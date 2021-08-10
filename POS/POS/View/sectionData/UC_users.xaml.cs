@@ -1432,7 +1432,6 @@ namespace POS.View
                 Window.GetWindow(this).Opacity = 0.2;
 
             wd_branchesList w = new wd_branchesList();
-
             w.Id = user.userId;
             w.userOrBranch = 'u';
             w.ShowDialog();

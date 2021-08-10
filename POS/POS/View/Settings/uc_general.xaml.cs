@@ -3,6 +3,7 @@ using POS.Classes;
 using POS.View.windows;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
@@ -133,6 +134,21 @@ namespace POS.View.Settings
             //await getDefaultCost();
             //if (cost != null)
             //    tb_storageCost.Text = cost.value;
+            #endregion
+
+            #region fill process type
+            DateTimeFormatInfo dtfi = DateTimeFormatInfo.CurrentInfo;
+            var typelist = new[] {
+            new { Text =  dtfi.ShortDatePattern.ToString(), Value = "ShortDatePattern" },
+            new { Text = dtfi.LongDatePattern.ToString() , Value = "LongDatePattern" },
+            new { Text =  dtfi.MonthDayPattern.ToString(), Value = "MonthDayPattern" },
+            new { Text =  dtfi.YearMonthPattern.ToString(), Value = "YearMonthPattern" },
+             };
+            cb_dateForm.DisplayMemberPath = "Text";
+            cb_dateForm.SelectedValuePath = "Value";
+            cb_dateForm.ItemsSource = typelist;
+            cb_dateForm.SelectedIndex = 0;
+
             #endregion
 
         }
@@ -432,6 +448,17 @@ namespace POS.View.Settings
         }
         User userModel = new User();
         User user = new User();
+
+        private void Btn_savedDateForm_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Cb_dateForm_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
         private async void Btn_changePassword_Click(object sender, RoutedEventArgs e)
         {//change password
             if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())

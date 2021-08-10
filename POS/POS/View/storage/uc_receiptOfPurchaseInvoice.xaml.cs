@@ -731,7 +731,7 @@ namespace POS.View.storage
             TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
             if (elapsed.TotalMilliseconds < 100)
             {
-                if (columnName == MainWindow.resourcemanager.GetString("trAmount"))
+                if (columnName == MainWindow.resourcemanager.GetString("trQuantity"))
                     t.Text = billDetails[index].Count.ToString();
             }
             else
@@ -740,7 +740,7 @@ namespace POS.View.storage
                 long newCount = 0;
 
                 //"tb_amont"
-                if (columnName == MainWindow.resourcemanager.GetString("trAmount"))
+                if (columnName == MainWindow.resourcemanager.GetString("trQuantity"))
                     newCount = int.Parse(t.Text);
                 else
                     newCount = row.Count;

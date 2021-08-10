@@ -836,7 +836,7 @@ namespace POS.View
                 w.title = MainWindow.resourcemanager.GetString("trPurchaseInvoices");         
                 // purchase invoices
                 //w.invoiceType = "pw"; // invoice type to view in grid
-                w.invoiceType = "p"; // invoice type to view in grid
+                w.invoiceType = "p, pw"; // invoice type to view in grid
                 w.branchCreatorId = MainWindow.branchID.Value;
                 w.branchId = MainWindow.branchID.Value; 
 
@@ -1470,7 +1470,7 @@ namespace POS.View
             TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
             if (elapsed.TotalMilliseconds < 100)
             {
-                if (columnName == MainWindow.resourcemanager.GetString("trAmount"))
+                if (columnName == MainWindow.resourcemanager.GetString("trQuantity"))
                     t.Text = billDetails[index].Count.ToString();
                 else if (columnName == MainWindow.resourcemanager.GetString("trPrice"))
                     t.Text = billDetails[index].Price.ToString();
@@ -1483,7 +1483,7 @@ namespace POS.View
                 decimal newPrice = 0;
 
                 //"tb_amont"
-                if (columnName == MainWindow.resourcemanager.GetString("trAmount"))
+                if (columnName == MainWindow.resourcemanager.GetString("trQuantity"))
                     newCount = int.Parse(t.Text);
                 else
                     newCount = row.Count;
@@ -1633,7 +1633,18 @@ namespace POS.View
                 LocalReportExtensions.PrintToPrinter(rep);
             }
         }
+        private void Btn_preview_Click(object sender, RoutedEventArgs e)
+        {
+                Window.GetWindow(this).Opacity = 0.2;
 
+                wd_previewPdf w = new wd_previewPdf();
+                w.pdfPath = "C:\\Users\\YasinIdlbiPC\\Desktop\\kj.pdf";
+            if (!string.IsNullOrEmpty(w.pdfPath))
+                w.ShowDialog();
+            else
+                Toaster.ShowError(Window.GetWindow(this), message: "", animation: ToasterAnimation.FadeIn);
+            Window.GetWindow(this).Opacity = 1;
+        }
 
         private void Btn_items_Click(object sender, RoutedEventArgs e)
         {
@@ -1673,6 +1684,6 @@ namespace POS.View
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
 
-       
+        
     }
 }

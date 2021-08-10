@@ -2697,3 +2697,15 @@ E:\GitHub\posproject2\POS\POS\obj\Debug\View\Settings\uc_emailTemplates.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\Settings\uc_emailTemplates.baml
 D:\myproj\posproject2\POS\POS\obj\Debug\View\Settings\uc_emailTemplates.g.cs
 D:\myproj\posproject2\POS\POS\obj\Debug\View\Settings\uc_emailTemplates.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\reports\uc_accountant.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\reports\uc_banksReport.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\reports\uc_paymentsReport.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\reports\uc_posReports.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\reports\uc_recipientReport.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\reports\uc_accountant.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\reports\uc_banksReport.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\reports\uc_paymentsReport.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\reports\uc_posReports.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\reports\uc_recipientReport.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_previewPdf.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_previewPdf.baml

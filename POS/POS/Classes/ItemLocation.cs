@@ -460,6 +460,38 @@ namespace POS.Classes
                 return false;
             }
         }
+        public async Task<Boolean> generatePackage(int packageParentId, int quantity,int locationId,int branchId,int userId)
+        {
+            // ... Use HttpClient.
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            // 
+          //  var myContent = JsonConvert.SerializeObject(invoiceItems);
+
+            using (var client = new HttpClient())
+            {
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                client.BaseAddress = new Uri(Global.APIUri);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+                HttpRequestMessage request = new HttpRequestMessage();
+                // encoding parameter to get special characters
+                //myContent = HttpUtility.UrlEncode(myContent);
+                request.RequestUri = new Uri(Global.APIUri + "ItemsLocations/generatePackage?packageParentId=" + packageParentId + "&quantity=" + quantity+
+                                                    "&locationId="+ locationId +"&branchId="+branchId+ "&userId=" + userId);
+                request.Headers.Add("APIKey", Global.APIKey);
+                request.Method = HttpMethod.Post;
+                //set content type
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
         public async Task<Boolean> recieptOrder(List<ItemLocation> invoiceItems,int toBranch,int userId)
         {
             // ... Use HttpClient.

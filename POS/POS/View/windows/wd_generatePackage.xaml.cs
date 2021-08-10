@@ -35,6 +35,7 @@ namespace POS.View.windows
         ItemLocation itemLocation = new ItemLocation();
         Package package = new Package();
         List<Package> packages;
+        private static int _PackageParentId;
         private void Cb_item_KeyUp(object sender, KeyEventArgs e)
         {
             cb_item.ItemsSource = items.Where(x => x.name.Contains(cb_item.Text));
@@ -72,15 +73,17 @@ namespace POS.View.windows
         private async Task<bool> checkAmount()
         {
             bool valid = true;
-            int quantity = int.Parse(tb_quantity.Text);
+            int quantity = 0;
+            if(!tb_quantity.Text.Equals(""))
+                quantity= int.Parse(tb_quantity.Text);
             if(cb_item.SelectedIndex != -1 && quantity > 0)
             {
                 ItemUnit itemUnit = new ItemUnit();
                 List< ItemUnit> itemUnits = new List<ItemUnit>();
                 itemUnits = await itemUnit.GetItemUnits((int)cb_item.SelectedValue);
-                int itemUnitId = itemUnits[0].itemUnitId;
-
-                packages = await package.GetChildsByParentId(itemUnitId);
+                _PackageParentId = itemUnits[0].itemUnitId;
+                int itemUnitId = 0;
+                packages = await package.GetChildsByParentId(_PackageParentId);
                 foreach(Package p in packages)
                 {
                     int branchQuantity = 0;
@@ -88,15 +91,16 @@ namespace POS.View.windows
                     itemUnitId = (int)p.childIUId;
                     int requireQuan = itemQuanP * quantity;
 
-                    if (cb_location.SelectedIndex == -1)
+                   // if (cb_location.SelectedIndex == -1)
                         branchQuantity = await itemLocation.getUnitAmount(itemUnitId, MainWindow.branchID.Value);
-                    else
-                        branchQuantity = await itemLocation.getAmountInLocation(itemUnitId,MainWindow.branchID.Value,(int) cb_location.SelectedValue);
+                    //else
+                     //  branchQuantity = await itemLocation.getAmountInLocation(itemUnitId,MainWindow.branchID.Value,(int) cb_location.SelectedValue);
 
                     if (requireQuan > branchQuantity)
                     {
-                        valid = false;                      
-                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorItemAmntNotAvailableToolTip")+" "+p.childIUId, animation: ToasterAnimation.FadeIn);
+                        valid = false;
+                        tb_quantity.Text = "0";
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorItemAmntNotAvailableToolTip")+" "+p.citemName, animation: ToasterAnimation.FadeIn);
                         return valid;
                     }
 
@@ -111,10 +115,54 @@ namespace POS.View.windows
                 Btn_save_Click(null, null);
             }
         }
-        private void Btn_save_Click(object sender, RoutedEventArgs e)
+        private bool validateInputs()
         {
+            bool valid = true;
+            SectionData.validateEmptyTextBox(tb_quantity, p_errorQuantity, tt_errorQuantity, "trEmptyQuantityToolTip");
+            SectionData.validateEmptyComboBox(cb_item, p_errorParentItem, tt_errorParentItem, "trErrorEmptyItemToolTip");
+            SectionData.validateEmptyComboBox(cb_location, p_errorLocation, tt_errorLocation, "trErrorEmptyLocationToolTip");
+            if (tb_quantity.Text.Equals("") || cb_item.SelectedIndex == -1 || cb_location.SelectedIndex == -1)
+            {
+                valid = false;
+                return valid;
+            }
+            if(int.Parse(tb_quantity.Text) == 0)
+            {
+                valid = false;
+                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorQuantIsZeroToolTip"), animation: ToasterAnimation.FadeIn);
 
-            this.Close();
+            }
+            return valid;
+        }
+        private async void Btn_save_Click(object sender, RoutedEventArgs e)
+        {
+            // bool valid =  await checkAmount();
+            bool valid = validateInputs();
+            if(valid)
+            {
+                int quantity = int.Parse(tb_quantity.Text);
+                bool res = await itemLocation.generatePackage(_PackageParentId,quantity,(int)cb_location.SelectedValue,MainWindow.branchID.Value, MainWindow.userID.Value);
+                if (res)
+                {
+                    clearGenerateInputs();
+                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                }
+                else
+                    Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+            }
+        }
+        private void clearGenerateInputs()
+        {
+            cb_item.SelectedIndex = -1;
+            _PackageParentId = 0;
+            cb_location.SelectedIndex = -1;
+            cb_location.Text = "";
+            tb_quantity.Clear();
+            
+            SectionData.clearValidate(tb_quantity, p_errorQuantity);
+            SectionData.clearComboBoxValidate(cb_item, p_errorParentItem);
+            SectionData.clearComboBoxValidate(cb_location, p_errorLocation);
+            
         }
         private void Btn_colse_Click(object sender, RoutedEventArgs e)
         {
@@ -159,6 +207,11 @@ namespace POS.View.windows
             {
                await checkAmount();
             }
+        }
+
+        private async void Cb_item_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+           await checkAmount();
         }
     }
 }

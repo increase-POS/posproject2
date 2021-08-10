@@ -315,7 +315,7 @@
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="title..."  
                                                           Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                                 BorderBrush="AliceBlue"  MaxLength="20" LostFocus="validationControl_LostFocus"
+                                 BorderBrush="AliceBlue"  MaxLength="100" LostFocus="validationControl_LostFocus"
                                  TextChanged="validationTextbox_TextChanged"
                     materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                   Height="40"   Grid.ColumnSpan="2" Margin="10,5,10,5" >
@@ -344,7 +344,7 @@
                                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
                                  BorderBrush="AliceBlue"   LostFocus="validationControl_LostFocus" TextChanged="validationTextbox_TextChanged"
-           MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+           MaxLength="1000" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                   Height="40"    Margin="10,5,10,5" Grid.ColumnSpan="2" >
                             <TextBox.ToolTip>
                                 <ToolTip x:Name="tt_text1" 
@@ -368,7 +368,7 @@
                                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
                                  BorderBrush="AliceBlue"   LostFocus="validationControl_LostFocus" TextChanged="validationTextbox_TextChanged"
-           MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+           MaxLength="1000" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                   Height="40"    Margin="10,5,10,5" Grid.ColumnSpan="2" >
                             <TextBox.ToolTip>
                                 <ToolTip x:Name="tt_text2" 
@@ -393,7 +393,7 @@
                         <TextBox x:Name="tb_link1text" Grid.Row="6" Text="{Binding link1text, Mode=OneWay}" Padding="10,0,5,0"   
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="link1text..." 
                                                                          Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-
+                                                                      
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
                                  BorderBrush="AliceBlue"   LostFocus="validationControl_LostFocus" TextChanged="validationTextbox_TextChanged"
                       MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
@@ -420,7 +420,7 @@
 
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
                                  BorderBrush="AliceBlue"   LostFocus="validationControl_LostFocus" TextChanged="validationTextbox_TextChanged"
-                      MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                      MaxLength="500" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                   Height="40"    Margin="10,5,10,5" >
                             <TextBox.ToolTip>
                                 <ToolTip x:Name="tt_link1url" 
@@ -470,7 +470,7 @@
 
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
                                  BorderBrush="AliceBlue"   LostFocus="validationControl_LostFocus" TextChanged="validationTextbox_TextChanged"
-                      MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                      MaxLength="500" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                   Height="40"    Margin="10,5,10,5" >
                             <TextBox.ToolTip>
                                 <ToolTip x:Name="tt_link2url" 
@@ -497,7 +497,7 @@
 
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
                                  BorderBrush="AliceBlue"   LostFocus="validationControl_LostFocus" TextChanged="validationTextbox_TextChanged"
-                      MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                      MaxLength="100" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                   Height="40"    Margin="10,5,10,5" >
                             <TextBox.ToolTip>
                                 <ToolTip x:Name="tt_link3text" 
@@ -521,7 +521,7 @@
 
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
                                  BorderBrush="AliceBlue"   LostFocus="validationControl_LostFocus" TextChanged="validationTextbox_TextChanged"
-                      MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                      MaxLength="500" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                   Height="40"    Margin="10,5,10,5" >
                             <TextBox.ToolTip>
                                 <ToolTip x:Name="tt_link3url" 

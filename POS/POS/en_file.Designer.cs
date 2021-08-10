@@ -475,7 +475,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Credit card....
+        ///   Looks up a localized string similar to card....
         /// </summary>
         internal static string trCardHint {
             get {
@@ -493,7 +493,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Credit card.
+        ///   Looks up a localized string similar to card.
         /// </summary>
         internal static string trCardTooltip {
             get {
@@ -2104,6 +2104,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You should choose an item.
+        /// </summary>
+        internal static string trErrorEmptyItemToolTip {
+            get {
+                return ResourceManager.GetString("trErrorEmptyItemToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Location can not be empty.
         /// </summary>
         internal static string trErrorEmptyLocationToolTip {
@@ -2266,6 +2275,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Quantity is not enouph of item:.
+        /// </summary>
+        internal static string trErrorItemAmntNotAvailableToolTip {
+            get {
+                return ResourceManager.GetString("trErrorItemAmntNotAvailableToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Item not found.
         /// </summary>
         internal static string trErrorItemNotFoundToolTip {
@@ -2302,6 +2320,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Quantity is not enough.
+        /// </summary>
+        internal static string trErrorNoEnoughQuantityToolTip {
+            get {
+                return ResourceManager.GetString("trErrorNoEnoughQuantityToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to There is an item with no serial.
         /// </summary>
         internal static string trErrorNoSerialToolTip {
@@ -2325,6 +2352,15 @@ namespace POS {
         internal static string trErrorPasswordToolTip {
             get {
                 return ResourceManager.GetString("trErrorPasswordToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Quantity cannot be zero.
+        /// </summary>
+        internal static string trErrorQuantIsZeroToolTip {
+            get {
+                return ResourceManager.GetString("trErrorQuantIsZeroToolTip", resourceCulture);
             }
         }
         

@@ -202,8 +202,6 @@ namespace POS.View.windows
         }
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {
-            isActive = true;
-            //this.Close();
             bool valid = await validateInputs();
             if (valid)
             {

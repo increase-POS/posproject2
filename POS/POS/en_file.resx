@@ -1147,10 +1147,10 @@
     <value>Values</value>
   </data>
   <data name="trCardHint" xml:space="preserve">
-    <value>Credit card...</value>
+    <value>card...</value>
   </data>
   <data name="trCardTooltip" xml:space="preserve">
-    <value>Credit card</value>
+    <value>card</value>
   </data>
   <data name="trEmptyCardTooltip" xml:space="preserve">
     <value>Credit card can not be empty</value>
@@ -1926,5 +1926,17 @@ Please add Email in setting</value>
   </data>
   <data name="trSaleOrderDraft" xml:space="preserve">
     <value>Sale Order Draft</value>
+  </data>
+  <data name="trErrorEmptyItemToolTip" xml:space="preserve">
+    <value>You should choose an item</value>
+  </data>
+  <data name="trErrorItemAmntNotAvailableToolTip" xml:space="preserve">
+    <value>Quantity is not enouph of item:</value>
+  </data>
+  <data name="trErrorNoEnoughQuantityToolTip" xml:space="preserve">
+    <value>Quantity is not enough</value>
+  </data>
+  <data name="trErrorQuantIsZeroToolTip" xml:space="preserve">
+    <value>Quantity cannot be zero</value>
   </data>
 </root>

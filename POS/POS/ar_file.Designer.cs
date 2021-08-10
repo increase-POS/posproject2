@@ -457,7 +457,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to بطاقة الائتمان....
+        ///   Looks up a localized string similar to بطاقة....
         /// </summary>
         internal static string trCardHint {
             get {
@@ -475,7 +475,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to بطاقة الائتمان.
+        ///   Looks up a localized string similar to بطاقة.
         /// </summary>
         internal static string trCardTooltip {
             get {
@@ -2077,6 +2077,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to عليك اختيار عنصر.
+        /// </summary>
+        internal static string trErrorEmptyItemToolTip {
+            get {
+                return ResourceManager.GetString("trErrorEmptyItemToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to مكان التخزين لا يمكن أن يكون فارغ.
         /// </summary>
         internal static string trErrorEmptyLocationToolTip {
@@ -2230,6 +2239,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to الكمية غير كافية من العنصر:.
+        /// </summary>
+        internal static string trErrorItemAmntNotAvailableToolTip {
+            get {
+                return ResourceManager.GetString("trErrorItemAmntNotAvailableToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to العنصر غير موجود.
         /// </summary>
         internal static string trErrorItemNotFoundToolTip {
@@ -2266,6 +2284,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to الكمية غير كافية.
+        /// </summary>
+        internal static string trErrorNoEnoughQuantityToolTip {
+            get {
+                return ResourceManager.GetString("trErrorNoEnoughQuantityToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to يوجد عنصر ليس له سيريال.
         /// </summary>
         internal static string trErrorNoSerialToolTip {
@@ -2289,6 +2316,15 @@ namespace POS {
         internal static string trErrorPasswordToolTip {
             get {
                 return ResourceManager.GetString("trErrorPasswordToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to الكمية لا يمكن أن تكون صفر.
+        /// </summary>
+        internal static string trErrorQuantIsZeroToolTip {
+            get {
+                return ResourceManager.GetString("trErrorQuantIsZeroToolTip", resourceCulture);
             }
         }
         

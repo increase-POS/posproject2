@@ -188,7 +188,7 @@ namespace POS.View.Settings
             //    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
 
         }
-        private void Dg_setValues_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void Dg_setValues_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//selection
             //p_errorZ.Visibility = Visibility.Collapsed;
             //p_errorZ.Visibility = Visibility.Collapsed;
@@ -200,8 +200,37 @@ namespace POS.View.Settings
 
             if (dg_setValues.SelectedIndex != -1)
             {
-                setValues = dg_setValues.SelectedItem as SetValues;
-                this.DataContext = setValues;
+                if (dg_setValues.SelectedIndex != -1)
+                {
+                    sett = dg_setValues.SelectedItem as SettingCls;
+                    setValuessQuery = await setValuesModel.GetBySetName(sett.name);
+                    tb_title.Text = setValuessQuery.Where(x => x.notes == "title").FirstOrDefault() is null ? ""
+                    : setValuessQuery.Where(x => x.notes == "title").FirstOrDefault().value.ToString();
+                    tb_text1.Text = setValuessQuery.Where(x => x.notes == "text1").FirstOrDefault() is null ? ""
+                       : setValuessQuery.Where(x => x.notes == "text1").FirstOrDefault().value.ToString();
+                    tb_text2.Text = setValuessQuery.Where(x => x.notes == "text2").FirstOrDefault() is null ? ""
+                    : setValuessQuery.Where(x => x.notes == "text2").FirstOrDefault().value.ToString();
+                    tb_link1text.Text = setValuessQuery.Where(x => x.notes == "link1text").FirstOrDefault() is null ? ""
+                    : setValuessQuery.Where(x => x.notes == "link1text").FirstOrDefault().value.ToString();
+
+                    tb_link2text.Text = setValuessQuery.Where(x => x.notes == "link2text").FirstOrDefault() is null ? ""
+                     : setValuessQuery.Where(x => x.notes == "link2text").FirstOrDefault().value.ToString();
+                    tb_link3text.Text = setValuessQuery.Where(x => x.notes == "link3text").FirstOrDefault() is null ? ""
+                    : setValuessQuery.Where(x => x.notes == "link3text").FirstOrDefault().value.ToString();
+
+
+                    tb_link1url.Text = setValuessQuery.Where(x => x.notes == "link1url").FirstOrDefault() is null ? ""
+                         : setValuessQuery.Where(x => x.notes == "link1url").FirstOrDefault().value.ToString();
+                    tb_link2url.Text = setValuessQuery.Where(x => x.notes == "link2url").FirstOrDefault() is null ? ""
+                           : setValuessQuery.Where(x => x.notes == "link2url").FirstOrDefault().value.ToString();
+
+                    tb_link3url.Text = setValuessQuery.Where(x => x.notes == "link3url").FirstOrDefault() is null ? ""
+                           : setValuessQuery.Where(x => x.notes == "link3url").FirstOrDefault().value.ToString();
+
+
+                    this.DataContext = setValues;
+                }
+
             }
 
             if (setValues != null)

@@ -2095,7 +2095,7 @@ namespace POS.View
             TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
             if (elapsed.TotalMilliseconds < 100)
             {
-                if (columnName == MainWindow.resourcemanager.GetString("trAmount"))
+                if (columnName == MainWindow.resourcemanager.GetString("trQuantity"))
                     t.Text = billDetails[index].Count.ToString();
                 else if (columnName == MainWindow.resourcemanager.GetString("trPrice"))
                     t.Text = billDetails[index].Price.ToString();
@@ -2108,7 +2108,7 @@ namespace POS.View
                 decimal newPrice = 0;
 
                 //"tb_amont"
-                if (columnName == MainWindow.resourcemanager.GetString("trAmount"))
+                if (columnName == MainWindow.resourcemanager.GetString("trQuantity"))
                 {
                     newCount = int.Parse(t.Text);
                     if (row.type == "sn")
@@ -2140,6 +2140,7 @@ namespace POS.View
                         newCount = availableAmount;
                         tb = dg_billDetails.Columns[4].GetCellContent(dg_billDetails.Items[index]) as TextBlock;
                         tb.Text = newCount.ToString();
+                        row.Count = (int)newCount;
                     }
                 }
 

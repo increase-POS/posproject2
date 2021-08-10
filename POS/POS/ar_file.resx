@@ -1126,10 +1126,10 @@
     <value>القيم</value>
   </data>
   <data name="trCardHint" xml:space="preserve">
-    <value>بطاقة الائتمان...</value>
+    <value>بطاقة...</value>
   </data>
   <data name="trCardTooltip" xml:space="preserve">
-    <value>بطاقة الائتمان</value>
+    <value>بطاقة</value>
   </data>
   <data name="trEmptyCardTooltip" xml:space="preserve">
     <value>بطاقة الائتمان لا يمكن أن تكون فارغة</value>
@@ -1905,5 +1905,17 @@
   </data>
   <data name="trSaleOrderDraft" xml:space="preserve">
     <value>مسودة طلبية مبيعات</value>
+  </data>
+  <data name="trErrorEmptyItemToolTip" xml:space="preserve">
+    <value>عليك اختيار عنصر</value>
+  </data>
+  <data name="trErrorItemAmntNotAvailableToolTip" xml:space="preserve">
+    <value>الكمية غير كافية من العنصر:</value>
+  </data>
+  <data name="trErrorNoEnoughQuantityToolTip" xml:space="preserve">
+    <value>الكمية غير كافية</value>
+  </data>
+  <data name="trErrorQuantIsZeroToolTip" xml:space="preserve">
+    <value>الكمية لا يمكن أن تكون صفر</value>
   </data>
 </root>
