@@ -91,6 +91,13 @@ namespace POS.Classes
         public Nullable<int> shippingCompanyId { get; set; }
         public string shippingCompanyName { get; set; }
         public string userAcc { get; set; }
+
+        //invoice
+        public string invNumber { get; set; }
+        public string invType { get; set; }
+        public Nullable<decimal> totalNet { get; set; }
+        public Nullable<decimal> deserved { get; set; }
+        public Nullable<System.DateTime> deservedDate { get; set; }
     }
     public class Storage
     {
@@ -1371,7 +1378,7 @@ namespace POS.Classes
 
         // المحاسبة
         #region Accountant
-            // المدفوعات
+        // المدفوعات
         public async Task<List<CashTransferSts>> GetPayments()
         {
             List<CashTransferSts> list = null;
@@ -1459,7 +1466,7 @@ namespace POS.Classes
 
 
         // bank
-  
+
         public async Task<List<CashTransferSts>> GetBankTrans()
         {
             List<CashTransferSts> list = null;
@@ -1628,7 +1635,7 @@ namespace POS.Classes
         {
             List<PaymentsTypeCombo> iulist = new List<PaymentsTypeCombo>();
 
-            iulist = ITInvoice.Where(g=>g.processType!=null).GroupBy(g => g.processType).Select(g => new PaymentsTypeCombo { PaymentsTypeName = g.FirstOrDefault().processType }).ToList();
+            iulist = ITInvoice.Where(g => g.processType != null).GroupBy(g => g.processType).Select(g => new PaymentsTypeCombo { PaymentsTypeName = g.FirstOrDefault().processType }).ToList();
             return iulist;
 
         }
@@ -1658,7 +1665,7 @@ namespace POS.Classes
         {
             List<ShippingCombo> iulist = new List<ShippingCombo>();
 
-            iulist = ITInvoice.GroupBy(g => g.shippingCompanyId).Select(g => new ShippingCombo { ShippingId = g.FirstOrDefault().shippingCompanyId,ShippingName=g.FirstOrDefault().shippingCompanyName }).ToList();
+            iulist = ITInvoice.GroupBy(g => g.shippingCompanyId).Select(g => new ShippingCombo { ShippingId = g.FirstOrDefault().shippingCompanyId, ShippingName = g.FirstOrDefault().shippingCompanyName }).ToList();
             return iulist;
 
         }
@@ -1674,7 +1681,7 @@ namespace POS.Classes
         {
             List<branchFromCombo> iulist = new List<branchFromCombo>();
 
-            iulist = ITInvoice.GroupBy(g=>g.frombranchId).Select(g => new branchFromCombo { BranchFromId = g.FirstOrDefault().frombranchId, BranchFromName = g.FirstOrDefault().frombranchName }).ToList();
+            iulist = ITInvoice.GroupBy(g => g.frombranchId).Select(g => new branchFromCombo { BranchFromId = g.FirstOrDefault().frombranchId, BranchFromName = g.FirstOrDefault().frombranchName }).ToList();
             return iulist;
 
         }
@@ -1708,7 +1715,7 @@ namespace POS.Classes
         {
             List<posFromCombo> iulist = new List<posFromCombo>();
 
-            iulist = ITInvoice.GroupBy(g => g.fromposId).Select(g => new posFromCombo { PosFromId = g.FirstOrDefault().fromposId, PosFromName = g.FirstOrDefault().fromposName,BranchId=g.FirstOrDefault().frombranchId }).ToList();
+            iulist = ITInvoice.GroupBy(g => g.fromposId).Select(g => new posFromCombo { PosFromId = g.FirstOrDefault().fromposId, PosFromName = g.FirstOrDefault().fromposName, BranchId = g.FirstOrDefault().frombranchId }).ToList();
             return iulist;
 
         }
@@ -1726,7 +1733,7 @@ namespace POS.Classes
         {
             List<posToCombo> iulist = new List<posToCombo>();
 
-            iulist = ITInvoice.GroupBy(g => g.toposId).Select(g => new posToCombo { PosToId = g.FirstOrDefault().toposId, PosToName = g.FirstOrDefault().toposName ,BranchId=g.FirstOrDefault().tobranchId}).ToList();
+            iulist = ITInvoice.GroupBy(g => g.toposId).Select(g => new posToCombo { PosToId = g.FirstOrDefault().toposId, PosToName = g.FirstOrDefault().toposName, BranchId = g.FirstOrDefault().tobranchId }).ToList();
             return iulist;
 
         }
