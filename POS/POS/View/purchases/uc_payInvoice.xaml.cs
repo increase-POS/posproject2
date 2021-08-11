@@ -375,7 +375,7 @@ namespace POS.View
         }
 
 
-        public async void ChangeItemIdEvent(int itemId)
+        public async Task ChangeItemIdEvent(int itemId)
         {
             item = items.ToList().Find(c => c.itemId == itemId);
 
@@ -1646,7 +1646,7 @@ namespace POS.View
             Window.GetWindow(this).Opacity = 1;
         }
 
-        private void Btn_items_Click(object sender, RoutedEventArgs e)
+        private async void Btn_items_Click(object sender, RoutedEventArgs e)
         {
             //items
 
@@ -1657,7 +1657,11 @@ namespace POS.View
             if (w.isActive)
             {
                 ////// w.selectedItem this is ItemId
-                ChangeItemIdEvent(w.selectedItem);
+                for (int i = 0; i < w.selectedItems.Count; i++)
+                {
+                    int itemId = w.selectedItems[i];
+                   await ChangeItemIdEvent(itemId);
+                }
             }
 
             Window.GetWindow(this).Opacity = 1;

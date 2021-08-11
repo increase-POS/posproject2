@@ -237,27 +237,19 @@ namespace POS.View.Settings
                 groupObject.objectId = item.objectId;
                 if (item.objectType == "one")
                 {
-                    //groupObject.showOb = 0;
-                    groupObject.showOb = 1;
+                    groupObject.showOb = 0;
                     groupObject.addOb = 2;
                     groupObject.updateOb = 2;
                     groupObject.deleteOb = 2;
                     groupObject.reportOb = 2;
-
                 }
                 else
                 {
-                    //groupObject.showOb = 0;
-                    //groupObject.addOb = 0;
-                    //groupObject.updateOb = 0;
-                    //groupObject.deleteOb = 0;
-                    //groupObject.reportOb = 0;
-
-                    groupObject.showOb = 1;
-                    groupObject.addOb = 1;
-                    groupObject.updateOb = 1;
-                    groupObject.deleteOb = 1;
-                    groupObject.reportOb = 1;
+                    groupObject.showOb = 0;
+                    groupObject.addOb = 0;
+                    groupObject.updateOb = 0;
+                    groupObject.deleteOb = 0;
+                    groupObject.reportOb = 0;
                 }
 
 

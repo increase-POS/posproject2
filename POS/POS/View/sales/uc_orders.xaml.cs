@@ -701,7 +701,7 @@ namespace POS.View.sales
             await invoice.saveOrderStatus(st);
         }
         #region Get Id By Click  Y
-        public async void ChangeItemIdEvent(int itemId)
+        public async Task ChangeItemIdEvent(int itemId)
         {
             if (items != null) item = items.ToList().Find(c => c.itemId == itemId);
 
@@ -1350,7 +1350,7 @@ namespace POS.View.sales
         {
             e.Handled = e.Key == Key.Space;
         }
-        private void Btn_items_Click(object sender, RoutedEventArgs e)
+        private async void Btn_items_Click(object sender, RoutedEventArgs e)
         {
             if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
@@ -1361,9 +1361,12 @@ namespace POS.View.sales
             w.ShowDialog();
             if (w.isActive)
             {
-                ////// this is ItemId
-                ChangeItemIdEvent(w.selectedItem);
-            }
+                    for (int i = 0; i < w.selectedItems.Count; i++)
+                    {
+                        int itemId = w.selectedItems[i];
+                        await ChangeItemIdEvent(itemId);
+                    }
+                }
 
             Window.GetWindow(this).Opacity = 1;
             }

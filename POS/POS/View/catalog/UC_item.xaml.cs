@@ -1097,22 +1097,77 @@ namespace POS.View
         }
         //**********************************************
         //**************delete barcode******************
+        private async Task activateBarcode()
+        {//activate
+
+            itemUnit.isActive = 1;
+            itemUnit.updateUserId = MainWindow.userID.Value;
+
+            string s = await itemUnit.saveItemUnit(itemUnit);
+
+            if (s == "true")
+                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
+            else
+                Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+        }
         async void Btn_deleteBarcode_Click(object sender, RoutedEventArgs e)
         {
             if (MainWindow.groupObject.HasPermissionAction(unitBasicsPermission, MainWindow.groupObjects, "delete") || SectionData.isAdminPermision())
             {
                 if (itemUnit.itemUnitId != 0)
                 {
-                    Boolean res = await itemUnit.Delete(itemUnit.itemUnitId);
+                    if ((!itemUnit.canDelete) && (itemUnit.isActive == 0))
+                    {
+                        #region
+                        Window.GetWindow(this).Opacity = 0.2;
+                        wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                        w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
+                        w.ShowDialog();
+                        Window.GetWindow(this).Opacity = 1;
+                        #endregion
+                        if (w.isOk)
+                            await activateBarcode();
 
-                    if (res)
-                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
+                    }
                     else
-                        Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    {
+                        #region
+                        Window.GetWindow(this).Opacity = 0.2;
+                        wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                        if (itemUnit.canDelete)
+                            w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDelete");
+                        if (!itemUnit.canDelete)
+                            w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDeactivate");
+                        w.ShowDialog();
+                        Window.GetWindow(this).Opacity = 1;
+                        #endregion
+                        if (w.isOk)
+                        {
+                            string popupContent = "";
+                            if (itemUnit.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
+                            if ((!itemUnit.canDelete) && (itemUnit.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
+                            int userId = (int)MainWindow.userID;
+                            Boolean res = await itemUnit.Delete(itemUnit.itemUnitId, userId, itemUnit.canDelete);
 
+                            if (res)
+                                Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
+                            else
+                                Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                        }
+                        //Boolean res = await itemUnit.Delete(itemUnit.itemUnitId);
+
+                        //if (res)
+                        //    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
+                        //else
+                        //    Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+
+                    }
+                    Btn_unitClear(null, null);
                     refreshItemUnitsGrid(item.itemId);
+                    tb_barcode.Focus();
                 }
-                tb_barcode.Focus();
             }
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -1430,7 +1485,7 @@ namespace POS.View
         }
         async void refreshItemUnitsGrid(int itemId)
         {
-            itemUnits = await itemUnitModel.GetItemUnits(itemId);
+            itemUnits = await itemUnitModel.GetAllItemUnits(itemId);
             dg_unit.ItemsSource = itemUnits.ToList();
         }
         async void refreshServicesGrid(int itemId)

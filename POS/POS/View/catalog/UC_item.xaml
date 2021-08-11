@@ -1661,23 +1661,23 @@
                         Background="#4E4E4E" BorderBrush="{x:Null}"
                     Margin="1,1"  Click="Btn_deleteBarcode_Click" >
                                 <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" VerticalAlignment="Center">
-                                    <materialDesign:PackIcon Kind="Delete" VerticalAlignment="Center" Width="15" Height="15" Margin="0,1,2,0">
+                                    <materialDesign:PackIcon Kind="Delete" Name="txt_deleteUnit_Icon" VerticalAlignment="Center" Width="15" Height="15" Margin="0,1,2,0">
 
                                     </materialDesign:PackIcon>
-                                    <TextBlock Visibility="Collapsed" Width="auto" Text="Delete" VerticalAlignment="Center">
+                                    <TextBlock Visibility="Collapsed" Width="auto" Name="txt_deleteUnitButton"  VerticalAlignment="Center">
 
                                     </TextBlock>
                                 </StackPanel>
                             </Button>
                             <Border.ToolTip>
-                                <ToolTip  Content="delete"
+                                <ToolTip  Content="delete" Name="tt_deleteUnit_Button"
                                     Placement="left" 
                                     HorizontalOffset="15"
                                     PlacementRectangle="50,0,0,0"
                                     VerticalOffset="30"/>
                             </Border.ToolTip>
                         </Border>
-                  
+
                     </Grid>
                 </Grid>
                 <!--#endregion-->

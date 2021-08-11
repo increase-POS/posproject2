@@ -13,6 +13,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using netoaster;
 using POS.Classes;
 
 namespace POS.View.windows
@@ -32,6 +33,7 @@ namespace POS.View.windows
         /// 
         public string CardType { get; set; }
         public int selectedItem { get; set; }
+        public List<int> selectedItems { get; set; }
         Item itemModel = new Item();
         Category categoryModel = new Category();
         Unit unitModel = new Unit();
@@ -145,6 +147,7 @@ namespace POS.View.windows
             short defaultSale = 0;
             short defaultPurchase = 0;
             int branchId = MainWindow.branchID.Value;
+            selectedItems = new List<int>();
             if (CardType.Equals("sales"))
             {
                 defaultSale = 1;
@@ -180,10 +183,19 @@ namespace POS.View.windows
 
             if (dg_items.SelectedIndex != -1)
             {
+                //item = dg_items.SelectedItem as Item;
+                //selectedItem = item.itemId;
+                //isActive = true;
+                //this.Close();
                 item = dg_items.SelectedItem as Item;
-                selectedItem = item.itemId;
-                isActive = true;
-                this.Close();
+                int isExist = selectedItems.IndexOf(item.itemId);
+                if (isExist == -1)
+                {
+                    lst_items.Items.Add(item.name);
+                    selectedItems.Add(item.itemId);
+                }
+               // isActive = true;
+               // this.Close();
 
             }
            
@@ -207,9 +219,18 @@ namespace POS.View.windows
 
         public void ChangeItemIdEvent(int itemId)
         {
-            selectedItem = itemId;
-            isActive = true;
-            this.Close();
+            //selectedItem = itemId;
+            //isActive = true;
+            //this.Close();
+            int isExist = -1;
+            if (selectedItems != null)
+                isExist = selectedItems.IndexOf(itemId);
+            var item = items.ToList().Find(x => x.itemId == itemId);
+            if (isExist == -1)
+            {
+                lst_items.Items.Add(item.name);
+                selectedItems.Add(itemId);
+            }
         }
 
         #endregion
@@ -481,5 +502,18 @@ namespace POS.View.windows
 
             }
         }
+
+        private void Btn_add_Click(object sender, RoutedEventArgs e)
+        {
+            if (selectedItems.Count > 0)
+            {
+                isActive = true;
+                this.Close();
+            }
+            else
+                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountIncreaseToolTip"), animation: ToasterAnimation.FadeIn);
+
+        }
+
     }
 }

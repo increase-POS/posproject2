@@ -55,7 +55,7 @@ namespace POS
         internal static int? userID;
         internal static User userLogin;
         internal static int? userLogInID;
-        internal static int? posID = 3;
+        internal static int? posID = 2;
         //مخزن الجميلية الرئيسي
         internal static int? branchID = 2;
         //مخزن الجميلية الفرقان

@@ -539,20 +539,20 @@
                         </DockPanel>
                     </Border>
                 </Grid>
-                <Border     Grid.Column="1"  Margin="5,10,5,10"
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="auto"></RowDefinition>
+                    </Grid.RowDefinitions>
+                <Border     Grid.Column="1"  Margin="0,10,5,10"
                     CornerRadius="7,7,7,7" BorderBrush="#999999"  Background="White">
+                       
                     <ListView Background="Purple" Width="135" Grid.Column="1" x:Name="lst_items" Margin="5,5,5,5" >
-                        <ListViewItem>
-                            <TextBlock Text="perthinal printer 258" />
-                        </ListViewItem>
-                        <ListViewItem>
-                            <TextBlock Text="perthinal printer 258" />
-                        </ListViewItem>
-                        <ListViewItem>
-                            <TextBlock Text="perthinal printer 258" />
-                        </ListViewItem>
+             
                     </ListView>
                 </Border>
+                    <Button x:Name="btn_add" Content="Add" BorderBrush="Transparent"  Grid.Row="1"  Margin="0,0,5,10" Click="Btn_add_Click"></Button>
+                </Grid>
 
             </Grid>
            

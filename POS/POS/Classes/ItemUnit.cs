@@ -34,7 +34,7 @@ namespace POS.Classes
         public string itemCode { get; set; }
         public string unitName { get; set; }
         public Boolean canDelete { get; set; }
-
+        public Nullable<byte> isActive { get; set; }
 
         //**************************************************
         //*************** item unit methods *********************
@@ -198,7 +198,7 @@ namespace POS.Classes
         //***************************************
         // delete item unit (barcode)
         //***************************************
-        public async Task<Boolean> Delete(int ItemUnitId)
+        public async Task<Boolean> Delete(int ItemUnitId, int userId, bool isFinal)
         {
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
@@ -211,7 +211,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "ItemsUnits/Delete?ItemUnitId=" + ItemUnitId);
+                request.RequestUri = new Uri(Global.APIUri + "ItemsUnits/Delete?ItemUnitId=" + ItemUnitId+ "&userId="+userId+"&final="+isFinal);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Post;
                 //set content type

@@ -494,7 +494,7 @@ namespace POS.View.storage
         }
         
 
-        private void Btn_items_Click(object sender, RoutedEventArgs e)
+        private async void Btn_items_Click(object sender, RoutedEventArgs e)
         {
             //items
 
@@ -504,7 +504,12 @@ namespace POS.View.storage
             w.ShowDialog();
             if (w.isActive)
             {
-                ChangeItemIdEvent(w.selectedItem);
+                // ChangeItemIdEvent(w.selectedItem);
+                for (int i = 0; i < w.selectedItems.Count; i++)
+                {
+                    int itemId = w.selectedItems[i];
+                    await ChangeItemIdEvent(itemId);
+                }
             }
 
             Window.GetWindow(this).Opacity = 1;
@@ -517,7 +522,7 @@ namespace POS.View.storage
         }
 
 
-        public async void ChangeItemIdEvent(int itemId)
+        public async Task ChangeItemIdEvent(int itemId)
         {
             if (items != null) item = items.ToList().Find(c => c.itemId == itemId);
 
