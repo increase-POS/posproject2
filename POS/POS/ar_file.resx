@@ -1930,4 +1930,7 @@
   <data name="trEmptyDateFormat" xml:space="preserve">
     <value>صيغة التاريخ لا يمكن أن فارغة</value>
   </data>
+  <data name="trCannotDeleteTheMainGroup" xml:space="preserve">
+    <value>لا يمكن حذف مجموعة رئيسية</value>
+  </data>
 </root>

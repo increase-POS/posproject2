@@ -430,6 +430,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to لا يمكن حذف مجموعة رئيسية.
+        /// </summary>
+        internal static string trCannotDeleteTheMainGroup {
+            get {
+                return ResourceManager.GetString("trCannotDeleteTheMainGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to لا يمكن حذف نقطة البيع الرئيسية.
         /// </summary>
         internal static string trCannotDeleteTheMainPos {

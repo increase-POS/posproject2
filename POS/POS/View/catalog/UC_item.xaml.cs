@@ -1111,7 +1111,7 @@ namespace POS.View
                 Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
         }
-        async void Btn_deleteBarcode_Click(object sender, RoutedEventArgs e)
+        async  void Btn_deleteBarcode_Click(object sender, RoutedEventArgs e)
         {
             if (MainWindow.groupObject.HasPermissionAction(unitBasicsPermission, MainWindow.groupObjects, "delete") || SectionData.isAdminPermision())
             {
@@ -1162,9 +1162,9 @@ namespace POS.View
                         //else
                         //    Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
-
+                        
                     }
-                    Btn_unitClear(null, null);
+                    Btn_unitClear(null,null);
                     refreshItemUnitsGrid(item.itemId);
                     tb_barcode.Focus();
                 }
@@ -1483,7 +1483,7 @@ namespace POS.View
             itemsProp = await itemsPropModel.Get(item.itemId);
             dg_properties.ItemsSource = itemsProp.ToList();
         }
-        async void refreshItemUnitsGrid(int itemId)
+        async Task refreshItemUnitsGrid(int itemId)
         {
             itemUnits = await itemUnitModel.GetAllItemUnits(itemId);
             dg_unit.ItemsSource = itemUnits.ToList();
@@ -1530,6 +1530,35 @@ namespace POS.View
                 tb_barcode.Text = itemUnit.barcode;
 
                 drawBarcode(itemUnit.barcode.Substring(1));
+                if (itemUnit.canDelete)
+                {
+                    txt_deleteUnitButton.Text = MainWindow.resourcemanager.GetString("trDelete");
+                    txt_deleteUnit_Icon.Kind =
+                             MaterialDesignThemes.Wpf.PackIconKind.Delete;
+                    tt_deleteUnit_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
+
+                }
+
+                else
+                {
+                    if (itemUnit.isActive == 0)
+                    {
+                        txt_deleteUnitButton.Text = MainWindow.resourcemanager.GetString("trActive");
+                        txt_deleteUnit_Icon.Kind =
+                         MaterialDesignThemes.Wpf.PackIconKind.Check;
+                        tt_deleteUnit_Button.Content = MainWindow.resourcemanager.GetString("trActive");
+
+                    }
+                    else
+                    {
+                        txt_deleteUnitButton.Text = MainWindow.resourcemanager.GetString("trInActive");
+                        txt_deleteUnit_Icon.Kind =
+                             MaterialDesignThemes.Wpf.PackIconKind.Cancel;
+                        tt_deleteUnit_Button.Content = MainWindow.resourcemanager.GetString("trInActive");
+
+                    }
+
+                }
             }
             tb_barcode.Focus();
         }
@@ -1871,7 +1900,7 @@ namespace POS.View
             Txb_searchitems_TextChanged(null, null);
         }
 
-        public void ChangeItemIdEvent(int itemId)
+        public async void ChangeItemIdEvent(int itemId)
         {
 
             p_errorName.Visibility = Visibility.Collapsed;
@@ -1888,7 +1917,7 @@ namespace POS.View
 
                 refreshPropertiesGrid(item.itemId);
                 refreshSerials(item.itemId);
-                refreshItemUnitsGrid(item.itemId);
+                await refreshItemUnitsGrid(item.itemId);
                 refreshServicesGrid(item.itemId);
 
                 tb_code.Text = item.code;
@@ -1913,11 +1942,14 @@ namespace POS.View
                     cb_itemType.SelectedValue = item.type;
                     switch (item.type)
                     {
-                        case "n": cb_itemType.SelectedIndex = 0; break;
-                        case "d": cb_itemType.SelectedIndex = 1; break;
-                        case "sn": cb_itemType.SelectedIndex = 2; break;
-                        case "sr": cb_itemType.SelectedIndex = 3; break;
-                        case "p": cb_itemType.SelectedIndex = 4; break;
+                        case "n": cb_itemType.SelectedIndex = 0; btn_addBarcode.IsEnabled = true; break;
+                        case "d": cb_itemType.SelectedIndex = 1; btn_addBarcode.IsEnabled = true; break;
+                        case "sn": cb_itemType.SelectedIndex = 2; btn_addBarcode.IsEnabled = true; break;
+                        case "sr": cb_itemType.SelectedIndex = 3; btn_addBarcode.IsEnabled = true; break;
+                        case "p": cb_itemType.SelectedIndex = 4;
+                            if (itemUnits != null && itemUnits.Count == 1) btn_addBarcode.IsEnabled = false;
+                            else btn_addBarcode.IsEnabled = true;
+                            break;
                     }
                 }
                 else

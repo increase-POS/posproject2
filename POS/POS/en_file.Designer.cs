@@ -97,6 +97,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string String4 {
+            get {
+                return ResourceManager.GetString("String4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Account Number.
         /// </summary>
         internal static string trAccNumber {
@@ -444,6 +453,15 @@ namespace POS {
         internal static string trCannotDeleteTheMainBranch {
             get {
                 return ResourceManager.GetString("trCannotDeleteTheMainBranch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot delete main Group.
+        /// </summary>
+        internal static string trCannotDeleteTheMainGroup {
+            get {
+                return ResourceManager.GetString("trCannotDeleteTheMainGroup", resourceCulture);
             }
         }
         

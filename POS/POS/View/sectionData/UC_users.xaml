@@ -812,7 +812,6 @@
                                      TabIndex="11"
                                      BorderBrush="AliceBlue"  MaxLength="100"
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                
                                      Height="auto"  MinHeight="65" Margin="10,5,10,5" Grid.ColumnSpan="2"  
                                      TextWrapping="Wrap">
                                 <TextBox.ToolTip>

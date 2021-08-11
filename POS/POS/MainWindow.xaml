@@ -166,14 +166,14 @@
                 <materialDesign:PackIcon Foreground="White" Kind="MenuDown" 
                                          Width="25" Height="25"/>
             </Button>-->
-            <StackPanel  Grid.Column="6" VerticalAlignment="Center">
-                <Menu  Background="Black"  Padding="0">
-                    <MenuItem Padding="0"  >
+            <StackPanel  Margin="0,25,0,0"   Grid.Column="6" VerticalAlignment="Center">
+                <Menu Background="Black"  Padding="0" VerticalAlignment="Center">
+                    <MenuItem Padding="0,0,0,25" >
                         <MenuItem.Header>
                             <materialDesign:PackIcon Foreground="White" Kind="MenuDown" 
                                          Width="25" Height="25"/>
                         </MenuItem.Header>
-                        <MenuItem x:Name="mi_changePassword"  Foreground="White"
+                        <MenuItem x:Name="mi_changePassword"  Foreground="White"  BorderThickness="0,1,0,0" BorderBrush="#DEDEDE"
                               Header="Change Password" Click="Mi_changePassword_Click"
                               Icon="{materialDesign:PackIcon Kind=Password}"></MenuItem>
                         <Separator />

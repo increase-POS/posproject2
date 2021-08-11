@@ -1529,7 +1529,7 @@
                                         </Path>
 
                                         <TextBlock Name="txt_posAccounting" Margin="5,5,5,2.5" TextWrapping="WrapWithOverflow"
-                                            VerticalAlignment="Bottom" FontSize="14" Foreground="#67686d" Text="POS" />
+                                            VerticalAlignment="Bottom" FontSize="14" Foreground="#67686d" Text="Transfers" />
                                     </DockPanel>
                                     <Button.ToolTip>
                                         <ToolTip Name="tt_pos" Content="Pos"
@@ -2526,7 +2526,7 @@
                                         </Path>
 
                                         <TextBlock x:Name="txt_emailTemplates" Margin="5,5,5,2.5" TextWrapping="WrapWithOverflow"
-                                            VerticalAlignment="Bottom" FontSize="14" Foreground="#67686d" Text="Emails" />
+                                            VerticalAlignment="Bottom" FontSize="14" Foreground="#67686d" Text="Email Templates" />
                                     </DockPanel>
 
                                 </Button>

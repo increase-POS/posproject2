@@ -13,6 +13,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using MaterialDesignThemes.Wpf;
 using netoaster;
 using POS.Classes;
 
@@ -191,7 +192,15 @@ namespace POS.View.windows
                 int isExist = selectedItems.IndexOf(item.itemId);
                 if (isExist == -1)
                 {
-                    lst_items.Items.Add(item.name);
+                    var b = new MaterialDesignThemes.Wpf.Chip()
+                    {
+                        Content = item.name,
+                        Name = "btn" + item.itemId,
+                        IsDeletable = true,
+                        Margin = new Thickness(5, 5, 5, 5)
+                    };
+                    b.DeleteClick += Chip_OnDeleteClick;
+                    lst_items.Children.Add(b);
                     selectedItems.Add(item.itemId);
                 }
                // isActive = true;
@@ -216,7 +225,12 @@ namespace POS.View.windows
             await RefrishItems();
             Txb_searchitems_TextChanged(null, null);
         }
-
+        private void Chip_OnDeleteClick(object sender, RoutedEventArgs e)
+        {
+            var currentChip = (Chip)sender;
+            lst_items.Children.Remove(currentChip);
+            selectedItems.Remove(Convert.ToInt32(currentChip.Name.Remove(0, 3)));
+        }
         public void ChangeItemIdEvent(int itemId)
         {
             //selectedItem = itemId;
@@ -228,7 +242,15 @@ namespace POS.View.windows
             var item = items.ToList().Find(x => x.itemId == itemId);
             if (isExist == -1)
             {
-                lst_items.Items.Add(item.name);
+                var b = new MaterialDesignThemes.Wpf.Chip()
+                {
+                    Content = item.name,
+                    Name = "btn" + item.itemId,
+                    IsDeletable = true,
+                    Margin = new Thickness(5, 5, 5, 5)
+                };
+                b.DeleteClick += Chip_OnDeleteClick;
+                lst_items.Children.Add(b);
                 selectedItems.Add(itemId);
             }
         }

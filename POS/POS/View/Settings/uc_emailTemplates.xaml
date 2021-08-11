@@ -292,9 +292,6 @@
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
                         <!--Base Information-->
@@ -345,7 +342,8 @@
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
                                  BorderBrush="AliceBlue"   LostFocus="validationControl_LostFocus" TextChanged="validationTextbox_TextChanged"
            MaxLength="1000" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                  Height="40"    Margin="10,5,10,5" Grid.ColumnSpan="2" >
+                   Margin="10,5,10,5" Grid.ColumnSpan="2"
+                                 Height="auto"  MinHeight="65" TextWrapping="Wrap">
                             <TextBox.ToolTip>
                                 <ToolTip x:Name="tt_text1" 
                                               Placement="left" 
@@ -369,7 +367,8 @@
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
                                  BorderBrush="AliceBlue"   LostFocus="validationControl_LostFocus" TextChanged="validationTextbox_TextChanged"
            MaxLength="1000" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                  Height="40"    Margin="10,5,10,5" Grid.ColumnSpan="2" >
+                  Margin="10,5,10,5" Grid.ColumnSpan="2" 
+                                 Height="auto"  MinHeight="65" TextWrapping="Wrap">
                             <TextBox.ToolTip>
                                 <ToolTip x:Name="tt_text2" 
                                               Placement="left" 
@@ -390,155 +389,177 @@
                             <TextBlock x:Name="txt_infoEmailSupport" Text="Email Support" Foreground="#737373" FontSize="10" VerticalAlignment="Center" Margin="5,5,5,5"/>
                             <Separator Background="#999999" VerticalAlignment="Center" Width="auto" />
                         </DockPanel>
-                        <TextBox x:Name="tb_link1text" Grid.Row="6" Text="{Binding link1text, Mode=OneWay}" Padding="10,0,5,0"   
+                        <Grid Grid.Row="6">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBox x:Name="tb_link1text" Grid.Row="6" Text="{Binding link1text, Mode=OneWay}" Padding="10,0,5,0"   
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="link1text..." 
                                                                          Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                                                       
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
                                  BorderBrush="AliceBlue"   LostFocus="validationControl_LostFocus" TextChanged="validationTextbox_TextChanged"
                       MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                  Height="40"    Margin="10,5,10,5" >
-                            <TextBox.ToolTip>
-                                <ToolTip x:Name="tt_link1text" 
+                  Height="40"    Margin="10,5,5,5" >
+                                <TextBox.ToolTip>
+                                    <ToolTip x:Name="tt_link1text" 
                                               Placement="left" 
                                               HorizontalOffset="5"
                                               PlacementRectangle="50,0,0,0"
                                               VerticalOffset="20"/>
-                            </TextBox.ToolTip>
-                        </TextBox>
-                        <Path Fill="#E81123" Stretch="Fill" Grid.Row="6" Margin="5,5,15,5" x:Name="p_errorLink1text"
-                              HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed" 
+                                </TextBox.ToolTip>
+                            </TextBox>
+                            <Path Fill="#E81123" Stretch="Fill" Grid.Row="6" Margin="5,5,15,5" x:Name="p_errorLink1text"
+                              HorizontalAlignment="Right"    Visibility="Collapsed" 
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
-                            <Path.ToolTip>
-                                <ToolTip  x:Name="tt_errorLink1text"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
-                            </Path.ToolTip>
-                        </Path>
-                        <TextBox x:Name="tb_link1url" Grid.Row="7" Text="{Binding link1url, Mode=OneWay}" Padding="10,0,5,0"   
+                                <Path.ToolTip>
+                                    <ToolTip  x:Name="tt_errorLink1text"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                </Path.ToolTip>
+                            </Path>
+                            <TextBox x:Name="tb_link1url" Grid.Row="7" Grid.Column="1" Text="{Binding link1url, Mode=OneWay}" Padding="10,0,5,0"   
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="link1url..." 
                                                                          Style="{StaticResource MaterialDesignFloatingHintTextBox}"
 
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
                                  BorderBrush="AliceBlue"   LostFocus="validationControl_LostFocus" TextChanged="validationTextbox_TextChanged"
                       MaxLength="500" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                  Height="40"    Margin="10,5,10,5" >
-                            <TextBox.ToolTip>
-                                <ToolTip x:Name="tt_link1url" 
+                  Height="40"    Margin="5,5,10,5" >
+                                <TextBox.ToolTip>
+                                    <ToolTip x:Name="tt_link1url" 
                                               Placement="left" 
                                               HorizontalOffset="5"
                                               PlacementRectangle="50,0,0,0"
                                               VerticalOffset="20"/>
-                            </TextBox.ToolTip>
-                        </TextBox>
-                        <Path Fill="#E81123" Stretch="Fill" Grid.Row="7" Margin="5,5,15,5" x:Name="p_errorLink1url"
-                              HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed" 
+                                </TextBox.ToolTip>
+                            </TextBox>
+                            <Path Fill="#E81123" Stretch="Fill" Grid.Row="7" Grid.Column="1"  Margin="5,5,15,5" x:Name="p_errorLink1url"
+                              HorizontalAlignment="Right"     Visibility="Collapsed" 
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
-                            <Path.ToolTip>
-                                <ToolTip  x:Name="tt_errorLink1url"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
-                            </Path.ToolTip>
-                        </Path>
+                                <Path.ToolTip>
+                                    <ToolTip  x:Name="tt_errorLink1url"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                </Path.ToolTip>
+                            </Path>
+                        </Grid>
 
+                        <Grid Grid.Row="7"  >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
 
-                        <TextBox x:Name="tb_link2text" Grid.Row="8" Text="{Binding link2text, Mode=OneWay}" Padding="10,0,5,0"   
+                            <TextBox x:Name="tb_link2text" Grid.Row="8" Text="{Binding link2text, Mode=OneWay}" Padding="10,0,5,0"   
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="link2text..." 
                                                                          Style="{StaticResource MaterialDesignFloatingHintTextBox}"
 
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
                                  BorderBrush="AliceBlue"   LostFocus="validationControl_LostFocus" TextChanged="validationTextbox_TextChanged"
                       MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                  Height="40"    Margin="10,5,10,5" >
-                            <TextBox.ToolTip>
-                                <ToolTip x:Name="tt_link2text" 
+                  Height="40"    Margin="10,5,5,5" >
+                                <TextBox.ToolTip>
+                                    <ToolTip x:Name="tt_link2text" 
                                               Placement="left" 
                                               HorizontalOffset="5"
                                               PlacementRectangle="50,0,0,0"
                                               VerticalOffset="20"/>
-                            </TextBox.ToolTip>
-                        </TextBox>
-                        <Path Fill="#E81123" Stretch="Fill" Grid.Row="8" Margin="5,5,15,5" x:Name="p_errorLink2text"
-                              HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed" 
+                                </TextBox.ToolTip>
+                            </TextBox>
+                            <Path Fill="#E81123" Stretch="Fill" Grid.Row="8" Margin="5,5,15,5" x:Name="p_errorLink2text"
+                              HorizontalAlignment="Right"   Visibility="Collapsed" 
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
-                            <Path.ToolTip>
-                                <ToolTip  x:Name="tt_errorLink2text"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
-                            </Path.ToolTip>
-                        </Path>
-                        <TextBox x:Name="tb_link2url" Grid.Row="9" Text="{Binding link2url, Mode=OneWay}" Padding="10,0,5,0"   
+                                <Path.ToolTip>
+                                    <ToolTip  x:Name="tt_errorLink2text"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                </Path.ToolTip>
+                            </Path>
+                            <TextBox x:Name="tb_link2url" Grid.Row="9" Grid.Column="1"     Text="{Binding link2url, Mode=OneWay}" Padding="10,0,5,0"   
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="link2url..." 
                                                                          Style="{StaticResource MaterialDesignFloatingHintTextBox}"
 
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
                                  BorderBrush="AliceBlue"   LostFocus="validationControl_LostFocus" TextChanged="validationTextbox_TextChanged"
                       MaxLength="500" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                  Height="40"    Margin="10,5,10,5" >
-                            <TextBox.ToolTip>
-                                <ToolTip x:Name="tt_link2url" 
+                  Height="40"    Margin="5,5,10,5" >
+                                <TextBox.ToolTip>
+                                    <ToolTip x:Name="tt_link2url" 
                                               Placement="left" 
                                               HorizontalOffset="5"
                                               PlacementRectangle="50,0,0,0"
                                               VerticalOffset="20"/>
-                            </TextBox.ToolTip>
-                        </TextBox>
-                        <Path Fill="#E81123" Stretch="Fill" Grid.Row="9" Margin="5,5,15,5" x:Name="p_errorLink2url"
-                              HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed" 
+                                </TextBox.ToolTip>
+                            </TextBox>
+                            <Path Fill="#E81123" Stretch="Fill" Grid.Row="9" Grid.Column="1"  Margin="5,5,15,5" x:Name="p_errorLink2url"
+                              HorizontalAlignment="Right"    Visibility="Collapsed" 
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
-                            <Path.ToolTip>
-                                <ToolTip  x:Name="tt_errorLink2url"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
-                            </Path.ToolTip>
-                        </Path>
+                                <Path.ToolTip>
+                                    <ToolTip  x:Name="tt_errorLink2url"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                </Path.ToolTip>
+                            </Path>
+
+                        </Grid>
 
 
+                        <Grid Grid.Row="8"  >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
 
-                        <TextBox x:Name="tb_link3text" Grid.Row="10" Text="{Binding link3text, Mode=OneWay}" Padding="10,0,5,0"   
+
+                            <TextBox x:Name="tb_link3text" Grid.Row="10" Text="{Binding link3text, Mode=OneWay}" Padding="10,0,5,0"   
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="link3text..." 
                                                                          Style="{StaticResource MaterialDesignFloatingHintTextBox}"
 
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
                                  BorderBrush="AliceBlue"   LostFocus="validationControl_LostFocus" TextChanged="validationTextbox_TextChanged"
                       MaxLength="100" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                  Height="40"    Margin="10,5,10,5" >
-                            <TextBox.ToolTip>
-                                <ToolTip x:Name="tt_link3text" 
+                  Height="40"    Margin="10,5,5,5" >
+                                <TextBox.ToolTip>
+                                    <ToolTip x:Name="tt_link3text" 
                                               Placement="left" 
                                               HorizontalOffset="5"
                                               PlacementRectangle="50,0,0,0"
                                               VerticalOffset="20"/>
-                            </TextBox.ToolTip>
-                        </TextBox>
-                        <Path Fill="#E81123" Stretch="Fill" Grid.Row="10" Margin="5,5,15,5" x:Name="p_errorLink3text"
-                              HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed" 
+                                </TextBox.ToolTip>
+                            </TextBox>
+                            <Path Fill="#E81123" Stretch="Fill" Grid.Row="10" Margin="5,5,15,5" x:Name="p_errorLink3text"
+                              HorizontalAlignment="Right"     Visibility="Collapsed" 
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
-                            <Path.ToolTip>
-                                <ToolTip  x:Name="tt_errorLink3text"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
-                            </Path.ToolTip>
-                        </Path>
-                        <TextBox x:Name="tb_link3url" Grid.Row="11" Text="{Binding link3url, Mode=OneWay}" Padding="10,0,5,0"   
+                                <Path.ToolTip>
+                                    <ToolTip  x:Name="tt_errorLink3text"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                </Path.ToolTip>
+                            </Path>
+                            <TextBox x:Name="tb_link3url" Grid.Row="11" Grid.Column="1"  Text="{Binding link3url, Mode=OneWay}" Padding="10,0,5,0"   
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="link3url..." 
                                                                          Style="{StaticResource MaterialDesignFloatingHintTextBox}"
 
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
                                  BorderBrush="AliceBlue"   LostFocus="validationControl_LostFocus" TextChanged="validationTextbox_TextChanged"
                       MaxLength="500" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                  Height="40"    Margin="10,5,10,5" >
-                            <TextBox.ToolTip>
-                                <ToolTip x:Name="tt_link3url" 
+                  Height="40"    Margin="5,5,10,5" >
+                                <TextBox.ToolTip>
+                                    <ToolTip x:Name="tt_link3url" 
                                               Placement="left" 
                                               HorizontalOffset="5"
                                               PlacementRectangle="50,0,0,0"
                                               VerticalOffset="20"/>
-                            </TextBox.ToolTip>
-                        </TextBox>
-                        <Path Fill="#E81123" Stretch="Fill" Grid.Row="11" Margin="5,5,15,5" x:Name="p_errorLink3url"
-                              HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed" 
+                                </TextBox.ToolTip>
+                            </TextBox>
+                            <Path Fill="#E81123" Stretch="Fill" Grid.Row="11" Grid.Column="1"  Margin="5,5,15,5" x:Name="p_errorLink3url"
+                              HorizontalAlignment="Right"   Visibility="Collapsed" 
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
-                            <Path.ToolTip>
-                                <ToolTip  x:Name="tt_errorLink3url"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
-                            </Path.ToolTip>
-                        </Path>
+                                <Path.ToolTip>
+                                    <ToolTip  x:Name="tt_errorLink3url"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                </Path.ToolTip>
+                            </Path>
+                        </Grid>
+
 
                     </Grid>
                 </ScrollViewer>

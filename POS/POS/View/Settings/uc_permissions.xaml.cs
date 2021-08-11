@@ -373,7 +373,9 @@ namespace POS.View.Settings
             
                     if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete") || SectionData.isAdminPermision())
                 {
-                        if (group.groupId != 0)
+                if (group.groupId > 4)
+                {
+                    if (group.groupId != 0)
             {
                 if ((!group.canDelete) && (group.isActive == 0))
                 {
@@ -417,8 +419,12 @@ namespace POS.View.Settings
                 await RefreshGroupList();
                 Tb_searchGroup_TextChanged(null, null);
             }
-            //clear textBoxs
-            Btn_clear_Click(sender, e);
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trCannotDeleteTheMainGroup"), animation: ToasterAnimation.FadeIn);
+
+                //clear textBoxs
+                Btn_clear_Click(sender, e);
                     }
                     else
                         Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -1135,7 +1141,7 @@ namespace POS.View.Settings
             txt_permissions.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
             txt_reportsSettings.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
             txt_general.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            path_emailsSetting.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+            txt_emailsSetting.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
             txt_emailTemplates.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
         }
 
