@@ -397,11 +397,11 @@ namespace POS.Classes
              //  rep.DataSources.Add(new ReportDataSource("DataSetBank", banksQuery));
 
            
-            paramarr.Add( new ReportParameter("invNumber", invoice.invNumber));//paramarr[6]
+            paramarr.Add( new ReportParameter("invNumber", invoice.invNumber == null ? "-" : invoice.invNumber.ToString()));//paramarr[6]
             paramarr.Add(new ReportParameter("invoiceId", invoice.invoiceId.ToString()));
              paramarr.Add( new ReportParameter("invDate", DateToString(invoice.invDate)));
             paramarr.Add( new ReportParameter("invTime", TimeToString(invoice.invTime)));
-            paramarr.Add( new ReportParameter("vendorInvNum", invoice.vendorInvNum.ToString()));
+            paramarr.Add( new ReportParameter("vendorInvNum", invoice.vendorInvNum==null?"-":invoice.vendorInvNum.ToString()));
              paramarr.Add( new ReportParameter("total", DecTostring(invoice.total)));
             paramarr.Add(new ReportParameter("discountValue", DecTostring(invoice.discountValue)));
             paramarr.Add( new ReportParameter("totalNet", DecTostring(invoice.totalNet)));

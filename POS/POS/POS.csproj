@@ -1031,7 +1031,7 @@
     <Resource Include="pic\no-image-icon-90x90.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Thumb\" />
+    <Folder Include="Thumb\report\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\netoaster\netoaster.csproj">

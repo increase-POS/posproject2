@@ -1148,7 +1148,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>Vendor Name:</Value>
+                    <Value>Vendor Num:</Value>
                     <Style>
                       <FontSize>14pt</FontSize>
                       <FontWeight>Bold</FontWeight>
