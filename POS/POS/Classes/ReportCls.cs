@@ -399,22 +399,54 @@ namespace POS.Classes
            
             paramarr.Add( new ReportParameter("invNumber", invoice.invNumber == null ? "-" : invoice.invNumber.ToString()));//paramarr[6]
             paramarr.Add(new ReportParameter("invoiceId", invoice.invoiceId.ToString()));
-             paramarr.Add( new ReportParameter("invDate", DateToString(invoice.invDate)));
+
+             paramarr.Add( new ReportParameter("invDate", DateToString(invoice.invDate) == null ? "-" : DateToString(invoice.invDate)));
             paramarr.Add( new ReportParameter("invTime", TimeToString(invoice.invTime)));
-            paramarr.Add( new ReportParameter("vendorInvNum", invoice.vendorInvNum==null?"-":invoice.vendorInvNum.ToString()));
-             paramarr.Add( new ReportParameter("total", DecTostring(invoice.total)));
-            paramarr.Add(new ReportParameter("discountValue", DecTostring(invoice.discountValue)));
-            paramarr.Add( new ReportParameter("totalNet", DecTostring(invoice.totalNet)));
-            paramarr.Add(new ReportParameter("paid", DecTostring(invoice.paid)));
-            paramarr.Add( new ReportParameter("deserved", DecTostring(invoice.deserved)));
-          paramarr.Add(new ReportParameter("deservedDate", invoice.deservedDate.ToString()));
+            paramarr.Add( new ReportParameter("vendorInvNum", invoice.agentCode == "-" ? "-" : invoice.agentCode.ToString()));
+             paramarr.Add( new ReportParameter("total", DecTostring(invoice.total)==null?"-": DecTostring(invoice.total)));
+            paramarr.Add(new ReportParameter("discountValue", DecTostring(invoice.discountValue) == null ? "-" : DecTostring(invoice.discountValue)));
+            paramarr.Add( new ReportParameter("totalNet", DecTostring(invoice.totalNet) == null ? "-" : DecTostring(invoice.totalNet)));
+            paramarr.Add(new ReportParameter("paid", DecTostring(invoice.paid) == null ? "-" : DecTostring(invoice.paid)));
+            paramarr.Add( new ReportParameter("deserved", DecTostring(invoice.deserved) == null ? "-" : DecTostring(invoice.deserved)));
+          paramarr.Add(new ReportParameter("deservedDate", invoice.deservedDate.ToString() == null ? "-" : invoice.deservedDate.ToString()));
              paramarr.Add( new ReportParameter("tax", "0"));
-            paramarr.Add( new ReportParameter("barcodeimage", "file:\\" + BarcodeToImage(invoice.invNumber.ToString(), "invnum")));
+            string invNum = invoice.invNumber == null ? "-" : invoice.invNumber.ToString();
+            paramarr.Add( new ReportParameter("barcodeimage", "file:\\" + BarcodeToImage(invNum, "invnum")));
             paramarr.Add( new ReportParameter("Currency",MainWindow.Currency));
             paramarr.Add( new ReportParameter("logoImage", "file:\\" +GetLogoImagePath()));
+            if (invoice.invType == "pd" || invoice.invType == "sd"
+              || invoice.invType == "sbd" || invoice.invType == "pbd"
+              || invoice.invType == "ord" || invoice.invType == "imd" || invoice.invType == "exd")
+            {
+            
+                paramarr.Add(new ReportParameter("watermark", "1"));
+            }
+            else
+            {
+                paramarr.Add(new ReportParameter("watermark", "0"));
+            }
 
+                /*
+                     paramarr.Add( new ReportParameter("invNumber", invoice.invNumber == null ? "-" : invoice.invNumber.ToString()));//paramarr[6]
+                paramarr.Add(new ReportParameter("invoiceId", invoice.invoiceId.ToString()));
 
-            return paramarr;
+                 paramarr.Add( new ReportParameter("invDate", DateToString(invoice.invDate)==null ?"-" : DateToString(invoice.invDate)));
+                paramarr.Add( new ReportParameter("invTime", TimeToString(invoice.invTime)));
+                paramarr.Add( new ReportParameter("vendorInvNum", invoice.agentCode==null?"-":invoice.agentCode.ToString()));
+                 paramarr.Add( new ReportParameter("total", DecTostring(invoice.total)==null?"-": DecTostring(invoice.total)));
+                paramarr.Add(new ReportParameter("discountValue", DecTostring(invoice.discountValue) == null ? "-" : DecTostring(invoice.discountValue)));
+                paramarr.Add( new ReportParameter("totalNet", DecTostring(invoice.totalNet) == null ? "-" : DecTostring(invoice.totalNet)));
+                paramarr.Add(new ReportParameter("paid", DecTostring(invoice.paid) == null ? "-" : DecTostring(invoice.paid)));
+                paramarr.Add( new ReportParameter("deserved", DecTostring(invoice.deserved) == null ? "-" : DecTostring(invoice.deserved)));
+              paramarr.Add(new ReportParameter("deservedDate", invoice.deservedDate.ToString() == null ? "-" : invoice.deservedDate.ToString()));
+                 paramarr.Add( new ReportParameter("tax", "0"));
+                string invNum = invoice.invNumber == null ? "-" : invoice.invNumber.ToString();
+                paramarr.Add( new ReportParameter("barcodeimage", "file:\\" + BarcodeToImage(invNum, "invnum")));
+                paramarr.Add( new ReportParameter("Currency",MainWindow.Currency));
+                paramarr.Add( new ReportParameter("logoImage", "file:\\" +GetLogoImagePath()));
+
+                 * */
+                return paramarr;
         }
         public  static List<ItemTransferInvoice> converter(List<ItemTransferInvoice> query)
         {

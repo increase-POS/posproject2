@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.IO;
 
 namespace POS.View.windows
 {
@@ -28,6 +29,8 @@ namespace POS.View.windows
         {
             translate();
             wb_pdfWebViewer.Navigate(new Uri(pdfPath));
+
+          
         }
         private void translate()
         {
@@ -56,6 +59,7 @@ namespace POS.View.windows
 
         private void Btn_colse_Click(object sender, RoutedEventArgs e)
         {
+           
             DialogResult = true;
             this.Close();
         }

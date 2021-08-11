@@ -1564,7 +1564,7 @@ namespace POS.View
             }
             else
             {
-                ReportCls rr = new ReportCls();
+              //  ReportCls rr = new ReportCls();
                 // MessageBox.Show(rr.GetLogoImagePath());
 
                 List<ReportParameter> paramarr = new List<ReportParameter>();
@@ -1583,6 +1583,11 @@ namespace POS.View
                 if (invoice.invoiceId > 0)
                 {
                     invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
+                    Agent agentinv = new Agent();
+                    agentinv = vendors.Where(X => X.agentId == invoice.agentId).FirstOrDefault();
+
+                    invoice.agentCode = agentinv.code;
+
                     ReportCls.checkLang();
 
                     clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
@@ -1635,6 +1640,11 @@ namespace POS.View
                 if (invoice.invoiceId > 0)
                 {
                     invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
+                    Agent agentinv = new Agent();
+                    agentinv = vendors.Where(X => X.agentId == invoice.agentId).FirstOrDefault();
+
+                    invoice.agentCode = agentinv.code;
+                    invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
                     ReportCls.checkLang();
 
                     clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
@@ -1651,13 +1661,17 @@ namespace POS.View
                 }
             }
         }
+        //
+       
         private async void Btn_preview_Click(object sender, RoutedEventArgs e)
         {
+            if (invoice.invoiceId>0)
+            {
                 Window.GetWindow(this).Opacity = 0.2;
-           // create pdf
-            //
-string pdfpath = "";
-           
+                // create pdf
+                //
+                //string pdfpath = "";
+
                 /*
               if (invoice.invType == "pd" || invoice.invType == "sd"
                   || invoice.invType == "sbd" || invoice.invType == "pbd"
@@ -1668,25 +1682,38 @@ string pdfpath = "";
             else
             {
                 */
-                ReportCls rr = new ReportCls();
+                // ReportCls rr = new ReportCls();
                 // MessageBox.Show(rr.GetLogoImagePath());
 
                 List<ReportParameter> paramarr = new List<ReportParameter>();
-                
+                string pdfpath;
                 string addpath;
                 bool isArabic = ReportCls.checkLang();
                 if (isArabic)
                 {
                     addpath = @"\Reports\Purchase\Ar\ArInvPurReport.rdlc";
                 }
-            else addpath = @"\Reports\Purchase\En\InvPurReport.rdlc";
-          
-            //
-            pdfpath = @"\Thumb\report\temp.pdf";
+                else addpath = @"\Reports\Purchase\En\InvPurReport.rdlc";
+
+                //
+                pdfpath = @"\Thumb\report\temp.pdf";
                 pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
                 string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
                 if (invoice.invoiceId > 0)
                 {
+                    invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
+                    if (invoice.agentId != null)
+                    {
+                        Agent agentinv = new Agent();
+                        agentinv = vendors.Where(X => X.agentId == invoice.agentId).FirstOrDefault();
+
+                        invoice.agentCode = agentinv.code;
+                    }
+                    else
+                    {
+                        invoice.agentCode = "-";
+                    }
+
                     invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
                     ReportCls.checkLang();
 
@@ -1698,26 +1725,40 @@ string pdfpath = "";
                     rep.SetParameters(paramarr);
                     rep.Refresh();
 
-                        LocalReportExtensions.ExportToPDF(rep, pdfpath);
-                   
+                    LocalReportExtensions.ExportToPDF(rep, pdfpath);
 
-               
+
+
                 }
 
-          //  }
+                //  }
 
-            //
+                //
 
-            wd_previewPdf w = new wd_previewPdf();
+                wd_previewPdf w = new wd_previewPdf();
                 w.pdfPath = pdfpath;
-            if (!string.IsNullOrEmpty(w.pdfPath))
-                w.ShowDialog();
+                if (!string.IsNullOrEmpty(w.pdfPath))
+                {
+                    w.ShowDialog();
+                    //delete file
+                    /*
+                    if (File.Exists(pdfpath))
+                    { File.Delete(pdfpath);}
+                    */
+                    //  ClosePDF();
+                    w.wb_pdfWebViewer.Dispose();
 
-            else
-                Toaster.ShowError(Window.GetWindow(this), message: "", animation: ToasterAnimation.FadeIn);
-            Window.GetWindow(this).Opacity = 1;
+
+                }
+                else
+                    Toaster.ShowError(Window.GetWindow(this), message: "", animation: ToasterAnimation.FadeIn);
+                Window.GetWindow(this).Opacity = 1;
+            }else
+            {
+                MessageBox.Show("save the invoice to preview");
+            }
         }
-
+   
         private async void Btn_items_Click(object sender, RoutedEventArgs e)
         {
             //items

@@ -877,29 +877,47 @@ namespace POS.Classes
             float newBalance = 0;
             agent = await agent.getAgentById(invoice.agentId.Value);
 
+            #region pos Cash transfer
+            CashTransfer posCash = new CashTransfer();
+            posCash.posId = MainWindow.posID;
+            posCash.invId = invoice.invoiceId;
+            posCash.createUserId = invoice.createUserId;
+            posCash.processType = "balance";
+            posCash.cash = invoice.totalNet;
+            #endregion
+            #region agent Cash transfer
             CashTransfer cashTrasnfer = new CashTransfer();
             cashTrasnfer.posId = MainWindow.posID;
             cashTrasnfer.agentId = invoice.agentId;
             cashTrasnfer.invId = invoice.invoiceId;
             cashTrasnfer.createUserId = invoice.createUserId; 
             cashTrasnfer.processType = "balance";
-
+            #endregion
             switch (invType)
             {
                 #region purchase
                 case "pi"://purchase invoice
                 case "sb"://sale bounce
-                    if(invType.Equals("pi"))
+                    posCash.transType = "d";
+                    cashTrasnfer.transType = "p";
+                    if (invType.Equals("pi"))
                     {
+                        posCash.side = "v"; // vendor
+                        posCash.transNum = await cashTrasnfer.generateCashNumber("dv");
+
                         cashTrasnfer.side = "v"; // vendor
                         cashTrasnfer.transNum = await cashTrasnfer.generateCashNumber("pv"); 
                     }
                     else
                     {
-                        cashTrasnfer.side = "c"; // vendor
+                        posCash.side = "c"; // vendor
+                        posCash.transNum = await cashTrasnfer.generateCashNumber("dc");
+
+                        cashTrasnfer.side = "c"; // vendor                        
                         cashTrasnfer.transNum = await cashTrasnfer.generateCashNumber("pc");
 
                     }
+                    await cashTrasnfer.Save(posCash); //add pos cash transfer
                     if (agent.balanceType == 1)
                     {
                         if (invoice.totalNet <= (decimal)agent.balance)
@@ -923,7 +941,8 @@ namespace POS.Classes
                        
 
                         await invoice.saveInvoice(invoice);
-                        await cashTrasnfer.Save(cashTrasnfer); //add cash transfer
+                        
+                        await cashTrasnfer.Save(cashTrasnfer); //add agent cash transfer
                         await agent.saveAgent(agent);
                     }
                     else if (agent.balanceType == 0)
@@ -937,17 +956,25 @@ namespace POS.Classes
                 #region purchase bounce
                 case "pb"://purchase bounce invoice
                 case "si"://sale invoice
-                    if(invType.Equals("pb"))
+                    posCash.transType = "p";
+                    cashTrasnfer.transType = "d";
+
+                    if (invType.Equals("pb"))
                     {
+                        posCash.side = "v"; // vendor
+                        posCash.transNum = await cashTrasnfer.generateCashNumber("pv");
                         cashTrasnfer.side = "v"; // vendor
                         cashTrasnfer.transNum = await cashTrasnfer.generateCashNumber("dv");
 
                     }
                     else
                     {
+                        posCash.side = "c"; // customer
+                        posCash.transNum = await cashTrasnfer.generateCashNumber("pc");
                         cashTrasnfer.side = "c"; // customer
                         cashTrasnfer.transNum = await cashTrasnfer.generateCashNumber("dc");
                     }
+                    await cashTrasnfer.Save(posCash); //add pos cash transfer
                     if (agent.balanceType == 0)
                     {
                         if (invoice.totalNet <= (decimal)agent.balance)
