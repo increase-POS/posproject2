@@ -1900,7 +1900,7 @@ Please add Email in setting</value>
   <data name="trEmailTemplates" xml:space="preserve">
     <value>Email Templates</value>
   </data>
-  <data name="trShortage" xml:space="preserve">
+  <data name="trShortages" xml:space="preserve">
     <value>Shortages</value>
   </data>
   <data name="trCredit" xml:space="preserve">
@@ -1951,10 +1951,64 @@ Please add Email in setting</value>
   <data name="trEmptyDateFormat" xml:space="preserve">
     <value>Date format cann't be empty</value>
   </data>
-  <data name="String4" xml:space="preserve">
-    <value />
+  <data name="trAmountHint" xml:space="preserve">
+    <value>Amount...</value>
   </data>
-  <data name="trCannotDeleteTheMainGroup" xml:space="preserve">
-    <value>Cannot delete main Group</value>
+  <data name="trErrorNoItems" xml:space="preserve">
+    <value>No item is selected</value>
+  </data>
+  <data name="trItemHint" xml:space="preserve">
+    <value>Item...</value>
+  </data>
+  <data name="trItemShortage" xml:space="preserve">
+    <value>Item Shortage</value>
+  </data>
+  <data name="trItemStorage" xml:space="preserve">
+    <value>Item storage</value>
+  </data>
+  <data name="trItemUnitHint" xml:space="preserve">
+    <value>Item-Unit...</value>
+  </data>
+  <data name="trLocationHint" xml:space="preserve">
+    <value>X Y Z...</value>
+  </data>
+  <data name="trReasonOfShortage" xml:space="preserve">
+    <value>Reason of shortage</value>
+  </data>
+  <data name="trReasonOfShortageHint" xml:space="preserve">
+    <value>Reason of shortage...</value>
+  </data>
+  <data name="trSectionHint" xml:space="preserve">
+    <value>Section...</value>
+  </data>
+  <data name="trShortage" xml:space="preserve">
+    <value>Shortage</value>
+  </data>
+  <data name="trStored" xml:space="preserve">
+    <value>Stored</value>
+  </data>
+  <data name="trTransfer" xml:space="preserve">
+    <value>Transfer</value>
+  </data>
+  <data name="trAllBranches" xml:space="preserve">
+    <value>All branches</value>
+  </data>
+  <data name="trBrannchesHint" xml:space="preserve">
+    <value>Branches...</value>
+  </data>
+  <data name="trNo." xml:space="preserve">
+    <value>No.</value>
+  </data>
+  <data name="trReturned" xml:space="preserve">
+    <value>Returned</value>
+  </data>
+  <data name="trTheCount" xml:space="preserve">
+    <value>Count</value>
+  </data>
+  <data name="trType" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="trVendors" xml:space="preserve">
+    <value>Vendors</value>
   </data>
 </root>
