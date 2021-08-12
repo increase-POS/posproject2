@@ -42,9 +42,6 @@ namespace POS.View.reports
             btn_storageReports.Content = MainWindow.resourcemanager.GetString("trStorage");
             btn_accountsReports.Content = MainWindow.resourcemanager.GetString("trAccounts");
             btn_usersReports.Content = MainWindow.resourcemanager.GetString("trUsers");
-            btn_paymentsReports.Content = MainWindow.resourcemanager.GetString("trPayments");
-            btn_recipientReports.Content = MainWindow.resourcemanager.GetString("trReceived");
-            btn_bankReports.Content = MainWindow.resourcemanager.GetString("trBank");
         }
 
         public uc_reports()
@@ -98,15 +95,6 @@ namespace POS.View.reports
             btn_usersReports.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             btn_usersReports.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
-            btn_recipientReports.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
-            btn_recipientReports.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
-
-            btn_paymentsReports.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
-            btn_paymentsReports.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
-
-            btn_bankReports.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
-            btn_bankReports.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
-
         }
 
       public  void refreashBachgroundClick(Button btn)
@@ -132,16 +120,18 @@ namespace POS.View.reports
 
         private void btn_storageReports_Click(object sender, RoutedEventArgs e)
         {
+            uc_storage uc = new uc_storage();
             refreashBachgroundClick(btn_storageReports);
             grid_main.Children.Clear();
-            grid_main.Children.Add(uc_storageReports.Instance);
+            grid_main.Children.Add(uc);
         }
 
         private void btn_accountsReports_Click(object sender, RoutedEventArgs e)
         {
+            uc_accountant uc = new uc_accountant();
             refreashBachgroundClick(btn_accountsReports);
             grid_main.Children.Clear();
-            grid_main.Children.Add(uc_accountant.Instance);
+            grid_main.Children.Add(uc);
         }
 
         private void btn_usersReports_Click(object sender, RoutedEventArgs e)
@@ -151,25 +141,6 @@ namespace POS.View.reports
             grid_main.Children.Add(uc_usersReport.Instance);
         }
 
-        private void Btn_paymentsReports_Click(object sender, RoutedEventArgs e)
-        {
-            refreashBachgroundClick(btn_paymentsReports);
-            grid_main.Children.Clear();
-            grid_main.Children.Add(uc_paymentsReport.Instance);
-        }
-
-        private void Btn_recipientReports_Click(object sender, RoutedEventArgs e)
-        {
-            refreashBachgroundClick(btn_recipientReports);
-            grid_main.Children.Clear();
-            grid_main.Children.Add(uc_recipientReport.Instance);
-        }
-
-        private void Btn_bankReports_Click(object sender, RoutedEventArgs e)
-        {
-            refreashBachgroundClick(btn_bankReports);
-            grid_main.Children.Clear();
-            grid_main.Children.Add(uc_banksReport.Instance);
-        }
+ 
     }
 }

@@ -17,15 +17,6 @@ namespace POS.View.reports
 {
     public partial class uc_accountant : UserControl
     {
-        private static uc_accountant _instance;
-        public static uc_accountant Instance
-        {
-            get
-            {
-                if (_instance == null) _instance = new uc_accountant();
-                return _instance;
-            }
-        }
         public uc_accountant()
         {
             InitializeComponent();
@@ -37,59 +28,32 @@ namespace POS.View.reports
 
         private void Btn_payments_Click(object sender, RoutedEventArgs e)
         {
-            sc_main.Visibility = Visibility.Collapsed;
-            main.Children.Add(uc_paymentsReport.Instance);
-            btn_closePayments.Visibility = Visibility.Visible;
+                uc_paymentsReport uc = new uc_paymentsReport();
+                sc_main.Visibility = Visibility.Collapsed;
+                main.Children.Add(uc);
         }
 
         private void Btn_recipient_Click(object sender, RoutedEventArgs e)
         {
+            uc_recipientReport uc = new uc_recipientReport();
             sc_main.Visibility = Visibility.Collapsed;
-            main.Children.Add(uc_recipientReport.Instance);
-            btn_closeRecipts.Visibility = Visibility.Visible;
+            main.Children.Add(uc);
         }
 
         private void Btn_bank_Click(object sender, RoutedEventArgs e)
         {
+            uc_banksReport uc = new uc_banksReport();
             sc_main.Visibility = Visibility.Collapsed;
-            main.Children.Add(uc_banksReport.Instance);
-            btn_closeBanks.Visibility = Visibility.Visible;
-        }
-
-
-        private void Btn_close_Click(object sender, RoutedEventArgs e)
-        {
-            sc_main.Visibility = Visibility.Visible;
-            main.Children.Remove(uc_paymentsReport.Instance);
-            btn_closePayments.Visibility = Visibility.Collapsed;
-        }
-
-        private void Btn_closeRecipts_Click(object sender, RoutedEventArgs e)
-        {
-            sc_main.Visibility = Visibility.Visible;
-            main.Children.Remove(uc_recipientReport.Instance);
-            btn_closeRecipts.Visibility = Visibility.Collapsed;
-        }
-
-        private void Btn_closeBanks_Click(object sender, RoutedEventArgs e)
-        {
-            sc_main.Visibility = Visibility.Visible;
-            main.Children.Remove(uc_banksReport.Instance);
-            btn_closeBanks.Visibility = Visibility.Collapsed;
+            main.Children.Add(uc);
         }
 
         private void Btn_pos_Click(object sender, RoutedEventArgs e)
         {
+            uc_posReports uc = new uc_posReports();
             sc_main.Visibility = Visibility.Collapsed;
-            main.Children.Add(uc_posReports.Instance);
-            btn_closePos.Visibility = Visibility.Visible;
+            main.Children.Add(uc);
         }
 
-        private void Btn_closePos_Click(object sender, RoutedEventArgs e)
-        {
-            sc_main.Visibility = Visibility.Visible;
-            main.Children.Remove(uc_posReports.Instance);
-            btn_closePos.Visibility = Visibility.Collapsed;
-        }
+    
     }
 }

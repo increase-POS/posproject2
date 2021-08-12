@@ -293,6 +293,15 @@
     <Compile Include="View\reports\uc_banksReport.xaml.cs">
       <DependentUpon>uc_banksReport.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\reports\uc_destroied.xaml.cs">
+      <DependentUpon>uc_destroied.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\reports\uc_external.xaml.cs">
+      <DependentUpon>uc_external.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\reports\uc_internal.xaml.cs">
+      <DependentUpon>uc_internal.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\reports\uc_paymentsReport.xaml.cs">
       <DependentUpon>uc_paymentsReport.xaml</DependentUpon>
     </Compile>
@@ -310,6 +319,15 @@
     </Compile>
     <Compile Include="View\reports\uc_saleReport.xaml.cs">
       <DependentUpon>uc_saleReport.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\reports\uc_stock.xaml.cs">
+      <DependentUpon>uc_stock.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\reports\uc_stocktaking.xaml.cs">
+      <DependentUpon>uc_stocktaking.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\reports\uc_storage.xaml.cs">
+      <DependentUpon>uc_storage.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\reports\uc_storageReports.xaml.cs">
       <DependentUpon>uc_storageReports.xaml</DependentUpon>
@@ -614,6 +632,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="View\reports\uc_destroied.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\reports\uc_external.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\reports\uc_internal.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="View\reports\uc_paymentsReport.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -635,6 +665,18 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="View\reports\uc_saleReport.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\reports\uc_stock.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\reports\uc_stocktaking.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\reports\uc_storage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

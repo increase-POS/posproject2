@@ -1,6 +1,10 @@
-﻿using POS.Classes;
+﻿using LiveCharts;
+using LiveCharts.Helpers;
+using LiveCharts.Wpf;
+using POS.Classes;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +17,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static POS.Classes.Statistics;
 
 namespace POS.View.reports
 {
@@ -21,12 +26,13 @@ namespace POS.View.reports
         Statistics statisticModel = new Statistics();
         List<CashTransferSts> list;
 
-        IEnumerable<Branch> branches;
-        Branch branchModel = new Branch();
+        List<branchFromCombo> fromBranches = new List<branchFromCombo>();
+        List<branchToCombo> toBranches = new List<branchToCombo>();
 
-        IEnumerable<Pos> fromPos;
-        IEnumerable<Pos> toPos;
-        Pos posModel = new Pos();
+        List<posFromCombo> fromPos;
+        List<posToCombo> toPos;
+
+        IEnumerable<AccountantCombo> accCombo;
 
         private static uc_posReports _instance;
         public static uc_posReports Instance
@@ -44,30 +50,39 @@ namespace POS.View.reports
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             list = await statisticModel.GetPosTrans();
-            branches = await branchModel.GetAllWithoutMain("b");
-            fromPos = await posModel.GetPosAsync();
-            toPos = await posModel.GetPosAsync();
-       
+
+            fromBranches = statisticModel.getFromCombo(list);
+            toBranches = statisticModel.getToCombo(list);
+
+            fromPos = statisticModel.getFromPosCombo(list);
+            toPos = statisticModel.getToPosCombo(list);
+
+            accCombo = statisticModel.getAccounantCombo(list, "p");
+
             fillComboBranches();
             fillComboFromPos();
             fillComboToPos();
+            fillAccCombo();
 
             fillEvents();
         }
-        private List<CashTransferSts> fillList(List<CashTransferSts> payments, ComboBox fromBranch, ComboBox toBranch, ComboBox fromPos, ComboBox toPos
-       , DatePicker startDate, DatePicker endDate)
+        private List<CashTransferSts> fillList(List<CashTransferSts> payments, ComboBox fromBranch, ComboBox toBranch, ComboBox fromPos, ComboBox toPos, ComboBox Acc
+       , DatePicker startDate, DatePicker endDate,CheckBox towWays)
         {
-            var selectedItem1 = fromBranch.SelectedItem as Branch;
-            var selectedItem2 = toBranch.SelectedItem as Branch;
-            var selectedItem3 = fromPos.SelectedItem as Pos;
-            var selectedItem4 = toPos.SelectedItem as Pos;
+            var selectedItem1 = fromBranch.SelectedItem as branchFromCombo;
+            var selectedItem2 = toBranch.SelectedItem as branchToCombo;
+            var selectedItem3 = fromPos.SelectedItem as posFromCombo;
+            var selectedItem4 = toPos.SelectedItem as posToCombo;
+            var selectedItem5 = Acc.SelectedItem as AccountantCombo;
 
 
             var result = payments.Where(x => (
-              (fromBranch.SelectedItem != null ? x.branchId == selectedItem1.branchId : true)
-             && (toBranch.SelectedItem != null ? x.branchId == selectedItem2.branchId : true)
-             && (fromPos.SelectedItem != null ? x.posId == selectedItem3.posId : true)
-             && (toPos.SelectedItem != null ? x.posId == selectedItem4.posId : true)
+              (fromBranch.SelectedItem != null ? x.frombranchId == selectedItem1.BranchFromId : true)
+             && (toBranch.SelectedItem != null ? x.tobranchId == selectedItem2.BranchToId : true)
+             && (fromPos.SelectedItem != null ? x.fromposId == selectedItem3.PosFromId : true)
+             && (toPos.SelectedItem != null ? x.toposId == selectedItem4.PosToId : true)
+             && (Acc.SelectedItem != null ? x.updateUserAcc == selectedItem5.Accountant : true)
+             && (towWays.IsChecked == false ? (x.transType == "d") : true)
 
                         && (startDate.SelectedDate != null ? x.updateDate >= startDate.SelectedDate : true)
                         && (endDate.SelectedDate != null ? x.updateDate <= endDate.SelectedDate : true)));
@@ -76,40 +91,50 @@ namespace POS.View.reports
         }
         private void fillComboBranches()
         {
-            cb_formBranch.SelectedValuePath = "branchId";
-            cb_formBranch.DisplayMemberPath = "name";
-            cb_formBranch.ItemsSource = branches;
+            cb_formBranch.SelectedValuePath = "BranchFromId";
+            cb_formBranch.DisplayMemberPath = "BranchFromName";
+            cb_formBranch.ItemsSource = fromBranches;
 
-            cb_toBranch.SelectedValuePath = "branchId";
-            cb_toBranch.DisplayMemberPath = "name";
-            cb_toBranch.ItemsSource = branches;
+            cb_toBranch.SelectedValuePath = "BranchToId";
+            cb_toBranch.DisplayMemberPath = "BranchToName";
+            cb_toBranch.ItemsSource = toBranches;
         }
         private void fillComboFromPos()
         {
-            cb_formPos.SelectedValuePath = "posId";
-            cb_formPos.DisplayMemberPath = "name";
+            cb_formPos.SelectedValuePath = "PosFromId";
+            cb_formPos.DisplayMemberPath = "PosFromName";
             cb_formPos.ItemsSource = fromPos;
             if (cb_formBranch.SelectedItem != null)
             {
-                var temp = cb_formBranch.SelectedItem as Branch;
-                cb_formPos.ItemsSource = fromPos.Where(x => x.branchId == temp.branchId);
+                var temp = cb_formBranch.SelectedItem as branchFromCombo;
+                cb_formPos.ItemsSource = fromPos.Where(x => x.BranchId == temp.BranchFromId);
             }
         }
         private void fillComboToPos()
         {
-            cb_toPos.SelectedValuePath = "posId";
-            cb_toPos.DisplayMemberPath = "name";
+            cb_toPos.SelectedValuePath = "PosToId";
+            cb_toPos.DisplayMemberPath = "PosToName";
             cb_toPos.ItemsSource = toPos;
             if (cb_toBranch.SelectedItem != null)
             {
-                var temp = cb_toPos.SelectedItem as Branch;
-                cb_toPos.ItemsSource = toPos.Where(x => x.branchId == temp.branchId);
+                var temp = cb_toBranch.SelectedItem as branchToCombo;
+                cb_toPos.ItemsSource = toPos.Where(x => x.BranchId == temp.BranchToId);
             }
+        }
+
+        private void fillAccCombo()
+        {
+            cb_Accountant.SelectedValuePath = "Accountant";
+            cb_Accountant.DisplayMemberPath = "Accountant";
+            cb_Accountant.ItemsSource = accCombo;
         }
 
         private void fillEvents()
         {
-           dgPayments.ItemsSource= fillList(list, cb_formBranch, cb_toBranch, cb_formPos, cb_toPos, dp_StartDate, dp_EndDate);
+            dgPayments.ItemsSource = fillList(list, cb_formBranch, cb_toBranch, cb_formPos, cb_toPos, cb_Accountant, dp_StartDate, dp_EndDate,chk_twoWay);
+            fillColumnChart();
+            fillPieChart();
+            fillRowChart();
         }
 
         private void Cb_formBranch_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -204,6 +229,198 @@ namespace POS.View.reports
             cb_Accountant.IsEnabled = true;
         }
 
+        private void Chk_twoWay_Checked(object sender, RoutedEventArgs e)
+        {
+            fillEvents(); 
+        }
 
+        private void Chk_twoWay_Unchecked(object sender, RoutedEventArgs e)
+        {
+            fillEvents();
+        }
+        private void fillPieChart()
+        {
+            List<string> titles = new List<string>();
+            List<int> resultList = new List<int>();
+            titles.Clear();
+            var temp= fillList(list, cb_formBranch, cb_toBranch, cb_formPos, cb_toPos, cb_Accountant, dp_StartDate, dp_EndDate, chk_twoWay);
+
+            var result = temp
+                .GroupBy(s => new { s.transType })
+                .Select(s => new CashTransferSts
+                {
+                    processTypeCount = s.Count(),
+                    processType = s.FirstOrDefault().transType,
+                });
+            resultList = result.Select(m => m.processTypeCount).ToList();
+            titles = result.Select(m => m.processType).ToList();
+            SeriesCollection piechartData = new SeriesCollection();
+            for (int i = 0; i < resultList.Count(); i++)
+            {
+                List<int> final = new List<int>();
+                List<string> lable = new List<string>();
+
+                final.Add(resultList.Skip(i).FirstOrDefault());
+                lable = titles;
+                piechartData.Add(
+                  new PieSeries
+                  {
+                      Values = final.AsChartValues(),
+                      Title = lable.Skip(i).FirstOrDefault(),
+                      DataLabels = true,
+                  }
+              );
+
+            }
+            chart1.Series = piechartData;
+        }
+
+        private void fillColumnChart()
+        {
+            axcolumn.Labels = new List<string>();
+            List<string> names = new List<string>();
+
+           var temp = fillList(list, cb_formBranch, cb_toBranch, cb_formPos, cb_toPos, cb_Accountant, dp_StartDate, dp_EndDate, chk_twoWay);
+            
+
+            var res = temp.GroupBy(x => new { x.posId, x.transType }).Select(x => new CashTransferSts
+            {
+                transType = x.FirstOrDefault().transType,
+                posId = x.FirstOrDefault().posId,
+                posName = x.FirstOrDefault().posName,
+                branchName = x.FirstOrDefault().branchName,
+                branchId = x.FirstOrDefault().branchId,
+                depositCount = x.Where(g => g.transType == "d").Count(),
+                pullCount = x.Where(g => g.transType == "p").Count()
+            });
+           
+
+            var tempName = temp.Select(s => new
+            {
+                itemName = s.posName,
+            });
+            names.AddRange(tempName.Select(nn => nn.itemName));
+
+            List<string> lable = new List<string>();
+            SeriesCollection columnChartData = new SeriesCollection();
+            List<int> cP = new List<int>();
+            List<int> cPb = new List<int>();
+
+
+            for (int i = 0; i < res.Count(); i++)
+            {
+                cP.Add(res.ToList().Skip(i).FirstOrDefault().depositCount);
+                cPb.Add(res.ToList().Skip(i).FirstOrDefault().pullCount);
+                axcolumn.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
+            }
+
+            columnChartData.Add(
+            new StackedColumnSeries
+            {
+                Values = cP.AsChartValues(),
+                DataLabels = true,
+                Title = "Deposit"
+            });
+            columnChartData.Add(
+            new StackedColumnSeries
+            {
+                Values = cPb.AsChartValues(),
+                DataLabels = true,
+                Title = "Pull"
+            });
+
+            DataContext = this;
+            cartesianChart.Series = columnChartData;
+        }
+
+        private void fillRowChart()
+        {
+            int endYear = DateTime.Now.Year;
+            int startYear = endYear - 1;
+            int startMonth = DateTime.Now.Month;
+            int endMonth = startMonth;
+            if (dp_StartDate.SelectedDate != null && dp_EndDate.SelectedDate != null)
+            {
+                startYear = dp_StartDate.SelectedDate.Value.Year;
+                endYear = dp_EndDate.SelectedDate.Value.Year;
+                startMonth = dp_StartDate.SelectedDate.Value.Month;
+                endMonth = dp_EndDate.SelectedDate.Value.Month;
+            }
+
+            MyAxis.Labels = new List<string>();
+            List<string> names = new List<string>();
+            List<CashTransferSts> resultList = new List<CashTransferSts>();
+
+            var temp = fillList(list, cb_formBranch, cb_toBranch, cb_formPos, cb_toPos, cb_Accountant, dp_StartDate, dp_EndDate, chk_twoWay);
+           
+
+            SeriesCollection rowChartData = new SeriesCollection();
+            var tempName = temp.GroupBy(s => new { s.agentId }).Select(s => new
+            {
+                itemName = s.FirstOrDefault().updateDate,
+            });
+            names.AddRange(tempName.Select(nn => nn.itemName.ToString()));
+
+            List<string> lable = new List<string>();
+            SeriesCollection columnChartData = new SeriesCollection();
+            List<decimal> cash = new List<decimal>();
+            List<decimal> card = new List<decimal>();
+
+            if (endYear - startYear <= 1)
+            {
+                for (int year = startYear; year <= endYear; year++)
+                {
+                    for (int month = startMonth; month <= 12; month++)
+                    {
+                        var firstOfThisMonth = new DateTime(year, month, 1);
+                        var firstOfNextMonth = firstOfThisMonth.AddMonths(1);
+                        var drawCash = temp.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth && c.transType == "p").Sum(c => c.cash);
+                        var drawCard = temp.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth && c.transType == "d").Sum(c => c.cash);
+                        cash.Add((decimal)drawCash);
+                        card.Add((decimal)drawCard);
+
+                        MyAxis.Labels.Add(CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month) + "/" + year);
+
+                        if (year == endYear && month == endMonth)
+                        {
+                            break;
+                        }
+                        if (month == 12)
+                        {
+                            startMonth = 1;
+                            break;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                for (int year = startYear; year <= endYear; year++)
+                {
+                    var firstOfThisYear = new DateTime(year, 1, 1);
+                    var firstOfNextMYear = firstOfThisYear.AddYears(1);
+                    var drawCash = temp.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear && c.processType == "cash").Count();
+                    var drawCard = temp.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear && c.processType == "card").Count();
+                    cash.Add(drawCash);
+                    card.Add(drawCard);
+                    MyAxis.Labels.Add(year.ToString());
+                }
+            }
+            rowChartData.Add(
+          new LineSeries
+          {
+              Values = cash.AsChartValues(),
+              Title = "Deposite",
+          }); ;
+            rowChartData.Add(
+         new LineSeries
+         {
+             Values = card.AsChartValues(),
+             Title = "Pull",
+         });
+
+            DataContext = this;
+            rowChart.Series = rowChartData;
+        }
     }
 }

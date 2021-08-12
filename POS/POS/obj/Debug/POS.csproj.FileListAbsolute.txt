@@ -2721,3 +2721,15 @@ D:\myproj\posproject2\POS\POS\obj\Debug\View\reports\uc_paymentsReport.baml
 D:\myproj\posproject2\POS\POS\obj\Debug\View\reports\uc_posReports.baml
 D:\myproj\posproject2\POS\POS\obj\Debug\View\reports\uc_recipientReport.baml
 D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\wd_previewPdf.baml
+D:\myproj\posproject2\POS\POS\obj\Debug\View\reports\uc_destroied.g.cs
+D:\myproj\posproject2\POS\POS\obj\Debug\View\reports\uc_external.g.cs
+D:\myproj\posproject2\POS\POS\obj\Debug\View\reports\uc_internal.g.cs
+D:\myproj\posproject2\POS\POS\obj\Debug\View\reports\uc_stock.g.cs
+D:\myproj\posproject2\POS\POS\obj\Debug\View\reports\uc_stocktaking.g.cs
+D:\myproj\posproject2\POS\POS\obj\Debug\View\reports\uc_storage.g.cs
+D:\myproj\posproject2\POS\POS\obj\Debug\View\reports\uc_destroied.baml
+D:\myproj\posproject2\POS\POS\obj\Debug\View\reports\uc_external.baml
+D:\myproj\posproject2\POS\POS\obj\Debug\View\reports\uc_internal.baml
+D:\myproj\posproject2\POS\POS\obj\Debug\View\reports\uc_stock.baml
+D:\myproj\posproject2\POS\POS\obj\Debug\View\reports\uc_stocktaking.baml
+D:\myproj\posproject2\POS\POS\obj\Debug\View\reports\uc_storage.baml

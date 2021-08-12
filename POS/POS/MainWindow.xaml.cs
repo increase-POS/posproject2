@@ -973,7 +973,7 @@ namespace POS
             FN_pathVisible(path_openStorage);
             fn_ColorIconRefreash(path_iconStorage);
             grid_main.Children.Clear();
-            grid_main.Children.Add(uc_storage.Instance);
+            grid_main.Children.Add(View.uc_storage.Instance);
             //uc_storage uc = new uc_storage();
             //grid_main.Children.Add(uc);
             isHome = true;

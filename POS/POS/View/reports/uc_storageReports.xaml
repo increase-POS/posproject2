@@ -1352,7 +1352,7 @@ Data="M93.34,7.49a3.11,3.11,0,0,1,2,.38,3.06,3.06,0,0,1,1.82,2.78l.2,28.16,0,0,0
                                     </Border>
                                 </Grid>
                                 <Grid x:Name="grid_stocktaking"
-                                      Visibility="Visible">
+                                      Visibility="Hidden">
 
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="auto"></RowDefinition>
@@ -1627,7 +1627,7 @@ Data="M93.34,7.49a3.11,3.11,0,0,1,2,.38,3.06,3.06,0,0,1,1.82,2.78l.2,28.16,0,0,0
 
                                 <Grid x:Name="grid_detroied" 
                                                   Margin="10,20,10,10" 
-                                                  Visibility="Hidden">
+                                                  Visibility="Visible">
 
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="auto"></RowDefinition>
@@ -1781,7 +1781,9 @@ Data="M93.34,7.49a3.11,3.11,0,0,1,2,.38,3.06,3.06,0,0,1,1.82,2.78l.2,28.16,0,0,0
                             <Setter Property="Background" Value="#e7f3fa" />
                             <Setter Property="BorderBrush" Value="White"/>
                             <Setter Property="BorderThickness" Value="0 0 1 0"/>
+                  
                         </Style>
+                        <converters:invoiceTypeConverter x:Key="invoiceTypeConverter"/>
                     </DataGrid.Resources>
                     <DataGrid.Columns>
 

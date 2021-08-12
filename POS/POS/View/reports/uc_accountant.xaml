@@ -14,51 +14,6 @@
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         
-        <Button x:Name="btn_closePayments"
-                Grid.Column="0"
-                Visibility="Collapsed"
-                VerticalAlignment="Top"
-                Background="Transparent"
-                BorderThickness="0"
-                BorderBrush="Transparent"
-                Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
-                Margin="5,15,5,0" Click="Btn_close_Click">
-            <materialDesign:PackIcon Kind="ArrowLeftBoldCircle" Foreground="{StaticResource MainColorBlue}" Height="auto" Width="auto"/>
-        </Button>
-        <Button x:Name="btn_closeRecipts"
-                Grid.Column="0"
-                Visibility="Collapsed"
-                VerticalAlignment="Top"
-                Background="Transparent"
-                BorderThickness="0"
-                BorderBrush="Transparent"
-                Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
-               Margin="5,15,5,0" Click="Btn_closeRecipts_Click">
-            <materialDesign:PackIcon Kind="ArrowLeftBoldCircle" Foreground="{StaticResource MainColorBlue}" Height="auto" Width="auto"/>
-        </Button>
-        <Button x:Name="btn_closeBanks"
-                Grid.Column="0"
-                Visibility="Collapsed"
-                VerticalAlignment="Top"
-                Background="Transparent"
-                BorderThickness="0"
-                BorderBrush="Transparent"
-                Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
-               Margin="5,15,5,0" Click="Btn_closeBanks_Click">
-            <materialDesign:PackIcon Kind="ArrowLeftBoldCircle" Foreground="{StaticResource MainColorBlue}" Height="auto" Width="auto"/>
-        </Button>
-        <Button x:Name="btn_closePos"
-                Grid.Column="0"
-                Visibility="Collapsed"
-                VerticalAlignment="Top"
-                Background="Transparent"
-                BorderThickness="0"
-                BorderBrush="Transparent"
-                Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
-               Margin="5,15,5,0" Click="Btn_closePos_Click">
-            <materialDesign:PackIcon Kind="ArrowLeftBoldCircle" Foreground="{StaticResource MainColorBlue}" Height="auto" Width="auto"/>
-        </Button>
-
         <Grid Name="main" Grid.Column="1">
             <ScrollViewer Name="sc_main" >
                 <WrapPanel Margin="0,15,0,15" HorizontalAlignment="Center" >
@@ -99,7 +54,7 @@
                             <Border Height="25" Width="25" CornerRadius="25" Grid.Column="2" VerticalAlignment="Bottom" Margin="0,0,10,10"
                                 Background="White" HorizontalAlignment="Center">
                                 <Button Background="Transparent" BorderThickness="0" x:Name="btn_payments" Click="Btn_payments_Click"
-                                 Padding="0" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                 Padding="0" VerticalAlignment="Center" HorizontalAlignment="Right"
                        Height="auto" Width="auto" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                                     <Path       VerticalAlignment="Center" HorizontalAlignment="Center"
                                     Height="25" Width="25"  

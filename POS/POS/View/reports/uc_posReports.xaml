@@ -152,7 +152,7 @@
                                         <ColumnDefinition Width="60"></ColumnDefinition>
                                         <ColumnDefinition Width="*"></ColumnDefinition>
                                         <ColumnDefinition Width="auto"></ColumnDefinition>
-                                        <ColumnDefinition Width="60"></ColumnDefinition>
+                                        <ColumnDefinition Width="auto"></ColumnDefinition>
                                     </Grid.ColumnDefinitions>
 
                                     <ComboBox Name="cb_formBranch" 
@@ -200,6 +200,15 @@
                                               Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}"
                                               Checked="Chk_allFromPos_Checked"
                                               Unchecked="Chk_allFromPos_Unchecked"
+                                               ></CheckBox>
+
+                                    <CheckBox x:Name="chk_twoWay"
+                                              Background="{StaticResource MainColorBlue}"
+                                              Grid.Row="0"
+                                              Grid.Column="5"
+                                              Content="Two Way"
+                                              Checked="Chk_twoWay_Checked"
+                                              Unchecked="Chk_twoWay_Unchecked"
                                                ></CheckBox>
 
                                     <ComboBox Name="cb_toBranch" 
@@ -251,7 +260,7 @@
                                               Unchecked="Chk_allToPos_Unchecked"
                                                ></CheckBox>
 
-                                    <DockPanel Grid.Column="5" Grid.ColumnSpan="2">
+                                    <DockPanel Grid.Column="6" Grid.ColumnSpan="2">
                                         <DatePicker Name="dp_EndDate" 
                                                 SelectedDateFormat="Short" 
                                                 Width="100"
@@ -281,7 +290,7 @@
                                                      SelectedDateChanged="Dp_StartDate_SelectedDateChanged"></DatePicker>
                                     </DockPanel>
 
-                                    <DockPanel Grid.Row="1" Grid.Column="5" Grid.ColumnSpan="2" LastChildFill="True">
+                                    <DockPanel Grid.Row="1" Grid.Column="6" Grid.ColumnSpan="2" LastChildFill="True">
 
 
                                         <CheckBox x:Name="chk_allAccountant"
@@ -297,7 +306,7 @@
                                         <ComboBox Name="cb_Accountant"
                                                   DockPanel.Dock="Left"
                                               Grid.Row="1"
-                                              Grid.Column="3"
+                                              Grid.Column="6"
                                               Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                               materialDesign:HintAssist.Hint="Acountant ...."
                                               Foreground="#4E4E4E" 
@@ -391,9 +400,12 @@
                     <DataGrid.Columns>
                         <DataGridTextColumn x:Name="col_tansNum" Width="*" Header="Transfer Number" Binding="{Binding transNum}"/>
                         <DataGridTextColumn x:Name="col_Type" Width="*" Header="Type" Binding="{Binding transType}"/>
-                        <DataGridTextColumn x:Name="col_Bank" Width="*" Header="Bank" Binding="{Binding bankName}"/>
+                        <DataGridTextColumn x:Name="col_fromBranch" Width="*" Header="From Branch" Binding="{Binding frombranchName}"/>
+                        <DataGridTextColumn x:Name="col_fromPos" Width="*" Header="From Pos" Binding="{Binding fromposName}"/>
+                        <DataGridTextColumn x:Name="col_toBranch" Width="*" Header="To Branch" Binding="{Binding tobranchName}"/>
+                        <DataGridTextColumn x:Name="col_toPos" Width="*" Header="To Pos" Binding="{Binding toposName}"/>
+
                         <DataGridTextColumn x:Name="col_updateUserAcc" Width="*" Header="Accountant" Binding="{Binding updateUserAcc}"/>
-                        <DataGridTextColumn x:Name="col_user" Width="*" Header="User" Binding="{Binding userAcc}"/>
 
                         <DataGridTextColumn x:Name="col_updateDate" Width="*" Header="Date" Binding="{Binding updateDate,StringFormat=d}"/>
                         <DataGridTextColumn x:Name="col_cash" Width="*" Header="Amount" Binding="{Binding cash}"/>
