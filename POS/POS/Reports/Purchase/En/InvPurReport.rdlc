@@ -138,7 +138,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>Deposit</Value>
+                    <Value>DRAFT</Value>
                     <Style>
                       <FontSize>110pt</FontSize>
                       <FontWeight>Light</FontWeight>
@@ -1069,6 +1069,20 @@
                       <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
+                  <TextRun>
+                    <Value xml:space="preserve"> </Value>
+                    <Style>
+                      <FontFamily>Montserrat</FontFamily>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                  <TextRun>
+                    <Value>=Parameters!Currency.Value</Value>
+                    <Style>
+                      <FontFamily>Montserrat</FontFamily>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
                 </TextRuns>
                 <Style />
               </Paragraph>
@@ -1102,13 +1116,27 @@
                       <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
+                  <TextRun>
+                    <Value xml:space="preserve"> </Value>
+                    <Style>
+                      <FontFamily>Montserrat</FontFamily>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                  <TextRun>
+                    <Value>=Parameters!Currency.Value</Value>
+                    <Style>
+                      <FontFamily>Montserrat</FontFamily>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
                 </TextRuns>
                 <Style />
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
             <Top>5.69576cm</Top>
-            <Left>3.3301cm</Left>
+            <Left>3.29482cm</Left>
             <Height>0.71114cm</Height>
             <Width>4.61194cm</Width>
             <ZIndex>13</ZIndex>
@@ -1130,6 +1158,20 @@
                 <TextRuns>
                   <TextRun>
                     <Value>=Parameters!deserved.Value</Value>
+                    <Style>
+                      <FontFamily>Montserrat</FontFamily>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                  <TextRun>
+                    <Value xml:space="preserve"> </Value>
+                    <Style>
+                      <FontFamily>Montserrat</FontFamily>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                  <TextRun>
+                    <Value>=Parameters!Currency.Value</Value>
                     <Style>
                       <FontFamily>Montserrat</FontFamily>
                       <FontWeight>Bold</FontWeight>

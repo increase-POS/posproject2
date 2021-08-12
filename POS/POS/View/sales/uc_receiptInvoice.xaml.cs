@@ -2201,55 +2201,78 @@ namespace POS.View
         }
         private async void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {
-            string addpath = @"\Reports\Sale\En\InvPurReport.rdlc";
-            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-            if (invoice.invoiceId > 0)
+            
+
+            if (invoice.invType == "pd" || invoice.invType == "sd"
+                  || invoice.invType == "sbd" || invoice.invType == "pbd"
+                  || invoice.invType == "ord" || invoice.invType == "imd" || invoice.invType == "exd")
             {
-                invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
-                rep.ReportPath = reppath;
-                rep.DataSources.Clear();
-                rep.DataSources.Add(new ReportDataSource("DataSetItemTransfer", invoiceItems));
-                rep.EnableExternalImages = true;
+                MessageBox.Show("can not print Draft Invoice");
+            }
+            else
+            {
+                //  ReportCls rr = new ReportCls();
+                // MessageBox.Show(rr.GetLogoImagePath());
 
+                List<ReportParameter> paramarr = new List<ReportParameter>();
 
-                // rep.DataSources.Add(new ReportDataSource("DataSetItemTransfer", data));
-                ReportParameter[] paramarr = new ReportParameter[14];
-
-                paramarr[0] = new ReportParameter("Title", "Purshase Invoice");
-                paramarr[1] = new ReportParameter("lang", MainWindow.lang);
-                paramarr[2] = new ReportParameter("invNumber", invoice.invNumber);
-                paramarr[3] = new ReportParameter("invoiceId", invoice.invoiceId.ToString());
-                paramarr[4] = new ReportParameter("invDate", reportclass.DateToString(invoice.invDate));
-                paramarr[5] = new ReportParameter("invTime", reportclass.TimeToString(invoice.invTime));
-                //paramarr[6] = new ReportParameter("vendorInvNum", invoice.vendorInvNum.ToString());
-                paramarr[6] = new ReportParameter("total", reportclass.DecTostring(invoice.total));
-                paramarr[7] = new ReportParameter("discountValue", reportclass.DecTostring(invoice.discountValue));
-                paramarr[8] = new ReportParameter("totalNet", reportclass.DecTostring(invoice.totalNet));
-                paramarr[9] = new ReportParameter("paid", reportclass.DecTostring(invoice.paid));
-                paramarr[10] = new ReportParameter("deserved", reportclass.DecTostring(invoice.deserved));
-                paramarr[11] = new ReportParameter("deservedDate", invoice.deservedDate.ToString());
-                paramarr[12] = new ReportParameter("tax", "0");
-                paramarr[13] = new ReportParameter("barcodeimage", "file:\\" + reportclass.BarcodeToImage(invoice.invNumber.ToString(), "invnum"));
-                //paramarr[14] = new ReportParameter("companyName", "Increase");
-                //paramarr[15] = new ReportParameter("storeName", "Bonni");
-                //paramarr[16] = new ReportParameter("cashName", "Mohammad Bonni");
-                //paramarr[17] = new ReportParameter("Notes", "Hello");
-                //paramarr[18] = new ReportParameter("Address", "Aleppo");
-                //  MessageBox.Show(reportclass.DecTostring(invoice.paid) + "des="+ invoice.deserved.ToString());
-
-                rep.SetParameters(paramarr);
-
-                rep.Refresh();
-
-                saveFileDialog.Filter = "PDF|*.pdf;";
-
-                if (saveFileDialog.ShowDialog() == true)
+                string addpath;
+                bool isArabic = ReportCls.checkLang();
+                if (isArabic)
                 {
-
-                    string filepath = saveFileDialog.FileName;
-                    LocalReportExtensions.ExportToPDF(rep, filepath);
-
+                    addpath = @"\Reports\Sale\Ar\ArInvPurReport.rdlc";
                 }
+                else addpath = @"\Reports\Sale\En\InvPurReport.rdlc";
+
+                //
+
+                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+                if (invoice.invoiceId > 0)
+                {
+                    invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
+               
+                  //  agentinv = customers.Where(X => X.agentId == invoice.agentId).FirstOrDefault();
+
+                  //  invoice.agentCode = agentinv.code;
+                    if (invoice.agentId != null)
+                    {  Agent agentinv = new Agent();
+                        
+                        agentinv = customers.Where(X => X.agentId == invoice.agentId).FirstOrDefault();
+
+                        invoice.agentCode = agentinv.code;
+                    }
+                    else
+                    {
+                        invoice.agentCode = "-";
+                    }
+                    ReportCls.checkLang();
+                    if (MainWindow.branchID > 0)
+                    {
+                     Branch branch = new Branch();
+
+                        //  branch=branches.Where(X => X.branchId == MainWindow.branchID).FirstOrDefault();
+                        branch =await branchModel.getBranchById((int)MainWindow.branchID);
+                        invoice.branchName = branch.name;
+                    }
+                  
+                    clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
+                    clsReports.setReportLanguage(paramarr);
+                    clsReports.Header(paramarr);
+                    paramarr = reportclass.fillSaleInvReport(invoice, paramarr);
+
+                    rep.SetParameters(paramarr);
+                    rep.Refresh();
+
+                    saveFileDialog.Filter = "PDF|*.pdf;";
+
+                    if (saveFileDialog.ShowDialog() == true)
+                    {
+
+                        string filepath = saveFileDialog.FileName;
+                        LocalReportExtensions.ExportToPDF(rep, filepath);
+                    }
+                }
+
             }
         }
 
@@ -2425,12 +2448,76 @@ namespace POS.View
             refreshTotalValue();
         }
 
-        private void Btn_printInvoice_Click(object sender, RoutedEventArgs e)
+        private async void Btn_printInvoice_Click(object sender, RoutedEventArgs e)
         {
+            if (invoice.invType == "pd" || invoice.invType == "sd"
+               || invoice.invType == "sbd" || invoice.invType == "pbd"
+               || invoice.invType == "ord" || invoice.invType == "imd" || invoice.invType == "exd")
+            {
+                MessageBox.Show("can not print Draft Invoice");
+            }
+            else
+            {
+                //  ReportCls rr = new ReportCls();
+                // MessageBox.Show(rr.GetLogoImagePath());
 
+                List<ReportParameter> paramarr = new List<ReportParameter>();
+
+                string addpath;
+                bool isArabic = ReportCls.checkLang();
+                if (isArabic)
+                {
+                    addpath = @"\Reports\Sale\Ar\ArInvPurReport.rdlc";
+                }
+                else addpath = @"\Reports\Sale\En\InvPurReport.rdlc";
+
+                //
+
+                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+                if (invoice.invoiceId > 0)
+                {
+                    invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
+                    if (invoice.agentId != null)
+                    {
+                        Agent agentinv = new Agent();
+
+                        agentinv = customers.Where(X => X.agentId == invoice.agentId).FirstOrDefault();
+
+                        invoice.agentCode = agentinv.code;
+                    }
+                    else
+                    {
+                        invoice.agentCode = "-";
+                    }
+                    if (MainWindow.branchID > 0)
+                    {
+                        Branch branch = new Branch();
+
+                        branch = branches.Where(X => X.branchId == MainWindow.branchID).FirstOrDefault();
+                        invoice.branchName = branch.name;
+                    }
+
+
+                    ReportCls.checkLang();
+
+                    clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
+                    clsReports.setReportLanguage(paramarr);
+                    clsReports.Header(paramarr);
+                    paramarr = reportclass.fillSaleInvReport(invoice, paramarr);
+
+                    rep.SetParameters(paramarr);
+                    rep.Refresh();
+
+                    LocalReportExtensions.PrintToPrinter(rep);
+                }
+                else
+                {
+                    MessageBox.Show("can not print Empty Invoice");
+                }
+            }
         }
 
-        private void Cb_company_SelectionChanged(object sender, SelectionChangedEventArgs e)
+                private void Cb_company_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (cb_company.SelectedIndex != -1)
             {
@@ -2514,6 +2601,103 @@ namespace POS.View
                 //return valid;
             }
             #endregion
+        }
+
+        private async void Btn_preview_Click(object sender, RoutedEventArgs e)
+        {
+            if (invoice.invoiceId > 0)
+            {
+                Window.GetWindow(this).Opacity = 0.2;
+                // create pdf
+                //
+                //string pdfpath = "";
+
+                /*
+              if (invoice.invType == "pd" || invoice.invType == "sd"
+                  || invoice.invType == "sbd" || invoice.invType == "pbd"
+                  || invoice.invType == "ord" || invoice.invType == "imd" || invoice.invType == "exd")
+            {
+                MessageBox.Show("can not print Draft Invoice");
+            }
+            else
+            {
+                */
+                // ReportCls rr = new ReportCls();
+                // MessageBox.Show(rr.GetLogoImagePath());
+
+                List<ReportParameter> paramarr = new List<ReportParameter>();
+                string pdfpath;
+                string addpath;
+                bool isArabic = ReportCls.checkLang();
+                if (isArabic)
+                {
+                    addpath = @"\Reports\Sale\Ar\ArInvPurReport.rdlc";
+                }
+                else addpath = @"\Reports\Sale\En\InvPurReport.rdlc";
+
+                //
+                pdfpath = @"\Thumb\report\temp.pdf";
+                pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
+                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+                if (invoice.invoiceId > 0)
+                {
+                    invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
+                    if (invoice.agentId != null)
+                    {
+                        Agent agentinv = new Agent();
+                        agentinv = customers.Where(X => X.agentId == invoice.agentId).FirstOrDefault();
+
+                        invoice.agentCode = agentinv.code;
+                    }
+                    else
+                    {
+                        invoice.agentCode = "-";
+                    }
+
+                    invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
+                    ReportCls.checkLang();
+
+                    clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
+                    clsReports.setReportLanguage(paramarr);
+                    clsReports.Header(paramarr);
+                    paramarr = reportclass.fillSaleInvReport(invoice, paramarr);
+
+                    rep.SetParameters(paramarr);
+                    rep.Refresh();
+
+                    LocalReportExtensions.ExportToPDF(rep, pdfpath);
+
+
+
+                }
+
+                //  }
+
+                //
+
+                wd_previewPdf w = new wd_previewPdf();
+                w.pdfPath = pdfpath;
+                if (!string.IsNullOrEmpty(w.pdfPath))
+                {
+                    w.ShowDialog();
+                    //delete file
+                    /*
+                    if (File.Exists(pdfpath))
+                    { File.Delete(pdfpath);}
+                    */
+                    //  ClosePDF();
+                    w.wb_pdfWebViewer.Dispose();
+
+
+                }
+                else
+                    Toaster.ShowError(Window.GetWindow(this), message: "", animation: ToasterAnimation.FadeIn);
+                Window.GetWindow(this).Opacity = 1;
+            }
+            else
+            {
+                MessageBox.Show("save the invoice to preview");
+            }
         }
     }
 }

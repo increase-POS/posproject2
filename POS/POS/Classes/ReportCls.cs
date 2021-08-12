@@ -452,10 +452,22 @@ namespace POS.Classes
             paramarr.Add(new ReportParameter("paid", DecTostring(invoice.paid) == null ? "-" : DecTostring(invoice.paid)));
             paramarr.Add(new ReportParameter("deserved", DecTostring(invoice.deserved) == null ? "-" : DecTostring(invoice.deserved)));
             paramarr.Add(new ReportParameter("deservedDate", invoice.deservedDate.ToString() == null ? "-" : invoice.deservedDate.ToString()));
-            paramarr.Add(new ReportParameter("tax", "0"));
+            decimal taxval = 0;
+            if (invoice.tax==null || invoice.tax == 0)
+            {
+                taxval = 0;
+            }
+            else
+            {
+                taxval = ((decimal)invoice.total * (decimal)invoice.tax) / 100;
+            }
+       
+            paramarr.Add(new ReportParameter("tax", taxval.ToString()));
             string invNum = invoice.invNumber == null ? "-" : invoice.invNumber.ToString();
             paramarr.Add(new ReportParameter("barcodeimage", "file:\\" + BarcodeToImage(invNum, "invnum")));
             paramarr.Add(new ReportParameter("Currency", MainWindow.Currency));
+            paramarr.Add(new ReportParameter("storeName",invoice.branchName == null ? "-" : invoice.branchName));
+
             paramarr.Add(new ReportParameter("logoImage", "file:\\" + GetLogoImagePath()));
             if (invoice.invType == "pd" || invoice.invType == "sd"
               || invoice.invType == "sbd" || invoice.invType == "pbd"

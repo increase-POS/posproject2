@@ -118,6 +118,42 @@
     <ReportSection>
       <Body>
         <ReportItems>
+          <Textbox Name="Textbox32">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>DRAFT</Value>
+                    <Style>
+                      <FontSize>50pt</FontSize>
+                      <FontWeight>Light</FontWeight>
+                      <Color>Gainsboro</Color>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>Textbox30</rd:DefaultName>
+            <Top>0.38901cm</Top>
+            <Left>0.84491cm</Left>
+            <Height>2.19762cm</Height>
+            <Width>6.48127cm</Width>
+            <Visibility>
+              <Hidden>=Parameters!watermark.Value = "0"</Hidden>
+            </Visibility>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
           <Tablix Name="Tablix1">
             <TablixBody>
               <TablixColumns>
@@ -544,6 +580,7 @@
             <Left>0.20991cm</Left>
             <Height>1.2cm</Height>
             <Width>7.36642cm</Width>
+            <ZIndex>1</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -575,7 +612,7 @@
             <Left>0.20991cm</Left>
             <Height>0.42693cm</Height>
             <Width>1.76099cm</Width>
-            <ZIndex>1</ZIndex>
+            <ZIndex>2</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -600,6 +637,22 @@
                       <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
+                  <TextRun>
+                    <Value xml:space="preserve"> </Value>
+                    <Style>
+                      <FontFamily>Montserrat</FontFamily>
+                      <FontSize>7pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                  <TextRun>
+                    <Value>=Parameters!Currency.Value</Value>
+                    <Style>
+                      <FontFamily>Montserrat</FontFamily>
+                      <FontSize>7pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
                 </TextRuns>
                 <Style />
               </Paragraph>
@@ -609,7 +662,7 @@
             <Left>5.75344cm</Left>
             <Height>0.49748cm</Height>
             <Width>1.82287cm</Width>
-            <ZIndex>2</ZIndex>
+            <ZIndex>3</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -645,7 +698,7 @@
             <Left>0.20991cm</Left>
             <Height>0.55755cm</Height>
             <Width>1.8024cm</Width>
-            <ZIndex>3</ZIndex>
+            <ZIndex>4</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -670,6 +723,22 @@
                       <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
+                  <TextRun>
+                    <Value xml:space="preserve"> </Value>
+                    <Style>
+                      <FontFamily>Montserrat</FontFamily>
+                      <FontSize>7pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                  <TextRun>
+                    <Value>=Parameters!Currency.Value</Value>
+                    <Style>
+                      <FontFamily>Montserrat</FontFamily>
+                      <FontSize>7pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
                 </TextRuns>
                 <Style />
               </Paragraph>
@@ -679,7 +748,7 @@
             <Left>5.75344cm</Left>
             <Height>0.55755cm</Height>
             <Width>1.82285cm</Width>
-            <ZIndex>4</ZIndex>
+            <ZIndex>5</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -715,7 +784,7 @@
             <Left>0.20991cm</Left>
             <Height>0.5742cm</Height>
             <Width>1.64975cm</Width>
-            <ZIndex>5</ZIndex>
+            <ZIndex>6</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -740,6 +809,22 @@
                       <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
+                  <TextRun>
+                    <Value xml:space="preserve"> </Value>
+                    <Style>
+                      <FontFamily>Montserrat</FontFamily>
+                      <FontSize>7pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                  <TextRun>
+                    <Value>=Parameters!Currency.Value</Value>
+                    <Style>
+                      <FontFamily>Montserrat</FontFamily>
+                      <FontSize>7pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
                 </TextRuns>
                 <Style />
               </Paragraph>
@@ -749,7 +834,7 @@
             <Left>5.75344cm</Left>
             <Height>0.50364cm</Height>
             <Width>1.82285cm</Width>
-            <ZIndex>6</ZIndex>
+            <ZIndex>7</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -785,7 +870,7 @@
             <Left>0.20991cm</Left>
             <Height>0.50299cm</Height>
             <Width>0.8195cm</Width>
-            <ZIndex>7</ZIndex>
+            <ZIndex>8</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -819,7 +904,7 @@
             <Left>5.75344cm</Left>
             <Height>0.50299cm</Height>
             <Width>0.93774cm</Width>
-            <ZIndex>8</ZIndex>
+            <ZIndex>9</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -835,7 +920,7 @@
             <Left>0.20991cm</Left>
             <Height>0cm</Height>
             <Width>7.36638cm</Width>
-            <ZIndex>9</ZIndex>
+            <ZIndex>10</ZIndex>
             <Style>
               <Border>
                 <Color>LightGrey</Color>
@@ -850,7 +935,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>%</Value>
+                    <Value />
                     <Style>
                       <FontFamily>Montserrat</FontFamily>
                       <FontSize>7pt</FontSize>
@@ -864,11 +949,11 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
-            <Top>2.66065cm</Top>
+            <Top>2.69246cm</Top>
             <Left>6.69118cm</Left>
             <Height>0.50299cm</Height>
             <Width>0.46883cm</Width>
-            <ZIndex>10</ZIndex>
+            <ZIndex>11</ZIndex>
             <Style>
               <Border />
               <PaddingLeft>2pt</PaddingLeft>
@@ -882,7 +967,7 @@
             <Left>0.20991cm</Left>
             <Height>0cm</Height>
             <Width>7.36638cm</Width>
-            <ZIndex>11</ZIndex>
+            <ZIndex>12</ZIndex>
             <Style>
               <Border>
                 <Color>LightGrey</Color>
@@ -895,7 +980,7 @@
             <Left>0.0857cm</Left>
             <Height>0cm</Height>
             <Width>7.49061cm</Width>
-            <ZIndex>12</ZIndex>
+            <ZIndex>13</ZIndex>
             <Style>
               <Border>
                 <Color>LightGrey</Color>
@@ -1484,11 +1569,29 @@
       <AllowBlank>true</AllowBlank>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
+    <ReportParameter Name="watermark">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="logoImage">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="Currency">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
   </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
       <NumberOfColumns>4</NumberOfColumns>
-      <NumberOfRows>5</NumberOfRows>
+      <NumberOfRows>6</NumberOfRows>
       <CellDefinitions>
         <CellDefinition>
           <ColumnIndex>0</ColumnIndex>
@@ -1589,6 +1692,21 @@
           <ColumnIndex>3</ColumnIndex>
           <RowIndex>4</RowIndex>
           <ParameterName>Address</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>5</RowIndex>
+          <ParameterName>watermark</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>1</ColumnIndex>
+          <RowIndex>5</RowIndex>
+          <ParameterName>logoImage</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>2</ColumnIndex>
+          <RowIndex>5</RowIndex>
+          <ParameterName>Currency</ParameterName>
         </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>

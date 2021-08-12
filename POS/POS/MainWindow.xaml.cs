@@ -43,7 +43,7 @@ namespace POS
         bool menuState = false;
         //ToolTip="{Binding Properties.Settings.Default.Lang}"
         public static string lang;
-        public static string Reportlang = "en";
+        public static string Reportlang = "ar";
         public static string companyName;
         public static string Email;
         public static string Fax;
@@ -57,7 +57,7 @@ namespace POS
         internal static int? userLogInID;
         internal static int? posID = 2;
         //مخزن الجميلية الرئيسي
-        internal static int? branchID = 2;
+        internal static int? branchID;
         //مخزن الجميلية الفرقان
         //internal static int? branchID = 12;
         bool isHome = false;
