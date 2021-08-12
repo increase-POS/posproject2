@@ -10,7 +10,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800" Loaded="UserControl_Loaded">
 
-    <Grid Margin="0,15,15,15">
+    <Grid Margin="0,15,15,15" x:Name="grid_statistic">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*" ></ColumnDefinition>
             <ColumnDefinition Width="1*" ></ColumnDefinition>
@@ -74,7 +74,7 @@
                                     <Path.ToolTip>
                                         <ToolTip x:Name="tt_branch" Content="Branch"
                                               Placement="left" 
-                                              HorizontalOffset="35"
+                                              HorizontalOffset="5"
                                               PlacementRectangle="50,0,0,0"
                                               VerticalOffset="-10"/>
                                     </Path.ToolTip>
@@ -122,7 +122,7 @@
                                     <Path.ToolTip>
                                         <ToolTip x:Name="tt_pos" Content="Pos"
                                               Placement="left" 
-                                              HorizontalOffset="35"
+                                              HorizontalOffset="5"
                                               PlacementRectangle="50,0,0,0"
                                               VerticalOffset="-10"/>
                                     </Path.ToolTip>
@@ -158,7 +158,7 @@
                                     <Path.ToolTip>
                                         <ToolTip x:Name="tt_vendors" Content="Vendors"
                                               Placement="left" 
-                                              HorizontalOffset="35"
+                                              HorizontalOffset="5"
                                               PlacementRectangle="50,0,0,0"
                                               VerticalOffset="-10"/>
                                     </Path.ToolTip>
@@ -199,7 +199,7 @@
                                     <Path.ToolTip>
                                         <ToolTip x:Name="tt_users" Content="Users"
                                               Placement="left" 
-                                              HorizontalOffset="35"
+                                              HorizontalOffset="10"
                                               PlacementRectangle="50,0,0,0"
                                               VerticalOffset="-10"/>
                                     </Path.ToolTip>
@@ -258,7 +258,7 @@
                                     <Path.ToolTip>
                                         <ToolTip x:Name="tt_items" Content="Items"
                                               Placement="left" 
-                                              HorizontalOffset="35"
+                                              HorizontalOffset="10"
                                               PlacementRectangle="50,0,0,0"
                                               VerticalOffset="-10"/>
                                     </Path.ToolTip>
@@ -312,7 +312,7 @@
                                     Height="40" Margin="10,5,10,5" Padding="10,0,5,0" Grid.Row="1"></ComboBox>
                                     <CheckBox  Background="{StaticResource MainColorBlue}" x:Name="chk_allBranches" Click="chk_allBranches_Click" Grid.Row="1" Grid.Column="1" Content="All Branches" Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}"></CheckBox>
                                     <DockPanel  Grid.Row="1" Grid.Column="2" LastChildFill="False">
-                                        <materialDesign:TimePicker  SelectedTimeChanged="dp_endTime_SelectedTimeChanged" Name="dt_endTime" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" Width="100" DockPanel.Dock="Right"  BorderBrush="#737373"  BorderThickness="0" 
+                                        <materialDesign:TimePicker SelectedTimeChanged="dp_endTime_SelectedTimeChanged" Name="dt_endTime" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" Width="100" DockPanel.Dock="Right"  BorderBrush="#737373"  BorderThickness="0" 
                                        Style="{StaticResource MaterialDesignFloatingHintTimePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                 materialDesign:HintAssist.Hint="End time..."/>
                                         <materialDesign:TimePicker SelectedTimeChanged="dt_startTime_SelectedTimeChanged" Name="dt_startTime" Margin="10,5,10,5" Padding="10,0,5,0" Height="40"  Width="100" MinWidth="100" DockPanel.Dock="Right" BorderBrush="#737373"  BorderThickness="0" 
@@ -587,9 +587,9 @@
                                     <materialDesign:PackIcon.ToolTip>
                                         <ToolTip x:Name="tt_report" Content="Report"
                                               Placement="left" 
-                                              HorizontalOffset="5"
+                                              HorizontalOffset="10"
                                               PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="-10"/>
+                                              VerticalOffset="-35"/>
                                     </materialDesign:PackIcon.ToolTip>
                                 </materialDesign:PackIcon>
                             </Button>
@@ -646,9 +646,9 @@
                                         <Path.ToolTip>
                                             <ToolTip x:Name="tt_pieChart" Content="Pie Chart"
                                               Placement="left" 
-                                              HorizontalOffset="35"
+                                              HorizontalOffset="10"
                                               PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="-10"/>
+                                              VerticalOffset="-35"/>
                                         </Path.ToolTip>
                                     </Path>
                                 </Grid>
@@ -664,9 +664,9 @@
                                     <Path.ToolTip>
                                         <ToolTip x:Name="tt_excel" Content="Export to excel"
                                               Placement="left" 
-                                              HorizontalOffset="35"
+                                              HorizontalOffset="10"
                                               PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="-10"/>
+                                              VerticalOffset="-35"/>
                                     </Path.ToolTip>
                                 </Path>
                             </Button>
@@ -676,7 +676,13 @@
                                 <materialDesign:PackIcon 
                           Width="20" Height="20" 
                            FlowDirection="LeftToRight" Kind="Settings" Foreground="Gray"  >
-
+                                    <materialDesign:PackIcon.ToolTip>
+                                        <ToolTip x:Name="tt_settings" Content="Settings"
+                                              Placement="left" 
+                                              HorizontalOffset="10"
+                                              PlacementRectangle="50,0,0,0"
+                                              VerticalOffset="-35"/>
+                                    </materialDesign:PackIcon.ToolTip>
                                 </materialDesign:PackIcon>
                             </Button>
                             <TextBlock   Background="{x:Null}" x:Name="txt_count"   Grid.Column="4" Margin="0,0,0,5" 
@@ -684,9 +690,9 @@
                                 <TextBlock.ToolTip>
                                     <ToolTip x:Name="tt_count" Content="Customers Count"
                                               Placement="left" 
-                                              HorizontalOffset="35"
+                                              HorizontalOffset="10"
                                               PlacementRectangle="50,25,0,0"
-                                              VerticalOffset="-20"/>
+                                              VerticalOffset="-35"/>
                                 </TextBlock.ToolTip>
                             </TextBlock>
 

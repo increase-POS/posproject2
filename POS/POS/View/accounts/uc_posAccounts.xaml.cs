@@ -150,7 +150,7 @@ namespace POS.View.accounts
             cb_fromBranch.DisplayMemberPath = "name";
             cb_fromBranch.SelectedValuePath = "branchId";
             cb_fromBranch.SelectedValue = MainWindow.branchID.Value;
-            cb_fromBranch.IsEnabled = false;////////////permissions
+            //cb_fromBranch.IsEnabled = false;////////////permissions
             #endregion
 
             #region fill branch combo2
@@ -635,6 +635,9 @@ namespace POS.View.accounts
         {
             string name = sender.GetType().Name;
             validateEmpty(name, sender);
+            var txb = sender as TextBox;
+            if ((sender as TextBox).Name == "tb_cash")
+                SectionData.InputJustNumber(ref txb);
         }
         private void PreventSpaces(object sender, KeyEventArgs e)
         {

@@ -457,14 +457,12 @@
                         <TextBox x:Name="tb_cash" MaxLength="20"  Grid.Row="5"
                                  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                                           Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
-
                                  Text="{Binding cash, Mode=OneWay}" 
                            Padding="10,0,5,0"
                                  BorderThickness="1" 
                                  materialDesign:HintAssist.Hint="Cash..."  
                                  Foreground="#4E4E4E"  TextBlock.FontSize="12"
                                  Background="#f8f8f8" BorderBrush="#f8f8f8"
-                             
                                  Grid.Column="0"   Height="40"   Margin="10,5,10,5"
                                  PreviewKeyDown="PreventSpaces" 
                                  PreviewTextInput="Tb_cash_PreviewTextInput"

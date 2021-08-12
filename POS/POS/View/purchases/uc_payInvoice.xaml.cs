@@ -1076,9 +1076,15 @@ namespace POS.View
         }
         private void tb_discount_TextChanged(object sender, TextChangedEventArgs e)
         {
+            var txb = sender as TextBox;
+            if ((sender as TextBox).Name == "tb_discount")
+                SectionData.InputJustNumber(ref txb);
+            if ((sender as TextBox).Name == "tb_taxValue")
+                SectionData.InputJustNumber(ref txb);
             _Sender = sender;
             refreshTotalValue();
             e.Handled = true;
+
         }
         private void refreshTotalValue()
         {

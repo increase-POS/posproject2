@@ -181,8 +181,6 @@ namespace POS.controlTemplate
             if (cardViewitem.item.isOffer == 1)
             {
                 #region Path offerLabel
-
-
                 //string dataStar = "";
                 Path pathOfferLabel = new Path();
                 Grid.SetColumnSpan(pathOfferLabel, 2);
@@ -192,7 +190,7 @@ namespace POS.controlTemplate
                 pathOfferLabel.Stretch = Stretch.Fill;
                 //   Height = "16" Width = "86" 
                 pathOfferLabel.Height = pathOfferLabel.Width = gridContainer.Width / 4.5;
-                pathOfferLabel.FlowDirection = FlowDirection.LeftToRight;
+                //pathOfferLabel.FlowDirection = FlowDirection.LeftToRight;
                 pathOfferLabel.HorizontalAlignment = HorizontalAlignment.Right;
 
                 if (cardViewitem.language == "ar")
@@ -208,7 +206,7 @@ namespace POS.controlTemplate
                 Path pathOfferLabelText = new Path();
                 Grid.SetColumnSpan(pathOfferLabelText, 2);
                 Grid.SetRowSpan(pathOfferLabelText, 4);
-                pathOfferLabelText.FlowDirection = FlowDirection.LeftToRight;
+                //pathOfferLabelText.FlowDirection = FlowDirection.LeftToRight;
                 pathOfferLabelText.VerticalAlignment = VerticalAlignment.Top;
                 pathOfferLabelText.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFD00"));
                 pathOfferLabelText.Stretch = Stretch.Fill;

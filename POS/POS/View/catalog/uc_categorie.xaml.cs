@@ -1045,5 +1045,12 @@ namespace POS.View
         {
             cb_parentCategorie.ItemsSource = categories.Where(x => x.name.Contains(cb_parentCategorie.Text));
         }
+
+        private void Tb_taxes_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var txb = sender as TextBox;
+            if ((sender as TextBox).Name == "tb_taxes")
+                SectionData.InputJustNumber(ref txb);
+        }
     }
 }

@@ -683,5 +683,20 @@ namespace POS.Classes
             combo.DisplayMemberPath = "name";
             combo.SelectedIndex = -1;
         }
+        /// <summary>
+        /// لمنع  الصفر بالبداية
+        /// </summary>
+        /// <param name="txb"></param>
+        static public void InputJustNumber(ref TextBox txb)
+        {
+            if (txb.Text.Count() == 2 && txb.Text == "00")
+            {
+                string myString = txb.Text;
+                myString = Regex.Replace(myString, "00", "0");
+                txb.Text = myString;
+                txb.Select(txb.Text.Length, 0);
+                txb.Focus();
+            }
+        }
     }
 }

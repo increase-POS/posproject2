@@ -2343,6 +2343,9 @@ namespace POS.View
         }
         private void Tb_textBox_TextChanged(object sender, TextChangedEventArgs e)
         {
+            var txb = sender as TextBox;
+            if ((sender as TextBox).Name == "tb_taxes")
+                SectionData.InputJustNumber(ref txb);
             _Sender = sender;
         }
 

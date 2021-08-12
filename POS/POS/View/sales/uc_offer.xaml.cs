@@ -114,10 +114,14 @@ namespace POS.View
 
         private void tb_discountValue_TextChanged(object sender, TextChangedEventArgs e)
         {
+
             if (tb_discountValue == null)
             {
                 return;
             }
+            var txb = sender as TextBox;
+            if ((sender as TextBox).Name == "tb_discountValue")
+                SectionData.InputJustNumber(ref txb);
 
             if (!int.TryParse(tb_discountValue.Text, out _numValue))
                 tb_discountValue.Text = _numValue.ToString();

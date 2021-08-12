@@ -318,7 +318,7 @@ namespace POS.Classes
             }
         }
 
-        public UC_squareCard FN_createCatalogCard(CardViewItems categoryCardView, int columnCount,   string BorderBrush = "#6e6e6e")
+        public UC_squareCard FN_createCatalogCard(CardViewItems categoryCardView, int columnCount,   string BorderBrush = "#DFDFDF")
         {
             UC_squareCard uc = new UC_squareCard(categoryCardView);
             uc.ContentId = categoryCardView.category.categoryId;
@@ -359,7 +359,7 @@ namespace POS.Classes
                 {
                     gridCatigories.Children.Remove(pastUc);
                     FN_createCatalogCard( pastUc.categoryCardView, pastUc.columnCount,
-                     "#6e6e6e");
+                     "#DFDFDF");
                 }
             }
             
@@ -430,7 +430,7 @@ namespace POS.Classes
                 }
             }
         }
-        UC_rectangleCard FN_createRectangelCard(CardViewItems itemCardView, string BorderBrush = "#6e6e6e")
+        UC_rectangleCard FN_createRectangelCard(CardViewItems itemCardView, string BorderBrush = "#DFDFDF")
         {
             UC_rectangleCard uc = new UC_rectangleCard(itemCardView);
             uc.rectangleCardBorderBrush = BorderBrush;
@@ -455,7 +455,7 @@ namespace POS.Classes
                 if (pastUc != null)
                 {
                     gridCatigorieItems.Children.Remove(pastUc);
-                    FN_createRectangelCard(pastUc.cardViewitem, "#6e6e6e");
+                    FN_createRectangelCard(pastUc.cardViewitem, "#DFDFDF");
                 }
             }
             pastCatalogItem = uc.cardViewitem.item.itemId;
@@ -488,7 +488,7 @@ namespace POS.Classes
                 }
             }
         }
-        UC_rectangleCard FN_createRectangelCardUsers(CardViewItems itemCardView, string BorderBrush = "#6e6e6e")
+        UC_rectangleCard FN_createRectangelCardUsers(CardViewItems itemCardView, string BorderBrush = "#DFDFDF")
         {
             UC_rectangleCard uc = new UC_rectangleCard(itemCardView);
             uc.rectangleCardBorderBrush = BorderBrush;
@@ -513,7 +513,7 @@ namespace POS.Classes
                 if (pastUc != null)
                 {
                     gridCatigorieItems.Children.Remove(pastUc);
-                    FN_createRectangelCardUsers(pastUc.cardViewitem, "#6e6e6e");
+                    FN_createRectangelCardUsers(pastUc.cardViewitem, "#DFDFDF");
                 }
             }
             pastCatalogItem = uc.cardViewitem.user.userId;
@@ -547,7 +547,7 @@ namespace POS.Classes
                 }
             }
         }
-        UC_rectangleCard FN_createRectangelCardAgents(CardViewItems itemCardView, string BorderBrush = "#6e6e6e")
+        UC_rectangleCard FN_createRectangelCardAgents(CardViewItems itemCardView, string BorderBrush = "#DFDFDF")
         {
             UC_rectangleCard uc = new UC_rectangleCard(itemCardView);
             uc.rectangleCardBorderBrush = BorderBrush;
@@ -572,7 +572,7 @@ namespace POS.Classes
                 if (pastUc != null)
                 {
                     gridCatigorieItems.Children.Remove(pastUc);
-                    FN_createRectangelCardAgents(pastUc.cardViewitem, "#6e6e6e");
+                    FN_createRectangelCardAgents(pastUc.cardViewitem, "#DFDFDF");
                 }
             }
             pastCatalogItem = uc.cardViewitem.agent.agentId;
@@ -584,7 +584,7 @@ namespace POS.Classes
         #region  sale
         #region En
         UC_rectangleCardPrice FN_createCatalogItem(Item item, string price,  int row, int column,
-           string newItem, string offer, string BorderBrush = "#6e6e6e")
+           string newItem, string offer, string BorderBrush = "#DFDFDF")
         {
 
             UC_rectangleCardPrice uc = new UC_rectangleCardPrice(item);
@@ -622,7 +622,7 @@ namespace POS.Classes
                 {
                     gridCatigorieItems.Children.Remove(pastUc);
                     FN_createCatalogItem(pastUc.item, pastUc.rectangleCardPricePriceTitle
-                        ,  pastUc.Row, pastUc.Column, pastUc.rectangleCardPriceNew, pastUc.rectangleCardPriceOffer,  "#6e6e6e");
+                        ,  pastUc.Row, pastUc.Column, pastUc.rectangleCardPriceNew, pastUc.rectangleCardPriceOffer,  "#DFDFDF");
                 }
             }
             pastCatalogItem = uc.ContentId;
@@ -631,7 +631,7 @@ namespace POS.Classes
         #endregion
         #region Ar
         UC_rectangleCardPrice_ar FN_createCatalogItem_ar(Item item, string price, int row, int column,
-           string newItem, string offer, string BorderBrush = "#6e6e6e")
+           string newItem, string offer, string BorderBrush = "#DFDFDF")
         {
         
             UC_rectangleCardPrice_ar uc = new UC_rectangleCardPrice_ar(item);
@@ -670,7 +670,7 @@ namespace POS.Classes
                 {
                     gridCatigorieItems.Children.Remove(pastUc);
                     FN_createCatalogItem_ar(pastUc.item, pastUc.rectangleCardPricePriceTitle_ar
-                        , pastUc.Row, pastUc.Column, pastUc.rectangleCardPriceNew_ar, pastUc.rectangleCardPriceOffer_ar, "#6e6e6e");
+                        , pastUc.Row, pastUc.Column, pastUc.rectangleCardPriceNew_ar, pastUc.rectangleCardPriceOffer_ar, "#DFDFDF");
                 }
             }
             pastCatalogItem = uc.ContentId;
@@ -683,7 +683,7 @@ namespace POS.Classes
 
         #region  En
         UC_rectangleCardWithoutPrice FN_createCatalogItemtWithoutPrice(Item item, string price, int row, int column,
-           string newItem, string offer, string BorderBrush = "#6e6e6e")
+           string newItem, string offer, string BorderBrush = "#DFDFDF")
         {
 
         
@@ -722,7 +722,7 @@ namespace POS.Classes
                 {
                     gridCatigorieItems.Children.Remove(pastUc);
                     FN_createCatalogItemtWithoutPrice(pastUc.item, pastUc.rectangleCardWithoutPriceWithoutPriceTitle
-                        , pastUc.Row, pastUc.Column, pastUc.rectangleCardWithoutPriceNew, pastUc.rectangleCardWithoutPriceOffer, "#6e6e6e");
+                        , pastUc.Row, pastUc.Column, pastUc.rectangleCardWithoutPriceNew, pastUc.rectangleCardWithoutPriceOffer, "#DFDFDF");
                 }
             }
             pastCatalogItem = uc.ContentId;
@@ -731,7 +731,7 @@ namespace POS.Classes
         #endregion
         #region  Ar
         UC_rectangleCardWithoutPrice_ar FN_createCatalogItemtWithoutPrice_ar(Item item, string price, int row, int column,
-           string newItem, string offer, string BorderBrush = "#6e6e6e")
+           string newItem, string offer, string BorderBrush = "#DFDFDF")
         {
         
             UC_rectangleCardWithoutPrice_ar uc = new UC_rectangleCardWithoutPrice_ar(item);
@@ -770,7 +770,7 @@ namespace POS.Classes
                 {
                     gridCatigorieItems.Children.Remove(pastUc);
                     FN_createCatalogItemtWithoutPrice_ar(pastUc.item,pastUc.rectangleCardWithoutPriceWithoutPriceTitle_ar
-                       , pastUc.Row, pastUc.Column, pastUc.rectangleCardWithoutPriceNew_ar, pastUc.rectangleCardWithoutPriceOffer_ar, "#6e6e6e");
+                       , pastUc.Row, pastUc.Column, pastUc.rectangleCardWithoutPriceNew_ar, pastUc.rectangleCardWithoutPriceOffer_ar, "#DFDFDF");
                 }
             }
             pastCatalogItem = uc.ContentId;

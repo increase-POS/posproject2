@@ -771,7 +771,7 @@
                                                  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"   
                                                  BorderThickness="1"  materialDesign:HintAssist.Hint="Taxes..."  
                                                  Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                                                 BorderBrush="#f8f8f8" 
+                                                 BorderBrush="#f8f8f8" TextChanged="Tb_validateEmptyTextChange"
                                                  HorizontalAlignment="Left" VerticalAlignment="Center" 
                                                  Grid.Column="1"  Height="35" Width="340"  Margin="10,5" 
                                                  PreviewKeyDown="Tb_PreventSpaces" 
@@ -828,7 +828,7 @@
                                                  Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                                  BorderBrush="AliceBlue" 
                                                  HorizontalAlignment="Left" VerticalAlignment="Center" 
-                                                 Height="35" Width="350"  Margin="5,5" KeyDown="tb_barcode_Generate" TextChanged="tb_barcode_TextChanged"
+                                                 Height="35" Width="350"  Margin="5,5" KeyDown="tb_barcode_Generate" TextChanged="Tb_validateEmptyTextChange"
                                                  PreviewKeyDown="Tb_PreventSpaces" 
                                                  PreviewTextInput="Tb_decimal_PreviewTextInput" 
                                                  LostFocus="Tb_validateEmptyLostFocus">

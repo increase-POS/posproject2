@@ -1,0 +1,128 @@
+﻿<Window x:Class="POS.View.windows.wd_selectPos"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:POS.View.windows"
+        mc:Ignorable="d"  KeyDown="HandleKeyPress"
+         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+         WindowStyle="None" WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize" Margin="0"
+        Title="wd_itemsList" Height="175" Width="300" Background="#333333" 
+        Loaded="Window_Loaded" Closing="Window_Closing">
+    <Grid Grid.Column="1" Grid.Row="1"  Background="#333333"  x:Name="grid_changePassword">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid   Background="#333333" >
+            <Border  BorderThickness="0" Grid.Row="0" 
+                    CornerRadius="7,7,0,0"  Background="#178DD2">
+                <Grid>
+
+                    <Button   IsCancel="true"  HorizontalAlignment="Right" VerticalAlignment="Center" Background="{x:Null}" 
+                             BorderBrush="{x:Null}"  Foreground="White" Margin="7.5,0"  x:Name="btn_colse" Click="Btn_colse_Click"
+                             FontWeight="SemiBold" Width="24" Padding="0" ToolTip="Close"  FontSize="14">
+                        <materialDesign:PackIcon Foreground="White" Kind="Close" 
+                                         Width="20" Height="20"/>
+                    </Button>
+                    <Grid  HorizontalAlignment="Center"  >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="1.2*"/>
+                        </Grid.ColumnDefinitions>
+                        <Path Fill="White" Stretch="Fill" Margin="5,0"
+                              HorizontalAlignment="Right" Grid.Column="0"  
+                         VerticalAlignment="Center" Width="15" Height="15"
+                              Data="M33,12c0-0.6,0.4-1,1-1h5c0.6,0,1,0.4,1,1c0,0.6-0.4,1-1,1h-5C33.4,13,33,12.6,33,12z M34,17h5c0.6,0,1-0.4,1-1
+	c0-0.6-0.4-1-1-1h-5c-0.6,0-1,0.4-1,1C33,16.6,33.4,17,34,17z M58,50v8H0v-8H58z M20,54c0-0.6-0.4-1-1-1H5c-0.6,0-1,0.4-1,1
+	s0.4,1,1,1h14C19.6,55,20,54.6,20,54z M55,54c0-0.6-0.4-1-1-1h-1c-0.6,0-1,0.4-1,1s0.4,1,1,1h1C54.6,55,55,54.6,55,54z M4,50h50v-4
+	H4V50z M19,29h-1c-0.6,0-1,0.4-1,1c0,0.6,0.4,1,1,1h1c0.6,0,1-0.4,1-1C20,29.4,19.6,29,19,29z M14.3,29.3C14.1,29.5,14,29.7,14,30
+	s0.1,0.5,0.3,0.7c0.2,0.2,0.4,0.3,0.7,0.3s0.5-0.1,0.7-0.3c0.2-0.2,0.3-0.4,0.3-0.7s-0.1-0.5-0.3-0.7C15.3,28.9,14.7,28.9,14.3,29.3
+	z M14,26h5c0.6,0,1-0.4,1-1c0-0.6-0.4-1-1-1h-5c-0.6,0-1,0.4-1,1C13,25.6,13.4,26,14,26z M18.3,34.3C18.1,34.5,18,34.7,18,35
+	s0.1,0.5,0.3,0.7S18.7,36,19,36s0.5-0.1,0.7-0.3S20,35.2,20,35s-0.1-0.5-0.3-0.7C19.3,33.9,18.7,33.9,18.3,34.3z M56,16.2v28.6
+	c0,0.7-0.5,1.2-1.2,1.2H3.2C2.5,46,2,45.5,2,44.8V16.2c0-0.7,0.5-1.2,1.2-1.1H12v-3h4v3h10.8c0.7,0,1.2-0.6,1.2-1.2V7.2
+	C28,6.5,28.5,6,29.2,6h21.6C51.5,6,52,6.5,52,7.2v6.6c0,0.7,0.6,1.2,1.2,1.2h1.6C55.5,15,56,15.5,56,16.2z M22,21H8v18h14V21z
+	 M35,38h-4v4h4V38z M35,31h-4v4h4V31z M35,24h-4v4h4V24z M42,38h-4v4h4V38z M42,31h-4v4h4V31z M42,24h-4v4h4V24z M49,38h-4v4h4V38z
+	 M49,31h-4v4h4V31z M49,24h-4v4h4V24z M49,9H31v11h18V9z M11,26c0.3,0,0.5-0.1,0.7-0.3c0.2-0.2,0.3-0.4,0.3-0.7s-0.1-0.5-0.3-0.7
+	c-0.4-0.4-1-0.4-1.4,0C10.1,24.5,10,24.7,10,25s0.1,0.5,0.3,0.7C10.5,25.9,10.7,26,11,26z M11,36h5c0.6,0,1-0.4,1-1s-0.4-1-1-1h-5
+	c-0.6,0-1,0.4-1,1S10.4,36,11,36z M11,31h1c0.6,0,1-0.4,1-1c0-0.6-0.4-1-1-1h-1c-0.6,0-1,0.4-1,1C10,30.6,10.4,31,11,31z M12,10
+	c0.3,0,0.5-0.1,0.7-0.3l1-1c0.4-0.4,0.4-1,0-1.4c-0.4-0.4-1-0.4-1.4,0l-1,1c-0.4,0.4-0.4,1,0,1.4C11.5,9.9,11.7,10,12,10z M16,6v3
+	c0,0.6,0.4,1,1,1s1-0.4,1-1V4c0-0.1,0-0.3-0.1-0.4c-0.1-0.2-0.3-0.4-0.5-0.5c-0.2-0.1-0.5-0.1-0.8,0c-0.1,0.1-0.2,0.1-0.3,0.2l-1,1
+	c-0.4,0.4-0.4,1,0,1.4C15.5,5.9,15.7,6,16,6z M20,6v3c0,0.6,0.4,1,1,1s1-0.4,1-1V4c0-0.1,0-0.3-0.1-0.4c-0.1-0.2-0.3-0.4-0.5-0.5
+	c-0.2-0.1-0.5-0.1-0.8,0c-0.1,0.1-0.2,0.1-0.3,0.2l-1,1c-0.4,0.4-0.4,1,0,1.4C19.5,5.9,19.7,6,20,6z M7,6v3c0,0.6,0.4,1,1,1
+	s1-0.4,1-1V4c0-0.1,0-0.3-0.1-0.4C8.8,3.4,8.6,3.2,8.4,3.1C8.1,3,7.9,3,7.6,3.1c-0.1,0-0.2,0.1-0.3,0.2l-1,1c-0.4,0.4-0.4,1,0,1.4
+	C6.5,5.9,6.7,6,7,6z M25,0v13H3V0H25z M23,2H5v9h18V2z"/>
+                        <TextBlock Text="pos" x:Name="txt_title" Foreground="White" 
+                                   HorizontalAlignment="Left" VerticalAlignment="Center" 
+                              Grid.Column="1"      Margin="5,0"/>
+                    </Grid>
+                </Grid>
+            </Border>
+        </Grid>
+        <Border BorderThickness="1,0,1,1"  Grid.Row="1"
+                    CornerRadius="0,0,7,7" BorderBrush="#999999"  Background="White">
+            <Grid  >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <ComboBox x:Name="cb_branch"  Grid.Row="0"
+                                  Padding="10,5,5,0"  TextBlock.Foreground="#4E4E4E"
+                                  materialDesign:HintAssist.Hint="branch..."  
+                                  TextBlock.FontSize="12"   Background="#f8f8f8"
+                                  Grid.Column="0" Height="40"  Margin="10,5,10,5"
+                                  BorderBrush="#737373" BorderThickness="0" 
+                                  LostFocus="Tb_validateEmptyLostFocus" SelectionChanged="Cb_branch_SelectionChanged">
+                    <ComboBox.ToolTip>
+                        <ToolTip x:Name="tt_branch" Content="branch"
+                                                          Placement="left" 
+                                                          HorizontalOffset="35"
+                                                          PlacementRectangle="50,0,0,0"
+                                                          VerticalOffset="20"/>
+                    </ComboBox.ToolTip>
+                </ComboBox>
+                <Path Fill="#E81123" x:Name="p_errorBranch" Stretch="Fill" Margin="5,5,15,5"
+                              HorizontalAlignment="Right" Grid.Row="0" Visibility="Collapsed"   
+                         VerticalAlignment="Center" Width="15"  Height="15"
+                              Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
+                    <Path.ToolTip>
+                        <ToolTip x:Name="tt_errorBranch" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                    </Path.ToolTip>
+                </Path>
+                <ComboBox x:Name="cb_pos"  Grid.Row="1"
+                                  Padding="10,5,5,0"  TextBlock.Foreground="#4E4E4E"
+                                  materialDesign:HintAssist.Hint="pos..."  
+                                  TextBlock.FontSize="12"   Background="#f8f8f8"
+                                  Grid.Column="0" Height="40"  Margin="10,5,10,5"
+                                  BorderBrush="#737373" BorderThickness="0" 
+                                  LostFocus="Tb_validateEmptyLostFocus">
+                    <ComboBox.ToolTip>
+                        <ToolTip x:Name="tt_pos" Content="pos"
+                                                          Placement="left" 
+                                                          HorizontalOffset="35"
+                                                          PlacementRectangle="50,0,0,0"
+                                                          VerticalOffset="20"/>
+                    </ComboBox.ToolTip>
+                </ComboBox>
+                <Path Fill="#E81123" x:Name="p_errorPos" Stretch="Fill" Margin="5,5,15,5"
+                              HorizontalAlignment="Right" Grid.Row="1" Visibility="Collapsed"   
+                         VerticalAlignment="Center" Width="15"  Height="15"
+                              Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
+                    <Path.ToolTip>
+                        <ToolTip x:Name="tt_errorPos" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                    </Path.ToolTip>
+                </Path>
+                <Button   Grid.Row="4"   Content="Save"
+                       Margin="10,2.5" x:Name="btn_save" Click="Btn_save_Click"
+                          Background="#178DD2" BorderBrush="{x:Null}" />
+
+            </Grid>
+
+        </Border>
+
+
+    </Grid>
+</Window>

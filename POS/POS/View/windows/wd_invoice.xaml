@@ -147,7 +147,7 @@
                                 <DataTrigger Binding="{Binding invType}" Value="spd">
                                     <Setter Property="Background" Value="{StaticResource lightRed}"></Setter>
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding invType}" Value="sd">
+                                <DataTrigger Binding="{Binding invType}" Value="sb">
                                     <Setter Property="Background" Value="{StaticResource lightRed}"></Setter>
                                 </DataTrigger>
                             </Style.Triggers>

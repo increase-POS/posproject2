@@ -534,6 +534,9 @@ namespace POS.View.accounts
         {
             string name = sender.GetType().Name;
             validateEmpty(name, sender);
+            var txb = sender as TextBox;
+            if ((sender as TextBox).Name == "tb_cash")
+                SectionData.InputJustNumber(ref txb);
         }
 
         string processType = "";
@@ -712,7 +715,7 @@ namespace POS.View.accounts
 
         private void Cb_branch_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//select branch
-            MessageBox.Show(cb_branch.SelectedValue.ToString());
+            
             //invoiceQuery = invoiceQuery.Where(u => u.branchId == Convert.ToInt32(cb_branch.SelectedValue));
             //invoiceQueryExcel = invoiceQuery;
             //RefreshInvoiceView();

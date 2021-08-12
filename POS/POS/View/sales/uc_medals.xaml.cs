@@ -498,6 +498,9 @@ namespace POS.View.sales
         {
             string name = sender.GetType().Name;
             validateEmpty(name, sender);
+            var txb = sender as TextBox;
+            if ((sender as TextBox).Name == "tb_cashPointsRequired")
+                SectionData.InputJustNumber(ref txb);
         }
 
         private void Dg_medal_SelectionChanged(object sender, SelectionChangedEventArgs e)

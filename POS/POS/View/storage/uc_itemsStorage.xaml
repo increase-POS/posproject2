@@ -63,7 +63,7 @@
                     <Button  DockPanel.Dock="Right" FlowDirection="LeftToRight"  Width="40" Height="40" x:Name="btn_refresh" Grid.Row="0" Grid.Column="4" Padding="0" 
                             materialDesign:ButtonAssist.CornerRadius="15" Cursor="Hand"
                           Background="{x:Null}" BorderBrush="{x:Null}" Click="Btn_refresh_Click"  Style="{StaticResource SmallButtonCircleRotate}"
-                             Margin="5,1"  Content="إضافة"   ToolTip="Refresh"  RenderTransformOrigin="0.5,0.5"
+                             Margin="5,1"  Content="إضافة"  RenderTransformOrigin="0.5,0.5"
                             DataContext="M896,0L896,0C401.2,0,0,401.2,0,896v0c0,494.8,401.2,896,896,896h0c494.8,0,896-401.2,896-896v0C1792,401.2,1390.8,0,896,0z
 	 M1451.3,1021c-31.9,133.7-98.8,242.1-200.6,325.2c-101.8,83.1-221,124.6-357.7,124.6c-72.8,0-143.3-13.7-211.4-41.2
 	s-128.8-66.6-182.2-117.5l-96.5,96.5c-9.5,9.5-20.7,14.2-33.7,14.2s-24.2-4.7-33.7-14.2c-9.5-9.5-14.2-20.7-14.2-33.7v-335.3
@@ -84,13 +84,20 @@
                                 <TranslateTransform/>
                             </TransformGroup>
                         </Button.RenderTransform>
+                        <Button.ToolTip>
+                            <ToolTip x:Name="tt_refresh" Content="Refresh"
+                                              Placement="left" 
+                                              HorizontalOffset="15"
+                                              PlacementRectangle="50,0,0,0"
+                                              VerticalOffset="25"/>
+                        </Button.ToolTip>
                     </Button>
                     <ToggleButton DockPanel.Dock="Right"  x:Name="tgl_IsActive"  
                                       Checked="Tgl_IsActive_Checked" 
                                       Unchecked="Tgl_IsActive_Unchecked"
                                       VerticalAlignment="Center" Padding="10,15,5,5"  IsChecked="True" 
                                       Margin="0" Height="13" Width="28"  />
-                    <TextBlock  DockPanel.Dock="Right"
+                    <TextBlock  DockPanel.Dock="Right" x:Name="txt_stored"
                                    Margin="5,0,5,0" Text="Stored" Foreground="#6e6e6e"
                                    HorizontalAlignment="Left" VerticalAlignment="Center"
                                    FontSize="12"/>
@@ -208,9 +215,9 @@
                                 <materialDesign:PackIcon.ToolTip>
                                     <ToolTip x:Name="tt_report" Content="Report"
                                               Placement="left" 
-                                              HorizontalOffset="5"
+                                              HorizontalOffset="10"
                                               PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="-10"/>
+                                              VerticalOffset="-35"/>
                                 </materialDesign:PackIcon.ToolTip>
                             </materialDesign:PackIcon>
                         </Button>
@@ -223,9 +230,9 @@
                                 <materialDesign:PackIcon.ToolTip>
                                     <ToolTip x:Name="tt_print" Content="Print"
                                               Placement="left" 
-                                              HorizontalOffset="5"
+                                              HorizontalOffset="10"
                                               PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="-10"/>
+                                              VerticalOffset="-35"/>
                                 </materialDesign:PackIcon.ToolTip>
                             </materialDesign:PackIcon>
                         </Button>
@@ -267,9 +274,9 @@
                                     <Path.ToolTip>
                                         <ToolTip x:Name="tt_pieChart" Content="Pie Chart"
                                               Placement="left" 
-                                              HorizontalOffset="35"
+                                              HorizontalOffset="10"
                                               PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="-10"/>
+                                              VerticalOffset="-35"/>
                                     </Path.ToolTip>
                                 </Path>
                             </Grid>
@@ -285,9 +292,9 @@
                                 <Path.ToolTip>
                                     <ToolTip x:Name="tt_excel" Content="Export to excel"
                                               Placement="left" 
-                                              HorizontalOffset="35"
+                                              HorizontalOffset="10"
                                               PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="-10"/>
+                                              VerticalOffset="-35"/>
                                 </Path.ToolTip>
                             </Path>
                         </Button>
@@ -380,7 +387,7 @@
                                     materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                      Height="40" Margin="10,5,0,5">
                                     <TextBox.ToolTip>
-                                        <ToolTip x:Name="tt_code" Content="Item Name"
+                                        <ToolTip x:Name="tt_itemName" Content="Item Name"
                                              Placement="left" 
                                               HorizontalOffset="35"
                                               PlacementRectangle="50,0,0,0"
@@ -393,7 +400,15 @@
                                     BorderBrush="AliceBlue"  TextChanged="Tb_quantity_TextChanged"
                                          PreviewTextInput="NumberValidationTextBox"  PreviewKeyDown="space_PreviewKeyDown"
                                     MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                    Height="40"   Margin="5,5,10,5" Grid.ColumnSpan="2" LostFocus="input_LostFocus" />
+                                    Height="40"   Margin="5,5,10,5" Grid.ColumnSpan="2" LostFocus="input_LostFocus" >
+                                    <TextBox.ToolTip>
+                                        <ToolTip x:Name="tt_quantity" Content="Item Name"
+                                             Placement="left" 
+                                              HorizontalOffset="35"
+                                              PlacementRectangle="50,0,0,0"
+                                              VerticalOffset="20"/>
+                                    </TextBox.ToolTip>
+                                </TextBox>
 
                                 <Path Fill="#E81123" Grid.Column="1" Stretch="Fill" Margin="5,5,15,5" x:Name="p_errorQuantity"
                               HorizontalAlignment="Right"   Visibility="Collapsed" 
@@ -411,7 +426,15 @@
                                         Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                         Height="40"   Margin="10,5,10,5"
                                         BorderBrush="#737373" BorderThickness="0" SelectionChanged="Cb_section_SelectionChanged"
-                                        LostFocus="input_LostFocus"/>
+                                        LostFocus="input_LostFocus">
+                                <ComboBox.ToolTip>
+                                    <ToolTip x:Name="tt_section" Content="Item Name"
+                                             Placement="left" 
+                                              HorizontalOffset="35"
+                                              PlacementRectangle="50,0,0,0"
+                                              VerticalOffset="20"/>
+                                </ComboBox.ToolTip>
+                            </ComboBox>
                             <Path Fill="#E81123" Grid.Row="2" Stretch="Fill" Margin="5,5,15,5"
                               x:Name="p_errorSection" HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
@@ -427,7 +450,15 @@
                                         Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                         Height="40"   Margin="10,5,10,5"
                                         BorderBrush="#737373" BorderThickness="0"
-                                        LostFocus="input_LostFocus"/>
+                                        LostFocus="input_LostFocus">
+                                <ComboBox.ToolTip>
+                                    <ToolTip x:Name="tt_location" Content="Item Name"
+                                             Placement="left" 
+                                              HorizontalOffset="35"
+                                              PlacementRectangle="50,0,0,0"
+                                              VerticalOffset="20"/>
+                                </ComboBox.ToolTip>
+                            </ComboBox>
                             <Path Fill="#E81123" Grid.Row="3" Stretch="Fill" Margin="5,5,15,5" x:Name="p_errorXYZ"
                               HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed" 
                          VerticalAlignment="Center" Width="15"  Height="15"
@@ -508,13 +539,13 @@
                 <Button x:Name="btn_transfer"  TabIndex="10" Content="Transfer" Grid.Row="11"
                                 Background="#4E4E4E" BorderBrush="{x:Null}" 
                                 Margin="1,1"  Click="Btn_transfer_Click" >
-                    <Button.ToolTip>
+                    <!--<Button.ToolTip>
                         <ToolTip x:Name="tt_pay" Content="Pay"
                                     Placement="left" 
                                     HorizontalOffset="15"
                                     PlacementRectangle="50,0,0,0"
                                     VerticalOffset="30"/>
-                    </Button.ToolTip>
+                    </Button.ToolTip>-->
                 </Button>
             </Grid>
 

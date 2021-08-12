@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Resources;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -41,6 +42,8 @@ namespace POS.View.storage
         string searchText = "";
         string transferPermission = "itemsStorage_transfer";
         string reportsPermission = "itemsStorage_reports";
+
+
         public static uc_itemsStorage Instance
         {
             get
@@ -56,7 +59,9 @@ namespace POS.View.storage
         }
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
+        {//load
+
+            #region translate
             if (MainWindow.lang.Equals("en"))
             {
                 MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
@@ -69,11 +74,14 @@ namespace POS.View.storage
             }
            
             translate();
+            #endregion
+
             //await refreshItemsLocations();
             //await refreshFreeZoneItemsLocations();
             Tb_search_TextChanged(null,null);
 
             await fillSections();
+
             #region Style Date
             dp_startDate.Loaded += delegate
             {
@@ -144,23 +152,43 @@ namespace POS.View.storage
         }
         private void translate()
         {
-            ////////////////////////////////----invoice----/////////////////////////////////
-            //txt_invoiceToggle.Text = MainWindow.resourcemanager.GetString("trInvoice");
-            //MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_InvoicenName, MainWindow.resourcemanager.GetString("trInvoiceHint"));
+            txt_itemsStorageHeader.Text = MainWindow.resourcemanager.GetString("trItemStorage");
+            txt_Location.Text = MainWindow.resourcemanager.GetString("trLocation");
+            txt_stored.Text = MainWindow.resourcemanager.GetString("trStored");
 
-            //dg_billDetails.Columns[1].Header = MainWindow.resourcemanager.GetString("trNum");
-            //dg_billDetails.Columns[2].Header = MainWindow.resourcemanager.GetString("trItem");
-            //dg_billDetails.Columns[4].Header = MainWindow.resourcemanager.GetString("trAmount");
-            //dg_invoice.Columns[0].Header = MainWindow.resourcemanager.GetString("trInvoiceNumber");
-            //txt_addButton.Text = MainWindow.resourcemanager.GetString("trAdd");
-            //txt_updateButton.Text = MainWindow.resourcemanager.GetString("trUpdate");
-            //txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trDelete");
-            //tt_add_Button.Content = MainWindow.resourcemanager.GetString("trAdd");
-            //tt_update_Button.Content = MainWindow.resourcemanager.GetString("trUpdate");
-            //tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_itemName, MainWindow.resourcemanager.GetString("trNameHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_quantity, MainWindow.resourcemanager.GetString("trQuantityHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_section, MainWindow.resourcemanager.GetString("trSectionHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_XYZ, MainWindow.resourcemanager.GetString("trLocationHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_notes, MainWindow.resourcemanager.GetString("trNoteHint"));
+
+            dg_itemsStorage.Columns[0].Header = MainWindow.resourcemanager.GetString("trItemUnit");
+            dg_itemsStorage.Columns[1].Header = MainWindow.resourcemanager.GetString("trSectionLocation");
+            dg_itemsStorage.Columns[2].Header = MainWindow.resourcemanager.GetString("trQuantity");
+            dg_itemsStorage.Columns[3].Header = MainWindow.resourcemanager.GetString("trStartDate");
+            dg_itemsStorage.Columns[4].Header = MainWindow.resourcemanager.GetString("trEndDate");
+            dg_itemsStorage.Columns[5].Header = MainWindow.resourcemanager.GetString("trNote");
+
+            tt_itemName.Content = MainWindow.resourcemanager.GetString("trName");
+            tt_quantity.Content = MainWindow.resourcemanager.GetString("trQuantity");
+            tt_section.Content = MainWindow.resourcemanager.GetString("trSection");
+            tt_location.Content = MainWindow.resourcemanager.GetString("trLocation");
+            tt_notes.Content = MainWindow.resourcemanager.GetString("trNote");
+
+            //tt_clear.Content = MainWindow.resourcemanager.GetString("trClear");
+            tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
+            tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
+            tt_print.Content = MainWindow.resourcemanager.GetString("trPrint");
+            tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
+            tt_pieChart.Content = MainWindow.resourcemanager.GetString("trPieChart");
+            tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
+
+            btn_transfer.Content = MainWindow.resourcemanager.GetString("trTransfer");
+
 
         }
-        
+
         private async Task refreshLocations()
         {
             if (cb_section.SelectedIndex != -1)
@@ -188,16 +216,42 @@ namespace POS.View.storage
             e.Handled = e.Key == Key.Space;
         }
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
-        {
-            if (MainWindow.groupObject.HasPermissionAction(transferPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+        {//export to excel
+            if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
-
+                this.Dispatcher.Invoke(() =>
+                {
+                    Thread t1 = new Thread(FN_ExportToExcel);
+                    t1.SetApartmentState(ApartmentState.STA);
+                    t1.Start();
+                });
             }
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
 
-        
+        private void FN_ExportToExcel()
+        {
+            var QueryExcel = itemLocationListQuery.AsEnumerable().Select(x => new
+            {
+                ItemUnit = x.itemName+"-"+x.unitName,
+                SectionLocation = x.section+"-"+x.location,
+                Quantity = x.quantity,
+                StartDate = x.startDate,
+                EndDate = x.endDate ,
+                Notes = x.note
+            });
+            var DTForExcel = QueryExcel.ToDataTable();
+            DTForExcel.Columns[0].Caption = MainWindow.resourcemanager.GetString("trItemUnit");
+            DTForExcel.Columns[1].Caption = MainWindow.resourcemanager.GetString("trSectionLocation");
+            DTForExcel.Columns[2].Caption = MainWindow.resourcemanager.GetString("trQuantity");
+            DTForExcel.Columns[3].Caption = MainWindow.resourcemanager.GetString("trStartDate");
+            DTForExcel.Columns[4].Caption = MainWindow.resourcemanager.GetString("trEndDate");
+            DTForExcel.Columns[5].Caption = MainWindow.resourcemanager.GetString("trNote");
+
+            ExportToExcel.Export(DTForExcel);
+        }
+
 
         private void Tb_search_GotFocus(object sender, RoutedEventArgs e)
         {

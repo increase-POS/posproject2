@@ -789,6 +789,9 @@ namespace POS.View
         {
             string name = sender.GetType().Name;
             validateEmpty(name, sender);
+            var txb = sender as TextBox;
+            if ((sender as TextBox).Name == "tb_taxes"|| (sender as TextBox).Name == "tb_price")
+                SectionData.InputJustNumber(ref txb);
         }
 
         private void Tb_validateEmptyLostFocus(object sender, RoutedEventArgs e)

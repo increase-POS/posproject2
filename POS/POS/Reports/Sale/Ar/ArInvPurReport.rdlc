@@ -739,7 +739,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>:الحسم</Value>
+                    <Value>:الضريبة</Value>
                     <Style>
                       <FontFamily>Montserrat</FontFamily>
                       <FontWeight>Bold</FontWeight>
@@ -753,9 +753,9 @@
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
             <Top>7.23802cm</Top>
-            <Left>6.9048cm</Left>
+            <Left>6.98087cm</Left>
             <Height>0.67938cm</Height>
-            <Width>2.01492cm</Width>
+            <Width>1.93885cm</Width>
             <ZIndex>4</ZIndex>
             <Style>
               <Border>
@@ -774,14 +774,14 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>=Parameters!discountValue.Value</Value>
+                    <Value>=Parameters!tax.Value</Value>
                     <Style>
                       <FontFamily>Montserrat</FontFamily>
                       <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
                   <TextRun>
-                    <Value xml:space="preserve">  </Value>
+                    <Value xml:space="preserve"> </Value>
                     <Style>
                       <FontFamily>Montserrat</FontFamily>
                       <FontWeight>Bold</FontWeight>
@@ -804,7 +804,7 @@
             <Top>7.23802cm</Top>
             <Left>1.78472cm</Left>
             <Height>0.67938cm</Height>
-            <Width>5.12707cm</Width>
+            <Width>5.2023cm</Width>
             <ZIndex>5</ZIndex>
             <Style>
               <Border>
@@ -893,7 +893,7 @@
             <Top>8.29846cm</Top>
             <Left>1.80589cm</Left>
             <Height>0.67938cm</Height>
-            <Width>5.17498cm</Width>
+            <Width>5.18113cm</Width>
             <ZIndex>7</ZIndex>
             <Style>
               <Border>
@@ -1003,7 +1003,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>:الضريبة</Value>
+                    <Value>:الحسم</Value>
                     <Style>
                       <FontFamily>Montserrat</FontFamily>
                       <FontWeight>Bold</FontWeight>
@@ -1017,9 +1017,9 @@
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
             <Top>6.55864cm</Top>
-            <Left>6.92682cm</Left>
+            <Left>6.98087cm</Left>
             <Height>0.67938cm</Height>
-            <Width>2.01492cm</Width>
+            <Width>1.96087cm</Width>
             <ZIndex>11</ZIndex>
             <Style>
               <Border>
@@ -1038,14 +1038,14 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>=Parameters!tax.Value</Value>
+                    <Value>=Parameters!discountValue.Value</Value>
                     <Style>
                       <FontFamily>Montserrat</FontFamily>
                       <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
                   <TextRun>
-                    <Value xml:space="preserve"> </Value>
+                    <Value xml:space="preserve">  </Value>
                     <Style>
                       <FontFamily>Montserrat</FontFamily>
                       <FontWeight>Bold</FontWeight>
@@ -1068,7 +1068,7 @@
             <Top>6.55864cm</Top>
             <Left>1.78874cm</Left>
             <Height>0.67938cm</Height>
-            <Width>5.12707cm</Width>
+            <Width>5.19828cm</Width>
             <ZIndex>12</ZIndex>
             <Style>
               <Border>

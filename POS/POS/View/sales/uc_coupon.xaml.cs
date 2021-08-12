@@ -109,6 +109,10 @@ namespace POS.View
         {
             string name = sender.GetType().Name;
             validateEmpty(name, sender);
+            var txb = sender as TextBox;
+            if ((sender as TextBox).Name == "tb_discountValue")
+                SectionData.InputJustNumber(ref txb);
+
             if (tb_discountValue == null)
             {
                 return;
@@ -872,6 +876,12 @@ namespace POS.View
         {
             string name = sender.GetType().Name;
             validateEmpty(name, sender);
+            var txb = sender as TextBox;
+            if ((sender as TextBox).Name == "tb_MinInvoiceValue" || (sender as TextBox).Name == "tb_MaxInvoiceValue"
+                || (sender as TextBox).Name == "tb_quantity")
+                SectionData.InputJustNumber(ref txb);
+            
+
         }
 
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)

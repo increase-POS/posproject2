@@ -68,6 +68,9 @@ namespace POS.View.windows
         {
             SectionData.validateEmptyTextBox(tb_quantity, p_errorQuantity, tt_errorQuantity, "trEmptyQuantityToolTip");
             bool validQan = await checkAmount();
+            var txb = sender as TextBox;
+            if ((sender as TextBox).Name == "tb_quantity")
+                SectionData.InputJustNumber(ref txb);
 
         }
         private async Task<bool> checkAmount()

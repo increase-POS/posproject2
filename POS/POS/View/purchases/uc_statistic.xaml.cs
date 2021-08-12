@@ -22,6 +22,8 @@ using LiveCharts.Helpers;
 using POS.View.windows;
 using MaterialDesignThemes.Wpf;
 using System.Collections.ObjectModel;
+using System.Resources;
+using System.Reflection;
 
 namespace POS.View.purchases
 {
@@ -66,7 +68,23 @@ namespace POS.View.purchases
         }
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
+        {//load
+
+            #region translate
+            if (MainWindow.lang.Equals("en"))
+            {
+                MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                grid_statistic.FlowDirection = FlowDirection.LeftToRight;
+            }
+            else
+            {
+                MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                grid_statistic.FlowDirection = FlowDirection.RightToLeft;
+            }
+
+            translate();
+            #endregion
+
             Invoices = await statisticModel.GetPurinvwithCount();
             Branches = await branchModel.GetAllWithoutMain("b");
             columnChartList = await statisticModel.GetPurinv();
@@ -79,22 +97,64 @@ namespace POS.View.purchases
             fillDgPos(chk_invoice, chk_return, chk_drafs, cb_branches, chk_allBranches, dp_startDate, dp_endDate, dt_startTime, dt_endTime, txt_search);
         }
 
+        private void translate()
+        {
+            chk_invoice.Content = MainWindow.resourcemanager.GetString("trInvoice");
+            chk_return.Content = MainWindow.resourcemanager.GetString("trReturnInvoice");
+            chk_drafs.Content = MainWindow.resourcemanager.GetString("trDrafts");
+            chk_allBranches.Content = MainWindow.resourcemanager.GetString("trAllBranches");
+
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(txt_search, MainWindow.resourcemanager.GetString("trSearchHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_startDate , MainWindow.resourcemanager.GetString("trStartDateHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_endDate, MainWindow.resourcemanager.GetString("trEndDateHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_branches, MainWindow.resourcemanager.GetString("trBranchesHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(dt_startTime, MainWindow.resourcemanager.GetString("trStartTime"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(dt_endTime, MainWindow.resourcemanager.GetString("trEndTime"));
+
+            dgInvoice.Columns[0].Header = MainWindow.resourcemanager.GetString("trNo.");
+            dgInvoice.Columns[1].Header = MainWindow.resourcemanager.GetString("trType");
+            dgInvoice.Columns[2].Header = MainWindow.resourcemanager.GetString("trDiscountType");
+            dgInvoice.Columns[3].Header = MainWindow.resourcemanager.GetString("trDiscountValue");
+            dgInvoice.Columns[4].Header = MainWindow.resourcemanager.GetString("trTotal");
+            dgInvoice.Columns[5].Header = MainWindow.resourcemanager.GetString("trTax");
+            dgInvoice.Columns[6].Header = MainWindow.resourcemanager.GetString("trTheCount");
+            dgInvoice.Columns[7].Header = MainWindow.resourcemanager.GetString("trBranch");
+            dgInvoice.Columns[8].Header = MainWindow.resourcemanager.GetString("trPos");
+            dgInvoice.Columns[9].Header = MainWindow.resourcemanager.GetString("trVendor");
+            dgInvoice.Columns[10].Header = MainWindow.resourcemanager.GetString("trUser");
+            dgInvoice.Columns[11].Header = MainWindow.resourcemanager.GetString("trItem");
+
+            tt_branch.Content = MainWindow.resourcemanager.GetString("trBranch");
+            tt_pos.Content = MainWindow.resourcemanager.GetString("trPOS");
+            tt_vendors.Content = MainWindow.resourcemanager.GetString("trVendors");
+            tt_users.Content = MainWindow.resourcemanager.GetString("trUsers");
+            tt_items.Content = MainWindow.resourcemanager.GetString("trItems");
+
+            tt_settings.Content = MainWindow.resourcemanager.GetString("trSettings");
+            tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
+            tt_print.Content = MainWindow.resourcemanager.GetString("trPrint");
+            tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
+            tt_pieChart.Content = MainWindow.resourcemanager.GetString("trPieChart");
+            tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
+
+        }
+
         #region Branch
 
         #region Branches Functions
-//        private async void fillDgBranches()
-//        {
-//            var temp = cb_branches.SelectedItem as Branch;
-//            Branches = await statisticModel.GetinvInBranch();
-//            //fillDatesBranches();
-//            var dgData = Invoices.Where(x => ((chk_drafs.IsChecked == true ? (x.invType == "pd" || x.invType == "pbd") : false) || (chk_return.IsChecked == true ? (x.invType == "pb") : false) || (chk_invoice.IsChecked == true ? (x.invType == "p") : false)) && (cb_branches.SelectedItem != null ? m.Contains((int)x.branchId) : true) &&
-//(dp_startDate.SelectedDate != null ? x.invDate >= dp_startDate.SelectedDate : true) && (dp_endDate.SelectedDate != null ? x.invDate <= dp_endDate.SelectedDate : true) &&
-//(dt_startTime.SelectedTime != null ? x.invDate >= dt_startTime.SelectedTime : true) && (dt_endTime.SelectedTime != null ? x.invDate <= dt_endTime.SelectedTime : true)
-//&& (txt_search.Text != null ? (x.invNumber.Contains(txt_search.Text) || x.invType.Contains(txt_search.Text)
-//|| x.discountType.Contains(txt_search.Text) || x.branchName.Contains(txt_search.Text)) : true))
-//;
-//            dgInvoice.ItemsSource = dgData;
-//        }
+        //        private async void fillDgBranches()
+        //        {
+        //            var temp = cb_branches.SelectedItem as Branch;
+        //            Branches = await statisticModel.GetinvInBranch();
+        //            //fillDatesBranches();
+        //            var dgData = Invoices.Where(x => ((chk_drafs.IsChecked == true ? (x.invType == "pd" || x.invType == "pbd") : false) || (chk_return.IsChecked == true ? (x.invType == "pb") : false) || (chk_invoice.IsChecked == true ? (x.invType == "p") : false)) && (cb_branches.SelectedItem != null ? m.Contains((int)x.branchId) : true) &&
+        //(dp_startDate.SelectedDate != null ? x.invDate >= dp_startDate.SelectedDate : true) && (dp_endDate.SelectedDate != null ? x.invDate <= dp_endDate.SelectedDate : true) &&
+        //(dt_startTime.SelectedTime != null ? x.invDate >= dt_startTime.SelectedTime : true) && (dt_endTime.SelectedTime != null ? x.invDate <= dt_endTime.SelectedTime : true)
+        //&& (txt_search.Text != null ? (x.invNumber.Contains(txt_search.Text) || x.invType.Contains(txt_search.Text)
+        //|| x.discountType.Contains(txt_search.Text) || x.branchName.Contains(txt_search.Text)) : true))
+        //;
+        //            dgInvoice.ItemsSource = dgData;
+        //        }
         private async void fillDgPos(CheckBox chkInvoice,CheckBox chkReturn,CheckBox chkDraft,ComboBox comboBox,CheckBox all,DatePicker startDate,DatePicker endDate,TimePicker startTime, TimePicker endTime,TextBox search)
         {
             fillDatesBranches(startDate,endDate,startTime,endTime);
@@ -246,7 +306,8 @@ namespace POS.View.purchases
             List<int> cD = new List<int>();
             List<string> titles = new List<string>()
             {
-                "مشتريات","مرتجع","هامش"
+                //"مشتريات","مرتجع","هامش"
+                MainWindow.resourcemanager.GetString("trPurchases") , MainWindow.resourcemanager.GetString("trReturned"),MainWindow.resourcemanager.GetString("trDraft")
             };
             for (int i = 0; i < result.Count(); i++)
             {

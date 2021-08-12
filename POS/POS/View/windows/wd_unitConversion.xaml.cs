@@ -128,6 +128,9 @@ namespace POS.View.windows
         {
             string name = sender.GetType().Name;
             validateEmpty(name, sender);
+            var txb = sender as TextBox;
+            if ((sender as TextBox).Name == "tb_fromQuantity")
+                SectionData.InputJustNumber(ref txb);
             checkLocationQuantity();
              setToquantityMessage();
         }

@@ -750,7 +750,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>Discount:</Value>
+                    <Value>Tax:</Value>
                     <Style>
                       <FontFamily>Montserrat</FontFamily>
                       <FontWeight>Bold</FontWeight>
@@ -785,14 +785,14 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>=Parameters!discountValue.Value</Value>
+                    <Value>=Parameters!tax.Value</Value>
                     <Style>
                       <FontFamily>Montserrat</FontFamily>
                       <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
                   <TextRun>
-                    <Value xml:space="preserve">  </Value>
+                    <Value xml:space="preserve"> </Value>
                     <Style>
                       <FontFamily>Montserrat</FontFamily>
                       <FontWeight>Bold</FontWeight>
@@ -848,7 +848,7 @@
             <Top>8.07051cm</Top>
             <Left>11.99436cm</Left>
             <Height>0.67938cm</Height>
-            <Width>1.96087cm</Width>
+            <Width>2.01492cm</Width>
             <ZIndex>6</ZIndex>
             <Style>
               <Border>
@@ -898,9 +898,9 @@
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
             <Top>8.07051cm</Top>
-            <Left>13.95523cm</Left>
+            <Left>14.00314cm</Left>
             <Height>0.67938cm</Height>
-            <Width>5.17498cm</Width>
+            <Width>5.13322cm</Width>
             <ZIndex>7</ZIndex>
             <Style>
               <Border>
@@ -1028,7 +1028,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>Tax:</Value>
+                    <Value>Discount:</Value>
                     <Style>
                       <FontFamily>Montserrat</FontFamily>
                       <FontWeight>Bold</FontWeight>
@@ -1063,14 +1063,14 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>=Parameters!tax.Value</Value>
+                    <Value>=Parameters!discountValue.Value</Value>
                     <Style>
                       <FontFamily>Montserrat</FontFamily>
                       <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
                   <TextRun>
-                    <Value xml:space="preserve"> </Value>
+                    <Value xml:space="preserve">  </Value>
                     <Style>
                       <FontFamily>Montserrat</FontFamily>
                       <FontWeight>Bold</FontWeight>

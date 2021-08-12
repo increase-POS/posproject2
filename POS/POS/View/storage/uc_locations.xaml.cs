@@ -176,11 +176,8 @@ namespace POS.View
         }
         bool validate(Location location = null)
         {
-            //chk empty x
             SectionData.validateEmptyTextBox(tb_x, p_errorX, tt_errorX, "trEmptyError");
-            //chk empty x
             SectionData.validateEmptyTextBox(tb_y, p_errorY, tt_errorY, "trEmptyError");
-            //chk empty x
             SectionData.validateEmptyTextBox(tb_z, p_errorZ, tt_errorZ, "trEmptyError");
 
             if ((!tb_x.Text.Equals("")) && (!tb_y.Text.Equals("")) && (!tb_z.Text.Equals("")))

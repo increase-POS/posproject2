@@ -540,7 +540,11 @@ namespace POS.View.accounts
         {
             string name = sender.GetType().Name;
             validateEmpty(name, sender);
+            var txb = sender as TextBox;
+            if ((sender as TextBox).Name == "tb_cash")
+                SectionData.InputJustNumber(ref txb);
             Cb_user_SelectionChanged(null , null);
+
         }
 
         private void Tb_validateEmptyLostFocusCash(object sender, RoutedEventArgs e)

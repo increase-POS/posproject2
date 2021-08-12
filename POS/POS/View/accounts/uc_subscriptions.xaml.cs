@@ -89,7 +89,6 @@ namespace POS.View.accounts
 
         private void validationTextbox_TextChanged(object sender, TextChangedEventArgs e)
         {
-
         }
 
         private void Btn_add_Click(object sender, RoutedEventArgs e)

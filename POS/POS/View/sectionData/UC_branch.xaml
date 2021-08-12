@@ -352,10 +352,10 @@
                                        Background="#f8f8f8"     TabIndex="0"
                                        BorderBrush="AliceBlue"  MaxLength="10" 
                                        Foreground="#4E4E4E"     TextBlock.FontSize="12" 
-                                     
                                        materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                        KeyboardNavigation.IsTabStop="False"
-                                       Height="40"  Margin="10,5,10,5"  LostFocus="tb_code_LostFocus" TextChanged="tb_code_TextChanged" PreviewKeyDown="Tb_code_PreviewKeyDown" PreviewTextInput="Tb_code_PreviewTextInput" >
+                                       Height="40"  Margin="10,5,10,5"  LostFocus="tb_code_LostFocus" TextChanged="tb_code_TextChanged"
+                                 PreviewKeyDown="Tb_code_PreviewKeyDown" PreviewTextInput="Tb_code_PreviewTextInput" >
                             <TextBox.ToolTip>
                                 <ToolTip x:Name="tt_code" Content="Code"
                                               Placement="left" 

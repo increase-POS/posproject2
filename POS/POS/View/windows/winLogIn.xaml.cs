@@ -57,23 +57,10 @@ namespace POS.View.windows
 
             bdrLogIn.RenderTransform = Animations.borderAnimation(-100, bdrLogIn, true);
 
-            //get user default language
-            //var person = (from p in db.People
-            //              join e in db.EmailAddresses
-            //              on p.BusinessEntityID equals e.BusinessEntityID
-            //              where p.FirstName == "KEN"
-            //              select new
-            //              {
-            //                  ID = p.BusinessEntityID,
-            //                  FirstName = p.FirstName,
-            //                  MiddleName = p.MiddleName,
-            //                  LastName = p.LastName,
-            //                  EmailID = e.EmailAddress1
-            //              }).ToList();
             if (Properties.Settings.Default.userName != string.Empty)
             {
                 txtUserName.Text = Properties.Settings.Default.userName;
-                txtPassword.Password = Properties.Settings.Default.password;
+                //txtPassword.Password = Properties.Settings.Default.password;
                 lang = Properties.Settings.Default.Lang;
                 cbxRemmemberMe.IsChecked = true;
                
@@ -185,12 +172,18 @@ namespace POS.View.windows
         }
         private async void btnLogIn_Click(object sender, RoutedEventArgs e)
         {//login
-        
-            
+            #region get default pos
+            string posId = await getCurrentPos();
+            #endregion
+            //if (posId.Equals(""))
+            //{
+
+            //}
+            //else
+            //{
+            #region login
             if (logInProcessing)
             {
-
-
                 logInProcessing = false;
                 awaitSaveBtn(true);
                 clearValidate(txtUserName, p_errorUserName);
@@ -236,13 +229,13 @@ namespace POS.View.windows
                         if (cbxRemmemberMe.IsChecked.Value)
                         {
                             Properties.Settings.Default.userName = txtUserName.Text;
-                            Properties.Settings.Default.password = txtPassword.Password;
+                            //Properties.Settings.Default.password = txtPassword.Password;
                             Properties.Settings.Default.Lang = lang;
                         }
                         else
                         {
                             Properties.Settings.Default.userName = "";
-                            Properties.Settings.Default.password = "";
+                            //Properties.Settings.Default.password = "";
                             Properties.Settings.Default.Lang = "";
                         }
                         Properties.Settings.Default.Save();
@@ -260,7 +253,26 @@ namespace POS.View.windows
                 awaitSaveBtn(false);
                 logInProcessing = true;
             }
-            
+            #endregion
+            //}
+
+        }
+        static SettingCls setModel = new SettingCls();
+        static SetValues valueModel = new SetValues();
+        static SettingCls set = new SettingCls();
+        static SetValues pos = new SetValues();
+        int posId = 0;
+        private async Task<string> getCurrentPos()
+        {
+            List<SettingCls> settingsCls = await setModel.GetAll();
+            List<SetValues> settingsValues = await valueModel.GetAll();
+            set = settingsCls.Where(s => s.name == "pos").FirstOrDefault<SettingCls>();
+            posId = set.settingId;
+            pos = settingsValues.Where(i => i.settingId == posId).FirstOrDefault();
+            if (pos != null)
+                return pos.value;
+            else
+                return "";
         }
 
         private  void HandleKeyPress(object sender, KeyEventArgs e)

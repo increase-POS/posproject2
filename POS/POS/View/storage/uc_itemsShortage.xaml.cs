@@ -105,7 +105,36 @@ namespace POS.View.storage
       
         private void translate()
         {
+            txt_itemsShortageHeader.Text = MainWindow.resourcemanager.GetString("trItemShortage");
 
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_itemUnit, MainWindow.resourcemanager.GetString("trItemUnitHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_amount, MainWindow.resourcemanager.GetString("trAmountHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_user, MainWindow.resourcemanager.GetString("trUserHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_reasonOfShortage, MainWindow.resourcemanager.GetString("trReasonOfShortageHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_notes, MainWindow.resourcemanager.GetString("trNoteHint"));
+
+            dg_itemShortage.Columns[0].Header = MainWindow.resourcemanager.GetString("trInventoryNum");
+            dg_itemShortage.Columns[1].Header = MainWindow.resourcemanager.GetString("trDate");
+            dg_itemShortage.Columns[2].Header = MainWindow.resourcemanager.GetString("trSectionLocation");
+            dg_itemShortage.Columns[3].Header = MainWindow.resourcemanager.GetString("trItemUnit");
+            dg_itemShortage.Columns[4].Header = MainWindow.resourcemanager.GetString("trAmount");
+
+            tt_itemUnit.Content = MainWindow.resourcemanager.GetString("trItemUnit");
+            tt_amount.Content = MainWindow.resourcemanager.GetString("trAmount");
+            tt_user.Content = MainWindow.resourcemanager.GetString("trUser");
+            tt_reasonOfShortage.Content = MainWindow.resourcemanager.GetString("trReasonOfShortage");
+            tt_notes.Content = MainWindow.resourcemanager.GetString("trNote");
+
+            tt_clear.Content = MainWindow.resourcemanager.GetString("trClear");
+            tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
+            tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
+            tt_print.Content = MainWindow.resourcemanager.GetString("trPrint");
+            tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
+            tt_pieChart.Content = MainWindow.resourcemanager.GetString("trPieChart");
+            tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
+
+            btn_shortage.Content = MainWindow.resourcemanager.GetString("trShortage");
 
         }
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
@@ -118,6 +147,7 @@ namespace POS.View.storage
         {//export to excel
             if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
+
                 this.Dispatcher.Invoke(() =>
                 {
                     Thread t1 = new Thread(FN_ExportToExcel);
@@ -351,8 +381,11 @@ namespace POS.View.storage
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
           
         }
-        private void Btn_refresh_Click(object sender, RoutedEventArgs e)
-        {
+        private async void Btn_refresh_Click(object sender, RoutedEventArgs e)
+        {//refresh
+            await refreshShortageDetails();
+            await fillUsers();
+            Tb_search_TextChanged(null, null);
 
         }
         private async Task refreshShortageDetails()
@@ -414,7 +447,6 @@ namespace POS.View.storage
         {
             if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
-
             }
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -511,6 +543,11 @@ namespace POS.View.storage
             }
         }
 
-      
+        private void Tb_amount_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var txb = sender as TextBox;
+            if ((sender as TextBox).Name == "tb_amount")
+                SectionData.InputJustNumber(ref txb);
+        }
     }
 }

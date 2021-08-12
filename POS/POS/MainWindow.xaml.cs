@@ -414,13 +414,29 @@ namespace POS
                 T.Visibility = Visibility.Hidden;
             else T.Visibility = Visibility.Visible;
         }
-        private  void BTN_logOut_Click(object sender, RoutedEventArgs e)
+        private async void BTN_logOut_Click(object sender, RoutedEventArgs e)
         {
-            close();
+            await close();
             Application.Current.Shutdown();
             System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
         }
-        async void close()
+        User userModel = new User();
+        UsersLogs userLogsModel = new UsersLogs();
+
+        async Task<bool> updateLogninRecord()
+        {
+            //update lognin record
+            UsersLogs userLog = new UsersLogs();
+            userLog = await userLogsModel.GetByID(userLogInID.Value);
+             await userLogsModel.Save(userLog);
+            //update user record
+            userLogin.isOnline = 0;
+            await userModel.saveUser(userLogin);
+
+
+            return true;
+        }
+        async Task<bool> close()
         {
             //log out
             //update lognin record
@@ -428,10 +444,12 @@ namespace POS
             timer.Stop();
             idletimer.Stop();
             threadtimer.Stop();
+            return true;
+
         }
-        private  void BTN_Close_Click(object sender, RoutedEventArgs e)
+        private async void BTN_Close_Click(object sender, RoutedEventArgs e)
         {
-            close();
+             await close();
             Application.Current.Shutdown();
         }
         //protected override void OnClosed(EventArgs e)
@@ -612,24 +630,7 @@ namespace POS
 
         }
 
-        User userModel = new User();
-        UsersLogs userLogsModel = new UsersLogs();
-
-        async Task<bool> updateLogninRecord()
-        {
-            //update lognin record
-            UsersLogs userLog = new UsersLogs();
-            userLog = await userLogsModel.GetByID(userLogInID.Value);
-
-            await userLogsModel.Save(userLog);
-
-            //update user record
-            userLogin.isOnline = 0;
-            await userModel.saveUser(userLogin);
-
-
-            return true;
-        }
+        
        
         private void BTN_SectionData_Click(object sender, RoutedEventArgs e)
         {

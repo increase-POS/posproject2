@@ -530,7 +530,6 @@
                                                           BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Discount Value..."    
                                                           Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                                           BorderBrush="AliceBlue" 
-                                  
                                                           materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                                           Height="40"   Margin="5,5,10,5" 
                                                       PreviewKeyDown="Tb_PreventSpaces" 

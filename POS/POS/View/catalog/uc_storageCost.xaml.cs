@@ -187,6 +187,9 @@ namespace POS.View.catalog
         {
             string name = sender.GetType().Name;
             validateEmpty(name, sender);
+            var txb = sender as TextBox;
+            if ((sender as TextBox).Name == "tb_cost")
+                SectionData.InputJustNumber(ref txb);
         }
 
         private void Tb_validateEmptyLostFocus(object sender, RoutedEventArgs e)

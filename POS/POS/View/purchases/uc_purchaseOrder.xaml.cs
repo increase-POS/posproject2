@@ -79,6 +79,7 @@ namespace POS.View.purchases
         }
         string createPermission = "purchaseOrder_create";
         string reportsPermission = "purchaseOrder_reports";
+        string sendEmailPermission = "purchaseOrder_sendEmail";
 
         ObservableCollection<BillDetails> billDetails = new ObservableCollection<BillDetails>();
 
@@ -1298,18 +1299,14 @@ namespace POS.View.purchases
 
         private async void Btn_emailMessage_Click(object sender, RoutedEventArgs e)
         {
-
+            if (MainWindow.groupObject.HasPermissionAction(sendEmailPermission, MainWindow.groupObjects, "one") )
+            {
             SysEmails email = new SysEmails();
-
             EmailClass mailtosend = new EmailClass();
-
             email = await email.GetByBranchIdandSide((int)MainWindow.branchID, "mg");
-
             Agent toAgent = new Agent();
-
             toAgent = vendors.Where(x => x.agentId == invoice.agentId).FirstOrDefault();
             //  int? itemcount = invoiceItems.Count();
-
             if (email.emailId == 0)
                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoEmailForThisDept"), animation: ToasterAnimation.FadeIn);
             else
@@ -1350,6 +1347,10 @@ namespace POS.View.purchases
                     }
                 }
             }
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+
         }
     }
 }
