@@ -4256,6 +4256,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Receipt Voucher.
+        /// </summary>
+        internal static string trReceiptVoucher {
+            get {
+                return ResourceManager.GetString("trReceiptVoucher", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Receipts.
         /// </summary>
         internal static string trReceived {

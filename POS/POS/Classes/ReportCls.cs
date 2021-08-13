@@ -163,12 +163,17 @@ namespace POS.Classes
 
         public List<ReportParameter> fillPayReport(CashTransfer cashtrans)
         {
-            checkLang();
+          bool isArabic=  checkLang();
+            string title;
+          if ( cashtrans.transType=="p")
+          title = MainWindow.resourcemanagerreport.GetString("trPayVocher");
+          else
+                title = MainWindow.resourcemanagerreport.GetString("trReceiptVoucher");
 
-            string title = MainWindow.resourcemanagerreport.GetString("trPayVocher");
+
             string company_name = MainWindow.companyName;
             string comapny_address = MainWindow.Address;
-            string company_phone = MainWindow.Address;
+            string company_phone = MainWindow.Phone;
             string company_fax = MainWindow.Fax;
             string company_email = MainWindow.Email;
             string company_logo_img = GetLogoImagePath();
@@ -203,15 +208,32 @@ namespace POS.Classes
             }
             if (cashtrans.processType == "cheque")
             {
-                type = "Cheque";
-                trans_num_txt = "Cheque Num:";
 
+                type = MainWindow.resourcemanagerreport.GetString("trCheque");
+                if (isArabic)
+                {
+                    trans_num_txt = "رقم الشيك:";
+                }
+                else
+                {
+                    trans_num_txt = "Cheque Num:";
+                }
+               
+                //    MainWindow.resourcemanagerreport.GetString("trCheque");
             }
             else if (cashtrans.processType == "card")
             {
                 type = cashtrans.cardName;
 
-                trans_num_txt = "Transfer Num:";
+                if (isArabic)
+                {
+                    trans_num_txt = "رقم العملية:";
+                }
+                else
+                {
+                    trans_num_txt = "Transfer Num:";
+                }
+              
 
                 // card name and number
             }
@@ -223,15 +245,26 @@ namespace POS.Classes
             }
             else if (cashtrans.processType == "doc")
             {
-                type = "Document";
-                trans_num_txt = "Document Num:";
+                if (isArabic)
+                {
+                    type = "مستند";
+                    trans_num_txt = "رقم المستند:";
+                }
+                else
+                {
+                    type = "Document";
+                    trans_num_txt = "Document Num:";
+                }
+
+
+               
 
             }
 
             //  rep.DataSources.Add(new ReportDataSource("DataSetBank", banksQuery));
 
-            List<ReportParameter> paramarr = null;
-            paramarr.Add(new ReportParameter("lang", MainWindow.lang));
+            List<ReportParameter> paramarr = new List<ReportParameter>();
+            paramarr.Add(new ReportParameter("lang", MainWindow.Reportlang));
             paramarr.Add(new ReportParameter("title", title));
             paramarr.Add(new ReportParameter("company_name", company_name));
             paramarr.Add(new ReportParameter("comapny_address", comapny_address));

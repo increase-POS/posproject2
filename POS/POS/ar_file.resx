@@ -1990,4 +1990,7 @@
   <data name="trVendors" xml:space="preserve">
     <value>الموردون</value>
   </data>
+  <data name="trReceiptVoucher" xml:space="preserve">
+    <value>سند قبض</value>
+  </data>
 </root>

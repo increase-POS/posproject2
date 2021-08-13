@@ -19,6 +19,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.IO;
+using Microsoft.Reporting.WinForms;
+using Microsoft.Win32;
 
 namespace POS.View.accounts
 {
@@ -45,6 +48,10 @@ namespace POS.View.accounts
         IEnumerable<CashTransfer> cashes;
 
         public List<Invoice> invoicesLst = new List<Invoice>();
+        //print
+        ReportCls reportclass = new ReportCls();
+        LocalReport rep = new LocalReport();
+        SaveFileDialog saveFileDialog = new SaveFileDialog();
 
         string searchText = "";
         string  createPermission = "received_create";
@@ -1045,7 +1052,39 @@ namespace POS.View.accounts
             if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
 
+                if (cashtrans.cashTransId > 0)
+                {
+                    string addpath;
+                    bool isArabic = ReportCls.checkLang();
+                    if (isArabic)
+                    {
+                        addpath = @"\Reports\Account\Ar\ArReciveReport.rdlc";
+                    }
+                    else
+                    {
+                        addpath = @"\Reports\Account\En\ReciveReport.rdlc";
+                    }
 
+                    string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+                //    int cashId = Int32.Parse(s);
+                    //MessageBox.Show(s);
+                    rep.ReportPath = reppath;
+                    rep.DataSources.Clear();
+                    rep.EnableExternalImages = true;
+                    rep.SetParameters(reportclass.fillPayReport(cashtrans));
+
+                    rep.Refresh();
+
+                    saveFileDialog.Filter = "PDF|*.pdf;";
+
+                    if (saveFileDialog.ShowDialog() == true)
+                    {
+                        string filepath = saveFileDialog.FileName;
+                        try { LocalReportExtensions.ExportToPDF(rep, filepath); }
+                        catch { }
+
+                    }
+                }
             }
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);

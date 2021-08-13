@@ -2011,4 +2011,7 @@ Please add Email in setting</value>
   <data name="trVendors" xml:space="preserve">
     <value>Vendors</value>
   </data>
+  <data name="trReceiptVoucher" xml:space="preserve">
+    <value>Receipt Voucher</value>
+  </data>
 </root>

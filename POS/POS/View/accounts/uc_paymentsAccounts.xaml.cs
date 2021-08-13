@@ -1062,8 +1062,17 @@ namespace POS.View.accounts
             {
                 if (cashtrans.cashTransId > 0 )
             {
-
-            string addpath = @"\Reports\Account\En\PayReport.rdlc";
+                    string addpath;
+                    bool isArabic = ReportCls.checkLang();
+                    if (isArabic)
+                    {
+                        addpath = @"\Reports\Account\Ar\ArPayReport.rdlc";
+                    }
+                    else
+                    {
+                       addpath = @"\Reports\Account\En\PayReport.rdlc";
+                    }
+                       
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
                 int cashId = Int32.Parse(s);
                 //MessageBox.Show(s);
@@ -1097,8 +1106,19 @@ namespace POS.View.accounts
                     if (cashtrans.cashTransId > 0)
             {
 
-                string addpath = @"\Reports\PayReport.rdlc";
-                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+                    string addpath;
+                    bool isArabic = ReportCls.checkLang();
+                    if (isArabic)
+                    {
+                        addpath = @"\Reports\Account\Ar\ArPayReport.rdlc";
+                    }
+                    else
+                    {
+                        addpath = @"\Reports\Account\En\PayReport.rdlc";
+                    }
+
+                    string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
                 int cashId = Int32.Parse(s);
                 //MessageBox.Show(s);
                 rep.ReportPath = reppath;
@@ -1126,7 +1146,8 @@ namespace POS.View.accounts
                 Bonds bond = new Bonds();
             bond.number = "xxx";
             bond.amount = 1000;
-            bond.deserveDate = dp_docDate.SelectedDate.Value;
+     
+          //  bond.deserveDate = dp_docDate.SelectedDate.Value;
             bond.type = "p";
             bond.isRecieved = 0;
             bond.createUserId = MainWindow.userID.Value;
