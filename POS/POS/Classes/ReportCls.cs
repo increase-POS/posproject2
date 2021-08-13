@@ -433,9 +433,9 @@ namespace POS.Classes
             paramarr.Add(new ReportParameter("barcodeimage", "file:\\" + BarcodeToImage(invNum, "invnum")));
             paramarr.Add(new ReportParameter("Currency", MainWindow.Currency));
             paramarr.Add(new ReportParameter("logoImage", "file:\\" + GetLogoImagePath()));
-            if (invoice.invType == "pd" || invoice.invType == "sd"
-              || invoice.invType == "sbd" || invoice.invType == "pbd"
-              || invoice.invType == "ord" || invoice.invType == "imd" || invoice.invType == "exd")
+            if (invoice.invType == "pd" || invoice.invType == "sd" || invoice.invType == "qd"
+                    || invoice.invType == "sbd" || invoice.invType == "pbd" || invoice.invType == "pod"
+                    || invoice.invType == "ord" || invoice.invType == "imd" || invoice.invType == "exd")
             {
 
                 paramarr.Add(new ReportParameter("watermark", "1"));
@@ -536,9 +536,9 @@ namespace POS.Classes
             paramarr.Add(new ReportParameter("storeName", invoice.branchName == null ? "-" : invoice.branchName));
 
             paramarr.Add(new ReportParameter("logoImage", "file:\\" + GetLogoImagePath()));
-            if (invoice.invType == "pd" || invoice.invType == "sd"
-              || invoice.invType == "sbd" || invoice.invType == "pbd"
-              || invoice.invType == "ord" || invoice.invType == "imd" || invoice.invType == "exd")
+            if (invoice.invType == "pd" || invoice.invType == "sd" || invoice.invType == "qd"
+                        || invoice.invType == "sbd" || invoice.invType == "pbd" || invoice.invType == "pod"
+                        || invoice.invType == "ord" || invoice.invType == "imd" || invoice.invType == "exd")
             {
 
                 paramarr.Add(new ReportParameter("watermark", "1"));

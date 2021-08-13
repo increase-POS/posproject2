@@ -1562,7 +1562,7 @@ namespace POS.View
         //print
         private async void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {
-            if (invoice.invType == "pd" || invoice.invType == "sd"
+            if (invoice.invType == "pd" || invoice.invType == "sd" || invoice.invType == "qd"
                   || invoice.invType == "sbd" || invoice.invType == "pbd"
                   || invoice.invType == "ord" || invoice.invType == "imd" || invoice.invType == "exd")
             {
@@ -1579,9 +1579,28 @@ namespace POS.View
                 bool isArabic = ReportCls.checkLang();
                 if (isArabic)
                 {
-                    addpath = @"\Reports\Purchase\Ar\ArInvPurReport.rdlc";
+                    if (invoice.invType == "or"|| invoice.invType == "po")
+                    {
+                        addpath = @"\Reports\Purchase\Ar\ArInvPurOrderReport.rdlc";
+                    }
+                    else
+                    {
+                        addpath = @"\Reports\Purchase\Ar\ArInvPurReport.rdlc";
+                    }
+
                 }
-                else addpath = @"\Reports\Purchase\En\InvPurReport.rdlc";
+                else
+                {
+                    if (invoice.invType == "or" || invoice.invType == "po")
+                    {
+                        addpath = @"\Reports\Purchase\En\InvPurOrderReport.rdlc";
+                    }
+                    else
+                    {
+                    addpath = @"\Reports\Purchase\En\InvPurReport.rdlc";
+                    }
+                }
+                
 
                 //
 
@@ -1620,9 +1639,9 @@ namespace POS.View
         private async void btn_printInvoice_Click(object sender, RoutedEventArgs e)
         {
 
-            if (invoice.invType == "pd" || invoice.invType == "sd"
-                  || invoice.invType == "sbd" || invoice.invType == "pbd"
-                  || invoice.invType == "ord" || invoice.invType == "imd" || invoice.invType == "exd")
+            if (invoice.invType == "pd" || invoice.invType == "sd" || invoice.invType == "qd"
+                              || invoice.invType == "sbd" || invoice.invType == "pbd"
+                              || invoice.invType == "ord" || invoice.invType == "imd" || invoice.invType == "exd")
             {
                 MessageBox.Show("can not print Draft Invoice");
             }
@@ -1636,9 +1655,28 @@ namespace POS.View
                 bool isArabic = ReportCls.checkLang();
                 if (isArabic)
                 {
-                    addpath = @"\Reports\Purchase\Ar\ArInvPurReport.rdlc";
+                    if (invoice.invType == "or" || invoice.invType == "po")
+                    {
+                        addpath = @"\Reports\Purchase\Ar\ArInvPurOrderReport.rdlc";
+                    }
+                    else
+                    {
+                        addpath = @"\Reports\Purchase\Ar\ArInvPurReport.rdlc";
+                    }
+
                 }
-                else addpath = @"\Reports\Purchase\En\InvPurReport.rdlc";
+                else
+                {
+                    if (invoice.invType == "or" || invoice.invType == "po")
+                    {
+                        addpath = @"\Reports\Purchase\En\InvPurOrderReport.rdlc";
+                    }
+                    else
+                    {
+                        addpath = @"\Reports\Purchase\En\InvPurReport.rdlc";
+                    }
+                }
+
 
                 //
 
@@ -1697,9 +1735,28 @@ namespace POS.View
                 bool isArabic = ReportCls.checkLang();
                 if (isArabic)
                 {
-                    addpath = @"\Reports\Purchase\Ar\ArInvPurReport.rdlc";
+                    if (invoice.invType == "or" || invoice.invType == "po")
+                    {
+                        addpath = @"\Reports\Purchase\Ar\ArInvPurOrderReport.rdlc";
+                    }
+                    else
+                    {
+                        addpath = @"\Reports\Purchase\Ar\ArInvPurReport.rdlc";
+                    }
+
                 }
-                else addpath = @"\Reports\Purchase\En\InvPurReport.rdlc";
+                else
+                {
+                    if (invoice.invType == "or" || invoice.invType == "po")
+                    {
+                        addpath = @"\Reports\Purchase\En\InvPurOrderReport.rdlc";
+                    }
+                    else
+                    {
+                        addpath = @"\Reports\Purchase\En\InvPurReport.rdlc";
+                    }
+                }
+
 
                 //
                 pdfpath = @"\Thumb\report\temp.pdf";
