@@ -1361,14 +1361,14 @@ namespace POS.View.sales
             wd_items w = new wd_items();
             w.CardType = "sales";
             w.ShowDialog();
-            if (w.isActive)
-            {
+                if (w.isActive)
+                {
                     for (int i = 0; i < w.selectedItems.Count; i++)
                     {
                         MainWindow.mainWindow.StartAwait();
                         int itemId = w.selectedItems[i];
                         await ChangeItemIdEvent(itemId);
-                    MainWindow.mainWindow.EndAwait();
+                        MainWindow.mainWindow.EndAwait();
                     }
                 }
 

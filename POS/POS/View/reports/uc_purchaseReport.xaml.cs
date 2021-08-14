@@ -1743,51 +1743,49 @@ fillColumnChart(cb_Items, selectedItemId);
             {
                 if (selectedTab == 0)
                 {
-                    addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurSts.rdlc";
+                    addpath = @"\Reports\StatisticReport\Ar\ArPurSts.rdlc";
                 }
                 else if (selectedTab == 1)
                 {
-                    addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurPosSts.rdlc";
+                    addpath = @"\Reports\StatisticReport\Ar\ArPurPosSts.rdlc";
                 }
                 else if (selectedTab == 2)
                 {
-                    addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurVendorSts.rdlc";
+                    addpath = @"\Reports\StatisticReport\Ar\ArPurVendorSts.rdlc";
                 }
                 else if (selectedTab == 3)
                 {
-                    addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurUserSts.rdlc";
+                    addpath = @"\Reports\StatisticReport\Ar\ArPurUserSts.rdlc";
                 }
                 else
                 {
-                    addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurItemSts.rdlc";
+                    addpath = @"\Reports\StatisticReport\Ar\ArPurItemSts.rdlc";
                 }
             }
             else
             {
                 //english
                 if (selectedTab == 0)
-                { addpath = @"\Reports\StatisticReport\Purchase\En\EnPurSts.rdlc"; }
+                { addpath = @"\Reports\StatisticReport\En\EnPurSts.rdlc"; }
                 else if (selectedTab == 1)
                 {
-                    addpath = @"\Reports\StatisticReport\Purchase\En\EnPurPosSts.rdlc";
+                    addpath = @"\Reports\StatisticReport\En\EnPurPosSts.rdlc";
                 }
                 else if (selectedTab == 2)
                 {
-                    addpath = @"\Reports\StatisticReport\Purchase\En\EnPurVendorSts.rdlc";
+                    addpath = @"\Reports\StatisticReport\En\EnPurVendorSts.rdlc";
                 }
                 else if (selectedTab == 3)
                 {
-                    addpath = @"\Reports\StatisticReport\Purchase\En\EnPurUserSts.rdlc";
+                    addpath = @"\Reports\StatisticReport\En\EnPurUserSts.rdlc";
                 }
                 else
                 {
-                    addpath = @"\Reports\StatisticReport\Purchase\En\EnPurItemSts.rdlc";
+                    addpath = @"\Reports\StatisticReport\En\EnPurItemSts.rdlc";
                 }
 
             }
-
-
-            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
             ReportCls.checkLang();
             //  getpuritemcount

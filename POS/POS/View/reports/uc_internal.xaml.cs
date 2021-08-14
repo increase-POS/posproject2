@@ -91,8 +91,18 @@ namespace POS.View.reports
             comboExternalInvType = statisticModel.GetExternalInvoiceTypeCombos(itemsTransfer);
             comboExternalInvoiceInvoice = statisticModel.GetExternalInvoiceCombos(itemsTransfer);
 
+            showSelectedTabColumn();
+            fillComboInternalItemsItems();
+            fillComboBranches(cb_internalItemsFromBranches);
+            fillComboBranches(cb_internalItemsToBranches);
+            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+            fillInternalColumnChart();
         }
 
+        private void Btn_item_Click(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
 
         public uc_internal()
         {
@@ -100,19 +110,33 @@ namespace POS.View.reports
         }
 
 
-
+        public void paintInternalChilds()
+        {
+           
+        }
+        private void isEnabledButtonsInternal()
+        {
+            btn_item.IsEnabled = true;
+            btn_operator.IsEnabled = true;
+        }
         public void paint()
         {
             bdrMain.RenderTransform = Animations.borderAnimation(50, bdrMain, true);
-            grid_internal.Visibility = Visibility.Hidden;
-            bdr_internal.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-            path_internal.Fill = Brushes.White;
+
+            grid_internalItems.Visibility = Visibility.Hidden;
+            grid_internalOperater.Visibility = Visibility.Hidden;
+
+            bdr_item.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+            bdr_operator.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+
+            path_item.Fill = Brushes.White;
+            path_operator.Fill = Brushes.White;
         }
 
 
         private void isEnabledButtons()
         {
-            btn_internal.IsEnabled = true;
+          
         }
         private int selectedStockTab = 0;
         IEnumerable<itemCombo> comboItems;
@@ -255,85 +279,8 @@ namespace POS.View.reports
         private void showSelectedTabColumn()
         {
             hideAllColumn();
-            if (selectedFatherTab == 0)
-            {
-                if (selectedStockTab == 0)
-                {
-                    hideAllColumn();
-                    col_branch.Visibility = Visibility.Visible;
-                    col_item.Visibility = Visibility.Visible;
-                    col_unit.Visibility = Visibility.Visible;
-                    col_quantity.Visibility = Visibility.Visible;
-                    col_locationSection.Visibility = Visibility.Visible;
-                    col_startDate.Visibility = Visibility.Visible;
-                    col_endDate.Visibility = Visibility.Visible;
-                    col_Min.Visibility = Visibility.Visible;
-                    col_Max.Visibility = Visibility.Visible;
-                    col_stockCost.Visibility = Visibility.Visible;
-                }
-                else if (selectedStockTab == 1)
-                {
-                    hideAllColumn();
-                    col_branch.Visibility = Visibility.Visible;
-                    col_section.Visibility = Visibility.Visible;
-                    col_location.Visibility = Visibility.Visible;
-                    col_quantity.Visibility = Visibility.Visible;
-                    col_itemUnits.Visibility = Visibility.Visible;
-                    col_startDate.Visibility = Visibility.Visible;
-                    col_endDate.Visibility = Visibility.Visible;
-                    col_Min.Visibility = Visibility.Visible;
-                    col_Max.Visibility = Visibility.Visible;
-                    col_stockCost.Visibility = Visibility.Visible;
-                }
-                else if (selectedStockTab == 2)
-                {
-                    hideAllColumn();
-                    col_branch.Visibility = Visibility.Visible;
-                    col_item.Visibility = Visibility.Visible;
-                    col_unit.Visibility = Visibility.Visible;
-                    col_quantity.Visibility = Visibility.Visible;
-                    col_MinCollect.Visibility = Visibility.Visible;
-                    col_MaxCollect.Visibility = Visibility.Visible;
-                }
-
-            }
-            else if (selectedFatherTab == 1)
-            {
-                if (selectedExternalTab == 0)
-                {
-                    hideAllColumn();
-                    col_branch.Visibility = Visibility.Visible;
-                    col_item.Visibility = Visibility.Visible;
-                    col_unit.Visibility = Visibility.Visible;
-                    col_quantity.Visibility = Visibility.Visible;
-                    col_agentTypeAgent.Visibility = Visibility.Visible;
-                    col_invTypeNumber.Visibility = Visibility.Visible;
-                }
-                else if (selectedExternalTab == 1)
-                {
-                    hideAllColumn();
-                    col_branch.Visibility = Visibility.Visible;
-                    col_itemUnits.Visibility = Visibility.Visible;
-                    col_agent.Visibility = Visibility.Visible;
-                    col_quantity.Visibility = Visibility.Visible;
-                    col_agentType.Visibility = Visibility.Visible;
-                    col_invTypeNumber.Visibility = Visibility.Visible;
-                }
-                else if (selectedExternalTab == 2)
-                {
-                    hideAllColumn();
-                    col_branch.Visibility = Visibility.Visible;
-                    col_invType.Visibility = Visibility.Visible;
-                    col_invNumber.Visibility = Visibility.Visible;
-                    col_quantity.Visibility = Visibility.Visible;
-                    col_agentTypeAgent.Visibility = Visibility.Visible;
-                    col_itemUnits.Visibility = Visibility.Visible;
-                }
-            }
-
-            else if (selectedFatherTab == 2)
-            {
-                if (selectedInternalTab == 0)
+         
+                if (selectedTab == 0)
                 {
                     hideAllColumn();
                     col_branchFrom.Visibility = Visibility.Visible;
@@ -344,7 +291,7 @@ namespace POS.View.reports
                     col_invTypeNumber.Visibility = Visibility.Visible;
 
                 }
-                else if (selectedInternalTab == 1)
+                else if (selectedTab == 1)
                 {
                     hideAllColumn();
                     col_branch.Visibility = Visibility.Visible;
@@ -354,44 +301,26 @@ namespace POS.View.reports
                     col_invTypeNumber.Visibility = Visibility.Visible;
                 }
 
-            }
             #endregion
 
         }
         /************************************************************************************************************************************/
-        private int selectedInternalTab = 0;
+        private int selectedTab = 0;
 
-        public void paintInternalChilds()
-        {
-            bdrMainInternal.RenderTransform = Animations.borderAnimation(50, bdrMainInternal, true);
-
-            grid_internalItems.Visibility = Visibility.Hidden;
-            grid_internalOperater.Visibility = Visibility.Hidden;
-
-            txt_internalItems.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-            txt_internalOperator.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-
-            path_internalItems.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-            path_internalOperator.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-        }
-        private void isEnabledButtonsInternal()
-        {
-            btn_internalItems.IsEnabled = true;
-            btn_internalOperator.IsEnabled = true;
-        }
+       
         private void btn_internalItems_Click(object sender, RoutedEventArgs e)
         {
-            selectedInternalTab = 0;
+
+            selectedTab = 0;
             txt_search.Text = "";
-            paintInternalChilds();
+            paint();
             isEnabledButtonsInternal();
             //fillComboBranches(cb_branchesLocation);
-            btn_internalItems.IsEnabled = false;
-            btn_internalItems.Opacity = 1;
+            btn_item.IsEnabled = false;
+            btn_item.Opacity = 1;
             grid_internalItems.Visibility = Visibility.Visible;
-            txt_internalItems.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
-            path_internalItems.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
-            //showSelectedTabColumn();
+            path_item.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+            bdr_item.Background = Brushes.White;
             fillComboBranches(cb_internalItemsFromBranches);
             fillComboBranches(cb_internalItemsToBranches);
             dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
@@ -401,21 +330,21 @@ namespace POS.View.reports
 
         private void btn_internalOperator_Click(object sender, RoutedEventArgs e)
         {
-            selectedInternalTab = 1;
+            selectedTab = 1;
             txt_search.Text = "";
-            paintInternalChilds();
+            paint();
             isEnabledButtonsInternal();
             //fillComboBranches(cb_branchesLocation);
-            btn_internalOperator.IsEnabled = false;
-            btn_internalOperator.Opacity = 1;
+            btn_operator.IsEnabled = false;
+            btn_operator.Opacity = 1;
             grid_internalOperater.Visibility = Visibility.Visible;
-            txt_internalOperator.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
-            path_internalOperator.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+            path_operator.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+            bdr_operator.Background = Brushes.White;
             //showSelectedTabColumn();
             fillComboBranches(cb_internalOperaterFromBranches);
             fillComboInternalOperatorType();
 
-            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
             showSelectedTabColumn();
             fillInternalColumnChart();
         }
@@ -624,25 +553,7 @@ namespace POS.View.reports
         List<internalTypeCombo> comboInternalOperatorType;
         List<internalOperatorCombo> comboInternalOperatorOperator;
 
-        private void btn_internal_Click(object sender, RoutedEventArgs e)
-        {
-            selectedFatherTab = 2;
-            txt_search.Text = "";
-            paint();
-            grid_internal.Visibility = Visibility.Visible;
-            bdr_internal.Background = Brushes.White;
-            path_internal.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-            isEnabledButtons();
-            btn_internal.IsEnabled = false;
-            btn_internal.Opacity = 1;
-            fillComboBranches(cb_internalItemsFromBranches);
-            fillComboBranches(cb_internalItemsToBranches);
-            fillComboInternalItemsItems();
-            fillComboInternalItemsUnits();
-            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
-            showSelectedTabColumn();
-            fillInternalColumnChart();
-        }
+     
 
 
         private void fillComboInternalItemsItems()
@@ -705,7 +616,7 @@ namespace POS.View.reports
             var selectedFromBranch = comboFromBranch.SelectedItem as Branch;
 
 
-            if (selectedInternalTab == 0)
+            if (selectedTab == 0)
             {
 
                 var selectedToBranch = comboToBranch.SelectedItem as Branch;
@@ -725,7 +636,7 @@ namespace POS.View.reports
                 return result;
             }
 
-            else if (selectedInternalTab == 1)
+            else if (selectedTab == 1)
             {
                 var selectedToBranch = comboToBranch.SelectedItem as internalTypeCombo;
                 var result = itemsTransfer.Where(x => (
@@ -765,7 +676,7 @@ namespace POS.View.reports
 
 
             var temp = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
-            if (selectedInternalTab == 1)
+            if (selectedTab == 1)
             {
                 temp = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
             }
@@ -844,7 +755,7 @@ namespace POS.View.reports
             List<string> names = new List<string>();
 
             var temp = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
-            if (selectedInternalTab == 1)
+            if (selectedTab == 1)
             {
                 temp = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
             }
@@ -908,7 +819,7 @@ namespace POS.View.reports
             List<decimal> x = new List<decimal>();
             titles.Clear();
             var temp = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
-            if (selectedInternalTab == 1)
+            if (selectedTab == 1)
             {
                 temp = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
             }
@@ -929,7 +840,7 @@ namespace POS.View.reports
                     itemName = s.FirstOrDefault().itemName,
                     unitName = s.FirstOrDefault().unitName,
                 }).OrderByDescending(s => s.quantity);
-            if (selectedInternalTab == 0)
+            if (selectedTab == 0)
             {
                 if (chk_internalItemsTwoWay.IsChecked == true)
                 {
@@ -942,7 +853,7 @@ namespace POS.View.reports
 
                 }
             }
-            else if (selectedInternalTab == 1)
+            else if (selectedTab == 1)
             {
                 if (cb_internalOperaterFromBranches.SelectedItem != null)
                 {
@@ -993,7 +904,6 @@ namespace POS.View.reports
             }
             chart1.Series = piechartData;
         }
-
 
 
 

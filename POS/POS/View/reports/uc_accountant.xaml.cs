@@ -54,6 +54,11 @@ namespace POS.View.reports
             main.Children.Add(uc);
         }
 
-    
+        private void Btn_statement_Click(object sender, RoutedEventArgs e)
+        {
+            uc_accountStatement uc = new uc_accountStatement();
+            sc_main.Visibility = Visibility.Collapsed;
+            main.Children.Add(uc);
+        }
     }
 }
