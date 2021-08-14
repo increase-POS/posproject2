@@ -11,8 +11,8 @@
               d:DesignHeight="675" d:DesignWidth="1150">
         <Grid x:Name="grid_ucItemsExport" Margin="0,15,15,15"  >
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*"/>
                 <ColumnDefinition Width="5.1*"/>
+                <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition   Height="45" />
@@ -216,42 +216,42 @@
                     </Button>
                 </DockPanel>
             </Border>
-            <Grid Grid.Column="0" Grid.Row="1" Margin="0,5,0,5">
-                <Grid.RowDefinitions >
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="auto"/>
-                </Grid.RowDefinitions>
-                <Border BorderThickness="0"   Grid.Column="0" Grid.Row="0"    Margin="5,10,5,5"
+        <Grid Grid.Column="1" Grid.Row="1" Margin="0,5,0,5">
+            <Grid.RowDefinitions >
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <Border BorderThickness="0"   Grid.Column="0" Grid.Row="0"    Margin="5,10,5,5"
                     CornerRadius="7" BorderBrush="Black" Background="White" Padding="0">
-                    <Grid   Margin="0" >
-                        <Grid.RowDefinitions >
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                        </Grid.RowDefinitions>
-                        <TextBlock Text="Stocktaking Details" x:Name="txt_inventoryDetails" Foreground="#178DD2" FontWeight="Bold" FontSize="18"  
+                <Grid   Margin="0" >
+                    <Grid.RowDefinitions >
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Stocktaking Details" x:Name="txt_inventoryDetails" Foreground="#178DD2" FontWeight="Bold" FontSize="18"  
                                   VerticalAlignment="Center" 
                                        HorizontalAlignment="Left" Margin="10,5,5,5"/>
-                        <TextBlock  x:Name="txt_inventoryNum" Foreground="#4E4E4E" FontWeight="Regular" FontSize="14"  
+                    <TextBlock  x:Name="txt_inventoryNum" Foreground="#4E4E4E" FontWeight="Regular" FontSize="14"  
                                   VerticalAlignment="Center"  Grid.Row="1"
                                        HorizontalAlignment="Left" Margin="10,5,5,5"/>
-                        <TextBlock  x:Name="txt_inventoryDate" Foreground="#4E4E4E" FontWeight="Regular" FontSize="18"  
+                    <TextBlock  x:Name="txt_inventoryDate" Foreground="#4E4E4E" FontWeight="Regular" FontSize="18"  
                                   VerticalAlignment="Center" Grid.Row="2"
                                        HorizontalAlignment="Left" Margin="10,5,5,5"/>
 
-                    </Grid>
-                </Border>
+                </Grid>
+            </Border>
 
 
-                <Border BorderThickness="0"  Grid.Column="0" Grid.ColumnSpan="1" Grid.Row="3"   Height="70" Margin="10,10,10,10"
+            <Border BorderThickness="0"  Grid.Column="0" Grid.ColumnSpan="1" Grid.Row="3"   Height="70" Margin="10,10,10,10"
                     CornerRadius="7" BorderBrush="Black" Background="{StaticResource MainColorRed}" Padding="0">
-                    <Button Content="Archiving" Height="auto" BorderBrush="{x:Null}"  FontSize="14" x:Name="btn_archive"
+                <Button Content="Archiving" Height="auto" BorderBrush="{x:Null}"  FontSize="14" x:Name="btn_archive"
                     Background="{x:Null}" Click="Btn_archive_Click"  />
-                </Border>
+            </Border>
 
-            </Grid>
+        </Grid>
 
-            <Grid Grid.Column="2" Grid.Row="1" Grid.RowSpan="2" Margin="0,5,0,5">
+        <Grid Grid.Column="0" Grid.Row="1" Grid.RowSpan="2" Margin="0,5,0,5">
                 <Grid.RowDefinitions >
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="auto"/>

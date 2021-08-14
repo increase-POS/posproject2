@@ -54,6 +54,7 @@ namespace POS.View.windows
         /// <param name="e"></param>
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
+            SectionData.StartAwait(grid_mainGrid);
             //MessageBox.Show(sectionId.ToString());
             if (MainWindow.lang.Equals("en"))
             { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly()); grid_locations.FlowDirection = FlowDirection.LeftToRight; }
@@ -96,6 +97,7 @@ namespace POS.View.windows
             lst_selectedLocations.ItemsSource = selectedLocations;
             lst_selectedLocations.SelectedValuePath = "x";
             lst_selectedLocations.DisplayMemberPath = "locationId";
+            SectionData.EndAwait(grid_mainGrid,this);
         }
 
         private void translat()

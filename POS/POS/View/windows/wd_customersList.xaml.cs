@@ -46,6 +46,7 @@ namespace POS.View.windows
         /// <param name="e"></param>
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
+            SectionData.StartAwait(grid_mainGrid);
             allAgents = (await agentModel.GetAgentsAsync("c")).Where(x => x.isActive == 1).ToList();
             allAgentsSource = allAgents;
             selectedAgents = (await medalAgentModel.GetAll()).Where(x => x.medalId == medalId).ToList();
@@ -73,6 +74,7 @@ namespace POS.View.windows
 
             translat();
 
+            SectionData.EndAwait(grid_mainGrid,this);
         }
 
         private void translat()

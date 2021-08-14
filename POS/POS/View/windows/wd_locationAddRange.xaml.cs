@@ -371,6 +371,7 @@ namespace POS.View.windows
         }
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
+            MainWindow.mainWindow.StartAwait();
             if (MainWindow.lang.Equals("en"))
             { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly()); grid_locationRange.FlowDirection = FlowDirection.LeftToRight; }
             else
@@ -379,6 +380,7 @@ namespace POS.View.windows
             AllLocations = await location.Get();
 
             translate();
+            MainWindow.mainWindow.EndAwait();
         }
 
         private void translate()

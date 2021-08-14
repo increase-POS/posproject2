@@ -54,6 +54,7 @@ namespace POS.View.windows
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
+            SectionData.StartAwait(grid_mainGrid);
 
             #region translate
             if (MainWindow.lang.Equals("en"))
@@ -105,6 +106,7 @@ namespace POS.View.windows
             dg_selectedItems.ItemsSource = allPackages;
             dg_allItems.SelectedValuePath = "packageId";
             dg_allItems.DisplayMemberPath = "notes";
+            SectionData.EndAwait(grid_mainGrid,this);
         }
 
         private void translat()

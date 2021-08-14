@@ -1563,134 +1563,178 @@ namespace POS.View
         //print
         private async void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {
-            if (invoice.invType == "pd" || invoice.invType == "sd"
-                  || invoice.invType == "sbd" || invoice.invType == "pbd"
-                  || invoice.invType == "ord" || invoice.invType == "imd" || invoice.invType == "exd")
-            {
-                MessageBox.Show("can not print Draft Invoice");
-            }
-            else
-            {
-              //  ReportCls rr = new ReportCls();
-                // MessageBox.Show(rr.GetLogoImagePath());
 
-                List<ReportParameter> paramarr = new List<ReportParameter>();
-
-                string addpath;
-                bool isArabic = ReportCls.checkLang();
-                if (isArabic)
+            try {
+                if (invoice.invType == "pd" || invoice.invType == "sd" || invoice.invType == "qd"
+               || invoice.invType == "sbd" || invoice.invType == "pbd"
+               || invoice.invType == "ord" || invoice.invType == "imd" || invoice.invType == "exd")
                 {
-                    addpath = @"\Reports\Purchase\Ar\ArInvPurReport.rdlc";
+                    MessageBox.Show("can not print Draft Invoice");
                 }
-                else addpath = @"\Reports\Purchase\En\InvPurReport.rdlc";
-
-                //
-
-                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-                if (invoice.invoiceId > 0)
+                else
                 {
-                    invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
-                    Agent agentinv = new Agent();
-                    agentinv = vendors.Where(X => X.agentId == invoice.agentId).FirstOrDefault();
+                    //  ReportCls rr = new ReportCls();
+                    // MessageBox.Show(rr.GetLogoImagePath());
 
-                    invoice.agentCode = agentinv.code;
+                    List<ReportParameter> paramarr = new List<ReportParameter>();
 
-                    ReportCls.checkLang();
-
-                    clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
-                    clsReports.setReportLanguage(paramarr);
-                    clsReports.Header(paramarr);
-                    paramarr = reportclass.fillPurInvReport(invoice, paramarr);
-
-                    rep.SetParameters(paramarr);
-                    rep.Refresh();
-
-                    saveFileDialog.Filter = "PDF|*.pdf;";
-
-                    if (saveFileDialog.ShowDialog() == true)
+                    string addpath;
+                    bool isArabic = ReportCls.checkLang();
+                    if (isArabic)
                     {
+                        if (invoice.invType == "or" || invoice.invType == "po")
+                        {
+                            addpath = @"\Reports\Purchase\Ar\ArInvPurOrderReport.rdlc";
+                        }
+                        else
+                        {
+                            addpath = @"\Reports\Purchase\Ar\ArInvPurReport.rdlc";
+                        }
 
-                        string filepath = saveFileDialog.FileName;
-                        LocalReportExtensions.ExportToPDF(rep, filepath);
                     }
+                    else
+                    {
+                        if (invoice.invType == "or" || invoice.invType == "po")
+                        {
+                            addpath = @"\Reports\Purchase\En\InvPurOrderReport.rdlc";
+                        }
+                        else
+                        {
+                            addpath = @"\Reports\Purchase\En\InvPurReport.rdlc";
+                        }
+                    }
+
+
+                    //
+
+                    string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+                    if (invoice.invoiceId > 0)
+                    {
+                        invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
+                        Agent agentinv = new Agent();
+                        agentinv = vendors.Where(X => X.agentId == invoice.agentId).FirstOrDefault();
+
+                        invoice.agentCode = agentinv.code;
+
+                        ReportCls.checkLang();
+
+                        clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
+                        clsReports.setReportLanguage(paramarr);
+                        clsReports.Header(paramarr);
+                        paramarr = reportclass.fillPurInvReport(invoice, paramarr);
+
+                        rep.SetParameters(paramarr);
+                        rep.Refresh();
+
+                        saveFileDialog.Filter = "PDF|*.pdf;";
+
+                        if (saveFileDialog.ShowDialog() == true)
+                        {
+
+                            string filepath = saveFileDialog.FileName;
+                            LocalReportExtensions.ExportToPDF(rep, filepath);
+                        }
+                    }
+
                 }
 
             }
+            catch
+            {
+
+            }
+           
 
         }
         private async void btn_printInvoice_Click(object sender, RoutedEventArgs e)
         {
-
-            if (invoice.invType == "pd" || invoice.invType == "sd"
-                  || invoice.invType == "sbd" || invoice.invType == "pbd"
-                  || invoice.invType == "ord" || invoice.invType == "imd" || invoice.invType == "exd")
+            try
             {
-                MessageBox.Show("can not print Draft Invoice");
+                if (invoice.invType == "pd" || invoice.invType == "sd" || invoice.invType == "qd"
+                             || invoice.invType == "sbd" || invoice.invType == "pbd"
+                             || invoice.invType == "ord" || invoice.invType == "imd" || invoice.invType == "exd")
+                {
+                    MessageBox.Show("can not print Draft Invoice");
+                }
+                else
+                {
+                    ReportCls rr = new ReportCls();
+
+                    List<ReportParameter> paramarr = new List<ReportParameter>();
+
+                    string addpath;
+                    bool isArabic = ReportCls.checkLang();
+                    if (isArabic)
+                    {
+                        if (invoice.invType == "or" || invoice.invType == "po")
+                        {
+                            addpath = @"\Reports\Purchase\Ar\ArInvPurOrderReport.rdlc";
+                        }
+                        else
+                        {
+                            addpath = @"\Reports\Purchase\Ar\ArInvPurReport.rdlc";
+                        }
+
+                    }
+                    else
+                    {
+                        if (invoice.invType == "or" || invoice.invType == "po")
+                        {
+                            addpath = @"\Reports\Purchase\En\InvPurOrderReport.rdlc";
+                        }
+                        else
+                        {
+                            addpath = @"\Reports\Purchase\En\InvPurReport.rdlc";
+                        }
+                    }
+
+
+                    //
+
+                    string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+                    if (invoice.invoiceId > 0)
+                    {
+                        invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
+                        Agent agentinv = new Agent();
+                        agentinv = vendors.Where(X => X.agentId == invoice.agentId).FirstOrDefault();
+
+                        invoice.agentCode = agentinv.code;
+                        invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
+                        ReportCls.checkLang();
+
+                        clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
+                        clsReports.setReportLanguage(paramarr);
+                        clsReports.Header(paramarr);
+                        paramarr = reportclass.fillPurInvReport(invoice, paramarr);
+
+                        rep.SetParameters(paramarr);
+                        rep.Refresh();
+
+
+
+                        LocalReportExtensions.PrintToPrinter(rep);
+                    }
+                }
             }
-            else
+            catch
             {
-                ReportCls rr = new ReportCls();
 
-                List<ReportParameter> paramarr = new List<ReportParameter>();
-
-                string addpath;
-                bool isArabic = ReportCls.checkLang();
-                if (isArabic)
-                {
-                    addpath = @"\Reports\Purchase\Ar\ArInvPurReport.rdlc";
-                }
-                else addpath = @"\Reports\Purchase\En\InvPurReport.rdlc";
-
-                //
-
-                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-                if (invoice.invoiceId > 0)
-                {
-                    invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
-                    Agent agentinv = new Agent();
-                    agentinv = vendors.Where(X => X.agentId == invoice.agentId).FirstOrDefault();
-
-                    invoice.agentCode = agentinv.code;
-                    invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
-                    ReportCls.checkLang();
-
-                    clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
-                    clsReports.setReportLanguage(paramarr);
-                    clsReports.Header(paramarr);
-                    paramarr = reportclass.fillPurInvReport(invoice, paramarr);
-
-                    rep.SetParameters(paramarr);
-                    rep.Refresh();
-
-
-
-                    LocalReportExtensions.PrintToPrinter(rep);
-                }
             }
+
+           
         }
         //
        
         private async void Btn_preview_Click(object sender, RoutedEventArgs e)
         {
-            if (invoice.invoiceId>0)
+            try
+            {
+
+           
+            if (invoice.invoiceId > 0)
             {
                 Window.GetWindow(this).Opacity = 0.2;
-                // create pdf
-                //
-                //string pdfpath = "";
-
-                /*
-              if (invoice.invType == "pd" || invoice.invType == "sd"
-                  || invoice.invType == "sbd" || invoice.invType == "pbd"
-                  || invoice.invType == "ord" || invoice.invType == "imd" || invoice.invType == "exd")
-            {
-                MessageBox.Show("can not print Draft Invoice");
-            }
-            else
-            {
-                */
-                // ReportCls rr = new ReportCls();
-                // MessageBox.Show(rr.GetLogoImagePath());
+            
 
                 List<ReportParameter> paramarr = new List<ReportParameter>();
                 string pdfpath;
@@ -1698,9 +1742,28 @@ namespace POS.View
                 bool isArabic = ReportCls.checkLang();
                 if (isArabic)
                 {
-                    addpath = @"\Reports\Purchase\Ar\ArInvPurReport.rdlc";
+                    if (invoice.invType == "or" || invoice.invType == "po")
+                    {
+                        addpath = @"\Reports\Purchase\Ar\ArInvPurOrderReport.rdlc";
+                    }
+                    else
+                    {
+                        addpath = @"\Reports\Purchase\Ar\ArInvPurReport.rdlc";
+                    }
+
                 }
-                else addpath = @"\Reports\Purchase\En\InvPurReport.rdlc";
+                else
+                {
+                    if (invoice.invType == "or" || invoice.invType == "po")
+                    {
+                        addpath = @"\Reports\Purchase\En\InvPurOrderReport.rdlc";
+                    }
+                    else
+                    {
+                        addpath = @"\Reports\Purchase\En\InvPurReport.rdlc";
+                    }
+                }
+
 
                 //
                 pdfpath = @"\Thumb\report\temp.pdf";
@@ -1734,8 +1797,6 @@ namespace POS.View
 
                     LocalReportExtensions.ExportToPDF(rep, pdfpath);
 
-
-
                 }
 
                 //  }
@@ -1760,12 +1821,18 @@ namespace POS.View
                 else
                     Toaster.ShowError(Window.GetWindow(this), message: "", animation: ToasterAnimation.FadeIn);
                 Window.GetWindow(this).Opacity = 1;
-            }else
+            }
+            else
             {
                 MessageBox.Show("save the invoice to preview");
             }
+            }
+            catch
+            {
+
+            }
         }
-   
+
         private async void Btn_items_Click(object sender, RoutedEventArgs e)
         {
             //items

@@ -57,6 +57,8 @@ namespace POS.View.windows
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
+            SectionData.StartAwait(grid_mainGrid);
+
             #region translate
             if (MainWindow.lang.Equals("en"))
             {
@@ -117,6 +119,7 @@ namespace POS.View.windows
             //tb_fax.Text = setV.value;//getLogo();
           await  getImg();
             #endregion
+            SectionData.EndAwait(grid_mainGrid,this);
         }
         private void translate()
         {

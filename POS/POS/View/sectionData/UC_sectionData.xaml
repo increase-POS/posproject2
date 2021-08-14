@@ -39,8 +39,10 @@
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
                         </Grid.RowDefinitions>
-                    <Button  Style="{StaticResource SmallButton}" x:Name="btn_suppliers" Click="Btn_suppliers_Click"   Grid.Row="0" Grid.Column="0"
-                Height="75" Width="75" Background="White" Margin="5" Tag="suppliers"
+
+                    <Border x:Name="bdr_suppliers" Tag="suppliers"  Height="87" Grid.Row="0" >
+                        <Button  Style="{StaticResource SmallButton}" x:Name="btn_suppliers" Click="Btn_suppliers_Click"   Grid.Row="0" Grid.Column="0"
+                Height="75" Width="75" Background="White"  Tag="suppliers"
                   Content="Suppliers"    BorderBrush="#67686D"
                 DataContext="M127,120.6h-22.8l-3.1-21.2l3.3-4.4h1c0,0,12,4,17.4,6.7c1.6,0.8,2.8,2.4,3.1,4.2
 	C126.6,110.7,126.9,115.6,127,120.6z M109.3,82.3l1.6-8.5c0.8-6.2-3.5-11.9-9.7-12.8c-0.5-0.1-1-0.1-1.5-0.1h-2
@@ -49,9 +51,11 @@
 	 M25.2,89.8h-9.7v9.7h9.7V89.8z M25.2,72.3h-9.7V82h9.7V72.3z M42.3,89.8h-9.7v9.7h9.7V89.8z M42.3,72.3h-9.7V82h9.7V72.3z M47,38.3
 	h-9.7V48H47V38.3z M64.1,38.3h-9.7V48h9.7V38.3z M92,94.9c0,0-11.9,4-17.4,6.7c-1.7,0.8-2.8,2.4-3.1,4.2c-0.6,4.8-1,9.7-1.1,14.6
 	h22.8l3.1-21.2L93,94.9H92z"/>
-                    <Button  Click="BTN_Customers_Click" x:Name="btn_customers"  Tag="customers"
+                    </Border>
+                    <Border x:Name="bdr_customers" Tag="customers"  Height="87" Grid.Row="1" >
+                        <Button  Click="BTN_Customers_Click" x:Name="btn_customers"  Tag="customers"
                 Style="{StaticResource SmallButton}"   Grid.Row="1" Grid.Column="0"
-                Height="75" Width="75" Background="White" Margin="0,5"
+                Height="75" Width="75" Background="White" 
                   Content="Customers"   BorderBrush="#67686D" 
                 DataContext="M32.1,21.7v1.9C32,23.8,32,23.9,31.9,24c-0.1,0.1-0.2,0.1-0.4,0.1h-2.6H25v2.5v0.1c0,0.2-0.2,0.4-0.5,0.4h-4.1h-8.8H7.5
 	c-0.3,0-0.5-0.2-0.5-0.5v-2.5H3.1H0.5c-0.3,0-0.5-0.2-0.5-0.5v-1.9c0-0.1,0-0.3,0-0.4c0,0,0,0,0,0c0-0.1,0.1-0.3,0.1-0.4
@@ -63,8 +67,10 @@
 	c0,0,0,0.1,0,0.1l2,0.6c0.2-0.2,0.5-0.4,0.8-0.5l1.9-0.6c-0.2,0-0.5-0.1-0.7-0.1h-0.2c-0.6-0.1-1.1-0.7-1.1-1.3V14
 	c0-2.4,1.9-4.3,4.3-4.3s4.3,1.9,4.3,4.3v1.2V16v1c0,0.6-0.4,1.2-1.1,1.3H29c-0.3,0.1-0.6,0.2-0.9,0.2l2,0.7c0.5,0.2,1,0.5,1.3,0.9
 	c0.1,0,0.2,0.1,0.3,0.2C32,20.7,32.1,21.2,32.1,21.7z"/>
-                    <Button  Style="{StaticResource SmallButton}"   Grid.Row="2" Grid.Column="0"
-                Height="75" Width="75" Background="White" Margin="5" Tag="users"
+                    </Border>
+                    <Border x:Name="bdr_users"   Tag="users" Height="87" Grid.Row="2" >
+                        <Button  Style="{StaticResource SmallButton}"   Grid.Row="2" Grid.Column="0"
+                Height="75" Width="75" Background="White"  Tag="users"
                   Content="Users"    BorderBrush="#67686D" x:Name="btn_users"
                 DataContext="M260.6,40.6c107.9-0.1,196.3,87.9,196.2,196.5c-0.1,108-87.9,195.7-195.7,196C152.5,433.4,63.8,344.9,64.3,236
 	C64.7,128.6,152.2,40.6,260.6,40.6z M327.2,183.3c1.3,1.5,2.5,2.5,3.1,3.8c0.7,1.5,1.1,3.3,1.1,5c0.3,8.6-2.1,16.6-6.5,23.9
@@ -78,8 +84,10 @@
 	c-0.7-4.5-1.5-9-2.1-13.4c-1.7-12-2.7-24-1.4-36.2c0.6-5.8,1.6-11.6,4.1-17c4.9-10.6,13.2-18.1,23.2-23.8
 	c12.2-6.9,25.5-10.2,39.4-10.6c19.5-0.5,37.6,3.8,53.6,15.5c11.1,8.2,17.8,19.2,19.6,33c1.6,12.3,0.9,24.5-0.9,36.7
 	C328.6,173.4,327.8,178.6,327.2,183.3z" Click="Btn_users_Click"/>
-                    <Button  Style="{StaticResource SmallButton}"   Grid.Row="3" Grid.Column="0"
-                Height="75" Width="75" Background="White" Margin="5" Tag="branches"
+                    </Border>
+                    <Border x:Name="bdr_branches"  Tag="branches" Height="87" Grid.Row="3" >
+                        <Button  Style="{StaticResource SmallButton}"   Grid.Row="3" Grid.Column="0"
+                Height="75" Width="75" Background="White"  Tag="branches"
                   Content="Branches"    BorderBrush="#67686D" x:Name="btn_branches" 
                 DataContext="M72.1,67.2h21.4c1.3,0,2.3,1,2.3,2.3v12.8c0,1.3-1,2.3-2.3,2.3H72.1c-1.3,0-2.3-1-2.3-2.3V69.5
 	C69.8,68.2,70.8,67.2,72.1,67.2C72.1,67.2,72.1,67.2,72.1,67.2z M105.8,59.1c-0.5,0-1,0-1.5-0.1v12.4h0v31.4c0,0.2,0,0.4,0,0.6H58.3
@@ -88,8 +96,10 @@
 	c0.7,0.7,1.5,1.3,2.3,1.8c5.1,3.1,11.7,2.4,15.9-1.8c2.7-2.6,6.1-4.2,9.8-4.6h3.8c3.7,0.4,7.2,2,9.9,4.6c5.1,5,13.3,5,18.4,0
 	c2.7-2.6,6.2-4.2,9.9-4.6h3.8c3.7,0.4,7.1,2,9.8,4.6c4.2,4.2,10.8,5,15.9,1.8c0.8-0.5,1.6-1.1,2.3-1.8C118,47,122,45.4,126.2,45.3
 	C126.4,45.3,126.2,45.3,126.2,45.3z" Click="Btn_branches_Click"/>
-                    <Button  Style="{StaticResource SmallButton}"   Grid.Row="4" Grid.Column="0"
-                Height="75" Width="75" Background="White" Margin="5" Tag="stores"
+                    </Border>
+                    <Border x:Name="bdr_stores" Tag="stores"  Height="87" Grid.Row="4" >
+                        <Button  Style="{StaticResource SmallButton}"   Grid.Row="4" Grid.Column="0"
+                Height="75" Width="75" Background="White"  Tag="stores"
                   Content="Stores"    BorderBrush="#67686D"   x:Name="btn_stores"
                 DataContext="M787.5,484.5c-0.2-86.7-0.3-173.3-0.6-260c0-3-0.8-6.3-2.1-9c-14.2-28.8-34.9-52.7-57.2-75.3C640.3,51.5,535-3.7,413.1-27.8
 	c-30.4-6-61.2-9.5-92.2-10.5c-2-0.1-3.9-0.5-5.9-0.8h-38c-7.8,0.6-15.5,1.2-23.3,1.8C119-26.8,0.7,23-101.5,111.2
@@ -107,8 +117,10 @@
 	c-36.2,0.3-72.3,0-108.5-0.2c-5.1,0-10.4-0.3-15.3-1.7c-14-4-22.4-14.6-23-29.1c-0.7-15.5-1-31-1.1-46.5
 	c-0.2-43.2,0.2-86.3-0.3-129.5c-0.2-14.3,14.9-31.5,28.2-32.1c11.1-0.5,22.3-0.9,33.4-1c16.1-0.2,32.3,0,49.1,0V744h17.8V639.7
 	c17.7,0,34.5-0.1,51.3,0.1c10.8,0.1,21.7,0.1,32.4,1.2c12.2,1.2,23.9,12.1,24.8,21.9C286.4,667.3,286.8,671.8,286.8,676.3z" Click="Btn_stores_Click"/>
-                    <Button  Style="{StaticResource SmallButton}"   Grid.Row="5" Grid.Column="0"
-                Height="75" Width="75" Background="White" Margin="5" Tag="pos"
+                    </Border>
+                    <Border x:Name="bdr_pos" Tag="pos"  Height="87" Grid.Row="5" >
+                        <Button  Style="{StaticResource SmallButton}"   Grid.Row="5" Grid.Column="0"
+                Height="75" Width="75" Background="White"  Tag="pos"
                   Content="POS"    BorderBrush="#67686D"  x:Name="btn_pos" FlowDirection="LeftToRight"
                 DataContext="M33,12c0-0.6,0.4-1,1-1h5c0.6,0,1,0.4,1,1c0,0.6-0.4,1-1,1h-5C33.4,13,33,12.6,33,12z M34,17h5c0.6,0,1-0.4,1-1
 	c0-0.6-0.4-1-1-1h-5c-0.6,0-1,0.4-1,1C33,16.6,33.4,17,34,17z M58,50v8H0v-8H58z M20,54c0-0.6-0.4-1-1-1H5c-0.6,0-1,0.4-1,1
@@ -129,12 +141,16 @@
 	c-0.2-0.1-0.5-0.1-0.8,0c-0.1,0.1-0.2,0.1-0.3,0.2l-1,1c-0.4,0.4-0.4,1,0,1.4C19.5,5.9,19.7,6,20,6z M7,6v3c0,0.6,0.4,1,1,1
 	s1-0.4,1-1V4c0-0.1,0-0.3-0.1-0.4C8.8,3.4,8.6,3.2,8.4,3.1C8.1,3,7.9,3,7.6,3.1c-0.1,0-0.2,0.1-0.3,0.2l-1,1c-0.4,0.4-0.4,1,0,1.4
 	C6.5,5.9,6.7,6,7,6z M25,0v13H3V0H25z M23,2H5v9h18V2z" Click="Btn_pos_Click"/>
-                    <Button  Style="{StaticResource SmallButton}"   Grid.Row="6" Grid.Column="0"
-                Height="75" Width="75" Background="White" Margin="5" Tag="banks"
+                    </Border>
+                    <Border x:Name="bdr_banks" Tag="banks" Height="87" Grid.Row="6" >
+                        <Button  Style="{StaticResource SmallButton}"   Grid.Row="6" Grid.Column="0"
+                Height="75" Width="75" Background="White"  Tag="banks"
                   Content="Banks"    BorderBrush="#67686D"    x:Name="btn_banks"
                 DataContext="M4,10h3v7H4V10z M10.5,10h3v7h-3V10z M2,19h20v3H2V19z M17,10h3v7h-3V10z M12,1L2,6v2h20V6L12,1z" Click="Btn_banks_Click"/>
-                    <Button  Style="{StaticResource SmallButton}"   Grid.Row="7" Grid.Column="0"
-                Height="75" Width="75" Background="White" Margin="5" Tag="cards"
+                    </Border>
+                    <Border x:Name="bdr_card" Tag="cards" Height="87" Grid.Row="7" >
+                        <Button  Style="{StaticResource SmallButton}"   Grid.Row="7" Grid.Column="0"
+                Height="75" Width="75" Background="White"  Tag="cards"
                   Content="Cards"    BorderBrush="#67686D"    x:Name="btn_cards"
                 DataContext="M14.3,21.7C14.3,21.7,14.3,21.7,14.3,21.7l0,1.1c0,0,0,0.1,0,0.1c0,0-0.1,0-0.1,0c0,0-0.1,0-0.1,0
 	c0,0,0-0.1,0-0.1v-1c0,0,0-0.1,0-0.1c0,0,0.1,0,0.1,0C14.2,21.6,14.3,21.6,14.3,21.7z M15.4,21.6c0,0-0.1,0-0.1,0c0,0,0,0.1,0,0.1v1
@@ -213,8 +229,10 @@
 	c0,0.5,0.4,1,1,1h24.2C36.1,13.1,36.6,12.7,36.6,12.2z M24,34.3C24,34.3,24,34.3,24,34.3C24,34.3,24,34.3,24,34.3
 	C24,34.3,24,34.3,24,34.3C24,34.3,24,34.3,24,34.3z M23.5,4C23.5,4,23.5,4,23.5,4C23.5,4,23.5,4,23.5,4C23.5,4,23.5,4,23.5,4
 	C23.5,4,23.5,4,23.5,4z" Click="Btn_cards_Click"/>
-                    <Button  Style="{StaticResource SmallButton}"   Grid.Row="8" Grid.Column="0"
-                Height="75" Width="75" Background="White" Margin="5" Tag="shippingCompany"
+                    </Border>
+                    <Border x:Name="bdr_shippingCompany" Tag="shippingCompany"  Height="87" Grid.Row="8" >
+                        <Button  Style="{StaticResource SmallButton}"   Grid.Row="8" Grid.Column="0"
+                Height="75" Width="75" Background="White" Tag="shippingCompany"
                   Content="Shipping"    BorderBrush="#67686D" x:Name="btn_shippingCompany"  Click="Btn_shippingCompany_Click"
                 DataContext="M58,176.7c-0.8-8.1,1.6-10.8,9.3-10.8c33.9,0,67.9,0,101.8,0c6.2,0,8.7,2.5,8.7,8.6c0,25.2,0,50.5,0,75.7
 	c0,5.7-2.6,8.3-8.2,8.3c-16.3,0-32.5,0-48.8-0.1c-1.6,0-3.4-0.4-4.9-1c-8.2-3.4-16.4-3.4-24.6,0.2c-1.2,0.5-2.6,0.8-3.9,0.9
@@ -239,6 +257,7 @@
 	c-0.2,4.5-0.1,9,0,13.4c0.1,2.7,1.5,4.9,4.3,5.1c3.5,0.4,7.1,0.1,11,0.1c-0.6-9.1,2.2-16.9,8.4-23.9
 	C74.9,264.4,68.8,264.3,62.8,264.5z M249.1,280.9c0-3.4,0-6.8,0-10.2c0-3-2.1-5.9-5-6.2c-4-0.3-8.1-0.1-12.8-0.1
 	c6.3,7.1,8.9,15,8.5,23.8C245.8,289.4,249.1,286.7,249.1,280.9z M134,143"/>
+                    </Border>
                 </Grid>
             </ScrollViewer>
         </Expander>

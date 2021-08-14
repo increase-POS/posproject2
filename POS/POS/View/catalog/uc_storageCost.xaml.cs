@@ -97,10 +97,10 @@ namespace POS.View.catalog
 
         async Task<IEnumerable<StorageCost>> RefreshStorageCostList()
         {
-            MainWindow.mainWindow.StartAwait();
+            SectionData.StartAwait(grid_ucStorageCost);
 
             storageCosts = await storageCostModel.Get();
-            MainWindow.mainWindow.EndAwait();
+            SectionData.EndAwait(grid_ucStorageCost, this);
             return storageCosts;
         }
         void RefreshstorageCostView()

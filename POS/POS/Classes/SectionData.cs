@@ -706,7 +706,35 @@ namespace POS.Classes
             else
                 Toaster.ShowWarning(MainWindow.mainWindow, message: ex.HResult + " || " + ex.Message, animation: ToasterAnimation.FadeIn);
         }
+        static public void StartAwait(Grid grid)
+        {
+            grid.IsEnabled = false;
+            grid.Opacity = 0.6;
+            MahApps.Metro.Controls.ProgressRing progressRing = new MahApps.Metro.Controls.ProgressRing();
+            progressRing.Name = "prg_awaitRing";
+            progressRing.Foreground = App.Current.Resources["MainColorBlue"] as Brush;
+            progressRing.IsActive = true;
+            Grid.SetRowSpan(progressRing, 10);
+            Grid.SetColumnSpan(progressRing, 10);
+            grid.Children.Add(progressRing);
 
-        
+        }
+        static public void EndAwait(Grid grid, Window window)
+        {
+            grid.IsEnabled = true;
+            grid.Opacity = 1;
+            MahApps.Metro.Controls.ProgressRing progressRing = FindControls.FindVisualChildren<MahApps.Metro.Controls.ProgressRing>(window)
+                .Where(x => x.Name == "prg_awaitRing").FirstOrDefault();
+            grid.Children.Remove(progressRing);
+        }
+        static public void EndAwait(Grid grid, UserControl window)
+        {
+            grid.IsEnabled = true;
+            grid.Opacity = 1;
+            MahApps.Metro.Controls.ProgressRing progressRing = FindControls.FindVisualChildren<MahApps.Metro.Controls.ProgressRing>(window)
+                .Where(x => x.Name == "prg_awaitRing").FirstOrDefault();
+            grid.Children.Remove(progressRing);
+        }
+
     }
 }

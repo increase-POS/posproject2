@@ -71,6 +71,7 @@ namespace POS.View.windows
         /// <param name="e"></param>
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            SectionData.StartAwait(grid_ucItems);
             // for pagination onTop Always
             btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
             //CreateGridCardContainer();
@@ -91,6 +92,7 @@ namespace POS.View.windows
             await RefrishCategories();
             RefrishCategoriesCard();
             Txb_searchitems_TextChanged(null, null);
+            SectionData.EndAwait(grid_ucItems,this);
         }
         private void translate()
         {

@@ -57,6 +57,7 @@ namespace POS.View.windows
         /// <param name="e"></param>
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
+            SectionData.StartAwait(grid_mainGrid);
             if (MainWindow.lang.Equals("en"))
             { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly()); grid_offerList.FlowDirection = FlowDirection.LeftToRight; }
             else
@@ -96,6 +97,7 @@ namespace POS.View.windows
             dg_selectedItems.SelectedValuePath = "itemUnitId";
             dg_selectedItems.DisplayMemberPath = "itemName";
 
+            SectionData.EndAwait(grid_mainGrid,this);
         }
 
         private void translat()

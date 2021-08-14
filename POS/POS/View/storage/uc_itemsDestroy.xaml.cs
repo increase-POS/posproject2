@@ -628,12 +628,5 @@ namespace POS.View.storage
         {
             Btn_clear_Click(null,null);
         }
-
-        private void Tb_amount_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            var txb = sender as TextBox;
-            if ((sender as TextBox).Name == "tb_amount")
-                SectionData.InputJustNumber(ref txb);
-        }
     } 
 }

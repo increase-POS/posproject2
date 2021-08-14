@@ -37,6 +37,7 @@ namespace POS.View.windows
         /// <param name="e"></param>
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            SectionData.StartAwait(grid_mainGrid);
             allItems = (await itemModel.GetAllItems()).Where(x => x.isActive == 1).ToList();
 
             foreach (var item in selectedItems)
@@ -56,6 +57,7 @@ namespace POS.View.windows
             lst_selectedItems.SelectedValuePath = "itemId";
             lst_allItems.DisplayMemberPath = "name";
             lst_selectedItems.DisplayMemberPath = "name";
+            SectionData.EndAwait(grid_mainGrid,this);
         }
         private void HandleKeyPress(object sender, KeyEventArgs e)
         { 

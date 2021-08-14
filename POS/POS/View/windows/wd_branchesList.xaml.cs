@@ -58,6 +58,7 @@ namespace POS.View.windows
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
+            SectionData.StartAwait(grid_mainGrid);
             if (MainWindow.lang.Equals("en"))
             { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly()); grid_branchList.FlowDirection = FlowDirection.LeftToRight; }
             else
@@ -113,6 +114,7 @@ namespace POS.View.windows
             dg_allStores.SelectedValuePath = "branchId";
             dg_allStores.DisplayMemberPath = "name";
           
+            SectionData.EndAwait(grid_mainGrid,this);
         }
 
         private void translat()

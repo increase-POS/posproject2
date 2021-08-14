@@ -382,7 +382,6 @@ namespace POS
         {
             MainWindow.mainWindow.prg_awaitRing.IsActive = true;
             MainWindow.mainWindow.grid_main.IsEnabled = false;
-            
             MainWindow.mainWindow.grid_main.Opacity = 0.6;
         }
         public void EndAwait()

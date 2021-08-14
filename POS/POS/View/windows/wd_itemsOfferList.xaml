@@ -112,7 +112,7 @@
                     <RowDefinition Height="45"/>
                 </Grid.RowDefinitions>
 
-                <Grid   Width="225"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0">
+                <Grid  x:Name="grid_mainGrid" Width="225"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0">
                     <TextBox   Width="225"  x:Name="txb_searchitems"  TextChanged="Txb_searchitems_TextChanged"
                         Padding="10,0,5,0" BorderBrush="{x:Null}"
                           materialDesign:HintAssist.Hint="Enter Here To Start Search ...."  

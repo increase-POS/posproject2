@@ -48,7 +48,7 @@
         </Grid>
         <Border BorderThickness="1,0,1,1"  Grid.Row="1"
                     CornerRadius="0,0,7,7" BorderBrush="#999999"  Background="White">
-            <Grid  Margin="5" >
+            <Grid  Margin="5" x:Name="grid_mainGrid"  >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>

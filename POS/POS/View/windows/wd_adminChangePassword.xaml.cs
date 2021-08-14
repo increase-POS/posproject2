@@ -39,7 +39,8 @@ namespace POS.View.windows
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
-
+            SectionData.StartAwait(grid_mainGrid);
+            
             #region translate
 
             if (MainWindow.lang.Equals("en"))
@@ -57,6 +58,7 @@ namespace POS.View.windows
             #endregion
 
             fillUsers();
+            SectionData.EndAwait(grid_mainGrid,this);
         }
 
         private async void fillUsers()

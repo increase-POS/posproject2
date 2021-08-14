@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.IO;
+using POS.Classes;
 
 namespace POS.View.windows
 {
@@ -25,12 +26,14 @@ namespace POS.View.windows
             InitializeComponent();
         }
         public string pdfPath;
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            SectionData.StartAwait(grid_mainGrid);
             translate();
             wb_pdfWebViewer.Navigate(new Uri(pdfPath));
+            SectionData.EndAwait(grid_mainGrid, this);
 
-          
         }
         private void translate()
         {

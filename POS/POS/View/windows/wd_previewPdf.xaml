@@ -72,10 +72,13 @@
         </Grid>
         <Border BorderThickness="1,0,1,1"  Grid.Row="1"
                     CornerRadius="0,0,7,7" BorderBrush="#999999"  Background="White">
+            <Grid x:Name="grid_mainGrid" >
+                
             <ScrollViewer  VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
                           ScrollViewer.CanContentScroll="True" Margin="10"  >
                 <WebBrowser   x:Name="wb_pdfWebViewer"  />
             </ScrollViewer>
+            </Grid>
         </Border>
     </Grid>
 </Window>

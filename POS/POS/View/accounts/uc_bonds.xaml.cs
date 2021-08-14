@@ -171,76 +171,90 @@ namespace POS.View.accounts
         {//pay
             if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
-
-            //chk empty payment type
-            SectionData.validateEmptyComboBox(cb_paymentProcessType, p_errorpaymentProcessType, tt_errorpaymentProcessType, "trErrorEmptyPaymentTypeToolTip");
-            //chk empty card 
-            if (cb_card.IsVisible)
-                SectionData.validateEmptyComboBox(cb_card, p_errorCard, tt_errorCard, "trEmptyCardTooltip");
-            else
-                SectionData.clearComboBoxValidate(cb_card, p_errorCard);
-
-            if ((!cb_paymentProcessType.Text.Equals("")) &&
-                  (((cb_card.IsVisible) && (!cb_card.Text.Equals(""))) || (!cb_card.IsVisible)))
-            {
-                //update bond
-                //bond.deserveDate = dp_deservecDate.SelectedDate.Value;
-                bond.isRecieved = 1;
-
-                string s = await bondModel.Save(bond);
-
-                if (!s.Equals("0"))
+                #region validate
+                //chk empty payment type
+                SectionData.validateEmptyComboBox(cb_paymentProcessType, p_errorpaymentProcessType, tt_errorpaymentProcessType, "trErrorEmptyPaymentTypeToolTip");
+                //chk empty card 
+                if (cb_card.IsVisible)
+                    SectionData.validateEmptyComboBox(cb_card, p_errorCard, tt_errorCard, "trEmptyCardTooltip");
+                else
+                    SectionData.clearComboBoxValidate(cb_card, p_errorCard);
+                //chk empty payment type
+                SectionData.validateEmptyComboBox(cb_paymentProcessType, p_errorpaymentProcessType, tt_errorpaymentProcessType, "trErrorEmptyPaymentTypeToolTip");
+                //chk enough money
+                bool enoughMoney = true;
+                if ((!cb_paymentProcessType.Text.Equals("")) && (cb_paymentProcessType.SelectedValue.ToString().Equals("cash")) && 
+                    (bond.type.Equals("p")) && (!await chkEnoughBalance(decimal.Parse(tb_amount.Text))))
                 {
-                    //save new cashtransfer
-                    CashTransfer cash = new CashTransfer();
+                    enoughMoney = false;
+                    SectionData.showTextBoxValidate(tb_amount, p_errorAmount, tt_errorAmount, "trPopNotEnoughBalance");
+                }
+                #endregion
 
-                    cash.transType = bond.type;
-                    cash.posId = MainWindow.posID.Value;
-                    //cash.transNum = await SectionData.generateNumber(char.Parse(bond.type), "bnd");
-                    cash.transNum = await cashModel.generateDocNumber(bond.type + "bnd");
-                    cash.cash = decimal.Parse(tb_amount.Text);
-                    cash.notes = tb_note.Text;
-                    cash.createUserId = MainWindow.userID;
-                    cash.side = "bnd";
-                    cash.docNum = tb_number.Text;
-                    cash.processType = cb_paymentProcessType.SelectedValue.ToString();
-                    cash.bondId = bond.bondId;
+                if ((!cb_paymentProcessType.Text.Equals("")) &&
+                    (((cb_card.IsVisible) && (!cb_card.Text.Equals(""))) || (!cb_card.IsVisible)) &&
+                    enoughMoney)
+                {
+                    //update bond
+                    //bond.deserveDate = dp_deservecDate.SelectedDate.Value;
+                    bond.isRecieved = 1;
 
-                    if (cb_depositorV.IsVisible)
-                        cash.agentId = Convert.ToInt32(cb_depositorV.SelectedValue);
-
-                    if (cb_depositorC.IsVisible)
-                        cash.agentId = Convert.ToInt32(cb_depositorC.SelectedValue);
-
-                    if (cb_depositorU.IsVisible)
-                        cash.userId = Convert.ToInt32(cb_depositorU.SelectedValue);
-
-                    if (cb_paymentProcessType.SelectedValue.ToString().Equals("card"))
-                        cash.cardId = Convert.ToInt32(cb_card.SelectedValue);
-
-                    s = await cashModel.Save(cash);
-                    //MessageBox.Show(cash.bondId.ToString()+"-"+s);
+                    string s = await bondModel.Save(bond);
 
                     if (!s.Equals("0"))
                     {
-                        if (cb_paymentProcessType.SelectedValue.ToString().Equals("cash"))
-                            calcBalance(bond.type ,cash.cash.Value);
-                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
-                        Btn_clear_Click(null, null);
+                        //save new cashtransfer
+                        CashTransfer cash = new CashTransfer();
 
-                        await RefreshBondsList();
-                        Tb_search_TextChanged(null, null);
+                        cash.transType = bond.type;
+                        cash.posId = MainWindow.posID.Value;
+                        //cash.transNum = await SectionData.generateNumber(char.Parse(bond.type), "bnd");
+                        cash.transNum = await cashModel.generateDocNumber(bond.type + "bnd");
+                        cash.cash = decimal.Parse(tb_amount.Text);
+                        cash.notes = tb_note.Text;
+                        cash.createUserId = MainWindow.userID;
+                        cash.side = "bnd";
+                        cash.docNum = tb_number.Text;
+                        cash.processType = cb_paymentProcessType.SelectedValue.ToString();
+                        cash.bondId = bond.bondId;
+
+                        if (cb_depositorV.IsVisible)
+                            cash.agentId = Convert.ToInt32(cb_depositorV.SelectedValue);
+
+                        if (cb_depositorC.IsVisible)
+                            cash.agentId = Convert.ToInt32(cb_depositorC.SelectedValue);
+
+                        if (cb_depositorU.IsVisible)
+                            cash.userId = Convert.ToInt32(cb_depositorU.SelectedValue);
+
+                        if (cb_paymentProcessType.SelectedValue.ToString().Equals("card"))
+                            cash.cardId = Convert.ToInt32(cb_card.SelectedValue);
+
+                        s = await cashModel.Save(cash);
+
+                        if (!s.Equals("0"))
+                        {
+                            if (cb_paymentProcessType.SelectedValue.ToString().Equals("cash"))
+                                calcBalance(bond.type, cash.cash.Value);
+
+                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+
+                            Btn_clear_Click(null, null);
+
+                            await RefreshBondsList();
+                            Tb_search_TextChanged(null, null);
+                        }
+                        //else
+                        //    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                     }
-                    //else
-                    //    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    else
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                 }
-                else
-                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-            }
             }
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
+
         Pos posModel = new Pos();
         private async void calcBalance(string _type , decimal ammount)
         {//balance for pos
@@ -253,6 +267,15 @@ namespace POS.View.accounts
                 pos.balance += ammount;
 
             s = await pos.savePos(pos);
+        }
+
+        private async Task<bool> chkEnoughBalance(decimal ammount)
+        {
+            Pos pos = await posModel.getPosById(MainWindow.posID.Value);
+            if (pos.balance.Value >= ammount)
+            { return true;  }
+            else { return false;  }
+            
         }
 
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)

@@ -111,6 +111,7 @@ namespace POS.View.windows
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
+            SectionData.StartAwait(grid_mainGrid);
 
             #region translate
             if (MainWindow.lang.Equals("en"))
@@ -138,6 +139,7 @@ namespace POS.View.windows
             }
 
                 Keyboard.Focus(tb_name);
+            SectionData.EndAwait(grid_mainGrid,this);
         }
 
         private async Task getImg()

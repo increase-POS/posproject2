@@ -56,6 +56,7 @@ namespace POS.View.windows
         }
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            SectionData.StartAwait(grid_mainGrid);
             if (MainWindow.lang.Equals("en"))
             {
                 MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
@@ -68,6 +69,7 @@ namespace POS.View.windows
             }
             txt_title.Text = title;
             await refreshInventories();
+            SectionData.EndAwait(grid_mainGrid,this);
 
         }
         private async Task refreshInventories()

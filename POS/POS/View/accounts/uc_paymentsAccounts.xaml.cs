@@ -460,7 +460,8 @@ namespace POS.View.accounts
                      (((dp_docDate.IsVisible) && (!dp_docDate.Text.Equals(""))) || (!dp_docDate.IsVisible)) &&
                      (((cb_card.IsVisible) && (!cb_card.Text.Equals(""))) || (!cb_card.IsVisible)) &&
                      (((tb_docNumCard.IsVisible) && (!tb_docNumCard.Text.Equals(""))) || (!tb_docNumCard.IsVisible)) &&
-                     await chkEnoughBalance(decimal.Parse(tb_cash.Text))
+                    ( await chkEnoughBalance(decimal.Parse(tb_cash.Text)) && (cb_paymentProcessType.SelectedValue.ToString() == "cash") ||
+                   (cb_paymentProcessType.SelectedValue.ToString() != "cash"))
                      )
                 {
                     string recipient = cb_depositTo.SelectedValue.ToString();

@@ -42,6 +42,7 @@ namespace POS.View.windows
         public string invType ;
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
+            SectionData.StartAwait(grid_mainGrid);
             //MessageBox.Show(agentId.ToString());
             #region translate
             if (MainWindow.lang.Equals("en"))
@@ -74,6 +75,7 @@ namespace POS.View.windows
             lst_selectedInvoices.ItemsSource = selectedInvoices;
             lst_selectedInvoices.SelectedValuePath = "invNumber";
             lst_selectedInvoices.DisplayMemberPath = "invoiceId";
+            SectionData.EndAwait(grid_mainGrid,this);
         }
 
         private void translat()

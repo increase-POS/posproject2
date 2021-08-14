@@ -49,7 +49,7 @@ namespace POS.View.windows
         /// <param name="e"></param>
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
-
+            SectionData.StartAwait(grid_mainGrid);
             #region translate
             if (MainWindow.lang.Equals("en"))
             { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
@@ -87,6 +87,7 @@ namespace POS.View.windows
             lst_selectedUsers.ItemsSource = selectedUsers;
             lst_selectedUsers.SelectedValuePath = "fullName";
             lst_selectedUsers.DisplayMemberPath = "userId";
+            SectionData.EndAwait(grid_mainGrid,this);
         }
 
         private void translat()

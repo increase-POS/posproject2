@@ -69,23 +69,24 @@ namespace POS.View
         {
             bool loadWindow = false;
             if (!SectionData.isAdminPermision())
-                foreach (Button button in FindControls.FindVisualChildren<Button>(this))
+                foreach (Border border in FindControls.FindVisualChildren<Border>(this))
                 {
-                    if (button.Tag != null)
-                        if (MainWindow.groupObject.HasPermission(button.Tag.ToString(), MainWindow.groupObjects))
+                    if (border.Tag != null)
+                        if (MainWindow.groupObject.HasPermission(border.Tag.ToString(), MainWindow.groupObjects))
 
                         {
-                            button.Visibility = Visibility.Visible;
+                            border.Visibility = Visibility.Visible;
                             if (!loadWindow)
                             {
+                                Button button = FindControls.FindVisualChildren<Button>(this).Where(x => x.Name == "btn_" + border.Tag).FirstOrDefault();
                                 button.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
                                 loadWindow = true;
                             }
                         }
-                        else button.Visibility = Visibility.Collapsed;
+                        else border.Visibility = Visibility.Collapsed;
                 }
             else
-           btn_payInvoice_Click(btn_payInvoice, null);
+                btn_payInvoice_Click(btn_payInvoice, null);
         }
         void refreashBackground()
         {

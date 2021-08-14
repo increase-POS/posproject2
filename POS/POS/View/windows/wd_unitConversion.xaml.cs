@@ -242,6 +242,8 @@ namespace POS.View.windows
         }
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            SectionData.StartAwait(grid_mainGrid);
+
             if (MainWindow.lang.Equals("en"))
             {
                 MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
@@ -254,6 +256,7 @@ namespace POS.View.windows
             translate();
 
             fillItemCombo();
+            SectionData.EndAwait(grid_mainGrid,this);
         }
         private void translate()
         {
@@ -270,10 +273,10 @@ namespace POS.View.windows
         }
         async Task<IEnumerable<Item>> RefrishItems()
         {
-            MainWindow.mainWindow.StartAwait();
+            SectionData.StartAwait(grid_mainGrid);
             items = await item.GetItemsWichHasUnits();
 
-            MainWindow.mainWindow.EndAwait();
+            SectionData.EndAwait(grid_mainGrid,this);
             return items;
         }
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)

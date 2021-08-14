@@ -22,7 +22,7 @@
                 <!--<RowDefinition Height="1.2*"/>-->
             </Grid.RowDefinitions>
 
-            <Border BorderThickness="0"  Height="auto"  Grid.Column="0" Grid.ColumnSpan="2" Margin="10,0,5,0"
+            <Border BorderThickness="0"  Height="auto"  Grid.Column="0"  Margin="10,0,5,0"
                     CornerRadius="7" BorderBrush="Black" Background="White" Padding="0">
                 <StackPanel  Orientation="Horizontal" Margin="5,0">
 
@@ -206,7 +206,7 @@
 
                 </StackPanel>
             </Border>
-            <Border BorderThickness="0"   Grid.Column="2"  
+            <Border BorderThickness="0"   Grid.Column="1"   Grid.ColumnSpan="2"
                     CornerRadius="7" BorderBrush="Black" Background="White" Padding="0" Margin="10,0,5,0">
                 <DockPanel   Margin="10,0" LastChildFill="False">
 

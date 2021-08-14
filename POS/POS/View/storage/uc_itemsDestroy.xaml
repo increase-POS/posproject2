@@ -459,7 +459,7 @@
                             <TextBox Visibility="Visible" x:Name="tb_amount" Grid.Row="4" Text="{Binding amountDestroyed, Mode=OneWay}" Padding="10,0,5,0"                               Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Amount Destroyed..."    
                                      Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
-                                    BorderBrush="AliceBlue"  TextChanged="Tb_amount_TextChanged"
+                                    BorderBrush="AliceBlue"  
                                          PreviewTextInput="NumberValidationTextBox"  PreviewKeyDown="space_PreviewKeyDown"
                                     MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                     Height="40"   Margin="10,5,10,5" Grid.ColumnSpan="2" LostFocus="input_LostFocus" />
@@ -585,7 +585,7 @@
 
                     <Button x:Name="btn_destroy" TabIndex="10" 
                           Background="#4E4E4E" BorderBrush="{x:Null}"
-                    Margin="6,0,6,10" Click="Btn_destroy_Click" Content="Destructive " VerticalAlignment="Bottom">
+                    Margin="5,5,5,10" Click="Btn_destroy_Click" Content="Destructive " VerticalAlignment="Bottom">
 
                     </Button>
 

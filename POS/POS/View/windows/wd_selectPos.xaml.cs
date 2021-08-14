@@ -41,6 +41,7 @@ namespace POS.View.windows
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
+            SectionData.StartAwait(grid_mainGrid);
 
             #region translate
 
@@ -59,6 +60,7 @@ namespace POS.View.windows
             #endregion
 
             fillBranch();
+            SectionData.EndAwait(grid_mainGrid,this);
         }
 
         private async void fillBranch()

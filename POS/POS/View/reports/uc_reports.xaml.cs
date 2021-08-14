@@ -68,13 +68,27 @@ namespace POS.View.reports
         }
         void permission()
         {
-            foreach (Button button in FindControls.FindVisualChildren<Button>(this))
-            {
-                if (button.Tag != null)
-                    if (MainWindow.groupObject.HasPermission(button.Tag.ToString(), MainWindow.groupObjects))
-                        button.Visibility = Visibility.Visible;
-                    else button.Visibility = Visibility.Collapsed;
-            }
+            bool loadWindow = false;
+            if (!SectionData.isAdminPermision())
+                foreach (Border border in FindControls.FindVisualChildren<Border>(this))
+                {
+                    if (border.Tag != null)
+                        if (MainWindow.groupObject.HasPermission(border.Tag.ToString(), MainWindow.groupObjects))
+
+                        {
+                            border.Visibility = Visibility.Visible;
+                            if (!loadWindow)
+                            {
+                                Button button = FindControls.FindVisualChildren<Button>(this).Where(x => x.Name == "btn_" + border.Tag).FirstOrDefault();
+                                button.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                                loadWindow = true;
+                            }
+                        }
+                        else border.Visibility = Visibility.Collapsed;
+                }
+            else
+                btn_salesReports_Click(null, null);
+
         }
 
         public void refreashBackground()
@@ -140,7 +154,5 @@ namespace POS.View.reports
             grid_main.Children.Clear();
             grid_main.Children.Add(uc_usersReport.Instance);
         }
-
- 
     }
 }
