@@ -657,8 +657,8 @@
           <PrintOnLastPage>true</PrintOnLastPage>
           <ReportItems>
             <Image Name="Logo">
-              <Source>Embedded</Source>
-              <Value>logo</Value>
+              <Source>External</Source>
+              <Value>=Parameters!company_logo_img.Value</Value>
               <Sizing>FitProportional</Sizing>
               <Top>0.68882cm</Top>
               <Left>1.46cm</Left>

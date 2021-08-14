@@ -984,21 +984,43 @@ namespace POS.View.accounts
             //cb_recipient.SelectedIndex = -1;
         }
 
-        private async void Btn_printInvoice_Click(object sender, RoutedEventArgs e)
+        private  void Btn_printInvoice_Click(object sender, RoutedEventArgs e)
         {
             if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
 
+                if (cashtrans.cashTransId > 0)
+                {
+                    string addpath;
+                    bool isArabic = ReportCls.checkLang();
+                    if (isArabic)
+                    {
+                        addpath = @"\Reports\Account\Ar\ArReciveReport.rdlc";
+                    }
+                    else
+                    {
+                        addpath = @"\Reports\Account\En\ReciveReport.rdlc";
+                    }
 
-           
-            Agent ag = new Agent();
-            ag = await ag.getAgentById(119);
-            MessageBox.Show(ag.balance.ToString()+" "+ag.address);
-            ag.balance = 5000;
-            ag.address = "halabb";
-            string msg = await ag.saveAgent(ag);
-            MessageBox.Show(ag.balance.ToString() + " " + ag.address);
-            MessageBox.Show(msg);
+                    string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+                    //    int cashId = Int32.Parse(s);
+                    //MessageBox.Show(s);
+                    rep.ReportPath = reppath;
+                    rep.DataSources.Clear();
+                    rep.EnableExternalImages = true;
+                    rep.SetParameters(reportclass.fillPayReport(cashtrans));
+
+                    rep.Refresh();
+                    try
+                    {
+                     LocalReportExtensions.PrintToPrinter(rep);
+                    }
+                    catch
+                    {
+
+                    }
+                   
+                }
             }
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -1038,57 +1060,122 @@ namespace POS.View.accounts
 
         private void Btn_preview_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+            try
             {
+                if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+                {
+                    //
 
+                    Window.GetWindow(this).Opacity = 0.2;
+
+
+
+                    string pdfpath;
+                    pdfpath = @"\Thumb\report\temp.pdf";
+                    pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
+
+                    //
+                    if (cashtrans.cashTransId > 0)
+                    {
+                        string addpath;
+                        bool isArabic = ReportCls.checkLang();
+                        if (isArabic)
+                        {
+                            addpath = @"\Reports\Account\Ar\ArReciveReport.rdlc";
+                        }
+                        else
+                        {
+                            addpath = @"\Reports\Account\En\ReciveReport.rdlc";
+                        }
+
+                        string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+                        //    int cashId = Int32.Parse(s);
+                        //MessageBox.Show(s);
+                        rep.ReportPath = reppath;
+                        rep.DataSources.Clear();
+                        rep.EnableExternalImages = true;
+                        rep.SetParameters(reportclass.fillPayReport(cashtrans));
+
+                        rep.Refresh();
+
+                        LocalReportExtensions.ExportToPDF(rep, pdfpath);
+                        wd_previewPdf w = new wd_previewPdf();
+                        w.pdfPath = pdfpath;
+                        if (!string.IsNullOrEmpty(w.pdfPath))
+                        {
+                            w.ShowDialog();
+
+                            w.wb_pdfWebViewer.Dispose();
+
+
+                        }
+                        else
+                            Toaster.ShowError(Window.GetWindow(this), message: "", animation: ToasterAnimation.FadeIn);
+                        Window.GetWindow(this).Opacity = 1;
+
+
+                    }
+
+
+
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+            }catch{
 
             }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-        }
+            }
 
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+            try
             {
-
-                if (cashtrans.cashTransId > 0)
+                if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
-                    string addpath;
-                    bool isArabic = ReportCls.checkLang();
-                    if (isArabic)
+
+                    if (cashtrans.cashTransId > 0)
                     {
-                        addpath = @"\Reports\Account\Ar\ArReciveReport.rdlc";
-                    }
-                    else
-                    {
-                        addpath = @"\Reports\Account\En\ReciveReport.rdlc";
-                    }
+                        string addpath;
+                        bool isArabic = ReportCls.checkLang();
+                        if (isArabic)
+                        {
+                            addpath = @"\Reports\Account\Ar\ArReciveReport.rdlc";
+                        }
+                        else
+                        {
+                            addpath = @"\Reports\Account\En\ReciveReport.rdlc";
+                        }
 
-                    string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-                //    int cashId = Int32.Parse(s);
-                    //MessageBox.Show(s);
-                    rep.ReportPath = reppath;
-                    rep.DataSources.Clear();
-                    rep.EnableExternalImages = true;
-                    rep.SetParameters(reportclass.fillPayReport(cashtrans));
+                        string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+                        //    int cashId = Int32.Parse(s);
+                        //MessageBox.Show(s);
+                        rep.ReportPath = reppath;
+                        rep.DataSources.Clear();
+                        rep.EnableExternalImages = true;
+                        rep.SetParameters(reportclass.fillPayReport(cashtrans));
 
-                    rep.Refresh();
+                        rep.Refresh();
 
-                    saveFileDialog.Filter = "PDF|*.pdf;";
+                        saveFileDialog.Filter = "PDF|*.pdf;";
 
-                    if (saveFileDialog.ShowDialog() == true)
-                    {
-                        string filepath = saveFileDialog.FileName;
-                        try { LocalReportExtensions.ExportToPDF(rep, filepath); }
-                        catch { }
+                        if (saveFileDialog.ShowDialog() == true)
+                        {
+                            string filepath = saveFileDialog.FileName;
+                            try { LocalReportExtensions.ExportToPDF(rep, filepath); }
+                            catch { }
 
+                        }
                     }
                 }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+
             }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-        }
+            catch
+            {
+
+            }
+           }
 
         private void Cb_depositorV_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

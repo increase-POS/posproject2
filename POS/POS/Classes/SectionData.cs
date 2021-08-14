@@ -1,4 +1,5 @@
 ﻿using MaterialDesignThemes.Wpf;
+using netoaster;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -698,5 +699,14 @@ namespace POS.Classes
                 txb.Focus();
             }
         }
+        static public void ExceptionMessage(Exception ex)
+        {
+            if (ex.HResult == -2146233088)
+                Toaster.ShowWarning(MainWindow.mainWindow, message: MainWindow.resourcemanager.GetString("trNoInternetConnection"), animation: ToasterAnimation.FadeIn);
+            else
+                Toaster.ShowWarning(MainWindow.mainWindow, message: ex.HResult + " || " + ex.Message, animation: ToasterAnimation.FadeIn);
+        }
+
+        
     }
 }

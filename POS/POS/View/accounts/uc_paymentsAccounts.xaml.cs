@@ -1058,45 +1058,53 @@ namespace POS.View.accounts
          
         private  void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+            try
             {
-                if (cashtrans.cashTransId > 0 )
-            {
-                    string addpath;
-                    bool isArabic = ReportCls.checkLang();
-                    if (isArabic)
+                if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+                {
+                    if (cashtrans.cashTransId > 0)
                     {
-                        addpath = @"\Reports\Account\Ar\ArPayReport.rdlc";
-                    }
-                    else
-                    {
-                       addpath = @"\Reports\Account\En\PayReport.rdlc";
-                    }
-                       
-            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-                int cashId = Int32.Parse(s);
-                //MessageBox.Show(s);
-                rep.ReportPath = reppath;
-                rep.DataSources.Clear();
-                rep.EnableExternalImages = true;
-                rep.SetParameters(reportclass.fillPayReport(cashtrans));
-             
-            rep.Refresh();
+                        string addpath;
+                        bool isArabic = ReportCls.checkLang();
+                        if (isArabic)
+                        {
+                            addpath = @"\Reports\Account\Ar\ArPayReport.rdlc";
+                        }
+                        else
+                        {
+                            addpath = @"\Reports\Account\En\PayReport.rdlc";
+                        }
 
-            saveFileDialog.Filter = "PDF|*.pdf;";
+                        string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+                        int cashId = Int32.Parse(s);
+                        //MessageBox.Show(s);
+                        rep.ReportPath = reppath;
+                        rep.DataSources.Clear();
+                        rep.EnableExternalImages = true;
+                        rep.SetParameters(reportclass.fillPayReport(cashtrans));
 
-            if (saveFileDialog.ShowDialog() == true)
+                        rep.Refresh();
+
+                        saveFileDialog.Filter = "PDF|*.pdf;";
+
+                        if (saveFileDialog.ShowDialog() == true)
+                        {
+                            string filepath = saveFileDialog.FileName;
+                            try { LocalReportExtensions.ExportToPDF(rep, filepath); }
+                            catch { }
+
+                        }
+                    }
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+
+            }
+            catch
             {
-                string filepath = saveFileDialog.FileName;
-                    try { LocalReportExtensions.ExportToPDF(rep, filepath); }
-                    catch { }
-               
+
             }
-        }
-            }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
-        }
+             }
 
 
         private void Btn_print_pay_Click(object sender, RoutedEventArgs e)
@@ -1134,33 +1142,77 @@ namespace POS.View.accounts
                 Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
         }
 
-        private async void Btn_preview_Click(object sender, RoutedEventArgs e)
+        private  void Btn_preview_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+            try
             {
-                //Pos p = await posModel.getPosById(53);
 
-                //p.balance = 100000;
 
-                //await posModel.savePos(p);
-                Bonds bond = new Bonds();
-            bond.number = "xxx";
-            bond.amount = 1000;
-     
-          //  bond.deserveDate = dp_docDate.SelectedDate.Value;
-            bond.type = "p";
-            bond.isRecieved = 0;
-            bond.createUserId = MainWindow.userID.Value;
-            bond.cashTransId = 127;
+                if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+                {
 
-            string s = await bondModel.Save(bond);
-            MessageBox.Show(s.ToString());
-                //saveBond("xxx", 1000 , dp_docDate.SelectedDate.Value, "p", 127);
+
+                    Window.GetWindow(this).Opacity = 0.2;
+
+
+
+                    string pdfpath;
+                    pdfpath = @"\Thumb\report\temp.pdf";
+                    pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
+
+                    //
+                    if (cashtrans.cashTransId > 0)
+                    {
+                        string addpath;
+                        bool isArabic = ReportCls.checkLang();
+                        if (isArabic)
+                        {
+                            addpath = @"\Reports\Account\Ar\ArPayReport.rdlc";
+                        }
+                        else
+                        {
+                            addpath = @"\Reports\Account\En\PayReport.rdlc";
+                        }
+
+                        string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+                        //    int cashId = Int32.Parse(s);
+                        //MessageBox.Show(s);
+                        rep.ReportPath = reppath;
+                        rep.DataSources.Clear();
+                        rep.EnableExternalImages = true;
+                        rep.SetParameters(reportclass.fillPayReport(cashtrans));
+
+                        rep.Refresh();
+
+                        LocalReportExtensions.ExportToPDF(rep, pdfpath);
+                        wd_previewPdf w = new wd_previewPdf();
+                        w.pdfPath = pdfpath;
+                        if (!string.IsNullOrEmpty(w.pdfPath))
+                        {
+                            w.ShowDialog();
+
+                            w.wb_pdfWebViewer.Dispose();
+
+
+                        }
+                        else
+                            Toaster.ShowError(Window.GetWindow(this), message: "", animation: ToasterAnimation.FadeIn);
+                        Window.GetWindow(this).Opacity = 1;
+
+
+                    }
+
+
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
 
             }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
-        }
+            catch
+            {
+
+            }
+            }
 
        
         private void Btn_invoices_Click(object sender, RoutedEventArgs e)

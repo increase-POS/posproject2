@@ -176,7 +176,7 @@ namespace POS.Classes
             string company_phone = MainWindow.Phone;
             string company_fax = MainWindow.Fax;
             string company_email = MainWindow.Email;
-            string company_logo_img = GetLogoImagePath();
+         //   string company_logo_img = GetLogoImagePath();
             string amount = cashtrans.cash.ToString();
             string voucher_num = cashtrans.transNum.ToString();
             string type = "";
@@ -192,7 +192,7 @@ namespace POS.Classes
             string user_name = cashtrans.createUserName + " " + cashtrans.createUserLName;
             string job = "Employee"; //cashtrans.createUserJob;
             string pay_to;
-
+          
             if (cashtrans.side == "u")
             {
                 pay_to = cashtrans.usersName + " " + cashtrans.usersLName;
@@ -201,6 +201,10 @@ namespace POS.Classes
             else if (cashtrans.side == "v" || cashtrans.side == "c")
             {
                 pay_to = cashtrans.agentName;
+            }
+            else if (cashtrans.side == "sh" )
+            {
+                pay_to = cashtrans.shippingCompanyName;
             }
             else
             {
@@ -271,7 +275,7 @@ namespace POS.Classes
             paramarr.Add(new ReportParameter("company_phone", company_phone));
             paramarr.Add(new ReportParameter("company_fax", company_fax));
             paramarr.Add(new ReportParameter("company_email", company_email));
-            paramarr.Add(new ReportParameter("company_logo_img", company_logo_img));
+            paramarr.Add(new ReportParameter("company_logo_img", "file:\\" + GetLogoImagePath()));
             paramarr.Add(new ReportParameter("amount", amount));
             paramarr.Add(new ReportParameter("voucher_num", voucher_num));
             paramarr.Add(new ReportParameter("type", type));

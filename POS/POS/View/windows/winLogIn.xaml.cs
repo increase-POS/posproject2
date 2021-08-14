@@ -74,11 +74,16 @@ namespace POS.View.windows
             {
                 resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
                 grid_logs.FlowDirection = FlowDirection.LeftToRight;
+                bdr_imageAr.Visibility = Visibility.Hidden;
+                bdr_image.Visibility = Visibility.Visible;
             }
             else
             {
                 resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
                 grid_logs.FlowDirection = FlowDirection.RightToLeft;
+                bdr_imageAr.Visibility = Visibility.Visible;
+                bdr_image.Visibility = Visibility.Hidden;
+               
             }
           
             if (txtUserName.Text.Equals(""))

@@ -770,10 +770,20 @@ namespace POS.View
 
         async Task<IEnumerable<User>> RefreshUsersList()
         {
-            MainWindow.mainWindow.StartAwait();
-            users = await userModel.GetUsersAsync();
-            MainWindow.mainWindow.EndAwait();
-            return users;
+            try
+            {
+                MainWindow.mainWindow.StartAwait();
+                users = await userModel.GetUsersAsync();
+                MainWindow.mainWindow.EndAwait();
+                return users;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+                MainWindow.mainWindow.EndAwait();
+                return users;
+            }
+
         }
         void RefreshUserView()
         {
