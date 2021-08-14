@@ -134,7 +134,7 @@
                 </Border>
                 <Border Visibility="Hidden" x:Name="bdr_imageAr" FlowDirection="LeftToRight"  CornerRadius="10,0,0,10">
                     <Border.Background>
-                        <ImageBrush x:Name="img_Ar"  Stretch="Fill"  ImageSource="/pic/increase-login-bg-rtl (2).png"/>
+                        <ImageBrush x:Name="img_Ar"  Stretch="Fill"  ImageSource="/pic/increase-login-bg-rtl.png"/>
                     </Border.Background>
                 </Border>
             </Grid>

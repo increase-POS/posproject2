@@ -1092,6 +1092,7 @@
     <Resource Include="pic\increaseLogo.ico" />
     <Resource Include="pic\increase-login-bg.png" />
     <Resource Include="EmailTemplates\images\image-2.gif" />
+    <Resource Include="pic\increase-login-bg-rtl.png" />
     <Content Include="SqlServerTypes\readme.htm" />
     <Content Include="SqlServerTypes\x64\msvcr120.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
