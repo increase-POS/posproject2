@@ -168,6 +168,7 @@ namespace POS.View
             //MainWindow.mainWindow.RemoveHandler(HandleKeyPress);
             MainWindow.mainWindow.KeyDown += HandleKeyPress;
             tb_moneyIcon.Text = MainWindow.Currency;
+            tb_moneyIconTotal.Text = MainWindow.Currency;
             //var window = Window.GetWindow(this);
             //window.KeyDown -= HandleKeyPress;
             //window.KeyDown += HandleKeyPress;
@@ -684,8 +685,8 @@ namespace POS.View
             tb_discount.Clear();
             tb_taxValue.Clear();
             billDetails.Clear();
-            tb_total.Text = "";
-            tb_sum.Text = null;
+            tb_total.Text = "0";
+            tb_sum.Text = "0";
             tb_taxValue.Text = MainWindow.tax.ToString();
 
             TextBox tbStartDate = (TextBox)dp_desrvedDate.Template.FindName("PART_TextBox", dp_desrvedDate);

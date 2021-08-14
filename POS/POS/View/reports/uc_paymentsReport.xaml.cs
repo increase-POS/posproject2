@@ -104,7 +104,6 @@ namespace POS.View.reports
             cb.DisplayMemberPath = "ShippingName";
             cb.ItemsSource = list;
         }
-        IEnumerable<CashTransferSts> searchQuery;
         private List<CashTransferSts> fillList(List<CashTransferSts> payments, ComboBox vendor, ComboBox payType, ComboBox accountant
            , DatePicker startDate, DatePicker endDate)
         {
@@ -139,9 +138,7 @@ namespace POS.View.reports
                        && (endDate.SelectedDate != null ? x.updateDate <= endDate.SelectedDate : true)));
             }
 
-            searchQuery = result;
-            txt_count.Text = result.Count().ToString();
-            
+         
             return result.ToList();
         }
 
@@ -845,6 +842,7 @@ namespace POS.View.reports
             fillPieChart();
             fillColumnChart();
             fillRowChart();
+            txt_count.Text = dgPayments.Items.Count.ToString();
         }
 
         private void fillCustomersEvents()
@@ -853,6 +851,8 @@ namespace POS.View.reports
             fillPieChart();
             fillColumnChart();
             fillRowChart();
+            txt_count.Text = dgPayments.Items.Count.ToString();
+
         }
 
         private void fillUserEvents()
@@ -861,6 +861,8 @@ namespace POS.View.reports
             fillPieChart();
             fillColumnChart();
             fillRowChart();
+            txt_count.Text = dgPayments.Items.Count.ToString();
+
         }
 
         private void fillSalaryEvents()
@@ -869,6 +871,8 @@ namespace POS.View.reports
             fillPieChart();
             fillColumnChart();
             fillRowChart();
+            txt_count.Text = dgPayments.Items.Count.ToString();
+
         }
 
         private void fillGeneralExpensesEvents()
@@ -877,6 +881,8 @@ namespace POS.View.reports
             fillPieChart();
             fillColumnChart();
             fillRowChart();
+            txt_count.Text = dgPayments.Items.Count.ToString();
+
         }
 
         private void fillAdministrativePullEvents()
@@ -885,6 +891,8 @@ namespace POS.View.reports
             fillPieChart();
             fillColumnChart();
             fillRowChart();
+            txt_count.Text = dgPayments.Items.Count.ToString();
+
         }
 
         private void fillShippingEvents()
@@ -893,6 +901,8 @@ namespace POS.View.reports
             fillPieChart();
             fillColumnChart();
             fillRowChart();
+            txt_count.Text = dgPayments.Items.Count.ToString();
+
         }
 
 
@@ -1641,14 +1651,17 @@ namespace POS.View.reports
 
         private void Txt_search_TextChanged(object sender, TextChangedEventArgs e)
         {//search
+
             if ((selectedTab == 0))
             {
                 fillVendorsEvents();
-                var agentQuery = searchQuery.Where(v => v.transNum.ToLower().Contains(txt_search.Text)    
-                                                    //|| v.processType.ToLower().Contains(txt_search.Text) 
-                                                    //|| v.updateUserAcc.ToLower().Contains(txt_search.Text)
-                                                    //|| v.userAcc.ToLower().Contains(txt_search.Text)   
-                                                    //|| v.shippingCompanyName.ToLower().Contains(txt_search.Text)
+                var items = dgPayments.ItemsSource as IEnumerable<CashTransferSts>;
+
+                var agentQuery = items.Where(v => v.transNum.ToLower().Contains(txt_search.Text)
+                                            //|| v.processType.ToLower().Contains(txt_search.Text)
+                                            //|| v.updateUserAcc.ToLower().Contains(txt_search.Text)
+                                            //|| v.userAcc.ToLower().Contains(txt_search.Text)
+                                            //|| v.shippingCompanyName.ToLower().Contains(txt_search.Text)
                                                       );
                 dgPayments.ItemsSource = agentQuery;
                 fillPieChartSearch(agentQuery.ToList());
@@ -1659,11 +1672,13 @@ namespace POS.View.reports
             if ((selectedTab == 1))
             {
                 fillCustomersEvents();
-                var customerQuery = searchQuery.Where(v => v.transNum.ToLower().Contains(txt_search.Text)
-                                                      //|| v.processType.ToLower().Contains(txt_search.Text)
-                                                      //|| v.updateUserAcc.ToLower().Contains(txt_search.Text)
-                                                      //|| v.userAcc.ToLower().Contains(txt_search.Text)
-                                                      //|| v.shippingCompanyName.ToLower().Contains(txt_search.Text)
+                var items = dgPayments.ItemsSource as IEnumerable<CashTransferSts>;
+
+                var customerQuery = items.Where(v => v.transNum.ToLower().Contains(txt_search.Text)
+                                                      || v.processType.ToLower().Contains(txt_search.Text)
+                                                      || v.updateUserAcc.ToLower().Contains(txt_search.Text)
+                                                      || v.userAcc.ToLower().Contains(txt_search.Text)
+                                                      || v.shippingCompanyName.ToLower().Contains(txt_search.Text)
                                                       );
                 dgPayments.ItemsSource = customerQuery;
                 fillPieChartSearch(customerQuery.ToList());
@@ -1671,42 +1686,82 @@ namespace POS.View.reports
                 fillColumnChartSearch(customerQuery.ToList());
                 txt_count.Text = customerQuery.Count().ToString();
             }
-            else if ((selectedTab == 2) || (selectedTab == 3))
+            else if (selectedTab == 2)
             {
-                MessageBox.Show(searchQuery.Count().ToString());
+                fillUserEvents();
+                var items = dgPayments.ItemsSource as IEnumerable<CashTransferSts>;
 
-                var userQuery = searchQuery.Where(v => v.transNum.ToLower().Contains(txt_search.Text)
+                var userQuery = items.Where(v => v.transNum.ToLower().Contains(txt_search.Text)
                                                       //|| v.processType.ToLower().Contains(txt_search.Text) 
                                                       //|| v.updateUserAcc.ToLower().Contains(txt_search.Text)
                                                       //|| v.userAcc.ToLower().Contains(txt_search.Text)
                                                       );
                 dgPayments.ItemsSource = userQuery;
-                //chart?????????????????
+                fillPieChartSearch(userQuery.ToList());
+                fillRowChartSearch(userQuery.ToList());
+                fillColumnChartSearch(userQuery.ToList());
                 txt_count.Text = userQuery.Count().ToString();
             }
-            else if ((selectedTab == 4) || (selectedTab == 5))
+            else if (selectedTab == 3)
             {
-                MessageBox.Show(searchQuery.Count().ToString());
+                fillSalaryEvents();
+                var items = dgPayments.ItemsSource as IEnumerable<CashTransferSts>;
 
-                var query = searchQuery.Where(v => v.transNum.ToLower().Contains(txt_search.Text)
+                var salaryQuery = items.Where(v => v.transNum.ToLower().Contains(txt_search.Text)
+                                                      //|| v.processType.ToLower().Contains(txt_search.Text) 
+                                                      //|| v.updateUserAcc.ToLower().Contains(txt_search.Text)
+                                                      //|| v.userAcc.ToLower().Contains(txt_search.Text)
+                                                      );
+                dgPayments.ItemsSource = salaryQuery;
+                fillPieChartSearch(salaryQuery.ToList());
+                fillRowChartSearch(salaryQuery.ToList());
+                fillColumnChartSearch(salaryQuery.ToList());
+                txt_count.Text = salaryQuery.Count().ToString();
+            }
+            else if (selectedTab == 4)
+            {
+                fillGeneralExpensesEvents();
+                var items = dgPayments.ItemsSource as IEnumerable<CashTransferSts>;
+
+                var generalQuery = items.Where(v => v.transNum.ToLower().Contains(txt_search.Text)
                                                       || v.processType.ToLower().Contains(txt_search.Text) 
                                                       || v.updateUserAcc.ToLower().Contains(txt_search.Text)
                                                       );
-                dgPayments.ItemsSource = query;
-                //chart?????????????????
-                txt_count.Text = query.Count().ToString();
+                dgPayments.ItemsSource = generalQuery;
+                fillPieChartSearch(generalQuery.ToList());
+                fillRowChartSearch(generalQuery.ToList());
+                fillColumnChartSearch(generalQuery.ToList());
+                txt_count.Text = generalQuery.Count().ToString();
+            }
+            else if (selectedTab == 5)
+            {
+                fillAdministrativePullEvents();
+                var items = dgPayments.ItemsSource as IEnumerable<CashTransferSts>;
+
+                var adminQuery = items.Where(v => v.transNum.ToLower().Contains(txt_search.Text)
+                                                      || v.processType.ToLower().Contains(txt_search.Text)
+                                                      || v.updateUserAcc.ToLower().Contains(txt_search.Text)
+                                                      );
+                dgPayments.ItemsSource = adminQuery;
+                fillPieChartSearch(adminQuery.ToList());
+                fillRowChartSearch(adminQuery.ToList());
+                fillColumnChartSearch(adminQuery.ToList());
+                txt_count.Text = adminQuery.Count().ToString();
             }
             else if (selectedTab == 6)
             {
-                MessageBox.Show(searchQuery.Count().ToString());
+                fillShippingEvents();
+                var items = dgPayments.ItemsSource as IEnumerable<CashTransferSts>;
 
-                var comQuery = searchQuery.Where(v => v.transNum.ToLower().Contains(txt_search.Text)
+                var comQuery = items.Where(v => v.transNum.ToLower().Contains(txt_search.Text)
                                                        || v.processType.ToLower().Contains(txt_search.Text)
                                                        || v.updateUserAcc.ToLower().Contains(txt_search.Text)
                                                        || v.shippingCompanyName.ToLower().Contains(txt_search.Text)
                                                        );
                 dgPayments.ItemsSource = comQuery;
-                //chart?????????????????
+                fillPieChartSearch(comQuery.ToList());
+                fillRowChartSearch(comQuery.ToList());
+                fillColumnChartSearch(comQuery.ToList());
                 txt_count.Text = comQuery.Count().ToString();
             }
 

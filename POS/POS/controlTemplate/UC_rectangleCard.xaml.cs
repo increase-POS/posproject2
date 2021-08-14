@@ -72,7 +72,7 @@ namespace POS.controlTemplate
 
             brd_main.Child = gridContainer;
             #endregion
-            if (cardViewitem.language == "ar")
+            if (MainWindow.lang.Equals("en"))
                 grid_main.FlowDirection = FlowDirection.LeftToRight ;
             else grid_main.FlowDirection = FlowDirection.RightToLeft;
             #region   Title
@@ -190,10 +190,10 @@ namespace POS.controlTemplate
                 pathOfferLabel.Stretch = Stretch.Fill;
                 //   Height = "16" Width = "86" 
                 pathOfferLabel.Height = pathOfferLabel.Width = gridContainer.Width / 4.5;
-                //pathOfferLabel.FlowDirection = FlowDirection.LeftToRight;
+                pathOfferLabel.FlowDirection = FlowDirection.LeftToRight;
                 pathOfferLabel.HorizontalAlignment = HorizontalAlignment.Right;
 
-                if (cardViewitem.language == "ar")
+                if (MainWindow.lang.Equals("ar"))
                 {
                     pathOfferLabel.Data = App.Current.Resources["offerLabelArTopLeft"] as Geometry;
                 }
@@ -206,15 +206,15 @@ namespace POS.controlTemplate
                 Path pathOfferLabelText = new Path();
                 Grid.SetColumnSpan(pathOfferLabelText, 2);
                 Grid.SetRowSpan(pathOfferLabelText, 4);
-                //pathOfferLabelText.FlowDirection = FlowDirection.LeftToRight;
+                pathOfferLabelText.FlowDirection = FlowDirection.LeftToRight;
                 pathOfferLabelText.VerticalAlignment = VerticalAlignment.Top;
                 pathOfferLabelText.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFD00"));
                 pathOfferLabelText.Stretch = Stretch.Fill;
                 pathOfferLabelText.HorizontalAlignment = HorizontalAlignment.Right;
-                if (cardViewitem.language == "ar")
+                if (MainWindow.lang.Equals("ar"))
                 {
                     pathOfferLabelText.Height = pathOfferLabelText.Width = gridContainer.Width / 7;
-                    pathOfferLabelText.Margin = new Thickness(4, 4, 0, 0);
+                    pathOfferLabelText.Margin = new Thickness(0,4, 4, 0);
                     pathOfferLabelText.Data = App.Current.Resources["offerLabelArTopLeft_Text"] as Geometry;
                 }
                 else
@@ -276,7 +276,7 @@ namespace POS.controlTemplate
 
             brd_main.Child = gridContainer;
             #endregion
-            if (cardViewitem.language == "ar")
+            if (MainWindow.lang.Equals("en"))
                 grid_main.FlowDirection = FlowDirection.LeftToRight;
             else grid_main.FlowDirection = FlowDirection.RightToLeft;
             #region   Title

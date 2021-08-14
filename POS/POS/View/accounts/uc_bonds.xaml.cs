@@ -223,6 +223,8 @@ namespace POS.View.accounts
 
                     if (!s.Equals("0"))
                     {
+                        if (cb_paymentProcessType.SelectedValue.ToString().Equals("cash"))
+                            calcBalance(bond.type ,cash.cash.Value);
                         Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                         Btn_clear_Click(null, null);
 
@@ -238,6 +240,19 @@ namespace POS.View.accounts
             }
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+        }
+        Pos posModel = new Pos();
+        private async void calcBalance(string _type , decimal ammount)
+        {//balance for pos
+            string s = "";
+            //increase pos balance
+            Pos pos = await posModel.getPosById(MainWindow.posID.Value);
+            if(_type.Equals("p"))
+                pos.balance -= ammount;
+            else
+                pos.balance += ammount;
+
+            s = await pos.savePos(pos);
         }
 
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)

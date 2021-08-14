@@ -139,12 +139,20 @@ namespace POS.View.Settings
 
             #region fill process type
             DateTimeFormatInfo dtfi = DateTimeFormatInfo.CurrentInfo;
+            //var typelist = new[] {
+            //new { Text =  dtfi.ShortDatePattern.ToString(), Value = "ShortDatePattern" },
+            //new { Text = dtfi.LongDatePattern.ToString() , Value = "LongDatePattern" },
+            //new { Text =  dtfi.MonthDayPattern.ToString(), Value = "MonthDayPattern" },
+            //new { Text =  dtfi.YearMonthPattern.ToString(), Value = "YearMonthPattern" },
+            // };
+            var date = DateTime.Now;
             var typelist = new[] {
-            new { Text =  dtfi.ShortDatePattern.ToString(), Value = "ShortDatePattern" },
-            new { Text = dtfi.LongDatePattern.ToString() , Value = "LongDatePattern" },
-            new { Text =  dtfi.MonthDayPattern.ToString(), Value = "MonthDayPattern" },
-            new { Text =  dtfi.YearMonthPattern.ToString(), Value = "YearMonthPattern" },
+            new { Text = date.ToString(dtfi.ShortDatePattern), Value = "ShortDatePattern" },
+            new { Text = date.ToString(dtfi.LongDatePattern) , Value = "LongDatePattern" },
+            new { Text =  date.ToString(dtfi.MonthDayPattern), Value = "MonthDayPattern" },
+            new { Text =  date.ToString(dtfi.YearMonthPattern), Value = "YearMonthPattern" },
              };
+
             cb_dateForm.DisplayMemberPath = "Text";
             cb_dateForm.SelectedValuePath = "Value";
             cb_dateForm.ItemsSource = typelist;
@@ -479,7 +487,7 @@ namespace POS.View.Settings
                 {
                     if (dateForm == null)
                         dateForm = new SetValues();
-                    dateForm.value = cb_dateForm.Text;
+                    dateForm.value = cb_dateForm.SelectedValue.ToString();
                     dateForm.isSystem = 1;
                     dateForm.settingId = dateFormId;
                     string s = await valueModel.Save(dateForm);

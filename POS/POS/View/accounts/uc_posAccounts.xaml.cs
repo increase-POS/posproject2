@@ -186,13 +186,20 @@ namespace POS.View.accounts
         }
         private async void dp_SelectedEndDateChanged(object sender, SelectionChangedEventArgs e)
         {
+
             await RefreshCashesList();
-            Tb_search_TextChanged(null, null);
+            this.Dispatcher.Invoke(() =>
+            {
+                Tb_search_TextChanged(null, null);
+            });
         }
         private async void dp_SelectedStartDateChanged(object sender, SelectionChangedEventArgs e)
         {
             await RefreshCashesList();
-            Tb_search_TextChanged(null, null);
+            this.Dispatcher.Invoke(() =>
+            {
+                Tb_search_TextChanged(null, null);
+            });
         }
         private async void Dg_posAccounts_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//selection
@@ -674,7 +681,11 @@ namespace POS.View.accounts
         private async void Cb_state_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             await RefreshCashesList();
-            Tb_search_TextChanged(null, null);
+            this.Dispatcher.Invoke(() =>
+            {
+                Tb_search_TextChanged(null, null);
+            });
+
         }
         private async void Cb_pos1_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//pos1selection

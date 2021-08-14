@@ -31,8 +31,8 @@ namespace POS.View.windows
            
         }
 
-        ResourceManager resourcemanager;
-        string lang ;
+        public static ResourceManager resourcemanager;
+        public static string lang ;
 
         User userModel = new User();
         User user = new User();
@@ -52,9 +52,6 @@ namespace POS.View.windows
         UserSetValues usLanguage = new UserSetValues();
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
-
-
-
             bdrLogIn.RenderTransform = Animations.borderAnimation(-100, bdrLogIn, true);
 
             if (Properties.Settings.Default.userName != string.Empty)
@@ -175,12 +172,7 @@ namespace POS.View.windows
             #region get default pos
             string posId = await getCurrentPos();
             #endregion
-            //if (posId.Equals(""))
-            //{
-
-            //}
-            //else
-            //{
+           
             #region login
             if (logInProcessing)
             {
@@ -213,18 +205,6 @@ namespace POS.View.windows
 
                         string s = await userModel.saveUser(user);
 
-                        //create lognin record
-                        UsersLogs userLog = new UsersLogs();
-                        userLog.posId = MainWindow.posID;
-                        Pos posmodel = new Pos();
-                        posmodel = await posmodel.getPosById((int)MainWindow.posID);
-                        MainWindow.branchID = posmodel.branchId;
-                        userLog.userId = user.userId;
-                        string str = await userLogsModel.Save(userLog);
-
-                        if (!str.Equals("0"))
-                            MainWindow.userLogInID = int.Parse(str);
-
                         //remember me
                         if (cbxRemmemberMe.IsChecked.Value)
                         {
@@ -240,10 +220,43 @@ namespace POS.View.windows
                         }
                         Properties.Settings.Default.Save();
 
-                        //open main window and close this window
-                        MainWindow main = new MainWindow();
-                        main.Show();
-                        this.Close();
+                        #region get default pos
+                        if (posId.Equals(""))
+                        {
+                            Window.GetWindow(this).Opacity = 0.2;
+
+                            wd_selectPos w = new wd_selectPos();
+                            w.settingsPoSId = settingsPosId;
+                            w.userId = user.userId;
+                            w.ShowDialog();
+
+                            Window.GetWindow(this).Opacity = 1;
+                            this.Close();
+                        }
+                        else
+                        {
+                            MainWindow.posID = int.Parse(posId);
+                            Pos pos = new Pos();
+                            Pos posModel = new Pos();
+                            pos = await posModel.getPosById(MainWindow.posID.Value);
+                            MainWindow.branchID = pos.branchId;
+
+                            //create lognin record
+                            UsersLogs userLog = new UsersLogs();
+                            userLog.posId = int.Parse(posId);
+                            userLog.userId = user.userId;
+
+                            string str = await userLogsModel.Save(userLog);
+
+                            if (!str.Equals("0"))
+                                MainWindow.userLogInID = int.Parse(str);
+
+                            //open main window and close this window
+                            MainWindow main = new MainWindow();
+                            main.Show();
+                            this.Close();
+                        }
+                        #endregion
                     }
                     else
                         showPasswordValidate(txtPassword, p_errorPassword, tt_errorPassword, "trWrongPassword");
@@ -252,23 +265,23 @@ namespace POS.View.windows
                     showTextBoxValidate(txtUserName, p_errorUserName, tt_errorUserName, "trUserNotFound");
                 awaitSaveBtn(false);
                 logInProcessing = true;
-            }
+            
             #endregion
-            //}
+            }
 
         }
         static SettingCls setModel = new SettingCls();
         static SetValues valueModel = new SetValues();
         static SettingCls set = new SettingCls();
         static SetValues pos = new SetValues();
-        int posId = 0;
+        int  settingsPosId = 0;
         private async Task<string> getCurrentPos()
         {
             List<SettingCls> settingsCls = await setModel.GetAll();
             List<SetValues> settingsValues = await valueModel.GetAll();
             set = settingsCls.Where(s => s.name == "pos").FirstOrDefault<SettingCls>();
-            posId = set.settingId;
-            pos = settingsValues.Where(i => i.settingId == posId).FirstOrDefault();
+            settingsPosId = set.settingId;
+            pos = settingsValues.Where(i => i.settingId == settingsPosId).FirstOrDefault();
             if (pos != null)
                 return pos.value;
             else

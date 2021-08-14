@@ -157,6 +157,7 @@ namespace POS.View.sales
 
             MainWindow.mainWindow.KeyDown += HandleKeyPress;
             tb_moneyIcon.Text = MainWindow.Currency;
+            tb_moneyIconTotal.Text = MainWindow.Currency;
 
             if (MainWindow.lang.Equals("en"))
             {
@@ -1070,7 +1071,8 @@ namespace POS.View.sales
 
                 int itemUnitId = (int)cmb.SelectedValue;
                 billDetails[dg_billDetails.SelectedIndex].itemUnitId = (int)cmb.SelectedValue;
-                var unit = itemUnits.ToList().Find(x => x.itemUnitId == (int)cmb.SelectedValue);
+                //var unit = itemUnits.ToList().Find(x => x.itemUnitId == (int)cmb.SelectedValue);
+                var unit = await itemUnitModel.GetById((int)cmb.SelectedValue);
                 int availableAmount = await itemLocationModel.getAmountInBranch(itemUnitId, MainWindow.branchID.Value);
 
                 int oldCount = 0;

@@ -967,10 +967,10 @@ namespace POS.View
             // cb_typeDiscount.SelectedIndex = 0;
             dp_desrvedDate.Text = "";
             tb_note.Clear();
-            txt_discount.Text = "";
+            txt_discount.Text = "0";
             billDetails.Clear();
-            tb_total.Text = "";
-            tb_sum.Text = null;
+            tb_total.Text = "0";
+            tb_sum.Text = "0";
             if (MainWindow.isInvTax == 1)
                 tb_taxValue.Text = MainWindow.tax.ToString();
             else
@@ -1929,7 +1929,8 @@ namespace POS.View
             {
                 int itemUnitId = (int)cmb.SelectedValue;
                 billDetails[dg_billDetails.SelectedIndex].itemUnitId = (int)cmb.SelectedValue;
-                var unit = itemUnits.ToList().Find(x => x.itemUnitId == (int)cmb.SelectedValue);
+                //var unit = itemUnits.ToList().Find(x => x.itemUnitId == (int)cmb.SelectedValue);
+                var unit = await itemUnitModel.GetById((int)cmb.SelectedValue);
                 int availableAmount = await itemLocationModel.getAmountInBranch(itemUnitId, MainWindow.branchID.Value);
 
                 int oldCount = 0;
