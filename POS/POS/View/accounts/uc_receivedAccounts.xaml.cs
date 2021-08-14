@@ -658,15 +658,22 @@ namespace POS.View.accounts
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {//export
+
             if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
-           
-                this.Dispatcher.Invoke(() =>
+                try
                 {
-                    Thread t1 = new Thread(FN_ExportToExcel);
-                    t1.SetApartmentState(ApartmentState.STA);
-                    t1.Start();
-                });
+                    this.Dispatcher.Invoke(() =>
+                    {
+                        Thread t1 = new Thread(FN_ExportToExcel);
+                        t1.SetApartmentState(ApartmentState.STA);
+                        t1.Start();
+                    });
+                }
+                catch (Exception ex)
+                {
+                    SectionData.ExceptionMessage(ex);
+                }
             }
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);

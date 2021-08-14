@@ -717,12 +717,19 @@ namespace POS.View.accounts
 
             if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
-                this.Dispatcher.Invoke(() =>
-            {
-                Thread t1 = new Thread(FN_ExportToExcel);
-                t1.SetApartmentState(ApartmentState.STA);
-                t1.Start();
-            });
+                try
+                {
+                    this.Dispatcher.Invoke(() =>
+                    {
+                        Thread t1 = new Thread(FN_ExportToExcel);
+                        t1.SetApartmentState(ApartmentState.STA);
+                        t1.Start();
+                    });
+                }
+                catch (Exception ex)
+                {
+                    SectionData.ExceptionMessage(ex);
+                }
             }
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);

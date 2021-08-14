@@ -2807,3 +2807,5 @@ C:\Users\HP\Documents\GitHub\posproject2\POS\POS\obj\Debug\POS.csproj.CoreCompil
 C:\Users\HP\Documents\GitHub\posproject2\POS\POS\obj\Debug\POS.csproj.CopyComplete
 C:\Users\HP\Documents\GitHub\posproject2\POS\POS\obj\Debug\POS.exe
 C:\Users\HP\Documents\GitHub\posproject2\POS\POS\obj\Debug\POS.pdb
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\reports\uc_accountStatement.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\reports\uc_accountStatement.baml

@@ -409,12 +409,19 @@ namespace POS.View.accounts
         {//export
             if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one"))
             {
-                this.Dispatcher.Invoke(() =>
-            {
-                Thread t1 = new Thread(FN_ExportToExcel);
-                t1.SetApartmentState(ApartmentState.STA);
-                t1.Start();
-            });
+                try
+                {
+                    this.Dispatcher.Invoke(() =>
+                    {
+                        Thread t1 = new Thread(FN_ExportToExcel);
+                        t1.SetApartmentState(ApartmentState.STA);
+                        t1.Start();
+                    });
+                }
+                catch (Exception ex)
+                {
+                    SectionData.ExceptionMessage(ex);
+                }
             }
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);

@@ -41,7 +41,6 @@ namespace POS.View.windows
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
-            SectionData.StartAwait(grid_mainGrid);
 
             #region translate
 
@@ -60,7 +59,6 @@ namespace POS.View.windows
             #endregion
 
             fillBranch();
-            SectionData.EndAwait(grid_mainGrid,this);
         }
 
         private async void fillBranch()
@@ -105,48 +103,10 @@ namespace POS.View.windows
             validateEmptyComboBox(cb_pos , p_errorPos , tt_errorPos , "trErrorEmptyPosToolTip");
             #endregion
 
-            if((!cb_branch.Text.Equals("")) && (!cb_pos.Text.Equals("")))
-            {
-                SetValues defaultPos = new SetValues();
-                defaultPos.value = cb_pos.SelectedValue.ToString();
-                defaultPos.isSystem = 1;
-                defaultPos.settingId = settingsPoSId;
-                string s = await valueModel.Save(defaultPos);
+            MainWindow.posID = Convert.ToInt32(cb_pos.SelectedValue);
+            MainWindow.branchID = Convert.ToInt32(cb_branch.SelectedValue);
 
-                values = await valueModel.GetBySetName("pos");
-                if (!s.Equals("-1"))
-                {
-                    //update branch and pos in main window
-                    MainWindow.posID = int.Parse(defaultPos.value);
-                    MainWindow.branchID = Convert.ToInt32(cb_branch.SelectedValue);
-
-                    //create record in userSetValues
-                    UserSetValues uSetValues = new UserSetValues();
-                    uSetValues.userId = userId;
-                    uSetValues.valId = values[0].valId;
-                    uSetValues.createUserId = userId;
-                    uSetValues.note = "";
-                    string res = await uSetValuesModel.Save(uSetValues);
-                    MessageBox.Show(res);
-
-                    //create lognin record
-                    UsersLogs userLog = new UsersLogs();
-                    userLog.posId = int.Parse(defaultPos.value);
-                    userLog.userId = userId;
-                    string str = await userLogsModel.Save(userLog);
-                    if (!str.Equals("-1"))
-                        MainWindow.userLogInID = int.Parse(str);
-
-                    Toaster.ShowSuccess(Window.GetWindow(this), message: winLogIn.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
-
-                    MainWindow main = new MainWindow();
-                    await Task.Delay(2000);
-                    this.Close();
-                    main.Show();
-                }
-                else
-                    Toaster.ShowWarning(Window.GetWindow(this), message: winLogIn.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-            }
+            this.Close();
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
