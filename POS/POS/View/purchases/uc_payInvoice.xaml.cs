@@ -1776,12 +1776,16 @@ namespace POS.View
             w.ShowDialog();
             if (w.isActive)
             {
+
                 ////// w.selectedItem this is ItemId
                 for (int i = 0; i < w.selectedItems.Count; i++)
                 {
+                    MainWindow.mainWindow.StartAwait();
                     int itemId = w.selectedItems[i];
                    await ChangeItemIdEvent(itemId);
+                    MainWindow.mainWindow.EndAwait();
                 }
+
             }
 
             Window.GetWindow(this).Opacity = 1;

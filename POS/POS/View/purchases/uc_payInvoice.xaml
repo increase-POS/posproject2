@@ -552,7 +552,7 @@
                                    TextAlignment="Center" Name="tb_total" Foreground="White" HorizontalAlignment="Left" 
                                        Text="0"         />
                         <TextBlock   Foreground="White" FontWeight="Bold" VerticalAlignment="Bottom" HorizontalAlignment="Left" 
-                               Margin="5,5,0,7.5" FontSize="18"
+                               Margin="5,0,0,0" FontSize="18"
                             Grid.Row="1"   x:Name="tb_moneyIconTotal" Grid.Column="1"  
                       Text="{Binding Path=MainWindow.Currency,Mode=OneWay}"/>
 
