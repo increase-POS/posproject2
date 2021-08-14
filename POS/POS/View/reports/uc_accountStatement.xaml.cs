@@ -80,13 +80,17 @@ namespace POS.View.reports
         private void fillDateCombo(ComboBox cb)
         {
             cb.Items.Clear();
-            int firstYear = statement.Min(obj => obj.updateDate.Value.Year);
-            int presentYear = DateTime.Now.Year;
-            for (int i = firstYear; i <= presentYear; i++)
+            if (statement.Count()>0)
             {
-                cb.Items.Add(firstYear);
-                firstYear++;
+                int firstYear = statement.Min(obj => obj.updateDate.Value.Year);
+                int presentYear = DateTime.Now.Year;
+                for (int i = firstYear; i <= presentYear; i++)
+                {
+                    cb.Items.Add(firstYear);
+                    firstYear++;
+                }
             }
+        
 
         }
 
