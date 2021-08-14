@@ -338,7 +338,7 @@ namespace POS.View.purchases
                     if (index == -1)//item doesn't exist in bill
                     {
                         // create new row in bill details data grid
-                        addRowToBill(item.name, itemId, defaultPurUnit.mainUnit, defaultPurUnit.itemUnitId, 1, 0, 0);
+                       await addRowToBill(item.name, itemId, defaultPurUnit.mainUnit, defaultPurUnit.itemUnitId, 1, 0, 0);
                     }
                     else // item exist prevoiusly in list
                     {
@@ -354,7 +354,7 @@ namespace POS.View.purchases
                 }
                 else
                 {
-                    addRowToBill(item.name, itemId, null, 0, 1, 0, 0);
+                   await addRowToBill(item.name, itemId, null, 0, 1, 0, 0);
                     refrishBillDetails();
                 }
             }
@@ -941,7 +941,7 @@ namespace POS.View.purchases
                                     int count = 1;
                                     decimal price = 0; //?????
                                     decimal total = count * price;
-                                    addRowToBill(item.name, item.itemId, unit1.mainUnit, unit1.itemUnitId, count, price, total);
+                                   await addRowToBill(item.name, item.itemId, unit1.mainUnit, unit1.itemUnitId, count, price, total);
                                 }
                                 else // item exist prevoiusly in list
                                 {
@@ -1019,7 +1019,7 @@ namespace POS.View.purchases
             }
         }
 
-        private void addRowToBill(string itemName, int itemId, string unitName, int itemUnitId, int count, decimal price, decimal total)
+        private async Task addRowToBill(string itemName, int itemId, string unitName, int itemUnitId, int count, decimal price, decimal total)
         {
             // increase sequence for each read
             _SequenceNum++;

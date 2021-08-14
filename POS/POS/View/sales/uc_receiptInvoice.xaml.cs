@@ -384,7 +384,7 @@ namespace POS.View
                 var defaultsaleUnit = itemUnits.ToList().Find(c => c.defaultSale == 1);
                 if (defaultsaleUnit != null)
                 {
-                    addItemToBill(itemId, defaultsaleUnit.itemUnitId, defaultsaleUnit.mainUnit, (decimal)defaultsaleUnit.price, false);
+                   await addItemToBill(itemId, defaultsaleUnit.itemUnitId, defaultsaleUnit.mainUnit, (decimal)defaultsaleUnit.price, false);
                     //decimal itemTax = 0;
                     //if (item.taxes != null)
                     //    itemTax = (decimal)item.taxes;
@@ -428,7 +428,7 @@ namespace POS.View
                     bool valid = true;
                     if (item.type == "sn")
                         valid = false;
-                    addRowToBill(item.name, itemId, null, 0, 1, 0, 0, (decimal)item.taxes, item.type, valid);
+                   await addRowToBill(item.name, itemId, null, 0, 1, 0, 0, (decimal)item.taxes, item.type, valid);
                     refreshTotalValue();
                     refrishBillDetails();
                 }
@@ -1720,7 +1720,7 @@ namespace POS.View
                             int itemId = (int)unit1.itemId;
                             if (unit1.itemId != 0)
                             {
-                                addItemToBill(itemId, unit1.itemUnitId, unit1.mainUnit, (decimal)unit1.price, false);
+                               await addItemToBill(itemId, unit1.itemUnitId, unit1.mainUnit, (decimal)unit1.price, false);
                                 //int index = billDetails.IndexOf(billDetails.Where(p => p.itemUnitId == unit1.itemUnitId).FirstOrDefault());
 
                                 //if (index == -1)//item doesn't exist in bill
@@ -1765,7 +1765,7 @@ namespace POS.View
 
             tb_barcode.Clear();
         }
-        private async void addItemToBill(int itemId, int itemUnitId, string unitName, decimal price, bool valid)
+        private async Task addItemToBill(int itemId, int itemUnitId, string unitName, decimal price, bool valid)
         {
             item = items.ToList().Find(i => i.itemId == itemId);
             bool isValid = true;
@@ -1786,7 +1786,7 @@ namespace POS.View
                 int count = 1;
                 decimal total = count * price;
                 decimal tax = (decimal)(count * item.taxes);
-                addRowToBill(item.name, item.itemId, unitName, itemUnitId, count, price, total, tax, item.type, isValid);
+               await addRowToBill(item.name, item.itemId, unitName, itemUnitId, count, price, total, tax, item.type, isValid);
             }
             else // item exist prevoiusly in list
             {
@@ -1896,7 +1896,7 @@ namespace POS.View
 
         }
 
-        private void addRowToBill(string itemName, int itemId, string unitName, int itemUnitId, int count, decimal price, decimal total, decimal tax, string type, bool valid, List<string> serialList = null)
+        private async Task addRowToBill(string itemName, int itemId, string unitName, int itemUnitId, int count, decimal price, decimal total, decimal tax, string type, bool valid, List<string> serialList = null)
         {
             // increase sequence for each read
             _SequenceNum++;
@@ -1918,6 +1918,7 @@ namespace POS.View
             });
             _Sum += total;
             _Tax += tax;
+           
         }
         #endregion billdetails
         private async void Cbm_unitItemDetails_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -2201,10 +2202,11 @@ namespace POS.View
         }
         private async void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {
+            
 
-            if (invoice.invType == "pd" || invoice.invType == "sd" || invoice.invType == "qd"
-                            || invoice.invType == "sbd" || invoice.invType == "pbd"
-                            || invoice.invType == "ord" || invoice.invType == "imd" || invoice.invType == "exd")
+            if (invoice.invType == "pd" || invoice.invType == "sd"
+                  || invoice.invType == "sbd" || invoice.invType == "pbd"
+                  || invoice.invType == "ord" || invoice.invType == "imd" || invoice.invType == "exd")
             {
                 MessageBox.Show("can not print Draft Invoice");
             }
@@ -2219,29 +2221,9 @@ namespace POS.View
                 bool isArabic = ReportCls.checkLang();
                 if (isArabic)
                 {
-                    if (invoice.invType == "q")
-                    {
-                        addpath = @"\Reports\Sale\Ar\ArInvPurQtReport.rdlc";
-                    }
-                    else
-                    {
-                        addpath = @"\Reports\Sale\Ar\ArInvPurReport.rdlc";
-                    }
-                
+                    addpath = @"\Reports\Sale\Ar\ArInvPurReport.rdlc";
                 }
-                else
-                {
-                    if (invoice.invType == "q")
-                    {
-                        addpath = @"\Reports\Sale\En\InvPurQtReport.rdlc";
-                    }
-                    else
-                    {
-                        addpath = @"\Reports\Sale\En\InvPurReport.rdlc";
-                    }
-
-                }
-               
+                else addpath = @"\Reports\Sale\En\InvPurReport.rdlc";
 
                 //
 
@@ -2469,9 +2451,9 @@ namespace POS.View
 
         private async void Btn_printInvoice_Click(object sender, RoutedEventArgs e)
         {
-            if (invoice.invType == "pd" || invoice.invType == "sd" || invoice.invType == "qd"
-                    || invoice.invType == "sbd" || invoice.invType == "pbd"
-                    || invoice.invType == "ord" || invoice.invType == "imd" || invoice.invType == "exd")
+            if (invoice.invType == "pd" || invoice.invType == "sd"
+               || invoice.invType == "sbd" || invoice.invType == "pbd"
+               || invoice.invType == "ord" || invoice.invType == "imd" || invoice.invType == "exd")
             {
                 MessageBox.Show("can not print Draft Invoice");
             }
@@ -2486,28 +2468,9 @@ namespace POS.View
                 bool isArabic = ReportCls.checkLang();
                 if (isArabic)
                 {
-                    if (invoice.invType == "q")
-                    {
-                        addpath = @"\Reports\Sale\Ar\ArInvPurQtReport.rdlc";
-                    }
-                    else
-                    {
-                        addpath = @"\Reports\Sale\Ar\ArInvPurReport.rdlc";
-                    }
-
+                    addpath = @"\Reports\Sale\Ar\ArInvPurReport.rdlc";
                 }
-                else
-                {
-                    if (invoice.invType == "q")
-                    {
-                        addpath = @"\Reports\Sale\En\InvPurQtReport.rdlc";
-                    }
-                    else
-                    {
-                        addpath = @"\Reports\Sale\En\InvPurReport.rdlc";
-                    }
-
-                }
+                else addpath = @"\Reports\Sale\En\InvPurReport.rdlc";
 
                 //
 
@@ -2669,28 +2632,9 @@ namespace POS.View
                 bool isArabic = ReportCls.checkLang();
                 if (isArabic)
                 {
-                    
-
-                    if (invoice.invType == "q" || invoice.invType == "qd")
-                    {
-                        addpath = @"\Reports\Sale\Ar\ArInvPurQtReport.rdlc";
-                    }
-                    else
-                    {
-                        addpath = @"\Reports\Sale\Ar\ArInvPurQtReport.rdlc";
-                    }
+                    addpath = @"\Reports\Sale\Ar\ArInvPurReport.rdlc";
                 }
-                else
-                {
-                    if (invoice.invType == "q"|| invoice.invType == "qd")
-                    {
-                        addpath = @"\Reports\Sale\En\InvPurQtReport.rdlc";
-                    }
-                    else
-                    {
-                        addpath = @"\Reports\Sale\En\InvPurReport.rdlc";
-                    }
-                }
+                else addpath = @"\Reports\Sale\En\InvPurReport.rdlc";
 
                 //
                 pdfpath = @"\Thumb\report\temp.pdf";

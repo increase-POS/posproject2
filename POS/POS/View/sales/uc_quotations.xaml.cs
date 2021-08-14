@@ -364,7 +364,7 @@ namespace POS.View.sales
                                         price = (decimal)unit1.price;
                                     decimal total = count * price;
                                     decimal tax = (decimal)(count * item.taxes);
-                                    addRowToBill(item.name, item.itemId, unit1.mainUnit, unit1.itemUnitId, count, price, total, tax);
+                                    await addRowToBill(item.name, item.itemId, unit1.mainUnit, unit1.itemUnitId, count, price, total, tax);
                                 }
                                 else // item exist prevoiusly in list
                                 {
@@ -671,11 +671,11 @@ namespace POS.View.sales
                     if (item.taxes != null)
                         itemTax = (decimal)item.taxes;
                     // create new row in bill details data grid
-                    addRowToBill(item.name, itemId, defaultsaleUnit.mainUnit, defaultsaleUnit.itemUnitId, 1, (decimal)defaultsaleUnit.price, (decimal)defaultsaleUnit.price, itemTax);                   
+                   await addRowToBill(item.name, itemId, defaultsaleUnit.mainUnit, defaultsaleUnit.itemUnitId, 1, (decimal)defaultsaleUnit.price, (decimal)defaultsaleUnit.price, itemTax);                   
                 }
                 else
                 {
-                    addRowToBill(item.name, itemId, null, 0, 1, 0, 0, (decimal)item.taxes);
+                   await addRowToBill(item.name, itemId, null, 0, 1, 0, 0, (decimal)item.taxes);
                 }
                 refreshTotalValue();
                 refrishBillDetails();
@@ -808,7 +808,7 @@ namespace POS.View.sales
             }
         }
 
-        private void addRowToBill(string itemName, int itemId, string unitName, int itemUnitId, int count, decimal price, decimal total, decimal tax)
+        private async Task addRowToBill(string itemName, int itemId, string unitName, int itemUnitId, int count, decimal price, decimal total, decimal tax)
         {
             // increase sequence for each read
             _SequenceNum++;
