@@ -23,6 +23,10 @@ using POS.View.windows;
 using MaterialDesignThemes.Wpf;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using System.IO;
+using Microsoft.Reporting.WinForms;
+using Microsoft.Win32;
+
 
 namespace POS.View.reports
 {
@@ -31,6 +35,13 @@ namespace POS.View.reports
     /// </summary>
     public partial class uc_saleReport : UserControl
     {
+
+
+        //prin & pdf
+        ReportCls reportclass = new ReportCls();
+        LocalReport rep = new LocalReport();
+        SaveFileDialog saveFileDialog = new SaveFileDialog();
+
         private int selectedTab = 0;
 
         Statistics statisticModel = new Statistics();
@@ -569,6 +580,8 @@ namespace POS.View.reports
             cartesianChart.Series = columnChartData;
         }
 
+
+
         private void fillRowChart(ComboBox comboBox, ObservableCollection<int> stackedButton)
         {
             MyAxis.Labels = new List<string>();
@@ -766,7 +779,110 @@ namespace POS.View.reports
             rowChart.Series = rowChartData;
         }
 
+        //
+        private List<ItemTransferInvoice> fillPdfList(ComboBox comboBox, ObservableCollection<int> stackedButton)
+        {
+            List<ItemTransferInvoice> list = new List<ItemTransferInvoice>();
 
+
+         
+
+            if (selectedTab == 0)
+            {
+                var temp = fillRowChartList(Invoices, chk_invoice, chk_return, chk_drafs, dp_startDate, dp_endDate, dt_startTime, dt_endTime);
+                temp = temp.Where(j => (selectedBranchId.Count != 0 ? stackedButton.Contains((int)j.branchCreatorId) : true));
+                list = temp.ToList();
+            }
+            if (selectedTab == 1)
+            {
+                var temp = fillRowChartList(Invoices, chk_posInvoice, chk_posReturn, chk_posDraft, dp_posStartDate, dp_posEndDate, dt_posStartTime, dt_posEndTime);
+                temp = temp.Where(j => (selectedPosId.Count != 0 ? stackedButton.Contains((int)j.posId) : true));
+                list = temp.ToList();
+            }
+            if (selectedTab == 3)
+            {
+                var temp = fillRowChartList(Invoices, chk_usersInvoice, chk_usersReturn, chk_usersDraft, dp_usersStartDate, dp_usersEndDate, dt_usersStartTime, dt_usersEndTime);
+                temp = temp.Where(j => (selectedUserId.Count != 0 ? stackedButton.Contains((int)j.updateUserId) : true));
+                list = temp.ToList();
+            }
+            if (selectedTab == 4)
+            {
+                var temp = fillRowChartList(Items, chk_itemInvoice, chk_itemReturn, chk_itemDrafs, dp_ItemStartDate, dp_ItemEndDate, dt_itemStartTime, dt_ItemEndTime);
+                temp = temp.Where(j => (selectedItemId.Count != 0 ? stackedButton.Contains((int)j.ITitemUnitId) : true));
+                list = temp.ToList();
+            }
+
+            if (selectedTab == 6)
+            {
+                var temp = fillRowChartList(Offers, chk_offersInvoice, chk_offersReturn, chk_offersDrafs, dp_offersStartDate, dp_offersEndDate, dt_offersStartTime, dt_offersEndTime);
+                temp = temp.Where(j => (selectedOfferId.Count != 0 ? stackedButton.Contains((int)j.OofferId) : true));
+                list = temp.ToList();
+            }
+
+
+            return list;
+
+
+        }
+
+
+        public List<ItemTransferInvoice> filltoprint()
+        {
+
+            /*
+       fillColumnChart(cb_branches, selectedBranchId);
+fillColumnChart(cb_vendors, selectedVendorsId);
+fillColumnChart(cb_users, selectedUserId);
+fillColumnChart(cb_Items, selectedItemId);
+
+      * */
+            List<ItemTransferInvoice> xx = new List<ItemTransferInvoice>();
+            if (selectedTab == 0)
+            {
+                //   xx = fillList(Invoices, chk_invoice, chk_return, chk_drafs, dp_startDate, dp_endDate, dt_startTime, dt_endTime).ToList();
+                xx = fillPdfList(cb_branches, selectedBranchId);
+
+            }
+            else if (selectedTab == 1)
+            {
+               
+                //cb_pos, selectedPosId
+                // var temp1 = fillList(Invoices, chk_posInvoice, chk_posReturn, chk_posDraft, dp_posStartDate, dp_posEndDate, dt_posStartTime, dt_posEndTime);
+                //  temp1 = temp1.Where(j => (selectedPosId.Count != 0 ? stackedButton.Contains((int)j.posId) : true));
+                //    xx = temp1.ToList();
+                xx = fillPdfList(cb_pos, selectedPosId);
+                //   xx = fillList(Invoices, chk_posInvoice, chk_posReturn, chk_posDraft, dp_posStartDate, dp_posEndDate, dt_posStartTime, dt_posEndTime).ToList();
+
+            }
+            else if (selectedTab == 2)
+            {
+                //   xx = fillList(Invoices, chk_vendorsInvoice, chk_vendorsReturn, chk_vendorsDraft, dp_vendorsStartDate, dp_vendorsEndDate, dt_vendorsStartTime, dt_vendorsEndTime).ToList();
+                xx = fillPdfList(cb_vendors, selectedVendorsId);
+            }
+            else if (selectedTab == 3)
+            {
+                //   xx = fillList(Invoices, chk_usersInvoice, chk_usersReturn, chk_usersDraft, dp_usersStartDate, dp_usersEndDate, dt_usersStartTime, dt_usersEndTime).ToList();
+                xx = fillPdfList(cb_users, selectedUserId);
+            }
+            else if (selectedTab == 4)
+            {
+                //   xx = fillList(Invoices, chk_usersInvoice, chk_usersReturn, chk_usersDraft, dp_usersStartDate, dp_usersEndDate, dt_usersStartTime, dt_usersEndTime).ToList();
+                xx = fillPdfList(cb_Items, selectedItemId);
+            }
+            else if (selectedTab ==5)
+            {
+                //   xx = fillList(Invoices, chk_usersInvoice, chk_usersReturn, chk_usersDraft, dp_usersStartDate, dp_usersEndDate, dt_usersStartTime, dt_usersEndTime).ToList();
+                xx = fillPdfList(cb_Coupons, selectedcouponId);
+            }
+            else //if (selectedTab ==6)
+            {
+                //   xx = fillList(Invoices, chk_usersInvoice, chk_usersReturn, chk_usersDraft, dp_usersStartDate, dp_usersEndDate, dt_usersStartTime, dt_usersEndTime).ToList();
+                xx = fillPdfList(cb_offers, selectedOfferId);
+            }
+           
+
+            return xx;
+        }
 
         public void fillBranchEvent()
         {
@@ -2206,6 +2322,191 @@ namespace POS.View.reports
             DataContext = this;
             rowChart.Series = rowChartData;
         }
+        private List<ItemTransferInvoice> converter(List<ItemTransferInvoice> query)
+        {
+            foreach (var item in query)
+            {
+                if (item.invType == "p")
+                {
+                    item.invType = MainWindow.resourcemanager.GetString("trPurchaseInvoice");
+                }
+                else if (item.invType == "pw")
+                {
+                    item.invType = MainWindow.resourcemanager.GetString("trPurchaseInvoice");
+                }
+                else if (item.invType == "pb")
+                {
+                    item.invType = MainWindow.resourcemanager.GetString("trPurchaseReturnInvoice");
+                }
+                else if (item.invType == "pd")
+                {
+                    item.invType = MainWindow.resourcemanager.GetString("trDraftPurchaseBill");
+                }
+                else if (item.invType == "pbd")
+                {
+                    item.invType = MainWindow.resourcemanager.GetString("trPurchaseReturnDraft");
+                }
+            }
+            return query;
 
+        }
+        private void Btn_pdf_Click(object sender, RoutedEventArgs e)
+        {
+            //   if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
+            //   {
+            List<ReportParameter> paramarr = new List<ReportParameter>();
+            List<ItemTransferInvoice> query = new List<ItemTransferInvoice>();
+            query = converter(filltoprint());
+
+            string addpath = "";
+            bool isArabic = ReportCls.checkLang();
+            if (isArabic)
+            {
+                if (selectedTab == 0)
+                {
+                    addpath = @"\Reports\StatisticReport\Sale\Ar\ArPurSts.rdlc";
+                }
+                else if (selectedTab == 1)
+                {
+                    addpath = @"\Reports\StatisticReport\Sale\Ar\ArPurPosSts.rdlc";
+                }
+                else if (selectedTab == 2)
+                {
+                    addpath = @"\Reports\StatisticReport\Sale\Ar\ArPurVendorSts.rdlc";
+                }
+                else if (selectedTab == 3)
+                {
+                    addpath = @"\Reports\StatisticReport\Sale\Ar\ArPurUserSts.rdlc";
+                }
+                else
+                {
+                    addpath = @"\Reports\StatisticReport\Sale\Ar\ArPurItemSts.rdlc";
+                }
+            }
+            else
+            {
+                //english
+                if (selectedTab == 0)
+                { addpath = @"\Reports\StatisticReport\Sale\En\EnPurSts.rdlc"; }
+                else if (selectedTab == 1)
+                {
+                    addpath = @"\Reports\StatisticReport\Sale\En\EnPurPosSts.rdlc";
+                }
+                else if (selectedTab == 2)
+                {
+                    addpath = @"\Reports\StatisticReport\Sale\En\EnPurVendorSts.rdlc";
+                }
+                else if (selectedTab == 3)
+                {
+                    addpath = @"\Reports\StatisticReport\Sale\En\EnPurUserSts.rdlc";
+                }
+                else
+                {
+                    addpath = @"\Reports\StatisticReport\Sale\En\EnPurItemSts.rdlc";
+                }
+
+            }
+
+
+            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+            ReportCls.checkLang();
+            //  getpuritemcount
+            clsReports.PurStsReport(query, rep, reppath);
+            clsReports.setReportLanguage(paramarr);
+            clsReports.Header(paramarr);
+
+            rep.SetParameters(paramarr);
+
+            rep.Refresh();
+
+            saveFileDialog.Filter = "PDF|*.pdf;";
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                string filepath = saveFileDialog.FileName;
+                LocalReportExtensions.ExportToPDF(rep, filepath);
+            }
+            //   }
+            //  else
+            //    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+
+        }
+
+        private void Btn_print_Click(object sender, RoutedEventArgs e)
+        {
+
+            //   if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
+            //   {
+            List<ReportParameter> paramarr = new List<ReportParameter>();
+            List<ItemTransferInvoice> query = new List<ItemTransferInvoice>();
+            query = converter(filltoprint());
+
+            string addpath = "";
+            bool isArabic = ReportCls.checkLang();
+            if (isArabic)
+            {
+                if (selectedTab == 0)
+                {
+                    addpath = @"\Reports\StatisticReport\Sale\Ar\ArPurSts.rdlc";
+                }
+                else if (selectedTab == 1)
+                {
+                    addpath = @"\Reports\StatisticReport\Sale\Ar\ArPurPosSts.rdlc";
+                }
+                else if (selectedTab == 2)
+                {
+                    addpath = @"\Reports\StatisticReport\Sale\Ar\ArPurVendorSts.rdlc";
+                }
+                else if (selectedTab == 3)
+                {
+                    addpath = @"\Reports\StatisticReport\Sale\Ar\ArPurUserSts.rdlc";
+                }
+                else
+                {
+                    addpath = @"\Reports\StatisticReport\Sale\Ar\ArPurItemSts.rdlc";
+                }
+            }
+            else
+            {
+                //english
+                if (selectedTab == 0)
+                { addpath = @"\Reports\StatisticReport\Sale\En\EnPurSts.rdlc"; }
+                else if (selectedTab == 1)
+                {
+                    addpath = @"\Reports\StatisticReport\Sale\En\EnPurPosSts.rdlc";
+                }
+                else if (selectedTab == 2)
+                {
+                    addpath = @"\Reports\StatisticReport\Sale\En\EnPurVendorSts.rdlc";
+                }
+                else if (selectedTab == 3)
+                {
+                    addpath = @"\Reports\StatisticReport\Sale\En\EnPurUserSts.rdlc";
+                }
+                else
+                {
+                    addpath = @"\Reports\StatisticReport\Sale\En\EnPurItemSts.rdlc";
+                }
+
+            }
+
+
+            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+            ReportCls.checkLang();
+            //  getpuritemcount
+            clsReports.PurStsReport(query, rep, reppath);
+            clsReports.setReportLanguage(paramarr);
+            clsReports.Header(paramarr);
+
+            rep.SetParameters(paramarr);
+
+            rep.Refresh();
+
+      
+
+            LocalReportExtensions.PrintToPrinter(rep);
+        }
     }
 }

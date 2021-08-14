@@ -628,7 +628,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>تقرير مشتريات</Value>
+                    <Value>تقرير مبيعات</Value>
                     <Style>
                       <FontFamily>Montserrat</FontFamily>
                       <FontSize>20pt</FontSize>
@@ -1404,7 +1404,7 @@
             <Top>2.07142cm</Top>
             <Left>1.18768cm</Left>
             <Height>1.2cm</Height>
-            <Width>25.85687cm</Width>
+            <Width>25.85688cm</Width>
             <ZIndex>1</ZIndex>
             <Style>
               <Border>

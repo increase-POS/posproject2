@@ -15,6 +15,7 @@ namespace POS.Classes
 {
     public class CashTransferSts
     {
+        public string bondNumber { get; set; }
         public Nullable<int> fromposId { get; set; }
         public string fromposName { get; set; }
         public Nullable<int> frombranchId { get; set; }
@@ -33,30 +34,30 @@ namespace POS.Classes
         public string branchCreator { get; set; }
         public int depositCount { get; set; }
         public int pullCount { get; set; }
-        public int cashTransId { get; set; }
-        public string transType { get; set; }
-        public Nullable<int> posId { get; set; }
+
+
+        public Nullable<int> posId { get; set; }//
         public Nullable<int> userId { get; set; }
-        public Nullable<int> agentId { get; set; }
-        public Nullable<int> invId { get; set; }
-        public string transNum { get; set; }
+        public Nullable<int> agentId { get; set; }//
+
+        public string transNum { get; set; }//
         public Nullable<System.DateTime> createDate { get; set; }
-        public Nullable<System.DateTime> updateDate { get; set; }
-        public Nullable<decimal> cash { get; set; }
-        public Nullable<int> updateUserId { get; set; }
+        public Nullable<System.DateTime> updateDate { get; set; }//
+
+        public Nullable<int> updateUserId { get; set; }//
         public Nullable<int> createUserId { get; set; }
         public string notes { get; set; }
         public Nullable<int> posIdCreator { get; set; }
         public Nullable<byte> isConfirm { get; set; }
         public Nullable<int> cashTransIdSource { get; set; }
-        public string side { get; set; }
+
         public string opSideNum { get; set; }
         public string docName { get; set; }
-        public string docNum { get; set; }
+
         public string docImage { get; set; }
-        public Nullable<int> bankId { get; set; }
-        public string bankName { get; set; }
-        public string agentName { get; set; }
+
+        public string bankName { get; set; }//
+        public string agentName { get; set; }//
         public string usersName { get; set; }
         public string usersLName { get; set; }
         public string posName { get; set; }
@@ -66,39 +67,59 @@ namespace POS.Classes
         public Nullable<int> pos2Id { get; set; }
 
         public string pos2Name { get; set; }
-        public string processType { get; set; }
+
         public int processTypeCount { get; set; }
-        public decimal cashTotal { get; set; }
+
         public decimal cardTotal { get; set; }
         public decimal docTotal { get; set; }
         public decimal chequeTotal { get; set; }
         public decimal balanceTotal { get; set; }
 
 
-        public Nullable<int> cardId { get; set; }
-        public Nullable<int> bondId { get; set; }
+
         public string createUserName { get; set; }
-        public string updateUserName { get; set; }
+        public string updateUserName { get; set; }//
         public string updateUserJob { get; set; }
         public string updateUserAcc { get; set; }
         public string createUserJob { get; set; }
         public string createUserLName { get; set; }
-        public string cardName { get; set; }
+        public string cardName { get; set; }//
         public Nullable<System.DateTime> bondDeserveDate { get; set; }
         public Nullable<byte> bondIsRecieved { get; set; }
-        public string agentCompany { get; set; }
+        public string agentCompany { get; set; }//
 
-        public Nullable<int> shippingCompanyId { get; set; }
-        public string shippingCompanyName { get; set; }
+        public Nullable<int> shippingCompanyId { get; set; }//
+        public string shippingCompanyName { get; set; }//
         public string userAcc { get; set; }
 
+
         //invoice
-        public string invNumber { get; set; }
-        public string invType { get; set; }
-        public Nullable<decimal> totalNet { get; set; }
+
+
+
         public Nullable<decimal> deserved { get; set; }
         public Nullable<System.DateTime> deservedDate { get; set; }
+
+        public int cashTransId { get; set; }
+        public string transType { get; set; }//
+        public string desc { get; set; }//
+        public Nullable<int> invId { get; set; }//
+        public Nullable<decimal> cash { get; set; }//
+        public decimal cashTotal { get; set; }//
+        public string side { get; set; }//
+        public string docNum { get; set; }//
+        public Nullable<int> bankId { get; set; }//
+        public string processType { get; set; }//
+
+        public Nullable<int> cardId { get; set; }//
+        public Nullable<int> bondId { get; set; }//
+        public string invNumber { get; set; }//
+        public string invType { get; set; }//
+        public Nullable<decimal> totalNet { get; set; }//
+
+
     }
+
     public class Storage
     {
 
@@ -2024,6 +2045,85 @@ namespace POS.Classes
 
 
         #endregion
+
+
+        public List<CashTransferSts> getstate(List<CashTransferSts> list)
+        {
+            List<CashTransferSts> list2 = new List<CashTransferSts>();
+            list2 = list.OrderBy(X => X.updateDate).GroupBy(obj => obj.transNum).Select(obj => new CashTransferSts
+            {
+                    bondNumber=obj.FirstOrDefault().bondNumber,
+        userId =obj.FirstOrDefault().userId,
+        agentId = obj.FirstOrDefault().agentId,
+
+         transNum = obj.FirstOrDefault().transNum,
+         updateDate = obj.FirstOrDefault().updateDate,
+
+         bankName = obj.FirstOrDefault().bankName,
+         agentName = obj.FirstOrDefault().agentName,
+         usersName = obj.FirstOrDefault().usersName,
+         usersLName = obj.FirstOrDefault().usersLName,
+         posName = obj.FirstOrDefault().posName,
+      
+        updateUserName = obj.FirstOrDefault().updateUserName,
+        updateUserAcc = obj.FirstOrDefault().updateUserAcc,
+        cardName = obj.FirstOrDefault().cardName,
+       bondDeserveDate = obj.FirstOrDefault().bondDeserveDate,
+
+         shippingCompanyId = obj.FirstOrDefault().shippingCompanyId,
+        shippingCompanyName = obj.FirstOrDefault().shippingCompanyName,
+        userAcc = obj.FirstOrDefault().userAcc,
+
+
+         cashTransId = obj.FirstOrDefault().cashTransId,
+         transType = obj.FirstOrDefault().transType,
+         desc = obj.FirstOrDefault().desc,
+        invId = obj.FirstOrDefault().invId,
+         cash = obj.Sum(x=>x.cash),
+         cashTotal = 0,
+         side = obj.FirstOrDefault().side,
+         processType = obj.FirstOrDefault().processType,
+
+         invNumber ="",
+         invType = obj.FirstOrDefault().invType,
+        totalNet = obj.FirstOrDefault().totalNet,
+    }).ToList();
+            decimal rowtotal = 0;
+
+            foreach (CashTransferSts row in list2)
+            {
+                string invnum = "";
+                List<string> invnumlist = new List<string>();
+                invnumlist = list.Where(x => x.transNum == row.transNum).Select(y=>y.invNumber).ToList();
+                foreach(string strrow in invnumlist)
+                {
+                    invnum += strrow+" ";
+                }
+                row.invNumber = invnum;
+                if (row.transType == "d")
+                {
+                    rowtotal += (decimal)row.cash;
+                }
+                else
+                {// p
+                    rowtotal -= (decimal)row.cash;
+                }
+                row.cashTotal = rowtotal;
+
+                //invoice
+                /*
+                row.desc+= row.invId > 0 ? "invoice" : "";
+                row.desc+= row.invType =="p" ? " purchase" : "";//converter
+                row.desc += "Number:"+row.invNumber;
+
+            */
+
+            }
+
+            return list2;
+
+
+        }
 
     }
 }
