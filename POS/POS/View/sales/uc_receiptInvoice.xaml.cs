@@ -196,8 +196,8 @@ namespace POS.View
         }
         public async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            MainWindow.mainWindow.StartAwait();
-
+            //MainWindow.mainWindow.StartAwait();
+            SectionData.StartAwait(grid_ucReceiptInvoice);
             MainWindow.mainWindow.KeyDown += HandleKeyPress;
             tb_moneyIcon.Text = MainWindow.Currency;
             tb_moneyIconTotal.Text = MainWindow.Currency;
@@ -243,7 +243,8 @@ namespace POS.View
             ((INotifyCollectionChanged)myCollectionView).CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
             #endregion
 
-            MainWindow.mainWindow.EndAwait();
+            //MainWindow.mainWindow.EndAwait();
+            SectionData.EndAwait(grid_ucReceiptInvoice, this);
 
         }
         //async Task RefrishBranches()

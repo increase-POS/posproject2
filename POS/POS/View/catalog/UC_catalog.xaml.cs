@@ -38,7 +38,7 @@ namespace POS.View
         public UC_catalog()
         {
             InitializeComponent();
-           
+
         }
 
         private void translate()
@@ -49,23 +49,30 @@ namespace POS.View
             btn_units.Content = MainWindow.resourcemanager.GetString("trUnits");
             btn_storageCost.Content = MainWindow.resourcemanager.GetString("trStorageCost");
         }
-      
+
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-
-            if (MainWindow.lang.Equals("en"))
+            try
             {
-                MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
-                grid_ucCatalog.FlowDirection = FlowDirection.LeftToRight;
-            }
-            else
-            {
-                MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
-                grid_ucCatalog.FlowDirection = FlowDirection.RightToLeft;
-            }
+                if (MainWindow.lang.Equals("en"))
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                    grid_ucCatalog.FlowDirection = FlowDirection.LeftToRight;
+                }
+                else
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                    grid_ucCatalog.FlowDirection = FlowDirection.RightToLeft;
+                }
 
-            translate();
-            permission();
+                translate();
+                permission();
+            }
+            catch (Exception ex)
+            {
+
+                SectionData.ExceptionMessage(ex);
+            }
         }
         void permission()
         {
@@ -113,69 +120,112 @@ namespace POS.View
 
         void refreashBachgroundClick(Button btn)
         {
-            refreashBackground();
-            btn.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
-            btn.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+            try
+            {
+                refreashBackground();
+                btn.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+                btn.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+            }
+            catch (Exception ex)
+            {
+
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
 
         private void Btn_categorie_Click(object sender, RoutedEventArgs e)
         {
-            refreashBachgroundClick(btn_categories);
+            try
+            {
+                refreashBachgroundClick(btn_categories);
 
-            grid_main.Children.Clear();
-            //uc_categorie uc = new uc_categorie();
-            //grid_main.Children.Add(uc);
-            grid_main.Children.Add(uc_categorie.Instance);
-            Button button = sender as Button;
-            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
+                grid_main.Children.Clear();
+                //uc_categorie uc = new uc_categorie();
+                //grid_main.Children.Add(uc);
+                grid_main.Children.Add(uc_categorie.Instance);
+                Button button = sender as Button;
+                MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
+            }
+            catch (Exception ex)
+            {
+
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
 
-        private   void BTN_item_Click(object sender, RoutedEventArgs e)
+        private void BTN_item_Click(object sender, RoutedEventArgs e)
         {
-            refreashBachgroundClick(btn_item);
-
-            grid_main.Children.Clear();
-            grid_main.Children.Add(UC_item.Instance);
-
-            //UC_item uc = new UC_item();
-            //grid_main.Children.Add(uc);
-            Button button = sender as Button;
-            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
+            try
+            {
+                refreashBachgroundClick(btn_item);
+                grid_main.Children.Clear();
+                grid_main.Children.Add(UC_item.Instance);
+                Button button = sender as Button;
+                MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
 
         }
 
         private void Btn_properties_Click(object sender, RoutedEventArgs e)
         {
-            refreashBachgroundClick(btn_properties);
+            try
+            {
+                refreashBachgroundClick(btn_properties);
 
-            grid_main.Children.Clear();
-            grid_main.Children.Add(UC_porperty.Instance);
-            //UC_porperty uc = new UC_porperty();
-            //grid_main.Children.Add(uc);
-            Button button = sender as Button;
-            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
+                grid_main.Children.Clear();
+                grid_main.Children.Add(UC_porperty.Instance);
+                //UC_porperty uc = new UC_porperty();
+                //grid_main.Children.Add(uc);
+                Button button = sender as Button;
+                MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
+            }
+            catch (Exception ex)
+            {
+
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         private void Btn_units_Click(object sender, RoutedEventArgs e)
         {
-            refreashBachgroundClick(btn_units);
-            grid_main.Children.Clear();
-            grid_main.Children.Add(UC_unit.Instance);
-            //UC_unit uc = new UC_unit();
-            //grid_main.Children.Add(uc);
-            Button button = sender as Button;
-            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
+            try
+            {
+                refreashBachgroundClick(btn_units);
+                grid_main.Children.Clear();
+                grid_main.Children.Add(UC_unit.Instance);
+                //UC_unit uc = new UC_unit();
+                //grid_main.Children.Add(uc);
+                Button button = sender as Button;
+                MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
+            }
+            catch (Exception ex)
+            {
+
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         private void Btn_storageCost_Click(object sender, RoutedEventArgs e)
         {
-            refreashBachgroundClick(btn_storageCost);
-            grid_main.Children.Clear();
-            grid_main.Children.Add(uc_storageCost.Instance);
-            Button button = sender as Button;
-            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
+            try
+            {
+                refreashBachgroundClick(btn_storageCost);
+                grid_main.Children.Clear();
+                grid_main.Children.Add(uc_storageCost.Instance);
+                Button button = sender as Button;
+                MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
+            }
+            catch (Exception ex)
+            {
+
+                SectionData.ExceptionMessage(ex);
+            }
         }
     }
 }

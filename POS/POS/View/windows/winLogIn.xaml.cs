@@ -57,7 +57,7 @@ namespace POS.View.windows
             if (Properties.Settings.Default.userName != string.Empty)
             {
                 txtUserName.Text = Properties.Settings.Default.userName;
-                //txtPassword.Password = Properties.Settings.Default.password;
+                txtPassword.Password = Properties.Settings.Default.password;
                 lang = Properties.Settings.Default.Lang;
                 cbxRemmemberMe.IsChecked = true;
                
@@ -234,13 +234,13 @@ namespace POS.View.windows
                             Properties.Settings.Default.Lang = "";
                         }
                         Properties.Settings.Default.Save();
-                        wd_selectPos sPos = new wd_selectPos();
-                        Window.GetWindow(this).Opacity = 0.2;
+                        //wd_selectPos sPos = new wd_selectPos();
+                        //Window.GetWindow(this).Opacity = 0.2;
 
-                        sPos.ShowDialog();
+                        //sPos.ShowDialog();
 
 
-                        Window.GetWindow(this).Opacity = 1;
+                        //Window.GetWindow(this).Opacity = 1;
                         //open main window and close this window
                         MainWindow main = new MainWindow();
                         main.Show();

@@ -563,7 +563,7 @@ namespace POS.View
             RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
             #endregion
             RefrishItemsDatagrid(itemsQuery);
-            tb_barcode.Focus();
+            //tb_barcode.Focus();
         }
         }
 
