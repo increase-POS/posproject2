@@ -526,6 +526,12 @@
     <Compile Include="View\windows\wd_serialNum.xaml.cs">
       <DependentUpon>wd_serialNum.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\windows\wd_setupGeneralSetting.xaml.cs">
+      <DependentUpon>wd_setupGeneralSetting.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\windows\wd_setupServer.xaml.cs">
+      <DependentUpon>wd_setupServer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\windows\wd_subscriptionFees.xaml.cs">
       <DependentUpon>wd_subscriptionFees.xaml</DependentUpon>
     </Compile>
@@ -951,6 +957,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\windows\wd_serialNum.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\windows\wd_setupGeneralSetting.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\windows\wd_setupServer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -1563,7 +1563,7 @@
                              materialDesign:HintAssist.Hint="storage Cost... "  
                            TextBlock.FontSize="12"   Background="#f8f8f8" 
                           Height="40"  Margin="5,5,10,5"
-                           BorderBrush="#737373" BorderThickness="0" SelectionChanged="Cb_storageCost_SelectionChanged" >
+                           BorderBrush="#737373" BorderThickness="0"  >
                                 </ComboBox>
                                 <Path x:Name="p_errorStorageCost" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   

@@ -39,6 +39,7 @@ namespace POS.View
         string paymentsPermission = "reciptInvoice_payments";
         string executeOrderPermission = "reciptInvoice_executeOrder";
         string quotationPermission = "reciptInvoice_quotation";
+        string sendEmailPermission = "reciptInvoice_sendEmail";
 
         private static uc_receiptInvoice _instance;
         public static uc_receiptInvoice Instance
@@ -153,21 +154,42 @@ namespace POS.View
             dg_billDetails.Columns[4].Header = MainWindow.resourcemanager.GetString("trQuantity");
             dg_billDetails.Columns[5].Header = MainWindow.resourcemanager.GetString("trPrice");
             dg_billDetails.Columns[6].Header = MainWindow.resourcemanager.GetString("trAmount");
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_discount, MainWindow.resourcemanager.GetString("trDiscountHint"));
+
             txt_discount.Text = MainWindow.resourcemanager.GetString("trDiscount");
             txt_tax.Text = MainWindow.resourcemanager.GetString("trTax");
             txt_sum.Text = MainWindow.resourcemanager.GetString("trSum");
             txt_total.Text = MainWindow.resourcemanager.GetString("trTotal");
-            //btn_preview.Content = MainWindow.resourcemanager.GetString("trPreview");
-            //btn_pdf.Content = MainWindow.resourcemanager.GetString("trPdfBtn");
-
-
-            ////////////////////////////////----Customer----/////////////////////////////////
-
+            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSaleOrder");
+            txt_barcode.Text = MainWindow.resourcemanager.GetString("trBarcode");
+            txt_coupon.Text = MainWindow.resourcemanager.GetString("trCoupon");
             txt_customer.Text = MainWindow.resourcemanager.GetString("trCustomer");
+            txt_delivery.Text = MainWindow.resourcemanager.GetString("trDelivery");
+
+
+            tt_printInvoice.Content = MainWindow.resourcemanager.GetString("trPrint");
+            tt_preview.Content = MainWindow.resourcemanager.GetString("trPreview");
+            tt_invoiceImages.Content = MainWindow.resourcemanager.GetString("trImages");
+            tt_items.Content = MainWindow.resourcemanager.GetString("trItems");
+            tt_drafts.Content = MainWindow.resourcemanager.GetString("trDrafts");
+            tt_newDraft.Content = MainWindow.resourcemanager.GetString("trNewDraft");
+            tt_emailMessage.Content = MainWindow.resourcemanager.GetString("trSendEmail");
+            tt_payments.Content = MainWindow.resourcemanager.GetString("trPayments");
+            tt_returnInvoice.Content = MainWindow.resourcemanager.GetString("trReturn");
+            tt_quotations.Content = MainWindow.resourcemanager.GetString("trQuotations");
+            tt_ordersWait.Content = MainWindow.resourcemanager.GetString("trOrders");
+            tt_invoices.Content = MainWindow.resourcemanager.GetString("trInvoices");
+
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_barcode, MainWindow.resourcemanager.GetString("trBarcodeHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_coupon, MainWindow.resourcemanager.GetString("trCoponHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_customer, MainWindow.resourcemanager.GetString("trCustomerHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_desrvedDate, MainWindow.resourcemanager.GetString("trDeservedDateHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_note, MainWindow.resourcemanager.GetString("trNoteHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_company, MainWindow.resourcemanager.GetString("trCompanyHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_user, MainWindow.resourcemanager.GetString("trUserHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_paymentProcessType, MainWindow.resourcemanager.GetString("trPaymentProcessTypeHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_card, MainWindow.resourcemanager.GetString("trCardHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_processNum, MainWindow.resourcemanager.GetString("trProcessNumHint"));
+
             btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
 
 
@@ -181,8 +203,8 @@ namespace POS.View
                 #region Accept
                 MainWindow.mainWindow.Opacity = 0.2;
                 wd_acceptCancelPopup w = new wd_acceptCancelPopup();
-                //w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
-                w.contentText = "Do you want save sale invoice in drafts?";
+                w.contentText = MainWindow.resourcemanager.GetString("trSaveInvoiceNotification");
+
                 w.ShowDialog();
                 MainWindow.mainWindow.Opacity = 1;
                 #endregion
@@ -247,13 +269,6 @@ namespace POS.View
             SectionData.EndAwait(grid_ucReceiptInvoice, this);
 
         }
-        //async Task RefrishBranches()
-        //{
-        //    branches = await branchModel.GetBranchesActive("all");
-        //    cb_branch.ItemsSource = branches;
-        //    cb_branch.DisplayMemberPath = "name";
-        //    cb_branch.SelectedValuePath = "branchId";
-        //}
         async Task RefrishCustomers()
         {
             customers = await agentModel.GetAgentsActive("c");
@@ -774,7 +789,6 @@ namespace POS.View
                                     cashTrasnfer.posId = MainWindow.posID;
                                     cashTrasnfer.agentId = invoice.agentId;
                                     cashTrasnfer.invId = invoiceId;
-                                    // cashTrasnfer.transNum =  SectionData.generateNumber('d', "c").ToString();
                                     cashTrasnfer.transNum = await cashTrasnfer.generateCashNumber("dc");
                                     cashTrasnfer.cash = invoice.totalNet;
                                     cashTrasnfer.side = "c"; // customer
@@ -792,12 +806,8 @@ namespace POS.View
                                     await invoice.recordCompanyCashTransfer(invoice, "si");
                                 else
                                     await invoice.recordCashTransfer(invoice, "si");
-                                    // await agentModel.updateBalance((int)invoice.agentId, balance);//update customer balance
                                     break;
                             }
-
-
-                            //}
                         }
                         else if (invType == "sb")
                         {
@@ -816,7 +826,6 @@ namespace POS.View
                                         cashTrasnfer.posId = MainWindow.posID;
                                         cashTrasnfer.agentId = invoice.agentId;
                                         cashTrasnfer.invId = invoiceId;
-                                        //cashTrasnfer.transNum = SectionData.generateNumber('p', "c").ToString();
                                         cashTrasnfer.transNum = await cashTrasnfer.generateCashNumber("pc");
                                         cashTrasnfer.cash = invoice.totalNet;
                                         cashTrasnfer.side = "c"; // customer
@@ -834,9 +843,6 @@ namespace POS.View
                                         await invoice.recordCashTransfer(invoice, "sb");
                                         break;
                                 }
-
-
-                            
 
                             //update items quantity
                         }
@@ -907,7 +913,6 @@ namespace POS.View
                             await saveSaleInvoice("s");
                         }
                         clearInvoice();
-                        // if (invoice.invoiceId == 0) clearInvoice();
                     }
                     awaitSaveBtn(false);
                     logInProcessing = true;
@@ -965,7 +970,6 @@ namespace POS.View
             tb_barcode.Clear();
             cb_customer.SelectedIndex = -1;
             cb_customer.SelectedItem = "";
-            // cb_typeDiscount.SelectedIndex = 0;
             dp_desrvedDate.Text = "";
             tb_note.Clear();
             txt_discount.Text = "0";
@@ -1018,7 +1022,7 @@ namespace POS.View
                     if (_InvoiceType == "sd")
                     {
                         mainInvoiceItems = invoiceItems;
-                        txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trDraftPurchaseBill");
+                        txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesDraft");
                         brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D22A17"));
                     }
                     if (_InvoiceType == "sbd")
@@ -1100,7 +1104,7 @@ namespace POS.View
 
                         _InvoiceType = invoice.invType;
                         // set title to bill
-                        txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesInvoice");
+                        txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSaleOrder");
                         // orange #FFA926 red #D22A17
                         brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
                         await fillInvoiceInputs(invoice);
@@ -1180,7 +1184,7 @@ namespace POS.View
             {
                 Window.GetWindow(this).Opacity = 0.2;
                 wd_invoice w = new wd_invoice();
-                w.title = MainWindow.resourcemanager.GetString("trPurchaseInvoices");
+                w.title = MainWindow.resourcemanager.GetString("trInvoices");
                 w.branchCreatorId = MainWindow.branchID.Value;
                 // sales invoices
                 w.invoiceType = "s"; // invoice type to view in grid
@@ -1195,7 +1199,7 @@ namespace POS.View
 
                         await fillInvoiceInputs(invoice);
                         mainInvoiceItems = invoiceItems;
-                        txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trReturnedInvoice");
+                        txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesReturnInvoice");
                         // orange #FFA926 red #D22A17
                         brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D22A17"));
                     }
@@ -1307,7 +1311,6 @@ namespace POS.View
                     tb_barcode.IsEnabled = true;
                     tb_discount.IsEnabled = true;
                     btn_save.IsEnabled = true;
-                    //cb_paymentProcessType.IsEnabled = true;
                     cb_card.IsEnabled = true;
                     cb_company.IsEnabled = true;
                     cb_user.IsEnabled = true;
@@ -1558,72 +1561,6 @@ namespace POS.View
                     }
                 }
 
-
-                //string prefix = _BarcodeStr.Substring(0, _BarcodeStr.IndexOf("-"));
-                //switch (prefix)
-                //{
-                //    case "si":// this barcode for invoice
-                //    case "pi":
-                //        break;
-                //    case "cop":// this barcode for coupon
-                //        break;
-                //    case "cus":// this barcode for customer
-                //        break;
-                //    default: // if barcode for item
-                //        tb_barcode.Text = _BarcodeStr;
-                //        // get item matches barcode
-                //        if (barcodesList != null)
-                //        {
-                //            ItemUnit unit1 = barcodesList.ToList().Find(c => c.barcode == tb_barcode.Text.Trim());
-
-                //            // get item matches the barcode
-                //            if (unit1 != null)
-                //            {
-                //                int itemId = (int)unit1.itemId;
-                //                if (unit1.itemId != 0)
-                //                {
-                //                    int index = billDetails.IndexOf(billDetails.Where(p => p.itemUnitId == unit1.itemUnitId).FirstOrDefault());
-
-                //                    if (index == -1)//item doesn't exist in bill
-                //                    {
-                //                        // get item units
-                //                        itemUnits = await itemUnitModel.GetItemUnits(itemId);
-                //                        //get item from list
-                //                        item = items.ToList().Find(i => i.itemId == itemId);
-
-                //                        int count = 1;
-                //                        decimal price = 0;
-                //                        if (unit1.price != null)
-                //                            price = (decimal)unit1.price;
-                //                        decimal total = count * price;
-                //                        decimal tax = (decimal)(count * item.taxes);
-                //                        addRowToBill(item.name, item.itemId, unit1.mainUnit, unit1.itemUnitId, count, price, total, tax);
-                //                    }
-                //                    else // item exist prevoiusly in list
-                //                    {
-                //                        decimal itemTax = 0;
-                //                        if (item.taxes != null)
-                //                            itemTax = (decimal)item.taxes;
-                //                        billDetails[index].Count++;
-                //                        billDetails[index].Total = billDetails[index].Count * billDetails[index].Price;
-                //                        billDetails[index].Tax = (decimal)(billDetails[index].Count * itemTax);
-
-                //                        _Sum += billDetails[index].Price;
-                //                        _Tax += billDetails[index].Tax;
-
-                //                    }
-                //                    refreshTotalValue();
-                //                    refrishBillDetails();
-                //                }
-                //            }
-                //            else
-                //            {
-                //                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorItemNotFoundToolTip"), animation: ToasterAnimation.FadeIn);
-                //            }
-                //        }
-                //        break;
-                //}
-
                 e.Handled = true;
             }
             _Sender = null;
@@ -1650,7 +1587,7 @@ namespace POS.View
                         // set title to bill
                         if (_InvoiceType == "sd")
                         {
-                            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trDraftPurchaseBill");
+                            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesDraft");
                             brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
                         }
                         else if (_InvoiceType == "s")
@@ -1660,12 +1597,12 @@ namespace POS.View
                         }
                         else if (_InvoiceType == "sbd")
                         {
-                            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trDraftBounceBill");
+                            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesReturnDraft");
                             brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D22A17"));
                         }
                         else if (_InvoiceType == "sb")
                         {
-                            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trReturnedInvoice");
+                            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesReturnInvoice");
                             // orange #FFA926 red #D22A17
                             brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D22A17"));
                         }
@@ -2211,7 +2148,8 @@ namespace POS.View
                            || invoice.invType == "sbd" || invoice.invType == "pbd"
                            || invoice.invType == "ord" || invoice.invType == "imd" || invoice.invType == "exd")
                 {
-                    MessageBox.Show("can not print Draft Invoice");
+                    //MessageBox.Show("can not print Draft Invoice");
+                    MessageBox.Show(MainWindow.resourcemanager.GetString("trPrintDraftInvoice"));
                 }
                 else
                 {
@@ -2354,7 +2292,7 @@ namespace POS.View
 
                         _InvoiceType = invoice.invType;
                         // set title to bill
-                        txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesInvoice");
+                        txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trQuotations");
                         // orange #FFA926 red #D22A17
                         brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
                         await fillInvoiceInputs(invoice);
@@ -2486,7 +2424,8 @@ namespace POS.View
                      || invoice.invType == "sbd" || invoice.invType == "pbd"
                      || invoice.invType == "ord" || invoice.invType == "imd" || invoice.invType == "exd")
             {
-                MessageBox.Show("can not print Draft Invoice");
+               // MessageBox.Show("can not print Draft Invoice");
+                MessageBox.Show(MainWindow.resourcemanager.GetString("trPrintDraftInvoice"));
             }
             else
             {
@@ -2563,7 +2502,8 @@ namespace POS.View
                 }
                 else
                 {
-                    MessageBox.Show("can not print Empty Invoice");
+                   // MessageBox.Show("can not print Empty Invoice");
+                    MessageBox.Show(MainWindow.resourcemanager.GetString("trPrintEmptyInvoice"));
                 }
             }
         }
@@ -2768,13 +2708,25 @@ namespace POS.View
                 }
                 else
                 {
-                    MessageBox.Show("save the invoice to preview");
+                    //MessageBox.Show("save the invoice to preview");
+                    MessageBox.Show(MainWindow.resourcemanager.GetString("trSaveInvoiceToPreview"));
                 }
             }
             catch
             {
 
             }
+
+        }
+
+        private void Btn_emailMessage_Click(object sender, RoutedEventArgs e)
+        {
+            if (MainWindow.groupObject.HasPermissionAction(sendEmailPermission, MainWindow.groupObjects, "one"))
+            {
+
+            }
+            else
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
 
         }
     }

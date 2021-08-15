@@ -1400,19 +1400,8 @@ namespace POS.View.reports
 
             else if (selectedExternalTab == 2)
             {
-                temp = fillList(itemsTransfer, cb_externalInvoicesBranches, cb_externalInvoicesInvoiceType, cb_externalInvoicesInvoice, dp_externalInvoicesStartDate, dp_externalInvoicesEndDate, chk_externalInvoicesAllBranches, chk_externalInvoicesAllInvoicesType, chk_externalInvoicesALlInvoice, null, null)
-           .GroupBy(x => new { x.branchId, x.invoiceId })
-                         .Select(s => new ItemTransferInvoice
-                         {
-                             branchId = s.FirstOrDefault().branchId,
-                             branchName = s.FirstOrDefault().branchName,
-                             AgentTypeAgent = s.FirstOrDefault().AgentTypeAgent,
-                             ItemUnits = s.FirstOrDefault().ItemUnits
-                           ,
-                             invNumber = s.FirstOrDefault().invNumber,
-                             invType = s.FirstOrDefault().invType,
-                             quantity = s.FirstOrDefault().quantity
-                         });
+                temp = fillList(itemsTransfer, cb_externalInvoicesBranches, cb_externalInvoicesInvoiceType, cb_externalInvoicesInvoice, dp_externalInvoicesStartDate, dp_externalInvoicesEndDate, chk_externalInvoicesAllBranches, chk_externalInvoicesAllInvoicesType, chk_externalInvoicesALlInvoice, null, null);
+           
                 dgStock.ItemsSource = temp;
                 fillExternalPieChart(temp);
             }

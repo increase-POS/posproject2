@@ -93,7 +93,6 @@ namespace POS.View.reports
 
             cbStockType = statisticModel.getStocktakingArchivesTypeCombo(inventory);
             comboDestroiedItemmsUnits = statisticModel.getDestroiedCombo(Destroied);
-            comboShortFalls = statisticModel.getshortFalls(falls);
 
             fillComboBranches(cb_branchesItem);
             fillComboItems(cb_branchesItem, cb_itemsItem);

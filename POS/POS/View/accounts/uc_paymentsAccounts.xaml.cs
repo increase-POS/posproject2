@@ -377,6 +377,7 @@ namespace POS.View.accounts
             s = "0"; s1 = "";
             if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
+                #region validate
                 //chk empty cash
                 SectionData.validateEmptyTextBox(tb_cash, p_errorCash, tt_errorCash, "trEmptyCashToolTip");
 
@@ -385,25 +386,20 @@ namespace POS.View.accounts
 
                 if (grid_document.IsVisible)
                 {
-                    //SectionData.validateEmptyTextBox(tb_docNum, p_errorDocNum, tt_errorDocNum, "trEmptyDocNumToolTip");
                     SectionData.validateEmptyTextBox(dpDate, p_errorDocDate, tt_errorDocDate, "trEmptyDocDateToolTip");
                 }
                 else
                 {
-                    //SectionData.clearValidate(tb_docNum, p_errorDocNum);
-                    //SectionData.clearValidate(dpDate, p_errorDocNum);
+                 
                 }
-
                 //chk empty doc num
                 if (grid_cheque.IsVisible)
                 {
                     SectionData.validateEmptyTextBox(tb_docNumCheque, p_errorDocNumCheque, tt_errorDocNumCheque, "trEmptyDocNumToolTip");
-                    //SectionData.validateEmptyTextBox(dpDate, p_errorDocDate, tt_errorDocDate, "trEmptyDocDateToolTip");
                 }
                 else
                 {
                     SectionData.clearValidate(tb_docNumCheque, p_errorDocNumCheque);
-                    //SectionData.clearValidate(dpDate, p_errorDocNum);
                 }
                 //chk empty process num
                 if (tb_docNumCard.IsVisible)
@@ -450,6 +446,15 @@ namespace POS.View.accounts
                     SectionData.validateEmptyComboBox(cb_card, p_errorCard, tt_errorCard, "trEmptyCardTooltip");
                 else
                     SectionData.clearComboBoxValidate(cb_card, p_errorCard);
+                //chk enough money
+                bool enoughMoney = true;
+                if ((!cb_paymentProcessType.Text.Equals("")) && (cb_paymentProcessType.SelectedValue.ToString().Equals("cash")) &&
+                    (!await chkEnoughBalance(decimal.Parse(tb_cash.Text))))
+                {
+                    enoughMoney = false;
+                    SectionData.showTextBoxValidate(tb_cash, p_errorCash , tt_errorCash, "trPopNotEnoughBalance");
+                }
+                #endregion
 
                 if ((!tb_cash.Text.Equals("")) && (!cb_depositTo.Text.Equals("")) && (!cb_paymentProcessType.Text.Equals("")) &&
                      (((cb_recipientV.IsVisible) && (!cb_recipientV.Text.Equals(""))) || (!cb_recipientV.IsVisible)) &&
@@ -460,8 +465,7 @@ namespace POS.View.accounts
                      (((dp_docDate.IsVisible) && (!dp_docDate.Text.Equals(""))) || (!dp_docDate.IsVisible)) &&
                      (((cb_card.IsVisible) && (!cb_card.Text.Equals(""))) || (!cb_card.IsVisible)) &&
                      (((tb_docNumCard.IsVisible) && (!tb_docNumCard.Text.Equals(""))) || (!tb_docNumCard.IsVisible)) &&
-                    ( await chkEnoughBalance(decimal.Parse(tb_cash.Text)) && (cb_paymentProcessType.SelectedValue.ToString() == "cash") ||
-                   (cb_paymentProcessType.SelectedValue.ToString() != "cash"))
+                      enoughMoney
                      )
                 {
                     string recipient = cb_depositTo.SelectedValue.ToString();

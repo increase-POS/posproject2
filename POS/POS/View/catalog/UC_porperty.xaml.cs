@@ -50,90 +50,111 @@ namespace POS.View
         }
         public UC_porperty()
         {
-            InitializeComponent();
-            if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1440)
+            try
             {
-                txt_deleteButton.Visibility = Visibility.Visible;
-                txt_addButton.Visibility = Visibility.Visible;
-                txt_updateButton.Visibility = Visibility.Visible;
-                txt_add_Icon.Visibility = Visibility.Visible;
-                txt_update_Icon.Visibility = Visibility.Visible;
-                txt_delete_Icon.Visibility = Visibility.Visible;
+                InitializeComponent();
+                if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1440)
+                {
+                    txt_deleteButton.Visibility = Visibility.Visible;
+                    txt_addButton.Visibility = Visibility.Visible;
+                    txt_updateButton.Visibility = Visibility.Visible;
+                    txt_add_Icon.Visibility = Visibility.Visible;
+                    txt_update_Icon.Visibility = Visibility.Visible;
+                    txt_delete_Icon.Visibility = Visibility.Visible;
 
-                txt_deleteValueButton.Visibility = Visibility.Visible;
-                txt_addValueButton.Visibility = Visibility.Visible;
-                txt_updateValueButton.Visibility = Visibility.Visible;
-                txt_addValue_Icon.Visibility = Visibility.Visible;
-                txt_updateValue_Icon.Visibility = Visibility.Visible;
-                txt_deleteValue_Icon.Visibility = Visibility.Visible;
+                    txt_deleteValueButton.Visibility = Visibility.Visible;
+                    txt_addValueButton.Visibility = Visibility.Visible;
+                    txt_updateValueButton.Visibility = Visibility.Visible;
+                    txt_addValue_Icon.Visibility = Visibility.Visible;
+                    txt_updateValue_Icon.Visibility = Visibility.Visible;
+                    txt_deleteValue_Icon.Visibility = Visibility.Visible;
+                }
+                else if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1360)
+                {
+                    txt_add_Icon.Visibility = Visibility.Collapsed;
+                    txt_update_Icon.Visibility = Visibility.Collapsed;
+                    txt_delete_Icon.Visibility = Visibility.Collapsed;
+                    txt_deleteButton.Visibility = Visibility.Visible;
+                    txt_addButton.Visibility = Visibility.Visible;
+                    txt_updateButton.Visibility = Visibility.Visible;
+
+                    txt_deleteValueButton.Visibility = Visibility.Visible;
+                    txt_addValueButton.Visibility = Visibility.Visible;
+                    txt_updateValueButton.Visibility = Visibility.Visible;
+                    txt_addValue_Icon.Visibility = Visibility.Collapsed;
+                    txt_updateValue_Icon.Visibility = Visibility.Collapsed;
+                    txt_deleteValue_Icon.Visibility = Visibility.Collapsed;
+
+                }
+                else
+                {
+                    txt_deleteButton.Visibility = Visibility.Collapsed;
+                    txt_addButton.Visibility = Visibility.Collapsed;
+                    txt_updateButton.Visibility = Visibility.Collapsed;
+                    txt_add_Icon.Visibility = Visibility.Visible;
+                    txt_update_Icon.Visibility = Visibility.Visible;
+                    txt_delete_Icon.Visibility = Visibility.Visible;
+
+                    txt_deleteValueButton.Visibility = Visibility.Collapsed;
+                    txt_addValueButton.Visibility = Visibility.Collapsed;
+                    txt_updateValueButton.Visibility = Visibility.Collapsed;
+                    txt_addValue_Icon.Visibility = Visibility.Visible;
+                    txt_updateValue_Icon.Visibility = Visibility.Visible;
+                    txt_deleteValue_Icon.Visibility = Visibility.Visible;
+
+                }
+
             }
-            else if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1360)
+            catch (Exception ex)
             {
-                txt_add_Icon.Visibility = Visibility.Collapsed;
-                txt_update_Icon.Visibility = Visibility.Collapsed;
-                txt_delete_Icon.Visibility = Visibility.Collapsed;
-                txt_deleteButton.Visibility = Visibility.Visible;
-                txt_addButton.Visibility = Visibility.Visible;
-                txt_updateButton.Visibility = Visibility.Visible;
-
-                txt_deleteValueButton.Visibility = Visibility.Visible;
-                txt_addValueButton.Visibility = Visibility.Visible;
-                txt_updateValueButton.Visibility = Visibility.Visible;
-                txt_addValue_Icon.Visibility = Visibility.Collapsed;
-                txt_updateValue_Icon.Visibility = Visibility.Collapsed;
-                txt_deleteValue_Icon.Visibility = Visibility.Collapsed;
-
+                SectionData.ExceptionMessage(ex);
             }
-            else
-            {
-                txt_deleteButton.Visibility = Visibility.Collapsed;
-                txt_addButton.Visibility = Visibility.Collapsed;
-                txt_updateButton.Visibility = Visibility.Collapsed;
-                txt_add_Icon.Visibility = Visibility.Visible;
-                txt_update_Icon.Visibility = Visibility.Visible;
-                txt_delete_Icon.Visibility = Visibility.Visible;
-
-                txt_deleteValueButton.Visibility = Visibility.Collapsed;
-                txt_addValueButton.Visibility = Visibility.Collapsed;
-                txt_updateValueButton.Visibility = Visibility.Collapsed;
-                txt_addValue_Icon.Visibility = Visibility.Visible;
-                txt_updateValue_Icon.Visibility = Visibility.Visible;
-                txt_deleteValue_Icon.Visibility = Visibility.Visible;
-
-            }
-
         }
 
         private void Tb_propertyName_LostFocus(object sender, RoutedEventArgs e)
         {
-            var bc = new BrushConverter();
+            try
+            {
+                var bc = new BrushConverter();
 
-            if (tb_name.Text.Equals(""))
-            {
-                p_errorName.Visibility = Visibility.Visible;
-                tt_errorName.Content = MainWindow.resourcemanager.GetString("trEmptyMainPropNameToolTip");
-                tb_name.Background = (Brush)bc.ConvertFrom("#15FF0000");
+                if (tb_name.Text.Equals(""))
+                {
+                    p_errorName.Visibility = Visibility.Visible;
+                    tt_errorName.Content = MainWindow.resourcemanager.GetString("trEmptyMainPropNameToolTip");
+                    tb_name.Background = (Brush)bc.ConvertFrom("#15FF0000");
+                }
+                else
+                {
+                    p_errorName.Visibility = Visibility.Collapsed;
+                    tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                p_errorName.Visibility = Visibility.Collapsed;
-                tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                SectionData.ExceptionMessage(ex);
             }
         }
         private void Tb_propertyName_TextChanged(object sender, TextChangedEventArgs e)
         {
-            var bc = new BrushConverter();
+            try
+            {
+                var bc = new BrushConverter();
 
-            if (tb_name.Text.Equals(""))
-            {
-                p_errorName.Visibility = Visibility.Visible;
-                tt_errorName.Content = MainWindow.resourcemanager.GetString("trEmptyMainPropNameToolTip");
-                tb_name.Background = (Brush)bc.ConvertFrom("#15FF0000");
+                if (tb_name.Text.Equals(""))
+                {
+                    p_errorName.Visibility = Visibility.Visible;
+                    tt_errorName.Content = MainWindow.resourcemanager.GetString("trEmptyMainPropNameToolTip");
+                    tb_name.Background = (Brush)bc.ConvertFrom("#15FF0000");
+                }
+                else
+                {
+                    p_errorName.Visibility = Visibility.Collapsed;
+                    tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                p_errorName.Visibility = Visibility.Collapsed;
-                tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                SectionData.ExceptionMessage(ex);
             }
         }
 
@@ -145,9 +166,9 @@ namespace POS.View
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_name, MainWindow.resourcemanager.GetString("trNameHint"));
             txt_values.Text = MainWindow.resourcemanager.GetString("trValues");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_valueName, MainWindow.resourcemanager.GetString("trValueHint"));
-           
 
-                txt_header.Text = MainWindow.resourcemanager.GetString("trProperty");
+
+            txt_header.Text = MainWindow.resourcemanager.GetString("trProperty");
             txt_addButton.Text = MainWindow.resourcemanager.GetString("trAdd");
             txt_updateButton.Text = MainWindow.resourcemanager.GetString("trUpdate");
             txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trDelete");
@@ -169,385 +190,475 @@ namespace POS.View
 
         private async void UserControl_Loaded_1(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.lang.Equals("en"))
+            try
             {
-                MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
-                grid_ucProperty.FlowDirection = FlowDirection.LeftToRight;
-            }
-            else
-            {
-                MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
-                grid_ucProperty.FlowDirection = FlowDirection.RightToLeft;
-            }
-
-            translate();
-
-            await RefreshPropertiesList();
-            Tb_search_TextChanged(null, null);
-
-            //var properties = await propertyModel.getProperty();
-            //dg_property.ItemsSource = properties;
-        }
-
-        private void Dg_subProperty_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            p_errorName.Visibility = Visibility.Collapsed;           
-            var bc = new BrushConverter();         
-
-            if (dg_subProperty.SelectedIndex != -1)
-            {
-                propertyItem = dg_subProperty.SelectedItem as PropertiesItems;
-                
-            }
-            if (propertyItem != null)
-            {
-                tb_valueName.Text = propertyItem.propertyItemName;
-                if (propertyItem.propertyItemId != 0)
+                SectionData.StartAwait(grid_ucProperty);
+                if (MainWindow.lang.Equals("en"))
                 {
-                    propertyItemId = propertyItem.propertyItemId;
-
-                    if (propertyItem.canDelete) btn_deleteValue.Content = MainWindow.resourcemanager.GetString("trDelete");
-
-                    else
-                    {
-                        if (propertyItem.isActive == 0) btn_deleteValue.Content = MainWindow.resourcemanager.GetString("trActive");
-                        else btn_deleteValue.Content = MainWindow.resourcemanager.GetString("trInActive");
-                    }
-                }
-            }
-            
-        }
-        //************************************************
-        //******************* update property***************
-        private async void Btn_update_Click(object sender, RoutedEventArgs e)
-        {
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update") || SectionData.isAdminPermision())
-            {
-                //update
-                property.name = tb_name.Text;
-            property.createUserId = MainWindow.userID;
-            property.updateUserId = MainWindow.userID;
-
-            Boolean res = await propertyModel.saveProperty(property);
-
-            if (res) 
-                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
-            else 
-                Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-
-            await RefreshPropertiesList();
-            Tb_search_TextChanged(null, null);
-                //var poss = await propertyModel.getProperty();
-                //dg_property.ItemsSource = poss;
-            }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-        }
-
-    private void Btn_clear_Click(object sender, RoutedEventArgs e)
-        {
-            var bc = new BrushConverter();
-
-            tb_name.Clear();
-            p_errorName.Visibility = Visibility.Collapsed;
-            tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            dg_subProperty.ItemsSource = null;
-            tb_valueName.Clear();
-            p_errorNameSub.Visibility = Visibility.Collapsed;
-            tb_valueName.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            property = new Property();
-        }
-        //************************************************
-        //******************* delete property***************
-        private async void Btn_delete_Click(object sender, RoutedEventArgs e)
-        {
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete") || SectionData.isAdminPermision())
-            {
-                if ((!property.canDelete) && (property.isActive == 0))
-            {
-                #region
-                Window.GetWindow(this).Opacity = 0.2;
-                wd_acceptCancelPopup w = new wd_acceptCancelPopup();
-                w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
-                w.ShowDialog();
-                Window.GetWindow(this).Opacity = 1;
-                #endregion
-                if (w.isOk)
-                    await activateProperty();
-
-            }
-            else
-            {
-                #region
-                Window.GetWindow(this).Opacity = 0.2;
-                wd_acceptCancelPopup w = new wd_acceptCancelPopup();
-                if (property.canDelete)
-                    w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDelete");
-                if (!property.canDelete)
-                    w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDeactivate");
-                w.ShowDialog();
-                Window.GetWindow(this).Opacity = 1;
-                #endregion
-                if (w.isOk)
-                {
-                    string popupContent = "";
-                    if (property.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
-                    if ((!property.canDelete) && (property.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
-                    int userId = (int)MainWindow.userID;
-                    Boolean res = await propertyModel.deleteProperty(property.propertyId, userId, property.canDelete);
-
-                    if (res)
-                        Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
-                    else
-                        Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-                }
-            }
-
-            await RefreshPropertiesList();
-            Tb_search_TextChanged(null, null);
-            Btn_clear_Click(sender, e);
-            }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-        }
-
-        private async Task activateProperty()
-        {//activate
-
-            property.isActive = 1;
-
-            Boolean s = await propertyModel.saveProperty(property);
-
-            if (s) 
-                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
-            else 
-                Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-
-        }
-        private async Task activatePropertyItem()
-        {//activate
-
-            propertyItem.isActive = 1;
-            propertyItem.name = propertyItem.propertyItemName;
-
-            Boolean s = await propertiesItemsModel.SavePropertiesItems(propertyItem);
-
-            if (s) 
-                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
-            else 
-                Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-
-        }
-        async void Dg_property_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
-        {
-            p_errorName.Visibility = Visibility.Collapsed;
-            var bc = new BrushConverter();
-            tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-
-            if (dg_property.SelectedIndex != -1)
-            {
-                property = dg_property.SelectedItem as Property;
-                this.DataContext = property;
-            }
-            if (property != null)
-            {
-                if (property.propertyId != 0)
-                {
-                                        
-                    var propItems = await propertiesItemsModel.GetPropertyItems(property.propertyId);
-                    dg_subProperty.ItemsSource = propItems;
-                }
-
-                if (property.canDelete)
-                {
-                    txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trDelete");
-                    txt_delete_Icon.Kind =
-                             MaterialDesignThemes.Wpf.PackIconKind.Delete;
-                    tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
-
-                }
-
-                else
-                {
-                    if (property.isActive == 0)
-                    {
-                        txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trActive");
-                        txt_delete_Icon.Kind =
-                         MaterialDesignThemes.Wpf.PackIconKind.Check;
-                        tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trActive");
-
-                    }
-                    else
-                    {
-                        txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trInActive");
-                        txt_delete_Icon.Kind =
-                             MaterialDesignThemes.Wpf.PackIconKind.Cancel;
-                        tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trInActive");
-
-                    }
-                }
-            }
-
-        }
-
-
-        private async void Btn_addValue_Click(object sender, RoutedEventArgs e)
-            {
-                //add
-                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add") || SectionData.isAdminPermision())
-                {
-                    var bc = new BrushConverter();
-            if (tb_valueName.Text.Equals(""))
-            {
-                p_errorNameSub.Visibility = Visibility.Visible;
-                tt_errorNameSub.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-                tb_valueName.Background = (Brush)bc.ConvertFrom("#15FF0000");
-            }
-            else
-            {
-                p_errorNameSub.Visibility = Visibility.Collapsed;
-                tb_valueName.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            }
-            if (!tb_valueName.Text.Equals(""))
-            {
-                
-                    propertyItem.propertyItemId = 0;
-                propertyItem.name = tb_valueName.Text;
-                propertyItem.propertyId = property.propertyId;
-                propertyItem.createUserId = MainWindow.userID;
-                propertyItem.isActive = 1;
-
-                Boolean res = await propertiesItemsModel.SavePropertiesItems(propertyItem);
-
-                if (res) 
-                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
-                else 
-                    Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-
-                tb_valueName.Text = null;
-                var properties = await propertyModel.getProperty();
-                dg_property.ItemsSource = properties;
-
-                var propertiesItemss = await propertiesItemsModel.GetPropertyItems(property.propertyId);
-                dg_subProperty.ItemsSource = propertiesItemss;
-            }
-
-            }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-        }
-
-        private async void Btn_deleteValue_Click(object sender, RoutedEventArgs e)
-        {
-                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete") || SectionData.isAdminPermision())
-                {
-                    if ((!propertyItem.canDelete) && (propertyItem.isActive == 0))
-               await activatePropertyItem();
-            else
-            {
-                string popupContent = "";
-                if (propertyItem.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
-                if ((!propertyItem.canDelete) && (propertyItem.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
-                int userId = (int)MainWindow.userID;
-                Boolean res = await propertiesItemsModel.DeletePropertiesItems(propertyItem.propertyItemId, userId, propertyItem.canDelete);
-
-                if (res) 
-                    Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
-                else 
-                    Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-            }
-
-            var propertiesitems = await propertiesItemsModel.GetPropertyItems(property.propertyId);
-            dg_subProperty.ItemsSource = propertiesitems;
+                    MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                    grid_ucProperty.FlowDirection = FlowDirection.LeftToRight;
                 }
                 else
-                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-            }
-
-
-            private async void Btn_add_Click(object sender, RoutedEventArgs e)
-        {
-            //add
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add") || SectionData.isAdminPermision())
-            {
-                var bc = new BrushConverter();
-            if (tb_valueName.Text.Equals(""))
-            {
-                p_errorNameSub.Visibility = Visibility.Visible;
-                tt_errorNameSub.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-                tb_valueName.Background = (Brush)bc.ConvertFrom("#15FF0000");
-            }
-            else
-            {
-                p_errorNameSub.Visibility = Visibility.Collapsed;
-                tb_valueName.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            }
-            if (!tb_valueName.Text.Equals(""))
-            {
-                property = new Property
                 {
-                    name = tb_name.Text,
-                    createUserId = 2,
-                    updateUserId = 2,
-                    isActive = 1
-                };
+                    MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                    grid_ucProperty.FlowDirection = FlowDirection.RightToLeft;
+                }
 
-                Boolean res = await propertyModel.saveProperty(property);
-
-                if (res)
-                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
-                else
-                    Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-
-                //tb_name.Text = null;
-
+                translate();
 
                 await RefreshPropertiesList();
                 Tb_search_TextChanged(null, null);
 
                 //var properties = await propertyModel.getProperty();
                 //dg_property.ItemsSource = properties;
+                SectionData.EndAwait(grid_ucProperty, this);
             }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
             }
+        }
+
+        private void Dg_subProperty_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                p_errorName.Visibility = Visibility.Collapsed;
+                var bc = new BrushConverter();
+
+                if (dg_subProperty.SelectedIndex != -1)
+                {
+                    propertyItem = dg_subProperty.SelectedItem as PropertiesItems;
+
+                }
+                if (propertyItem != null)
+                {
+                    tb_valueName.Text = propertyItem.propertyItemName;
+                    if (propertyItem.propertyItemId != 0)
+                    {
+                        propertyItemId = propertyItem.propertyItemId;
+
+                        if (propertyItem.canDelete) btn_deleteValue.Content = MainWindow.resourcemanager.GetString("trDelete");
+
+                        else
+                        {
+                            if (propertyItem.isActive == 0) btn_deleteValue.Content = MainWindow.resourcemanager.GetString("trActive");
+                            else btn_deleteValue.Content = MainWindow.resourcemanager.GetString("trInActive");
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
+        }
+        //************************************************
+        //******************* update property***************
+        private async void Btn_update_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+
+                SectionData.StartAwait(grid_ucProperty);
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update") || SectionData.isAdminPermision())
+                {
+                    //update
+                    property.name = tb_name.Text;
+                    property.createUserId = MainWindow.userID;
+                    property.updateUserId = MainWindow.userID;
+
+                    Boolean res = await propertyModel.saveProperty(property);
+
+                    if (res)
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
+                    else
+                        Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+                    await RefreshPropertiesList();
+                    Tb_search_TextChanged(null, null);
+                    //var poss = await propertyModel.getProperty();
+                    //dg_property.ItemsSource = poss;
+                SectionData.EndAwait(grid_ucProperty, this);
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
+        }
+
+        private void Btn_clear_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var bc = new BrushConverter();
+
+                tb_name.Clear();
+                p_errorName.Visibility = Visibility.Collapsed;
+                tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                dg_subProperty.ItemsSource = null;
+                tb_valueName.Clear();
+                p_errorNameSub.Visibility = Visibility.Collapsed;
+                tb_valueName.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                property = new Property();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
+        }
+        //************************************************
+        //******************* delete property***************
+        private async void Btn_delete_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                SectionData.StartAwait(grid_ucProperty);
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete") || SectionData.isAdminPermision())
+                {
+                    if ((!property.canDelete) && (property.isActive == 0))
+                    {
+                        #region
+                        Window.GetWindow(this).Opacity = 0.2;
+                        wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                        w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
+                        w.ShowDialog();
+                        Window.GetWindow(this).Opacity = 1;
+                        #endregion
+                        if (w.isOk)
+                            await activateProperty();
+
+                    }
+                    else
+                    {
+                        #region
+                        Window.GetWindow(this).Opacity = 0.2;
+                        wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                        if (property.canDelete)
+                            w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDelete");
+                        if (!property.canDelete)
+                            w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDeactivate");
+                        w.ShowDialog();
+                        Window.GetWindow(this).Opacity = 1;
+                        #endregion
+                        if (w.isOk)
+                        {
+                            string popupContent = "";
+                            if (property.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
+                            if ((!property.canDelete) && (property.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
+                            int userId = (int)MainWindow.userID;
+                            Boolean res = await propertyModel.deleteProperty(property.propertyId, userId, property.canDelete);
+
+                            if (res)
+                                Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
+                            else
+                                Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                        }
+                    }
+
+                    await RefreshPropertiesList();
+                    Tb_search_TextChanged(null, null);
+                    Btn_clear_Click(sender, e);
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                SectionData.EndAwait(grid_ucProperty, this);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
+        }
+
+        private async Task activateProperty()
+        {//activate
+
+            SectionData.StartAwait(grid_ucProperty);
+            property.isActive = 1;
+
+            Boolean s = await propertyModel.saveProperty(property);
+
+            if (s)
+                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
             else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+                SectionData.EndAwait(grid_ucProperty, this);
+        }
+        private async Task activatePropertyItem()
+        {//activate
+
+            SectionData.StartAwait(grid_ucProperty);
+            propertyItem.isActive = 1;
+            propertyItem.name = propertyItem.propertyItemName;
+
+            Boolean s = await propertiesItemsModel.SavePropertiesItems(propertyItem);
+
+            if (s)
+                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
+            else
+                Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+            SectionData.EndAwait(grid_ucProperty, this);
+
+        }
+        async void Dg_property_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                SectionData.StartAwait(grid_ucProperty);
+                p_errorName.Visibility = Visibility.Collapsed;
+                var bc = new BrushConverter();
+                tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+
+                if (dg_property.SelectedIndex != -1)
+                {
+                    property = dg_property.SelectedItem as Property;
+                    this.DataContext = property;
+                }
+                if (property != null)
+                {
+                    if (property.propertyId != 0)
+                    {
+
+                        var propItems = await propertiesItemsModel.GetPropertyItems(property.propertyId);
+                        dg_subProperty.ItemsSource = propItems;
+                    }
+
+                    if (property.canDelete)
+                    {
+                        txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trDelete");
+                        txt_delete_Icon.Kind =
+                                 MaterialDesignThemes.Wpf.PackIconKind.Delete;
+                        tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
+
+                    }
+
+                    else
+                    {
+                        if (property.isActive == 0)
+                        {
+                            txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trActive");
+                            txt_delete_Icon.Kind =
+                             MaterialDesignThemes.Wpf.PackIconKind.Check;
+                            tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trActive");
+
+                        }
+                        else
+                        {
+                            txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trInActive");
+                            txt_delete_Icon.Kind =
+                                 MaterialDesignThemes.Wpf.PackIconKind.Cancel;
+                            tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trInActive");
+
+                        }
+                    }
+                }
+                SectionData.EndAwait(grid_ucProperty, this);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
+        }
+
+
+        private async void Btn_addValue_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                SectionData.StartAwait(grid_ucProperty);
+                //add
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add") || SectionData.isAdminPermision())
+                {
+                    var bc = new BrushConverter();
+                    if (tb_valueName.Text.Equals(""))
+                    {
+                        p_errorNameSub.Visibility = Visibility.Visible;
+                        tt_errorNameSub.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+                        tb_valueName.Background = (Brush)bc.ConvertFrom("#15FF0000");
+                    }
+                    else
+                    {
+                        p_errorNameSub.Visibility = Visibility.Collapsed;
+                        tb_valueName.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                    }
+                    if (!tb_valueName.Text.Equals(""))
+                    {
+
+                        propertyItem.propertyItemId = 0;
+                        propertyItem.name = tb_valueName.Text;
+                        propertyItem.propertyId = property.propertyId;
+                        propertyItem.createUserId = MainWindow.userID;
+                        propertyItem.isActive = 1;
+
+                        Boolean res = await propertiesItemsModel.SavePropertiesItems(propertyItem);
+
+                        if (res)
+                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                        else
+                            Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+                        tb_valueName.Text = null;
+                        var properties = await propertyModel.getProperty();
+                        dg_property.ItemsSource = properties;
+
+                        var propertiesItemss = await propertiesItemsModel.GetPropertyItems(property.propertyId);
+                        dg_subProperty.ItemsSource = propertiesItemss;
+                    }
+
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                SectionData.EndAwait(grid_ucProperty, this);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
+        }
+
+        private async void Btn_deleteValue_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                SectionData.StartAwait(grid_ucProperty);
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete") || SectionData.isAdminPermision())
+                {
+                    if ((!propertyItem.canDelete) && (propertyItem.isActive == 0))
+                        await activatePropertyItem();
+                    else
+                    {
+                        string popupContent = "";
+                        if (propertyItem.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
+                        if ((!propertyItem.canDelete) && (propertyItem.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
+                        int userId = (int)MainWindow.userID;
+                        Boolean res = await propertiesItemsModel.DeletePropertiesItems(propertyItem.propertyItemId, userId, propertyItem.canDelete);
+
+                        if (res)
+                            Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
+                        else
+                            Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    }
+
+                    var propertiesitems = await propertiesItemsModel.GetPropertyItems(property.propertyId);
+                    dg_subProperty.ItemsSource = propertiesitems;
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                SectionData.EndAwait(grid_ucProperty, this);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
+        }
+
+
+        private async void Btn_add_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                //add
+
+                SectionData.StartAwait(grid_ucProperty);
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add") || SectionData.isAdminPermision())
+                {
+                    var bc = new BrushConverter();
+                    if (tb_valueName.Text.Equals(""))
+                    {
+                        p_errorNameSub.Visibility = Visibility.Visible;
+                        tt_errorNameSub.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+                        tb_valueName.Background = (Brush)bc.ConvertFrom("#15FF0000");
+                    }
+                    else
+                    {
+                        p_errorNameSub.Visibility = Visibility.Collapsed;
+                        tb_valueName.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                    }
+                    if (!tb_valueName.Text.Equals(""))
+                    {
+                        property = new Property
+                        {
+                            name = tb_name.Text,
+                            createUserId = 2,
+                            updateUserId = 2,
+                            isActive = 1
+                        };
+
+                        Boolean res = await propertyModel.saveProperty(property);
+
+                        if (res)
+                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                        else
+                            Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+                        //tb_name.Text = null;
+
+
+                        await RefreshPropertiesList();
+                        Tb_search_TextChanged(null, null);
+
+                        //var properties = await propertyModel.getProperty();
+                        //dg_property.ItemsSource = properties;
+                    }
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                SectionData.EndAwait(grid_ucProperty, this);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         private async void Btn_updateValue_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update") || SectionData.isAdminPermision())
+            try
             {
-                //check mandatory values
-                var bc = new BrushConverter();
-            if (tb_valueName.Text.Equals(""))
-            {
-                p_errorNameSub.Visibility = Visibility.Visible;
-                tt_errorNameSub.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-                tb_valueName.Background = (Brush)bc.ConvertFrom("#15FF0000");
-            }
-            else
-            {
-                p_errorNameSub.Visibility = Visibility.Collapsed;
-                tb_valueName.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            }
-            if(!tb_valueName.Text.Equals(""))
-            {
-                propertyItem.name = tb_valueName.Text;
-                propertyItem.updateUserId = MainWindow.userID;
+                SectionData.StartAwait(grid_ucProperty);
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update") || SectionData.isAdminPermision())
+                {
+                    //check mandatory values
+                    var bc = new BrushConverter();
+                    if (tb_valueName.Text.Equals(""))
+                    {
+                        p_errorNameSub.Visibility = Visibility.Visible;
+                        tt_errorNameSub.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+                        tb_valueName.Background = (Brush)bc.ConvertFrom("#15FF0000");
+                    }
+                    else
+                    {
+                        p_errorNameSub.Visibility = Visibility.Collapsed;
+                        tb_valueName.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                    }
+                    if (!tb_valueName.Text.Equals(""))
+                    {
+                        propertyItem.name = tb_valueName.Text;
+                        propertyItem.updateUserId = MainWindow.userID;
 
-                Boolean res = await propertiesItemsModel.SavePropertiesItems(propertyItem);
+                        Boolean res = await propertiesItemsModel.SavePropertiesItems(propertyItem);
 
-                if (res) 
-                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
-                else 
-                Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                        if (res)
+                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
+                        else
+                            Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
-                var propertiesItemss = await propertiesItemsModel.GetPropertyItems(property.propertyId);
-                dg_subProperty.ItemsSource = propertiesItemss;
+                        var propertiesItemss = await propertiesItemsModel.GetPropertyItems(property.propertyId);
+                        dg_subProperty.ItemsSource = propertiesItemss;
+                    }
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                SectionData.EndAwait(grid_ucProperty, this);
             }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
             }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
 
 
@@ -561,62 +672,104 @@ namespace POS.View
 
         async Task<IEnumerable<Property>> RefreshPropertiesList()
         {
-            MainWindow.mainWindow.StartAwait();
+
+            SectionData.StartAwait(grid_ucProperty);
             properties = await propertyModel.getProperty();
-            MainWindow.mainWindow.EndAwait();
+            SectionData.EndAwait(grid_ucProperty, this);
             return properties;
         }
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
         {//search
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
+            try
             {
-                if (properties is null)
-                await RefreshPropertiesList();
-            searchText = tb_search.Text.ToLower();
-            propertiesQuery = properties.Where(s => s.name.ToLower().Contains(searchText) && s.isActive == tgl_PropertyState);
-            refreshPropertiesGrid();
+                SectionData.StartAwait(grid_ucProperty);
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
+                {
+                    if (properties is null)
+                        await RefreshPropertiesList();
+                    searchText = tb_search.Text.ToLower();
+                    propertiesQuery = properties.Where(s => s.name.ToLower().Contains(searchText) && s.isActive == tgl_PropertyState);
+                    refreshPropertiesGrid();
+                }
+                SectionData.EndAwait(grid_ucProperty, this);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
             }
         }
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
+            try
             {
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
+                {
 
-                RefreshPropertiesList();
-                Tb_search_TextChanged(null, null);
+                    RefreshPropertiesList();
+                    Tb_search_TextChanged(null, null);
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+
             }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-            
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
         private async void Tgl_isActive_Checked(object sender, RoutedEventArgs e)
         {
+            try
+            {
 
-            if (properties is null)
-                await RefreshPropertiesList();
-            tgl_PropertyState = 1;
-            Tb_search_TextChanged(null, null);
+                SectionData.StartAwait(grid_ucProperty);
+                if (properties is null)
+                    await RefreshPropertiesList();
+                tgl_PropertyState = 1;
+                Tb_search_TextChanged(null, null);
+                SectionData.EndAwait(grid_ucProperty, this);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
         private async void Tgl_isActive_Unchecked(object sender, RoutedEventArgs e)
         {
-            if (properties is null)
+            try
+            {
+                SectionData.StartAwait(grid_ucProperty);
+                if (properties is null)
                 await RefreshPropertiesList();
             tgl_PropertyState = 0;
             Tb_search_TextChanged(null, null);
+                SectionData.EndAwait(grid_ucProperty, this);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
+            try
             {
-                this.Dispatcher.Invoke(() =>
-            {
-                Thread t1 = new Thread(FN_ExportToExcel);
-                t1.SetApartmentState(ApartmentState.STA);
-                t1.Start();
-            });
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
+                {
+                    this.Dispatcher.Invoke(() =>
+                {
+                    Thread t1 = new Thread(FN_ExportToExcel);
+                    t1.SetApartmentState(ApartmentState.STA);
+                    t1.Start();
+                });
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
             }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         void FN_ExportToExcel()

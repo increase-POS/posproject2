@@ -241,10 +241,8 @@ namespace POS.View.purchases
             fillDates(startDate, endDate, startTime, endTime);
             var result = Invoices.Where(x => (
 
-              (txt_search.Text != null ? x.invNumber.Contains(txt_search.Text)
-              || x.invType.Contains(txt_search.Text)
-              || x.discountType.Contains(txt_search.Text) : true)
-              && ((chkDraft.IsChecked == true ? (x.invType == "pd" || x.invType == "pbd") : false)
+            
+               ((chkDraft.IsChecked == true ? (x.invType == "pd" || x.invType == "pbd") : false)
                           || (chkReturn.IsChecked == true ? (x.invType == "pb") : false)
                             || (chkInvoice.IsChecked == true ? ((x.invType == "p") || (x.invType == "pw")) : false))
                       && (startDate.SelectedDate != null ? x.invDate >= startDate.SelectedDate : true)
@@ -315,7 +313,7 @@ fillColumnChart(cb_Items, selectedItemId);
 
             return xx;
         }
-        private void fillPieChart(ComboBox comboBox, ObservableCollection<int> stackedButton)
+        private void fillPieChart( ComboBox comboBox, ObservableCollection<int> stackedButton)
         {
             List<string> titles = new List<string>();
             IEnumerable<int> x = null;
@@ -741,11 +739,11 @@ fillColumnChart(cb_Items, selectedItemId);
             rowChart.Series = rowChartData;
         }
 
+        IEnumerable<ItemTransferInvoice> itemTransfers = null;
         public void fillBranchEvent()
         {
-            var temp = fillList(Invoices, chk_invoice, chk_return, chk_drafs, dp_startDate, dp_endDate, dt_startTime, dt_endTime);
-            temp = temp.Where(j => (selectedBranchId.Count != 0 ? selectedBranchId.Contains((int)j.branchCreatorId) : true));
-            dgInvoice.ItemsSource = temp;
+            itemTransfers = fillList(Invoices, chk_invoice, chk_return, chk_drafs, dp_startDate, dp_endDate, dt_startTime, dt_endTime).Where(j => (selectedBranchId.Count != 0 ? selectedBranchId.Contains((int)j.branchCreatorId) : true));
+            dgInvoice.ItemsSource = itemTransfers;
             fillPieChart(cb_branches, selectedBranchId);
             fillColumnChart(cb_branches, selectedBranchId);
             fillRowChart(cb_branches, selectedBranchId);
@@ -1137,29 +1135,7 @@ fillColumnChart(cb_Items, selectedItemId);
 
         #endregion
 
-        private void txt_search_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (selectedTab == 0)
-            {
-                fillBranchEvent();
-            }
-            if (selectedTab == 1)
-            {
-                fillPosEvent();
-            }
-            if (selectedTab == 2)
-            {
-                fillVendorsEvent();
-            }
-            if (selectedTab == 3)
-            {
-                fillUsersEvent();
-            }
-            if (selectedTab == 4)
-            {
-                fillItemsEvent();
-            }
-        }
+      
 
         #region posEvents
         private void chk_posInvoice_Checked(object sender, RoutedEventArgs e)
@@ -1883,6 +1859,67 @@ fillColumnChart(cb_Items, selectedItemId);
             rep.Refresh();
 
             LocalReportExtensions.PrintToPrinter(rep);
+        }
+        private void txt_search_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (selectedTab==0)
+            {
+                itemTransfers = fillList(Invoices, chk_invoice, chk_return, chk_drafs, dp_startDate, dp_endDate, dt_startTime, dt_endTime)
+                    .Where(j => (selectedBranchId.Count != 0 ? selectedBranchId.Contains((int)j.branchCreatorId) : true));
+
+                dgInvoice.ItemsSource = itemTransfers
+                    .Where(s => (s.branchCreatorName.Contains(txt_search.Text) ||
+      s.invNumber.Contains(txt_search.Text) 
+      ));
+            }
+           else if (selectedTab == 1)
+            {
+                itemTransfers = fillList(Invoices, chk_posInvoice, chk_posReturn, chk_posDraft, dp_posStartDate, dp_posEndDate, dt_posStartTime, dt_posEndTime)
+                    .Where(j => (selectedPosId.Count != 0 ? selectedPosId.Contains((int)j.posId) : true));
+
+                dgInvoice.ItemsSource = itemTransfers
+                    .Where(s => (s.branchCreatorName.Contains(txt_search.Text) ||
+                   s.posName.Contains(txt_search.Text) ||
+      s.invNumber.Contains(txt_search.Text)
+      ));
+            }
+
+            else if (selectedTab == 2)
+            {
+                itemTransfers = fillList(Invoices, chk_vendorsInvoice, chk_vendorsReturn, chk_vendorsDraft, dp_vendorsStartDate, dp_vendorsEndDate, dt_vendorsStartTime, dt_vendorsEndTime)
+                .Where(j => (selectedVendorsId.Count != 0 ? selectedVendorsId.Contains((int)j.agentId) : true));
+
+                dgInvoice.ItemsSource = itemTransfers
+                    .Where(s => (s.branchCreatorName.Contains(txt_search.Text) ||
+                   s.agentName.Contains(txt_search.Text) ||
+                   s.agentCompany.Contains(txt_search.Text) ||
+      s.invNumber.Contains(txt_search.Text)
+      ));
+            }
+
+            else if (selectedTab == 3)
+            {
+                itemTransfers = fillList(Invoices, chk_usersInvoice, chk_usersReturn, chk_usersDraft, dp_usersStartDate, dp_usersEndDate, dt_usersStartTime, dt_usersEndTime)
+                .Where(j => (selectedUserId.Count != 0 ? selectedUserId.Contains((int)j.updateUserId) : true));
+
+                dgInvoice.ItemsSource = itemTransfers
+                    .Where(s => (s.branchCreatorName.Contains(txt_search.Text) ||
+                   s.posName.Contains(txt_search.Text) ||
+                   s.uUserAccName.Contains(txt_search.Text) ||
+      s.invNumber.Contains(txt_search.Text)
+      ));
+            }
+            else if (selectedTab == 4)
+            {
+                itemTransfers = fillList(Items, chk_itemInvoice, chk_itemReturn, chk_itemDrafs, dp_ItemStartDate, dp_ItemEndDate, dt_itemStartTime, dt_ItemEndTime)
+                .Where(j => (selectedItemId.Count != 0 ? selectedItemId.Contains((int)j.ITitemUnitId) : true));
+
+                dgInvoice.ItemsSource = itemTransfers
+                    .Where(s => (s.ITitemName.Contains(txt_search.Text) ||
+                   s.ITitemUnitName1.Contains(txt_search.Text) ||
+      s.invNumber.Contains(txt_search.Text)
+      ));
+            }
         }
     }
 }

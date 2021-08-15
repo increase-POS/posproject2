@@ -139,10 +139,7 @@ namespace POS.View
             try
             {
                 refreashBachgroundClick(btn_categories);
-
                 grid_main.Children.Clear();
-                //uc_categorie uc = new uc_categorie();
-                //grid_main.Children.Add(uc);
                 grid_main.Children.Add(uc_categorie.Instance);
                 Button button = sender as Button;
                 MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
@@ -169,7 +166,6 @@ namespace POS.View
             {
                 SectionData.ExceptionMessage(ex);
             }
-
         }
 
         private void Btn_properties_Click(object sender, RoutedEventArgs e)
@@ -180,8 +176,6 @@ namespace POS.View
 
                 grid_main.Children.Clear();
                 grid_main.Children.Add(UC_porperty.Instance);
-                //UC_porperty uc = new UC_porperty();
-                //grid_main.Children.Add(uc);
                 Button button = sender as Button;
                 MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
             }
@@ -199,14 +193,11 @@ namespace POS.View
                 refreashBachgroundClick(btn_units);
                 grid_main.Children.Clear();
                 grid_main.Children.Add(UC_unit.Instance);
-                //UC_unit uc = new UC_unit();
-                //grid_main.Children.Add(uc);
                 Button button = sender as Button;
                 MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
             }
             catch (Exception ex)
             {
-
                 SectionData.ExceptionMessage(ex);
             }
         }

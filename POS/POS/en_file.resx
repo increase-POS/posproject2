@@ -2014,4 +2014,58 @@ Please add Email in setting</value>
   <data name="trReceiptVoucher" xml:space="preserve">
     <value>Receipt Voucher</value>
   </data>
+  <data name="trDiscountTypeHint" xml:space="preserve">
+    <value>Discount Type...</value>
+  </data>
+  <data name="trDraftQuontaion" xml:space="preserve">
+    <value>Quotation Draft</value>
+  </data>
+  <data name="trImages" xml:space="preserve">
+    <value>Images</value>
+  </data>
+  <data name="trInstallationSettings" xml:space="preserve">
+    <value>Installation settings</value>
+  </data>
+  <data name="trNewDraft" xml:space="preserve">
+    <value>New draft</value>
+  </data>
+  <data name="trPrintDraftInvoice" xml:space="preserve">
+    <value>can not print Draft Invoice</value>
+  </data>
+  <data name="trPrintEmptyInvoice" xml:space="preserve">
+    <value>can not print Empty Invoice</value>
+  </data>
+  <data name="trSalesOrders" xml:space="preserve">
+    <value>Sales Orders</value>
+  </data>
+  <data name="trSaveInvoiceNotification" xml:space="preserve">
+    <value>Do you want save the invoice in drafts?</value>
+  </data>
+  <data name="trSaveInvoiceToPreview" xml:space="preserve">
+    <value>save the invoice to preview</value>
+  </data>
+  <data name="trSaveOrderNotification" xml:space="preserve">
+    <value>Do you want save the order in drafts?</value>
+  </data>
+  <data name="trSaveQuotationNotification" xml:space="preserve">
+    <value>Do you want save the quotation in drafts?</value>
+  </data>
+  <data name="trSendEmail" xml:space="preserve">
+    <value>Send email</value>
+  </data>
+  <data name="trStore/Branch" xml:space="preserve">
+    <value>Stroe/Branch</value>
+  </data>
+  <data name="trStore/BranchHint" xml:space="preserve">
+    <value>Stroe/Branch...</value>
+  </data>
+  <data name="trTaxHint" xml:space="preserve">
+    <value>Tax...</value>
+  </data>
+  <data name="trVendorDetails" xml:space="preserve">
+    <value>Vendor Details</value>
+  </data>
+  <data name="trWaitConfirmUser" xml:space="preserve">
+    <value>Waiting for user confirmation</value>
+  </data>
 </root>

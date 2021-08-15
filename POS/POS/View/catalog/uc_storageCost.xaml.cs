@@ -41,35 +41,42 @@ namespace POS.View.catalog
         }
         public uc_storageCost()
         {
-            InitializeComponent();
-            if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1440)
+            try
             {
-                txt_deleteButton.Visibility = Visibility.Visible;
-                txt_addButton.Visibility = Visibility.Visible;
-                txt_updateButton.Visibility = Visibility.Visible;
-                txt_add_Icon.Visibility = Visibility.Visible;
-                txt_update_Icon.Visibility = Visibility.Visible;
-                txt_delete_Icon.Visibility = Visibility.Visible;
-            }
-            else if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1360)
-            {
-                txt_add_Icon.Visibility = Visibility.Collapsed;
-                txt_update_Icon.Visibility = Visibility.Collapsed;
-                txt_delete_Icon.Visibility = Visibility.Collapsed;
-                txt_deleteButton.Visibility = Visibility.Visible;
-                txt_addButton.Visibility = Visibility.Visible;
-                txt_updateButton.Visibility = Visibility.Visible;
+                InitializeComponent();
+                if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1440)
+                {
+                    txt_deleteButton.Visibility = Visibility.Visible;
+                    txt_addButton.Visibility = Visibility.Visible;
+                    txt_updateButton.Visibility = Visibility.Visible;
+                    txt_add_Icon.Visibility = Visibility.Visible;
+                    txt_update_Icon.Visibility = Visibility.Visible;
+                    txt_delete_Icon.Visibility = Visibility.Visible;
+                }
+                else if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1360)
+                {
+                    txt_add_Icon.Visibility = Visibility.Collapsed;
+                    txt_update_Icon.Visibility = Visibility.Collapsed;
+                    txt_delete_Icon.Visibility = Visibility.Collapsed;
+                    txt_deleteButton.Visibility = Visibility.Visible;
+                    txt_addButton.Visibility = Visibility.Visible;
+                    txt_updateButton.Visibility = Visibility.Visible;
 
-            }
-            else
-            {
-                txt_deleteButton.Visibility = Visibility.Collapsed;
-                txt_addButton.Visibility = Visibility.Collapsed;
-                txt_updateButton.Visibility = Visibility.Collapsed;
-                txt_add_Icon.Visibility = Visibility.Visible;
-                txt_update_Icon.Visibility = Visibility.Visible;
-                txt_delete_Icon.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    txt_deleteButton.Visibility = Visibility.Collapsed;
+                    txt_addButton.Visibility = Visibility.Collapsed;
+                    txt_updateButton.Visibility = Visibility.Collapsed;
+                    txt_add_Icon.Visibility = Visibility.Visible;
+                    txt_update_Icon.Visibility = Visibility.Visible;
+                    txt_delete_Icon.Visibility = Visibility.Visible;
 
+                }
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
             }
         }
         StorageCost storageCost = new StorageCost();
@@ -83,22 +90,30 @@ namespace POS.View.catalog
 
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
         {//search
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
+            try
             {
-                if (storageCosts is null)
-                    await RefreshStorageCostList();
-                searchText = tb_search.Text.ToLower();
-                storageCostQuery = storageCosts.Where(s => (s.name.ToLower().Contains(searchText) ||
-                s.cost.ToString().Contains(searchText) 
-                ) && s.isActive == tgl_storageCostState);
-                RefreshstorageCostView();
+                SectionData.StartAwait(grid_ucStorageCost);
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
+                {
+                    if (storageCosts is null)
+                        await RefreshStorageCostList();
+                    searchText = tb_search.Text.ToLower();
+                    storageCostQuery = storageCosts.Where(s => (s.name.ToLower().Contains(searchText) ||
+                    s.cost.ToString().Contains(searchText)
+                    ) && s.isActive == tgl_storageCostState);
+                    RefreshstorageCostView();
+                }
+                SectionData.EndAwait(grid_ucStorageCost, this);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
             }
         }
 
         async Task<IEnumerable<StorageCost>> RefreshStorageCostList()
         {
             SectionData.StartAwait(grid_ucStorageCost);
-
             storageCosts = await storageCostModel.Get();
             SectionData.EndAwait(grid_ucStorageCost, this);
             return storageCosts;
@@ -110,45 +125,79 @@ namespace POS.View.catalog
         }
         private async void Tgl_isActive_Checked(object sender, RoutedEventArgs e)
         {//active
-            if (storageCosts is null)
-                await RefreshStorageCostList();
-            tgl_storageCostState = 1;
-            Tb_search_TextChanged(null, null);
+            try
+            {
+            SectionData.StartAwait(grid_ucStorageCost);
+                if (storageCosts is null)
+                    await RefreshStorageCostList();
+                tgl_storageCostState = 1;
+                Tb_search_TextChanged(null, null);
+                SectionData.EndAwait(grid_ucStorageCost, this);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         private async void Tgl_isActive_Unchecked(object sender, RoutedEventArgs e)
         {//inactive
-            if (storageCosts is null)
-                await RefreshStorageCostList();
-            tgl_storageCostState = 0;
-            Tb_search_TextChanged(null, null);
+            try
+            {
+                SectionData.StartAwait(grid_ucStorageCost);
+                if (storageCosts is null)
+                    await RefreshStorageCostList();
+                tgl_storageCostState = 0;
+                Tb_search_TextChanged(null, null);
+                SectionData.EndAwait(grid_ucStorageCost, this);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         private async void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {//refresh
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
+            try
             {
-                await RefreshStorageCostList();
-                Tb_search_TextChanged(null, null);
-            }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                SectionData.StartAwait(grid_ucStorageCost);
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
+                {
+                    await RefreshStorageCostList();
+                    Tb_search_TextChanged(null, null);
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
 
+                SectionData.EndAwait(grid_ucStorageCost, this);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {//export
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
+            try
             {
-                this.Dispatcher.Invoke(() =>
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
                 {
-                    Thread t1 = new Thread(FN_ExportToExcel);
-                    t1.SetApartmentState(ApartmentState.STA);
-                    t1.Start();
-                });
+                    this.Dispatcher.Invoke(() =>
+                    {
+                        Thread t1 = new Thread(FN_ExportToExcel);
+                        t1.SetApartmentState(ApartmentState.STA);
+                        t1.Start();
+                    });
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
             }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         void FN_ExportToExcel()
@@ -169,163 +218,219 @@ namespace POS.View.catalog
 
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
         {//clear
-            tb_name.Clear();
-            tb_cost.Clear();
-            tb_notes.Clear();
+            try
+            {
+                tb_name.Clear();
+                tb_cost.Clear();
+                tb_notes.Clear();
 
-            SectionData.clearValidate(tb_name, p_errorName);
-            SectionData.clearValidate(tb_cost, p_errorCost);
+                SectionData.clearValidate(tb_name, p_errorName);
+                SectionData.clearValidate(tb_cost, p_errorCost);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         private void validationControl_LostFocus(object sender, RoutedEventArgs e)
         {
-            string name = sender.GetType().Name;
-            validateEmpty(name, sender);
+            try
+            {
+                string name = sender.GetType().Name;
+                validateEmpty(name, sender);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         private void validationTextbox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            string name = sender.GetType().Name;
-            validateEmpty(name, sender);
-            var txb = sender as TextBox;
-            if ((sender as TextBox).Name == "tb_cost")
-                SectionData.InputJustNumber(ref txb);
+            try
+            {
+                string name = sender.GetType().Name;
+                validateEmpty(name, sender);
+                var txb = sender as TextBox;
+                if ((sender as TextBox).Name == "tb_cost")
+                    SectionData.InputJustNumber(ref txb);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         private void Tb_validateEmptyLostFocus(object sender, RoutedEventArgs e)
         {
-            string name = sender.GetType().Name;
-            validateEmpty(name, sender);
+            try
+            {
+                string name = sender.GetType().Name;
+                validateEmpty(name, sender);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//add
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add") || SectionData.isAdminPermision())
+            try
             {
-                //chk empty name
-                SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
-                //chk empty delivery cost
-                SectionData.validateEmptyTextBox(tb_cost, p_errorCost, tt_errorCost, "trEmptyStoreCost");
-
-                if ((!tb_name.Text.Equals("")) && (!tb_cost.Text.Equals("")) )
+                SectionData.StartAwait(grid_ucStorageCost);
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add") || SectionData.isAdminPermision())
                 {
-                    StorageCost storageCost = new StorageCost();
+                    //chk empty name
+                    SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
+                    //chk empty delivery cost
+                    SectionData.validateEmptyTextBox(tb_cost, p_errorCost, tt_errorCost, "trEmptyStoreCost");
 
-                    storageCost.name = tb_name.Text;
-                    storageCost.cost = decimal.Parse(tb_cost.Text);
-                    storageCost.note = tb_notes.Text;
-                    storageCost.createUserId = MainWindow.userID;
-                    storageCost.isActive = 1;
-
-                    string s = await storageCostModel.Save(storageCost);
-                    if (!s.Equals("-1"))
+                    if ((!tb_name.Text.Equals("")) && (!tb_cost.Text.Equals("")))
                     {
-                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
-                        Btn_clear_Click(null, null);
+                        StorageCost storageCost = new StorageCost();
 
-                        await RefreshStorageCostList();
-                        Tb_search_TextChanged(null, null);
+                        storageCost.name = tb_name.Text;
+                        storageCost.cost = decimal.Parse(tb_cost.Text);
+                        storageCost.note = tb_notes.Text;
+                        storageCost.createUserId = MainWindow.userID;
+                        storageCost.isActive = 1;
+
+                        string s = await storageCostModel.Save(storageCost);
+                        if (!s.Equals("-1"))
+                        {
+                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                            Btn_clear_Click(null, null);
+
+                            await RefreshStorageCostList();
+                            Tb_search_TextChanged(null, null);
+                        }
+                        else
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                     }
-                    else
-                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                 }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                SectionData.EndAwait(grid_ucStorageCost, this);
             }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
         {//update
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update") || SectionData.isAdminPermision())
+            try
             {
-                //chk empty name
-                SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
-                //chk empty delivery cost
-                SectionData.validateEmptyTextBox(tb_cost, p_errorCost, tt_errorCost, "trEmptyStoreCost");
-
-                if ((!tb_name.Text.Equals("")) && (!tb_cost.Text.Equals("")))
+                SectionData.StartAwait(grid_ucStorageCost);
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update") || SectionData.isAdminPermision())
                 {
-                    storageCost.name = tb_name.Text;
-                    storageCost.cost = decimal.Parse(tb_cost.Text);
-                    storageCost.note = tb_notes.Text;
-                    storageCost.createUserId = MainWindow.userID;
-                    //storageCost.isActive = 1;
+                    //chk empty name
+                    SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
+                    //chk empty delivery cost
+                    SectionData.validateEmptyTextBox(tb_cost, p_errorCost, tt_errorCost, "trEmptyStoreCost");
 
-                    string s = await storageCostModel.Save(storageCost);
-                    if (!s.Equals("-1"))
+                    if ((!tb_name.Text.Equals("")) && (!tb_cost.Text.Equals("")))
                     {
-                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
+                        storageCost.name = tb_name.Text;
+                        storageCost.cost = decimal.Parse(tb_cost.Text);
+                        storageCost.note = tb_notes.Text;
+                        storageCost.createUserId = MainWindow.userID;
+                        //storageCost.isActive = 1;
 
-                        await RefreshStorageCostList();
-                        Tb_search_TextChanged(null, null);
+                        string s = await storageCostModel.Save(storageCost);
+                        if (!s.Equals("-1"))
+                        {
+                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
+
+                            await RefreshStorageCostList();
+                            Tb_search_TextChanged(null, null);
+                        }
+                        else
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                     }
-                    else
-                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                 }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                SectionData.EndAwait(grid_ucStorageCost, this);
             }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {//delete
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete") || SectionData.isAdminPermision())
+            try
             {
-                if (storageCost.storageCostId != 0)
+                SectionData.StartAwait(grid_ucStorageCost);
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete") || SectionData.isAdminPermision())
                 {
-                    if ((!storageCost.canDelete) && (storageCost.isActive == 0))
+                    if (storageCost.storageCostId != 0)
                     {
-                        #region
-                        Window.GetWindow(this).Opacity = 0.2;
-                        wd_acceptCancelPopup w = new wd_acceptCancelPopup();
-                        w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
-                        w.ShowDialog();
-                        Window.GetWindow(this).Opacity = 1;
-                        #endregion
-                        if (w.isOk)
-                            activate();
-                    }
-                    else
-                    {
-                        #region
-                        Window.GetWindow(this).Opacity = 0.2;
-                        wd_acceptCancelPopup w = new wd_acceptCancelPopup();
-                        if (storageCost.canDelete)
-                            w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDelete");
-                        if (!storageCost.canDelete)
-                            w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDeactivate");
-                        w.ShowDialog();
-                        Window.GetWindow(this).Opacity = 1;
-                        #endregion
-
-                        if (w.isOk)
+                        if ((!storageCost.canDelete) && (storageCost.isActive == 0))
                         {
-                            string popupContent = "";
-                            if (storageCost.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
-                            if ((!storageCost.canDelete) && (storageCost.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
-
-                            string b = await storageCostModel.Delete(storageCost.storageCostId, MainWindow.userID.Value, storageCost.canDelete);
-
-                            if (!b.Equals("-1"))
-                                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
-
-                            else
-                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                            #region
+                            Window.GetWindow(this).Opacity = 0.2;
+                            wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                            w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
+                            w.ShowDialog();
+                            Window.GetWindow(this).Opacity = 1;
+                            #endregion
+                            if (w.isOk)
+                                activate();
                         }
+                        else
+                        {
+                            #region
+                            Window.GetWindow(this).Opacity = 0.2;
+                            wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                            if (storageCost.canDelete)
+                                w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDelete");
+                            if (!storageCost.canDelete)
+                                w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDeactivate");
+                            w.ShowDialog();
+                            Window.GetWindow(this).Opacity = 1;
+                            #endregion
+
+                            if (w.isOk)
+                            {
+                                string popupContent = "";
+                                if (storageCost.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
+                                if ((!storageCost.canDelete) && (storageCost.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
+
+                                string b = await storageCostModel.Delete(storageCost.storageCostId, MainWindow.userID.Value, storageCost.canDelete);
+
+                                if (!b.Equals("-1"))
+                                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
+
+                                else
+                                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                            }
+                        }
+
+                        await RefreshStorageCostList();
+                        Tb_search_TextChanged(null, null);
+
+                        //clear textBoxs
+                        Btn_clear_Click(sender, e);
                     }
-
-                    await RefreshStorageCostList();
-                    Tb_search_TextChanged(null, null);
-
-                    //clear textBoxs
-                    Btn_clear_Click(sender, e);
                 }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                SectionData.EndAwait(grid_ucStorageCost, this);
             }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         private async void activate()
         {//activate
+            SectionData.StartAwait(grid_ucStorageCost);
             storageCost.isActive = 1;
 
             string s = await storageCostModel.Save(storageCost);
@@ -337,63 +442,80 @@ namespace POS.View.catalog
 
             await RefreshStorageCostList();
             Tb_search_TextChanged(null, null);
+            SectionData.EndAwait(grid_ucStorageCost, this);
 
         }
 
         private void Dg_storageCost_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//selection
-            SectionData.clearValidate(tb_name, p_errorName);
-            SectionData.clearValidate(tb_cost, p_errorCost);
-            if (dg_storageCost.SelectedIndex != -1)
+            try
             {
-                storageCost = dg_storageCost.SelectedItem as StorageCost;
-                this.DataContext = storageCost;
-
-                if (storageCost != null)
+                SectionData.clearValidate(tb_name, p_errorName);
+                SectionData.clearValidate(tb_cost, p_errorCost);
+                if (dg_storageCost.SelectedIndex != -1)
                 {
-                    #region delete
-                    if (storageCost.canDelete)
-                    {
-                        txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trDelete");
-                        txt_delete_Icon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Delete;
-                        tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
-                    }
+                    storageCost = dg_storageCost.SelectedItem as StorageCost;
+                    this.DataContext = storageCost;
 
-                    else
+                    if (storageCost != null)
                     {
-                        if (storageCost.isActive == 0)
+                        #region delete
+                        if (storageCost.canDelete)
                         {
-                            txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trActive");
-                            txt_delete_Icon.Kind =
-                             MaterialDesignThemes.Wpf.PackIconKind.Check;
-                            tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trActive");
+                            txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trDelete");
+                            txt_delete_Icon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Delete;
+                            tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
                         }
+
                         else
                         {
-                            txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trInActive");
-                            txt_delete_Icon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Cancel;
-                            tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trInActive");
+                            if (storageCost.isActive == 0)
+                            {
+                                txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trActive");
+                                txt_delete_Icon.Kind =
+                                 MaterialDesignThemes.Wpf.PackIconKind.Check;
+                                tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trActive");
+                            }
+                            else
+                            {
+                                txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trInActive");
+                                txt_delete_Icon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Cancel;
+                                tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trInActive");
+                            }
                         }
-                    }
-                    #endregion
+                        #endregion
 
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
             }
         }
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {//load
+            try
+            {
+                SectionData.StartAwait(grid_ucStorageCost);
 
-            if (MainWindow.lang.Equals("en"))
-            { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly()); grid_shipping.FlowDirection = FlowDirection.LeftToRight; }
-            else
-            { MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly()); grid_shipping.FlowDirection = FlowDirection.RightToLeft; }
+                if (MainWindow.lang.Equals("en"))
+                { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly()); grid_shipping.FlowDirection = FlowDirection.LeftToRight; }
+                else
+                { MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly()); grid_shipping.FlowDirection = FlowDirection.RightToLeft; }
 
-            translat();
+                translat();
 
 
-            await RefreshStorageCostList();
-            Tb_search_TextChanged(null, null);
+                await RefreshStorageCostList();
+                Tb_search_TextChanged(null, null);
+                SectionData.EndAwait(grid_ucStorageCost, this);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         private void translat()
@@ -429,27 +551,48 @@ namespace POS.View.catalog
 
         private void Tb_PreventSpaces(object sender, KeyEventArgs e)
         {
-            e.Handled = e.Key == Key.Space;
+            try
+            {
+                e.Handled = e.Key == Key.Space;
 
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         private void Tb_Numbers_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            var regex = new Regex(@"^[0-9]*(?:\.[0-9]*)?$");
-            if (regex.IsMatch(e.Text) && !(e.Text == "." && ((TextBox)sender).Text.Contains(e.Text)))
-                e.Handled = false;
-            else
-                e.Handled = true;
+            try
+            {
+                var regex = new Regex(@"^[0-9]*(?:\.[0-9]*)?$");
+                if (regex.IsMatch(e.Text) && !(e.Text == "." && ((TextBox)sender).Text.Contains(e.Text)))
+                    e.Handled = false;
+                else
+                    e.Handled = true;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         private void validateEmpty(string name, object sender)
         {
-            if (name == "TextBox")
+            try
             {
-                if ((sender as TextBox).Name == "tb_name")
-                    SectionData.validateEmptyTextBox((TextBox)sender, p_errorName, tt_errorName, "trEmptyNameToolTip");
-                else if ((sender as TextBox).Name == "tb_cost")
-                    SectionData.validateEmptyTextBox((TextBox)sender, p_errorCost, tt_errorCost, "trEmptyStoreCost");
+                if (name == "TextBox")
+                {
+                    if ((sender as TextBox).Name == "tb_name")
+                        SectionData.validateEmptyTextBox((TextBox)sender, p_errorName, tt_errorName, "trEmptyNameToolTip");
+                    else if ((sender as TextBox).Name == "tb_cost")
+                        SectionData.validateEmptyTextBox((TextBox)sender, p_errorCost, tt_errorCost, "trEmptyStoreCost");
+                }
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
             }
         }
     }

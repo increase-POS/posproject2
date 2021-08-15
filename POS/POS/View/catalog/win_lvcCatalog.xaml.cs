@@ -50,11 +50,18 @@ namespace POS.View.catalog
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            chartList = new List<double>();
+            try
+            {
+                chartList = new List<double>();
             PiechartList = new List<double>();
             ColumnchartList = new List<double>();
             fillDates();
             fillSelectedChart();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         public void fillDates()
@@ -63,9 +70,16 @@ namespace POS.View.catalog
             dpStrtDate.SelectedDate = dpEndDate.SelectedDate.Value.AddYears(-1);
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e) { this.Close(); }
+        private void Button_Click(object sender, RoutedEventArgs e) {
+                this.Close();
+            }
 
-        private void Window_MouseDown(object sender, MouseButtonEventArgs e) { try { DragMove(); } catch (Exception) { } }
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e) {
+                try {
+                    DragMove();
+                }
+                catch (Exception) { }
+            }
 
         public void fillChart()
         {
@@ -307,8 +321,10 @@ namespace POS.View.catalog
         }
 
         private void dpStrtDate_CalendarClosed(object sender, RoutedEventArgs e)
-        {
-            if (dpEndDate.SelectedDate.Value.Year - dpStrtDate.SelectedDate.Value.Year > 1)
+            {
+                try
+                {
+                    if (dpEndDate.SelectedDate.Value.Year - dpStrtDate.SelectedDate.Value.Year > 1)
             {
                 rdoYear.IsChecked = true;
                 fillSelectedChart();
@@ -317,11 +333,18 @@ namespace POS.View.catalog
             {
                 fillSelectedChart();
             }
-        }
+                }
+                catch (Exception ex)
+                {
+                    SectionData.ExceptionMessage(ex);
+                }
+            }
 
         private void dpEndDate_CalendarClosed(object sender, RoutedEventArgs e)
-        {
-            if (dpEndDate.SelectedDate.Value.Year - dpStrtDate.SelectedDate.Value.Year > 1)
+                {
+                    try
+                    {
+                        if (dpEndDate.SelectedDate.Value.Year - dpStrtDate.SelectedDate.Value.Year > 1)
             {
                 rdoYear.IsChecked = true;
                 fillSelectedChart();
@@ -330,18 +353,33 @@ namespace POS.View.catalog
             {
                 fillSelectedChart();
             }
-        }
+                    }
+                    catch (Exception ex)
+                    {
+                        SectionData.ExceptionMessage(ex);
+                    }
+                }
 
-        private void btn_refresh_Click(object sender, RoutedEventArgs e) { 
-            rdoMonth.IsChecked = true; 
+        private void btn_refresh_Click(object sender, RoutedEventArgs e)
+                    {
+                        try
+                        {
+                            rdoMonth.IsChecked = true; 
             fillDates();
             selectedChart = 1;
             fillSelectedChart();
-        }
+                        }
+                        catch (Exception ex)
+                        {
+                            SectionData.ExceptionMessage(ex);
+                        }
+                    }
 
         private void rdoYear_Click(object sender, RoutedEventArgs e)
-        {
-            if (dpEndDate.SelectedDate.Value.Year - dpStrtDate.SelectedDate.Value.Year > 1)
+                        {
+                            try
+                            {
+                                if (dpEndDate.SelectedDate.Value.Year - dpStrtDate.SelectedDate.Value.Year > 1)
             {
                 rdoYear.IsChecked = true;
                 fillSelectedChart();
@@ -350,11 +388,18 @@ namespace POS.View.catalog
             {
                 fillSelectedChart();
             }
-        }
+                            }
+                            catch (Exception ex)
+                            {
+                                SectionData.ExceptionMessage(ex);
+                            }
+                        }
 
         private void rdoMonth_Click(object sender, RoutedEventArgs e)
-        {
-            if (dpEndDate.SelectedDate.Value.Year - dpStrtDate.SelectedDate.Value.Year > 1)
+                            {
+                                try
+                                {
+                                    if (dpEndDate.SelectedDate.Value.Year - dpStrtDate.SelectedDate.Value.Year > 1)
             {
                 rdoYear.IsChecked = true;
                 fillSelectedChart();
@@ -363,11 +408,18 @@ namespace POS.View.catalog
             {
                 fillSelectedChart();
             }
-        }
+                                }
+                                catch (Exception ex)
+                                {
+                                    SectionData.ExceptionMessage(ex);
+                                }
+                            }
 
         private void fillSelectedChart()
-        {
-            grid1.Visibility = Visibility.Hidden;
+                                {
+                                    try
+                                    {
+                                        grid1.Visibility = Visibility.Hidden;
             grd_pieChart.Visibility = Visibility.Hidden;
             grd_columnChart.Visibility = Visibility.Hidden;
 
@@ -394,24 +446,50 @@ namespace POS.View.catalog
                 fillColumnChart();
 
             }
-        }
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        SectionData.ExceptionMessage(ex);
+                                    }
+                                }
 
         private void btn_rowChart_Click(object sender, RoutedEventArgs e)
-        {
-            selectedChart = 1;
+                                    {
+                                        try
+                                        {
+                                            selectedChart = 1;
             fillSelectedChart();
-        }
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            SectionData.ExceptionMessage(ex);
+                                        }
+                                    }
 
         private void btn_pieChart_Click(object sender, RoutedEventArgs e)
-        {
-            selectedChart = 2;
+                                        {
+                                            try
+                                            {
+                                                selectedChart = 2;
             fillSelectedChart();
-        }
+                                            }
+                                            catch (Exception ex)
+                                            {
+                                                SectionData.ExceptionMessage(ex);
+                                            }
+                                        }
 
         private void btn_columnChart_Click(object sender, RoutedEventArgs e)
-        {
-            selectedChart = 3;
+                                            {
+                                                try
+                                                {
+                                                    selectedChart = 3;
             fillSelectedChart();
-        }
+                                                }
+                                                catch (Exception ex)
+                                                {
+                                                    SectionData.ExceptionMessage(ex);
+                                                }
+                                            }
     }
 }

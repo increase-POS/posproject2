@@ -141,7 +141,7 @@
 
                 <ComboBox x:Name="cb_sectionLocation"  Grid.Row="3" Grid.Column="0"
                                   Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
-                                            Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
+                                IsEditable="True"  Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
                              materialDesign:HintAssist.Hint="from Location"  
                            TextBlock.FontSize="12"   Background="#f8f8f8"
               Height="40"   Margin="10,5,10,5"

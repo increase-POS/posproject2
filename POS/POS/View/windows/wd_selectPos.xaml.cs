@@ -72,7 +72,7 @@ namespace POS.View.windows
 
         private void translate()
         {
-            txt_title.Text = winLogIn.resourcemanager.GetString("trPosTooltip");
+            txt_title.Text = winLogIn.resourcemanager.GetString("trInstallationSettings");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_branch, winLogIn.resourcemanager.GetString("trBranchHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_pos, winLogIn.resourcemanager.GetString("trPosHint"));
 

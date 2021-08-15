@@ -39,35 +39,42 @@ namespace POS.View
         }
         public UC_unit()
         {
-            InitializeComponent();
-            if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1440)
+            try
             {
-                txt_deleteButton.Visibility = Visibility.Visible;
-                txt_addButton.Visibility = Visibility.Visible;
-                txt_updateButton.Visibility = Visibility.Visible;
-                txt_add_Icon.Visibility = Visibility.Visible;
-                txt_update_Icon.Visibility = Visibility.Visible;
-                txt_delete_Icon.Visibility = Visibility.Visible;
-            }
-            else if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1360)
-            {
-                txt_add_Icon.Visibility = Visibility.Collapsed;
-                txt_update_Icon.Visibility = Visibility.Collapsed;
-                txt_delete_Icon.Visibility = Visibility.Collapsed;
-                txt_deleteButton.Visibility = Visibility.Visible;
-                txt_addButton.Visibility = Visibility.Visible;
-                txt_updateButton.Visibility = Visibility.Visible;
+                InitializeComponent();
+                if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1440)
+                {
+                    txt_deleteButton.Visibility = Visibility.Visible;
+                    txt_addButton.Visibility = Visibility.Visible;
+                    txt_updateButton.Visibility = Visibility.Visible;
+                    txt_add_Icon.Visibility = Visibility.Visible;
+                    txt_update_Icon.Visibility = Visibility.Visible;
+                    txt_delete_Icon.Visibility = Visibility.Visible;
+                }
+                else if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1360)
+                {
+                    txt_add_Icon.Visibility = Visibility.Collapsed;
+                    txt_update_Icon.Visibility = Visibility.Collapsed;
+                    txt_delete_Icon.Visibility = Visibility.Collapsed;
+                    txt_deleteButton.Visibility = Visibility.Visible;
+                    txt_addButton.Visibility = Visibility.Visible;
+                    txt_updateButton.Visibility = Visibility.Visible;
 
-            }
-            else
-            {
-                txt_deleteButton.Visibility = Visibility.Collapsed;
-                txt_addButton.Visibility = Visibility.Collapsed;
-                txt_updateButton.Visibility = Visibility.Collapsed;
-                txt_add_Icon.Visibility = Visibility.Visible;
-                txt_update_Icon.Visibility = Visibility.Visible;
-                txt_delete_Icon.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    txt_deleteButton.Visibility = Visibility.Collapsed;
+                    txt_addButton.Visibility = Visibility.Collapsed;
+                    txt_updateButton.Visibility = Visibility.Collapsed;
+                    txt_add_Icon.Visibility = Visibility.Visible;
+                    txt_update_Icon.Visibility = Visibility.Visible;
+                    txt_delete_Icon.Visibility = Visibility.Visible;
 
+                }
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
             }
         }
         string searchText = "";
@@ -75,46 +82,53 @@ namespace POS.View
         BrushConverter bc = new BrushConverter();
         private void DG_unit_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            p_errorName.Visibility = Visibility.Collapsed;
-            var bc = new BrushConverter();
-            tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            try
+            {
+                p_errorName.Visibility = Visibility.Collapsed;
+                var bc = new BrushConverter();
+                tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
 
-            if (dg_unit.SelectedIndex != -1)
-            {
-                unit = dg_unit.SelectedItem as Unit;
-                this.DataContext = unit;
-            }
-            if (unit != null)
-            {
-                if (unit.canDelete)
+                if (dg_unit.SelectedIndex != -1)
                 {
-                    txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trDelete");
-                    txt_delete_Icon.Kind =
-                             MaterialDesignThemes.Wpf.PackIconKind.Delete;
-                    tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
-
+                    unit = dg_unit.SelectedItem as Unit;
+                    this.DataContext = unit;
                 }
-
-                else
+                if (unit != null)
                 {
-                    if (unit.isActive == 0)
+                    if (unit.canDelete)
                     {
-                        txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trActive");
+                        txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trDelete");
                         txt_delete_Icon.Kind =
-                         MaterialDesignThemes.Wpf.PackIconKind.Check;
-                        tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trActive");
+                                 MaterialDesignThemes.Wpf.PackIconKind.Delete;
+                        tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
 
                     }
+
                     else
                     {
-                        txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trInActive");
-                        txt_delete_Icon.Kind =
-                             MaterialDesignThemes.Wpf.PackIconKind.Cancel;
-                        tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trInActive");
+                        if (unit.isActive == 0)
+                        {
+                            txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trActive");
+                            txt_delete_Icon.Kind =
+                             MaterialDesignThemes.Wpf.PackIconKind.Check;
+                            tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trActive");
+
+                        }
+                        else
+                        {
+                            txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trInActive");
+                            txt_delete_Icon.Kind =
+                                 MaterialDesignThemes.Wpf.PackIconKind.Cancel;
+                            tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trInActive");
+
+                        }
 
                     }
-
                 }
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
             }
         }
         List<int> ids = new List<int>();
@@ -132,33 +146,47 @@ namespace POS.View
         }
         private void Tb_name_LostFocus(object sender, RoutedEventArgs e)
         {
-            var bc = new BrushConverter();
+            try
+            {
+                var bc = new BrushConverter();
 
-            if (tb_name.Text.Equals(""))
-            {
-                p_errorName.Visibility = Visibility.Visible;
-                tt_errorName.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-                tb_name.Background = (Brush)bc.ConvertFrom("#15FF0000");
+                if (tb_name.Text.Equals(""))
+                {
+                    p_errorName.Visibility = Visibility.Visible;
+                    tt_errorName.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+                    tb_name.Background = (Brush)bc.ConvertFrom("#15FF0000");
+                }
+                else
+                {
+                    p_errorName.Visibility = Visibility.Collapsed;
+                    tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                p_errorName.Visibility = Visibility.Collapsed;
-                tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                SectionData.ExceptionMessage(ex);
             }
         }
         private void Tb_name_TextChanged(object sender, TextChangedEventArgs e)
         {
+            try
+            {
 
-            if (tb_name.Text.Equals(""))
-            {
-                p_errorName.Visibility = Visibility.Visible;
-                tt_errorName.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-                tb_name.Background = (Brush)bc.ConvertFrom("#15FF0000");
+                if (tb_name.Text.Equals(""))
+                {
+                    p_errorName.Visibility = Visibility.Visible;
+                    tt_errorName.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+                    tb_name.Background = (Brush)bc.ConvertFrom("#15FF0000");
+                }
+                else
+                {
+                    p_errorName.Visibility = Visibility.Collapsed;
+                    tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                p_errorName.Visibility = Visibility.Collapsed;
-                tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                SectionData.ExceptionMessage(ex);
             }
         }
         private void translate()
@@ -183,30 +211,46 @@ namespace POS.View
         }
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
         {
-            tb_name.Clear();
-            tb_notes.Clear();
-            p_errorName.Visibility = Visibility.Collapsed;
-            tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            unit = new Unit();
+            try
+            {
+                tb_name.Clear();
+                tb_notes.Clear();
+                p_errorName.Visibility = Visibility.Collapsed;
+                tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                unit = new Unit();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.lang.Equals("en"))
+
+            try
             {
-                MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
-                grid_ucUnit.FlowDirection = FlowDirection.LeftToRight;
+                SectionData.StartAwait(grid_ucUnit);
+                if (MainWindow.lang.Equals("en"))
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                    grid_ucUnit.FlowDirection = FlowDirection.LeftToRight;
+                }
+                else
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                    grid_ucUnit.FlowDirection = FlowDirection.RightToLeft;
+                }
+
+                translate();
+
+                //await RefreshUnitsList();
+                //Tb_search_TextChanged(null, null);
+                SectionData.EndAwait(grid_ucUnit, this);
             }
-            else
+            catch (Exception ex)
             {
-                MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
-                grid_ucUnit.FlowDirection = FlowDirection.RightToLeft;
+                SectionData.ExceptionMessage(ex);
             }
-
-            translate();
-
-            //await RefreshUnitsList();
-            //Tb_search_TextChanged(null, null);
-
         }
         private void validateEmptyValues()
         {
@@ -214,98 +258,116 @@ namespace POS.View
         }
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//add
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add") || SectionData.isAdminPermision())
+            try
             {
-                //validate values
-                validateEmptyValues();
-           
-            if (!tb_name.Text.Equals(""))
-            {
-                // check if new unit doesn't match old units
-                var unitObj = units.ToList().Find(x => x.name == tb_name.Text);
-                if (unitObj is null)
+                SectionData.StartAwait(grid_ucUnit);
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add") || SectionData.isAdminPermision())
                 {
-                    unit = new Unit
+                    //validate values
+                    validateEmptyValues();
+
+                    if (!tb_name.Text.Equals(""))
                     {
-                        name = tb_name.Text,
-                        notes = tb_notes.Text,
-                        createUserId = MainWindow.userID,
-                        updateUserId = MainWindow.userID,
-                        isActive = 1,
-                    };
-                    Boolean res = await unitModel.saveUnit(unit);
-                    if (res) 
-                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
-                    else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                        // check if new unit doesn't match old units
+                        var unitObj = units.ToList().Find(x => x.name == tb_name.Text);
+                        if (unitObj is null)
+                        {
+                            unit = new Unit
+                            {
+                                name = tb_name.Text,
+                                notes = tb_notes.Text,
+                                createUserId = MainWindow.userID,
+                                updateUserId = MainWindow.userID,
+                                isActive = 1,
+                            };
+                            Boolean res = await unitModel.saveUnit(unit);
+                            if (res)
+                                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                            else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
-                    await RefreshUnitsList();
-                    Tb_search_TextChanged(null, null);
+                            await RefreshUnitsList();
+                            Tb_search_TextChanged(null, null);
 
-                    Btn_clear_Click(null, null);
+                            Btn_clear_Click(null, null);
+                        }
+                        else
+                        {
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUnitExist"), animation: ToasterAnimation.FadeIn);
+                            p_errorName.Visibility = Visibility.Visible;
+                            tt_errorName.Content = MainWindow.resourcemanager.GetString("trPopUnitExist");
+                            tb_name.Background = (Brush)bc.ConvertFrom("#15FF0000");
+                        }
+                    }
                 }
                 else
-                {
-                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUnitExist"), animation: ToasterAnimation.FadeIn);
-                    p_errorName.Visibility = Visibility.Visible;
-                    tt_errorName.Content = MainWindow.resourcemanager.GetString("trPopUnitExist");
-                    tb_name.Background = (Brush)bc.ConvertFrom("#15FF0000");
-                }
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                SectionData.EndAwait(grid_ucUnit, this);
             }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
             }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {//delete
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete") || SectionData.isAdminPermision())
+            try
             {
-                if ((!unit.canDelete) && (unit.isActive == 0))
-            {
-                #region
-                Window.GetWindow(this).Opacity = 0.2;
-                wd_acceptCancelPopup w = new wd_acceptCancelPopup();
-                w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
-                w.ShowDialog();
-                Window.GetWindow(this).Opacity = 1;
-                #endregion
-                if (w.isOk)
-                    await activate();
-
-            }
-            else
-            {
-                #region
-                Window.GetWindow(this).Opacity = 0.2;
-                wd_acceptCancelPopup w = new wd_acceptCancelPopup();
-                if (unit.canDelete)
-                    w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDelete");
-                if (!unit.canDelete)
-                    w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDeactivate");
-                w.ShowDialog();
-                Window.GetWindow(this).Opacity = 1;
-                #endregion
-                if (w.isOk)
+                SectionData.StartAwait(grid_ucUnit);
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete") || SectionData.isAdminPermision())
                 {
-                    string popupContent = "";
-                    if (unit.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
-                    if ((!unit.canDelete) && (unit.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
-                    int userId = (int)MainWindow.userID;
-                    Boolean res = await unitModel.deleteUnit(unit.unitId, userId, unit.canDelete);
+                    if ((!unit.canDelete) && (unit.isActive == 0))
+                    {
+                        #region
+                        Window.GetWindow(this).Opacity = 0.2;
+                        wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                        w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
+                        w.ShowDialog();
+                        Window.GetWindow(this).Opacity = 1;
+                        #endregion
+                        if (w.isOk)
+                            await activate();
 
-                    if (res)
-                        Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
+                    }
                     else
-                        Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-                }
-            }
-            await RefreshUnitsList();
-            Tb_search_TextChanged(null, null);
+                    {
+                        #region
+                        Window.GetWindow(this).Opacity = 0.2;
+                        wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                        if (unit.canDelete)
+                            w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDelete");
+                        if (!unit.canDelete)
+                            w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDeactivate");
+                        w.ShowDialog();
+                        Window.GetWindow(this).Opacity = 1;
+                        #endregion
+                        if (w.isOk)
+                        {
+                            string popupContent = "";
+                            if (unit.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
+                            if ((!unit.canDelete) && (unit.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
+                            int userId = (int)MainWindow.userID;
+                            Boolean res = await unitModel.deleteUnit(unit.unitId, userId, unit.canDelete);
 
-            Btn_clear_Click(sender,e);
+                            if (res)
+                                Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
+                            else
+                                Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                        }
+                    }
+                    await RefreshUnitsList();
+                    Tb_search_TextChanged(null, null);
+
+                    Btn_clear_Click(sender, e);
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                SectionData.EndAwait(grid_ucUnit, this);
             }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
         private async Task activate()
         {//activate
@@ -314,54 +376,60 @@ namespace POS.View
 
             Boolean s = await unitModel.saveUnit(unit);
 
-            if (s) 
+            if (s)
                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
-            else 
+            else
                 Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
         }
-        private void Cb_smallestUnitId_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            //smallestUnitId = ids[cb_smallestUnitId.SelectedIndex];
-        }
+
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
         {//update
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update") || SectionData.isAdminPermision())
+            try
             {
-                //validate values
-                validateEmptyValues();
-
-            if (!tb_name.Text.Equals(""))
-            {
-                // check if new unit doesn't match old units
-                var unitObj = units.ToList().Find(x => x.name == tb_name.Text);
-                if (unitObj is null || unitObj.name == unit.name)
+                SectionData.StartAwait(grid_ucUnit);
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update") || SectionData.isAdminPermision())
                 {
-                    unit.name = tb_name.Text;
-                    unit.notes = tb_notes.Text;
+                    //validate values
+                    validateEmptyValues();
 
-                    Boolean res = await unitModel.saveUnit(unit);
-                    if (res)
-                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
-                    else 
-                        Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    if (!tb_name.Text.Equals(""))
+                    {
+                        // check if new unit doesn't match old units
+                        var unitObj = units.ToList().Find(x => x.name == tb_name.Text);
+                        if (unitObj is null || unitObj.name == unit.name)
+                        {
+                            unit.name = tb_name.Text;
+                            unit.notes = tb_notes.Text;
 
-                    await RefreshUnitsList();
-                    Tb_search_TextChanged(null, null);
+                            Boolean res = await unitModel.saveUnit(unit);
+                            if (res)
+                                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
+                            else
+                                Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+                            await RefreshUnitsList();
+                            Tb_search_TextChanged(null, null);
+                        }
+                        else
+                        {
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorDuplicateUnitNameToolTip"), animation: ToasterAnimation.FadeIn);
+                        }
+
+                    }
                 }
                 else
-                {
-                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorDuplicateUnitNameToolTip"), animation: ToasterAnimation.FadeIn);
-                }
-
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                SectionData.EndAwait(grid_ucUnit, this);
             }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
             }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
         void refreshUnitsGrid()
         {
-            
+
             dg_unit.ItemsSource = unitsQuery;
             txt_count.Text = unitsQuery.Count().ToString();
 
@@ -376,49 +444,91 @@ namespace POS.View
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
         {//search
 
-            if (units is null)
-                await RefreshUnitsList();
-            searchText = tb_search.Text.ToLower();
-            unitsQuery = units.Where(s => s.name.ToLower().Contains(searchText) && s.isActive == tgl_unitState);
-            refreshUnitsGrid();
+            try
+            {
+                SectionData.StartAwait(grid_ucUnit);
+                if (units is null)
+                    await RefreshUnitsList();
+                searchText = tb_search.Text.ToLower();
+                unitsQuery = units.Where(s => s.name.ToLower().Contains(searchText) && s.isActive == tgl_unitState);
+                refreshUnitsGrid();
+                SectionData.EndAwait(grid_ucUnit, this);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
+            try
             {
-                RefreshUnitsList();
-            Tb_search_TextChanged(null, null);
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
+                {
+                    RefreshUnitsList();
+                    Tb_search_TextChanged(null, null);
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                SectionData.EndAwait(grid_ucUnit, this);
             }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
         private async void Tgl_isActive_Checked(object sender, RoutedEventArgs e)
         {
-            if (units is null)
-                await RefreshUnitsList();
-            tgl_unitState = 1;
-            Tb_search_TextChanged(null, null);
+            try
+            {
+                SectionData.StartAwait(grid_ucUnit);
+                if (units is null)
+                    await RefreshUnitsList();
+                tgl_unitState = 1;
+                Tb_search_TextChanged(null, null);
+                SectionData.EndAwait(grid_ucUnit, this);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
         private async void Tgl_isActive_Unchecked(object sender, RoutedEventArgs e)
         {
-            if (units is null)
-                await RefreshUnitsList();
-            tgl_unitState = 0;
-            Tb_search_TextChanged(null, null);
+            try
+            {
+                SectionData.StartAwait(grid_ucUnit);
+                if (units is null)
+                    await RefreshUnitsList();
+                tgl_unitState = 0;
+                Tb_search_TextChanged(null, null);
+                SectionData.EndAwait(grid_ucUnit, this);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
+            try
             {
-                this.Dispatcher.Invoke(() =>
-            {
-                Thread t1 = new Thread(FN_ExportToExcel);
-                t1.SetApartmentState(ApartmentState.STA);
-                t1.Start();
-            });
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
+                {
+                    this.Dispatcher.Invoke(() =>
+                {
+                    Thread t1 = new Thread(FN_ExportToExcel);
+                    t1.SetApartmentState(ApartmentState.STA);
+                    t1.Start();
+                });
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
             }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
         void FN_ExportToExcel()
         {

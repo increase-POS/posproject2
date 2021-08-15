@@ -41,7 +41,7 @@ namespace POS.View.reports
         IEnumerable<InventoryClass> archiveCount;
 
         List<InventoryClass> inventory;
-        List<InventoryClass> falls;
+        List<ItemTransferInvoice> falls;
         List<ItemTransferInvoice> Destroied;
 
         private static uc_storageReports _instance;
@@ -61,7 +61,7 @@ namespace POS.View.reports
             try
             {
                 inventory = await statisticModel.GetInventory();
-                falls = await statisticModel.GetInventoryItems();
+                falls = await statisticModel.GetFallsItems();
                 Destroied = await statisticModel.GetDesItems();
                 storages = await statisticModel.GetStorage();
                 itemsTransfer = await statisticModel.GetExternalMov();
@@ -93,7 +93,21 @@ namespace POS.View.reports
 
             cbStockType = statisticModel.getStocktakingArchivesTypeCombo(inventory);
             comboShortFalls = statisticModel.getshortFalls(falls);
-          
+
+
+            hideAllColumn();
+            col_stockTakeNum.Visibility = Visibility.Visible;
+            col_stockTakingCoastType.Visibility = Visibility.Visible;
+            col_stockTakingDate.Visibility = Visibility.Visible;
+            col_branch.Visibility = Visibility.Visible;
+            col_diffPercentage.Visibility = Visibility.Visible;
+            col_itemCountAr.Visibility = Visibility.Visible;
+            col_DestroyedCount.Visibility = Visibility.Visible;
+
+            fillComboBranches(cb_stocktakingArchivedBranch);
+            fillSocktakingEvents();
+
+            fillSocktakingEvents();
         }
 
 
@@ -108,21 +122,11 @@ namespace POS.View.reports
      
         public void paint()
         {
-            bdrMain.RenderTransform = Animations.borderAnimation(50, bdrMain, true);
-
-         
-            grid_stocktaking.Visibility = Visibility.Hidden;
-
-         
-            bdr_stocktaking.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-
-      
-            path_stocktaking.Fill = Brushes.White;
+            
         }
 
         private void isEnabledButtons()
         {
-            btn_stocktaking.IsEnabled = true;
         }
 
       
@@ -354,30 +358,6 @@ namespace POS.View.reports
         List<internalOperatorCombo> comboInternalOperatorOperator;
 
      
-        private void Btn_stocktaking_Click(object sender, RoutedEventArgs e)
-        {
-            selectedFatherTab = 3;
-            txt_search.Text = "";
-            paint();
-            grid_stocktaking.Visibility = Visibility.Visible;
-            bdr_stocktaking.Background = Brushes.White;
-            path_stocktaking.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-            isEnabledButtons();
-            fillComboBranches(cb_stocktakingArchivedBranch);
-            fillComboArchivedTypeType();
-            btn_stocktaking.IsEnabled = false;
-            btn_stocktaking.Opacity = 1;
-            hideAllColumn();
-            col_stockTakeNum.Visibility = Visibility.Visible;
-            col_stockTakingCoastType.Visibility = Visibility.Visible;
-            col_stockTakingDate.Visibility = Visibility.Visible;
-            col_branch.Visibility = Visibility.Visible;
-            col_diffPercentage.Visibility = Visibility.Visible;
-            col_itemCountAr.Visibility = Visibility.Visible;
-            col_DestroyedCount.Visibility = Visibility.Visible;
-
-            fillSocktakingEvents();
-        }
    
 
 
@@ -385,7 +365,7 @@ namespace POS.View.reports
         private int selectedStocktakingTab = 0;
         List<StocktakingArchivesTypeCombo> cbStockType;
         List<ShortFalls> comboShortFalls;
-        private IEnumerable<InventoryClass> fillListshortFalls(ComboBox branch, ComboBox cb, DatePicker startDate, DatePicker endDate)
+        private IEnumerable<ItemTransferInvoice> fillListshortFalls(ComboBox branch, ComboBox cb, DatePicker startDate, DatePicker endDate)
         {
             var selectedBranch = branch.SelectedItem as Branch;
             var selectedType1 = cb.SelectedItem as DestroiedCombo;
@@ -393,67 +373,28 @@ namespace POS.View.reports
 
                          (branch.SelectedItem != null ? (x.branchId == selectedBranch.branchId) : true)
                         && (cb.SelectedItem != null ? (x.itemUnitId == selectedType1.ItemsUnitsId) : true)
-                        && (dp_stocktakingFalseStartDate.SelectedDate != null ? (x.updateDate >= startDate.SelectedDate) : true)
-                        && (dp_stocktakingFalseEndDate.SelectedDate != null ? (x.updateDate <= endDate.SelectedDate) : true)
+                        && (dp_stocktakingFalseStartDate.SelectedDate != null ? (x.IupdateDate >= startDate.SelectedDate) : true)
+                        && (dp_stocktakingFalseEndDate.SelectedDate != null ? (x.IupdateDate <= endDate.SelectedDate) : true)
           ));
             return result;
         }
 
 
 
-        private void Btn_stocktakeArchived_Click(object sender, RoutedEventArgs e)
-        {
-            selectedStocktakingTab = 0;
-            txt_search.Text = "";
-            paintStockTakingChilds();
-            grid_stocktakingArchived.Visibility = Visibility.Visible;
-            txt_stocktakeArchived.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
-            path_stocktakeArchived.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
-            hideAllColumn();
-            col_stockTakeNum.Visibility = Visibility.Visible;
-            col_stockTakingCoastType.Visibility = Visibility.Visible;
-            col_stockTakingDate.Visibility = Visibility.Visible;
-            col_branch.Visibility = Visibility.Visible;
-            col_diffPercentage.Visibility = Visibility.Visible;
-            col_itemCountAr.Visibility = Visibility.Visible;
-            col_DestroyedCount.Visibility = Visibility.Visible;
+      
 
-            fillComboBranches(cb_stocktakingArchivedBranch);
-            fillSocktakingEvents();
-        }
-        private void Btn_stocktakeShortfalse_Click(object sender, RoutedEventArgs e)
-        {
-            selectedStocktakingTab = 1;
-            txt_search.Text = "";
-            paintStockTakingChilds();
-            grid_stocktakingShortfalse.Visibility = Visibility.Visible;
-            txt_stocktakeShortfalse.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
-            path_stocktakeShortfalse.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
-
-            hideAllColumn();
-            col_stockTakeNum.Visibility = Visibility.Visible;
-            col_stockTakingCoastType.Visibility = Visibility.Visible;
-            col_stockTakingDate.Visibility = Visibility.Visible;
-            col_branch.Visibility = Visibility.Visible;
-            col_itemCountAr.Visibility = Visibility.Visible;
-            col_itemUnits.Visibility = Visibility.Visible;
-
-            fillComboBranches(cb_stocktakingFalseBranch);
-            fillShortFallsEvents();
-            fillComboItemsUnitsFalls();
-        }
         public void paintStockTakingChilds()
         {
-            bdrMainStocktake.RenderTransform = Animations.borderAnimation(50, bdrMainStocktake, true);
+            bdrMain.RenderTransform = Animations.borderAnimation(50, bdrMain, true);
 
             grid_stocktakingArchived.Visibility = Visibility.Hidden;
             grid_stocktakingShortfalse.Visibility = Visibility.Hidden;
 
-            txt_stocktakeArchived.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-            txt_stocktakeShortfalse.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+            bdr_archives.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+            bdr_shortfalls.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
 
-            path_stocktakeArchived.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-            path_stocktakeShortfalse.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+            path_archives.Foreground = Brushes.White;
+            path_shortfalls.Fill = Brushes.White;
         }
 
         private void fillComboArchivedTypeType()
@@ -823,149 +764,195 @@ new StackedColumnSeries
 
 
 
-        private void fillFalsRowChart()
-        {
-            List<long> cP = new List<long>();
+        //private void fillFalsRowChart()
+        //{
+        //    List<long> cP = new List<long>();
 
-            MyAxis.Labels = new List<string>();
+        //    MyAxis.Labels = new List<string>();
 
-            List<string> names = new List<string>();
+        //    List<string> names = new List<string>();
 
-            var temp = fillListshortFalls(cb_stocktakingFalseBranch, cb_stocktakingFalseType, dp_stocktakingFalseStartDate, dp_stocktakingFalseEndDate);
+        //    var temp = fillListshortFalls(cb_stocktakingFalseBranch, cb_stocktakingFalseType, dp_stocktakingFalseStartDate, dp_stocktakingFalseEndDate);
 
-            var result = temp.GroupBy(s => new { s.itemUnitId }).Select(s => new InventoryClass
-            {
-                branchId = s.FirstOrDefault().branchId,
-                branchName = s.FirstOrDefault().branchName,
-                shortfalls = s.Sum(x => x.shortfalls),
-                ItemUnits = s.FirstOrDefault().ItemUnits,
-                itemUnitId = s.FirstOrDefault().itemUnitId,
-                itemName = s.FirstOrDefault().itemName,
-                unitName = s.FirstOrDefault().unitName
-            });
-            var tempName = result.GroupBy(s => new { s.itemUnitId }).Select(s => new
-            {
-                itemName = s.FirstOrDefault().itemName + s.FirstOrDefault().unitName,
-            });
-            names.AddRange(tempName.Select(nn => nn.itemName));
-            for (int i = 0; i < result.Count(); i++)
-            {
-                cP.Add(long.Parse(result.ToList().Skip(i).FirstOrDefault().shortfalls.ToString()));
-                MyAxis.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
-            }
-            SeriesCollection rowChartData = new SeriesCollection();
+        //    var result = temp.GroupBy(s => new { s.itemUnitId }).Select(s => new InventoryClass
+        //    {
+        //        branchId = s.FirstOrDefault().branchId,
+        //        branchName = s.FirstOrDefault().branchName,
+        //        shortfalls = s.Sum(x => x.shortfalls),
+        //        ItemUnits = s.FirstOrDefault().ItemUnits,
+        //        itemUnitId = s.FirstOrDefault().itemUnitId,
+        //        itemName = s.FirstOrDefault().itemName,
+        //        unitName = s.FirstOrDefault().unitName
+        //    });
+        //    var tempName = result.GroupBy(s => new { s.itemUnitId }).Select(s => new
+        //    {
+        //        itemName = s.FirstOrDefault().itemName + s.FirstOrDefault().unitName,
+        //    });
+        //    names.AddRange(tempName.Select(nn => nn.itemName));
+        //    for (int i = 0; i < result.Count(); i++)
+        //    {
+        //        cP.Add(long.Parse(result.ToList().Skip(i).FirstOrDefault().shortfalls.ToString()));
+        //        MyAxis.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
+        //    }
+        //    SeriesCollection rowChartData = new SeriesCollection();
 
-            rowChartData.Add(
-             new LineSeries
-             {
-                 Values = cP.AsChartValues(),
+        //    rowChartData.Add(
+        //     new LineSeries
+        //     {
+        //         Values = cP.AsChartValues(),
 
-                 DataLabels = true,
-             });
-            DataContext = this;
-            rowChart.Series = rowChartData;
+        //         DataLabels = true,
+        //     });
+        //    DataContext = this;
+        //    rowChart.Series = rowChartData;
 
-        }
+        //}
 
-        private void fillFalsColumnChart()
-        {
-            axcolumn.Labels = new List<string>();
-            List<string> names = new List<string>();
-
-
-            var temp = fillListshortFalls(cb_stocktakingFalseBranch, cb_stocktakingFalseType, dp_stocktakingFalseStartDate, dp_stocktakingFalseEndDate);
-
-            var result = temp.GroupBy(s => new { s.branchId }).Select(s => new InventoryClass
-            {
-                branchId = s.FirstOrDefault().branchId,
-                branchName = s.FirstOrDefault().branchName,
-                shortfalls = s.Sum(x => x.shortfalls),
-            });
-
-            var tempName = result.GroupBy(s => new { s.branchId }).Select(s => new
-            {
-                itemName = s.FirstOrDefault().branchName,
-            });
-            names.AddRange(tempName.Select(nn => nn.itemName));
-
-            SeriesCollection columnChartData = new SeriesCollection();
-            List<long> cPa = new List<long>();
+        //private void fillFalsColumnChart()
+        //{
+        //    axcolumn.Labels = new List<string>();
+        //    List<string> names = new List<string>();
 
 
+        //    var temp = fillListshortFalls(cb_stocktakingFalseBranch, cb_stocktakingFalseType, dp_stocktakingFalseStartDate, dp_stocktakingFalseEndDate);
 
-            for (int i = 0; i < result.Count(); i++)
-            {
-                cPa.Add(long.Parse(result.ToList().Skip(i).FirstOrDefault().shortfalls.ToString()));
-                axcolumn.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
-            }
+        //    var result = temp.GroupBy(s => new { s.branchId }).Select(s => new InventoryClass
+        //    {
+        //        branchId = s.FirstOrDefault().branchId,
+        //        branchName = s.FirstOrDefault().branchName,
+        //        shortfalls = s.Sum(x => x.shortfalls),
+        //    });
 
-            columnChartData.Add(
-            new StackedColumnSeries
-            {
-                Values = cPa.AsChartValues(),
-                DataLabels = true,
-                Title = "Amount"
-            });
+        //    var tempName = result.GroupBy(s => new { s.branchId }).Select(s => new
+        //    {
+        //        itemName = s.FirstOrDefault().branchName,
+        //    });
+        //    names.AddRange(tempName.Select(nn => nn.itemName));
+
+        //    SeriesCollection columnChartData = new SeriesCollection();
+        //    List<long> cPa = new List<long>();
 
 
-            DataContext = this;
-            cartesianChart.Series = columnChartData;
-        }
 
-        private void fillFalsPieChart()
-        {
-            List<string> titles = new List<string>();
-            List<long> cP = new List<long>();
+        //    for (int i = 0; i < result.Count(); i++)
+        //    {
+        //        cPa.Add(long.Parse(result.ToList().Skip(i).FirstOrDefault().shortfalls.ToString()));
+        //        axcolumn.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
+        //    }
 
-            titles.Clear();
-            var temp = fillListshortFalls(cb_stocktakingFalseBranch, cb_stocktakingFalseType, dp_stocktakingFalseStartDate, dp_stocktakingFalseEndDate);
+        //    columnChartData.Add(
+        //    new StackedColumnSeries
+        //    {
+        //        Values = cPa.AsChartValues(),
+        //        DataLabels = true,
+        //        Title = "Amount"
+        //    });
 
-            var result = temp.GroupBy(s => new { s.itemUnitId }).Select(s => new InventoryClass
-            {
-                branchId = s.FirstOrDefault().branchId,
-                branchName = s.FirstOrDefault().branchName,
-                shortfalls = s.Sum(x => x.shortfalls),
-                ItemUnits = s.FirstOrDefault().ItemUnits,
-                itemUnitId = s.FirstOrDefault().itemUnitId,
-                itemName = s.FirstOrDefault().itemName,
-                unitName = s.FirstOrDefault().unitName
-            });
-            var tempName = result.GroupBy(s => new { s.itemUnitId }).Select(s => new
-            {
-                itemName = s.FirstOrDefault().itemName + s.FirstOrDefault().unitName,
-            });
-            titles.AddRange(tempName.Select(nn => nn.itemName));
-            for (int i = 0; i < result.Count(); i++)
-            {
-                cP.Add(long.Parse(result.ToList().Skip(i).FirstOrDefault().shortfalls.ToString()));
-                MyAxis.Labels.Add(titles.ToList().Skip(i).FirstOrDefault());
-            }
-            SeriesCollection piechartData = new SeriesCollection();
-            for (int i = 0; i < cP.Count(); i++)
-            {
-                List<decimal> final = new List<decimal>();
-                List<string> lable = new List<string>();
-                final.Add(cP.ToList().Skip(i).FirstOrDefault());
-                piechartData.Add(
-                  new PieSeries
-                  {
-                      Values = final.AsChartValues(),
-                      Title = titles.Skip(i).FirstOrDefault(),
-                      DataLabels = true,
-                  }
-              );
-            }
-            chart1.Series = piechartData;
-        }
+
+        //    DataContext = this;
+        //    cartesianChart.Series = columnChartData;
+        //}
+
+        //private void fillFalsPieChart()
+        //{
+        //    List<string> titles = new List<string>();
+        //    List<long> cP = new List<long>();
+
+        //    titles.Clear();
+        //    var temp = fillListshortFalls(cb_stocktakingFalseBranch, cb_stocktakingFalseType, dp_stocktakingFalseStartDate, dp_stocktakingFalseEndDate);
+
+        //    var result = temp.GroupBy(s => new { s.itemUnitId }).Select(s => new InventoryClass
+        //    {
+        //        branchId = s.FirstOrDefault().branchId,
+        //        branchName = s.FirstOrDefault().branchName,
+        //        shortfalls = s.Sum(x => x.shortfalls),
+        //        ItemUnits = s.FirstOrDefault().ItemUnits,
+        //        itemUnitId = s.FirstOrDefault().itemUnitId,
+        //        itemName = s.FirstOrDefault().itemName,
+        //        unitName = s.FirstOrDefault().unitName
+        //    });
+        //    var tempName = result.GroupBy(s => new { s.itemUnitId }).Select(s => new
+        //    {
+        //        itemName = s.FirstOrDefault().itemName + s.FirstOrDefault().unitName,
+        //    });
+        //    titles.AddRange(tempName.Select(nn => nn.itemName));
+        //    for (int i = 0; i < result.Count(); i++)
+        //    {
+        //        cP.Add(long.Parse(result.ToList().Skip(i).FirstOrDefault().shortfalls.ToString()));
+        //        MyAxis.Labels.Add(titles.ToList().Skip(i).FirstOrDefault());
+        //    }
+        //    SeriesCollection piechartData = new SeriesCollection();
+        //    for (int i = 0; i < cP.Count(); i++)
+        //    {
+        //        List<decimal> final = new List<decimal>();
+        //        List<string> lable = new List<string>();
+        //        final.Add(cP.ToList().Skip(i).FirstOrDefault());
+        //        piechartData.Add(
+        //          new PieSeries
+        //          {
+        //              Values = final.AsChartValues(),
+        //              Title = titles.Skip(i).FirstOrDefault(),
+        //              DataLabels = true,
+        //          }
+        //      );
+        //    }
+        //    chart1.Series = piechartData;
+        //}
 
 
         private void fillShortFallsEvents()
         {
             dgStock.ItemsSource = fillListshortFalls(cb_stocktakingFalseBranch, cb_stocktakingFalseType, dp_stocktakingFalseStartDate, dp_stocktakingFalseEndDate);
 
-            fillFalsColumnChart();
-            fillFalsRowChart();
-            fillFalsPieChart();
+            //fillFalsColumnChart();
+            //fillFalsRowChart();
+            //fillFalsPieChart();
+        }
+
+
+   
+
+        private void Btn_archives_Click(object sender, RoutedEventArgs e)
+        {
+            selectedStocktakingTab = 0;
+            txt_search.Text = "";
+            paintStockTakingChilds();
+            grid_stocktakingArchived.Visibility = Visibility.Visible;
+            bdr_archives.Background = Brushes.White;
+            path_archives.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+            hideAllColumn();
+            col_stockTakeNum.Visibility = Visibility.Visible;
+            col_stockTakingCoastType.Visibility = Visibility.Visible;
+            col_stockTakingDate.Visibility = Visibility.Visible;
+            col_branch.Visibility = Visibility.Visible;
+            col_diffPercentage.Visibility = Visibility.Visible;
+            col_itemCountAr.Visibility = Visibility.Visible;
+            col_DestroyedCount.Visibility = Visibility.Visible;
+
+            fillComboBranches(cb_stocktakingArchivedBranch);
+            fillSocktakingEvents();
+        }
+
+        private void Btn_shortfalls_Click(object sender, RoutedEventArgs e)
+        {
+            selectedStocktakingTab = 1;
+            txt_search.Text = "";
+            paintStockTakingChilds();
+            grid_stocktakingShortfalse.Visibility = Visibility.Visible;
+            bdr_shortfalls.Background = Brushes.White;
+            path_shortfalls.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+
+            hideAllColumn();
+            col_stockTakeNum.Visibility = Visibility.Visible;
+            col_stockTakingCoastType.Visibility = Visibility.Visible;
+            col_stockTakingDate.Visibility = Visibility.Visible;
+            col_branch.Visibility = Visibility.Visible;
+            col_itemCountAr.Visibility = Visibility.Visible;
+            col_itemUnits.Visibility = Visibility.Visible;
+
+            fillComboBranches(cb_stocktakingFalseBranch);
+            fillShortFallsEvents();
+            fillComboItemsUnitsFalls();
         }
     }
 }

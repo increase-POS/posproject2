@@ -364,14 +364,14 @@ namespace POS
             try
             {
                 thrlog = await thrlog.GetByID((int)userLogInID);
-                grid_mainWindow.IsEnabled = true;
-                EndAwait();
+                //grid_mainWindow.IsEnabled = true;
+                //EndAwait();
             }
             catch (Exception ex)
             {
                 SectionData.ExceptionMessage(ex);
-                grid_mainWindow.IsEnabled = false;
-                StartAwait();
+                //grid_mainWindow.IsEnabled = false;
+                //StartAwait();
             }
 
             if (thrlog.sOutDate != null)

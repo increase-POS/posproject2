@@ -17,7 +17,7 @@
                 <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition   Height="45" />
+                <RowDefinition   Height="50" />
                 <RowDefinition Height="*"/>
                 <!--<RowDefinition Height="1.2*"/>-->
             </Grid.RowDefinitions>
@@ -25,87 +25,9 @@
             <Border BorderThickness="0"  Height="auto"  Grid.Column="0"  Margin="10,0,5,0"
                     CornerRadius="7" BorderBrush="Black" Background="White" Padding="0">
                 <StackPanel  Orientation="Horizontal" Margin="5,0">
-
-                    <Button Grid.Column="1" BorderBrush="{x:Null}"  Height="auto"
-                    Background="{x:Null}" x:Name="btn_newDraft" Padding="0" Margin="5,0" 
-                    Click="Btn_newDraft_Click">
-                        <Path Fill="#4E4E4E" Stretch="Fill" Height="36" Margin="0,5,0,0" Width="36" x:Name="path_newDraft"
-                            
-                          Data="M26.5,20v-2.5h-6v3h5.1c-0.8,0.5-1.5,1.2-2.1,1.9v-0.9h-3v3h-1v-7h-3v8H22c-0.1,0.3-0.2,0.7-0.2,1h-6.3v-10h12v3.1
-	C27.2,19.7,26.8,19.9,26.5,20z M11.5,28.5c-1.1,0-2-0.9-2-2s1-2,2.1-2c1.3,0,1.9,1,1.9,1v-11h16v4.7c0.2,0,0.5,0,0.7,0
-	c0.5,0,0.9,0,1.3,0.1v-6.8h-18l0-1.7c-0.2-1-1.1-2.3-3-2.3c-1.7,0-2.7,1.2-3,2.3v15.7c0,2.2,1.8,4,4,4h10.7c-0.2-0.6-0.4-1.3-0.5-2
-	H11.5z M37.2,27.7c0,3.9-3.1,7-7,7c-3.9,0-7-3.1-7-7c0-3.9,3.1-7,7-7C34.1,20.7,37.2,23.8,37.2,27.7z M34.3,26.5h-2.9v-2.9H29v2.9
-	h-2.9v2.3H29v2.9h2.3v-2.9h2.9V26.5z"  >
-                            <Path.ToolTip>
-                                <ToolTip x:Name="tt_newDraft" Content="New draft"
-                                              Placement="left" 
-                                              HorizontalOffset="35"
-                                              PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="-10"/>
-                            </Path.ToolTip>
-                        </Path>
-                    </Button>
-                    <Button Grid.Column="2" BorderBrush="{x:Null}" Padding="0" Margin="5,0" Height="auto"
-                    Background="{x:Null}" x:Name="btn_drafts"  Click="Btn_draft_Click" >
-                        <Path Fill="#4E4E4E" Stretch="Fill"  
-                          Width="30" Height="30"  
-                           Data="M24,23H4c-2.2,0-4-1.8-4-4V3.3C0.3,2.2,1.3,1,3,1c1.9,0,2.8,1.3,3,2.3L6,5h18V23z M22,7H6v11c0,0-0.6-1-1.9-1
-	C3,17,2,17.9,2,19s0.9,2,2,2h18V7z M20,19H8V9h12V19z M12,10H9v8h10v-8h-6v3h6v1h-2v3h-1v-3h-3v3h-1V10z"  >
-                            <Path.ToolTip>
-                                <ToolTip x:Name="tt_drafts" Content="Drafts"
-                                              Placement="left" 
-                                              HorizontalOffset="35"
-                                              PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="-10"/>
-                            </Path.ToolTip>
-                        </Path>
-                    </Button>
-                    <Border  DockPanel.Dock="Right"  Margin="5,10,5,10"    CornerRadius="0,0,0,0"  Width="2" BorderThickness="0" Background="#377EB8" />
-                    <Button Grid.Column="4" BorderBrush="{x:Null}" Padding="0" Margin="5,0" Height="45"
-                    Background="{x:Null}" x:Name="btn_purchaseOrder"  Click="Btn_purchaseOrder_Click" VerticalAlignment="Bottom" >
-                        <Path Fill="#4E4E4E" Stretch="Fill"  
-                           Width="30" Height="30"   FlowDirection="LeftToRight"
-                           Data="M24.5,5.5h-1v1c0,1.1-0.9,2-2,2h-9c-1.1,0-2-0.9-2-2v-1h-1c-1.1,0-2,0.9-2,2v21c0,1.1,0.9,2,2,2h15
-	c1.1,0,2-0.9,2-2v-21C26.5,6.4,25.6,5.5,24.5,5.5z M12.9,24.8c0,0.1-0.1,0.2-0.1,0.2c-0.1,0.1-0.1,0.1-0.2,0.2
-	c-0.1,0.1-0.2,0.1-0.3,0.1v0.5h-0.5v-0.5c-0.2,0-0.3,0-0.5-0.1c-0.1,0-0.2-0.1-0.3-0.1l0.2-0.5c0.1,0.1,0.2,0.1,0.3,0.1
-	s0.3,0.1,0.4,0.1c0.1,0,0.2,0,0.3-0.1c0.1,0,0.1-0.1,0.1-0.2v-0.1l-0.1-0.1c-0.1,0-0.1-0.1-0.2-0.1c-0.1,0-0.1-0.1-0.2-0.1
-	c-0.1,0-0.2-0.1-0.3-0.1s-0.2-0.1-0.2-0.1c-0.1-0.1-0.2-0.3-0.2-0.5c0-0.1,0-0.2,0-0.3c0-0.1,0.1-0.2,0.1-0.2
-	c0.1-0.1,0.1-0.1,0.2-0.2c0.1-0.1,0.2-0.1,0.3-0.1v-0.5h0.5v0.4c0.1,0,0.2,0,0.4,0.1c0.1,0,0.2,0.1,0.2,0.1l-0.1,0.5
-	c-0.1,0-0.2-0.1-0.3-0.1s-0.2,0-0.4,0c-0.1,0-0.2,0-0.3,0.1c-0.1,0-0.1,0.1-0.1,0.2v0.1l0.1,0.1l0.1,0.1c0.1,0,0.1,0,0.2,0.1
-	c0.1,0,0.2,0.1,0.3,0.1s0.2,0.1,0.3,0.2s0.1,0.1,0.2,0.2c0,0.1,0.1,0.2,0.1,0.3C12.9,24.6,12.9,24.7,12.9,24.8z M12.9,19.8
-	c0,0.1-0.1,0.2-0.1,0.2c-0.1,0.1-0.1,0.1-0.2,0.2c-0.1,0.1-0.2,0.1-0.3,0.1v0.5h-0.5v-0.5c-0.2,0-0.3,0-0.5-0.1
-	c-0.1,0-0.2-0.1-0.3-0.1l0.2-0.5c0.1,0.1,0.2,0.1,0.3,0.1s0.3,0.1,0.4,0.1c0.1,0,0.2,0,0.3-0.1c0.1,0,0.1-0.1,0.1-0.2v-0.1l-0.1-0.1
-	c-0.1,0-0.1-0.1-0.2-0.1c-0.1,0-0.1-0.1-0.2-0.1c-0.1,0-0.2-0.1-0.3-0.1s-0.2-0.1-0.2-0.1c-0.1-0.1-0.2-0.3-0.2-0.5
-	c0-0.1,0-0.2,0-0.3c0-0.1,0.1-0.2,0.1-0.2c0.1-0.1,0.1-0.1,0.2-0.2c0.1-0.1,0.2-0.1,0.3-0.1v-0.5h0.5v0.4c0.1,0,0.2,0,0.4,0.1
-	c0.1,0,0.2,0.1,0.2,0.1l-0.1,0.5c-0.1,0-0.2-0.1-0.3-0.1s-0.2,0-0.4,0c-0.1,0-0.2,0-0.3,0.1c-0.1,0-0.1,0.1-0.1,0.2v0.1l0.1,0.1
-	l0.1,0.1c0.1,0,0.1,0,0.2,0.1c0.1,0,0.2,0.1,0.3,0.1s0.2,0.1,0.3,0.2s0.1,0.1,0.2,0.2c0,0.1,0.1,0.2,0.1,0.3
-	C12.9,19.6,12.9,19.7,12.9,19.8z M13.4,14.5c0,0.1-0.1,0.2-0.2,0.3c-0.1,0.1-0.2,0.2-0.3,0.3c-0.2,0.1-0.3,0.1-0.5,0.2v0.8h-0.8
-	v-0.7c-0.2,0-0.5,0-0.7-0.1c-0.1,0-0.3-0.1-0.4-0.2l0.3-0.7c0.2,0.1,0.3,0.1,0.5,0.2c0.2,0,0.4,0.1,0.6,0.1c0.2,0,0.4,0,0.5-0.1
-	s0.1-0.2,0.1-0.3s0-0.1,0-0.2c0,0-0.1-0.1-0.2-0.1c-0.1,0-0.2-0.1-0.3-0.1s-0.2-0.1-0.4-0.1c-0.1,0-0.3-0.1-0.4-0.2
-	c-0.1,0-0.2-0.1-0.4-0.2c-0.2-0.2-0.4-0.5-0.3-0.8c0-0.1,0-0.3,0.1-0.4c0-0.1,0.1-0.2,0.2-0.3c0.1-0.1,0.2-0.2,0.3-0.3
-	s0.3-0.1,0.5-0.2v-0.9h0.8v0.6c0.2,0,0.4,0,0.6,0.1c0.1,0,0.2,0.1,0.4,0.1L13.2,12c-0.1-0.1-0.3-0.1-0.5-0.1s-0.4-0.1-0.6-0.1
-	c-0.1,0-0.3,0-0.4,0.1c-0.2,0.2-0.2,0.3-0.2,0.4c0,0,0,0.1,0,0.2l0.1,0.1c0.1,0,0.1,0.1,0.2,0.1c0.1,0,0.2,0.1,0.3,0.1
-	c0.2,0.1,0.3,0.1,0.5,0.2c0.1,0.1,0.3,0.1,0.4,0.3c0.1,0.1,0.2,0.2,0.3,0.4c0.1,0.1,0.1,0.3,0.1,0.5C13.4,14.2,13.4,14.4,13.4,14.5z
-	 M23.5,24.5h-8v-1h8V24.5z M23.5,19.5h-8v-1h8V19.5z M23.5,14.5h-8v-1h8V14.5z M12.5,7.5h9c0.5,0,1-0.4,1-1v-1c0-0.6-0.4-1-1-1h-2
-	v-1c0-1.1-0.9-2-2-2h-1c-1.1,0-2,0.9-2,2v1h-2c-0.5,0-1,0.4-1,1v1C11.5,7.1,11.9,7.5,12.5,7.5z M17,3.5c0.3,0,0.5,0.2,0.5,0.5
-	S17.3,4.5,17,4.5S16.5,4.3,16.5,4S16.7,3.5,17,3.5z M4.1,16.8L4.1,16.8l0-0.7h0V16.8z M29.9,18.5L29.9,18.5l0-0.7h0V18.5z"  >
-                            <Path.ToolTip>
-                                <ToolTip x:Name="tt_purchaseOrder" Content="Purchase Order"
-                                              Placement="left" 
-                                              HorizontalOffset="35"
-                                              PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="-10"/>
-                            </Path.ToolTip>
-                        </Path>
-                    </Button>
-                </StackPanel>
-            </Border>
-            <Border BorderThickness="0" Grid.ColumnSpan="2"  Grid.Column="1"  
-                    CornerRadius="7" BorderBrush="Black" Background="White" Padding="0" Margin="5,0,10,0">
-                <DockPanel   Margin="10,0" LastChildFill="False">
-
-                    <Button Grid.Column="8" BorderBrush="{x:Null}" DockPanel.Dock="Right" Height="auto" Click="Btn_items_Click"
-                    Background="{x:Null}" x:Name="btn_items" Padding="0" Margin="5,0"   >
+                    
+                    <Button Grid.Column="8" BorderBrush="{x:Null}" DockPanel.Dock="Right"   Click="Btn_items_Click"
+                    Background="{x:Null}" x:Name="btn_items" Padding="0" Margin="7.5,5,7.5,0" >
                         <Path Fill="#4E4E4E" Stretch="Fill"  x:Name="path_itemsIcon"
                          Height="30" Width="30"
                            FlowDirection="LeftToRight" Data="M473.2,341.6c-10.5-18.1-21-36.2-31.5-54.2c-1.9-3.3-3.8-6.6-5.8-9.9c2.1-3.7,3.3-8,3.3-12.8c0-7.7,0-15.4,0-23
@@ -148,8 +70,94 @@
                         </Path>
                     </Button>
 
-                    <Border  DockPanel.Dock="Right"  Margin="5,10,5,10"   CornerRadius="0,0,0,0"  Width="2" BorderThickness="0" Background="#377EB8" />
-                    <Button Grid.Column="5" DockPanel.Dock="Right" BorderBrush="{x:Null}" Padding="0" Margin="5,0"  Height="auto"
+                    <Border  DockPanel.Dock="Right"   Margin="7.5,5"  CornerRadius="0,0,0,0"  Width="2" BorderThickness="0" Background="#377EB8" />
+
+                    <Button Grid.Column="1" BorderBrush="{x:Null}"  
+                    Background="{x:Null}" x:Name="btn_newDraft" Padding="0" Margin="7.5,5,7.5,0"
+                    Click="Btn_newDraft_Click">
+                        <Path Fill="#4E4E4E" Stretch="Fill" Height="30"  Width="30" x:Name="path_newDraft"
+                            
+                          Data="M26.5,20v-2.5h-6v3h5.1c-0.8,0.5-1.5,1.2-2.1,1.9v-0.9h-3v3h-1v-7h-3v8H22c-0.1,0.3-0.2,0.7-0.2,1h-6.3v-10h12v3.1
+	C27.2,19.7,26.8,19.9,26.5,20z M11.5,28.5c-1.1,0-2-0.9-2-2s1-2,2.1-2c1.3,0,1.9,1,1.9,1v-11h16v4.7c0.2,0,0.5,0,0.7,0
+	c0.5,0,0.9,0,1.3,0.1v-6.8h-18l0-1.7c-0.2-1-1.1-2.3-3-2.3c-1.7,0-2.7,1.2-3,2.3v15.7c0,2.2,1.8,4,4,4h10.7c-0.2-0.6-0.4-1.3-0.5-2
+	H11.5z M37.2,27.7c0,3.9-3.1,7-7,7c-3.9,0-7-3.1-7-7c0-3.9,3.1-7,7-7C34.1,20.7,37.2,23.8,37.2,27.7z M34.3,26.5h-2.9v-2.9H29v2.9
+	h-2.9v2.3H29v2.9h2.3v-2.9h2.9V26.5z"  >
+                            <Path.ToolTip>
+                                <ToolTip x:Name="tt_newDraft" Content="New draft"
+                                              Placement="left" 
+                                              HorizontalOffset="35"
+                                              PlacementRectangle="50,0,0,0"
+                                              VerticalOffset="-10"/>
+                            </Path.ToolTip>
+                        </Path>
+                    </Button>
+                    <materialDesign:Badged VerticalAlignment="Center" Margin="10,5,5,0"
+                      BadgeColorZoneMode="PrimaryDark"  BadgeForeground="White"  Badge="+9">
+                    <Button Grid.Column="2" BorderBrush="{x:Null}" Padding="0"    
+                    Background="{x:Null}" x:Name="btn_drafts"  Click="Btn_draft_Click" >
+                        <Path Fill="#4E4E4E" Stretch="Fill"  
+                          Width="30" Height="30"  
+                           Data="M24,23H4c-2.2,0-4-1.8-4-4V3.3C0.3,2.2,1.3,1,3,1c1.9,0,2.8,1.3,3,2.3L6,5h18V23z M22,7H6v11c0,0-0.6-1-1.9-1
+	C3,17,2,17.9,2,19s0.9,2,2,2h18V7z M20,19H8V9h12V19z M12,10H9v8h10v-8h-6v3h6v1h-2v3h-1v-3h-3v3h-1V10z"  >
+                            <Path.ToolTip>
+                                <ToolTip x:Name="tt_drafts" Content="Drafts"
+                                              Placement="left" 
+                                              HorizontalOffset="35"
+                                              PlacementRectangle="50,0,0,0"
+                                              VerticalOffset="-10"/>
+                            </Path.ToolTip>
+                        </Path>
+                    </Button>
+                    </materialDesign:Badged>
+
+                    <Border  DockPanel.Dock="Right"  Margin="7.5,5"   CornerRadius="0,0,0,0"  Width="2" BorderThickness="0" Background="#377EB8" />
+
+                    <Button Grid.Column="4" BorderBrush="{x:Null}" Padding="0" Margin="7.5,5,7.5,0"
+                    Background="{x:Null}" x:Name="btn_purchaseOrder"  Click="Btn_purchaseOrder_Click"  >
+                        <Path Fill="#4E4E4E" Stretch="Fill"  
+                           Width="30" Height="30"   FlowDirection="LeftToRight"
+                           Data="M24.5,5.5h-1v1c0,1.1-0.9,2-2,2h-9c-1.1,0-2-0.9-2-2v-1h-1c-1.1,0-2,0.9-2,2v21c0,1.1,0.9,2,2,2h15
+	c1.1,0,2-0.9,2-2v-21C26.5,6.4,25.6,5.5,24.5,5.5z M12.9,24.8c0,0.1-0.1,0.2-0.1,0.2c-0.1,0.1-0.1,0.1-0.2,0.2
+	c-0.1,0.1-0.2,0.1-0.3,0.1v0.5h-0.5v-0.5c-0.2,0-0.3,0-0.5-0.1c-0.1,0-0.2-0.1-0.3-0.1l0.2-0.5c0.1,0.1,0.2,0.1,0.3,0.1
+	s0.3,0.1,0.4,0.1c0.1,0,0.2,0,0.3-0.1c0.1,0,0.1-0.1,0.1-0.2v-0.1l-0.1-0.1c-0.1,0-0.1-0.1-0.2-0.1c-0.1,0-0.1-0.1-0.2-0.1
+	c-0.1,0-0.2-0.1-0.3-0.1s-0.2-0.1-0.2-0.1c-0.1-0.1-0.2-0.3-0.2-0.5c0-0.1,0-0.2,0-0.3c0-0.1,0.1-0.2,0.1-0.2
+	c0.1-0.1,0.1-0.1,0.2-0.2c0.1-0.1,0.2-0.1,0.3-0.1v-0.5h0.5v0.4c0.1,0,0.2,0,0.4,0.1c0.1,0,0.2,0.1,0.2,0.1l-0.1,0.5
+	c-0.1,0-0.2-0.1-0.3-0.1s-0.2,0-0.4,0c-0.1,0-0.2,0-0.3,0.1c-0.1,0-0.1,0.1-0.1,0.2v0.1l0.1,0.1l0.1,0.1c0.1,0,0.1,0,0.2,0.1
+	c0.1,0,0.2,0.1,0.3,0.1s0.2,0.1,0.3,0.2s0.1,0.1,0.2,0.2c0,0.1,0.1,0.2,0.1,0.3C12.9,24.6,12.9,24.7,12.9,24.8z M12.9,19.8
+	c0,0.1-0.1,0.2-0.1,0.2c-0.1,0.1-0.1,0.1-0.2,0.2c-0.1,0.1-0.2,0.1-0.3,0.1v0.5h-0.5v-0.5c-0.2,0-0.3,0-0.5-0.1
+	c-0.1,0-0.2-0.1-0.3-0.1l0.2-0.5c0.1,0.1,0.2,0.1,0.3,0.1s0.3,0.1,0.4,0.1c0.1,0,0.2,0,0.3-0.1c0.1,0,0.1-0.1,0.1-0.2v-0.1l-0.1-0.1
+	c-0.1,0-0.1-0.1-0.2-0.1c-0.1,0-0.1-0.1-0.2-0.1c-0.1,0-0.2-0.1-0.3-0.1s-0.2-0.1-0.2-0.1c-0.1-0.1-0.2-0.3-0.2-0.5
+	c0-0.1,0-0.2,0-0.3c0-0.1,0.1-0.2,0.1-0.2c0.1-0.1,0.1-0.1,0.2-0.2c0.1-0.1,0.2-0.1,0.3-0.1v-0.5h0.5v0.4c0.1,0,0.2,0,0.4,0.1
+	c0.1,0,0.2,0.1,0.2,0.1l-0.1,0.5c-0.1,0-0.2-0.1-0.3-0.1s-0.2,0-0.4,0c-0.1,0-0.2,0-0.3,0.1c-0.1,0-0.1,0.1-0.1,0.2v0.1l0.1,0.1
+	l0.1,0.1c0.1,0,0.1,0,0.2,0.1c0.1,0,0.2,0.1,0.3,0.1s0.2,0.1,0.3,0.2s0.1,0.1,0.2,0.2c0,0.1,0.1,0.2,0.1,0.3
+	C12.9,19.6,12.9,19.7,12.9,19.8z M13.4,14.5c0,0.1-0.1,0.2-0.2,0.3c-0.1,0.1-0.2,0.2-0.3,0.3c-0.2,0.1-0.3,0.1-0.5,0.2v0.8h-0.8
+	v-0.7c-0.2,0-0.5,0-0.7-0.1c-0.1,0-0.3-0.1-0.4-0.2l0.3-0.7c0.2,0.1,0.3,0.1,0.5,0.2c0.2,0,0.4,0.1,0.6,0.1c0.2,0,0.4,0,0.5-0.1
+	s0.1-0.2,0.1-0.3s0-0.1,0-0.2c0,0-0.1-0.1-0.2-0.1c-0.1,0-0.2-0.1-0.3-0.1s-0.2-0.1-0.4-0.1c-0.1,0-0.3-0.1-0.4-0.2
+	c-0.1,0-0.2-0.1-0.4-0.2c-0.2-0.2-0.4-0.5-0.3-0.8c0-0.1,0-0.3,0.1-0.4c0-0.1,0.1-0.2,0.2-0.3c0.1-0.1,0.2-0.2,0.3-0.3
+	s0.3-0.1,0.5-0.2v-0.9h0.8v0.6c0.2,0,0.4,0,0.6,0.1c0.1,0,0.2,0.1,0.4,0.1L13.2,12c-0.1-0.1-0.3-0.1-0.5-0.1s-0.4-0.1-0.6-0.1
+	c-0.1,0-0.3,0-0.4,0.1c-0.2,0.2-0.2,0.3-0.2,0.4c0,0,0,0.1,0,0.2l0.1,0.1c0.1,0,0.1,0.1,0.2,0.1c0.1,0,0.2,0.1,0.3,0.1
+	c0.2,0.1,0.3,0.1,0.5,0.2c0.1,0.1,0.3,0.1,0.4,0.3c0.1,0.1,0.2,0.2,0.3,0.4c0.1,0.1,0.1,0.3,0.1,0.5C13.4,14.2,13.4,14.4,13.4,14.5z
+	 M23.5,24.5h-8v-1h8V24.5z M23.5,19.5h-8v-1h8V19.5z M23.5,14.5h-8v-1h8V14.5z M12.5,7.5h9c0.5,0,1-0.4,1-1v-1c0-0.6-0.4-1-1-1h-2
+	v-1c0-1.1-0.9-2-2-2h-1c-1.1,0-2,0.9-2,2v1h-2c-0.5,0-1,0.4-1,1v1C11.5,7.1,11.9,7.5,12.5,7.5z M17,3.5c0.3,0,0.5,0.2,0.5,0.5
+	S17.3,4.5,17,4.5S16.5,4.3,16.5,4S16.7,3.5,17,3.5z M4.1,16.8L4.1,16.8l0-0.7h0V16.8z M29.9,18.5L29.9,18.5l0-0.7h0V18.5z"  >
+                            <Path.ToolTip>
+                                <ToolTip x:Name="tt_purchaseOrder" Content="Purchase Order"
+                                              Placement="left" 
+                                              HorizontalOffset="35"
+                                              PlacementRectangle="50,0,0,0"
+                                              VerticalOffset="-10"/>
+                            </Path.ToolTip>
+                        </Path>
+                    </Button>
+
+                </StackPanel>
+            </Border>
+            <Border BorderThickness="0" Grid.ColumnSpan="2"  Grid.Column="1"  
+                    CornerRadius="7" BorderBrush="Black" Background="White" Padding="0" Margin="5,0,10,0">
+                <DockPanel   Margin="10,0" LastChildFill="False">
+                    <materialDesign:Badged VerticalAlignment="Center" Margin="7.5,5,7.5,0" DockPanel.Dock="Right" 
+                      BadgeColorZoneMode="PrimaryDark"  BadgeForeground="White"  Badge="+9">
+                        <Button Grid.Column="5" BorderBrush="{x:Null}" Padding="0" 
                     Background="{x:Null}" x:Name="btn_invoiceImages" Click="Btn_invoiceImage_Click"  >
                         <Path Fill="#4E4E4E" Stretch="Fill"  
                          Height="30" Width="30"
@@ -167,9 +175,12 @@
                             </Path.ToolTip>
                         </Path>
                     </Button>
-                    <Border  DockPanel.Dock="Right"  Margin="5,10,5,10"    CornerRadius="0,0,0,0"  Width="2" BorderThickness="0" Background="#377EB8" />
-                    <Button DockPanel.Dock="Right" Grid.Column="3" BorderBrush="{x:Null}" Padding="0" Margin="5,0"  Height="auto"
-                    Background="{x:Null}" x:Name="btn_preview" Click="Btn_preview_Click"   >
+                    </materialDesign:Badged>
+                        <Border  DockPanel.Dock="Right"  Margin="7.5,5"  CornerRadius="0,0,0,0"  Width="2" BorderThickness="0" Background="#377EB8" />
+
+
+                    <Button DockPanel.Dock="Right" Grid.Column="3" BorderBrush="{x:Null}" Padding="0"  Margin="7.5,5,7.5,0"
+                    Background="{x:Null}" x:Name="btn_preview"  Click="Btn_preview_Click"  >
                         <Path Fill="#4E4E4E" Stretch="Fill"  
                         Height="30" Width="30" 
                            Data="M243,83.3c0,2.5,0,4.7,0,6.9c0,23.1,0,46.3,0,69.4c0,5.4,1.7,7.1,7.2,7.1c23.6,0,47.3,0,70.9,0c5.2,0,5.2,0,5.2,5
@@ -207,7 +218,7 @@
                             </Path.ToolTip>
                         </Path>
                     </Button>
-                    <Button Grid.Column="2" DockPanel.Dock="Right" BorderBrush="{x:Null}" Padding="0" Margin="5,0" Height="auto"
+                    <Button Grid.Column="2" DockPanel.Dock="Right" BorderBrush="{x:Null}" Padding="0"  Margin="7.5,5,7.5,0"
                     Background="{x:Null}" x:Name="btn_pdf" Click="Btn_pdf_Click"   >
                         <Path Fill="#4E4E4E" Stretch="Fill"  
                          Height="30" Width="25" 
@@ -236,8 +247,8 @@
                             </Path.ToolTip>
                         </Path>
                     </Button>
-                    <Button Grid.Column="1" DockPanel.Dock="Right" BorderBrush="{x:Null}" Padding="0" Margin="5,0" Height="auto"
-                    Background="{x:Null}" x:Name="btn_printInvoice" Click="btn_printInvoice_Click"   >
+                    <Button Grid.Column="1" DockPanel.Dock="Right" BorderBrush="{x:Null}" Padding="0" Margin="7.5,5,7.5,0"
+                    Background="{x:Null}" x:Name="btn_printInvoice" Click="btn_printInvoice_Click"  >
                         <Path Fill="#4E4E4E" Stretch="Fill"  
                        Height="30" Width="30"
                            Data="M9,23.9v4.8c0,0.3,0.2,0.5,0.5,0.5h13.1c0.3,0,0.5-0.2,0.5-0.5v-4.8v-3c0-0.3-0.2-0.5-0.5-0.5H9.5
@@ -254,21 +265,32 @@
                             </Path.ToolTip>
                         </Path>
                     </Button>
-                    <Border  DockPanel.Dock="Right"  Margin="5,10,5,10"    CornerRadius="0,0,0,0"  Width="2" BorderThickness="0" Background="#377EB8" />
-                    <Button Grid.Column="1" DockPanel.Dock="Right" BorderBrush="{x:Null}" Padding="0" Margin="5,0" Height="auto"
+                    <Border  DockPanel.Dock="Right"   Margin="7.5,5"   CornerRadius="0,0,0,0"  Width="2" BorderThickness="0" Background="#377EB8" />
+                    <Button Grid.Column="1" DockPanel.Dock="Right" BorderBrush="{x:Null}" Padding="0"  Margin="7.5,5,7.5,0" 
                     Background="{x:Null}" x:Name="btn_emailMessage" Click="Btn_emailMessage_Click"   >
                         <Path Fill="#4E4E4E" Stretch="Fill"  
-                       Height="30" Width="40"
-                           Data="M0,143.9V33.1c4.5,2.8,8.6,5.2,12.6,7.7c21.3,13.3,42.6,26.5,63.9,39.8c10.2,6.4,20.5,7.2,31,0.8
-	c10.8-6.5,21.7-13,32.4-19.6c2.1-1.3,3.6-2,6,0.1c13.5,12.2,22.1,15,40.3,13.4v68.4H0z M8,140.3c2.4-1.6,3.8-2.3,4.9-3.2
-	c17.7-14.6,35.3-29.3,53-43.9c1.7-1.5,4.8-3,2.1-6s-4.5-0.3-6.3,1.2c-11.9,9.6-23.8,19.3-35.5,29c-6.1,5-12.3,10.2-18.2,15.5
-	c-1,0.9-1.3,2.8-1.3,4.3C6.5,138.2,7.5,139.2,8,140.3z M180.3,135.8c-0.9-1.1-1.8-2.1-2.8-3.1c-3-2.7-6-5.3-9.1-7.8
-	c-14.9-12.2-29.8-24.5-44.7-36.7c-1.6-1.3-3.8-4-5.6-0.9c-0.7,1.1,0.9,3.9,1.9,5.7c0.6,1.1,1.9,1.9,2.9,2.7
-	c11,9.2,21.9,18.4,32.9,27.5c6,5,12.1,9.8,18.3,14.6c1.2,0.7,2.6,0.9,3.9,0.6C178.8,138.2,179.4,136.8,180.3,135.8L180.3,135.8z
-	 M138.6,54.8c-12.5,7.4-25.4,15.3-38.5,22.8c-4.6,2.7-10.3,2.6-14.9-0.3C59.6,61.8,34.1,46.2,8.9,29.6c1.2-0.2,2.4-0.4,3.6-0.4
-	c39-0.2,77.9-0.3,116.9-0.5c3.5,0,4.8,0.8,5.2,4.6C135.4,40.1,137.1,46.8,138.6,54.8z M200.6,14.3c-6.9,5.1-13.7,10.2-20.6,15.3
-	c-5.1,3.7-10.3,7.3-15.3,11.2c-2.4,1.8-4.2,2-6.4-0.2c-4.3-4.3-8.9-8.3-13.9-12.9L218.6,0l1,0.9c-11.8,21.4-23.5,42.8-35.6,64.9
-	l-11.1-10.1l-5.1,6.1c-3-7.3-2.3-12.2,2.7-17.1c8.7-8.5,17.4-16.9,26.2-25.3c1.5-1.4,3.2-2.7,4.8-4L200.6,14.3z"  >
+                       Height="30" Width="30"
+                           Data="M0,151c0.4-1.4,0.8-2.8,1.3-4.1c1.8-4.6,5.5-6.5,10.2-4.9c1.7,0.6,3.3,1.5,4.8,2.4c28,17.6,55.9,35.3,83.9,52.8
+	c8.1,5.1,11.2,13.7,6.9,22.5c-7.4,15.2-15.4,30.1-23.1,45.1c-1.9,3.6-3.8,7.2-5.3,11c-1.2,2.8-2.1,6.1,0.7,8.6
+	c2.8,2.5,5.9,1.1,8.6-0.3c2.1-1.1,4.2-2.6,5.9-4.3c11.8-12.3,23.4-24.6,35.2-37c5.3-5.6,11.2-10.5,19.1-11.9
+	c4.5-0.8,8.8-0.5,12.7,2.1c15.5,10.2,31.2,20.3,46.6,30.7c12.5,8.5,25.9,9,39.4,4.1c7.7-2.8,14.8-7.6,21.8-11.9
+	c32.8-20.1,65.7-40.1,98.3-60.5c25-15.7,49.7-32.1,74.6-48.1c3.3-2.1,6.8-3.9,10.5-5.1c6-1.9,9.9,1,10,7.3c0.1,4.2,0.1,8.5,0.1,12.8
+	c0,37.1,0,74.2,0,111.2c0,1.1,0,2.2,0,3.9c-1.2-1-2.1-1.6-2.9-2.3c-15.7-12.7-31.6-25.2-48.7-36.1c-3.8-2.4-7.7-4.4-12.2-4.8
+	c-7.6-0.5-13.4,3-17.9,8.9c-5.6,7.4-8.9,15.9-10.1,25c-1.1,7.5-1.1,15.2-1.7,22.8c-0.1,2.1-0.4,4.2-0.6,6.6c-4.7,0-9.3,0-13.9,0
+	c-13.6,0-27.2,0.3-40.8-0.2c-21.7-0.9-30.7,13.7-33.4,27.4c-1.3,6.7-1.8,13.7-2,20.5c-0.3,13-0.1,26-0.1,39c0,2,0.2,4.1,0.4,6.4
+	c-1,0-1.9,0-2.8,0c-72.8-0.2-145.6-0.3-218.3-0.5c-10.1,0-20-1.2-29.4-5.3C12,378.2,3.3,366.3,1,349.6c-0.3-2.1-0.7-4.2-1-6.3
+	C0,279.3,0,215.1,0,151z M500,360.2c-1.1-4.8-3.4-8.7-7.4-11.8c-23.5-18.5-46.9-37.2-70.3-55.8c-4.2-3.3-8.4-6.7-12.9-9.6
+	c-5.2-3.4-8.2-2-9.3,4.2c-0.4,2.4-0.5,4.9-0.5,7.4c-0.1,7.7,0.1,15.5-0.2,23.2c-0.2,6.9-3.5,10.6-10.3,11.9c-3,0.6-6.1,0.8-9.1,0.8
+	c-19,0-37.9-0.6-56.9-0.2c-12.3,0.3-14.9,3.1-15.4,15.3c-0.4,9.8-0.1,19.6-0.1,29.3c0,4.8,2.1,8.7,5.8,11.7
+	c4.6,3.7,9.8,5.6,15.7,5.6c18.1-0.1,36.2,0,54.3,0c7.7,0,12.7,3.5,15,10.9c0.9,3,1.2,6.2,1.3,9.3c0.2,6.6,0,13.3,0.1,19.9
+	c0,3.1,0.2,6.3,0.7,9.4c0.8,4.6,2.6,5.5,6.7,3.2c3.4-1.9,6.7-4.1,9.7-6.5c25-20.1,49.9-40.2,74.9-60.3c3.8-3.1,7.1-6.2,8.1-11.2
+	C500,364.6,500,362.4,500,360.2z M231.4,54.1c-2.4,0-4.8,0-7.1,0c-52.5,0-105.1-0.1-157.6-0.1c-13.9,0-27.9-0.2-41.8,0.2
+	C12.8,54.4,5.1,59.8,2.2,69.9C1,74.2,1.1,78.8,0.5,83.2c-0.9,7,2.3,11.9,8,15.5c0.7,0.4,1.4,0.9,2.2,1.3c22,13.2,44,26.4,66,39.5
+	c45.1,27,90.2,54,135.4,81c4.9,2.9,10.3,5.2,15.6,7.5c1.6,0.7,3.9,0.9,5.4,0.3c7.3-3,14.8-5.8,21.5-9.8
+	c65.3-39,130.5-78.3,195.7-117.6c3-1.8,5.7-4.2,8.6-6.3c2.6-1.9,3.8-4.5,3.5-7.8c-0.4-4.8-0.4-9.7-1.3-14.4c-1.7-9-7-14.9-16.3-16.8
+	c-3.1-0.6-6.2-1.1-9.3-1.1c-30-0.2-60-0.3-90-0.3c-38,0-76,0-114,0C231.4,54.2,231.4,54.1,231.4,54.1z M250,0C250,0,250,0,250,0
+	C250,0,250,0,250,0C250,0,250,0,250,0C250,0,250,0,250,0z M250,500C250,500,250,500,250,500C250,500,250,500,250,500
+	C250,500,250,500,250,500C250,500,250,500,250,500z"  >
                             <Path.ToolTip>
                                 <ToolTip x:Name="tt_emailMessage" Content="email Message"
                                               Placement="left" 

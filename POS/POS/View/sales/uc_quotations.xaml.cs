@@ -132,21 +132,30 @@ namespace POS.View.sales
             dg_billDetails.Columns[4].Header = MainWindow.resourcemanager.GetString("trQuantity");
             dg_billDetails.Columns[5].Header = MainWindow.resourcemanager.GetString("trPrice");
             dg_billDetails.Columns[6].Header = MainWindow.resourcemanager.GetString("trAmount");
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_discount, MainWindow.resourcemanager.GetString("trDiscountHint"));
+
+           // MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_discount, MainWindow.resourcemanager.GetString("trDiscountHint"));
             txt_discount.Text = MainWindow.resourcemanager.GetString("trDiscount");
+            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trQuotations");
             txt_tax.Text = MainWindow.resourcemanager.GetString("trTax");
             txt_sum.Text = MainWindow.resourcemanager.GetString("trSum");
             txt_total.Text = MainWindow.resourcemanager.GetString("trTotal");
-            //btn_preview.Content = MainWindow.resourcemanager.GetString("trPreview");
-            //btn_pdf.Content = MainWindow.resourcemanager.GetString("trPdfBtn");
-
-
-            ////////////////////////////////----Customer----/////////////////////////////////
-
+            txt_barcode.Text = MainWindow.resourcemanager.GetString("trBarcode");
+            txt_coupon.Text = MainWindow.resourcemanager.GetString("trCoupon");
             txt_customer.Text = MainWindow.resourcemanager.GetString("trCustomer");
+
+            tt_printInvoice.Content = MainWindow.resourcemanager.GetString("trPrint");
+            tt_preview.Content = MainWindow.resourcemanager.GetString("trPreview");
+            tt_invoiceImages.Content = MainWindow.resourcemanager.GetString("trImages");
+            tt_items.Content = MainWindow.resourcemanager.GetString("trItems");
+            tt_quotations.Content = MainWindow.resourcemanager.GetString("trQuotations");
+            tt_drafts.Content = MainWindow.resourcemanager.GetString("trDrafts");
+            tt_newDraft.Content = MainWindow.resourcemanager.GetString("trNewDraft");
+
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_barcode, MainWindow.resourcemanager.GetString("trBarcodeHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_customer, MainWindow.resourcemanager.GetString("trCustomerHint"));
-            //MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_desrvedDate, MainWindow.resourcemanager.GetString("trDeservedDateHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_note, MainWindow.resourcemanager.GetString("trNoteHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_coupon, MainWindow.resourcemanager.GetString("trCoponHint"));
+
             btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
 
 
@@ -528,7 +537,7 @@ namespace POS.View.sales
             tb_discount.Text = "0";
 
             //btn_updateCustomer.IsEnabled = false;
-            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSaleInvoice");
+            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trQuotations");
             SectionData.clearComboBoxValidate(cb_customer, p_errorCustomer);
             //SectionData.clearValidate(tb_name, p_errorName);
             refrishBillDetails();
@@ -544,13 +553,10 @@ namespace POS.View.sales
                     dg_billDetails.Columns[3].IsReadOnly = true; //make unit read only
                     dg_billDetails.Columns[4].IsReadOnly = true; //make count read only
                     cb_customer.IsEnabled = true;
-                    //tb_name.IsEnabled = true;
-                    //dp_desrvedDate.IsEnabled = true;
                     tb_note.IsEnabled = true;
                     tb_barcode.IsEnabled = true;
                     tb_discount.IsEnabled = true;
                     btn_save.IsEnabled = true;
-                    //btn_updateCustomer.IsEnabled = true;
                     tb_coupon.IsEnabled = true;
                     btn_clearCoupon.IsEnabled = true;
                     break;
@@ -559,13 +565,10 @@ namespace POS.View.sales
                     dg_billDetails.Columns[3].IsReadOnly = true; //make unit read only
                     dg_billDetails.Columns[4].IsReadOnly = true; //make count read only
                     cb_customer.IsEnabled = false;
-                    //tb_name.IsEnabled = false;
-                    //dp_desrvedDate.IsEnabled = false;
                     tb_note.IsEnabled = false;
                     tb_barcode.IsEnabled = false;
                     tb_discount.IsEnabled = false;
                     btn_save.IsEnabled = false;
-                    //btn_updateCustomer.IsEnabled = false;
                     tb_coupon.IsEnabled = false;
                     btn_clearCoupon.IsEnabled = false;
                     break;
@@ -589,7 +592,6 @@ namespace POS.View.sales
             if (cb_customer.SelectedIndex != -1)
                 invoice.agentId = (int)cb_customer.SelectedValue;
 
-            //invoice.deservedDate = dp_desrvedDate.SelectedDate;
             invoice.notes = tb_note.Text;
 
             if (tb_taxValue.Text != "")
@@ -600,7 +602,7 @@ namespace POS.View.sales
             invoice.createUserId = MainWindow.userID;
             invoice.updateUserId = MainWindow.userID;
 
-            // build invoice NUM like storCode_PI_sequence exp: 123_PI_2
+            // build invoice NUM 
             if (invType == "q")
             {
                 invoice.invNumber = await invoice.generateInvNumber("qt");
@@ -638,21 +640,7 @@ namespace POS.View.sales
             }
             clearInvoice();
         }
-        //private async Task<string> generateInvNumber(string invoiceCode)
-        //{
-        //    string storeCode = "";
-        //    string posCode = "";
-        //    if (pos != null)
-        //    {
-        //        storeCode = pos.branchCode;
-        //        posCode = pos.code;
-        //    }
-        //    int sequence = await invoiceModel.GetLastNumOfInv(invoiceCode);
-        //    sequence++;
-
-        //    string invoiceNum = invoiceCode + "-" + storeCode + "-" + posCode + "-" + sequence.ToString();
-        //    return invoiceNum;
-        //}
+       
         #region Get Id By Click  Y
         public async Task ChangeItemIdEvent(int itemId)
         {
@@ -849,7 +837,7 @@ namespace POS.View.sales
 
                     _InvoiceType = invoice.invType;
                     // set title to bill
-                    txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trDraftPurchaseBill");
+                    txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trQuotationsDraft");
 
                     await fillInvoiceInputs(invoice);
                 }
@@ -862,9 +850,8 @@ namespace POS.View.sales
             txt_invNumber.Text = invoice.invNumber.ToString();
             if (invoice.tax != null)
                 _Tax = (decimal)invoice.tax;
-            //tb_name.Text = invoice.name;
+
             cb_customer.SelectedValue = invoice.agentId;
-            //dp_desrvedDate.Text = invoice.deservedDate.ToString();
             if (invoice.totalNet != null)
                 tb_total.Text = Math.Round((double)invoice.totalNet, 2).ToString();
             tb_taxValue.Text = invoice.tax.ToString();
@@ -933,7 +920,7 @@ namespace POS.View.sales
             w.invoiceType = "q";
             w.userId = MainWindow.userLogin.userId;
             w.duration = 1; // view quotations which updated during 1 last days 
-            w.title = MainWindow.resourcemanager.GetString("trSalesInvoices");
+            w.title = MainWindow.resourcemanager.GetString("trQuotations");
 
             if (w.ShowDialog() == true)
             {
@@ -944,7 +931,7 @@ namespace POS.View.sales
 
                     _InvoiceType = invoice.invType;
                     // set title to bill
-                    txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSaleInvoice");
+                    txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trQuotations");
 
                     await fillInvoiceInputs(invoice);
                 }
@@ -986,18 +973,6 @@ namespace POS.View.sales
                 }
                 else
                     newCount = oldCount;
-                //if (_InvoiceType == "sbd")
-                //{
-                //    ItemTransfer item = invoiceItems.ToList().Find(i => i.itemUnitId == row.itemUnitId);
-                //    if (newCount > item.quantity)
-                //    {
-                //        // return old value 
-                //        t.Text = item.quantity.ToString();
-
-                //        newCount = (long)item.quantity;
-                //        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountIncreaseToolTip"), animation: ToasterAnimation.FadeIn);
-                //    }
-                //}
 
                 // old total for changed item
                 decimal total = oldPrice * oldCount;
@@ -1280,8 +1255,8 @@ namespace POS.View.sales
                 #region Accept
                 MainWindow.mainWindow.Opacity = 0.2;
                 wd_acceptCancelPopup w = new wd_acceptCancelPopup();
-                //w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
-                w.contentText = "Do you want save the quotation in drafts?";
+                w.contentText = MainWindow.resourcemanager.GetString("trSaveQuotationNotification");
+
                 w.ShowDialog();
                 MainWindow.mainWindow.Opacity = 1;
                 #endregion
@@ -1325,6 +1300,11 @@ namespace POS.View.sales
             }
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+        }
+
+        private void Btn_invoiceImage_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

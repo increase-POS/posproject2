@@ -131,25 +131,37 @@ namespace POS.View.sales
             dg_billDetails.Columns[4].Header = MainWindow.resourcemanager.GetString("trQuantity");
             dg_billDetails.Columns[5].Header = MainWindow.resourcemanager.GetString("trPrice");
             dg_billDetails.Columns[6].Header = MainWindow.resourcemanager.GetString("trAmount");
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_discount, MainWindow.resourcemanager.GetString("trDiscountHint"));
+
             txt_discount.Text = MainWindow.resourcemanager.GetString("trDiscount");
             txt_tax.Text = MainWindow.resourcemanager.GetString("trTax");
             txt_sum.Text = MainWindow.resourcemanager.GetString("trSum");
             txt_total.Text = MainWindow.resourcemanager.GetString("trTotal");
-            //btn_preview.Content = MainWindow.resourcemanager.GetString("trPreview");
-            //btn_pdf.Content = MainWindow.resourcemanager.GetString("trPdfBtn");
-
-
-            ////////////////////////////////----Customer----/////////////////////////////////
-
+            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSaleOrder");
+            txt_barcode.Text = MainWindow.resourcemanager.GetString("trBarcode");
+            txt_store.Text = MainWindow.resourcemanager.GetString("trStore/Branch");
+            txt_coupon.Text = MainWindow.resourcemanager.GetString("trCoupon");
             txt_customer.Text = MainWindow.resourcemanager.GetString("trCustomer");
+            txt_delivery.Text = MainWindow.resourcemanager.GetString("trDelivery");
+
+            tt_waitConfirmUser.Content = MainWindow.resourcemanager.GetString("trWaitConfirmUser");
+            tt_printInvoice.Content = MainWindow.resourcemanager.GetString("trPrint");
+            tt_preview.Content = MainWindow.resourcemanager.GetString("trPreview");
+            tt_invoiceImages.Content = MainWindow.resourcemanager.GetString("trImages");
+            tt_items.Content = MainWindow.resourcemanager.GetString("trItems");
+            tt_orders.Content = MainWindow.resourcemanager.GetString("trOrders");
+            tt_drafts.Content = MainWindow.resourcemanager.GetString("trDrafts");
+            tt_newDraft.Content = MainWindow.resourcemanager.GetString("trNewDraft");
+
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_barcode, MainWindow.resourcemanager.GetString("trBarcodeHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_branch, MainWindow.resourcemanager.GetString("trStore/BranchHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_coupon, MainWindow.resourcemanager.GetString("trCoponHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_customer, MainWindow.resourcemanager.GetString("trCustomerHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_desrvedDate, MainWindow.resourcemanager.GetString("trDeservedDateHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_note, MainWindow.resourcemanager.GetString("trNoteHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_company, MainWindow.resourcemanager.GetString("trCompanyHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_user, MainWindow.resourcemanager.GetString("trUserHint"));
+
             btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
-
-
-
         }
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
@@ -311,16 +323,16 @@ namespace POS.View.sales
                     Btn_newDraft_Click(null, null);
                     invoice = await invoiceModel.GetInvoicesByNum(barcode);
                     _InvoiceType = invoice.invType;
-                    if (_InvoiceType.Equals("qd") || _InvoiceType.Equals("q"))
+                    if (_InvoiceType.Equals("ord") || _InvoiceType.Equals("or"))
                     {
                         // set title to bill
-                        if (_InvoiceType == "qd")
+                        if (_InvoiceType == "ord")
                         {
-                            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trDraftQuontaion");
+                            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSaleOrderDraft");
                         }
-                        else if (_InvoiceType == "q")
+                        else if (_InvoiceType == "or")
                         {
-                            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesInvoice");
+                            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSaleOrder");
                         }
                         await fillInvoiceInputs(invoice);
                     }
@@ -539,10 +551,10 @@ namespace POS.View.sales
             cb_customer.SelectedItem = "";
             dp_desrvedDate.Text = "";
             tb_note.Clear();
-            txt_discount.Text = "";
+            //txt_discount.Text = "0";
             billDetails.Clear();
-            tb_total.Text = "";
-            tb_sum.Text = null;
+            tb_total.Text = "0";
+            tb_sum.Text = "0";
             cb_company.SelectedIndex = -1;
             cb_company.SelectedItem = "";
             cb_user.SelectedIndex = -1;
@@ -556,7 +568,7 @@ namespace POS.View.sales
             tb_discount.Text = "0";
 
             //btn_updateCustomer.IsEnabled = false;
-            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSaleInvoice");
+            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSaleOrder");
             SectionData.clearComboBoxValidate(cb_customer, p_errorCustomer);
             refrishBillDetails();
             tb_barcode.Focus();
@@ -910,7 +922,7 @@ namespace POS.View.sales
 
                     _InvoiceType = invoice.invType;
                     // set title to bill
-                    txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trDraftPurchaseBill");
+                    txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSaleOrderDraft");
 
                     await fillInvoiceInputs(invoice);
                 }
@@ -946,7 +958,7 @@ namespace POS.View.sales
         }
         private async Task getInvoiceCoupons(int invoiceId)
         {
-            if (_InvoiceType != "qd")
+            if (_InvoiceType != "ord")
                 selectedCoupons = await invoiceModel.GetInvoiceCoupons(invoiceId);
             else
                 selectedCoupons = await invoiceModel.getOriginalCoupons(invoiceId);
@@ -1004,7 +1016,7 @@ namespace POS.View.sales
             w.invoiceType = "or";
             w.userId = MainWindow.userLogin.userId;
                 w.duration = 1; // view orders which updated during 1 last days 
-                w.title = MainWindow.resourcemanager.GetString("trSalesInvoices");
+                w.title = MainWindow.resourcemanager.GetString("trSalesOrders");
 
             if (w.ShowDialog() == true)
             {
@@ -1015,7 +1027,7 @@ namespace POS.View.sales
 
                     _InvoiceType = invoice.invType;
                     // set title to bill
-                    txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSaleInvoice");
+                    txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSaleOrder");
 
                     await fillInvoiceInputs(invoice);
                 }
@@ -1038,7 +1050,7 @@ namespace POS.View.sales
             w.invoiceStatus = "ex";
             w.userId = MainWindow.userLogin.userId;
 
-            w.title = MainWindow.resourcemanager.GetString("trSalesInvoices");
+            w.title = MainWindow.resourcemanager.GetString("trSalesOrders");
 
             if (w.ShowDialog() == true)
             {
@@ -1049,7 +1061,7 @@ namespace POS.View.sales
 
                     _InvoiceType = invoice.invType;
                     // set title to bill
-                    txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSaleInvoice");
+                    txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSaleOrder");
 
                     await fillInvoiceInputs(invoice);
                 }
@@ -1385,13 +1397,13 @@ namespace POS.View.sales
         {
 
             MainWindow.mainWindow.KeyDown -= HandleKeyPress;
-            if (billDetails.Count > 0)
+            if (billDetails.Count > 0 && _InvoiceType == "ord")
             {
                 #region Accept
                 MainWindow.mainWindow.Opacity = 0.2;
                 wd_acceptCancelPopup w = new wd_acceptCancelPopup();
-                //w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
-                w.contentText = "Do you want save the quotation in drafts?";
+
+                w.contentText = MainWindow.resourcemanager.GetString("trSaveOrderNotification");
                 w.ShowDialog();
                 MainWindow.mainWindow.Opacity = 1;
                 #endregion
@@ -1498,6 +1510,10 @@ namespace POS.View.sales
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
-       
+
+        private void Btn_invoiceImage_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

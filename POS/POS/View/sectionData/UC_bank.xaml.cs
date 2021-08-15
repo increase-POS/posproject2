@@ -67,73 +67,90 @@ namespace POS.View
         public UC_bank()
         {
             InitializeComponent();
-
-            if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1440)
+            try
             {
-                txt_deleteButton.Visibility = Visibility.Visible;
-                txt_addButton.Visibility = Visibility.Visible;
-                txt_updateButton.Visibility = Visibility.Visible;
-                txt_add_Icon.Visibility = Visibility.Visible;
-                txt_update_Icon.Visibility = Visibility.Visible;
-                txt_delete_Icon.Visibility = Visibility.Visible;
-            }
-            else if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1360)
-            {
-                txt_add_Icon.Visibility = Visibility.Collapsed;
-                txt_update_Icon.Visibility = Visibility.Collapsed;
-                txt_delete_Icon.Visibility = Visibility.Collapsed;
-                txt_deleteButton.Visibility = Visibility.Visible;
-                txt_addButton.Visibility = Visibility.Visible;
-                txt_updateButton.Visibility = Visibility.Visible;
+                if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1440)
+                {
+                    txt_deleteButton.Visibility = Visibility.Visible;
+                    txt_addButton.Visibility = Visibility.Visible;
+                    txt_updateButton.Visibility = Visibility.Visible;
+                    txt_add_Icon.Visibility = Visibility.Visible;
+                    txt_update_Icon.Visibility = Visibility.Visible;
+                    txt_delete_Icon.Visibility = Visibility.Visible;
+                }
+                else if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1360)
+                {
+                    txt_add_Icon.Visibility = Visibility.Collapsed;
+                    txt_update_Icon.Visibility = Visibility.Collapsed;
+                    txt_delete_Icon.Visibility = Visibility.Collapsed;
+                    txt_deleteButton.Visibility = Visibility.Visible;
+                    txt_addButton.Visibility = Visibility.Visible;
+                    txt_updateButton.Visibility = Visibility.Visible;
 
-            }
-            else
-            {
-                txt_deleteButton.Visibility = Visibility.Collapsed;
-                txt_addButton.Visibility = Visibility.Collapsed;
-                txt_updateButton.Visibility = Visibility.Collapsed;
-                txt_add_Icon.Visibility = Visibility.Visible;
-                txt_update_Icon.Visibility = Visibility.Visible;
-                txt_delete_Icon.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    txt_deleteButton.Visibility = Visibility.Collapsed;
+                    txt_addButton.Visibility = Visibility.Collapsed;
+                    txt_updateButton.Visibility = Visibility.Collapsed;
+                    txt_add_Icon.Visibility = Visibility.Visible;
+                    txt_update_Icon.Visibility = Visibility.Visible;
+                    txt_delete_Icon.Visibility = Visibility.Visible;
 
+                }
             }
-
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
         }
 
         //area code methods
         async Task<IEnumerable<CountryCode>> RefreshCountry()
         {
+            SectionData.StartAwait(grid_ucBank);
             countrynum = await countrycodes.GetAllCountries();
+            SectionData.EndAwait(grid_ucBank, this);
+
             return countrynum;
         }
         private async void fillCountries()
         {
-            if (countrynum is null)
-                await RefreshCountry();
+            try
+            {
+                if (countrynum is null)
+                    await RefreshCountry();
 
-            cb_areaPhone.ItemsSource = countrynum.ToList();
-            cb_areaPhone.SelectedValuePath = "countryId";
-            cb_areaPhone.DisplayMemberPath = "code";
+                cb_areaPhone.ItemsSource = countrynum.ToList();
+                cb_areaPhone.SelectedValuePath = "countryId";
+                cb_areaPhone.DisplayMemberPath = "code";
 
-            cb_area.ItemsSource = countrynum.ToList();
-            cb_area.SelectedValuePath = "countryId";
-            cb_area.DisplayMemberPath = "code";
+                cb_area.ItemsSource = countrynum.ToList();
+                cb_area.SelectedValuePath = "countryId";
+                cb_area.DisplayMemberPath = "code";
 
-
-            cb_area.SelectedIndex = MainWindow.Region.countryId;
-            cb_areaPhone.SelectedIndex = MainWindow.Region.countryId;
+                cb_area.SelectedIndex = MainWindow.Region.countryId;
+                cb_areaPhone.SelectedIndex = MainWindow.Region.countryId;
+            }
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
 
         }
 
         async Task<IEnumerable<City>> RefreshCity()
         {
+            SectionData.StartAwait(grid_ucBank);
             citynum = await cityCodes.Get();
+            SectionData.EndAwait(grid_ucBank , this);
             return citynum;
         }
         private async void fillCity()
         {
-            if (citynum is null)
-                await RefreshCity();
+            try
+            {
+                if (citynum is null)
+                    await RefreshCity();
+            }
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
 
         }
         //end areacod
@@ -180,55 +197,77 @@ namespace POS.View
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.lang.Equals("en"))
+            try
             {
-                MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
-                grid_ucBank.FlowDirection = FlowDirection.LeftToRight;
+                #region translate
+                if (MainWindow.lang.Equals("en"))
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                    grid_ucBank.FlowDirection = FlowDirection.LeftToRight;
+                }
+                else
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                    grid_ucBank.FlowDirection = FlowDirection.RightToLeft;
+                }
+
+                translate();
+                #endregion
+
+                fillCountries();
+                fillCity();
+
+                Keyboard.Focus(tb_name);
+
+                this.Dispatcher.Invoke(() =>
+                {
+                    Tb_search_TextChanged(null, null);
+                });
             }
-            else
-            {
-                MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
-                grid_ucBank.FlowDirection = FlowDirection.RightToLeft;
-            }
-
-            translate();
-
-
-            fillCountries();
-            fillCity();
-
-            Keyboard.Focus(tb_name);
-
-            this.Dispatcher.Invoke(() =>
-            {
-                Tb_search_TextChanged(null, null);
-            });
-
-
-
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
 
         }
 
         private void Tb_name_TextChanged(object sender, TextChangedEventArgs e)
         {
-            SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
+            try
+            {
+                SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
+            }
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
         }
 
         private void Tb_name_LostFocus(object sender, RoutedEventArgs e)
         {
-            SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
+            try
+            {
+                SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
+            }
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
         }
 
         private void Tb_accNum_TextChanged(object sender, TextChangedEventArgs e)
         {
-            SectionData.validateEmptyTextBox(tb_accNumber, p_errorAccNum, tt_errorAccNum, "trEmptyAccNumToolTip");
+            try
+            {
+                SectionData.validateEmptyTextBox(tb_accNumber, p_errorAccNum, tt_errorAccNum, "trEmptyAccNumToolTip");
+            }
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
         }
 
 
         private void Tb_accNum_LostFocus(object sender, RoutedEventArgs e)
         {
-            SectionData.validateEmptyTextBox(tb_accNumber, p_errorAccNum, tt_errorAccNum, "trEmptyAccNumToolTip");
-
+            try
+            {
+                SectionData.validateEmptyTextBox(tb_accNumber, p_errorAccNum, tt_errorAccNum, "trEmptyAccNumToolTip");
+            }
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
         }
 
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
@@ -240,290 +279,338 @@ namespace POS.View
 
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
         {//clear
-            tb_name.Clear();
-            tb_accNumber.Clear();
-            tb_address.Clear();
-            tb_notes.Clear();
+            try
+            {
+                tb_name.Clear();
+                tb_accNumber.Clear();
+                tb_address.Clear();
+                tb_notes.Clear();
 
-            tb_mobile.Clear();
+                tb_mobile.Clear();
 
-            tb_phone.Clear();
+                tb_phone.Clear();
 
-            p_errorName.Visibility = Visibility.Collapsed;
-            p_errorMobile.Visibility = Visibility.Collapsed;
-            p_errorPhone.Visibility = Visibility.Collapsed;
-            p_errorAccNum.Visibility = Visibility.Collapsed;
+                p_errorName.Visibility = Visibility.Collapsed;
+                p_errorMobile.Visibility = Visibility.Collapsed;
+                p_errorPhone.Visibility = Visibility.Collapsed;
+                p_errorAccNum.Visibility = Visibility.Collapsed;
 
-            tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            tb_mobile.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            tb_phone.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            tb_accNumber.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                tb_mobile.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                tb_phone.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                tb_accNumber.Background = (Brush)bc.ConvertFrom("#f8f8f8");
 
-            //cb_area.SelectedIndex = 8;
-            //cb_areaPhone.SelectedIndex = 8;
-
+            }
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
         }
 
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//add
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add") || SectionData.isAdminPermision())
+            try
             {
-                bank.bankId = 0;
-                //chk empty name
-                SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
-                //chk empty mobile
-                SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
-                //chk empty phone
-                SectionData.validateEmptyTextBox(tb_phone, p_errorPhone, tt_errorPhone, "trEmptyPhoneToolTip");
-                //chk empty acc
-                SectionData.validateEmptyTextBox(tb_accNumber, p_errorAccNum, tt_errorAccNum, "trEmptyAccNumberToolTip");
-
-                string phoneStr = "";
-                if (!tb_phone.Text.Equals("")) phoneStr = cb_areaPhone.Text + "-" + cb_areaPhoneLocal.Text + "-" + tb_phone.Text;
-
-                if ((!tb_name.Text.Equals("")) && (!tb_mobile.Text.Equals("")) && (!tb_phone.Text.Equals("")) && (!tb_accNumber.Text.Equals("")))
+                SectionData.StartAwait(grid_ucBank);
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add") || SectionData.isAdminPermision())
                 {
-                    bool isBankExist = await chkDuplicateBank();
-                    if (isBankExist)
-                    {
-                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopBankExist"), animation: ToasterAnimation.FadeIn);
-                        p_errorName.Visibility = Visibility.Visible;
-                        tt_errorName.Content = MainWindow.resourcemanager.GetString("trPopBankExist");
-                        tb_name.Background = (Brush)bc.ConvertFrom("#15FF0000");
-                        p_errorAccNum.Visibility = Visibility.Visible;
-                        tt_errorAccNum.Content = MainWindow.resourcemanager.GetString("trPopBankExist");
-                        tb_accNumber.Background = (Brush)bc.ConvertFrom("#15FF0000");
-                    }
-                    else
-                    {
-                        bank.name = tb_name.Text;
-                        bank.phone = phoneStr;
-                        bank.mobile = cb_area.Text + "-" + tb_mobile.Text;
-                        bank.address = tb_address.Text;
-                        bank.accNumber = tb_accNumber.Text;
-                        bank.notes = tb_notes.Text;
-                        bank.createUserId = MainWindow.userID;
-                        bank.updateUserId = MainWindow.userID;
-                        bank.isActive = 1;
+                    bank.bankId = 0;
 
-                        string s = await bankModel.saveBank(bank);
+                    #region validate
+                    //chk empty name
+                    SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
+                    //chk empty mobile
+                    SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
+                    //chk empty phone
+                    SectionData.validateEmptyTextBox(tb_phone, p_errorPhone, tt_errorPhone, "trEmptyPhoneToolTip");
+                    //chk empty acc
+                    SectionData.validateEmptyTextBox(tb_accNumber, p_errorAccNum, tt_errorAccNum, "trEmptyAccNumberToolTip");
+                    #endregion
 
-                        if (s.Equals("Bank Is Added Successfully")) //{SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd")); Btn_clear_Click(null, null); }
+                    string phoneStr = "";
+                    if (!tb_phone.Text.Equals("")) phoneStr = cb_areaPhone.Text + "-" + cb_areaPhoneLocal.Text + "-" + tb_phone.Text;
+
+                    if ((!tb_name.Text.Equals("")) && (!tb_mobile.Text.Equals("")) && (!tb_phone.Text.Equals("")) && (!tb_accNumber.Text.Equals("")))
+                    {
+                        bool isBankExist = await chkDuplicateBank();
+                        if (isBankExist)
                         {
-                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
-                            Btn_clear_Click(null, null);
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopBankExist"), animation: ToasterAnimation.FadeIn);
+                            p_errorName.Visibility = Visibility.Visible;
+                            tt_errorName.Content = MainWindow.resourcemanager.GetString("trPopBankExist");
+                            tb_name.Background = (Brush)bc.ConvertFrom("#15FF0000");
+                            p_errorAccNum.Visibility = Visibility.Visible;
+                            tt_errorAccNum.Content = MainWindow.resourcemanager.GetString("trPopBankExist");
+                            tb_accNumber.Background = (Brush)bc.ConvertFrom("#15FF0000");
                         }
-                        else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                        else
+                        {
+                            bank.name = tb_name.Text;
+                            bank.phone = phoneStr;
+                            bank.mobile = cb_area.Text + "-" + tb_mobile.Text;
+                            bank.address = tb_address.Text;
+                            bank.accNumber = tb_accNumber.Text;
+                            bank.notes = tb_notes.Text;
+                            bank.createUserId = MainWindow.userID;
+                            bank.updateUserId = MainWindow.userID;
+                            bank.isActive = 1;
+                            
+                            string s = await bankModel.saveBank(bank);
+                            
+                            if (s.Equals("Bank Is Added Successfully")) 
+                            {
+                                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                                Btn_clear_Click(null, null);
+                            }
+                            else 
+                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
-                        await RefreshBanksList();
-                        Tb_search_TextChanged(null, null);
+                            await RefreshBanksList();
+                            Tb_search_TextChanged(null, null);
+                        }
                     }
                 }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                SectionData.EndAwait(grid_ucBank, this);
             }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
         }
 
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
         {//update
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update") || SectionData.isAdminPermision())
+            try
             {
-                //chk empty name
-                SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
-                //chk empty mobile
-                SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
-                //chk empty phone
-                SectionData.validateEmptyTextBox(tb_phone, p_errorPhone, tt_errorPhone, "trEmptyPhoneToolTip");
-                //chk empty acc
-                SectionData.validateEmptyTextBox(tb_accNumber, p_errorAccNum, tt_errorAccNum, "trEmptyPhoneToolTip");
-                string phoneStr = "";
-                if (!tb_phone.Text.Equals("")) phoneStr = cb_areaPhone.Text + "-" + cb_areaPhoneLocal.Text + "-" + tb_phone.Text;
+                SectionData.StartAwait(grid_ucBank);
 
-                if ((!tb_name.Text.Equals("")) && (!tb_mobile.Text.Equals("")) && (!tb_phone.Text.Equals("")) && (!tb_accNumber.Text.Equals("")))
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update") || SectionData.isAdminPermision())
                 {
-                    bool isBankExist = await chkDuplicateBank();
-                    if (isBankExist)
+                    #region validate
+                    //chk empty name
+                    SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
+                    //chk empty mobile
+                    SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
+                    //chk empty phone
+                    SectionData.validateEmptyTextBox(tb_phone, p_errorPhone, tt_errorPhone, "trEmptyPhoneToolTip");
+                    //chk empty acc
+                    SectionData.validateEmptyTextBox(tb_accNumber, p_errorAccNum, tt_errorAccNum, "trEmptyPhoneToolTip");
+                    string phoneStr = "";
+                    if (!tb_phone.Text.Equals("")) phoneStr = cb_areaPhone.Text + "-" + cb_areaPhoneLocal.Text + "-" + tb_phone.Text;
+                    #endregion
+
+                    if ((!tb_name.Text.Equals("")) && (!tb_mobile.Text.Equals("")) && (!tb_phone.Text.Equals("")) && (!tb_accNumber.Text.Equals("")))
                     {
-                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopBankExist"), animation: ToasterAnimation.FadeIn);
-                        p_errorName.Visibility = Visibility.Visible;
-                        tt_errorName.Content = MainWindow.resourcemanager.GetString("trPopBankExist");
-                        tb_name.Background = (Brush)bc.ConvertFrom("#15FF0000");
-                        p_errorAccNum.Visibility = Visibility.Visible;
-                        tt_errorAccNum.Content = MainWindow.resourcemanager.GetString("trPopBankExist");
-                        tb_accNumber.Background = (Brush)bc.ConvertFrom("#15FF0000");
-                    }
-                    else
-                    {
+                        bool isBankExist = await chkDuplicateBank();
+                        if (isBankExist)
+                        {
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopBankExist"), animation: ToasterAnimation.FadeIn);
+                            p_errorName.Visibility = Visibility.Visible;
+                            tt_errorName.Content = MainWindow.resourcemanager.GetString("trPopBankExist");
+                            tb_name.Background = (Brush)bc.ConvertFrom("#15FF0000");
+                            p_errorAccNum.Visibility = Visibility.Visible;
+                            tt_errorAccNum.Content = MainWindow.resourcemanager.GetString("trPopBankExist");
+                            tb_accNumber.Background = (Brush)bc.ConvertFrom("#15FF0000");
+                        }
+                        else
+                        {
 
-                        bank.name = tb_name.Text;
-                        bank.phone = phoneStr;
-                        bank.mobile = cb_area.Text + "-" + tb_mobile.Text;
-                        bank.address = tb_address.Text;
-                        bank.accNumber = tb_accNumber.Text;
-                        bank.notes = tb_notes.Text;
-                        bank.createUserId = MainWindow.userID;
-                        bank.updateUserId = MainWindow.userID;
-                        bank.isActive = 1;
+                            bank.name = tb_name.Text;
+                            bank.phone = phoneStr;
+                            bank.mobile = cb_area.Text + "-" + tb_mobile.Text;
+                            bank.address = tb_address.Text;
+                            bank.accNumber = tb_accNumber.Text;
+                            bank.notes = tb_notes.Text;
+                            bank.createUserId = MainWindow.userID;
+                            bank.updateUserId = MainWindow.userID;
+                            bank.isActive = 1;
 
-                        string s = await bankModel.saveBank(bank);
+                            string s = await bankModel.saveBank(bank);
 
-                        if (s.Equals("Bank Is Updated Successfully")) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));
-                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
-                        else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                            if (s.Equals("Bank Is Updated Successfully")) 
+                                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
+                            else 
+                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
-                        await RefreshBanksList();
-                        Tb_search_TextChanged(null, null);
+                            await RefreshBanksList();
+                            Tb_search_TextChanged(null, null);
 
-                        SectionData.getMobile(bank.mobile, cb_area, tb_mobile);
+                            SectionData.getMobile(bank.mobile, cb_area, tb_mobile);
 
-                        SectionData.getPhone(bank.phone, cb_areaPhone, cb_areaPhoneLocal, tb_phone);
+                            SectionData.getPhone(bank.phone, cb_areaPhone, cb_areaPhoneLocal, tb_phone);
+                        }
                     }
                 }
-            }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                SectionData.EndAwait(grid_ucBank, this);
 
+            }
+            catch (Exception ex)
+            { SectionData.ExceptionMessage(ex); }
         }
 
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {//delete
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete") || SectionData.isAdminPermision())
+            try
             {
-                if (bank.bankId != 0)
+                SectionData.StartAwait(grid_ucBank);
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete") || SectionData.isAdminPermision())
                 {
-                    if ((!bank.canDelete) && (bank.isActive == 0))
+                    if (bank.bankId != 0)
                     {
-                        #region
-                        Window.GetWindow(this).Opacity = 0.2;
-                        wd_acceptCancelPopup w = new wd_acceptCancelPopup();
-                        w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
-                        w.ShowDialog();
-                        Window.GetWindow(this).Opacity = 1;
-                        #endregion
-                        if (w.isOk)
-                            activate();
-                    }
-                    else
-                    {
-                        #region
-                        Window.GetWindow(this).Opacity = 0.2;
-                        wd_acceptCancelPopup w = new wd_acceptCancelPopup();
-                        if (bank.canDelete)
-                            w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDelete");
-                        if (!bank.canDelete)
-                            w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDeactivate");
-                        w.ShowDialog();
-                        Window.GetWindow(this).Opacity = 1;
-                        #endregion
-                        if (w.isOk)
+                        if ((!bank.canDelete) && (bank.isActive == 0))
                         {
-                            string popupContent = "";
-                            if (bank.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
-                            if ((!bank.canDelete) && (bank.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
-
-                            bool b = await bankModel.deleteBank(bank.bankId, MainWindow.userID.Value, bank.canDelete);
-
-                            if (b) //SectionData.popUpResponse("", popupContent);
-                                Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
-                            else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                            #region
+                            Window.GetWindow(this).Opacity = 0.2;
+                            wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                            w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
+                            w.ShowDialog();
+                            Window.GetWindow(this).Opacity = 1;
+                            #endregion
+                            if (w.isOk)
+                                activate();
                         }
+                        else
+                        {
+                            #region
+                            Window.GetWindow(this).Opacity = 0.2;
+                            wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                            if (bank.canDelete)
+                                w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDelete");
+                            if (!bank.canDelete)
+                                w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDeactivate");
+                            w.ShowDialog();
+                            Window.GetWindow(this).Opacity = 1;
+                            #endregion
 
+                            if (w.isOk)
+                            {
+                                string popupContent = "";
+                                if (bank.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
+                                if ((!bank.canDelete) && (bank.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
+
+                                bool b = await bankModel.deleteBank(bank.bankId, MainWindow.userID.Value, bank.canDelete);
+
+                                if (b)
+                                    Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
+                                else
+                                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                            }
+
+                        }
+                        await RefreshBanksList();
+                        Tb_search_TextChanged(null, null);
                     }
-                    await RefreshBanksList();
-                    Tb_search_TextChanged(null, null);
+                    //clear textBoxs
+                    Btn_clear_Click(sender, e);
                 }
-                //clear textBoxs
-                Btn_clear_Click(sender, e);
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                SectionData.EndAwait(grid_ucBank , this);
             }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
         }
 
         private async void activate()
         {//activate
-            bank.isActive = 1;
+            try
+            {
+                SectionData.StartAwait(grid_ucBank);
+                bank.isActive = 1;
 
-            string s = await bankModel.saveBank(bank);
+                string s = await bankModel.saveBank(bank);
 
-            if (s.Equals("Bank Is Updated Successfully")) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopActive"));
-                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
-            else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                if (s.Equals("Bank Is Updated Successfully")) 
+                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
+                else 
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
-            await RefreshBanksList();
-            Tb_search_TextChanged(null, null);
+                await RefreshBanksList();
+                Tb_search_TextChanged(null, null);
+                SectionData.EndAwait(grid_ucBank , this);
+            }
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
 
         }
         private void Dg_bank_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            p_errorName.Visibility = Visibility.Collapsed;
-            p_errorMobile.Visibility = Visibility.Collapsed;
-            p_errorPhone.Visibility = Visibility.Collapsed;
-
-
-            tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            tb_mobile.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            tb_phone.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-
-            if (dg_bank.SelectedIndex != -1)
+        {//selection
+            try
             {
-                bank = dg_bank.SelectedItem as Bank;
-                this.DataContext = bank;
+                p_errorName.Visibility = Visibility.Collapsed;
+                p_errorMobile.Visibility = Visibility.Collapsed;
+                p_errorPhone.Visibility = Visibility.Collapsed;
 
-            }
+                tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                tb_mobile.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                tb_phone.Background = (Brush)bc.ConvertFrom("#f8f8f8");
 
-            if (bank != null)
-            {
-                SectionData.getMobile(bank.mobile, cb_area, tb_mobile);
-
-                SectionData.getPhone(bank.phone, cb_areaPhone, cb_areaPhoneLocal, tb_phone);
-
-                #region delete
-                if (bank.canDelete)
+                if (dg_bank.SelectedIndex != -1)
                 {
-                    txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trDelete");
-                    txt_delete_Icon.Kind =
-                             MaterialDesignThemes.Wpf.PackIconKind.Delete;
-                    tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
-
+                    bank = dg_bank.SelectedItem as Bank;
+                    this.DataContext = bank;
                 }
-                else
+
+                if (bank != null)
                 {
-                    if (bank.isActive == 0)
+                    SectionData.getMobile(bank.mobile, cb_area, tb_mobile);
+
+                    SectionData.getPhone(bank.phone, cb_areaPhone, cb_areaPhoneLocal, tb_phone);
+
+                    #region delete
+                    if (bank.canDelete)
                     {
-                        txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trActive");
+                        txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trDelete");
                         txt_delete_Icon.Kind =
-                         MaterialDesignThemes.Wpf.PackIconKind.Check;
-                        tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trActive");
+                                 MaterialDesignThemes.Wpf.PackIconKind.Delete;
+                        tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
 
                     }
                     else
                     {
-                        txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trInActive");
-                        txt_delete_Icon.Kind =
-                             MaterialDesignThemes.Wpf.PackIconKind.Cancel;
-                        tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trInActive");
+                        if (bank.isActive == 0)
+                        {
+                            txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trActive");
+                            txt_delete_Icon.Kind =
+                             MaterialDesignThemes.Wpf.PackIconKind.Check;
+                            tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trActive");
+
+                        }
+                        else
+                        {
+                            txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trInActive");
+                            txt_delete_Icon.Kind =
+                                 MaterialDesignThemes.Wpf.PackIconKind.Cancel;
+                            tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trInActive");
+
+                        }
 
                     }
-
+                    #endregion
                 }
-                #endregion 
             }
-
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
         }
 
         private void tb_mobile_LostFocus(object sender, RoutedEventArgs e)
         {
-            SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
+            try
+            {
+                SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
+            }
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
         }
 
         private void tb_mobile_TextChanged(object sender, TextChangedEventArgs e)
         {
-            SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
+            try
+            {
+                SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
+            }
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
         }
 
         private void tb_phone_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -533,12 +620,22 @@ namespace POS.View
 
         private void Tb_phone_TextChanged(object sender, TextChangedEventArgs e)
         {
-            SectionData.validateEmptyTextBox(tb_phone, p_errorPhone, tt_errorPhone, "trEmptyPhoneToolTip");
+            try
+            {
+                SectionData.validateEmptyTextBox(tb_phone, p_errorPhone, tt_errorPhone, "trEmptyPhoneToolTip");
+            }
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
         }
 
         private void Tb_phone_LostFocus(object sender, RoutedEventArgs e)
         {
-            SectionData.validateEmptyTextBox(tb_phone, p_errorPhone, tt_errorPhone, "trEmptyPhoneToolTip");
+            try
+            {
+                SectionData.validateEmptyTextBox(tb_phone, p_errorPhone, tt_errorPhone, "trEmptyPhoneToolTip");
+            }
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
         }
 
         private void Tb_mobile_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -553,131 +650,177 @@ namespace POS.View
 
         void FN_ExportToExcel()
         {
-            var QueryExcel = banksQuery.AsEnumerable().Select(x => new
+            try
             {
-                Name = x.name,
-                AccNumber = x.accNumber,
-                Mobile = x.mobile,
-                Phone = x.phone,
-                Address = x.address,
-                Notes = x.notes
-            });
-            var DTForExcel = QueryExcel.ToDataTable();
-            DTForExcel.Columns[0].Caption = MainWindow.resourcemanager.GetString("trName");
-            DTForExcel.Columns[1].Caption = MainWindow.resourcemanager.GetString("trAccNum");
-            DTForExcel.Columns[2].Caption = MainWindow.resourcemanager.GetString("trMobile");
-            DTForExcel.Columns[3].Caption = MainWindow.resourcemanager.GetString("trPhone");
-            DTForExcel.Columns[5].Caption = MainWindow.resourcemanager.GetString("trAddress");
-            DTForExcel.Columns[5].Caption = MainWindow.resourcemanager.GetString("trNote");
+                var QueryExcel = banksQuery.AsEnumerable().Select(x => new
+                {
+                    Name = x.name,
+                    AccNumber = x.accNumber,
+                    Mobile = x.mobile,
+                    Phone = x.phone,
+                    Address = x.address,
+                    Notes = x.notes
+                });
+                var DTForExcel = QueryExcel.ToDataTable();
+                DTForExcel.Columns[0].Caption = MainWindow.resourcemanager.GetString("trName");
+                DTForExcel.Columns[1].Caption = MainWindow.resourcemanager.GetString("trAccNum");
+                DTForExcel.Columns[2].Caption = MainWindow.resourcemanager.GetString("trMobile");
+                DTForExcel.Columns[3].Caption = MainWindow.resourcemanager.GetString("trPhone");
+                DTForExcel.Columns[5].Caption = MainWindow.resourcemanager.GetString("trAddress");
+                DTForExcel.Columns[5].Caption = MainWindow.resourcemanager.GetString("trNote");
 
-            ExportToExcel.Export(DTForExcel);
+                ExportToExcel.Export(DTForExcel);
+            }
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            this.Dispatcher.Invoke(() =>
+            try
             {
-                Thread t1 = new Thread(FN_ExportToExcel);
-                t1.SetApartmentState(ApartmentState.STA);
-                t1.Start();
-            });
-
+                this.Dispatcher.Invoke(() =>
+                {
+                    Thread t1 = new Thread(FN_ExportToExcel);
+                    t1.SetApartmentState(ApartmentState.STA);
+                    t1.Start();
+                });
+            }
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
         }
 
         private async void Tgl_bankIsActive_Checked(object sender, RoutedEventArgs e)
         {
-            if (banks is null)
-                await RefreshBanksList();
-            tgl_bankState = 1;
-            Tb_search_TextChanged(null, null);
+            try
+            {
+                if (banks is null)
+                    await RefreshBanksList();
+                tgl_bankState = 1;
+                Tb_search_TextChanged(null, null);
+            }
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
         }
 
         private async void Tgl_bankIsActive_Unchecked(object sender, RoutedEventArgs e)
         {
-            if (banks is null)
-                await RefreshBanksList();
-            tgl_bankState = 0;
-            Tb_search_TextChanged(null, null);
+            try
+            {
+                SectionData.StartAwait(grid_ucBank);
+                if (banks is null)
+                    await RefreshBanksList();
+                tgl_bankState = 0;
+                Tb_search_TextChanged(null, null);
+                SectionData.EndAwait(grid_ucBank , this);
+            }
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
         }
 
         async Task<IEnumerable<Bank>> RefreshBanksList()
         {
-            MainWindow.mainWindow.StartAwait();
-            banks = await bankModel.GetBanksAsync();
-            MainWindow.mainWindow.EndAwait();
+            try
+            {
+                MainWindow.mainWindow.StartAwait();
+                banks = await bankModel.GetBanksAsync();
+                MainWindow.mainWindow.EndAwait();
+            }
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
             return banks;
         }
         void RefreshBankView()
         {
-            dg_bank.ItemsSource = banksQuery;
-            txt_count.Text = banksQuery.Count().ToString();
-
+            try
+            {
+                dg_bank.ItemsSource = banksQuery;
+                txt_count.Text = banksQuery.Count().ToString();
+            }
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
         }
 
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
         {//search
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
+            try
             {
-                p_errorName.Visibility = Visibility.Collapsed;
-                tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                SectionData.StartAwait(grid_ucBank);
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
+                {
+                    p_errorName.Visibility = Visibility.Collapsed;
+                    tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
 
-                if (banks is null)
-                    await RefreshBanksList();
-                searchText = tb_search.Text.ToLower();
-                banksQuery = banks.Where(s => (s.phone.Contains(searchText) ||
-                s.name.ToLower().Contains(searchText) ||
-                s.mobile.ToLower().Contains(searchText)
-                ) && s.isActive == tgl_bankState);
-                RefreshBankView();
+                    if (banks is null)
+                        await RefreshBanksList();
+                    searchText = tb_search.Text.ToLower();
+                    banksQuery = banks.Where(s => (s.phone.Contains(searchText) ||
+                    s.name.ToLower().Contains(searchText) ||
+                    s.mobile.ToLower().Contains(searchText)
+                    ) && s.isActive == tgl_bankState);
+                    RefreshBankView();
+                }
+                SectionData.EndAwait(grid_ucBank , this);
             }
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
         }
 
         private void Cb_areaPhone_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (firstchange == true)
+            try
             {
-                if (cb_areaPhone.SelectedValue != null)
+                if (firstchange == true)
                 {
-                    if (cb_areaPhone.SelectedIndex >= 0)
-                        countryid = int.Parse(cb_areaPhone.SelectedValue.ToString());
-                    if (citynum != null)
+                    if (cb_areaPhone.SelectedValue != null)
                     {
-                        citynumofcountry = citynum.Where(b => b.countryId == countryid).OrderBy(b => b.cityCode).ToList();
-
-                        cb_areaPhoneLocal.ItemsSource = citynumofcountry;
-                        cb_areaPhoneLocal.SelectedValuePath = "cityId";
-                        cb_areaPhoneLocal.DisplayMemberPath = "cityCode";
-                        //cb_area.Text = "+963";
-                        //cb_areaPhone.Text = "+963";
-                        if (citynumofcountry.Count() > 0)
+                        if (cb_areaPhone.SelectedIndex >= 0)
+                            countryid = int.Parse(cb_areaPhone.SelectedValue.ToString());
+                        if (citynum != null)
                         {
+                            citynumofcountry = citynum.Where(b => b.countryId == countryid).OrderBy(b => b.cityCode).ToList();
 
-                            cb_areaPhoneLocal.Visibility = Visibility.Visible;
+                            cb_areaPhoneLocal.ItemsSource = citynumofcountry;
+                            cb_areaPhoneLocal.SelectedValuePath = "cityId";
+                            cb_areaPhoneLocal.DisplayMemberPath = "cityCode";
+
+                            if (citynumofcountry.Count() > 0)
+                            {
+
+                                cb_areaPhoneLocal.Visibility = Visibility.Visible;
+                            }
+                            else
+                            {
+                                cb_areaPhoneLocal.Visibility = Visibility.Collapsed;
+                            }
                         }
-                        else
-                        {
-                            cb_areaPhoneLocal.Visibility = Visibility.Collapsed;
-                        }
+
                     }
-
+                }
+                else
+                {
+                    firstchange = true;
                 }
             }
-            else
-            {
-                firstchange = true;
-            }
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
         }
 
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
+            try
             {
-                RefreshBanksList();
-                Tb_search_TextChanged(null, null);
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
+                {
+                    RefreshBanksList();
+                    Tb_search_TextChanged(null, null);
 
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
             }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
 
         }
 
@@ -685,116 +828,140 @@ namespace POS.View
         {
             bool b = false;
 
-            List<Bank> banks = await bankModel.GetBanksAsync();
-            Bank bank1 = new Bank();
-
-            for (int i = 0; i < banks.Count(); i++)
+            try
             {
-                bank1 = banks[i];
-                if ((bank1.name.Equals(tb_name.Text.Trim())) &&
-                    (bank1.accNumber.Equals(tb_accNumber.Text.Trim())) &&
-                    (bank1.bankId != bank.bankId))
-                { b = true; break; }
-            }
+                List<Bank> banks = await bankModel.GetBanksAsync();
+                Bank bank1 = new Bank();
 
+                for (int i = 0; i < banks.Count(); i++)
+                {
+                    bank1 = banks[i];
+                    if ((bank1.name.Equals(tb_name.Text.Trim())) &&
+                        (bank1.accNumber.Equals(tb_accNumber.Text.Trim())) &&
+                        (bank1.bankId != bank.bankId))
+                    { b = true; break; }
+                }
+            }
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
             return b;
         }
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
+            try
             {
-                this.Dispatcher.Invoke(() =>
-            {
-                Thread t1 = new Thread(FN_ExportToExcel);
-                t1.SetApartmentState(ApartmentState.STA);
-                t1.Start();
-            });
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
+                {
+                    this.Dispatcher.Invoke(() =>
+                {
+                    Thread t1 = new Thread(FN_ExportToExcel);
+                    t1.SetApartmentState(ApartmentState.STA);
+                    t1.Start();
+                });
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
             }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
         }
 
 
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
+            try
             {
-                List<ReportParameter> paramarr = new List<ReportParameter>();
-
-                string addpath;
-                bool isArabic = ReportCls.checkLang();
-                if (isArabic)
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
                 {
-                    addpath = @"\Reports\SectionData\Ar\ArBankReport.rdlc";
+                    List<ReportParameter> paramarr = new List<ReportParameter>();
+
+                    string addpath;
+                    bool isArabic = ReportCls.checkLang();
+                    if (isArabic)
+                    {
+                        addpath = @"\Reports\SectionData\Ar\ArBankReport.rdlc";
+                    }
+                    else addpath = @"\Reports\SectionData\EN\BankReport.rdlc";
+                    string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+                    ReportCls.checkLang();
+
+                    clsReports.bankReport(banksQuery, rep, reppath);
+                    clsReports.setReportLanguage(paramarr);
+                    clsReports.Header(paramarr);
+
+                    rep.SetParameters(paramarr);
+
+                    rep.Refresh();
+
+                    saveFileDialog.Filter = "PDF|*.pdf;";
+
+                    if (saveFileDialog.ShowDialog() == true)
+                    {
+                        string filepath = saveFileDialog.FileName;
+                        LocalReportExtensions.ExportToPDF(rep, filepath);
+                    }
                 }
-                else addpath = @"\Reports\SectionData\EN\BankReport.rdlc";
-                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-                ReportCls.checkLang();
-
-                clsReports.bankReport(banksQuery, rep, reppath);
-                clsReports.setReportLanguage(paramarr);
-                clsReports.Header(paramarr);
-
-                rep.SetParameters(paramarr);
-
-                rep.Refresh();
-
-                saveFileDialog.Filter = "PDF|*.pdf;";
-
-                if (saveFileDialog.ShowDialog() == true)
-                {
-                    string filepath = saveFileDialog.FileName;
-                    LocalReportExtensions.ExportToPDF(rep, filepath);
-                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
             }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
         }
 
 
         private void Btn_print_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
+            try
             {
-                List<ReportParameter> paramarr = new List<ReportParameter>();
-
-                string addpath;
-                bool isArabic = ReportCls.checkLang();
-                if (isArabic)
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
                 {
-                    addpath = @"\Reports\SectionData\Ar\ArBankReport.rdlc";
+                    List<ReportParameter> paramarr = new List<ReportParameter>();
+
+                    string addpath;
+                    bool isArabic = ReportCls.checkLang();
+                    if (isArabic)
+                    {
+                        addpath = @"\Reports\SectionData\Ar\ArBankReport.rdlc";
+                    }
+                    else addpath = @"\Reports\SectionData\EN\BankReport.rdlc";
+                    string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+                    ReportCls.checkLang();
+
+                    clsReports.bankReport(banksQuery, rep, reppath);
+                    clsReports.setReportLanguage(paramarr);
+                    clsReports.Header(paramarr);
+
+                    rep.SetParameters(paramarr);
+                    rep.Refresh();
+                    LocalReportExtensions.PrintToPrinter(rep);
                 }
-                else addpath = @"\Reports\SectionData\EN\BankReport.rdlc";
-                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-                ReportCls.checkLang();
-
-                clsReports.bankReport(banksQuery, rep, reppath);
-                clsReports.setReportLanguage(paramarr);
-                clsReports.Header(paramarr);
-
-                rep.SetParameters(paramarr);
-                rep.Refresh();
-                LocalReportExtensions.PrintToPrinter(rep);
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
             }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
         }
 
 
         private void btn_pieChart_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
+            try
             {
-                Window.GetWindow(this).Opacity = 0.2;
-                win_lvc win = new win_lvc(banksQuery, 2);
-                win.ShowDialog();
-                Window.GetWindow(this).Opacity = 1;
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
+                {
+                    Window.GetWindow(this).Opacity = 0.2;
+                    win_lvc win = new win_lvc(banksQuery, 2);
+                    win.ShowDialog();
+                    Window.GetWindow(this).Opacity = 1;
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
             }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
         }
 
     }

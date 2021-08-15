@@ -1993,4 +1993,58 @@
   <data name="trReceiptVoucher" xml:space="preserve">
     <value>سند قبض</value>
   </data>
+  <data name="Do you want save the quotation in drafts?" xml:space="preserve">
+    <value>هل تريد حفظ عرض السعر في المسودات؟</value>
+  </data>
+  <data name="trDiscountTypeHint" xml:space="preserve">
+    <value>نوع الحسم...</value>
+  </data>
+  <data name="trDraftQuontaion" xml:space="preserve">
+    <value>مسودة عرض سعر</value>
+  </data>
+  <data name="trImages" xml:space="preserve">
+    <value>الصور</value>
+  </data>
+  <data name="trInstallationSettings" xml:space="preserve">
+    <value>إعدادات التنصيب</value>
+  </data>
+  <data name="trNewDraft" xml:space="preserve">
+    <value>مسودة جديدة</value>
+  </data>
+  <data name="trPrintDraftInvoice" xml:space="preserve">
+    <value>لا يمكن طباعة مسودة فاتورة</value>
+  </data>
+  <data name="trPrintEmptyInvoice" xml:space="preserve">
+    <value>لا يمكن طباعة فاتورة فارغة</value>
+  </data>
+  <data name="trSalesOrders" xml:space="preserve">
+    <value>طلبيات المبيعات</value>
+  </data>
+  <data name="trSaveInvoiceNotification" xml:space="preserve">
+    <value>هل تريد حفظ الفاتورة في المسودات؟</value>
+  </data>
+  <data name="trSaveInvoiceToPreview" xml:space="preserve">
+    <value>احفظ الفاتورة قبل المعاينة</value>
+  </data>
+  <data name="trSaveOrderNotification" xml:space="preserve">
+    <value>هل تريد حفظ الطلبية في المسودات؟</value>
+  </data>
+  <data name="trSendEmail" xml:space="preserve">
+    <value>إرسال ايميل</value>
+  </data>
+  <data name="trStore/Branch" xml:space="preserve">
+    <value>مخزن/فرع</value>
+  </data>
+  <data name="trStore/BranchHint" xml:space="preserve">
+    <value>مخزن/فرع...</value>
+  </data>
+  <data name="trTaxHint" xml:space="preserve">
+    <value>الضريبة...</value>
+  </data>
+  <data name="trVendorDetails" xml:space="preserve">
+    <value>تفاصيل المورد</value>
+  </data>
+  <data name="trWaitConfirmUser" xml:space="preserve">
+    <value>بانتظار تأكيد المستخدم</value>
+  </data>
 </root>
