@@ -279,6 +279,11 @@ namespace POS.Classes
 
     public class ItemTransferInvoice
     {// new properties
+
+        public string userdestroy { get; set; }
+        public string userFalls { get; set; }
+        public Nullable<int> userId { get; set; }
+
         public Nullable<decimal> subTotal { get; set; }
         public string agentCompany { get; set; }
         public string itemName { get; set; }
@@ -1394,6 +1399,48 @@ namespace POS.Classes
             }
         }
 
+        // العناصر الناقصة
+        public async Task<List<ItemTransferInvoice>> GetFallsItems()
+        {
+            List<ItemTransferInvoice> list = null;
+            // ... Use HttpClient.
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            using (var client = new HttpClient())
+            {
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                client.BaseAddress = new Uri(Global.APIUri);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+                HttpRequestMessage request = new HttpRequestMessage();
+                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetFallsItems");
+                request.Headers.Add("APIKey", Global.APIKey);
+                request.Method = HttpMethod.Get;
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonString = await response.Content.ReadAsStringAsync();
+                    jsonString = jsonString.Replace("\\", string.Empty);
+                    jsonString = jsonString.Trim('"');
+                    // fix date format
+                    JsonSerializerSettings settings = new JsonSerializerSettings
+                    {
+                        Converters = new List<JsonConverter> { new BadDateFixingConverter() },
+                        DateParseHandling = DateParseHandling.None
+                    };
+                    list = JsonConvert.DeserializeObject<List<ItemTransferInvoice>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    return list;
+                }
+                else //web api sent error response 
+                {
+                    list = new List<ItemTransferInvoice>();
+                }
+                return list;
+            }
+        }
+
         #endregion
 
 
@@ -2036,7 +2083,7 @@ namespace POS.Classes
         }
 
 
-        public List<ShortFalls> getshortFalls(List<InventoryClass> ITInvoice)
+        public List<ShortFalls> getshortFalls(List<ItemTransferInvoice> ITInvoice)
         {
             List<ShortFalls> iulist = new List<ShortFalls>();
             iulist = ITInvoice.Select(g => new ShortFalls { BranchId = g.branchId, ItemsUnitsId = g.itemUnitId, ItemsUnits = g.ItemUnits }).ToList();
@@ -2052,52 +2099,52 @@ namespace POS.Classes
             List<CashTransferSts> list2 = new List<CashTransferSts>();
             list2 = list.OrderBy(X => X.updateDate).GroupBy(obj => obj.transNum).Select(obj => new CashTransferSts
             {
-                    bondNumber=obj.FirstOrDefault().bondNumber,
-        userId =obj.FirstOrDefault().userId,
-        agentId = obj.FirstOrDefault().agentId,
+                bondNumber = obj.FirstOrDefault().bondNumber,
+                userId = obj.FirstOrDefault().userId,
+                agentId = obj.FirstOrDefault().agentId,
 
-         transNum = obj.FirstOrDefault().transNum,
-         updateDate = obj.FirstOrDefault().updateDate,
+                transNum = obj.FirstOrDefault().transNum,
+                updateDate = obj.FirstOrDefault().updateDate,
 
-         bankName = obj.FirstOrDefault().bankName,
-         agentName = obj.FirstOrDefault().agentName,
-         usersName = obj.FirstOrDefault().usersName,
-         usersLName = obj.FirstOrDefault().usersLName,
-         posName = obj.FirstOrDefault().posName,
-      
-        updateUserName = obj.FirstOrDefault().updateUserName,
-        updateUserAcc = obj.FirstOrDefault().updateUserAcc,
-        cardName = obj.FirstOrDefault().cardName,
-       bondDeserveDate = obj.FirstOrDefault().bondDeserveDate,
+                bankName = obj.FirstOrDefault().bankName,
+                agentName = obj.FirstOrDefault().agentName,
+                usersName = obj.FirstOrDefault().usersName,
+                usersLName = obj.FirstOrDefault().usersLName,
+                posName = obj.FirstOrDefault().posName,
 
-         shippingCompanyId = obj.FirstOrDefault().shippingCompanyId,
-        shippingCompanyName = obj.FirstOrDefault().shippingCompanyName,
-        userAcc = obj.FirstOrDefault().userAcc,
+                updateUserName = obj.FirstOrDefault().updateUserName,
+                updateUserAcc = obj.FirstOrDefault().updateUserAcc,
+                cardName = obj.FirstOrDefault().cardName,
+                bondDeserveDate = obj.FirstOrDefault().bondDeserveDate,
+
+                shippingCompanyId = obj.FirstOrDefault().shippingCompanyId,
+                shippingCompanyName = obj.FirstOrDefault().shippingCompanyName,
+                userAcc = obj.FirstOrDefault().userAcc,
 
 
-         cashTransId = obj.FirstOrDefault().cashTransId,
-         transType = obj.FirstOrDefault().transType,
-         desc = obj.FirstOrDefault().desc,
-        invId = obj.FirstOrDefault().invId,
-         cash = obj.Sum(x=>x.cash),
-         cashTotal = 0,
-         side = obj.FirstOrDefault().side,
-         processType = obj.FirstOrDefault().processType,
+                cashTransId = obj.FirstOrDefault().cashTransId,
+                transType = obj.FirstOrDefault().transType,
+                desc = obj.FirstOrDefault().desc,
+                invId = obj.FirstOrDefault().invId,
+                cash = obj.Sum(x => x.cash),
+                cashTotal = 0,
+                side = obj.FirstOrDefault().side,
+                processType = obj.FirstOrDefault().processType,
 
-         invNumber ="",
-         invType = obj.FirstOrDefault().invType,
-        totalNet = obj.FirstOrDefault().totalNet,
-    }).ToList();
+                invNumber = "",
+                invType = obj.FirstOrDefault().invType,
+                totalNet = obj.FirstOrDefault().totalNet,
+            }).ToList();
             decimal rowtotal = 0;
 
             foreach (CashTransferSts row in list2)
             {
                 string invnum = "";
                 List<string> invnumlist = new List<string>();
-                invnumlist = list.Where(x => x.transNum == row.transNum).Select(y=>y.invNumber).ToList();
-                foreach(string strrow in invnumlist)
+                invnumlist = list.Where(x => x.transNum == row.transNum).Select(y => y.invNumber).ToList();
+                foreach (string strrow in invnumlist)
                 {
-                    invnum += strrow+" ";
+                    invnum += strrow + " ";
                 }
                 row.invNumber = invnum;
                 if (row.transType == "d")

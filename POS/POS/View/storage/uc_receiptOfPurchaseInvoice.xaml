@@ -74,7 +74,7 @@
                     <Border Grid.Column="6"  Background="White" Margin="7.5,5"   CornerRadius="0,0,0,0"  Width="1" BorderThickness="0,0,1,0" BorderBrush="#377EB8" DockPanel.Dock="Right"/>
 
                     <materialDesign:Badged VerticalAlignment="Center" Margin="7.5,5,7.5,0"
-                      BadgeColorZoneMode="PrimaryDark"  BadgeForeground="White"  Badge="+9">
+                     BadgeBackground="{StaticResource MainColorRed}"  BadgeForeground="White"  Badge="+9">
                         <Button Grid.Column="4" BorderBrush="{x:Null}"   Padding="0"   
                     Background="{x:Null}" x:Name="btn_invoices"  Click="Btn_invoices_Click" >
                         <Path Fill="#4E4E4E" Stretch="Fill"  
@@ -104,7 +104,7 @@
                     </Button>
                     </materialDesign:Badged>
                     <materialDesign:Badged VerticalAlignment="Center" Margin="7.5,5,7.5,0"
-                      BadgeColorZoneMode="PrimaryDark"  BadgeForeground="White"  Badge="+9">
+                      BadgeBackground="{StaticResource MainColorRed}"  BadgeForeground="White"  Badge="+9">
                         <Button Grid.Column="5" BorderBrush="{x:Null}" Padding="0"   
                     Background="{x:Null}" x:Name="btn_returnInvoice" Click="Btn_returnInvoice_Click"  >
                         <Path Fill="#4E4E4E" Stretch="Fill"  
@@ -128,7 +128,7 @@
                     CornerRadius="7" BorderBrush="Black" Background="White" Padding="0" Margin="10,0,5,0">
                 <DockPanel   Margin="10,0" LastChildFill="False">
                     <materialDesign:Badged VerticalAlignment="Center" Margin="7.5,5,7.5,0" DockPanel.Dock="Right" 
-                      BadgeColorZoneMode="PrimaryDark"  BadgeForeground="White"  Badge="+9">
+                      BadgeBackground="{StaticResource MainColorRed}"  BadgeForeground="White"  Badge="+9">
                         <Button Grid.Column="5" DockPanel.Dock="Right" BorderBrush="{x:Null}" Padding="0"  
                     Background="{x:Null}" x:Name="btn_invoiceImages" Click="Btn_invoiceImage_Click"  IsEnabled="False">
                         <Path Fill="#4E4E4E" Stretch="Fill"  
