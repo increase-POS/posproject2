@@ -52,117 +52,153 @@ namespace POS.View.storage
         }
         public uc_itemsStorage()
         {
-            InitializeComponent();
+            try
+            {
+
+                InitializeComponent();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.lang.Equals("en"))
+            try
             {
-                MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
-                grid_ucItemsStorage.FlowDirection = FlowDirection.LeftToRight;
-            }
-            else
-            {
-                MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
-                grid_ucItemsStorage.FlowDirection = FlowDirection.RightToLeft;
-            }
-           
-            translate();
-            //await refreshItemsLocations();
-            //await refreshFreeZoneItemsLocations();
-            Tb_search_TextChanged(null,null);
+                SectionData.StartAwait(grid_main);
 
-            await fillSections();
-            #region Style Date
-            dp_startDate.Loaded += delegate
-            {
-
-                var textBox1 = (TextBox)dp_startDate.Template.FindName("PART_TextBox", dp_startDate);
-                if (textBox1 != null)
+                if (MainWindow.lang.Equals("en"))
                 {
-                    textBox1.Background = dp_startDate.Background;
-                    textBox1.BorderThickness = dp_startDate.BorderThickness;
+                    MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                    grid_main.FlowDirection = FlowDirection.LeftToRight;
                 }
-            };
-            dp_endDate.Loaded += delegate
-            {
-
-                var textBox1 = (TextBox)dp_endDate.Template.FindName("PART_TextBox", dp_endDate);
-                if (textBox1 != null)
+                else
                 {
-                    textBox1.Background = dp_endDate.Background;
-                    textBox1.BorderThickness = dp_endDate.BorderThickness;
+                    MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                    grid_main.FlowDirection = FlowDirection.RightToLeft;
                 }
-            };
 
-            #endregion
+                translate();
+                 
+                Tb_search_TextChanged(null, null);
+
+                await fillSections();
+                #region Style Date
+                dp_startDate.Loaded += delegate
+                {
+
+                    var textBox1 = (TextBox)dp_startDate.Template.FindName("PART_TextBox", dp_startDate);
+                    if (textBox1 != null)
+                    {
+                        textBox1.Background = dp_startDate.Background;
+                        textBox1.BorderThickness = dp_startDate.BorderThickness;
+                    }
+                };
+                dp_endDate.Loaded += delegate
+                {
+
+                    var textBox1 = (TextBox)dp_endDate.Template.FindName("PART_TextBox", dp_endDate);
+                    if (textBox1 != null)
+                    {
+                        textBox1.Background = dp_endDate.Background;
+                        textBox1.BorderThickness = dp_endDate.BorderThickness;
+                    }
+                };
+
+                #endregion
+                SectionData.EndAwait(grid_main, this);
+
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
         {
-            //if (itemLocationList is null)
+            try
+            {
+                SectionData.StartAwait(grid_main);
+
+                //if (itemLocationList is null)
                 if (tgl_IsActive.IsChecked == true)
-            {
-                await refreshItemsLocations();
-                clearInputs();
+                {
+                    await refreshItemsLocations();
+                    clearInputs();
+                }
+                else
+                {
+                    await refreshFreeZoneItemsLocations();
+                    clearInputs();
+                }
+
+
+                searchText = tb_search.Text.ToLower();
+
+
+                itemLocationListQuery = itemLocationList.Where(s => (s.itemName.ToLower().Contains(searchText) ||
+                s.unitName.ToLower().Contains(searchText) ||
+                s.section.ToLower().Contains(searchText) ||
+                s.location.ToLower().Contains(searchText)));
+                dg_itemsStorage.ItemsSource = itemLocationListQuery;
+
+                SectionData.EndAwait(grid_main, this);
             }
-            else
+            catch (Exception ex)
             {
-                await refreshFreeZoneItemsLocations();
-                clearInputs();
+                SectionData.ExceptionMessage(ex);
             }
-
-
-            searchText = tb_search.Text.ToLower();
-
-            
-            itemLocationListQuery = itemLocationList.Where(s => (s.itemName.ToLower().Contains(searchText) ||
-            s.unitName.ToLower().Contains(searchText) ||
-            s.section.ToLower().Contains(searchText) ||
-            s.location.ToLower().Contains(searchText)) );
-            dg_itemsStorage.ItemsSource = itemLocationListQuery;
-
         }
-        private  void Tgl_IsActive_Checked(object sender, RoutedEventArgs e)
+        private void Tgl_IsActive_Checked(object sender, RoutedEventArgs e)
         {
-            Tb_search_TextChanged(null, null);
+            try
+            {
+
+                Tb_search_TextChanged(null, null);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         private async void Tgl_IsActive_Unchecked(object sender, RoutedEventArgs e)
         {
-            Tb_search_TextChanged(null, null);
+            try
+            {
+                SectionData.StartAwait(grid_main);
+
+                Tb_search_TextChanged(null, null);
+                SectionData.EndAwait(grid_main, this);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
         private async Task refreshItemsLocations()
         {
+                SectionData.StartAwait(grid_main);
             itemLocationList = await itemLocation.get(MainWindow.branchID.Value);
-            //dg_itemsStorage.ItemsSource = itemLocationList;
+                SectionData.EndAwait(grid_main, this);
         }
         private async Task refreshFreeZoneItemsLocations()
         {
+                SectionData.StartAwait(grid_main);
             itemLocationList = await itemLocation.GetFreeZoneItems(MainWindow.branchID.Value);
-            //dg_itemsStorage.ItemsSource = itemLocationList;
+            SectionData.EndAwait(grid_main, this);
         }
         private void translate()
         {
-            ////////////////////////////////----invoice----/////////////////////////////////
-            //txt_invoiceToggle.Text = MainWindow.resourcemanager.GetString("trInvoice");
-            //MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_InvoicenName, MainWindow.resourcemanager.GetString("trInvoiceHint"));
 
-            //dg_billDetails.Columns[1].Header = MainWindow.resourcemanager.GetString("trNum");
-            //dg_billDetails.Columns[2].Header = MainWindow.resourcemanager.GetString("trItem");
-            //dg_billDetails.Columns[4].Header = MainWindow.resourcemanager.GetString("trAmount");
-            //dg_invoice.Columns[0].Header = MainWindow.resourcemanager.GetString("trInvoiceNumber");
-            //txt_addButton.Text = MainWindow.resourcemanager.GetString("trAdd");
-            //txt_updateButton.Text = MainWindow.resourcemanager.GetString("trUpdate");
-            //txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trDelete");
-            //tt_add_Button.Content = MainWindow.resourcemanager.GetString("trAdd");
-            //tt_update_Button.Content = MainWindow.resourcemanager.GetString("trUpdate");
-            //tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
 
         }
-        
+
         private async Task refreshLocations()
         {
+                SectionData.StartAwait(grid_main);
             if (cb_section.SelectedIndex != -1)
             {
                 locations = await locationModel.getLocsBySectionId((int)cb_section.SelectedValue);
@@ -170,194 +206,261 @@ namespace POS.View.storage
                 cb_XYZ.SelectedValuePath = "locationId";
                 cb_XYZ.DisplayMemberPath = "name";
             }
+                SectionData.EndAwait(grid_main, this);
         }
         private async Task fillSections()
         {
+                SectionData.StartAwait(grid_main);
             sections = await sectionModel.getBranchSections(MainWindow.branchID.Value);
             cb_section.ItemsSource = sections.ToList();
             cb_section.SelectedValuePath = "sectionId";
             cb_section.DisplayMemberPath = "name";
+                SectionData.EndAwait(grid_main, this);
         }
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
-            Regex regex = new Regex("[^0-9]+");
-            e.Handled = regex.IsMatch(e.Text);
+            try
+            {
+
+                Regex regex = new Regex("[^0-9]+");
+                e.Handled = regex.IsMatch(e.Text);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
         private void space_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            e.Handled = e.Key == Key.Space;
+            try
+            {
+
+                e.Handled = e.Key == Key.Space;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(transferPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+            try
             {
 
+                if (MainWindow.groupObject.HasPermissionAction(transferPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+                {
+
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
             }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
-        
 
-        private void Tb_search_GotFocus(object sender, RoutedEventArgs e)
-        {
 
-        }
 
-       
 
-     
-        private void Btn_add_Click(object sender, RoutedEventArgs e)
-        {
 
-        }
-
-        private void Btn_update_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void Btn_delete_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
 
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
-            Tb_search_TextChanged(null, null);
+            try
+            {
+
+                Tb_search_TextChanged(null, null);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         private void Expander_Expanded(object sender, RoutedEventArgs e)
         {
-            dg_collapsed.IsEnabled = false;
-            dg_collapsed.Opacity = 0.2;
+            try
+            {
+
+                dg_collapsed.IsEnabled = false;
+                dg_collapsed.Opacity = 0.2;
 
 
 
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         private void Expander_Collapsed(object sender, RoutedEventArgs e)
         {
-            dg_collapsed.IsEnabled = true;
-            dg_collapsed.Opacity = 1;
+            try
+            {
 
+                dg_collapsed.IsEnabled = true;
+                dg_collapsed.Opacity = 1;
+
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
-        private void Btn_save_Click(object sender, RoutedEventArgs e)
-        {
 
-        }
         private void validateMandatoryInputs()
         {
             SectionData.validateEmptyTextBox(tb_quantity, p_errorQuantity, tt_errorQuantity, "trEmptyQuantityToolTip");
             SectionData.validateEmptyComboBox(cb_section, p_errorSection, tt_errorSection, "trEmptySectionToolTip");
             SectionData.validateEmptyComboBox(cb_XYZ, p_errorXYZ, tt_errorXYZ, "trErrorEmptyLocationToolTip");
-            if(itemLocation.itemType.Equals("d"))
+            if (itemLocation.itemType.Equals("d"))
             {
-                SectionData.showDatePickerValidate(dp_startDate,p_errorStartDate,tt_errorStartDate, "trEmptyStartDateToolTip");
-                SectionData.showDatePickerValidate(dp_endDate,p_errorEndDate,tt_errorEndDate, "trEmptyEndDateToolTip");
+                SectionData.showDatePickerValidate(dp_startDate, p_errorStartDate, tt_errorStartDate, "trEmptyStartDateToolTip");
+                SectionData.showDatePickerValidate(dp_endDate, p_errorEndDate, tt_errorEndDate, "trEmptyEndDateToolTip");
             }
         }
         private async void Btn_transfer_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+            try
             {
-                if (dg_itemsStorage.SelectedIndex != -1)
-            {
-                validateMandatoryInputs();
-                if (itemLocation != null &&
-                    !tb_quantity.Text.Equals("") && cb_section.SelectedIndex != -1
-                    && cb_XYZ.SelectedIndex != -1 && (!itemLocation.itemType.Equals("d") ||
-                    (itemLocation.itemType.Equals("d") && dp_startDate.SelectedDate != null && dp_endDate.SelectedDate != null)))
+                SectionData.StartAwait(grid_main);
+                
+                if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
-                    int oldLocationId = (int)itemLocation.locationId;
-                    int newLocationId = (int)cb_XYZ.SelectedValue;
-                    if (oldLocationId != newLocationId)
+                    if (dg_itemsStorage.SelectedIndex != -1)
                     {
-                    int quantity = int.Parse(tb_quantity.Text);
-                    ItemLocation newLocation = new ItemLocation();
-                    newLocation.itemUnitId = itemLocation.itemUnitId;
-                    newLocation.locationId = newLocationId;
-                    newLocation.quantity = quantity;
-                    newLocation.startDate = dp_startDate.SelectedDate;
-                    newLocation.endDate = dp_endDate.SelectedDate;
-                    newLocation.note = tb_notes.Text;
-                    newLocation.updateUserId = MainWindow.userID.Value;
-                    newLocation.createUserId = MainWindow.userID.Value;
-                    //newLocation.storeCost 
-                    bool res = await itemLocation.trasnferItem(itemLocation.itemsLocId, newLocation);
-                    if (res)
-                    {
-                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
-                                
+                        validateMandatoryInputs();
+                        if (itemLocation != null &&
+                            !tb_quantity.Text.Equals("") && cb_section.SelectedIndex != -1
+                            && cb_XYZ.SelectedIndex != -1 && (!itemLocation.itemType.Equals("d") ||
+                            (itemLocation.itemType.Equals("d") && dp_startDate.SelectedDate != null && dp_endDate.SelectedDate != null)))
+                        {
+                            int oldLocationId = (int)itemLocation.locationId;
+                            int newLocationId = (int)cb_XYZ.SelectedValue;
+                            if (oldLocationId != newLocationId)
+                            {
+                                int quantity = int.Parse(tb_quantity.Text);
+                                ItemLocation newLocation = new ItemLocation();
+                                newLocation.itemUnitId = itemLocation.itemUnitId;
+                                newLocation.locationId = newLocationId;
+                                newLocation.quantity = quantity;
+                                newLocation.startDate = dp_startDate.SelectedDate;
+                                newLocation.endDate = dp_endDate.SelectedDate;
+                                newLocation.note = tb_notes.Text;
+                                newLocation.updateUserId = MainWindow.userID.Value;
+                                newLocation.createUserId = MainWindow.userID.Value;
+                                //newLocation.storeCost 
+                                bool res = await itemLocation.trasnferItem(itemLocation.itemsLocId, newLocation);
+                                if (res)
+                                {
+                                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+
+                                }
+                                else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+                                if (tgl_IsActive.IsChecked == true)
+                                    await refreshItemsLocations();
+                                else
+                                    await refreshFreeZoneItemsLocations();
+
+                                clearInputs();
                             }
-                    else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-
-                    if (tgl_IsActive.IsChecked == true)
-                        await refreshItemsLocations();
-                    else
-                        await refreshFreeZoneItemsLocations();
-
-                    clearInputs();
+                            else
+                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trTranseToSameLocation"), animation: ToasterAnimation.FadeIn);
+                            Tb_search_TextChanged(null, null);
+                        }
                     }
-                    else
-                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trTranseToSameLocation"), animation: ToasterAnimation.FadeIn);
-                        Tb_search_TextChanged(null, null);
-                    }
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                SectionData.EndAwait(grid_main, this);
             }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
             }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
         private async void Cb_section_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            await refreshLocations();
+            try
+            {
+
+                SectionData.StartAwait(grid_main);
+                await refreshLocations();
+                SectionData.EndAwait(grid_main, this);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         private async void Dg_itemsStorage_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (dg_itemsStorage.SelectedIndex != -1)
+            try
             {
-                clearInputs();
 
-                itemLocation = dg_itemsStorage.SelectedItem as ItemLocation;
-                this.DataContext = itemLocation;
-                dp_startDate.SelectedDate = itemLocation.startDate;
-                dp_endDate.SelectedDate = itemLocation.endDate;
-                if (itemLocation.itemType.Equals("d"))
-                    gd_date.Visibility = Visibility.Visible;
-                else
-                    gd_date.Visibility = Visibility.Collapsed;
-                if (tgl_IsActive.IsChecked == true)
+                SectionData.StartAwait(grid_main);
+                if (dg_itemsStorage.SelectedIndex != -1)
                 {
-                    tb_itemName.IsReadOnly = true;
-                    dp_endDate.IsEnabled = false;
-                    dp_startDate.IsEnabled = false;
-                    cb_section.SelectedValue = itemLocation.sectionId;
-                    await refreshLocations();
-                    cb_XYZ.SelectedValue = itemLocation.locationId;
-                }
-                else
-                {
-                    dp_endDate.IsEnabled = true;
-                    dp_startDate.IsEnabled = true;
-                    cb_section.SelectedIndex = -1;
-                    cb_XYZ.SelectedIndex = -1;
-                }
+                    clearInputs();
 
+                    itemLocation = dg_itemsStorage.SelectedItem as ItemLocation;
+                    this.DataContext = itemLocation;
+                    dp_startDate.SelectedDate = itemLocation.startDate;
+                    dp_endDate.SelectedDate = itemLocation.endDate;
+                    if (itemLocation.itemType.Equals("d"))
+                        gd_date.Visibility = Visibility.Visible;
+                    else
+                        gd_date.Visibility = Visibility.Collapsed;
+                    if (tgl_IsActive.IsChecked == true)
+                    {
+                        tb_itemName.IsReadOnly = true;
+                        dp_endDate.IsEnabled = false;
+                        dp_startDate.IsEnabled = false;
+                        cb_section.SelectedValue = itemLocation.sectionId;
+                        await refreshLocations();
+                        cb_XYZ.SelectedValue = itemLocation.locationId;
+                    }
+                    else
+                    {
+                        dp_endDate.IsEnabled = true;
+                        dp_startDate.IsEnabled = true;
+                        cb_section.SelectedIndex = -1;
+                        cb_XYZ.SelectedIndex = -1;
+                    }
+
+                }
+                SectionData.EndAwait(grid_main, this);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
             }
         }
 
         private void Tb_quantity_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if(itemLocation != null && !tb_quantity.Text.Equals(""))
+            try
             {
-                if(int.Parse(tb_quantity.Text) > itemLocation.quantity)
+
+                if (itemLocation != null && !tb_quantity.Text.Equals(""))
                 {
-                    tb_quantity.Text = itemLocation.quantity.ToString();
-                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountIncreaseToolTip"), animation: ToasterAnimation.FadeIn);
+                    if (int.Parse(tb_quantity.Text) > itemLocation.quantity)
+                    {
+                        tb_quantity.Text = itemLocation.quantity.ToString();
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountIncreaseToolTip"), animation: ToasterAnimation.FadeIn);
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
             }
         }
         private void clearInputs()
@@ -374,9 +477,9 @@ namespace POS.View.storage
             itemLocation = new ItemLocation();
             gd_date.Visibility = Visibility.Collapsed;
 
-            SectionData.clearComboBoxValidate(cb_section,p_errorSection);
-            SectionData.clearComboBoxValidate(cb_XYZ,p_errorXYZ);
-            SectionData.clearValidate(tb_quantity,p_errorQuantity);
+            SectionData.clearComboBoxValidate(cb_section, p_errorSection);
+            SectionData.clearComboBoxValidate(cb_XYZ, p_errorXYZ);
+            SectionData.clearValidate(tb_quantity, p_errorQuantity);
             if (gd_date.Visibility == Visibility.Visible)
             {
                 TextBox tbStartDate = (TextBox)dp_startDate.Template.FindName("PART_TextBox", dp_startDate);
@@ -388,54 +491,55 @@ namespace POS.View.storage
 
         private void Dp_date_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(dp_endDate.SelectedDate != null && dp_startDate.SelectedDate != null)
+            try
             {
-                if(dp_endDate.SelectedDate < dp_startDate.SelectedDate)
-                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorStartBeforEndToolTip"), animation: ToasterAnimation.FadeIn);
+
+                if (dp_endDate.SelectedDate != null && dp_startDate.SelectedDate != null)
+                {
+                    if (dp_endDate.SelectedDate < dp_startDate.SelectedDate)
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorStartBeforEndToolTip"), animation: ToasterAnimation.FadeIn);
+                }
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
             }
         }
-        //private void clearValidity()
-        //{
-        //    SectionData.clearComboBoxValidate(cb_section, p_errorSection);
-        //    SectionData.clearComboBoxValidate(cb_XYZ, p_errorXYZ);
-        //    SectionData.clearValidate(tb_quantity, p_errorQuantity);
-        //    if (gd_date.Visibility == Visibility.Visible)
-        //    {
-        //        TextBox tbStartDate = (TextBox)dp_startDate.Template.FindName("PART_TextBox", dp_startDate);
-        //        SectionData.clearValidate(tbStartDate, p_errorStartDate);
-        //        TextBox tbEndDate = (TextBox)dp_endDate.Template.FindName("PART_TextBox", dp_endDate);
-        //        SectionData.clearValidate(tbEndDate, p_errorEndDate);
-        //    }
-        //}
+
         private void input_LostFocus(object sender, RoutedEventArgs e)
         {
-            string name = sender.GetType().Name;
-            if (name == "TextBox")
+            try
             {
-                if ((sender as TextBox).Name == "tb_quantity")
-                    SectionData.validateEmptyTextBox((TextBox)sender, p_errorQuantity, tt_errorQuantity, "trEmptyQuantityToolTip");  
+
+                string name = sender.GetType().Name;
+                if (name == "TextBox")
+                {
+                    if ((sender as TextBox).Name == "tb_quantity")
+                        SectionData.validateEmptyTextBox((TextBox)sender, p_errorQuantity, tt_errorQuantity, "trEmptyQuantityToolTip");
+                }
+                else if (name == "ComboBox")
+                {
+                    if ((sender as ComboBox).Name == "cb_section")
+                        SectionData.validateEmptyComboBox((ComboBox)sender, p_errorSection, tt_errorSection, "trEmptySectionToolTip");
+                    else if ((sender as ComboBox).Name == "cb_XYZ")
+                        SectionData.validateEmptyComboBox((ComboBox)sender, p_errorXYZ, tt_errorXYZ, "trErrorEmptyLocationToolTip");
+                }
+                else if (name == "DatePicker")
+                {
+                    if ((sender as DatePicker).Name == "dp_startDate")
+                        SectionData.validateEmptyDatePicker((DatePicker)sender, p_errorStartDate, tt_errorStartDate, "trEmptyStartDateToolTip");
+                    else if ((sender as DatePicker).Name == "dp_endDate")
+                        SectionData.validateEmptyDatePicker((DatePicker)sender, p_errorEndDate, tt_errorEndDate, "trEmptyEndDateToolTip");
+                }
             }
-            else if (name == "ComboBox")
+            catch (Exception ex)
             {
-                if ((sender as ComboBox).Name == "cb_section")
-                    SectionData.validateEmptyComboBox((ComboBox)sender, p_errorSection, tt_errorSection, "trEmptySectionToolTip");
-                else if ((sender as ComboBox).Name == "cb_XYZ")
-                    SectionData.validateEmptyComboBox((ComboBox)sender, p_errorXYZ, tt_errorXYZ, "trErrorEmptyLocationToolTip");
-            }
-            else if (name == "DatePicker")
-            {
-                if ((sender as DatePicker).Name == "dp_startDate")
-                    SectionData.validateEmptyDatePicker((DatePicker)sender, p_errorStartDate, tt_errorStartDate, "trEmptyStartDateToolTip");
-                else if ((sender as DatePicker).Name == "dp_endDate")
-                    SectionData.validateEmptyDatePicker((DatePicker)sender, p_errorEndDate, tt_errorEndDate, "trEmptyEndDateToolTip");
+                SectionData.ExceptionMessage(ex);
             }
         }
 
-        private void Tb_storageCost_TextChanged(object sender, TextChangedEventArgs e)
-        {
 
-        }
 
-       
+
     }
 }

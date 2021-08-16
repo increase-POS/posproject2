@@ -12,7 +12,7 @@
                d:DesignHeight="675" d:DesignWidth="985">
 
     <ScrollViewer>
-        <Grid x:Name="grid_ucPayInvoice" Margin="0,15,15,15"  >
+        <Grid x:Name="grid_main" Margin="0,15,15,15"  >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="4*"/>
                 <ColumnDefinition Width="1.1*"/>
@@ -130,7 +130,7 @@
                     <materialDesign:Badged VerticalAlignment="Center" Margin="7.5,5,7.5,0" DockPanel.Dock="Right" 
                       BadgeBackground="{StaticResource MainColorRed}"  BadgeForeground="White"  Badge="+9">
                         <Button Grid.Column="5" DockPanel.Dock="Right" BorderBrush="{x:Null}" Padding="0"  
-                    Background="{x:Null}" x:Name="btn_invoiceImages" Click="Btn_invoiceImage_Click"  IsEnabled="False">
+                    Background="{x:Null}" x:Name="btn_invoiceImages"   IsEnabled="False">
                         <Path Fill="#4E4E4E" Stretch="Fill"  
                          Height="30" Width="30"
                            Data="M368,224c26.5,0,48-21.5,48-48s-21.5-48-48-48s-48,21.5-48,48S341.5,224,368,224z M452,64H60

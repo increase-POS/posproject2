@@ -10,7 +10,7 @@
              Loaded="UserControl_Loaded" Unloaded="UserControl_Unloaded"
               d:DesignHeight="675" d:DesignWidth="1150">
     <ScrollViewer>
-        <Grid x:Name="grid_ucItemsExport" Margin="0,15,15,15"  >
+        <Grid x:Name="grid_main" Margin="0,15,15,15"  >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="4*"/>
                 <ColumnDefinition Width="1.1*"/>
@@ -561,8 +561,7 @@
                                   TextBlock.FontSize="12"   Background="#f8f8f8"
                                   Grid.Column="0" Height="40"   Margin="10,5,10,0"
                                   BorderBrush="#737373" BorderThickness="0" 
-                                  SelectionChanged="Cb_company_SelectionChanged" 
-                                  LostFocus="Cb_company_LostFocus" VerticalAlignment="Top">
+                                   VerticalAlignment="Top">
                                 <ComboBox.ToolTip>
                                     <ToolTip x:Name="tt_company" Content="Company"
                                                           Placement="left" 
@@ -585,8 +584,7 @@
                                   TextBlock.FontSize="12"   Background="#f8f8f8"
                                  Visibility="Collapsed"
                                   Grid.Column="0" Height="40"  Margin="10,5,10,5"
-                                  BorderBrush="#737373" BorderThickness="0" 
-                                  LostFocus="Tb_validateEmptyLostFocus">
+                                  BorderBrush="#737373" BorderThickness="0">
                                 <ComboBox.ToolTip>
                                     <ToolTip x:Name="tt_user" Content="User"
                                                           Placement="left" 
