@@ -2473,6 +2473,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to منتهي الصلاحية.
+        /// </summary>
+        internal static string trExpired {
+            get {
+                return ResourceManager.GetString("trExpired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to تصدير.
         /// </summary>
         internal static string trExport {
@@ -5566,6 +5575,24 @@ namespace POS {
         internal static string trUserType {
             get {
                 return ResourceManager.GetString("trUserType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to فعال.
+        /// </summary>
+        internal static string trValid {
+            get {
+                return ResourceManager.GetString("trValid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to الصلاحية.
+        /// </summary>
+        internal static string trvalidity {
+            get {
+                return ResourceManager.GetString("trvalidity", resourceCulture);
             }
         }
         

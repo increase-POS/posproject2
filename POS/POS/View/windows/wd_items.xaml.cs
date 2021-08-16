@@ -309,7 +309,7 @@ namespace POS.View.windows
         {
             grid_itemCards.Visibility = Visibility.Collapsed;
             grid_itemsDatagrid.Visibility = Visibility.Visible;
-            path_itemsInCards.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+            path_itemsInGrid.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
             path_itemsInCards.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
 
             Txb_searchitems_TextChanged(null, null);

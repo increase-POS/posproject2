@@ -2068,4 +2068,13 @@ Please add Email in setting</value>
   <data name="trWaitConfirmUser" xml:space="preserve">
     <value>Waiting for user confirmation</value>
   </data>
+  <data name="trExpired" xml:space="preserve">
+    <value>Expired</value>
+  </data>
+  <data name="trValid" xml:space="preserve">
+    <value>Valid</value>
+  </data>
+  <data name="trvalidity" xml:space="preserve">
+    <value>Validity</value>
+  </data>
 </root>

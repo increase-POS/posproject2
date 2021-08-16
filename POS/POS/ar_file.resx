@@ -2047,4 +2047,13 @@
   <data name="trWaitConfirmUser" xml:space="preserve">
     <value>بانتظار تأكيد المستخدم</value>
   </data>
+  <data name="trExpired" xml:space="preserve">
+    <value>منتهي الصلاحية</value>
+  </data>
+  <data name="trValid" xml:space="preserve">
+    <value>فعال</value>
+  </data>
+  <data name="trvalidity" xml:space="preserve">
+    <value>الصلاحية</value>
+  </data>
 </root>

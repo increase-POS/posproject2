@@ -49,14 +49,18 @@ namespace POS.View
         }
         public uc_payInvoice()
         {
-            InitializeComponent();
+            try
+            {
+
+                InitializeComponent();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
         ObservableCollection<BillDetails> billDetails = new ObservableCollection<BillDetails>();
-        //Category categoryModel = new Category();
-        //Category category = new Category();
-        //IEnumerable<Category> categories;
-        //IEnumerable<Category> categoriesQuery;
-        //int? categoryParentId = 0;
+
 
         Item itemModel = new Item();
         Item item = new Item();
@@ -107,8 +111,15 @@ namespace POS.View
         SaveFileDialog saveFileDialog = new SaveFileDialog();
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
-            Regex regex = new Regex("[^0-9]+");
-            e.Handled = regex.IsMatch(e.Text);
+            try
+            {
+                Regex regex = new Regex("[^0-9]+");
+                e.Handled = regex.IsMatch(e.Text);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
         private void translate()
         {
@@ -148,8 +159,6 @@ namespace POS.View
 
             txt_vendor.Text = MainWindow.resourcemanager.GetString("trVendor");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_vendor, MainWindow.resourcemanager.GetString("trVendorHint"));
-            //MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_paid, MainWindow.resourcemanager.GetString("trPaidHint"));
-            //MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_deserved, MainWindow.resourcemanager.GetString("trDeservedHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_desrvedDate, MainWindow.resourcemanager.GetString("trDeservedDateHint"));
             txt_vendorIvoiceDetails.Text = MainWindow.resourcemanager.GetString("trVendorInvoiceDetails");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_invoiceNumber, MainWindow.resourcemanager.GetString("trInvoiceNumberHint"));
@@ -159,77 +168,80 @@ namespace POS.View
         }
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
-            MainWindow.mainWindow.KeyDown -= HandleKeyPress;
-            if (billDetails.Count > 0 &&  _InvoiceType == "pd")
+            try
             {
-                #region Accept
-                MainWindow.mainWindow.Opacity = 0.2;
-                wd_acceptCancelPopup w = new wd_acceptCancelPopup();
-                //w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
-                w.contentText = "Do you want save pay invoice in drafts?";
-                w.ShowDialog();
-                MainWindow.mainWindow.Opacity = 1;
-                #endregion
-                if (w.isOk)
-                    Btn_newDraft_Click(null, null);
+                MainWindow.mainWindow.KeyDown -= HandleKeyPress;
+                if (billDetails.Count > 0 && _InvoiceType == "pd")
+                {
+                    #region Accept
+                    MainWindow.mainWindow.Opacity = 0.2;
+                    wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                    //w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
+                    w.contentText = "Do you want save pay invoice in drafts?";
+                    w.ShowDialog();
+                    MainWindow.mainWindow.Opacity = 1;
+                    #endregion
+                    if (w.isOk)
+                        Btn_newDraft_Click(null, null);
+                    else
+                        clearInvoice();
+                }
                 else
                     clearInvoice();
+
             }
-            else
-                clearInvoice();
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
         public async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            MainWindow.mainWindow.StartAwait();
-
-            // for pagination
-            //btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
-            //MainWindow.mainWindow.RemoveHandler(HandleKeyPress);
-            MainWindow.mainWindow.KeyDown += HandleKeyPress;
-            tb_moneyIcon.Text = MainWindow.Currency;
-            tb_moneyIconTotal.Text = MainWindow.Currency;
-            //var window = Window.GetWindow(this);
-            //window.KeyDown -= HandleKeyPress;
-            //window.KeyDown += HandleKeyPress;
-
-            dp_desrvedDate.SelectedDateChanged += this.dp_SelectedDateChanged;
-            dp_invoiceDate.SelectedDateChanged += this.dp_SelectedDateChanged;
-
-            if (MainWindow.lang.Equals("en"))
+            try
             {
-                MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
-                grid_ucPayInvoice.FlowDirection = FlowDirection.LeftToRight;
+                SectionData.StartAwait(grid_ucPayInvoice);
+
+                MainWindow.mainWindow.KeyDown += HandleKeyPress;
+                tb_moneyIcon.Text = MainWindow.Currency;
+                tb_moneyIconTotal.Text = MainWindow.Currency;
+
+                dp_desrvedDate.SelectedDateChanged += this.dp_SelectedDateChanged;
+                dp_invoiceDate.SelectedDateChanged += this.dp_SelectedDateChanged;
+
+                if (MainWindow.lang.Equals("en"))
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                    grid_ucPayInvoice.FlowDirection = FlowDirection.LeftToRight;
+                }
+                else
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                    grid_ucPayInvoice.FlowDirection = FlowDirection.RightToLeft;
+                }
+
+                translate();
+                catigoriesAndItemsView.ucPayInvoice = this;
+                await RefrishItems();
+                configureDiscountType();
+                SectionData.fillBranches(cb_branch, "bs");
+                await RefrishVendors();
+                await fillBarcodeList();
+
+                #region Style Date
+                SectionData.defaultDatePickerStyle(dp_desrvedDate);
+                SectionData.defaultDatePickerStyle(dp_invoiceDate);
+                #endregion
+                tb_barcode.Focus();
+                #region datagridChange
+                CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(dg_billDetails.Items);
+                ((INotifyCollectionChanged)myCollectionView).CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
+                #endregion
+                SectionData.EndAwait(grid_ucPayInvoice, this);
             }
-            else
+            catch (Exception ex)
             {
-                MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
-                grid_ucPayInvoice.FlowDirection = FlowDirection.RightToLeft;
+                SectionData.ExceptionMessage(ex);
             }
-
-            translate();
-            catigoriesAndItemsView.ucPayInvoice = this;
-            await RefrishItems();
-            //await RefrishCategories();
-            //RefrishCategoriesCard();
-            //Txb_searchitems_TextChanged(null, null);
-            configureDiscountType();
-            SectionData.fillBranches(cb_branch, "bs");
-            //await RefrishBranches();
-            await RefrishVendors();
-            await fillBarcodeList();
-
-            #region Style Date
-            SectionData.defaultDatePickerStyle(dp_desrvedDate);
-            SectionData.defaultDatePickerStyle(dp_invoiceDate);
-            #endregion
-
-            //tb_taxValue.Text = MainWindow.tax.ToString();
-            tb_barcode.Focus();
-            #region datagridChange
-            CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(dg_billDetails.Items);
-            ((INotifyCollectionChanged)myCollectionView).CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
-            #endregion
-            MainWindow.mainWindow.EndAwait();
         }
         private void configureDiscountType()
         {
@@ -265,26 +277,7 @@ namespace POS.View
         }
 
         #endregion
-        #region Tab
-        /*
-         private void btn_payInvoice_Click(object sender, RoutedEventArgs e)
-         {
-             grid_vendor.Visibility   = Visibility.Collapsed;
-             grid_payinvoice.Visibility = Visibility.Visible;
-             brd_vendorTab.BorderBrush =  (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
-             brd_payInvoiceTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
-         }
 
-         private void btn_vendor_Click(object sender, RoutedEventArgs e)
-         {
-             grid_payinvoice.Visibility = Visibility.Collapsed;
-             grid_vendor.Visibility = Visibility.Visible;
-             brd_payInvoiceTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
-             brd_vendorTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
-         }
-
-         */
-        #endregion
         #region Button In DataGrid
         void deleteRowFromInvoiceItems(object sender, RoutedEventArgs e)
         {
@@ -321,20 +314,25 @@ namespace POS.View
 
         private void Btn_updateVendor_Click(object sender, RoutedEventArgs e)
         {
-            if (cb_vendor.SelectedIndex != -1)
+            try
             {
-                Window.GetWindow(this).Opacity = 0.2;
+                if (cb_vendor.SelectedIndex != -1)
+                {
 
-                //if (((( ).Parent as Grid).Parent as UserControl) != null)
-                Window.GetWindow(this).Opacity = 0.2;
-                wd_updateVendor w = new wd_updateVendor();
-                //// pass agent id to update windows
-                w.agent.agentId = (int)cb_vendor.SelectedValue;
-                //w.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#00178DD2"));
-                w.ShowDialog();
+                    Window.GetWindow(this).Opacity = 0.2;
+                    wd_updateVendor w = new wd_updateVendor();
+                    //// pass agent id to update windows
+                    w.agent.agentId = (int)cb_vendor.SelectedValue;
+                    w.ShowDialog();
 
 
-                Window.GetWindow(this).Opacity = 1;
+                    Window.GetWindow(this).Opacity = 1;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
             }
         }
         #region Categor and Item
@@ -343,35 +341,31 @@ namespace POS.View
         /// Category
         /// </summary>
         /// <returns></returns>
-        //async Task<IEnumerable<Category>> RefrishCategories()
-        //{
-        //    categories = await categoryModel.GetAllCategories();
-        //    return categories;
-        //}
+       
         async Task RefrishVendors()
         {
+            SectionData.StartAwait(grid_ucPayInvoice);
             vendors = await agentModel.GetAgentsActive("v");
             cb_vendor.ItemsSource = vendors;
             cb_vendor.DisplayMemberPath = "name";
             cb_vendor.SelectedValuePath = "agentId";
+                SectionData.EndAwait(grid_ucPayInvoice, this);
         }
-        //async Task RefrishBranches()
-        //{
-        //    branches = await branchModel.GetBranchesActive("all");
-        //    cb_branch.ItemsSource = branches;
-        //    cb_branch.DisplayMemberPath = "name";
-        //    cb_branch.SelectedValuePath = "branchId";
-        //}
+
         async Task RefrishItems()
         {
+            SectionData.StartAwait(grid_ucPayInvoice);
             items = await itemModel.GetAllItems();
+                SectionData.EndAwait(grid_ucPayInvoice, this);
         }
         async Task fillBarcodeList()
         {
+            SectionData.StartAwait(grid_ucPayInvoice);
             barcodesList = await itemUnitModel.getAllBarcodes();
+                SectionData.EndAwait(grid_ucPayInvoice, this);
         }
 
-       
+
 
 
 
@@ -380,23 +374,15 @@ namespace POS.View
 
         public async void ChangeCategoryIdEvent(int categoryId)
         {
-            //    category = categories.ToList().Find(c => c.categoryId == categoryId);
+            SectionData.StartAwait(grid_ucPayInvoice);
 
-            //    if (categories.Where(x =>
-            //    x.isActive == tglCategoryState && x.parentId == category.categoryId).Count() != 0)
-            //    {
-            //        categoryParentId = category.categoryId;
-            //        RefrishCategoriesCard();
-            //    }
-
-            //    generateTrack(categoryId);
-            //    await RefrishItems();
-            //    Txb_searchitems_TextChanged(null, null);
+                SectionData.EndAwait(grid_ucPayInvoice, this);
         }
 
 
         public async Task ChangeItemIdEvent(int itemId)
         {
+            SectionData.StartAwait(grid_ucPayInvoice);
             item = items.ToList().Find(c => c.itemId == itemId);
 
             if (item != null)
@@ -413,7 +399,7 @@ namespace POS.View
                     if (index == -1)//item doesn't exist in bill
                     {
                         // create new row in bill details data grid
-                       await addRowToBill(item.name, itemId, defaultPurUnit.mainUnit, defaultPurUnit.itemUnitId, 1, 0, 0);
+                        await addRowToBill(item.name, itemId, defaultPurUnit.mainUnit, defaultPurUnit.itemUnitId, 1, 0, 0);
                     }
                     else // item exist prevoiusly in list
                     {
@@ -427,60 +413,79 @@ namespace POS.View
                 }
                 else
                 {
-                   await addRowToBill(item.name, itemId, null, 0, 1, 0, 0);
+                    await addRowToBill(item.name, itemId, null, 0, 1, 0, 0);
                     refrishBillDetails();
                 }
 
             }
+                SectionData.EndAwait(grid_ucPayInvoice, this);
         }
 
         #endregion
-        
 
 
-        #endregion
-        #region Excel
-        private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
-        {
 
-        }
         #endregion
 
         #region validation
         private void DecimalValidationTextBox(object sender, TextCompositionEventArgs e)
         {
-            var regex = new Regex(@"^[0-9]*(?:\.[0-9]*)?$");
-            if (regex.IsMatch(e.Text) && !(e.Text == "." && ((TextBox)sender).Text.Contains(e.Text)))
-                e.Handled = false;
+            try
+            {
+                var regex = new Regex(@"^[0-9]*(?:\.[0-9]*)?$");
+                if (regex.IsMatch(e.Text) && !(e.Text == "." && ((TextBox)sender).Text.Contains(e.Text)))
+                    e.Handled = false;
 
-            else
-                e.Handled = true;
+                else
+                    e.Handled = true;
+
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
         private void space_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            e.Handled = e.Key == Key.Space;
+            try
+            {
+                e.Handled = e.Key == Key.Space;
+
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
-        
+
 
         private void input_LostFocus(object sender, RoutedEventArgs e)
         {
-            string name = sender.GetType().Name;
-            if (name == "TextBox")
+            try
             {
-                if ((sender as TextBox).Name == "tb_invoiceNumber")
-                    SectionData.validateEmptyTextBox((TextBox)sender, p_errorInvoiceNumber, tt_errorInvoiceNumber, "trErrorEmptyInvNumToolTip");
+                string name = sender.GetType().Name;
+                if (name == "TextBox")
+                {
+                    if ((sender as TextBox).Name == "tb_invoiceNumber")
+                        SectionData.validateEmptyTextBox((TextBox)sender, p_errorInvoiceNumber, tt_errorInvoiceNumber, "trErrorEmptyInvNumToolTip");
+                }
+                else if (name == "ComboBox")
+                {
+                    if ((sender as ComboBox).Name == "cb_branch")
+                        SectionData.validateEmptyComboBox((ComboBox)sender, p_errorBranch, tt_errorBranch, "trEmptyBranchToolTip");
+                    if ((sender as ComboBox).Name == "cb_vendor")
+                        SectionData.validateEmptyComboBox((ComboBox)sender, p_errorVendor, tt_errorVendor, "trErrorEmptyVendorToolTip");
+                }
+                else
+                {
+                    if ((sender as DatePicker).Name == "dp_desrvedDate")
+                        SectionData.validateEmptyDatePicker((DatePicker)sender, p_errorDesrvedDate, tt_errorDesrvedDate, "trErrorEmptyDeservedDate");
+                }
+
             }
-            else if (name == "ComboBox")
+            catch (Exception ex)
             {
-                if ((sender as ComboBox).Name == "cb_branch")
-                    SectionData.validateEmptyComboBox((ComboBox)sender, p_errorBranch, tt_errorBranch, "trEmptyBranchToolTip");
-                if ((sender as ComboBox).Name == "cb_vendor")
-                    SectionData.validateEmptyComboBox((ComboBox)sender, p_errorVendor, tt_errorVendor, "trErrorEmptyVendorToolTip");
-            }
-            else
-            {
-                if ((sender as DatePicker).Name == "dp_desrvedDate")
-                    SectionData.validateEmptyDatePicker((DatePicker)sender, p_errorDesrvedDate, tt_errorDesrvedDate, "trErrorEmptyDeservedDate");
+                SectionData.ExceptionMessage(ex);
             }
         }
         #endregion
@@ -488,6 +493,7 @@ namespace POS.View
 
         private async Task addInvoice(string invType, string invCode)
         {
+            SectionData.StartAwait(grid_ucPayInvoice);
             if (invoice.invType == "p" && (invType == "pbw" || invType == "pbd")) // invoice is purchase and will be bounce purchase  or purchase bounce draft , save another invoice in db
             {
                 invoice.invoiceMainId = invoice.invoiceId;
@@ -496,7 +502,7 @@ namespace POS.View
                 invoice.branchCreatorId = MainWindow.branchID.Value;
                 invoice.posId = MainWindow.posID.Value;
             }
-            if(invoice.invType == "po")
+            if (invoice.invType == "po")
             {
                 invoice.invNumber = await invoice.generateInvNumber("pi");
             }
@@ -538,7 +544,7 @@ namespace POS.View
                 invoice.createUserId = MainWindow.userID;
                 invoice.updateUserId = MainWindow.userID;
                 if (invType == "pw")
-                    invoice.invNumber = await invoice.generateInvNumber("pi");  
+                    invoice.invNumber = await invoice.generateInvNumber("pi");
 
                 // save invoice in DB
                 int invoiceId = int.Parse(await invoiceModel.saveInvoice(invoice));
@@ -546,7 +552,7 @@ namespace POS.View
                 if (invoiceId != 0)
                 {
                     if (invType == "pw")
-                        await invoice.recordCashTransfer(invoice,"pi");
+                        await invoice.recordCashTransfer(invoice, "pi");
                     //else if (invType == "pb")
                     //    await invoice.recordCashTransfer(invoice,"pb");
 
@@ -565,7 +571,7 @@ namespace POS.View
 
                         invoiceItems.Add(itemT);
                     }
-                string s =    await invoiceModel.saveInvoiceItems(invoiceItems, invoiceId);
+                    string s = await invoiceModel.saveInvoiceItems(invoiceItems, invoiceId);
 
                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                 }
@@ -574,20 +580,27 @@ namespace POS.View
 
             }
             clearInvoice();
+                SectionData.EndAwait(grid_ucPayInvoice, this);
         }
         private void dp_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            //DateTime invoiceDate;
-            DateTime desrveDate;
-            if ( dp_desrvedDate.SelectedDate != null)
+            try
             {
-                //invoiceDate = (DateTime)dp_invoiceDate.SelectedDate.Value.Date;
-                desrveDate = (DateTime)dp_desrvedDate.SelectedDate.Value.Date;
-                if (desrveDate.Date < DateTime.Now.Date)
+                DateTime desrveDate;
+                if (dp_desrvedDate.SelectedDate != null)
                 {
-                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorInvDateAfterDeserveToolTip"), animation: ToasterAnimation.FadeIn);
-                    dp_desrvedDate.Text = "";
+                    desrveDate = (DateTime)dp_desrvedDate.SelectedDate.Value.Date;
+                    if (desrveDate.Date < DateTime.Now.Date)
+                    {
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorInvDateAfterDeserveToolTip"), animation: ToasterAnimation.FadeIn);
+                        dp_desrvedDate.Text = "";
+                    }
                 }
+
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
             }
         }
         private void validateInvoiceValues()
@@ -597,7 +610,7 @@ namespace POS.View
             SectionData.validateEmptyComboBox(cb_vendor, p_errorVendor, tt_errorVendor, "trErrorEmptyVendorToolTip");
             SectionData.validateEmptyTextBox(tb_invoiceNumber, p_errorInvoiceNumber, tt_errorInvoiceNumber, "trErrorEmptyInvNumToolTip");
             SectionData.validateEmptyDatePicker(dp_desrvedDate, p_errorDesrvedDate, tt_errorDesrvedDate, "trErrorEmptyDeservedDate");
-          if(  decimal.Parse(tb_total.Text) == 0)
+            if (decimal.Parse(tb_total.Text) == 0)
                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorTotalIsZeroToolTip"), animation: ToasterAnimation.FadeIn);
 
             //SectionData.validateSmalThanDateNowDatePicker(dp_desrvedDate, p_errorDesrvedDate, tt_errorDesrvedDate, "trErrorEmptyDeservedDate");
@@ -623,37 +636,47 @@ namespace POS.View
         }
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(invoicePermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision()) 
-              
+            try
             {
-            if (logInProcessing)
-            {
-                logInProcessing = false;
-                awaitSaveBtn(true);
+            SectionData.StartAwait(grid_ucPayInvoice);
+                if (MainWindow.groupObject.HasPermissionAction(invoicePermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
 
-                //check mandatory inputs
-                validateInvoiceValues();
-                    bool valid = validateItemUnits();
-                TextBox tb = (TextBox)dp_desrvedDate.Template.FindName("PART_TextBox", dp_desrvedDate);
-                if (cb_branch.SelectedIndex != -1 && cb_vendor.SelectedIndex != -1 && !tb_invoiceNumber.Equals("") && billDetails.Count > 0
-                    && !tb.Text.Trim().Equals("") && decimal.Parse(tb_total.Text) > 0 && valid)
                 {
-                    if (_InvoiceType == "pbd") //pbd means purchase bounse draft
-                        await addInvoice("pbw", "pb"); // pbw means waiting purchase bounce 
-                    else if (_InvoiceType == "po")//po  purchase order
-                        await addInvoice("pw", "pi");
-                    else//pw  waiting purchase invoice
-                        await addInvoice("pw", "pi");
+                    if (logInProcessing)
+                    {
+                        logInProcessing = false;
+                        awaitSaveBtn(true);
 
-                    if (invoice.invoiceId == 0)
-                            clearInvoice();
+                        //check mandatory inputs
+                        validateInvoiceValues();
+                        bool valid = validateItemUnits();
+                        TextBox tb = (TextBox)dp_desrvedDate.Template.FindName("PART_TextBox", dp_desrvedDate);
+                        if (cb_branch.SelectedIndex != -1 && cb_vendor.SelectedIndex != -1 && !tb_invoiceNumber.Equals("") && billDetails.Count > 0
+                            && !tb.Text.Trim().Equals("") && decimal.Parse(tb_total.Text) > 0 && valid)
+                        {
+                            if (_InvoiceType == "pbd") //pbd means purchase bounse draft
+                                await addInvoice("pbw", "pb"); // pbw means waiting purchase bounce 
+                            else if (_InvoiceType == "po")//po  purchase order
+                                await addInvoice("pw", "pi");
+                            else//pw  waiting purchase invoice
+                                await addInvoice("pw", "pi");
+
+                            if (invoice.invoiceId == 0)
+                                clearInvoice();
+                        }
+                        awaitSaveBtn(false);
+                        logInProcessing = true;
+                    }
                 }
-                awaitSaveBtn(false);
-                logInProcessing = true;
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+
+                SectionData.EndAwait(grid_ucPayInvoice, this);
             }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
             }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
 
         private bool validateItemUnits()
@@ -673,14 +696,24 @@ namespace POS.View
         }
         private async void Btn_newDraft_Click(object sender, RoutedEventArgs e)
         {
-            bool valid = validateItemUnits();
-            if (billDetails.Count > 0 && valid)
+            try
             {
-                await addInvoice(_InvoiceType, "pi");
-                clearInvoice();
+            SectionData.StartAwait(grid_ucPayInvoice);
+                bool valid = validateItemUnits();
+                if (billDetails.Count > 0 && valid)
+                {
+                    await addInvoice(_InvoiceType, "pi");
+                    clearInvoice();
+                }
+                else if (billDetails.Count == 0)
+                    clearInvoice();
+                SectionData.EndAwait(grid_ucPayInvoice, this);
+
             }
-            else if (billDetails.Count == 0)
-                clearInvoice();
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
         private void clearInvoice()
         {
@@ -720,107 +753,132 @@ namespace POS.View
         #endregion
         private async void Btn_draft_Click(object sender, RoutedEventArgs e)
         {
-            Window.GetWindow(this).Opacity = 0.2;
-            wd_invoice w = new wd_invoice();
-
-            // purchase drafts and purchase bounce drafts
-            // string[] typeArr = { "pd","pdbd" };
-            w.invoiceType = "pd ,pbd";
-            //w.branchId = int.Parse(MainWindow.branchID.ToString());
-            w.userId = MainWindow.userLogin.userId;
-            w.duration = 2; // view drafts which created during 2 last days 
-
-            w.title = MainWindow.resourcemanager.GetString("trDrafts");
-
-            if (w.ShowDialog() == true)
+            try
             {
-                if (w.invoice != null)
+            SectionData.StartAwait(grid_ucPayInvoice);
+                Window.GetWindow(this).Opacity = 0.2;
+                wd_invoice w = new wd_invoice();
+
+                w.invoiceType = "pd ,pbd";
+                w.userId = MainWindow.userLogin.userId;
+                w.duration = 2; // view drafts which created during 2 last days 
+
+                w.title = MainWindow.resourcemanager.GetString("trDrafts");
+
+                if (w.ShowDialog() == true)
                 {
-                    invoice = w.invoice;
-                    //this.DataContext = invoice;
-                  //  mainInvoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceMainId.Value);
-                    _InvoiceType = invoice.invType;
-
-                   await fillInvoiceInputs(invoice);
-                    if (_InvoiceType == "pd")// set title to bill
+                    if (w.invoice != null)
                     {
-                        mainInvoiceItems = invoiceItems;
-                        txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trDraftPurchaseBill");
-                        brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
-                    }
-                    if (_InvoiceType == "pbd")
-                    {
-                        mainInvoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceMainId.Value);
-                        txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trDraftBounceBill");
-                        brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D22A17"));
+                        invoice = w.invoice;
+                        _InvoiceType = invoice.invType;
 
+                        await fillInvoiceInputs(invoice);
+                        if (_InvoiceType == "pd")// set title to bill
+                        {
+                            mainInvoiceItems = invoiceItems;
+                            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trDraftPurchaseBill");
+                            brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
+                        }
+                        if (_InvoiceType == "pbd")
+                        {
+                            mainInvoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceMainId.Value);
+                            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trDraftBounceBill");
+                            brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D22A17"));
+
+                        }
                     }
                 }
+                Window.GetWindow(this).Opacity = 1;
+
+                SectionData.EndAwait(grid_ucPayInvoice, this);
             }
-            Window.GetWindow(this).Opacity = 1;
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
         private async void Btn_invoices_Click(object sender, RoutedEventArgs e)
         {
-            Window.GetWindow(this).Opacity = 0.2;
-            wd_invoice w = new wd_invoice();
-
-            // purchase invoices
-            //w.invoiceType = "pw";
-            w.invoiceType = "p , pw , pb, pbw";
-            w.userId = MainWindow.userLogin.userId;
-            w.duration = 1; // view drafts which created during 1 last days 
-
-            w.title = MainWindow.resourcemanager.GetString("trPurchaseInvoices");
-
-            if (w.ShowDialog() == true)
+            try
             {
-                if (w.invoice != null)
+            SectionData.StartAwait(grid_ucPayInvoice);
+                Window.GetWindow(this).Opacity = 0.2;
+                wd_invoice w = new wd_invoice();
+
+                // purchase invoices
+                w.invoiceType = "p , pw , pb, pbw";
+                w.userId = MainWindow.userLogin.userId;
+                w.duration = 1; // view drafts which created during 1 last days 
+
+                w.title = MainWindow.resourcemanager.GetString("trPurchaseInvoices");
+
+                if (w.ShowDialog() == true)
                 {
-                    invoice = w.invoice;
-                    
-                    this.DataContext = invoice;
+                    if (w.invoice != null)
+                    {
+                        invoice = w.invoice;
 
-                    _InvoiceType = invoice.invType;
-                    // set title to bill
-                    txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaseInvoice");
-                    brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
-                   await fillInvoiceInputs(invoice);
+                        this.DataContext = invoice;
 
+                        _InvoiceType = invoice.invType;
+                        // set title to bill
+                        txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaseInvoice");
+                        brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
+                        await fillInvoiceInputs(invoice);
+
+                    }
                 }
+                Window.GetWindow(this).Opacity = 1;
+
+                SectionData.EndAwait(grid_ucPayInvoice, this);
             }
-            Window.GetWindow(this).Opacity = 1;
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
         private async void Btn_purchaseOrder_Click(object sender, RoutedEventArgs e)
         {
-            Window.GetWindow(this).Opacity = 0.2;
-            wd_invoice w = new wd_invoice();
-
-            // purchase orders
-            w.invoiceType = "po";
-            w.userId = MainWindow.userLogin.userId;
-           // w.duration = 1; // view drafts which created during 1 last days 
-
-            w.title = MainWindow.resourcemanager.GetString("trPurchaseOrders");
-
-            if (w.ShowDialog() == true)
+            try
             {
-                if (w.invoice != null)
+            SectionData.StartAwait(grid_ucPayInvoice);
+                Window.GetWindow(this).Opacity = 0.2;
+                wd_invoice w = new wd_invoice();
+
+                // purchase orders
+                w.invoiceType = "po";
+                w.userId = MainWindow.userLogin.userId;
+                // w.duration = 1; // view drafts which created during 1 last days 
+
+                w.title = MainWindow.resourcemanager.GetString("trPurchaseOrders");
+
+                if (w.ShowDialog() == true)
                 {
-                    invoice = w.invoice;
+                    if (w.invoice != null)
+                    {
+                        invoice = w.invoice;
 
-                    this.DataContext = invoice;
+                        this.DataContext = invoice;
 
-                    _InvoiceType = invoice.invType;
-                    // set title to bill
-                    txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaseOrder");
-                    brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
-                    await fillInvoiceInputs(invoice);
+                        _InvoiceType = invoice.invType;
+                        // set title to bill
+                        txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaseOrder");
+                        brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
+                        await fillInvoiceInputs(invoice);
+                    }
                 }
+                Window.GetWindow(this).Opacity = 1;
+
+                SectionData.EndAwait(grid_ucPayInvoice, this);
             }
-            Window.GetWindow(this).Opacity = 1;
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
         public async Task fillInvoiceInputs(Invoice invoice)
         {
+            SectionData.StartAwait(grid_ucPayInvoice);
             _Sum = (decimal)invoice.total;
             txt_invNumber.Text = invoice.invNumber.ToString();
             cb_branch.SelectedValue = invoice.branchId;
@@ -845,76 +903,56 @@ namespace POS.View
             await buildInvoiceDetails();
 
             inputEditable();
+                SectionData.EndAwait(grid_ucPayInvoice, this);
         }
         private async void Btn_returnInvoice_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(returnPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+            try
             {
-                Window.GetWindow(this).Opacity = 0.2;
-                wd_invoice w = new wd_invoice();
-
-                w.title = MainWindow.resourcemanager.GetString("trPurchaseInvoices");         
-                // purchase invoices
-                //w.invoiceType = "pw"; // invoice type to view in grid
-                w.invoiceType = "p, pw"; // invoice type to view in grid
-                w.branchCreatorId = MainWindow.branchID.Value;
-                w.branchId = MainWindow.branchID.Value; 
-
-                if (w.ShowDialog() == true)
+            SectionData.StartAwait(grid_ucPayInvoice);
+                if (MainWindow.groupObject.HasPermissionAction(returnPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
-                if (w.invoice != null)
-                {
-                    _InvoiceType = "pbd";
-                    invoice = w.invoice;
+                    Window.GetWindow(this).Opacity = 0.2;
+                    wd_invoice w = new wd_invoice();
 
-                    this.DataContext = invoice;
+                    w.title = MainWindow.resourcemanager.GetString("trPurchaseInvoices");
+                    // purchase invoices
+                    w.invoiceType = "p, pw"; // invoice type to view in grid
+                    w.branchCreatorId = MainWindow.branchID.Value;
+                    w.branchId = MainWindow.branchID.Value;
 
-                   await fillInvoiceInputs(invoice);
-                    mainInvoiceItems = invoiceItems;
-                    txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trReturnedInvoice");
-                    brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D22A17"));
+                    if (w.ShowDialog() == true)
+                    {
+                        if (w.invoice != null)
+                        {
+                            _InvoiceType = "pbd";
+                            invoice = w.invoice;
+
+                            this.DataContext = invoice;
+
+                            await fillInvoiceInputs(invoice);
+                            mainInvoiceItems = invoiceItems;
+                            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trReturnedInvoice");
+                            brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D22A17"));
+                        }
+                    }
+                    Window.GetWindow(this).Opacity = 1;
                 }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+
+                SectionData.EndAwait(grid_ucPayInvoice, this);
             }
-            Window.GetWindow(this).Opacity = 1;
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
             }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
-        //private async void Btn_returnWInvoice_Click(object sender, RoutedEventArgs e)
-        //{
-        //    if (MainWindow.groupObject.HasPermissionAction(returnPermission, MainWindow.groupObjects, "one")|| SectionData.isAdminPermision())
-        //    {
-        //        Window.GetWindow(this).Opacity = 0.2;
-        //    wd_invoice w = new wd_invoice();
 
-        //    w.title = MainWindow.resourcemanager.GetString("trPurchaseInvoices");
-        //    w.branchId = MainWindow.branchID.Value;
-        //    // purchase invoices
-        //    w.invoiceType = "pbw"; // invoice type to view in grid
-        //    if (w.ShowDialog() == true)
-        //    {
-        //        if (w.invoice != null)
-        //        {
-        //            invoice = w.invoice;
-        //            _InvoiceType = invoice.invType;
-
-        //            mainInvoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceMainId.Value);
-        //            this.DataContext = invoice;
-
-        //            await fillInvoiceInputs(invoice);
-
-        //            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trReturnedInvoice");
-        //            brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D22A17"));
-        //        }
-        //    }
-        //    Window.GetWindow(this).Opacity = 1;
-        //    }
-        //    else
-        //        Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-        //}
 
         private async Task buildInvoiceDetails()
         {
+            SectionData.StartAwait(grid_ucPayInvoice);
             //get invoice items
             invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
             // build invoice details grid
@@ -940,6 +978,7 @@ namespace POS.View
             tb_barcode.Focus();
 
             refrishBillDetails();
+                SectionData.EndAwait(grid_ucPayInvoice, this);
         }
         private void inputEditable()
         {
@@ -1001,110 +1040,168 @@ namespace POS.View
         }
         private void Btn_invoiceImage_Click(object sender, RoutedEventArgs e)
         {
-            if (invoice != null && invoice.invoiceId != 0)
+            try
             {
-                Window.GetWindow(this).Opacity = 0.2;
+                if (invoice != null && invoice.invoiceId != 0)
+                {
+                    Window.GetWindow(this).Opacity = 0.2;
 
-                wd_uploadImage w = new wd_uploadImage();
+                    wd_uploadImage w = new wd_uploadImage();
 
-                w.tableName = "invoices";
-                w.tableId = invoice.invoiceId;
-                w.docNum = invoice.invNumber;
-                w.ShowDialog();
-                Window.GetWindow(this).Opacity = 1;
+                    w.tableName = "invoices";
+                    w.tableId = invoice.invoiceId;
+                    w.docNum = invoice.invNumber;
+                    w.ShowDialog();
+                    Window.GetWindow(this).Opacity = 1;
+                }
+                else
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trChooseInvoiceToolTip"), animation: ToasterAnimation.FadeIn);
+
             }
-            else
-                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trChooseInvoiceToolTip"), animation: ToasterAnimation.FadeIn);
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
-            _SequenceNum = 0;
-            billDetails.Clear();
-            foreach (ItemTransfer itemT in invoiceItems)
+            try
             {
-                _SequenceNum++;
-                decimal total = (decimal)(itemT.price * itemT.quantity);
-                billDetails.Add(new BillDetails()
+                _SequenceNum = 0;
+                billDetails.Clear();
+                foreach (ItemTransfer itemT in invoiceItems)
                 {
-                    ID = _SequenceNum,
-                    Product = itemT.itemName,
-                    itemId = (int)itemT.itemId,
-                    Unit = itemT.itemUnitId.ToString(),
-                    Count = (int)itemT.quantity,
-                    Price = (decimal)itemT.price,
-                    Total = total,
-                });
+                    _SequenceNum++;
+                    decimal total = (decimal)(itemT.price * itemT.quantity);
+                    billDetails.Add(new BillDetails()
+                    {
+                        ID = _SequenceNum,
+                        Product = itemT.itemName,
+                        itemId = (int)itemT.itemId,
+                        Unit = itemT.itemUnitId.ToString(),
+                        Count = (int)itemT.quantity,
+                        Price = (decimal)itemT.price,
+                        Total = total,
+                    });
+                }
+                tb_barcode.Focus();
+
+                refrishBillDetails();
+
             }
-            tb_barcode.Focus();
-
-            refrishBillDetails();
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
-
-        private void Btn_pay_Click(object sender, RoutedEventArgs e)
-        {
-            //  btn_vendor_Click(null, null);
-        }
+ 
 
         private void Cb_branch_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
-            if (elapsed.TotalMilliseconds > 100 && cb_branch.SelectedIndex != -1)
+            try
             {
-                _SelectedBranch = (int)cb_branch.SelectedValue;
+                TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
+                if (elapsed.TotalMilliseconds > 100 && cb_branch.SelectedIndex != -1)
+                {
+                    _SelectedBranch = (int)cb_branch.SelectedValue;
+                }
+                else
+                {
+                    cb_branch.SelectedValue = _SelectedBranch;
+                }
+
             }
-            else
+            catch (Exception ex)
             {
-                cb_branch.SelectedValue = _SelectedBranch;
+                SectionData.ExceptionMessage(ex);
             }
         }
         private void Cb_vendor_KeyUp(object sender, KeyEventArgs e)
         {
-            cb_vendor.ItemsSource = vendors.Where(x => x.name.Contains( cb_vendor.Text));
+            try
+            {
+                cb_vendor.ItemsSource = vendors.Where(x => x.name.Contains(cb_vendor.Text));
+
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
         private void Cb_vendor_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
-            if (elapsed.TotalMilliseconds > 100 && cb_vendor.SelectedIndex != -1)
+            try
             {
-                _SelectedVendor = (int)cb_vendor.SelectedValue;
+                TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
+                if (elapsed.TotalMilliseconds > 100 && cb_vendor.SelectedIndex != -1)
+                {
+                    _SelectedVendor = (int)cb_vendor.SelectedValue;
+                }
+                else
+                {
+                    cb_vendor.SelectedValue = _SelectedVendor;
+                }
+                
             }
-            else
+            catch (Exception ex)
             {
-                cb_vendor.SelectedValue = _SelectedVendor;
+                SectionData.ExceptionMessage(ex);
             }
-            //if (cb_vendor.SelectedIndex != -1)
-            //    btn_updateVendor.IsEnabled = true;
         }
         private void Tb_textBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            _Sender = sender;
+            try
+            {
+                _Sender = sender;
+
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
         private void Cb_typeDiscount_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
-            if (elapsed.TotalMilliseconds > 100 && cb_typeDiscount.SelectedIndex != -1)
+            try
             {
-                _SelectedDiscountType = (int)cb_typeDiscount.SelectedValue;
-                refreshTotalValue();
-            }
-            else
-            {
-                cb_typeDiscount.SelectedValue = _SelectedDiscountType;
-            }
+                TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
+                if (elapsed.TotalMilliseconds > 100 && cb_typeDiscount.SelectedIndex != -1)
+                {
+                    _SelectedDiscountType = (int)cb_typeDiscount.SelectedValue;
+                    refreshTotalValue();
+                }
+                else
+                {
+                    cb_typeDiscount.SelectedValue = _SelectedDiscountType;
+                }
 
+
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
         private void tb_discount_TextChanged(object sender, TextChangedEventArgs e)
         {
-            var txb = sender as TextBox;
-            if ((sender as TextBox).Name == "tb_discount")
-                SectionData.InputJustNumber(ref txb);
-            if ((sender as TextBox).Name == "tb_taxValue")
-                SectionData.InputJustNumber(ref txb);
-            _Sender = sender;
-            refreshTotalValue();
-            e.Handled = true;
+            try
+            {
+                var txb = sender as TextBox;
+                if ((sender as TextBox).Name == "tb_discount")
+                    SectionData.InputJustNumber(ref txb);
+                if ((sender as TextBox).Name == "tb_taxValue")
+                    SectionData.InputJustNumber(ref txb);
+                _Sender = sender;
+                refreshTotalValue();
+                e.Handled = true;
 
+
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
         private void refreshTotalValue()
         {
@@ -1129,60 +1226,10 @@ namespace POS.View
             total = total + taxValue;
             tb_total.Text = Math.Round(total, 2).ToString();
         }
-        //private void refreshTotalValue(decimal discountVal)
-        // {
-        //     decimal discountVal = 0;
-        //     if (!tb_discount.Text.Equals(""))
-        //     {
-        //         if (tb_discount.Text.Equals("."))
-        //             discountVal = 0;
-        //         else
-        //             discountVal = decimal.Parse(tb_discount.Text);
-        //     }
-        //     decimal total = _Sum - discountVal;
-        //     tb_sum.Text = _Sum.ToString();
-        //     tb_total.Text = total.ToString();
-        // }
+
 
         #region billdetails
-        /*
-        List<ItemUnit> GetItemUnits(int itemId)
-        {
-            List<ItemUnit> itemUnits = new List<ItemUnit>();
-            var ItemUnit1 = new ItemUnit { itemUnitId = 35 };
-            var ItemUnit2 = new ItemUnit { itemUnitId = 63 };
-            var ItemUnit3 = new ItemUnit { itemUnitId = 364 };
-            itemUnits.Add(ItemUnit1);
-            itemUnits.Add(ItemUnit2);
-            itemUnits.Add(ItemUnit3);
 
-
-            return itemUnits;
-
-        }
-        void GenerateComboBox(DataGrid dg)
-        {
-            var vm = GetItemUnits(1);
-            var dataGridTemplateColumn = new DataGridTemplateColumn();
-            var dataTemplate = new DataTemplate();
-            var comboBox = new FrameworkElementFactory(typeof(ComboBox));
-            //comboBox.SetValue(NameProperty, new Binding("cc" + dataGridTemplateColumn.Header));
-            comboBox.SetValue(ComboBox.ItemsSourceProperty, vm);//Bind the ObservableCollection list
-            comboBox.SetValue(ComboBox.SelectedIndexProperty, 1);
-            comboBox.SetValue(ComboBox.DisplayMemberPathProperty, "itemUnitId");
-            comboBox.AddHandler(ComboBox.SelectionChangedEvent, new SelectionChangedEventHandler(ComboBox_SelectionChanged));
-
-            dataTemplate.VisualTree = comboBox;
-            dataGridTemplateColumn.CellTemplate = dataTemplate;
-            dataGridTemplateColumn.Header = "Unit";
-            dg.Columns.Add(dataGridTemplateColumn);
-        }
-
-        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-        */
         void refrishBillDetails()
         {
             dg_billDetails.ItemsSource = null;
@@ -1195,89 +1242,98 @@ namespace POS.View
         // read item from barcode
         private async void HandleKeyPress(object sender, KeyEventArgs e)
         {
-
-            if (e.KeyboardDevice.IsKeyDown(Key.LeftCtrl) || e.KeyboardDevice.IsKeyDown(Key.RightCtrl))
+            try
             {
-                switch (e.Key)
+
+            SectionData.StartAwait(grid_ucPayInvoice);
+                if (e.KeyboardDevice.IsKeyDown(Key.LeftCtrl) || e.KeyboardDevice.IsKeyDown(Key.RightCtrl))
                 {
-                    case Key.P:
-                        //handle D key
-                        //MessageBox.Show("You want Print");
-                        btn_printInvoice_Click(null, null);
-                        break;
-                    case Key.S:
-                        //handle X key
-                        //MessageBox.Show("You want Save");
-                        Btn_save_Click(null, null);
-                        break;
-                }
-            }
-           
-            
-
-            TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
-            if (elapsed.TotalMilliseconds > 50)
-            {
-                _BarcodeStr = "";
-            }
-            string digit = "";
-            // record keystroke & timestamp 
-            if (e.Key >= Key.D0 && e.Key <= Key.D9)
-            {
-                //digit pressed!         
-                digit = e.Key.ToString().Substring(1);
-                // = "1" when D1 is pressed
-            }
-            else if (e.Key >= Key.NumPad0 && e.Key <= Key.NumPad9)
-            {
-                digit = e.Key.ToString().Substring(6); // = "1" when NumPad1 is pressed
-            }
-            else if (e.Key >= Key.A && e.Key <= Key.Z)
-                digit = e.Key.ToString();
-            else if (e.Key == Key.OemMinus)
-            {
-                digit = "-";
-            }
-            _BarcodeStr += digit;
-            _lastKeystroke = DateTime.Now;
-            // process barcode
-
-            if (e.Key.ToString() == "Return" && _BarcodeStr != "")
-            {
-                await dealWithBarcode(_BarcodeStr);
-                if (_Sender != null)
-                {
-                    DatePicker dt = _Sender as DatePicker;
-                    TextBox tb = _Sender as TextBox;
-                    if (dt != null)
+                    switch (e.Key)
                     {
-                        if (dt.Name == "dp_desrvedDate" || dt.Name == "dp_invoiceDate")
-                            _BarcodeStr = _BarcodeStr.Substring(1);
+                        case Key.P:
+                            //handle D key
+                            btn_printInvoice_Click(null, null);
+                            break;
+                        case Key.S:
+                            //handle X key
+                            Btn_save_Click(null, null);
+                            break;
                     }
-                    else if (tb != null)
-                    {
-                        if (tb.Name == "tb_invoiceNumber" || tb.Name == "tb_note" || tb.Name == "tb_discount" || tb.Name == "tb_barcode")// remove barcode from text box
-                        {
-                            string tbString = tb.Text;
-                            string newStr = "";
-                            int startIndex = tbString.IndexOf(_BarcodeStr);
-                            if (startIndex != -1)
-                                newStr = tbString.Remove(startIndex, _BarcodeStr.Length);
+                }
 
-                            tb.Text = newStr;
+
+
+                TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
+                if (elapsed.TotalMilliseconds > 50)
+                {
+                    _BarcodeStr = "";
+                }
+                string digit = "";
+                // record keystroke & timestamp 
+                if (e.Key >= Key.D0 && e.Key <= Key.D9)
+                {
+                    //digit pressed!         
+                    digit = e.Key.ToString().Substring(1);
+                    // = "1" when D1 is pressed
+                }
+                else if (e.Key >= Key.NumPad0 && e.Key <= Key.NumPad9)
+                {
+                    digit = e.Key.ToString().Substring(6); // = "1" when NumPad1 is pressed
+                }
+                else if (e.Key >= Key.A && e.Key <= Key.Z)
+                    digit = e.Key.ToString();
+                else if (e.Key == Key.OemMinus)
+                {
+                    digit = "-";
+                }
+                _BarcodeStr += digit;
+                _lastKeystroke = DateTime.Now;
+                // process barcode
+
+                if (e.Key.ToString() == "Return" && _BarcodeStr != "")
+                {
+                    await dealWithBarcode(_BarcodeStr);
+                    if (_Sender != null)
+                    {
+                        DatePicker dt = _Sender as DatePicker;
+                        TextBox tb = _Sender as TextBox;
+                        if (dt != null)
+                        {
+                            if (dt.Name == "dp_desrvedDate" || dt.Name == "dp_invoiceDate")
+                                _BarcodeStr = _BarcodeStr.Substring(1);
+                        }
+                        else if (tb != null)
+                        {
+                            if (tb.Name == "tb_invoiceNumber" || tb.Name == "tb_note" || tb.Name == "tb_discount" || tb.Name == "tb_barcode")// remove barcode from text box
+                            {
+                                string tbString = tb.Text;
+                                string newStr = "";
+                                int startIndex = tbString.IndexOf(_BarcodeStr);
+                                if (startIndex != -1)
+                                    newStr = tbString.Remove(startIndex, _BarcodeStr.Length);
+
+                                tb.Text = newStr;
+                            }
                         }
                     }
+                    tb_barcode.Text = _BarcodeStr;
+                    _BarcodeStr = "";
+
+                    e.Handled = true;
+                    cb_branch.SelectedValue = _SelectedBranch;
                 }
-                tb_barcode.Text = _BarcodeStr;
-                _BarcodeStr = "";
-   
-                e.Handled = true;
-                cb_branch.SelectedValue = _SelectedBranch;
+                _Sender = null;
+
+                SectionData.EndAwait(grid_ucPayInvoice, this);
             }
-            _Sender = null;
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
         private async Task dealWithBarcode(string barcode)
         {
+            SectionData.StartAwait(grid_ucPayInvoice);
             int codeindex = barcode.IndexOf("-");
             string prefix = "";
             if (codeindex >= 0)
@@ -1318,7 +1374,7 @@ namespace POS.View
                         await fillInvoiceInputs(invoice);
                     }
                     break;
-               
+
                 default: // if barcode for item
                          // get item matches barcode
                     if (barcodesList != null)
@@ -1343,7 +1399,7 @@ namespace POS.View
                                     int count = 1;
                                     decimal price = 0; //?????
                                     decimal total = count * price;
-                                   await addRowToBill(item.name, item.itemId, unit1.mainUnit, unit1.itemUnitId, count, price, total);
+                                    await addRowToBill(item.name, item.itemId, unit1.mainUnit, unit1.itemUnitId, count, price, total);
                                 }
                                 else // item exist prevoiusly in list
                                 {
@@ -1366,63 +1422,35 @@ namespace POS.View
             }
 
             tb_barcode.Clear();
+                SectionData.EndAwait(grid_ucPayInvoice, this);
         }
         private async void Tb_barcode_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Return)
+            try
             {
-                string barcode = "";
-                if (_BarcodeStr.Length < 13)
+            SectionData.StartAwait(grid_ucPayInvoice);
+                if (e.Key == Key.Return)
                 {
-                    barcode = tb_barcode.Text;
-                    await dealWithBarcode(barcode);
+                    string barcode = "";
+                    if (_BarcodeStr.Length < 13)
+                    {
+                        barcode = tb_barcode.Text;
+                        await dealWithBarcode(barcode);
+                    }
+
                 }
-                //if (barcodesList != null && _BarcodeStr.Length < 13) //_BarcodeStr == "" barcode not from barcode reader
-                //{
-                //    ItemUnit unit1 = barcodesList.ToList().Find(c => c.barcode == tb_barcode.Text);
 
-                //    // get item matches the barcode
-                //    if (unit1 != null)
-                //    {
-                //        int itemId = (int)unit1.itemId;
-                //        if (unit1.itemId != 0)
-                //        {
-                //            int index = billDetails.IndexOf(billDetails.Where(p => p.itemUnitId == unit1.itemUnitId).FirstOrDefault());
-                //            //item doesn't exist in bill
-                //            if (index == -1)
-                //            {
-                //                // get item units
-                //                itemUnits = await itemUnitModel.GetItemUnits(itemId);
-                //                //get item from list
-                //                item = items.ToList().Find(i => i.itemId == itemId);
-
-                //                int count = 1;
-                //                decimal price = 0; //?????
-                //                decimal total = count * price;
-                //                addRowToBill(item.name, item.itemId, unit1.mainUnit, unit1.itemUnitId, count, price, total);
-                //            }
-                //            else // item exist prevoiusly in list
-                //            {
-                //                billDetails[index].Count++;
-                //                billDetails[index].Total = billDetails[index].Count * billDetails[index].Price;
-
-                //                _Sum += billDetails[index].Price;
-
-                //            }
-                //            refreshTotalValue();
-                //            refrishBillDetails();
-                //        }
-                //    }
-                //    else
-                //    {
-                //        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorItemNotFoundToolTip"), animation: ToasterAnimation.FadeIn);
-                //    }
-                //}
+                SectionData.EndAwait(grid_ucPayInvoice, this);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
             }
         }
 
         private async Task addRowToBill(string itemName, int itemId, string unitName, int itemUnitId, int count, decimal price, decimal total)
         {
+            SectionData.StartAwait(grid_ucPayInvoice);
             // increase sequence for each read
             _SequenceNum++;
 
@@ -1438,143 +1466,189 @@ namespace POS.View
                 Total = total,
             });
             _Sum += total;
+                SectionData.EndAwait(grid_ucPayInvoice, this);
         }
         #endregion billdetails
 
         private void Cbm_unitItemDetails_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            //billDetails
-            if (billDetails.Count == 1)
+            try
             {
-                var cmb = sender as ComboBox;
-                cmb.SelectedValue = (int)billDetails[0].itemUnitId;
+                //billDetails
+                if (billDetails.Count == 1)
+                {
+                    var cmb = sender as ComboBox;
+                    cmb.SelectedValue = (int)billDetails[0].itemUnitId;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
             }
         }
         private void Cbm_unitItemDetails_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var cmb = sender as ComboBox;
+            try
+            {
+                var cmb = sender as ComboBox;
 
-            if (dg_billDetails.SelectedIndex != -1 && cmb != null)
-                billDetails[dg_billDetails.SelectedIndex].itemUnitId = (int)cmb.SelectedValue;
+                if (dg_billDetails.SelectedIndex != -1 && cmb != null)
+                    billDetails[dg_billDetails.SelectedIndex].itemUnitId = (int)cmb.SelectedValue;
+
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
 
         private void DataGrid_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            //billDetails
-            int count = 0;
-            foreach (var item in billDetails)
+            try
             {
-                if (dg_billDetails.Items.Count != 0)
+                //billDetails
+                int count = 0;
+                foreach (var item in billDetails)
                 {
-                    if (dg_billDetails.Items.Count > 1)
+                    if (dg_billDetails.Items.Count != 0)
                     {
-                        var cell = DataGridHelper.GetCell(dg_billDetails, count, 3);
-                        if (cell != null)
+                        if (dg_billDetails.Items.Count > 1)
                         {
-                            var cp = (ContentPresenter)cell.Content;
-                            var combo = (ComboBox)cp.ContentTemplate.FindName("cbm_unitItemDetails", cp);
-                            //var combo = (combo)cell.Content;
-                            combo.SelectedValue = (int)item.itemUnitId;
-                            count++;
+                            var cell = DataGridHelper.GetCell(dg_billDetails, count, 3);
+                            if (cell != null)
+                            {
+                                var cp = (ContentPresenter)cell.Content;
+                                var combo = (ComboBox)cp.ContentTemplate.FindName("cbm_unitItemDetails", cp);
+                                //var combo = (combo)cell.Content;
+                                combo.SelectedValue = (int)item.itemUnitId;
+                                count++;
+                            }
                         }
+
                     }
-
                 }
-            }
 
+
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         private void Dg_billDetails_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
-            TextBox t = e.EditingElement as TextBox;  // Assumes columns are all TextBoxes
-            var columnName = e.Column.Header.ToString();
-
-            BillDetails row = e.Row.Item as BillDetails;
-            int index = billDetails.IndexOf(billDetails.Where(p => p.itemUnitId == row.itemUnitId).FirstOrDefault());
-
-            TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
-            if (elapsed.TotalMilliseconds < 100)
+            try
             {
-                if (columnName == MainWindow.resourcemanager.GetString("trQuantity"))
-                    t.Text = billDetails[index].Count.ToString();
-                else if (columnName == MainWindow.resourcemanager.GetString("trPrice"))
-                    t.Text = billDetails[index].Price.ToString();
-            }
-            else
-            {
-                int oldCount = 0;
-                long newCount = 0;
-                decimal oldPrice = 0;
-                decimal newPrice = 0;
+                TextBox t = e.EditingElement as TextBox;  // Assumes columns are all TextBoxes
+                var columnName = e.Column.Header.ToString();
 
-                //"tb_amont"
-                if (columnName == MainWindow.resourcemanager.GetString("trQuantity"))
-                    newCount = int.Parse(t.Text);
-                else
-                    newCount = row.Count;
+                BillDetails row = e.Row.Item as BillDetails;
+                int index = billDetails.IndexOf(billDetails.Where(p => p.itemUnitId == row.itemUnitId).FirstOrDefault());
 
-                oldCount = row.Count;
-
-                if (_InvoiceType == "pbd" || _InvoiceType == "pbw")
+                TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
+                if (elapsed.TotalMilliseconds < 100)
                 {
-                    ItemTransfer item = mainInvoiceItems.ToList().Find(i => i.itemUnitId == row.itemUnitId);
-                    if (newCount > item.quantity)
-                    {
-                        // return old value 
-                        t.Text = item.quantity.ToString();
+                    if (columnName == MainWindow.resourcemanager.GetString("trQuantity"))
+                        t.Text = billDetails[index].Count.ToString();
+                    else if (columnName == MainWindow.resourcemanager.GetString("trPrice"))
+                        t.Text = billDetails[index].Price.ToString();
+                }
+                else
+                {
+                    int oldCount = 0;
+                    long newCount = 0;
+                    decimal oldPrice = 0;
+                    decimal newPrice = 0;
 
-                        newCount = (long)item.quantity;
-                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountIncreaseToolTip"), animation: ToasterAnimation.FadeIn);
+                    //"tb_amont"
+                    if (columnName == MainWindow.resourcemanager.GetString("trQuantity"))
+                        newCount = int.Parse(t.Text);
+                    else
+                        newCount = row.Count;
+
+                    oldCount = row.Count;
+
+                    if (_InvoiceType == "pbd" || _InvoiceType == "pbw")
+                    {
+                        ItemTransfer item = mainInvoiceItems.ToList().Find(i => i.itemUnitId == row.itemUnitId);
+                        if (newCount > item.quantity)
+                        {
+                            // return old value 
+                            t.Text = item.quantity.ToString();
+
+                            newCount = (long)item.quantity;
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountIncreaseToolTip"), animation: ToasterAnimation.FadeIn);
+                        }
                     }
+
+                    if (columnName == MainWindow.resourcemanager.GetString("trPrice") && !t.Text.Equals(""))
+                        newPrice = decimal.Parse(t.Text);
+                    else
+                        newPrice = row.Price;
+
+                    oldPrice = row.Price;
+
+                    // old total for changed item
+                    decimal total = oldPrice * oldCount;
+                    _Sum -= total;
+
+                    // new total for changed item
+                    total = newCount * newPrice;
+                    _Sum += total;
+
+                    //refresh total cell
+                    TextBlock tb = dg_billDetails.Columns[6].GetCellContent(dg_billDetails.Items[index]) as TextBlock;
+                    tb.Text = total.ToString();
+
+                    //  refresh sum and total text box
+                    refreshTotalValue();
+
+                    // update item in billdetails           
+                    billDetails[index].Count = (int)newCount;
+                    billDetails[index].Price = newPrice;
+                    billDetails[index].Total = total;
                 }
 
-                if (columnName == MainWindow.resourcemanager.GetString("trPrice") && !t.Text.Equals(""))
-                    newPrice = decimal.Parse(t.Text);
-                else
-                    newPrice = row.Price;
-
-                oldPrice = row.Price;
-
-                // old total for changed item
-                decimal total = oldPrice * oldCount;
-                _Sum -= total;
-
-                // new total for changed item
-                total = newCount * newPrice;
-                _Sum += total;
-
-                //refresh total cell
-                TextBlock tb = dg_billDetails.Columns[6].GetCellContent(dg_billDetails.Items[index]) as TextBlock;
-                tb.Text = total.ToString();
-
-                //  refresh sum and total text box
-                refreshTotalValue();
-
-                // update item in billdetails           
-                billDetails[index].Count = (int)newCount;
-                billDetails[index].Price = newPrice;
-                billDetails[index].Total = total;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
             }
         }
 
-        //private void Dp_desrvedDate_KeyDown(object sender, KeyEventArgs e)
-        //{
-        //    moveControlToBarcode(sender , e);          
-        //}
+
         private void Dp_date_PreviewKeyUp(object sender, KeyEventArgs e)
         {
-            _Sender = sender;
-            moveControlToBarcode(sender, e);
+            try
+            {
+                _Sender = sender;
+                moveControlToBarcode(sender, e);
+
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
         private void moveControlToBarcode(object sender, KeyEventArgs e)
         {
-            DatePicker dt = sender as DatePicker;
-            TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
-            if (elapsed.TotalMilliseconds < 100)
+            try
             {
-                tb_barcode.Focus();
-                HandleKeyPress(sender, e);
+                DatePicker dt = sender as DatePicker;
+                TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
+                if (elapsed.TotalMilliseconds < 100)
+                {
+                    tb_barcode.Focus();
+                    HandleKeyPress(sender, e);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
             }
         }
 
@@ -1582,8 +1656,8 @@ namespace POS.View
         //print
         private async void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {
-
             try {
+            SectionData.StartAwait(grid_ucPayInvoice);
                 if (invoice.invType == "pd" || invoice.invType == "sd" || invoice.invType == "qd"
                || invoice.invType == "sbd" || invoice.invType == "pbd"
                || invoice.invType == "ord" || invoice.invType == "imd" || invoice.invType == "exd")
@@ -1592,9 +1666,7 @@ namespace POS.View
                 }
                 else
                 {
-                    //  ReportCls rr = new ReportCls();
-                    // MessageBox.Show(rr.GetLogoImagePath());
-
+                   
                     List<ReportParameter> paramarr = new List<ReportParameter>();
 
                     string addpath;
@@ -1657,18 +1729,21 @@ namespace POS.View
 
                 }
 
-            }
-            catch
-            {
 
+                SectionData.EndAwait(grid_ucPayInvoice, this);
             }
-           
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
+
 
         }
         private async void btn_printInvoice_Click(object sender, RoutedEventArgs e)
         {
             try
             {
+            SectionData.StartAwait(grid_ucPayInvoice);
                 if (invoice.invType == "pd" || invoice.invType == "sd" || invoice.invType == "qd"
                              || invoice.invType == "sbd" || invoice.invType == "pbd"
                              || invoice.invType == "ord" || invoice.invType == "imd" || invoice.invType == "exd")
@@ -1734,170 +1809,202 @@ namespace POS.View
                         LocalReportExtensions.PrintToPrinter(rep);
                     }
                 }
+
+                SectionData.EndAwait(grid_ucPayInvoice, this);
             }
-            catch
+            catch (Exception ex)
             {
-
+                SectionData.ExceptionMessage(ex);
             }
 
-           
+
         }
         //
-       
+
         private async void Btn_preview_Click(object sender, RoutedEventArgs e)
         {
+
             try
             {
 
-           
-            if (invoice.invoiceId > 0)
-            {
-                Window.GetWindow(this).Opacity = 0.2;
-            
 
-                List<ReportParameter> paramarr = new List<ReportParameter>();
-                string pdfpath;
-                string addpath;
-                bool isArabic = ReportCls.checkLang();
-                if (isArabic)
-                {
-                    if (invoice.invType == "or" || invoice.invType == "po")
-                    {
-                        addpath = @"\Reports\Purchase\Ar\ArInvPurOrderReport.rdlc";
-                    }
-                    else
-                    {
-                        addpath = @"\Reports\Purchase\Ar\ArInvPurReport.rdlc";
-                    }
-
-                }
-                else
-                {
-                    if (invoice.invType == "or" || invoice.invType == "po")
-                    {
-                        addpath = @"\Reports\Purchase\En\InvPurOrderReport.rdlc";
-                    }
-                    else
-                    {
-                        addpath = @"\Reports\Purchase\En\InvPurReport.rdlc";
-                    }
-                }
-
-
-                //
-                pdfpath = @"\Thumb\report\temp.pdf";
-                pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
-                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+            SectionData.StartAwait(grid_ucPayInvoice);
                 if (invoice.invoiceId > 0)
                 {
-                    invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
-                    if (invoice.agentId != null)
-                    {
-                        Agent agentinv = new Agent();
-                        agentinv = vendors.Where(X => X.agentId == invoice.agentId).FirstOrDefault();
+                    Window.GetWindow(this).Opacity = 0.2;
 
-                        invoice.agentCode = agentinv.code;
+
+                    List<ReportParameter> paramarr = new List<ReportParameter>();
+                    string pdfpath;
+                    string addpath;
+                    bool isArabic = ReportCls.checkLang();
+                    if (isArabic)
+                    {
+                        if (invoice.invType == "or" || invoice.invType == "po")
+                        {
+                            addpath = @"\Reports\Purchase\Ar\ArInvPurOrderReport.rdlc";
+                        }
+                        else
+                        {
+                            addpath = @"\Reports\Purchase\Ar\ArInvPurReport.rdlc";
+                        }
+
                     }
                     else
                     {
-                        invoice.agentCode = "-";
+                        if (invoice.invType == "or" || invoice.invType == "po")
+                        {
+                            addpath = @"\Reports\Purchase\En\InvPurOrderReport.rdlc";
+                        }
+                        else
+                        {
+                            addpath = @"\Reports\Purchase\En\InvPurReport.rdlc";
+                        }
                     }
 
-                    invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
-                    ReportCls.checkLang();
 
-                    clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
-                    clsReports.setReportLanguage(paramarr);
-                    clsReports.Header(paramarr);
-                    paramarr = reportclass.fillPurInvReport(invoice, paramarr);
+                    //
+                    pdfpath = @"\Thumb\report\temp.pdf";
+                    pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
+                    string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+                    if (invoice.invoiceId > 0)
+                    {
+                        invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
+                        if (invoice.agentId != null)
+                        {
+                            Agent agentinv = new Agent();
+                            agentinv = vendors.Where(X => X.agentId == invoice.agentId).FirstOrDefault();
 
-                    rep.SetParameters(paramarr);
-                    rep.Refresh();
+                            invoice.agentCode = agentinv.code;
+                        }
+                        else
+                        {
+                            invoice.agentCode = "-";
+                        }
 
-                    LocalReportExtensions.ExportToPDF(rep, pdfpath);
+                        invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
+                        ReportCls.checkLang();
 
-                }
+                        clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
+                        clsReports.setReportLanguage(paramarr);
+                        clsReports.Header(paramarr);
+                        paramarr = reportclass.fillPurInvReport(invoice, paramarr);
 
-                //  }
+                        rep.SetParameters(paramarr);
+                        rep.Refresh();
 
-                //
+                        LocalReportExtensions.ExportToPDF(rep, pdfpath);
 
-                wd_previewPdf w = new wd_previewPdf();
-                w.pdfPath = pdfpath;
-                if (!string.IsNullOrEmpty(w.pdfPath))
-                {
-                    w.ShowDialog();
-                    //delete file
-                    /*
-                    if (File.Exists(pdfpath))
-                    { File.Delete(pdfpath);}
-                    */
-                    //  ClosePDF();
-                    w.wb_pdfWebViewer.Dispose();
+                    }
+
+                    //  }
+
+                    //
+
+                    wd_previewPdf w = new wd_previewPdf();
+                    w.pdfPath = pdfpath;
+                    if (!string.IsNullOrEmpty(w.pdfPath))
+                    {
+                        w.ShowDialog();
+                        w.wb_pdfWebViewer.Dispose();
 
 
+                    }
+                    else
+                        Toaster.ShowError(Window.GetWindow(this), message: "", animation: ToasterAnimation.FadeIn);
+                    Window.GetWindow(this).Opacity = 1;
                 }
                 else
-                    Toaster.ShowError(Window.GetWindow(this), message: "", animation: ToasterAnimation.FadeIn);
-                Window.GetWindow(this).Opacity = 1;
-            }
-            else
-            {
-                MessageBox.Show("save the invoice to preview");
-            }
-            }
-            catch
-            {
+                {
+                    MessageBox.Show("save the invoice to preview");
+                }
 
+                SectionData.EndAwait(grid_ucPayInvoice, this);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
             }
         }
 
         private async void Btn_items_Click(object sender, RoutedEventArgs e)
         {
-            //items
-
-            Window.GetWindow(this).Opacity = 0.2;
-            wd_items w = new wd_items();
-            w.CardType = "purchase";
-            w.ShowDialog();
-            if (w.isActive)
+            try
             {
+            SectionData.StartAwait(grid_ucPayInvoice);
+                //items
 
-                ////// w.selectedItem this is ItemId
-                for (int i = 0; i < w.selectedItems.Count; i++)
+                Window.GetWindow(this).Opacity = 0.2;
+                wd_items w = new wd_items();
+                w.CardType = "purchase";
+                w.ShowDialog();
+                if (w.isActive)
                 {
-                    MainWindow.mainWindow.StartAwait();
-                    int itemId = w.selectedItems[i];
-                   await ChangeItemIdEvent(itemId);
-                    MainWindow.mainWindow.EndAwait();
+
+                    ////// w.selectedItem this is ItemId
+                    for (int i = 0; i < w.selectedItems.Count; i++)
+                    {
+                        int itemId = w.selectedItems[i];
+                        await ChangeItemIdEvent(itemId);
+                    }
+
                 }
 
-            }
+                Window.GetWindow(this).Opacity = 1;
 
-            Window.GetWindow(this).Opacity = 1;
+                SectionData.EndAwait(grid_ucPayInvoice, this);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
         {
-            clearInvoice();
+            try
+            {
+                clearInvoice();
+
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
-     
+
         private void Tb_barcode_TextChanged(object sender, TextChangedEventArgs e)
         {
-            _Sender = sender;
+            try
+            {
+                _Sender = sender;
+
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         private void Btn_payments_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(paymentsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+            try
             {
+                if (MainWindow.groupObject.HasPermissionAction(paymentsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+                {
+
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
 
             }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
-        
+
     }
 }

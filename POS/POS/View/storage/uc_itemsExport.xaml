@@ -93,7 +93,7 @@
                         </Path>
                     </Button>
                     <materialDesign:Badged VerticalAlignment="Center" Margin="10,5,5,0"
-                      BadgeColorZoneMode="PrimaryDark"  BadgeForeground="White"  Badge="+9">
+                      BadgeBackground="{StaticResource MainColorRed}"  BadgeForeground="White"  Badge="+9">
                     <Button Grid.Column="2" BorderBrush="{x:Null}" Padding="0" 
                     Background="{x:Null}" x:Name="btn_drafts"  Click="Btn_draft_Click" >
                         <Path Fill="#4E4E4E" Stretch="Fill"  
@@ -134,7 +134,7 @@
                         </Path>
                     </Button>
                         <materialDesign:Badged VerticalAlignment="Center" Margin="10,5,5,0"
-                      BadgeColorZoneMode="PrimaryDark"  BadgeForeground="White"  Badge="+9">
+                      BadgeBackground="{StaticResource MainColorRed}" BadgeForeground="White"  Badge="+9">
                             <Button Grid.Column="4" BorderBrush="{x:Null}" Padding="0"  
                     Background="{x:Null}" x:Name="btn_ordersWait"  Click="Btn_ordersWait_Click" >
                         <Path Fill="#4E4E4E" Stretch="Fill"  

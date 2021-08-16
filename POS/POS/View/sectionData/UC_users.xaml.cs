@@ -84,9 +84,10 @@ namespace POS.View
         }
         public UC_users()
         {
-            InitializeComponent();
             try
             {
+                InitializeComponent();
+           
                 if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1440)
                 {
                     txt_deleteButton.Visibility = Visibility.Visible;
@@ -138,19 +139,29 @@ namespace POS.View
         }
         private async void fillCountries()
         {
-            if (countrynum is null)
-                await RefreshCountry();
+            try
+            {
+                SectionData.StartAwait(grid_ucUsers);
+                if (countrynum is null)
+                    await RefreshCountry();
 
-            cb_areaPhone.ItemsSource = countrynum.ToList();
-            cb_areaPhone.SelectedValuePath = "countryId";
-            cb_areaPhone.DisplayMemberPath = "code";
+                cb_areaPhone.ItemsSource = countrynum.ToList();
+                cb_areaPhone.SelectedValuePath = "countryId";
+                cb_areaPhone.DisplayMemberPath = "code";
 
-            cb_areaMobile.ItemsSource = countrynum.ToList();
-            cb_areaMobile.SelectedValuePath = "countryId";
-            cb_areaMobile.DisplayMemberPath = "code";
+                cb_areaMobile.ItemsSource = countrynum.ToList();
+                cb_areaMobile.SelectedValuePath = "countryId";
+                cb_areaMobile.DisplayMemberPath = "code";
 
-            cb_areaMobile.SelectedIndex = MainWindow.Region.countryId;
-            cb_areaPhone.SelectedIndex = MainWindow.Region.countryId;
+                cb_areaMobile.SelectedIndex = MainWindow.Region.countryId;
+                cb_areaPhone.SelectedIndex = MainWindow.Region.countryId;
+                SectionData.EndAwait(grid_ucUsers , this);
+            }
+            catch(Exception ex)
+            {
+                SectionData.EndAwait(grid_ucUsers , this);
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         async Task<IEnumerable<City>> RefreshCity()
@@ -174,12 +185,15 @@ namespace POS.View
         {
             try
             {
+                SectionData.StartAwait(grid_ucUsers);
                 if (citynum is null)
                     await RefreshCity();
+                SectionData.EndAwait(grid_ucUsers , this);
             }
             catch(Exception ex)
             {
                 SectionData.ExceptionMessage(ex);
+                SectionData.EndAwait(grid_ucUsers, this);
             }
         }
 
@@ -934,14 +948,17 @@ namespace POS.View
         {
             try
             {
+                SectionData.StartAwait(grid_ucUsers);
                 if (users is null)
                     await RefreshUsersList();
                 tgl_userState = 1;
                 Tb_search_TextChanged(null, null);
+                SectionData.EndAwait(grid_ucUsers,this);
             }
             catch (Exception ex)
             {
                 SectionData.ExceptionMessage(ex);
+                SectionData.EndAwait(grid_ucUsers , this);
             }
          }
 
@@ -949,14 +966,17 @@ namespace POS.View
         {
             try
             {
+                SectionData.StartAwait(grid_ucUsers);
                 if (users is null)
                     await RefreshUsersList();
                 tgl_userState = 0;
                 Tb_search_TextChanged(null, null);
+                SectionData.EndAwait(grid_ucUsers , this);
             }
             catch (Exception ex)
             {
                 SectionData.ExceptionMessage(ex);
+                SectionData.EndAwait(grid_ucUsers , this);
             }
         }
 
@@ -964,6 +984,7 @@ namespace POS.View
         {
             try
             {
+                SectionData.StartAwait(grid_ucUsers);
                 if (firstchange == true)
                 {
                     if (cb_areaPhone.SelectedValue != null)
@@ -993,10 +1014,12 @@ namespace POS.View
                 {
                     firstchange = true;
                 }
+                SectionData.EndAwait(grid_ucUsers , this);
             }
             catch (Exception ex)
             {
                 SectionData.ExceptionMessage(ex);
+                SectionData.EndAwait(grid_ucUsers,this);
             }
         }
 
@@ -1509,6 +1532,7 @@ namespace POS.View
         {//search
             try
             {
+                SectionData.StartAwait(grid_ucUsers);
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
                 {
                     p_errorFirstName.Visibility = Visibility.Collapsed;
@@ -1532,10 +1556,12 @@ namespace POS.View
                     #endregion
                     RefreshUserView();
                 }
+                SectionData.EndAwait(grid_ucUsers , this);
             }
             catch (Exception ex)
             {
                 SectionData.ExceptionMessage(ex);
+                SectionData.EndAwait(grid_ucUsers , this);
             }
 
         }

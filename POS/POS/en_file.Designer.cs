@@ -2500,6 +2500,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Expired.
+        /// </summary>
+        internal static string trExpired {
+            get {
+                return ResourceManager.GetString("trExpired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Export.
         /// </summary>
         internal static string trExport {
@@ -5629,6 +5638,24 @@ namespace POS {
         internal static string trUserType {
             get {
                 return ResourceManager.GetString("trUserType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Valid.
+        /// </summary>
+        internal static string trValid {
+            get {
+                return ResourceManager.GetString("trValid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Validity.
+        /// </summary>
+        internal static string trvalidity {
+            get {
+                return ResourceManager.GetString("trvalidity", resourceCulture);
             }
         }
         

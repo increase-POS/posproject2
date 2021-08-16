@@ -231,6 +231,7 @@
     <Compile Include="converters\depositorNameConverter.cs" />
     <Compile Include="converters\depositorTypeConverter.cs" />
     <Compile Include="converters\discountTypeConverter.cs" />
+    <Compile Include="converters\enabledCouponConverter.cs" />
     <Compile Include="converters\invoiceStatusConverter.cs" />
     <Compile Include="converters\invoiceTypeConverter.cs" />
     <Compile Include="converters\invoiceTypeVisibilityConverter.cs" />

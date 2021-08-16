@@ -49,7 +49,15 @@ namespace POS.View
         }
         public uc_packageOfItems()
         {
-            InitializeComponent();
+            try
+            {
+
+                InitializeComponent();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         Category categoryModel = new Category();
@@ -109,8 +117,10 @@ namespace POS.View
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {//load
-
-            btn_items.IsEnabled = false;
+            try
+            {
+                SectionData.StartAwait(grid_ucPackage);
+                btn_items.IsEnabled = false;
 
             btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
             catigoriesAndItemsView.ucPackageOfItems = this;
@@ -144,11 +154,18 @@ namespace POS.View
 
             RefrishCategoriesCard();
             Txb_searchitems_TextChanged(null, null);
-
+                SectionData.EndAwait(grid_ucPackage, this);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
         async void fillBarcodeList()
         {
+                SectionData.StartAwait(grid_ucPackage);
             barcodesList = await itemUnitModel.getAllBarcodes();
+                SectionData.EndAwait(grid_ucPackage, this);
         }
         private void generateBarcode(string barcodeString = "")
         {
@@ -174,8 +191,11 @@ namespace POS.View
         }
 
         private void btn_clear_Click(object sender, RoutedEventArgs e)
-        {//clear
-            btn_items.IsEnabled = false;
+        {
+                try
+                {
+                    //clear
+                    btn_items.IsEnabled = false;
 
             tb_code.Clear();
             tb_name.Clear();
@@ -195,7 +215,12 @@ namespace POS.View
             SectionData.clearValidate(tb_price , p_errorPrice);
 
             clearImg();
-          
+
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         private void clearImg()
@@ -221,10 +246,12 @@ namespace POS.View
         }
         async void fillCategories()
         {
+                SectionData.StartAwait(grid_ucPackage);
             categories = await categoryModel.GetAllCategories();
             cb_categorie.ItemsSource = categories.ToList();
             cb_categorie.SelectedValuePath = "categoryId";
             cb_categorie.DisplayMemberPath = "name";
+                SectionData.EndAwait(grid_ucPackage, this);
         }
 
         private void translate()
@@ -277,27 +304,59 @@ namespace POS.View
 
         private void tb_barcode_TextChanged(object sender, TextChangedEventArgs e)
         {
-            string barCode = tb_barcode.Text;
+                    try
+                    {
+
+                        string barCode = tb_barcode.Text;
             generateBarcode(barCode);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
        
         private void tb_upperLimit_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            e.Handled = e.Key == Key.Space;
+                        try
+                        {
+
+                            e.Handled = e.Key == Key.Space;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         private void tb_barcode_Generate(object sender, KeyEventArgs e)
         {
-            if (e.Key.ToString() == "Return")
+                            try
+                            {
+
+                                if (e.Key.ToString() == "Return")
             {
                 string barCode = tb_barcode.Text;
                 generateBarcode(barCode);
             }
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
-            Regex regex = new Regex("[^0-9]+");
+                                try
+                                {
+
+                                    Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         #region Categor and Item
@@ -309,18 +368,22 @@ namespace POS.View
         /// <returns></returns>
         async Task<IEnumerable<Category>> RefrishCategories()
         {
+                SectionData.StartAwait(grid_ucPackage);
             categories = await categoryModel.GetAllCategories();
+                SectionData.EndAwait(grid_ucPackage, this);
             return categories;
         }
 
         async void RefrishCategoriesCard()
         {
+                SectionData.StartAwait(grid_ucPackage);
             if (categories is null)
                 await RefrishCategories();
             categoriesQuery = categories.Where(x => x.isActive == tglCategoryState && x.parentId == categoryParentId);
             catigoriesAndItemsView.gridCatigories = grid_categoryCards;
             generateCoulmnCategoriesGrid(categoriesQuery.Count());
             catigoriesAndItemsView.FN_refrishCatalogCard(categoriesQuery.ToList(), -1);
+                SectionData.EndAwait(grid_ucPackage, this);
         }
 
         void generateCoulmnCategoriesGrid(int column)
@@ -343,12 +406,14 @@ namespace POS.View
         Package packageModel = new Package();
         async Task<IEnumerable<Item>> RefrishItems()
         {
+                SectionData.StartAwait(grid_ucPackage);
             if (category.categoryId == 0)
                 //items = await itemModel.GetAllItems();
                 items = await packageModel.GetPackages();
 
             else items = await itemModel.GetItemsInCategoryAndSub(category.categoryId);
             items = items.Where(x => x.type == "p");
+                SectionData.EndAwait(grid_ucPackage, this);
             return items;
         }
 
@@ -366,15 +431,27 @@ namespace POS.View
         }
         private void Grid_containerCard_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
+                                    try
+                                    {
+
+                                        RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
         #endregion
 
         #region Get Id By Click  Y
         int itemUnitId = 0;
         private async void dg_items_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {//selection
-            if (dg_items.SelectedIndex != -1)
+        {
+                                        try
+                                        {
+                SectionData.StartAwait(grid_ucPackage);
+                //selection
+                if (dg_items.SelectedIndex != -1)
             {
                 item = dg_items.SelectedItem as Item;
                 this.DataContext = item;
@@ -399,11 +476,18 @@ namespace POS.View
                 }
                 getImg();
             }
-            //tb_barcode.Focus();
+                //tb_barcode.Focus();
+                SectionData.EndAwait(grid_ucPackage, this);
 
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
         private async void getImg()
         {
+                SectionData.StartAwait(grid_ucPackage);
             if (string.IsNullOrEmpty(item.image))
             {
                 SectionData.clearImg(img_item);
@@ -432,9 +516,11 @@ namespace POS.View
                 openFileDialog.FileName = tmpPath;
             }
 
+                SectionData.EndAwait(grid_ucPackage, this);
         }
         public async void ChangeCategoryIdEvent(int categoryId)
         {
+                SectionData.StartAwait(grid_ucPackage);
             category = categories.ToList().Find(c => c.categoryId == categoryId);
 
             if (categories.Where(x =>
@@ -448,10 +534,12 @@ namespace POS.View
             generateTrack(categoryId);
             await RefrishItems();
             Txb_searchitems_TextChanged(null, null);
+                SectionData.EndAwait(grid_ucPackage, this);
         }
 
         public async void ChangeItemIdEvent(int itemId)
         {//change id
+                SectionData.StartAwait(grid_ucPackage);
             item = items.ToList().Find(c => c.itemId == itemId);
             if (item != null)
             {
@@ -474,12 +562,13 @@ namespace POS.View
                 }
                 getImg();
             }
+                SectionData.EndAwait(grid_ucPackage, this);
         }
 
         #endregion
-       
+
         #region Toggle Button Y
-       
+
         /// <summary>
         /// Item
         /// </summary>
@@ -487,24 +576,40 @@ namespace POS.View
         /// <param name="e"></param>
         private void Tgl_itemIsActive_Checked(object sender, RoutedEventArgs e)
         {
-            //if (categories is null)
-            //    await RefrishCategories();
-            tglItemState = 1;
+                                            try
+                                            {
+
+                                                //if (categories is null)
+                                                //    await RefrishCategories();
+                                                tglItemState = 1;
             //tgl_categoryCardIsActive.IsChecked =
             //    tgl_categoryDatagridIsActive.IsChecked = true;
             Txb_searchitems_TextChanged(null, null);
 
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
         private void Tgl_itemIsActive_Unchecked(object sender, RoutedEventArgs e)
         {
-            //if (categories is null)
-            //    await RefrishCategories();
-            //categoriesQuery = categories.Where(x => x.isActive == 0);
-            tglItemState = 0;
+                                                try
+                                                {
+
+                                                    //if (categories is null)
+                                                    //    await RefrishCategories();
+                                                    //categoriesQuery = categories.Where(x => x.isActive == 0);
+                                                    tglItemState = 0;
             //tgl_categoryCardIsActive.IsChecked =
             //    tgl_categoryDatagridIsActive.IsChecked = false;
             Txb_searchitems_TextChanged(null, null);
             tb_barcode.Focus();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
         #endregion
 
@@ -512,7 +617,10 @@ namespace POS.View
 
         private void Btn_itemsInCards_Click(object sender, RoutedEventArgs e)
         {
-            grid_itemsDatagrid.Visibility = Visibility.Collapsed;
+                                                    try
+                                                    {
+
+                                                        grid_itemsDatagrid.Visibility = Visibility.Collapsed;
             grid_itemCards.Visibility = Visibility.Visible;
             path_itemsInCards.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
             path_itemsInGrid.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
@@ -520,11 +628,19 @@ namespace POS.View
             tgl_itemIsActive.IsChecked = (tglItemState == 1) ? true : false;
             Txb_searchitems_TextChanged(null, null);
             tb_barcode.Focus();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         private void Btn_itemsInGrid_Click(object sender, RoutedEventArgs e)
         {
-            grid_itemCards.Visibility = Visibility.Collapsed;
+                                                        try
+                                                        {
+
+                                                            grid_itemCards.Visibility = Visibility.Collapsed;
             grid_itemsDatagrid.Visibility = Visibility.Visible;
             path_itemsInCards.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
             path_itemsInCards.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
@@ -532,6 +648,11 @@ namespace POS.View
             tgl_itemIsActive.IsChecked = (tglItemState == 1) ? true : false;
             Txb_searchitems_TextChanged(null, null);
             tb_barcode.Focus();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
         #endregion
 
@@ -544,8 +665,12 @@ namespace POS.View
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private async void Txb_searchitems_TextChanged(object sender, TextChangedEventArgs e)
-        {//search
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
+        {
+                SectionData.StartAwait(grid_ucPackage);
+            try
+            {
+                                                                //search
+                                                                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
             {
                 if (items is null)
                 await RefrishItems();
@@ -565,6 +690,12 @@ namespace POS.View
             RefrishItemsDatagrid(itemsQuery);
             //tb_barcode.Focus();
         }
+                SectionData.EndAwait(grid_ucPackage, this);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         #endregion
@@ -576,8 +707,11 @@ namespace POS.View
 
         private void Tb_pageNumberSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
+            try
+            {
 
-            itemsQuery = items.Where(x => x.isActive == tglItemState);
+
+                itemsQuery = items.Where(x => x.isActive == tglItemState);
 
             if (tb_pageNumberSearch.Text.Equals(""))
             {
@@ -599,13 +733,21 @@ namespace POS.View
             ) && x.isActive == tglItemState);
             txt_count.Text = itemsQuery.Count().ToString();
             RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
-            #endregion
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
 
         private void Btn_firstPage_Click(object sender, RoutedEventArgs e)
         {
-            pageIndex = 1;
+                try
+                {
+
+                    pageIndex = 1;
             #region
             itemsQuery = items.Where(x => (x.code.ToLower().Contains(txtItemSearch) ||
             x.name.ToLower().Contains(txtItemSearch) ||
@@ -613,11 +755,19 @@ namespace POS.View
             ) && x.isActive == tglItemState);
             txt_count.Text = itemsQuery.Count().ToString();
             RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
-            #endregion
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
         private void Btn_prevPage_Click(object sender, RoutedEventArgs e)
         {
-            pageIndex = int.Parse(btn_prevPage.Content.ToString());
+                    try
+                    {
+
+                        pageIndex = int.Parse(btn_prevPage.Content.ToString());
             #region
             itemsQuery = items.Where(x => (x.code.ToLower().Contains(txtItemSearch) ||
             x.name.ToLower().Contains(txtItemSearch) ||
@@ -625,11 +775,19 @@ namespace POS.View
             ) && x.isActive == tglItemState);
             txt_count.Text = itemsQuery.Count().ToString();
             RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
-            #endregion
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
         private void Btn_activePage_Click(object sender, RoutedEventArgs e)
         {
-            pageIndex = int.Parse(btn_activePage.Content.ToString());
+                        try
+                        {
+
+                            pageIndex = int.Parse(btn_activePage.Content.ToString());
             #region
             itemsQuery = items.Where(x => (x.code.ToLower().Contains(txtItemSearch) ||
             x.name.ToLower().Contains(txtItemSearch) ||
@@ -637,11 +795,18 @@ namespace POS.View
             ) && x.isActive == tglItemState);
             txt_count.Text = itemsQuery.Count().ToString();
             RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
-            #endregion
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
         private void Btn_nextPage_Click(object sender, RoutedEventArgs e)
         {
-            pageIndex = int.Parse(btn_nextPage.Content.ToString());
+                            try
+                            {
+                                pageIndex = int.Parse(btn_nextPage.Content.ToString());
             #region
             itemsQuery = items.Where(x => (x.code.ToLower().Contains(txtItemSearch) ||
             x.name.ToLower().Contains(txtItemSearch) ||
@@ -649,11 +814,19 @@ namespace POS.View
             ) && x.isActive == tglItemState);
             txt_count.Text = itemsQuery.Count().ToString();
             RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
-            #endregion
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
         private void Btn_lastPage_Click(object sender, RoutedEventArgs e)
         {
-            itemsQuery = items.Where(x => x.isActive == tglCategoryState);
+                                try
+                                {
+
+                                    itemsQuery = items.Where(x => x.isActive == tglCategoryState);
             pageIndex = ((itemsQuery.Count() - 1) / 9) + 1;
             #region
             itemsQuery = items.Where(x => (x.code.ToLower().Contains(txtItemSearch) ||
@@ -662,7 +835,12 @@ namespace POS.View
             ) && x.isActive == tglItemState);
             txt_count.Text = itemsQuery.Count().ToString();
             RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
-            #endregion
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
         #endregion
 
@@ -670,6 +848,7 @@ namespace POS.View
 
         async void generateTrack(int categorypaPathId)
         {
+                SectionData.StartAwait(grid_ucPackage);
             grid_categoryControlPath.Children.Clear();
             IEnumerable<Category> categoriesPath = await
             categoryModel.GetCategoryTreeByID(categorypaPathId);
@@ -698,11 +877,16 @@ namespace POS.View
                 }
             }
             tb_barcode.Focus();
+            SectionData.EndAwait(grid_ucPackage, this);
 
         }
         private async void getCategoryIdFromPath(object sender, RoutedEventArgs e)
         {
-            Button b = (Button)sender;
+                                    try
+                                    {
+
+                SectionData.StartAwait(grid_ucPackage);
+                Button b = (Button)sender;
 
             if (!string.IsNullOrEmpty(b.Tag.ToString()))
             {
@@ -717,12 +901,21 @@ namespace POS.View
             tb_barcode.Focus();
             await RefrishItems();
             Txb_searchitems_TextChanged(null, null);
+                SectionData.EndAwait(grid_ucPackage, this);
 
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
         private async void Btn_getAllCategory_Click(object sender, RoutedEventArgs e)
         {
+                                        try
+                                        {
+                SectionData.StartAwait(grid_ucPackage);
 
-            categoryParentId = 0;
+                categoryParentId = 0;
             RefrishCategoriesCard();
             grid_categoryControlPath.Children.Clear();
             category.categoryId = 0;
@@ -730,6 +923,12 @@ namespace POS.View
             Txb_searchitems_TextChanged(null, null);
             tb_barcode.Focus();
 
+                SectionData.EndAwait(grid_ucPackage, this);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         #endregion
@@ -738,8 +937,11 @@ namespace POS.View
 
         #region Excel
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
-        {//excel
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
+        {
+                                            try
+                                            {
+                                                //excel
+                                                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
             {
                 this.Dispatcher.Invoke(() =>
             {
@@ -750,6 +952,11 @@ namespace POS.View
             }
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
 
@@ -774,8 +981,12 @@ namespace POS.View
         #endregion
 
         private async void Btn_refresh_Click(object sender, RoutedEventArgs e)
-        {//refresh
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
+        {
+                                                try
+                                                {
+                SectionData.StartAwait(grid_ucPackage);
+                //refresh
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
             {
 
                 await RefrishItems();
@@ -783,31 +994,61 @@ namespace POS.View
             }
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                SectionData.EndAwait(grid_ucPackage, this);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         private void Tb_validateEmptyTextChange(object sender, TextChangedEventArgs e)
         {
-            string name = sender.GetType().Name;
+                                                    try
+                                                    {
+
+                                                        string name = sender.GetType().Name;
             validateEmpty(name, sender);
             var txb = sender as TextBox;
             if ((sender as TextBox).Name == "tb_taxes"|| (sender as TextBox).Name == "tb_price")
                 SectionData.InputJustNumber(ref txb);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         private void Tb_validateEmptyLostFocus(object sender, RoutedEventArgs e)
         {
-            string name = sender.GetType().Name;
+                                                        try
+                                                        {
+                                                            string name = sender.GetType().Name;
             validateEmpty(name, sender);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         private void Tb_PreventSpaces(object sender, KeyEventArgs e)
         {
-            e.Handled = e.Key == Key.Space;
+                                                            try
+                                                            {
+                                                                e.Handled = e.Key == Key.Space;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         private void validateEmpty(string name, object sender)
         {
-            if (name == "TextBox")
+                                                                try
+                                                                {
+                                                                    if (name == "TextBox")
             {
                 if ((sender as TextBox).Name == "tb_code")
                     SectionData.validateEmptyTextBox((TextBox)sender, p_errorCode, tt_errorCode, "trEmptyCodeToolTip");
@@ -823,29 +1064,54 @@ namespace POS.View
                 if ((sender as ComboBox).Name == "cb_categorie")
                     SectionData.validateEmptyComboBox((ComboBox)sender, p_errorCategorie, tt_errorCategorie , "trErrorEmptyCategoryToolTip");
             }
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         private void Tb_decimal_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        { //decimal
-            var regex = new Regex(@"^[0-9]*(?:\.[0-9]*)?$");
+        {
+                                                                    try
+                                                                    {
+                                                                        //decimal
+                                                                        var regex = new Regex(@"^[0-9]*(?:\.[0-9]*)?$");
             if (regex.IsMatch(e.Text) && !(e.Text == "." && ((TextBox)sender).Text.Contains(e.Text)))
                 e.Handled = false;
 
             else
                 e.Handled = true;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         private void Tb_EnglishAndDigits_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {//only english and digits
-            Regex regex = new Regex("^[a-zA-Z0-9. -_?]*$");
+        {
+                                                                        try
+                                                                        {
+                                                                            //only english and digits
+                                                                            Regex regex = new Regex("^[a-zA-Z0-9. -_?]*$");
             if (!regex.IsMatch(e.Text))
                 e.Handled = true;
 
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
         int unitpackageId = 0;
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
-        {//add
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add") || SectionData.isAdminPermision())
+        {
+                                                                            try
+                                                                            {
+                SectionData.StartAwait(grid_ucPackage);
+                //add
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add") || SectionData.isAdminPermision())
             {
                 validateEmptyEntries();
 
@@ -911,9 +1177,19 @@ namespace POS.View
             }
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                SectionData.EndAwait(grid_ucPackage, this);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
-        {//update
+        {
+                                                                                try
+                                                                                {
+                SectionData.StartAwait(grid_ucPackage);
+                //update
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update") || SectionData.isAdminPermision())
                 {
                     validateEmptyEntries();
@@ -983,10 +1259,20 @@ namespace POS.View
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                SectionData.EndAwait(grid_ucPackage, this);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
-        {//delete
-                    if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete") || SectionData.isAdminPermision())
+        {
+                                                                                    try
+                                                                                    {
+                SectionData.StartAwait(grid_ucPackage);
+                //delete
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete") || SectionData.isAdminPermision())
                     {
                         if (item.itemId != 0)
             {
@@ -1041,9 +1327,16 @@ namespace POS.View
                     }
                     else
                         Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                SectionData.EndAwait(grid_ucPackage, this);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
         private async void activate()
         {//activate
+                SectionData.StartAwait(grid_ucPackage);
             item.isActive = 1;
 
             string s = await itemModel.saveItem(item);
@@ -1055,26 +1348,31 @@ namespace POS.View
 
             await RefrishItems();
             Txb_searchitems_TextChanged(null, null);
+                SectionData.EndAwait(grid_ucPackage, this);
         }
 
         private async Task<Boolean> checkCodeAvailabiltiy(string code)
         {
+                SectionData.StartAwait(grid_ucPackage);
             List<Item> items = await itemModel.GetAllItems();
          
            if(items != null)
                 if(items.Any(i => i.code == code && i.itemId != item.itemId))
                 {
                     SectionData.validateDuplicateCode(tb_code, p_errorCode, tt_errorCode, "trDuplicateCodeToolTip");
+                SectionData.EndAwait(grid_ucPackage, this);
                     return false;
                 }
                 else
                 {
                     SectionData.clearValidate(tb_code, p_errorCode);
+                SectionData.EndAwait(grid_ucPackage, this);
                     return true;
                 }
            else
             {
                 SectionData.clearValidate(tb_code, p_errorCode);
+                SectionData.EndAwait(grid_ucPackage, this);
                 return true;
             }
             
@@ -1095,18 +1393,30 @@ namespace POS.View
         }
 
         private void Img_item_Click(object sender, RoutedEventArgs e)
-        {//select image
-            openFileDialog.Filter = "Images|*.png;*.jpg;*.bmp;*.jpeg;*.jfif";
+        {
+                                                                                        try
+                                                                                        {
+                                                                                            //select image
+                                                                                            openFileDialog.Filter = "Images|*.png;*.jpg;*.bmp;*.jpeg;*.jfif";
             if (openFileDialog.ShowDialog() == true)
             {
                 brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
                 img_item.Background = brush;
             }
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         private async void Btn_items_Click(object sender, RoutedEventArgs e)
-        {//items
-            if (MainWindow.groupObject.HasPermissionAction(itemsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+        {
+                                                                                            try
+                                                                                            {
+                SectionData.StartAwait(grid_ucPackage);
+                //items
+                if (MainWindow.groupObject.HasPermissionAction(itemsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
                 SectionData.clearValidate(tb_code, p_errorCode);
 
@@ -1126,36 +1436,68 @@ namespace POS.View
             }
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                SectionData.EndAwait(grid_ucPackage, this);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         private async void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
+                                                                                                try
+                                                                                                {
+
+                SectionData.StartAwait(grid_ucPackage);
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
             {
                 List<Item> pkg = await packageModel.GetPackages();
                 MessageBox.Show(pkg.Count.ToString());
             }
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                SectionData.EndAwait(grid_ucPackage, this);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         private void Btn_print_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
+                                                                                                    try
+                                                                                                    {
+
+                                                                                                        if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
             {
             }
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
 
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         private void Btn_pieChart_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
+                                                                                                        try
+                                                                                                        {
+
+                                                                                                            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
             {
             }
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
     }
 }

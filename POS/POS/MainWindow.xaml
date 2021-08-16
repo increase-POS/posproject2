@@ -144,22 +144,27 @@
                 <materialDesign:PackIcon Foreground="White" Kind="Keyboard"  FlowDirection="LeftToRight"
                                          Width="30" Height="30"/>
             </Button>
-       
-            <Button Grid.Column="4" x:Name="BTN_message"
-                Margin="5,10,5,10" ToolTip="" 
+            <materialDesign:Badged VerticalAlignment="Center" Margin="7.5,10,7.5,10"  Grid.Column="4" DockPanel.Dock="Right" 
+                      BadgeBackground="{StaticResource MainColorRed}"  BadgeForeground="White"  Badge="+9">
+                <Button Grid.Column="4" x:Name="BTN_message"
                     Background="{x:Null}" BorderBrush="{x:Null}" Width="25" Height="25" 
                     Padding="0" >
                 <materialDesign:PackIcon Foreground="White" Kind="Message"  FlowDirection="LeftToRight"
                                          Width="25" Height="25"/>
             </Button>
+            </materialDesign:Badged>
+
+            <materialDesign:Badged VerticalAlignment="Center" Margin="7.5,10,7.5,10" Grid.Column="5"  
+                      BadgeBackground="{StaticResource MainColorRed}"  BadgeForeground="White"  Badge="+9">
             <Button Grid.Column="5" x:Name="BTN_notifications"
-                Margin="5,10,5,10" ToolTip="" 
                     Background="{x:Null}" BorderBrush="{x:Null}" Width="25" Height="25" 
                     Padding="0" >
                 <materialDesign:PackIcon Foreground="White" Kind="Bell" 
                                          Width="25" Height="25"/>
             </Button>
-            <!--<Button Grid.Column="6" x:Name="BTN_dropDownProfile"
+                </materialDesign:Badged>
+
+                <!--<Button Grid.Column="6" x:Name="BTN_dropDownProfile"
                 Margin="5,10,5,10" ToolTip="" 
                     Background="{x:Null}" BorderBrush="{x:Null}" Width="25" Height="25" 
                     Padding="0" >

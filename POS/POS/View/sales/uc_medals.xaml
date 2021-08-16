@@ -8,7 +8,7 @@
                xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              d:DesignHeight="675" d:DesignWidth="985" Loaded="UserControl_Loaded" >
     <!--Main grid-->
-    <Grid x:Name="grid_ucStore" >
+    <Grid x:Name="grid_ucMedals" >
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2.54*"/>
             <ColumnDefinition x:Name="gridWidth" Width="*" MinWidth="225"/>

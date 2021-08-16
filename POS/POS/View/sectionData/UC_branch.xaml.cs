@@ -72,10 +72,11 @@ namespace POS.View
         }
         public UC_branch()
         {
-            InitializeComponent();
-
             try
             {
+                InitializeComponent();
+
+            
                 if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1440)
                 {
                     txt_deleteButton.Visibility = Visibility.Visible;
@@ -516,6 +517,7 @@ namespace POS.View
         {
             try
             {
+                SectionData.StartAwait(grid_ucBranch);
                 var section = new Classes.Section();
                 section.name = "FreeZone";
                 section.branchId = branchId;
@@ -558,9 +560,13 @@ namespace POS.View
                     await branchModel.deleteBranch(branchId, MainWindow.userID.Value, true);
                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                 }
+                SectionData.EndAwait(grid_ucBranch , this);
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            {
+                SectionData.ExceptionMessage(ex);
+                SectionData.EndAwait(grid_ucBranch , this);
+            }
         }
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
         {//update

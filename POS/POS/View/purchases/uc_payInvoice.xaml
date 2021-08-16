@@ -92,7 +92,7 @@
                         </Path>
                     </Button>
                     <materialDesign:Badged VerticalAlignment="Center" Margin="10,5,5,0"
-                      BadgeColorZoneMode="PrimaryDark"  BadgeForeground="White"  Badge="+9">
+                      BadgeBackground="{StaticResource MainColorRed}"  BadgeForeground="White"  Badge="+9">
                         <Button Grid.Column="2" BorderBrush="{x:Null}" Padding="0"  
                     Background="{x:Null}" x:Name="btn_drafts"  Click="Btn_draft_Click" >
                         <Path Fill="#4E4E4E" Stretch="Fill"  
@@ -141,7 +141,7 @@
                     </Button>
 
                         <materialDesign:Badged VerticalAlignment="Center" Margin="10,5,5,0"
-                      BadgeColorZoneMode="PrimaryDark"  BadgeForeground="White"  Badge="+9">
+                      BadgeBackground="{StaticResource MainColorRed}"  BadgeForeground="White"  Badge="+9">
                             <Button Grid.Column="5" BorderBrush="{x:Null}" Padding="0" 
                     Background="{x:Null}" x:Name="btn_purchaseOrder"  Click="Btn_purchaseOrder_Click" >
                         <Path Fill="#4E4E4E" Stretch="Fill"  
@@ -201,7 +201,7 @@
                     <Border  DockPanel.Dock="Right"   Margin="7.5,5"   CornerRadius="0,0,0,0"  Width="2" BorderThickness="0" Background="#377EB8" />
 
                             <materialDesign:Badged VerticalAlignment="Center" Margin="10,5,5,0"
-                      BadgeColorZoneMode="PrimaryDark"  BadgeForeground="White"  Badge="+9">
+                      BadgeBackground="{StaticResource MainColorRed}"  BadgeForeground="White"  Badge="+9">
                                 <Button Grid.Column="7" BorderBrush="{x:Null}" Padding="0"   
                     Background="{x:Null}" x:Name="btn_payments" Click="Btn_payments_Click"   >
                         <Path Fill="#4E4E4E" Stretch="Fill"   FlowDirection="LeftToRight"
@@ -231,7 +231,7 @@
                     CornerRadius="7" BorderBrush="Black" Background="White" Padding="0" Margin="5,0,10,0">
                 <DockPanel   Margin="10,0" LastChildFill="False">
                     <materialDesign:Badged VerticalAlignment="Center" Margin="7.5,5,7.5,0" DockPanel.Dock="Right" 
-                      BadgeColorZoneMode="PrimaryDark"  BadgeForeground="White"  Badge="+9">
+                      BadgeBackground="{StaticResource MainColorRed}"  BadgeForeground="White"  Badge="+9">
                         <Button Grid.Column="5" BorderBrush="{x:Null}" Padding="0" 
                     Background="{x:Null}" x:Name="btn_invoiceImages" Click="Btn_invoiceImage_Click"  >
                             <Path Fill="#4E4E4E" Stretch="Fill"  

@@ -104,7 +104,7 @@
                     </Button>
                     </materialDesign:Badged>
                     <materialDesign:Badged VerticalAlignment="Center" Margin="7.5,5,7.5,0"
-                      BadgeBackground="{StaticResource MainColorRed}"  BadgeForeground="White"  Badge="+9">
+                      BadgeBackground="{StaticResource MainColorRed}"  BadgeForeground="White"  Badge="7">
                         <Button Grid.Column="5" BorderBrush="{x:Null}" Padding="0"   
                     Background="{x:Null}" x:Name="btn_returnInvoice" Click="Btn_returnInvoice_Click"  >
                         <Path Fill="#4E4E4E" Stretch="Fill"  

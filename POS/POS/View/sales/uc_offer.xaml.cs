@@ -54,7 +54,9 @@ namespace POS.View
         }
         public uc_offer()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
             if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1440)
             {
                 txt_deleteButton.Visibility = Visibility.Visible;
@@ -84,6 +86,11 @@ namespace POS.View
                 txt_delete_Icon.Visibility = Visibility.Visible;
 
             }
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         #region Numeric
@@ -104,18 +111,33 @@ namespace POS.View
 
         private void cmdUp_Click(object sender, RoutedEventArgs e)
         {
-            NumValue++;
+            try
+            {
+                NumValue++;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         private void cmdDown_Click(object sender, RoutedEventArgs e)
         {
-            NumValue--;
+                try
+                {
+                    NumValue--;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         private void tb_discountValue_TextChanged(object sender, TextChangedEventArgs e)
         {
-
-            if (tb_discountValue == null)
+                    try
+                    {
+                        if (tb_discountValue == null)
             {
                 return;
             }
@@ -125,28 +147,58 @@ namespace POS.View
 
             if (!int.TryParse(tb_discountValue.Text, out _numValue))
                 tb_discountValue.Text = _numValue.ToString();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         private void tb_discountValue_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            Regex regex = new Regex("[^0-9]+");
+                        try
+                        {
+                            Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
         #endregion
         private async void Tgl_isActive_Checked(object sender, RoutedEventArgs e)
         {
-            if (offers is null)
+                            try
+                            {
+                SectionData.StartAwait(grid_ucOffer);
+                if (offers is null)
                 await RefreshOffersList();
             tgl_offerState = 1;
             Tb_search_TextChanged(null, null);
+                SectionData.EndAwait(grid_ucOffer, this);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         private async void Tgl_isActive_Unchecked(object sender, RoutedEventArgs e)
         {
-            if (offers is null)
+                                try
+                                {
+                SectionData.StartAwait(grid_ucOffer);
+                                    if (offers is null)
                 await RefreshOffersList();
             tgl_offerState = 0;
             Tb_search_TextChanged(null, null);
+                SectionData.EndAwait(grid_ucOffer, this);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         private void translate()
@@ -209,9 +261,12 @@ namespace POS.View
         }
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {//load
+        {
+                                    try
+                                    {//load
+                SectionData.StartAwait(grid_ucOffer);
 
-            var dislist = new[] {
+                var dislist = new[] {
             new { Text = MainWindow.resourcemanager.GetString("trValueDiscount"), Value = "1" },
             new { Text = MainWindow.resourcemanager.GetString("trPercentageDiscount"), Value = "2" },
              };
@@ -308,78 +363,77 @@ namespace POS.View
 
             await RefreshOffersList();
             Tb_search_TextChanged(null, null);
+                SectionData.EndAwait(grid_ucOffer, this);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
-        #region Tab
-        /*
-        private void Btn_offerTab_Click(object sender, RoutedEventArgs e)
-        {
-            grid_offerOnItem.Visibility = Visibility.Collapsed;
-            grid_offer.Visibility = Visibility.Visible;
-            brd_offerItemsTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
-            brd_offerTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
-        }
-
-        private void btn_offerItems_Click(object sender, RoutedEventArgs e)
-        {
-            grid_offer.Visibility = Visibility.Collapsed;
-            grid_offerOnItem.Visibility = Visibility.Visible;
-            brd_offerTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
-            brd_offerItemsTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
-        }
-
-
-        */
-
-
-
-        #endregion
+        
 
         private async void Btn_items_Click(object sender, RoutedEventArgs e)
-        {//items
-            if (MainWindow.groupObject.HasPermissionAction(itemsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+        {
+                                        try
+                                        {//items
+                SectionData.StartAwait(grid_ucOffer);
+                if (MainWindow.groupObject.HasPermissionAction(itemsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
                 SectionData.clearValidate(tb_code, p_errorCode);
 
             itemUnits = await itemUnitsModel.Getall();
-            //itemUnitsQuery = itemUnits.Where(s => s.is == offer.offerId);
+       
 
             Window.GetWindow(this).Opacity = 0.2;
 
             wd_itemsOfferList w = new wd_itemsOfferList();
-            //w.selectedItems.AddRange();
+           
             w.offerId = offer.offerId;
             w.ShowDialog();
             if (w.isActive)
             {
-                //w.selectedItems.AddRange(itemUnits.ToList());
-                //foreach (var item in w.selectedItems)
-                //{
-                //    MessageBox.Show(item.barcode + "\t");
-                //}
+                 
             }
 
             Window.GetWindow(this).Opacity =1;
             }
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                SectionData.EndAwait(grid_ucOffer, this);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         private async void Btn_refresh_Click(object sender, RoutedEventArgs e)
-        {//refresh
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
+        {
+                                            try
+                                            {//refresh
+                SectionData.StartAwait(grid_ucOffer);
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
             {
                 await RefreshOffersList();
             Tb_search_TextChanged(null, null);
             }
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                SectionData.EndAwait(grid_ucOffer, this);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
-        {//export to excel
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
+        {
+                                                try
+                                                {//export to excel
+                                                    if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
             {
                 this.Dispatcher.Invoke(() =>
             {
@@ -391,6 +445,11 @@ namespace POS.View
             }
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         void FN_ExportToExcel()
@@ -418,21 +477,30 @@ namespace POS.View
         }
 
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
-        {//search
-            if (offers is null)
+        {
+                                                    try
+                                                    {//search
+                SectionData.StartAwait(grid_ucOffer);
+                if (offers is null)
                 await RefreshOffersList();
             searchText = tb_search.Text.ToLower();
             offersQuery = offers.Where(s => (s.code.ToLower().Contains(searchText) ||
             s.name.ToLower().Contains(searchText)
             ) && s.isActive == tgl_offerState);
             RefreshOfferView();
+                SectionData.EndAwait(grid_ucOffer, this);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         async Task<IEnumerable<Offer>> RefreshOffersList()
         {
-            MainWindow.mainWindow.StartAwait();
+            SectionData.StartAwait(grid_ucOffer);
             offers = await offerModel.GetOffersAsync();
-            MainWindow.mainWindow.EndAwait();
+                SectionData.EndAwait(grid_ucOffer, this);
             return offers;
         }
         void RefreshOfferView()
@@ -442,8 +510,10 @@ namespace POS.View
         }
 
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
-        {//clear
-            btn_items.IsEnabled = false;
+        {
+                                                        try
+                                                        {//clear
+                                                            btn_items.IsEnabled = false;
             tb_code.Clear();
             tb_name.Clear();
             tgl_ActiveOffer.IsChecked = true;
@@ -467,42 +537,85 @@ namespace POS.View
             SectionData.clearValidate(tbStartTime, p_errorStartTime);
             TextBox tbEndTime = (TextBox)tp_endTime.Template.FindName("PART_TextBox", tp_endTime);
             SectionData.clearValidate(tbEndTime, p_errorEndTime);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
       
         private void Tb_discountValue_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            Regex regex = new Regex("[^0-9]+");
+                                                            try
+                                                            {
+                                                                Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
        
         private void Tb_code_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {//only english and digits
-            Regex regex = new Regex("^[a-zA-Z0-9. -_?]*$");
+        {
+                                                                try
+                                                                {//only english and digits
+                                                                    Regex regex = new Regex("^[a-zA-Z0-9. -_?]*$");
             if (!regex.IsMatch(e.Text))
                 e.Handled = true;
-        }
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
+        
+}
 
         private void Tb_PreventSpaces(object sender, KeyEventArgs e)
         {
-            e.Handled = e.Key == Key.Space;
+                                                                    try
+                                                                    {
+                                                                        e.Handled = e.Key == Key.Space;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         private void Tb_validateEmptyTextChange(object sender, TextChangedEventArgs e)
         {
-            string name = sender.GetType().Name;
+                                                                        try
+                                                                        {
+                                                                            string name = sender.GetType().Name;
             validateEmpty(name, sender);
-        }
+                }
+                catch (Exception ex)
+                {
+                    SectionData.ExceptionMessage(ex);
+                }
+            }
 
         private void Tb_validateEmptyLostFocus(object sender, RoutedEventArgs e)
         {
-            string name = sender.GetType().Name;
+                                                                            try
+                                                                            {
+                                                                                string name = sender.GetType().Name;
             validateEmpty(name, sender);
-        }
+                    }
+                    catch (Exception ex)
+                    {
+                        SectionData.ExceptionMessage(ex);
+                    }
+                }
 
         private void validateEmpty(string name , object sender)
         {
-            if (name == "TextBox")
+                                                                                try
+                                                                                {
+                                                                                    if (name == "TextBox")
             {
                 if ((sender as TextBox).Name == "tb_code")
                     SectionData.validateEmptyTextBox((TextBox)sender, p_errorCode, tt_errorCode, "trEmptyCodeToolTip");
@@ -536,11 +649,18 @@ namespace POS.View
                     SectionData.validateEmptyTextBox(tb, p_errorEndTime, tt_errorEndTime, "trEmptyEndTimeToolTip");
                 }
             }
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         private void Dg_offer_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {//selection
-            SectionData.clearValidate(tb_name, p_errorName);
+        {
+                                                                                    try
+                                                                                    {//selection
+                                                                                        SectionData.clearValidate(tb_name, p_errorName);
             SectionData.clearValidate(tb_code, p_errorCode);
             SectionData.clearValidate(tb_discountValue, p_errorDiscountValue);
             SectionData.clearComboBoxValidate(cb_discountType, p_errorDiscountType);
@@ -602,11 +722,19 @@ namespace POS.View
                     #endregion
                 }
             }
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
-        {//delete
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete") || SectionData.isAdminPermision())
+        {
+                                                                                        try
+                                                                                        {//delete
+                SectionData.StartAwait(grid_ucOffer);
+                                                                                            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete") || SectionData.isAdminPermision())
             {
                 if (offer.offerId != 0)
             {
@@ -658,10 +786,17 @@ namespace POS.View
             }
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                SectionData.EndAwait(grid_ucOffer, this);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         private async void activate()
         {//activate
+                SectionData.StartAwait(grid_ucOffer);
             offer.isActive = 1;
 
             string s = await offerModel.Save(offer);
@@ -673,12 +808,16 @@ namespace POS.View
 
             await RefreshOffersList();
             Tb_search_TextChanged(null, null);
+            SectionData.EndAwait(grid_ucOffer, this);
 
         }
 
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
-        {//add
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add") || SectionData.isAdminPermision())
+        {
+                                                                                            try
+                                                                                            {//add
+                SectionData.StartAwait(grid_ucOffer);
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add") || SectionData.isAdminPermision())
             {
                 bool isCodeExist = await SectionData.isCodeExist(tb_code.Text, "" , "Offer");
             //chk empty code
@@ -767,10 +906,19 @@ namespace POS.View
             }
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                SectionData.EndAwait(grid_ucOffer, this);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
-        {//update
+        {
+                                                                                                try
+                                                                                                {//update
+                SectionData.StartAwait(grid_ucOffer);
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update") || SectionData.isAdminPermision())
                 {
 
@@ -858,35 +1006,62 @@ namespace POS.View
             }
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                SectionData.EndAwait(grid_ucOffer, this);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
+                                                                                                    try
+                                                                                                    {
+                                                                                                        if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
             {
             }
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
 
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         private void Btn_print_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
+                                                                                                        try
+                                                                                                        {
+                                                                                                            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
             {
             }
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
 
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         private void Btn_pieChart_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
+                                                                                                            try
+                                                                                                            {
+                                                                                                                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
             {
             }
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
     }
 }

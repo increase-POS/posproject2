@@ -91,7 +91,7 @@
                     CornerRadius="7" BorderBrush="Black" Background="White" Padding="0" Margin="10,0,5,0">
                 <DockPanel   Margin="10,0" LastChildFill="False">
                 <materialDesign:Badged VerticalAlignment="Center" Margin="7.5,5,7.5,0" DockPanel.Dock="Right" 
-                      BadgeColorZoneMode="PrimaryDark"  BadgeForeground="White"  Badge="+9">
+                      BadgeBackground="{StaticResource MainColorRed}"  BadgeForeground="White"  Badge="+9">
                     <Button Grid.Column="5" BorderBrush="{x:Null}" Padding="0" 
                     Background="{x:Null}" x:Name="btn_invoiceImages" Click="Btn_invoiceImage_Click"  >
                         <Path Fill="#4E4E4E" Stretch="Fill"  

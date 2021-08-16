@@ -77,37 +77,41 @@ namespace POS.View
         }
         public UC_store()
         {
-            InitializeComponent();
-            if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1440)
+            try
             {
-                txt_deleteButton.Visibility = Visibility.Visible;
-                txt_addButton.Visibility = Visibility.Visible;
-                txt_updateButton.Visibility = Visibility.Visible;
-                txt_add_Icon.Visibility = Visibility.Visible;
-                txt_update_Icon.Visibility = Visibility.Visible;
-                txt_delete_Icon.Visibility = Visibility.Visible;
-            }
-            else if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1360)
-            {
-                txt_add_Icon.Visibility = Visibility.Collapsed;
-                txt_update_Icon.Visibility = Visibility.Collapsed;
-                txt_delete_Icon.Visibility = Visibility.Collapsed;
-                txt_deleteButton.Visibility = Visibility.Visible;
-                txt_addButton.Visibility = Visibility.Visible;
-                txt_updateButton.Visibility = Visibility.Visible;
+                InitializeComponent();
+                if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1440)
+                {
+                    txt_deleteButton.Visibility = Visibility.Visible;
+                    txt_addButton.Visibility = Visibility.Visible;
+                    txt_updateButton.Visibility = Visibility.Visible;
+                    txt_add_Icon.Visibility = Visibility.Visible;
+                    txt_update_Icon.Visibility = Visibility.Visible;
+                    txt_delete_Icon.Visibility = Visibility.Visible;
+                }
+                else if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1360)
+                {
+                    txt_add_Icon.Visibility = Visibility.Collapsed;
+                    txt_update_Icon.Visibility = Visibility.Collapsed;
+                    txt_delete_Icon.Visibility = Visibility.Collapsed;
+                    txt_deleteButton.Visibility = Visibility.Visible;
+                    txt_addButton.Visibility = Visibility.Visible;
+                    txt_updateButton.Visibility = Visibility.Visible;
 
-            }
-            else
-            {
-                txt_deleteButton.Visibility = Visibility.Collapsed;
-                txt_addButton.Visibility = Visibility.Collapsed;
-                txt_updateButton.Visibility = Visibility.Collapsed;
-                txt_add_Icon.Visibility = Visibility.Visible;
-                txt_update_Icon.Visibility = Visibility.Visible;
-                txt_delete_Icon.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    txt_deleteButton.Visibility = Visibility.Collapsed;
+                    txt_addButton.Visibility = Visibility.Collapsed;
+                    txt_updateButton.Visibility = Visibility.Collapsed;
+                    txt_add_Icon.Visibility = Visibility.Visible;
+                    txt_update_Icon.Visibility = Visibility.Visible;
+                    txt_delete_Icon.Visibility = Visibility.Visible;
 
+                }
             }
-
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
         }
         //area code methods
         async Task<IEnumerable<CountryCode>> RefreshCountry()
@@ -148,6 +152,8 @@ namespace POS.View
         //end areacod
         private void DG_Store_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            try
+            { 
             p_errorBranch.Visibility = Visibility.Collapsed;
             p_errorCode.Visibility = Visibility.Collapsed;
             p_errorName.Visibility = Visibility.Collapsed;
@@ -166,50 +172,51 @@ namespace POS.View
                 this.DataContext = store;
             }
 
-            if (store != null)
-            {
-                SectionData.getMobile(store.mobile, cb_area, tb_mobile);
-
-                SectionData.getPhone(store.phone, cb_areaPhone, cb_areaPhoneLocal, tb_phone);
-
-                //parent branch
-                try
+                if (store != null)
                 {
-                    cb_branch.SelectedValue = store.parentId.Value;
-                }
-                catch
-                {
-                    cb_branch.SelectedValue = -1;
-                }
+                    SectionData.getMobile(store.mobile, cb_area, tb_mobile);
 
-                btn_stores.IsEnabled = true ;
+                    SectionData.getPhone(store.phone, cb_areaPhone, cb_areaPhoneLocal, tb_phone);
 
-                //delete
-                if (store.canDelete)
-                {
-                    txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trDelete");
-                    txt_delete_Icon.Kind =
-                             MaterialDesignThemes.Wpf.PackIconKind.Delete;
-                    tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
+                    //parent branch
+                    try
+                    {
+                        cb_branch.SelectedValue = store.parentId.Value;
+                    }
+                    catch
+                    {
+                        cb_branch.SelectedValue = -1;
+                    }
 
+                    btn_stores.IsEnabled = true;
+
+                    //delete
+                    if (store.canDelete)
+                    {
+                        txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trDelete");
+                        txt_delete_Icon.Kind =
+                                 MaterialDesignThemes.Wpf.PackIconKind.Delete;
+                        tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
+
+                    }
+                    else if (store.isActive == 0)
+                    {
+                        txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trActive");
+                        txt_delete_Icon.Kind =
+                         MaterialDesignThemes.Wpf.PackIconKind.Check;
+                        tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trActive");
+                    }
+                    else
+                    {
+                        txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trInActive");
+                        txt_delete_Icon.Kind =
+                             MaterialDesignThemes.Wpf.PackIconKind.Cancel;
+                        tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trInActive");
+                    }
                 }
-                else if (store.isActive == 0)
-                {
-                    txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trActive");
-                    txt_delete_Icon.Kind =
-                     MaterialDesignThemes.Wpf.PackIconKind.Check;
-                    tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trActive");
-                }
-                else
-                {
-                    txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trInActive");
-                    txt_delete_Icon.Kind =
-                         MaterialDesignThemes.Wpf.PackIconKind.Cancel;
-                    tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trInActive");
-                }
-            
         }
-
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
 
     }
     private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
@@ -220,16 +227,30 @@ namespace POS.View
 
     private void Tb_name_TextChanged(object sender, TextChangedEventArgs e)
     {
-        SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
+            try
+            {
+                SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
+            }
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
     }
     private void Tb_name_LostFocus(object sender, RoutedEventArgs e)
     {
-        SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
+            try
+            {
+                SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
+            }
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
     }
     private void Tb_email_LostFocus(object sender, RoutedEventArgs e)
     {
-        SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
-
+            try
+            {
+                SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
+            }
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
     }
 
     private void translate()
@@ -242,7 +263,6 @@ namespace POS.View
         MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_code, MainWindow.resourcemanager.GetString("trCodeHint"));
         txt_contentInformatin.Text = MainWindow.resourcemanager.GetString("trMoreInformation");
         MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_address, MainWindow.resourcemanager.GetString("trAdressHint"));
-        //MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_area, MainWindow.resourcemanager.GetString("trAreaHint"));
         MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_mobile, MainWindow.resourcemanager.GetString("trMobileHint"));
         MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_phone, MainWindow.resourcemanager.GetString("trPhoneHint"));
         MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_email, MainWindow.resourcemanager.GetString("trEmailHint"));
@@ -257,14 +277,14 @@ namespace POS.View
 
         btn_clear.ToolTip = MainWindow.resourcemanager.GetString("trClear");
 
-        tt_code.Content = MainWindow.resourcemanager.GetString("trCode");
-        tt_name.Content = MainWindow.resourcemanager.GetString("trName");
-        tt_branch.Content = MainWindow.resourcemanager.GetString("trParentBranch");
-        tt_mobile.Content = MainWindow.resourcemanager.GetString("trMobile");
-        tt_phone.Content = MainWindow.resourcemanager.GetString("trPhone");
-        tt_email.Content = MainWindow.resourcemanager.GetString("trEmail");
-        tt_address.Content = MainWindow.resourcemanager.GetString("trAddress");
-        tt_notes.Content = MainWindow.resourcemanager.GetString("trNote");
+        //tt_code.Content = MainWindow.resourcemanager.GetString("trCode");
+        //tt_name.Content = MainWindow.resourcemanager.GetString("trName");
+        //tt_branch.Content = MainWindow.resourcemanager.GetString("trParentBranch");
+        //tt_mobile.Content = MainWindow.resourcemanager.GetString("trMobile");
+        //tt_phone.Content = MainWindow.resourcemanager.GetString("trPhone");
+        //tt_email.Content = MainWindow.resourcemanager.GetString("trEmail");
+        //tt_address.Content = MainWindow.resourcemanager.GetString("trAddress");
+        //tt_notes.Content = MainWindow.resourcemanager.GetString("trNote");
         tt_search.Content = MainWindow.resourcemanager.GetString("trSearch");
 
         tt_add_Button.Content = MainWindow.resourcemanager.GetString("trAdd");
@@ -281,104 +301,116 @@ namespace POS.View
 
     private void Btn_clear_Click(object sender, RoutedEventArgs e)
     {//clear
-        tb_code.Clear();
-        tb_name.Clear();
-        cb_branch.SelectedIndex = -1;
-        tb_address.Clear();
-        tb_notes.Clear();
-        tb_email.Clear();
-       
-        tb_mobile.Clear();
-        cb_areaPhone.SelectedIndex = 8;
-        cb_area.SelectedIndex = 8;
-        tb_phone.Clear();
+            try
+            {
+                tb_code.Clear();
+                tb_name.Clear();
+                cb_branch.SelectedIndex = -1;
+                tb_address.Clear();
+                tb_notes.Clear();
+                tb_email.Clear();
 
-        btn_stores.IsEnabled = false;
+                tb_mobile.Clear();
+                cb_areaPhone.SelectedIndex = 8;
+                cb_area.SelectedIndex = 8;
+                tb_phone.Clear();
 
-        p_errorBranch.Visibility = Visibility.Collapsed;
-        p_errorCode.Visibility = Visibility.Collapsed;
-        p_errorName.Visibility = Visibility.Collapsed;
-        p_errorMobile.Visibility = Visibility.Collapsed;
-        p_errorEmail.Visibility = Visibility.Collapsed;
+                btn_stores.IsEnabled = false;
 
-        cb_branch.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-        tb_code.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-        tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-        tb_mobile.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-        tb_email.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                p_errorBranch.Visibility = Visibility.Collapsed;
+                p_errorCode.Visibility = Visibility.Collapsed;
+                p_errorName.Visibility = Visibility.Collapsed;
+                p_errorMobile.Visibility = Visibility.Collapsed;
+                p_errorEmail.Visibility = Visibility.Collapsed;
 
+                cb_branch.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                tb_code.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                tb_mobile.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                tb_email.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            }
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
     }
 
     private async void Btn_add_Click(object sender, RoutedEventArgs e)
     {//add
-            
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add") || SectionData.isAdminPermision())
-                {
-                store.branchId = 0;
-
-        bool iscodeExist = await SectionData.isCodeExist(tb_code.Text, "s", "Branch", 0);
-        //chk empty branch
-        SectionData.validateEmptyComboBox(cb_branch, p_errorBranch, tt_errorBranch, "trEmptyBranchToolTip");
-        //chk empty code
-        SectionData.validateEmptyTextBox(tb_code, p_errorCode, tt_errorCode, "trEmptyCodeToolTip");
-        //chk empty name
-        SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
-        //chk empty mobile
-        SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
-        //validate email
-        SectionData.validateEmail(tb_email, p_errorEmail, tt_email);
-
-        string phoneStr = "";
-        if (!tb_phone.Text.Equals("")) phoneStr = cb_areaPhone.Text + "-" + cb_areaPhoneLocal.Text + "-" + tb_phone.Text;
-
-        bool emailError = false;
-
-        if (!tb_email.Text.Equals(""))
-            if (!SectionData.IsValid(tb_email.Text))
-                emailError = true;
-
-            if ((!tb_name.Text.Equals("")) && (!tb_mobile.Text.Equals("")) && (!tb_code.Text.Equals("")) && (!cb_branch.Text.Equals("")))
+            try
             {
-                if ((emailError) || (iscodeExist))
+                SectionData.StartAwait(grid_ucStore);
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add") || SectionData.isAdminPermision())
                 {
-                    if (emailError)
-                        SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
-                    //duplicate
-                    if (iscodeExist)
-                        SectionData.validateDuplicateCode(tb_code, p_errorCode, tt_errorCode, "trDuplicateCodeToolTip");
+                    store.branchId = 0;
+                    #region validate
+                    bool iscodeExist = await SectionData.isCodeExist(tb_code.Text, "s", "Branch", 0);
+                    //chk empty branch
+                    SectionData.validateEmptyComboBox(cb_branch, p_errorBranch, tt_errorBranch, "trEmptyBranchToolTip");
+                    //chk empty code
+                    SectionData.validateEmptyTextBox(tb_code, p_errorCode, tt_errorCode, "trEmptyCodeToolTip");
+                    //chk empty name
+                    SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
+                    //chk empty mobile
+                    SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
+                    //validate email
+                    SectionData.validateEmail(tb_email, p_errorEmail, tt_email);
+                    #endregion
+                    string phoneStr = "";
+                    if (!tb_phone.Text.Equals("")) phoneStr = cb_areaPhone.Text + "-" + cb_areaPhoneLocal.Text + "-" + tb_phone.Text;
+
+                    bool emailError = false;
+
+                    if (!tb_email.Text.Equals(""))
+                        if (!SectionData.IsValid(tb_email.Text))
+                            emailError = true;
+
+                    if ((!tb_name.Text.Equals("")) && (!tb_mobile.Text.Equals("")) && (!tb_code.Text.Equals("")) && (!cb_branch.Text.Equals("")))
+                    {
+                        if ((emailError) || (iscodeExist))
+                        {
+                            if (emailError)
+                                SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
+                            //duplicate
+                            if (iscodeExist)
+                                SectionData.validateDuplicateCode(tb_code, p_errorCode, tt_errorCode, "trDuplicateCodeToolTip");
+                        }
+                        else
+                        {
+                            store.code = tb_code.Text;
+                            store.name = tb_name.Text;
+                            store.notes = tb_notes.Text;
+                            store.address = tb_address.Text;
+                            store.email = tb_email.Text;
+                            store.phone = phoneStr;
+                            store.mobile = cb_area.Text + "-" + tb_mobile.Text;
+                            store.createUserId = MainWindow.userID;
+                            store.updateUserId = MainWindow.userID;
+                            store.type = "s";
+                            store.isActive = 1;
+                            store.parentId = Convert.ToInt32(cb_branch.SelectedValue);
+
+                            string s = await storeModel.saveBranch(store);
+                            if (!s.Equals("-1"))
+                            {
+                                AddFreeThone(int.Parse(s));
+                            }
+                            else
+                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+                            await RefreshStoresList();
+                            Tb_search_TextChanged(null, null);
+                            fillComboBranchParent();
+                        }
+                    }
                 }
                 else
-                {
-                    store.code = tb_code.Text;
-                    store.name = tb_name.Text;
-                    store.notes = tb_notes.Text;
-                    store.address = tb_address.Text;
-                    store.email = tb_email.Text;
-                    store.phone = phoneStr;
-                    store.mobile = cb_area.Text + "-" + tb_mobile.Text;
-                    store.createUserId = MainWindow.userID;
-                    store.updateUserId = MainWindow.userID;
-                    store.type = "s";
-                    store.isActive = 1;
-                    store.parentId = Convert.ToInt32(cb_branch.SelectedValue);
-
-                    string s = await storeModel.saveBranch(store);
-                    if (!s.Equals("-1"))
-                    {
-                        AddFreeThone(int.Parse(s));
-                    }
-                    else 
-                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-
-                    await RefreshStoresList();
-                    Tb_search_TextChanged(null, null);
-                    fillComboBranchParent();
-                }
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                SectionData.EndAwait(grid_ucStore , this);
             }
+            catch(Exception ex)
+            {
+                SectionData.EndAwait(grid_ucStore , this);
+                SectionData.ExceptionMessage(ex);
             }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-
         }
         async void AddFreeThone(int branchId)
         {
@@ -428,142 +460,156 @@ namespace POS.View
 
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
     {//update
-            
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update") || SectionData.isAdminPermision())
+            try
+            {
+                SectionData.StartAwait(grid_ucStore);
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update") || SectionData.isAdminPermision())
                 {
-                bool iscodeExist = await SectionData.isCodeExist(tb_code.Text, "s", "Branch", store.branchId);
+                    bool iscodeExist = await SectionData.isCodeExist(tb_code.Text, "s", "Branch", store.branchId);
+                    #region validate
+                    //chk empty branch
+                    SectionData.validateEmptyComboBox(cb_branch, p_errorBranch, tt_errorBranch, "trEmptyBranchToolTip");
+                    //chk empty code
+                    SectionData.validateEmptyTextBox(tb_code, p_errorCode, tt_errorCode, "trEmptyCodeToolTip");
+                    //chk empty name
+                    SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
+                    //chk empty mobile
+                    SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
+                    //validate email
+                    SectionData.validateEmail(tb_email, p_errorEmail, tt_email);
+                    #endregion
+                    string phoneStr = "";
+                    if (!tb_phone.Text.Equals("")) phoneStr = cb_areaPhone.Text + "-" + cb_areaPhoneLocal.Text + "-" + tb_phone.Text;
 
-        //chk empty branch
-        SectionData.validateEmptyComboBox(cb_branch, p_errorBranch, tt_errorBranch, "trEmptyBranchToolTip");
-        //chk empty code
-        SectionData.validateEmptyTextBox(tb_code, p_errorCode, tt_errorCode, "trEmptyCodeToolTip");
-        //chk empty name
-        SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
-        //chk empty mobile
-        SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
-        //validate email
-        SectionData.validateEmail(tb_email, p_errorEmail, tt_email);
+                    bool emailError = false;
 
-        string phoneStr = "";
-        if (!tb_phone.Text.Equals("")) phoneStr = cb_areaPhone.Text + "-" + cb_areaPhoneLocal.Text + "-" + tb_phone.Text;
+                    if (!tb_email.Text.Equals(""))
+                        if (!SectionData.IsValid(tb_email.Text))
+                            emailError = true;
+                    if ((!tb_name.Text.Equals("")) && (!tb_mobile.Text.Equals("")) && (!tb_code.Text.Equals("")) && (!cb_branch.Text.Equals("")))
+                    {
+                        if ((emailError) || (iscodeExist))
+                        {
+                            if (emailError)
+                                SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
+                            if (iscodeExist)
+                                SectionData.validateDuplicateCode(tb_code, p_errorCode, tt_errorCode, "trDuplicateCodeToolTip");
+                        }
+                        else
+                        {
+                            store.code = tb_code.Text;
+                            store.name = tb_name.Text;
+                            store.notes = tb_notes.Text;
+                            store.address = tb_address.Text;
+                            store.email = tb_email.Text;
+                            store.phone = phoneStr;
+                            store.mobile = cb_area.Text + "-" + tb_mobile.Text;
+                            store.updateUserId = MainWindow.userID;
+                            store.type = "s";
+                            store.isActive = 1;
+                            store.parentId = Convert.ToInt32(cb_branch.SelectedValue);
 
-        bool emailError = false;
+                            string s = await storeModel.saveBranch(store);
 
-        if (!tb_email.Text.Equals(""))
-            if (!SectionData.IsValid(tb_email.Text))
-                emailError = true;
-        if ((!tb_name.Text.Equals("")) && (!tb_mobile.Text.Equals("")) && (!tb_code.Text.Equals("")) && (!cb_branch.Text.Equals("")))
-        {
-            if ((emailError) || (iscodeExist))
+                            if (!s.Equals("-1"))
+                                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
+                            else
+                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+                            await RefreshStoresList();
+                            Tb_search_TextChanged(null, null);
+                            fillComboBranchParent();
+                            cb_branch.SelectedValue = store.parentId;
+
+                            SectionData.getMobile(store.mobile, cb_area, tb_mobile);
+
+                            SectionData.getPhone(store.phone, cb_areaPhone, cb_areaPhoneLocal, tb_phone);
+
+                        }
+                    }
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                SectionData.EndAwait(grid_ucStore , this);
+            }
+            catch(Exception ex)
             {
-                if (emailError)
-                    SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
-                if (iscodeExist)
-                    SectionData.validateDuplicateCode(tb_code, p_errorCode, tt_errorCode, "trDuplicateCodeToolTip");
+                SectionData.EndAwait(grid_ucStore , this);
+                SectionData.ExceptionMessage(ex);
             }
-            else
-            {
-                //SectionData.genRandomCode("s", "Branch");
-                //tb_code.Text = SectionData.code;
-
-                store.code = tb_code.Text;
-                store.name = tb_name.Text;
-                store.notes = tb_notes.Text;
-                store.address = tb_address.Text;
-                store.email = tb_email.Text;
-                store.phone = phoneStr;
-                store.mobile = cb_area.Text + "-" + tb_mobile.Text;
-                store.updateUserId = MainWindow.userID;
-                store.type = "s";
-                store.isActive = 1;
-                store.parentId = Convert.ToInt32(cb_branch.SelectedValue);
-
-                string s = await storeModel.saveBranch(store);
-
-                    if (!s.Equals("-1")) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));
-                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
-                else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-
-                await RefreshStoresList();
-                Tb_search_TextChanged(null, null);
-                    fillComboBranchParent();
-                    cb_branch.SelectedValue = store.parentId;
-
-                SectionData.getMobile(store.mobile, cb_area, tb_mobile);
-
-                SectionData.getPhone(store.phone, cb_areaPhone, cb_areaPhoneLocal, tb_phone);
-
-            }
-        }
-            }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-
         }
 
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {//delete
-
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete") || SectionData.isAdminPermision())
+            try
             {
-                if (store.branchId != 1 && store.branchId != 2)
+                SectionData.StartAwait(grid_ucStore);
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete") || SectionData.isAdminPermision())
                 {
-                    if (store.branchId != 0)
+                    if (store.branchId != 1 && store.branchId != 2)
                     {
-                        if ((!store.canDelete) && (store.isActive == 0))
+                        if (store.branchId != 0)
                         {
-                            #region
-                            Window.GetWindow(this).Opacity = 0.2;
-                            wd_acceptCancelPopup w = new wd_acceptCancelPopup();
-                            w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
-                            w.ShowDialog();
-                            Window.GetWindow(this).Opacity = 1;
-                            #endregion
-                            if (w.isOk)
-                                activate();
-                        }
-                        else
-                        {
-
-                            #region
-                            Window.GetWindow(this).Opacity = 0.2;
-                            wd_acceptCancelPopup w = new wd_acceptCancelPopup();
-                            if (store.canDelete)
-                                w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDelete");
-                            if (!store.canDelete)
-                                w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDeactivate");
-                            w.ShowDialog();
-                            Window.GetWindow(this).Opacity = 1;
-                            #endregion
-                            if (w.isOk)
+                            if ((!store.canDelete) && (store.isActive == 0))
                             {
-                                string popupContent = "";
-                                if (store.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
-                                if ((!store.canDelete) && (store.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
-
-                                bool b = await storeModel.deleteBranch(store.branchId, MainWindow.userID.Value, store.canDelete);
-
-                                if (b) //SectionData.popUpResponse("", popupContent);
-                                    Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
-                                else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                                #region
+                                Window.GetWindow(this).Opacity = 0.2;
+                                wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                                w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
+                                w.ShowDialog();
+                                Window.GetWindow(this).Opacity = 1;
+                                #endregion
+                                if (w.isOk)
+                                    activate();
                             }
+                            else
+                            {
+
+                                #region
+                                Window.GetWindow(this).Opacity = 0.2;
+                                wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                                if (store.canDelete)
+                                    w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDelete");
+                                if (!store.canDelete)
+                                    w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDeactivate");
+                                w.ShowDialog();
+                                Window.GetWindow(this).Opacity = 1;
+                                #endregion
+                                if (w.isOk)
+                                {
+                                    string popupContent = "";
+                                    if (store.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
+                                    if ((!store.canDelete) && (store.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
+
+                                    bool b = await storeModel.deleteBranch(store.branchId, MainWindow.userID.Value, store.canDelete);
+
+                                    if (b)
+                                        Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
+                                    else
+                                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                                }
+                            }
+
+                            await RefreshStoresList();
+                            Tb_search_TextChanged(null, null);
+                            fillComboBranchParent();
                         }
 
-                        await RefreshStoresList();
-                        Tb_search_TextChanged(null, null);
-                        fillComboBranchParent();
+                        else
+                            Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trCannotDeleteTheMainPos"), animation: ToasterAnimation.FadeIn);
+
+                        //clear textBoxs
+                        Btn_clear_Click(sender, e);
                     }
-
                     else
-                        Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trCannotDeleteTheMainPos"), animation: ToasterAnimation.FadeIn);
-
-                    //clear textBoxs
-                    Btn_clear_Click(sender, e);
+                        Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
                 }
-                else
-                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                SectionData.EndAwait(grid_ucStore, this);
+            }
+            catch(Exception ex)
+            {
+                SectionData.EndAwait(grid_ucStore , this);
+                SectionData.ExceptionMessage(ex);
             }
         }
     private async void activate()
@@ -572,9 +618,9 @@ namespace POS.View
 
         string s = await storeModel.saveBranch(store);
 
-        if (!s.Equals("-1"))  //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopActive"));
+        if (!s.Equals("-1"))  
                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
-        else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+        else 
             Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
         await RefreshStoresList();
@@ -583,38 +629,45 @@ namespace POS.View
 
     private async void UserControl_Loaded(object sender, RoutedEventArgs e)
     {//load
-        if (MainWindow.lang.Equals("en"))
-        { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
-                grid_ucStore.FlowDirection = FlowDirection.LeftToRight; }
-        else
-        { MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
-                grid_ucStore.FlowDirection = FlowDirection.RightToLeft; }
+            try
+            {
+                SectionData.StartAwait(grid_ucStore);
+                if (MainWindow.lang.Equals("en"))
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                    grid_ucStore.FlowDirection = FlowDirection.LeftToRight;
+                }
+                else
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                    grid_ucStore.FlowDirection = FlowDirection.RightToLeft;
+                }
 
-        translate();
-        //fill combo
-        //var branches = await branchModel.GetBranchesAsync("b");
-        //cb_branch.ItemsSource = branches;
-        fillComboBranchParent();
+                translate();
+                //fill combo
+                fillComboBranchParent();
 
-        cb_area.SelectedIndex = 0;
-        cb_areaPhone.SelectedIndex = 0;
-        cb_areaPhoneLocal.SelectedIndex = 0;
-        //if(cb_branch.Items.Count > 0)
-        //    cb_branch.SelectedIndex = 0;
-        fillCountries();
-        fillCity();
+                cb_area.SelectedIndex = 0;
+                cb_areaPhone.SelectedIndex = 0;
+                cb_areaPhoneLocal.SelectedIndex = 0;
 
-            Keyboard.Focus(tb_code);
+                fillCountries();
+                fillCity();
 
-            btn_stores.IsEnabled = false;
+                Keyboard.Focus(tb_code);
 
-        //SectionData.genRandomCode("s", "Branch");
-        //tb_code.Text = SectionData.code;
+                btn_stores.IsEnabled = false;
 
-            this.Dispatcher.Invoke(() =>
-        {
-            Tb_search_TextChanged(null, null);
-        });
+                this.Dispatcher.Invoke(() =>
+            {
+                Tb_search_TextChanged(null, null);
+            });
+            }
+            catch(Exception ex)
+            {
+                SectionData.EndAwait(grid_ucStore , this);
+                SectionData.ExceptionMessage(ex);
+            }
     }
         async void fillComboBranchParent()
         {
@@ -626,42 +679,41 @@ namespace POS.View
         }
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
         {//search
-            
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
+            try
+            {
+                SectionData.StartAwait(grid_ucStore);
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
                 {
-                p_errorName.Visibility = Visibility.Collapsed;
-                tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                    p_errorName.Visibility = Visibility.Collapsed;
+                    tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
 
-                if (stores is null)
-                    await RefreshStoresList();
-                searchText = tb_search.Text.ToLower();
-                storesQuery = stores.Where(s => (s.code.ToLower().Contains(searchText) ||
-                s.name.ToLower().Contains(searchText) ||
-                s.mobile.ToLower().Contains(searchText)
-                ) && s.isActive == tgl_storeState);
-                RefreshStoreView();
+                    if (stores is null)
+                        await RefreshStoresList();
+                    searchText = tb_search.Text.ToLower();
+                    storesQuery = stores.Where(s => (s.code.ToLower().Contains(searchText) ||
+                    s.name.ToLower().Contains(searchText) ||
+                    s.mobile.ToLower().Contains(searchText)
+                    ) && s.isActive == tgl_storeState);
+                    RefreshStoreView();
+                }
+                SectionData.EndAwait(grid_ucStore , this);
+            }
+            catch(Exception ex)
+            {
+                SectionData.EndAwait(grid_ucStore , this);
+                SectionData.ExceptionMessage(ex);
             }
         }
 
     private void cb_branch_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        //try
-        //{
-        // ParentId = Convert.ToInt32(cb_branch.SelectedValue);
-        //}
-        //catch 
-        //{
-        //  ParentId = 0;
-        //}
-        //MessageBox.Show(ParentId.ToString());
     }
 
         async Task<IEnumerable<Branch>> RefreshStoresList()
         {
-
-            MainWindow.mainWindow.StartAwait();
+            SectionData.StartAwait(grid_ucStore);
             stores = await storeModel.GetBranchesAsync("s");
-            MainWindow.mainWindow.EndAwait();
+            SectionData.EndAwait(grid_ucStore , this);
             return stores;
         }
         void RefreshStoreView()
@@ -674,30 +726,58 @@ namespace POS.View
 
     private async void tgl_storeIsActive_Checked(object sender, RoutedEventArgs e)
     {
-        if (stores is null)
-            await RefreshStoresList();
-        tgl_storeState = 1;
-        Tb_search_TextChanged(null, null);
+            try
+            {
+                SectionData.StartAwait(grid_ucStore);
+                if (stores is null)
+                    await RefreshStoresList();
+                tgl_storeState = 1;
+                Tb_search_TextChanged(null, null);
+                SectionData.EndAwait(grid_ucStore, this);
+            }
+            catch(Exception ex)
+            {
+                SectionData.EndAwait(grid_ucStore , this);
+                SectionData.ExceptionMessage(ex);
+            }
     }
 
     private async void tgl_storeIsActive_Unchecked(object sender, RoutedEventArgs e)
     {
-        if (stores is null)
-            await RefreshStoresList();
-        tgl_storeState = 0;
-        Tb_search_TextChanged(null, null);
+            try
+            {
+                SectionData.StartAwait(grid_ucStore);
+                if (stores is null)
+                    await RefreshStoresList();
+                tgl_storeState = 0;
+                Tb_search_TextChanged(null, null);
+                SectionData.EndAwait(grid_ucStore, this);
+            }
+            catch(Exception ex)
+            {
+                SectionData.EndAwait(grid_ucStore , this);
+                SectionData.ExceptionMessage(ex);
+            }
     }
 
     private void tb_mobile_TextChanged(object sender, TextChangedEventArgs e)
     {
-        SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
-
+            try
+            {
+                SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
+            }
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
     }
 
     private void tb_mobile_LostFocus(object sender, RoutedEventArgs e)
     {
-        SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
-
+            try
+            {
+                SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
+            }
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
     }
 
     
@@ -719,77 +799,111 @@ namespace POS.View
 
     private void tb_code_LostFocus(object sender, RoutedEventArgs e)
     {
-        SectionData.validateEmptyTextBox(tb_code, p_errorCode, tt_errorCode, "trEmptyCodeToolTip");
+            try
+            {
+                SectionData.validateEmptyTextBox(tb_code, p_errorCode, tt_errorCode, "trEmptyCodeToolTip");
+            }
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
     }
 
     private void tb_code_TextChanged(object sender, TextChangedEventArgs e)
     {
-        SectionData.validateEmptyTextBox(tb_code, p_errorCode, tt_errorCode, "trEmptyCodeToolTip");
+            try
+            {
+                SectionData.validateEmptyTextBox(tb_code, p_errorCode, tt_errorCode, "trEmptyCodeToolTip");
+            }
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
+
     }
 
     private void cb_branch_LostFocus(object sender, RoutedEventArgs e)
     {
-        SectionData.validateEmptyComboBox(cb_branch, p_errorBranch, tt_errorBranch, "trEmptyBranchToolTip");
+            try
+            {
+                SectionData.validateEmptyComboBox(cb_branch, p_errorBranch, tt_errorBranch, "trEmptyBranchToolTip");
+            }
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
     }
 
     private async void Cb_areaPhone_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        if (firstchange == true)
-        {
-            if (cb_areaPhone.SelectedValue != null)
+            try
             {
-                if (cb_areaPhone.SelectedIndex >= 0)
-                    countryid = int.Parse(cb_areaPhone.SelectedValue.ToString());
-                    if (citynum is null)
-                        await RefreshCity();
-                    citynumofcountry = citynum.Where(b => b.countryId == countryid).OrderBy(b => b.cityCode).ToList();
-
-                cb_areaPhoneLocal.ItemsSource = citynumofcountry;
-                cb_areaPhoneLocal.SelectedValuePath = "cityId";
-                cb_areaPhoneLocal.DisplayMemberPath = "cityCode";
-                if (citynumofcountry.Count() > 0)
+                SectionData.StartAwait(grid_ucStore);
+                if (firstchange == true)
                 {
+                    if (cb_areaPhone.SelectedValue != null)
+                    {
+                        if (cb_areaPhone.SelectedIndex >= 0)
+                            countryid = int.Parse(cb_areaPhone.SelectedValue.ToString());
+                        if (citynum is null)
+                            await RefreshCity();
+                        citynumofcountry = citynum.Where(b => b.countryId == countryid).OrderBy(b => b.cityCode).ToList();
 
-                    cb_areaPhoneLocal.Visibility = Visibility.Visible;
+                        cb_areaPhoneLocal.ItemsSource = citynumofcountry;
+                        cb_areaPhoneLocal.SelectedValuePath = "cityId";
+                        cb_areaPhoneLocal.DisplayMemberPath = "cityCode";
+                        if (citynumofcountry.Count() > 0)
+                        {
+
+                            cb_areaPhoneLocal.Visibility = Visibility.Visible;
+                        }
+                        else
+                        {
+                            cb_areaPhoneLocal.Visibility = Visibility.Collapsed;
+                        }
+
+                    }
                 }
                 else
                 {
-                    cb_areaPhoneLocal.Visibility = Visibility.Collapsed;
+                    firstchange = true;
                 }
-
+                SectionData.EndAwait(grid_ucStore, this);
             }
-        }
-        else
-        {
-            firstchange = true;
-        }
+            catch(Exception ex)
+            {
+                SectionData.EndAwait(grid_ucStore , this);
+                SectionData.ExceptionMessage(ex);
+            }
     }
 
     private void Btn_refresh_Click(object sender, RoutedEventArgs e)
     {
-            
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
+            try
+            {
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
                 {
-                RefreshStoresList();
-                Tb_search_TextChanged(null, null);
+                    RefreshStoresList();
+                    Tb_search_TextChanged(null, null);
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
             }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
     }
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {
-            
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
-                {
-                this.Dispatcher.Invoke(() =>
+            try
             {
-                Thread t1 = new Thread(FN_ExportToExcel);
-                t1.SetApartmentState(ApartmentState.STA);
-                t1.Start();
-            });
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
+                {
+                    this.Dispatcher.Invoke(() =>
+                {
+                    Thread t1 = new Thread(FN_ExportToExcel);
+                    t1.SetApartmentState(ApartmentState.STA);
+                    t1.Start();
+                });
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
             }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
         }
 
         void FN_ExportToExcel()
@@ -818,89 +932,102 @@ namespace POS.View
 
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
     {
-            
+            try
+            {
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
                 {
-                List<ReportParameter> paramarr = new List<ReportParameter>();
+                    List<ReportParameter> paramarr = new List<ReportParameter>();
 
-                string addpath;
+                    string addpath;
 
-            bool isArabic = ReportCls.checkLang();
-            if (isArabic)
-            {
-                addpath = @"\Reports\SectionData\Ar\ArStoreReport.rdlc";
-            }
-            else addpath = @"\Reports\SectionData\En\StoreReport.rdlc";
-          
-        string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+                    bool isArabic = ReportCls.checkLang();
+                    if (isArabic)
+                    {
+                        addpath = @"\Reports\SectionData\Ar\ArStoreReport.rdlc";
+                    }
+                    else addpath = @"\Reports\SectionData\En\StoreReport.rdlc";
 
-            ReportCls.checkLang();
+                    string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
-            clsReports.branchReport(storesQuery, rep, reppath);
-            clsReports.setReportLanguage(paramarr);
-            clsReports.Header(paramarr);
+                    ReportCls.checkLang();
 
-            rep.SetParameters(paramarr);
+                    clsReports.branchReport(storesQuery, rep, reppath);
+                    clsReports.setReportLanguage(paramarr);
+                    clsReports.Header(paramarr);
 
-        rep.Refresh();
+                    rep.SetParameters(paramarr);
 
-        saveFileDialog.Filter = "PDF|*.pdf;";
+                    rep.Refresh();
 
-        if (saveFileDialog.ShowDialog() == true)
-        {
+                    saveFileDialog.Filter = "PDF|*.pdf;";
 
-            string filepath = saveFileDialog.FileName;
-            LocalReportExtensions.ExportToPDF(rep, filepath);
+                    if (saveFileDialog.ShowDialog() == true)
+                    {
 
-        }
+                        string filepath = saveFileDialog.FileName;
+                        LocalReportExtensions.ExportToPDF(rep, filepath);
+
+                    }
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
             }
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
+            }
 
             private void Btn_print_Click(object sender, RoutedEventArgs e)
     {
-            
-                    if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
-                {
-                List<ReportParameter> paramarr = new List<ReportParameter>();
-
-                string addpath;
-
-            bool isArabic = ReportCls.checkLang();
-            if (isArabic)
+            try
             {
-                addpath = @"\Reports\SectionData\Ar\ArStoreReport.rdlc";
-            }
-            else addpath = @"\Reports\SectionData\En\StoreReport.rdlc";
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
+                {
+                    List<ReportParameter> paramarr = new List<ReportParameter>();
 
-            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+                    string addpath;
 
-            ReportCls.checkLang();
-
-            clsReports.branchReport(storesQuery, rep, reppath);
-            clsReports.setReportLanguage(paramarr);
-            clsReports.Header(paramarr);
-
-            rep.SetParameters(paramarr);
-            rep.Refresh();
-        LocalReportExtensions.PrintToPrinter(rep);
+                    bool isArabic = ReportCls.checkLang();
+                    if (isArabic)
+                    {
+                        addpath = @"\Reports\SectionData\Ar\ArStoreReport.rdlc";
                     }
-                    else
-                        Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                    else addpath = @"\Reports\SectionData\En\StoreReport.rdlc";
+
+                    string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+                    ReportCls.checkLang();
+
+                    clsReports.branchReport(storesQuery, rep, reppath);
+                    clsReports.setReportLanguage(paramarr);
+                    clsReports.Header(paramarr);
+
+                    rep.SetParameters(paramarr);
+                    rep.Refresh();
+                    LocalReportExtensions.PrintToPrinter(rep);
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+            }
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
                 }
                 private void btn_pieChart_Click(object sender, RoutedEventArgs e)
         {
-            
-                        if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
+            try
+            {
+
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
                 {
-                            Window.GetWindow(this).Opacity = 0.2;
-            win_lvc win = new win_lvc(storesQuery, 4, false);
-            win.ShowDialog();
-            Window.GetWindow(this).Opacity = 1;
-                        }
-                        else
-                            Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                    Window.GetWindow(this).Opacity = 0.2;
+                    win_lvc win = new win_lvc(storesQuery, 4, false);
+                    win.ShowDialog();
+                    Window.GetWindow(this).Opacity = 1;
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+            }
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
                     }
                     private void Tb_code_PreviewTextInput(object sender, TextCompositionEventArgs e)
     {
@@ -923,28 +1050,34 @@ namespace POS.View
 
         private void Btn_stores_Click(object sender, RoutedEventArgs e)
         {//stores
-            
-            if (MainWindow.groupObject.HasPermissionAction(storesPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
-                {
-                Window.GetWindow(this).Opacity = 0.2;
-
-            wd_branchesList w = new wd_branchesList();
-
-            w.Id = store.branchId;
-            w.userOrBranch = 's';
-            w.ShowDialog();
-            if (w.isActive)
+            try
             {
+                if (MainWindow.groupObject.HasPermissionAction(storesPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+                {
+                    Window.GetWindow(this).Opacity = 0.2;
 
+                    wd_branchesList w = new wd_branchesList();
+
+                    w.Id = store.branchId;
+                    w.userOrBranch = 's';
+                    w.ShowDialog();
+                    if (w.isActive)
+                    {
+
+                    }
+
+                    Window.GetWindow(this).Opacity = 1;
+
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
             }
-
-            Window.GetWindow(this).Opacity = 1;
-
+            catch(Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
             }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-        }
-
+            }
+        
 
     }
 }
