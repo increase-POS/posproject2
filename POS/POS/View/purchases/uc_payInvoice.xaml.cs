@@ -1656,8 +1656,9 @@ namespace POS.View
         //print
         private async void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {
-            try {
-            SectionData.StartAwait(grid_ucPayInvoice);
+
+            try
+            {
                 if (invoice.invType == "pd" || invoice.invType == "sd" || invoice.invType == "qd"
                || invoice.invType == "sbd" || invoice.invType == "pbd"
                || invoice.invType == "ord" || invoice.invType == "imd" || invoice.invType == "exd")
@@ -1666,39 +1667,16 @@ namespace POS.View
                 }
                 else
                 {
-                   
+                    //  ReportCls rr = new ReportCls();
+                    // MessageBox.Show(rr.GetLogoImagePath());
+
                     List<ReportParameter> paramarr = new List<ReportParameter>();
 
-                    string addpath;
-                    bool isArabic = ReportCls.checkLang();
-                    if (isArabic)
-                    {
-                        if (invoice.invType == "or" || invoice.invType == "po")
-                        {
-                            addpath = @"\Reports\Purchase\Ar\ArInvPurOrderReport.rdlc";
-                        }
-                        else
-                        {
-                            addpath = @"\Reports\Purchase\Ar\ArInvPurReport.rdlc";
-                        }
-
-                    }
-                    else
-                    {
-                        if (invoice.invType == "or" || invoice.invType == "po")
-                        {
-                            addpath = @"\Reports\Purchase\En\InvPurOrderReport.rdlc";
-                        }
-                        else
-                        {
-                            addpath = @"\Reports\Purchase\En\InvPurReport.rdlc";
-                        }
-                    }
 
 
                     //
 
-                    string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+                    string reppath = reportclass.GetpayInvoiceRdlcpath(invoice);
                     if (invoice.invoiceId > 0)
                     {
                         invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
@@ -1706,6 +1684,23 @@ namespace POS.View
                         agentinv = vendors.Where(X => X.agentId == invoice.agentId).FirstOrDefault();
 
                         invoice.agentCode = agentinv.code;
+                        //new lines
+                        invoice.agentName = agentinv.name;
+                        invoice.agentCompany = agentinv.company;
+
+                        User employ = new User();
+                        employ = await employ.getUserById((int)invoice.updateUserId);
+                        invoice.uuserName = employ.name;
+                        invoice.uuserLast = employ.lastname;
+
+
+                        Branch branch = new Branch();
+                        branch = await branchModel.getBranchById((int)invoice.branchCreatorId);
+                        if (branch.branchId > 0)
+                        {
+                            invoice.branchName = branch.name;
+                        }
+
 
                         ReportCls.checkLang();
 
@@ -1729,12 +1724,10 @@ namespace POS.View
 
                 }
 
-
-                SectionData.EndAwait(grid_ucPayInvoice, this);
             }
-            catch (Exception ex)
+            catch
             {
-                SectionData.ExceptionMessage(ex);
+
             }
 
 
@@ -1743,7 +1736,6 @@ namespace POS.View
         {
             try
             {
-            SectionData.StartAwait(grid_ucPayInvoice);
                 if (invoice.invType == "pd" || invoice.invType == "sd" || invoice.invType == "qd"
                              || invoice.invType == "sbd" || invoice.invType == "pbd"
                              || invoice.invType == "ord" || invoice.invType == "imd" || invoice.invType == "exd")
@@ -1756,44 +1748,32 @@ namespace POS.View
 
                     List<ReportParameter> paramarr = new List<ReportParameter>();
 
-                    string addpath;
-                    bool isArabic = ReportCls.checkLang();
-                    if (isArabic)
-                    {
-                        if (invoice.invType == "or" || invoice.invType == "po")
-                        {
-                            addpath = @"\Reports\Purchase\Ar\ArInvPurOrderReport.rdlc";
-                        }
-                        else
-                        {
-                            addpath = @"\Reports\Purchase\Ar\ArInvPurReport.rdlc";
-                        }
-
-                    }
-                    else
-                    {
-                        if (invoice.invType == "or" || invoice.invType == "po")
-                        {
-                            addpath = @"\Reports\Purchase\En\InvPurOrderReport.rdlc";
-                        }
-                        else
-                        {
-                            addpath = @"\Reports\Purchase\En\InvPurReport.rdlc";
-                        }
-                    }
-
-
-                    //
-
-                    string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+                    string reppath = reportclass.GetpayInvoiceRdlcpath(invoice);
                     if (invoice.invoiceId > 0)
                     {
                         invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
                         Agent agentinv = new Agent();
                         agentinv = vendors.Where(X => X.agentId == invoice.agentId).FirstOrDefault();
 
+                        User employ = new User();
+                        employ = await employ.getUserById((int)invoice.updateUserId);
+                        invoice.uuserName = employ.name;
+                        invoice.uuserLast = employ.lastname;
+
                         invoice.agentCode = agentinv.code;
+                        //new lines
+                        invoice.agentName = agentinv.name;
+                        invoice.agentCompany = agentinv.company;
+
                         invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
+                        Branch branch = new Branch();
+                        branch = await branchModel.getBranchById((int)invoice.branchCreatorId);
+                        if (branch.branchId > 0)
+                        {
+                            invoice.branchName = branch.name;
+                        }
+
+
                         ReportCls.checkLang();
 
                         clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
@@ -1809,14 +1789,11 @@ namespace POS.View
                         LocalReportExtensions.PrintToPrinter(rep);
                     }
                 }
-
-                SectionData.EndAwait(grid_ucPayInvoice, this);
             }
-            catch (Exception ex)
+            catch
             {
-                SectionData.ExceptionMessage(ex);
-            }
 
+            }
 
         }
         //
@@ -1828,7 +1805,6 @@ namespace POS.View
             {
 
 
-            SectionData.StartAwait(grid_ucPayInvoice);
                 if (invoice.invoiceId > 0)
                 {
                     Window.GetWindow(this).Opacity = 0.2;
@@ -1836,37 +1812,11 @@ namespace POS.View
 
                     List<ReportParameter> paramarr = new List<ReportParameter>();
                     string pdfpath;
-                    string addpath;
-                    bool isArabic = ReportCls.checkLang();
-                    if (isArabic)
-                    {
-                        if (invoice.invType == "or" || invoice.invType == "po")
-                        {
-                            addpath = @"\Reports\Purchase\Ar\ArInvPurOrderReport.rdlc";
-                        }
-                        else
-                        {
-                            addpath = @"\Reports\Purchase\Ar\ArInvPurReport.rdlc";
-                        }
-
-                    }
-                    else
-                    {
-                        if (invoice.invType == "or" || invoice.invType == "po")
-                        {
-                            addpath = @"\Reports\Purchase\En\InvPurOrderReport.rdlc";
-                        }
-                        else
-                        {
-                            addpath = @"\Reports\Purchase\En\InvPurReport.rdlc";
-                        }
-                    }
-
 
                     //
                     pdfpath = @"\Thumb\report\temp.pdf";
                     pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
-                    string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+                    string reppath = reportclass.GetpayInvoiceRdlcpath(invoice);
                     if (invoice.invoiceId > 0)
                     {
                         invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
@@ -1876,13 +1826,32 @@ namespace POS.View
                             agentinv = vendors.Where(X => X.agentId == invoice.agentId).FirstOrDefault();
 
                             invoice.agentCode = agentinv.code;
+                            //new lines
+                            invoice.agentName = agentinv.name;
+                            invoice.agentCompany = agentinv.company;
                         }
                         else
                         {
+
                             invoice.agentCode = "-";
+                            //new lines
+                            invoice.agentName = "-";
+                            invoice.agentCompany = "-";
                         }
 
                         invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
+                        Branch branch = new Branch();
+                        branch = await branchModel.getBranchById((int)invoice.branchCreatorId);
+                        if (branch.branchId > 0)
+                        {
+                            invoice.branchName = branch.name;
+                        }
+
+                        User employ = new User();
+                        employ = await employ.getUserById((int)invoice.updateUserId);
+                        invoice.uuserName = employ.name;
+                        invoice.uuserLast = employ.lastname;
+
                         ReportCls.checkLang();
 
                         clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
@@ -1906,6 +1875,12 @@ namespace POS.View
                     if (!string.IsNullOrEmpty(w.pdfPath))
                     {
                         w.ShowDialog();
+                        //delete file
+                        /*
+                        if (File.Exists(pdfpath))
+                        { File.Delete(pdfpath);}
+                        */
+                        //  ClosePDF();
                         w.wb_pdfWebViewer.Dispose();
 
 
@@ -1918,12 +1893,10 @@ namespace POS.View
                 {
                     MessageBox.Show("save the invoice to preview");
                 }
-
-                SectionData.EndAwait(grid_ucPayInvoice, this);
             }
-            catch (Exception ex)
+            catch
             {
-                SectionData.ExceptionMessage(ex);
+
             }
         }
 

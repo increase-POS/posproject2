@@ -1265,5 +1265,41 @@ namespace POS.View.reports
             rowChart.Series = rowChartData;
         }
 
+        private void Btn_refresh_Click(object sender, RoutedEventArgs e)
+        {
+            if (selectedTab == 0)
+            {
+                fillVendorsEvents();
+            }
+           else if (selectedTab == 1)
+            {
+                fillCustomersEvents();
+            }
+            else if (selectedTab == 2)
+            {
+                fillUserEvents();
+            }
+            else if (selectedTab == 3)
+            {
+                fillSalaryEvents();
+            }
+            else if (selectedTab == 4)
+            {
+                fillGeneralExpensesEvents();
+            }
+            else if (selectedTab == 5)
+            {
+                fillAdministrativePullEvents();
+            }
+            else if (selectedTab == 6)
+            {
+                fillShippingEvents();
+            }
+        }
+
+        private void Txt_search_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
     }
 }

@@ -438,7 +438,7 @@
                         <DataGridTextColumn x:Name="col_destroiedDate" Visibility="Hidden" Width="*" Header="Date" Binding="{Binding IupdateDate}"/>
                         <DataGridTextColumn x:Name="col_destroiedItemsUnits" Visibility="Hidden" Width="*" Header="Items/Units" Binding="{Binding ItemUnits}"/>
                         <DataGridTextColumn x:Name="col_destroiedAmount" Visibility="Hidden" Width="*" Header="Quantity" Binding="{Binding quantity}"/>
-                        <DataGridTextColumn x:Name="col_destroiedReason" Visibility="Hidden" Width="*" Header="Reason" Binding="{Binding }"/>
+                        <DataGridTextColumn x:Name="col_destroiedReason" Visibility="Hidden" Width="*" Header="Reason" Binding="{Binding causeFalls}"/>
 
                     </DataGrid.Columns>
                 </DataGrid>

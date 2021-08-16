@@ -113,6 +113,7 @@ namespace POS.Classes
         public string posName { get; set; }
         public string posCode { get; set; }
         public string agentName { get; set; }
+        public string agentCompany { get; set; }
         public string agentCode { get; set; }
         public string cuserName { get; set; }
         public string cuserLast { get; set; }

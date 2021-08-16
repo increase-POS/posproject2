@@ -422,5 +422,38 @@ namespace POS.View.reports
             DataContext = this;
             rowChart.Series = rowChartData;
         }
+
+        private void Btn_refresh_Click(object sender, RoutedEventArgs e)
+        {
+            cb_formBranch.SelectedItem = null;
+            cb_toBranch.SelectedItem = null;
+            cb_formPos.SelectedItem = null;
+            cb_toPos.SelectedItem = null;
+            cb_Accountant.SelectedItem = null;
+            chk_allFromBranch.IsChecked = false;
+            chk_allToBranch.IsChecked = false;
+            chk_allFromPos.IsChecked = false;
+            chk_allToPos.IsChecked = false;
+            chk_allAccountant.IsChecked = false;
+            chk_twoWay.IsChecked = false;
+            dp_StartDate.SelectedDate = null;
+            dp_EndDate.SelectedDate = null;
+            txt_search.Text = "";
+            fillEvents();
+
+        }
+
+        private void Txt_search_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            dgPayments.ItemsSource = fillList(list, cb_formBranch, cb_toBranch, cb_formPos, cb_toPos, cb_Accountant, dp_StartDate, dp_EndDate, chk_twoWay)
+                .Where(obj=>(
+                obj.transNum.Contains(txt_search.Text)||
+                obj.frombranchName.Contains(txt_search.Text)||
+                obj.tobranchName.Contains(txt_search.Text)||
+                obj.fromposName.Contains(txt_search.Text)||
+                obj.toposName.Contains(txt_search.Text)||
+                obj.updateUserAcc.Contains(txt_search.Text)
+                ));
+        }
     }
 }

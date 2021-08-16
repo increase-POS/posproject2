@@ -150,7 +150,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox30</rd:DefaultName>
-            <Top>2.26294cm</Top>
+            <Top>2.22767cm</Top>
             <Left>3.52177cm</Left>
             <Height>7.57051cm</Height>
             <Width>13.95646cm</Width>
@@ -1203,7 +1203,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>Sale Invoice</Value>
+                    <Value>Order</Value>
                     <Style>
                       <FontSize>20pt</FontSize>
                       <FontWeight>Bold</FontWeight>
@@ -1239,7 +1239,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>Customer Num:</Value>
+                    <Value>To:</Value>
                     <Style>
                       <FontSize>14pt</FontSize>
                       <FontWeight>Bold</FontWeight>
@@ -1255,7 +1255,7 @@
             <Top>2.256cm</Top>
             <Left>1.78874cm</Left>
             <Height>0.67938cm</Height>
-            <Width>4.0393cm</Width>
+            <Width>1.27967cm</Width>
             <ZIndex>16</ZIndex>
             <Style>
               <Border>
@@ -1274,7 +1274,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>=Parameters!vendorInvNum.Value</Value>
+                    <Value>=Parameters!agentName.Value</Value>
                     <Style>
                       <FontSize>14pt</FontSize>
                       <FontWeight>Bold</FontWeight>
@@ -1288,9 +1288,9 @@
             </Paragraphs>
             <rd:DefaultName>agentTitle</rd:DefaultName>
             <Top>2.256cm</Top>
-            <Left>5.78394cm</Left>
+            <Left>3.17424cm</Left>
             <Height>0.67938cm</Height>
-            <Width>4.41463cm</Width>
+            <Width>7.02433cm</Width>
             <ZIndex>17</ZIndex>
             <Style>
               <Border>
@@ -1445,6 +1445,111 @@
             <Height>0.6cm</Height>
             <Width>4.66764cm</Width>
             <ZIndex>21</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Textbox Name="Textbox29">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>=Parameters!branchName.Value</Value>
+                    <Style>
+                      <FontFamily>Montserrat</FontFamily>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style>
+                  <TextAlign>Center</TextAlign>
+                </Style>
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>Textbox1</rd:DefaultName>
+            <Top>1.1734cm</Top>
+            <Left>14.46871cm</Left>
+            <Height>0.67938cm</Height>
+            <Width>4.6615cm</Width>
+            <ZIndex>22</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Textbox Name="agentTitle4">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>=Parameters!userName.Value</Value>
+                    <Style>
+                      <FontSize>14pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style>
+                  <TextAlign>Left</TextAlign>
+                </Style>
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>agentTitle</rd:DefaultName>
+            <Top>7.69452cm</Top>
+            <Left>4.27109cm</Left>
+            <Height>0.67938cm</Height>
+            <Width>5.29248cm</Width>
+            <ZIndex>23</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Textbox Name="agentTitle5">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>Employ:</Value>
+                    <Style>
+                      <FontSize>14pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style>
+                  <TextAlign>Left</TextAlign>
+                </Style>
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>agentTitle</rd:DefaultName>
+            <Top>7.65924cm</Top>
+            <Left>1.78875cm</Left>
+            <Height>0.67938cm</Height>
+            <Width>2.3792cm</Width>
+            <ZIndex>24</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1975,7 +2080,25 @@
       <AllowBlank>true</AllowBlank>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
-    <ReportParameter Name="storeName">
+    <ReportParameter Name="branchName">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="agentName">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="agentCompany">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="userName">
       <DataType>String</DataType>
       <Nullable>true</Nullable>
       <AllowBlank>true</AllowBlank>
@@ -1985,7 +2108,7 @@
   <ReportParametersLayout>
     <GridLayoutDefinition>
       <NumberOfColumns>4</NumberOfColumns>
-      <NumberOfRows>6</NumberOfRows>
+      <NumberOfRows>7</NumberOfRows>
       <CellDefinitions>
         <CellDefinition>
           <ColumnIndex>0</ColumnIndex>
@@ -2105,7 +2228,22 @@
         <CellDefinition>
           <ColumnIndex>3</ColumnIndex>
           <RowIndex>5</RowIndex>
-          <ParameterName>storeName</ParameterName>
+          <ParameterName>branchName</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>6</RowIndex>
+          <ParameterName>agentName</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>1</ColumnIndex>
+          <RowIndex>6</RowIndex>
+          <ParameterName>agentCompany</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>2</ColumnIndex>
+          <RowIndex>6</RowIndex>
+          <ParameterName>userName</ParameterName>
         </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>

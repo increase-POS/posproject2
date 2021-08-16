@@ -1147,7 +1147,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=Parameters!storeName.Value</Value>
+                      <Value>=Parameters!branchName.Value</Value>
                       <Style>
                         <FontFamily>Montserrat</FontFamily>
                         <FontSize>8pt</FontSize>
@@ -1506,7 +1506,7 @@
       <AllowBlank>true</AllowBlank>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
-    <ReportParameter Name="storeName">
+    <ReportParameter Name="branchName">
       <DataType>String</DataType>
       <Nullable>true</Nullable>
       <AllowBlank>true</AllowBlank>
@@ -1551,11 +1551,29 @@
       <AllowBlank>true</AllowBlank>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
+    <ReportParameter Name="agentCompany">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="agentName">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="userName">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
   </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
       <NumberOfColumns>4</NumberOfColumns>
-      <NumberOfRows>6</NumberOfRows>
+      <NumberOfRows>7</NumberOfRows>
       <CellDefinitions>
         <CellDefinition>
           <ColumnIndex>0</ColumnIndex>
@@ -1635,7 +1653,7 @@
         <CellDefinition>
           <ColumnIndex>3</ColumnIndex>
           <RowIndex>3</RowIndex>
-          <ParameterName>storeName</ParameterName>
+          <ParameterName>branchName</ParameterName>
         </CellDefinition>
         <CellDefinition>
           <ColumnIndex>0</ColumnIndex>
@@ -1671,6 +1689,21 @@
           <ColumnIndex>2</ColumnIndex>
           <RowIndex>5</RowIndex>
           <ParameterName>Currency</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>3</ColumnIndex>
+          <RowIndex>5</RowIndex>
+          <ParameterName>agentCompany</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>6</RowIndex>
+          <ParameterName>agentName</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>1</ColumnIndex>
+          <RowIndex>6</RowIndex>
+          <ParameterName>userName</ParameterName>
         </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>

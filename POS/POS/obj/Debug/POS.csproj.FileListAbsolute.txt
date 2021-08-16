@@ -2813,3 +2813,11 @@ E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_setupServer.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_setupServer.baml
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_setupGeneralSetting.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_setupGeneralSetting.baml
+D:\myproj\posproject2\POS\POS\obj\Debug\View\reports\uc_accountStatement.g.cs
+D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\wd_selectPos.g.cs
+D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\wd_setupGeneralSetting.g.cs
+D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\wd_setupServer.g.cs
+D:\myproj\posproject2\POS\POS\obj\Debug\View\reports\uc_accountStatement.baml
+D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\wd_selectPos.baml
+D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\wd_setupGeneralSetting.baml
+D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\wd_setupServer.baml

@@ -429,6 +429,85 @@ namespace POS.Classes
             str.Close();
             return content;
         }
+
+      public string GetpayInvoiceRdlcpath(Invoice invoice)
+        {
+            string addpath;
+            bool isArabic = ReportCls.checkLang();
+            if (isArabic)
+            {
+                if (invoice.invType == "or" || invoice.invType == "po" || invoice.invType == "pod")
+                {
+                    addpath = @"\Reports\Purchase\Ar\ArInvPurOrderReport.rdlc";
+                }
+                else
+                {
+                    addpath = @"\Reports\Purchase\Ar\ArInvPurReport.rdlc";
+                }
+
+            }
+            else
+            {
+                if (invoice.invType == "or" || invoice.invType == "po" || invoice.invType == "pod")
+                {
+                    addpath = @"\Reports\Purchase\En\InvPurOrderReport.rdlc";
+                }
+                else
+                {
+                    addpath = @"\Reports\Purchase\En\InvPurReport.rdlc";
+                }
+            }
+
+
+            //
+
+            string reppath = PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+            return reppath;
+        }
+
+        public string GetreceiptInvoiceRdlcpath(Invoice invoice)
+        {
+            string addpath;
+            bool isArabic =checkLang();
+            if (isArabic)
+            {
+                if (invoice.invType == "q"|| invoice.invType == "qd")
+                {
+                    addpath = @"\Reports\Sale\Ar\ArInvPurQtReport.rdlc";
+                }
+                else if(invoice.invType == "or" || invoice.invType == "ord")
+                {
+                    addpath = @"\Reports\Sale\Ar\ArInvPurOrderReport.rdlc";
+                }
+                   else
+                {
+                    addpath = @"\Reports\Sale\Ar\ArInvPurReport.rdlc";
+                }
+
+            }
+            else
+            {
+                if (invoice.invType == "q" || invoice.invType == "qd")
+                {
+                    addpath = @"\Reports\Sale\En\InvPurQtReport.rdlc";
+                }
+                else if (invoice.invType == "or" || invoice.invType == "ord")
+                {
+                    addpath = @"\Reports\Sale\En\InvPurOrderReport.rdlc";
+                }
+                else
+                {
+                    addpath = @"\Reports\Sale\En\InvPurReport.rdlc";
+                }
+
+            }
+
+
+            //
+
+            string reppath = PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+            return reppath;
+        }
         public List<ReportParameter> fillPurInvReport(Invoice invoice, List<ReportParameter> paramarr)
         {
             checkLang();
@@ -443,7 +522,9 @@ namespace POS.Classes
             {
                 totalafterdis = 0;
             }
-
+            string userName = invoice.uuserName + " " + invoice.uuserLast;
+            string agentName = (invoice.agentCompany != null || invoice.agentCompany != "") ? invoice.agentCompany.Trim()
+                : ((invoice.agentName != null || invoice.agentName != "") ? invoice.agentName.Trim() : "-");
 
             decimal taxval = calcpercentval("2", invoice.tax, totalafterdis);
            // decimal totalnet = totalafterdis + taxval;
@@ -459,6 +540,7 @@ namespace POS.Classes
             paramarr.Add(new ReportParameter("invDate", DateToString(invoice.invDate) == null ? "-" : DateToString(invoice.invDate)));
             paramarr.Add(new ReportParameter("invTime", TimeToString(invoice.invTime)));
             paramarr.Add(new ReportParameter("vendorInvNum", invoice.agentCode == "-" ? "-" : invoice.agentCode.ToString()));
+            paramarr.Add(new ReportParameter("agentName", agentName));
             paramarr.Add(new ReportParameter("total", DecTostring(invoice.total) == null ? "-" : DecTostring(invoice.total)));
             paramarr.Add(new ReportParameter("discountValue", DecTostring(disval) == null ? "-" : DecTostring(disval)));
             paramarr.Add(new ReportParameter("totalNet", DecTostring(invoice.totalNet) == null ? "-" : DecTostring(invoice.totalNet)));
@@ -470,6 +552,8 @@ namespace POS.Classes
             paramarr.Add(new ReportParameter("barcodeimage", "file:\\" + BarcodeToImage(invNum, "invnum")));
             paramarr.Add(new ReportParameter("Currency", MainWindow.Currency));
             paramarr.Add(new ReportParameter("logoImage", "file:\\" + GetLogoImagePath()));
+            paramarr.Add(new ReportParameter("branchName", invoice.branchName == null ? "-" : invoice.branchName));
+            paramarr.Add(new ReportParameter("userName", userName.Trim()));
             if (invoice.invType == "pd" || invoice.invType == "sd" || invoice.invType == "qd"
                     || invoice.invType == "sbd" || invoice.invType == "pbd" || invoice.invType == "pod"
                     || invoice.invType == "ord" || invoice.invType == "imd" || invoice.invType == "exd")
@@ -527,8 +611,10 @@ namespace POS.Classes
         {
             checkLang();
 
-
-
+            string agentName = (invoice.agentCompany != null || invoice.agentCompany != "") ? invoice.agentCompany.Trim()
+            : ((invoice.agentName != null || invoice.agentName != "") ? invoice.agentName.Trim() : "-");
+            string userName = invoice.uuserName + " " + invoice.uuserLast;
+       
             //  rep.DataSources.Add(new ReportDataSource("DataSetBank", banksQuery));
             decimal disval = calcpercentval(invoice.discountType, invoice.discountValue, invoice.total);
             decimal totalafterdis;
@@ -553,6 +639,7 @@ namespace POS.Classes
             paramarr.Add(new ReportParameter("invDate", DateToString(invoice.invDate) == null ? "-" : DateToString(invoice.invDate)));
             paramarr.Add(new ReportParameter("invTime", TimeToString(invoice.invTime)));
             paramarr.Add(new ReportParameter("vendorInvNum", invoice.agentCode == "-" ? "-" : invoice.agentCode.ToString()));
+            paramarr.Add(new ReportParameter("agentName", agentName.Trim()));
             paramarr.Add(new ReportParameter("total", DecTostring(invoice.total) == null ? "-" : DecTostring(invoice.total)));
 
         
@@ -570,8 +657,8 @@ namespace POS.Classes
             string invNum = invoice.invNumber == null ? "-" : invoice.invNumber.ToString();
             paramarr.Add(new ReportParameter("barcodeimage", "file:\\" + BarcodeToImage(invNum, "invnum")));
             paramarr.Add(new ReportParameter("Currency", MainWindow.Currency));
-            paramarr.Add(new ReportParameter("storeName", invoice.branchName == null ? "-" : invoice.branchName));
-
+            paramarr.Add(new ReportParameter("branchName", invoice.branchName == null ? "-" : invoice.branchName));
+            paramarr.Add(new ReportParameter("userName", userName.Trim()));
             paramarr.Add(new ReportParameter("logoImage", "file:\\" + GetLogoImagePath()));
             if (invoice.invType == "pd" || invoice.invType == "sd" || invoice.invType == "qd"
                         || invoice.invType == "sbd" || invoice.invType == "pbd" || invoice.invType == "pod"

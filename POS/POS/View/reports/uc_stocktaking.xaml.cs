@@ -115,10 +115,6 @@ namespace POS.View.reports
         {
             InitializeComponent();
         }
-
-
-
-
      
         public void paint()
         {
@@ -949,6 +945,7 @@ new StackedColumnSeries
             col_branch.Visibility = Visibility.Visible;
             col_itemCountAr.Visibility = Visibility.Visible;
             col_itemUnits.Visibility = Visibility.Visible;
+            col_destroiedReason.Visibility = Visibility.Visible;
 
             fillComboBranches(cb_stocktakingFalseBranch);
             fillShortFallsEvents();

@@ -905,9 +905,34 @@ namespace POS.View.reports
             chart1.Series = piechartData;
         }
 
+        private void Txt_search_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+            if (selectedTab == 0)
+            {
+                dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay)
+            .Where(s => (s.exportBranch.Contains(txt_search.Text) ||
+       s.importBranch.Contains(txt_search.Text) ||
+       s.itemName.Contains(txt_search.Text) ||
+       s.unitName.Contains(txt_search.Text) ||
+       s.InvTypeNumber.Contains(txt_search.Text) 
+       ));
+            }
+            else if (selectedTab == 1)
+            {
+                dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null)
+              .Where(s => (s.branchName.Contains(txt_search.Text) ||
+       s.itemName.Contains(txt_search.Text) ||
+       s.unitName.Contains(txt_search.Text) ||
+       s.InvTypeNumber.Contains(txt_search.Text)
+       ));
+             
+            }
 
 
+        }
 
-
-
+        private void Btn_refresh_Click(object sender, RoutedEventArgs e)
+        {
+        }
     } }

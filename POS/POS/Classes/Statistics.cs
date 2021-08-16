@@ -213,7 +213,7 @@ namespace POS.Classes
     public class InventoryClass
 
     {
-
+        public string userFalls { get; set; }
         private string itemUnits;
         public string ItemUnits { get => itemUnits = itemName + " - " + unitName; set => itemUnits = value; }
         public int shortfalls { get; set; }
@@ -279,11 +279,15 @@ namespace POS.Classes
 
     public class ItemTransferInvoice
     {// new properties
-
+        public string causeFalls { get; set; }
+        public string causeDestroy { get; set; }
         public string userdestroy { get; set; }
         public string userFalls { get; set; }
         public Nullable<int> userId { get; set; }
-
+        public string inventoryNum { get; set; }
+        public string inventoryType { get; set; }
+        public Nullable<DateTime> inventoryDate { get; set; }
+        public int  itemCount { get; set; }
         public Nullable<decimal> subTotal { get; set; }
         public string agentCompany { get; set; }
         public string itemName { get; set; }

@@ -396,7 +396,7 @@ namespace POS.View.reports
                     {
                         var firstOfThisMonth = new DateTime(year, month, 1);
                         var firstOfNextMonth = firstOfThisMonth.AddMonths(1);
-                        var drawCash = temp.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth && c.transType=="p").Sum(c=>c.cash);
+                        var drawCash = temp.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth && c.transType == "p").Sum(c => c.cash);
                         var drawCard = temp.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth && c.transType == "d").Sum(c => c.cash);
                         cash.Add((decimal)drawCash);
                         card.Add((decimal)drawCard);
@@ -561,6 +561,59 @@ namespace POS.View.reports
         private void Dp_recipientStartDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
             fillRecipientsEvents();
+        }
+
+        private void Btn_refresh_Click(object sender, RoutedEventArgs e)
+        {
+            txt_search.Text = "";
+            if (selectedTab == 0)
+            {
+                cb_paymentsBank.SelectedItem = null;
+                cb_paymentsUser.SelectedItem = null;
+                cb_paymentsAccountant.SelectedItem = null;
+                chk_allPaymentsBanks.IsChecked = false;
+                chk_allPyamentsUser.IsChecked = false;
+                chk_allpaymentsAccountant.IsChecked = false;
+                dp_paymentsStartDate.SelectedDate = null;
+                dp_paymentsEndDate.SelectedDate = null;
+                fillPyamentsEvents();
+            }
+            else if (selectedTab == 1)
+            {
+                cb_recipientBank.SelectedItem = null;
+                cb_recipientUser.SelectedItem = null;
+                cb_recipientAccountant.SelectedItem = null;
+                chk_allRecipientBanks.IsChecked = false;
+                chk_allRecipientUsers.IsChecked = false;
+                chk_allRecipientAccountant.IsChecked = false;
+                dp_recipientStartDate.SelectedDate = null;
+                dp_recipientEndDate.SelectedDate = null;
+                fillRecipientsEvents();
+            }
+        }
+
+        private void Txt_search_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (selectedTab==0)
+            {
+                var temp = fillList(payments, cb_paymentsBank, cb_paymentsUser, cb_paymentsAccountant, dp_paymentsStartDate, dp_paymentsEndDate).Where(s => s.side == "bn" && s.isConfirm == 1);
+                dgPayments.ItemsSource = temp.Where(obj=>(
+                obj.transNum.Contains(txt_search.Text)||
+                obj.bankName.Contains(txt_search.Text)||
+                obj.updateUserAcc.Contains(txt_search.Text)||
+                obj.userAcc.Contains(txt_search.Text)
+                ));
+            }
+            else if (selectedTab == 1)
+            {
+                var temp = fillList(recipient, cb_recipientBank, cb_recipientUser, cb_recipientAccountant, dp_recipientStartDate, dp_recipientEndDate).Where(s => s.side == "bn" && s.isConfirm == 1);
+                dgPayments.ItemsSource = temp.Where(obj => (
+                obj.transNum.Contains(txt_search.Text) ||
+                obj.bankName.Contains(txt_search.Text) ||
+                obj.updateUserAcc.Contains(txt_search.Text) ||
+                obj.userAcc.Contains(txt_search.Text)
+                ));
+            }
         }
     }
 }
