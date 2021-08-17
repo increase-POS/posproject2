@@ -35,7 +35,7 @@ namespace POS_Server.Models
         public string cause { get; set; }
         public string fallCause { get; set; }
 
-        public Nullable<bool> isFalls { get; set; }
+        public bool isFalls { get; set; }
 
     }
 }

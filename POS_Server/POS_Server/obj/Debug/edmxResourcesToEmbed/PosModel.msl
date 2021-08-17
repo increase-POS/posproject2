@@ -176,6 +176,7 @@
           <ScalarProperty Name="processType" ColumnName="processType" />
           <ScalarProperty Name="cardId" ColumnName="cardId" />
           <ScalarProperty Name="bondId" ColumnName="bondId" />
+          <ScalarProperty Name="shippingCompanyId" ColumnName="shippingCompanyId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -351,6 +352,7 @@
           <ScalarProperty Name="inventoryType" ColumnName="inventoryType" />
           <ScalarProperty Name="branchId" ColumnName="branchId" />
           <ScalarProperty Name="posId" ColumnName="posId" />
+          <ScalarProperty Name="mainInventoryId" ColumnName="mainInventoryId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -371,6 +373,8 @@
           <ScalarProperty Name="isActive" ColumnName="isActive" />
           <ScalarProperty Name="notes" ColumnName="notes" />
           <ScalarProperty Name="cause" ColumnName="cause" />
+          <ScalarProperty Name="isFalls" ColumnName="isFalls" />
+          <ScalarProperty Name="fallCause" ColumnName="fallCause" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -408,6 +412,7 @@
           <ScalarProperty Name="branchCreatorId" ColumnName="branchCreatorId" />
           <ScalarProperty Name="shipUserId" ColumnName="shipUserId" />
           <ScalarProperty Name="prevStatus" ColumnName="prevStatus" />
+          <ScalarProperty Name="userId" ColumnName="userId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -522,6 +527,7 @@
           <ScalarProperty Name="price" ColumnName="price" />
           <ScalarProperty Name="itemUnitId" ColumnName="itemUnitId" />
           <ScalarProperty Name="itemSerial" ColumnName="itemSerial" />
+          <ScalarProperty Name="inventoryItemLocId" ColumnName="inventoryItemLocId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -543,6 +549,7 @@
           <ScalarProperty Name="subUnitId" ColumnName="subUnitId" />
           <ScalarProperty Name="purchasePrice" ColumnName="purchasePrice" />
           <ScalarProperty Name="storageCostId" ColumnName="storageCostId" />
+          <ScalarProperty Name="isActive" ColumnName="isActive" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -842,6 +849,8 @@
           <ScalarProperty Name="createUserId" ColumnName="createUserId" />
           <ScalarProperty Name="updateUserId" ColumnName="updateUserId" />
           <ScalarProperty Name="isActive" ColumnName="isActive" />
+          <ScalarProperty Name="balance" ColumnName="balance" />
+          <ScalarProperty Name="balanceType" ColumnName="balanceType" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

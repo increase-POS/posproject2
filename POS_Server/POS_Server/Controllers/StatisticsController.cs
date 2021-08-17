@@ -1772,7 +1772,12 @@ else
                                         uuserName = JUPUS.name,
                                         uuserLast = JUPUS.lastname,
                                         uUserAccName = JUPUS.username,
-                                        agentCompany = JAA.company,
+                                        agentCompany = ((JAA.company == null || JAA.company == "") && (I.invType == "s" || I.invType == "sb")) ?
+                                        "unknown" : JAA.company,
+
+
+
+                                       
 
                                         //username
 
@@ -2794,9 +2799,11 @@ notes
                                 join u in entity.itemsUnits on l.itemUnitId equals u.itemUnitId
                                 join un in entity.units on u.unitId equals un.unitId
                                 join lo in entity.locations on l.locationId equals lo.locationId
+                                join usr in entity.users on i.updateUserId equals usr.updateUserId
                                 //   join s in entity.sections on lo.sectionId equals s.sectionId
                                 select new
                                 {
+                                    usr.username,
                                     inventoryILId = c.id,
                                     c.isDestroyed,
                                     c.amount,
@@ -2838,6 +2845,7 @@ notes
                         X.FirstOrDefault().inventoryId,
                         X.FirstOrDefault().isDestroyed,
                         DestroyedCount = X.Where(a => a.isDestroyed == true ? true : false).Count(),
+                        userFalls= X.FirstOrDefault().username,
 
                         X.FirstOrDefault().branchName,
                         X.FirstOrDefault().branchId,
@@ -3026,16 +3034,19 @@ notes
                                     join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
                                     from JPP in entity.pos.Where(X => X.posId == I.posId)
                                     join BP in entity.branches on JPP.branchId equals BP.branchId
-
+                                    join du in entity.users on I.userId equals du.userId into Dusr
                                     //   from JPP into  JP.DefaultIfEmpty
                                     from JUU in JU.DefaultIfEmpty()
                                     from JUPUS in JUPUSR.DefaultIfEmpty()
-
+                                    from duu in Dusr.DefaultIfEmpty()
                                     from JBCC in JBC.DefaultIfEmpty()
                                     where I.invType == "d"
 
                                     select new
                                     {
+                                        causeDestroy=  IT.inventoryItemLocation.cause,
+                                        userdestroy= duu.username,
+                                        I.userId,
                                         itemName = ITEM.name,
                                         unitName = UNIT.name,
                                         IT.itemsTransId,
@@ -3044,6 +3055,126 @@ notes
                                         IU.itemId,
                                         IU.unitId,
                                         IT.quantity,
+                                        IT.price,
+                                        IU.barcode,
+
+                                        I.invoiceId,
+                                        I.invNumber,
+
+                                        I.posId,
+                                        I.invType,
+                                        I.total,
+                                        I.totalNet,
+                                        I.paid,
+                                        I.deserved,
+                                        I.deservedDate,
+                                        I.invDate,
+                                        I.invoiceMainId,
+                                        I.invCase,
+                                        I.invTime,
+                                        I.notes,
+                                        I.vendorInvNum,
+                                        I.vendorInvDate,
+                                        I.createUserId,
+                                        IupdateDate = I.updateDate,
+                                        I.updateUserId,
+                                        // I.branchId,
+                                        I.discountValue,
+                                        I.discountType,
+                                        I.tax,
+                                        I.name,
+                                        I.isApproved,
+                                        IT.itemSerial,
+                                        //
+                                        I.branchCreatorId,
+
+                                        //
+                                        branchName = JBCC.name,
+                                        branchId = I.branchCreatorId,
+
+                                        branchType = JBCC.type,
+                                        posName = JPP.name,
+                                        posCode = JPP.code,
+
+                                        cuserName = JUU.name,
+                                        cuserLast = JUU.lastname,
+                                        cUserAccName = JUU.username,
+                                        uuserName = JUPUS.name,
+                                        uuserLast = JUPUS.lastname,
+                                        uUserAccName = JUPUS.username,
+
+                                    }).ToList();
+
+                    if (invListm == null)
+                        return NotFound();
+                    else
+                        return Ok(invListm);
+                }
+
+            }
+
+            //else
+            return NotFound();
+        }
+
+        // العناصر الناقصة
+        [HttpGet]
+        [Route("GetFallsItems")]
+        public IHttpActionResult GetFallsItems()
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var invListm = (from IT in entity.itemsTransfer
+                                    from I in entity.invoices.Where(I => I.invoiceId == IT.invoiceId)
+
+                                    from IU in entity.itemsUnits.Where(IU => IU.itemUnitId == IT.itemUnitId)
+
+                                    join ITEM in entity.items on IU.itemId equals ITEM.itemId
+                                    join UNIT in entity.units on IU.unitId equals UNIT.unitId
+                                    join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
+                                    join U in entity.users on I.createUserId equals U.userId into JU
+                                    join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
+                                    from JPP in entity.pos.Where(X => X.posId == I.posId)
+                                    join BP in entity.branches on JPP.branchId equals BP.branchId
+                                    join du in entity.users on I.userId equals du.userId into Dusr
+                                    //   from JPP into  JP.DefaultIfEmpty
+                                    from JUU in JU.DefaultIfEmpty()
+                                    from JUPUS in JUPUSR.DefaultIfEmpty()
+                                    from duu in Dusr.DefaultIfEmpty()
+                                    from JBCC in JBC.DefaultIfEmpty()
+                                    where I.invType == "sh"
+
+                                    select new
+                                    {
+
+
+                                        inventoryNum=IT.inventoryItemLocation.Inventory.num,
+                                        IT.inventoryItemLocation.Inventory.inventoryType,
+                                        inventoryDate= IT.inventoryItemLocation.Inventory.createDate,
+                                      //   itemCount
+                                      causeFalls =  IT.inventoryItemLocation.fallCause,
+                                        userFalls = duu.username,
+                                        I.userId,
+                                        itemName = ITEM.name,
+                                        unitName = UNIT.name,
+                                        IT.itemsTransId,
+                                        IT.itemUnitId,
+
+                                        IU.itemId,
+                                        IU.unitId,
+                                        itemCount=  IT.quantity,
                                         IT.price,
                                         IU.barcode,
 

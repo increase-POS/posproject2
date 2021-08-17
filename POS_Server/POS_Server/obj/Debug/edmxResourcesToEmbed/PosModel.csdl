@@ -41,7 +41,7 @@
     <Property Name="image" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="accType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="balance" Type="Decimal" Precision="20" Scale="2" />
+    <Property Name="balance" Type="Decimal" Precision="20" Scale="3" />
     <Property Name="balanceType" Type="Byte" />
     <Property Name="createDate" Type="DateTime" Precision="7" />
     <Property Name="updateDate" Type="DateTime" Precision="7" />
@@ -209,6 +209,7 @@
     <Property Name="processType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="cardId" Type="Int32" />
     <Property Name="bondId" Type="Int32" />
+    <Property Name="shippingCompanyId" Type="Int32" />
     <NavigationProperty Name="agentMemberships" Relationship="Self.FK_agentMemberships_cashTransfer" FromRole="cashTransfer" ToRole="agentMemberships" />
     <NavigationProperty Name="agentMemberships1" Relationship="Self.FK_cashTransfer_agentMemberships" FromRole="cashTransfer" ToRole="agentMemberships" />
     <NavigationProperty Name="agents" Relationship="Self.FK_cashTransfer_agents" FromRole="cashTransfer" ToRole="agents" />
@@ -221,6 +222,7 @@
     <NavigationProperty Name="invoices" Relationship="Self.FK_cashTransfer_invoices" FromRole="cashTransfer" ToRole="invoices" />
     <NavigationProperty Name="pos" Relationship="Self.FK_cashTransfer_pos" FromRole="cashTransfer" ToRole="pos" />
     <NavigationProperty Name="pos1" Relationship="Self.FK_cashTransfer_pos1" FromRole="cashTransfer" ToRole="pos" />
+    <NavigationProperty Name="shippingCompanies" Relationship="Self.FK_cashTransfer_shippingCompanies" FromRole="cashTransfer" ToRole="shippingCompanies" />
     <NavigationProperty Name="users" Relationship="Self.FK_cashTransfer_users" FromRole="cashTransfer" ToRole="users" />
     <NavigationProperty Name="users1" Relationship="Self.FK_cashTransfer_users1" FromRole="cashTransfer" ToRole="users" />
     <NavigationProperty Name="users2" Relationship="Self.FK_cashTransfer_users2" FromRole="cashTransfer" ToRole="users" />
@@ -416,6 +418,7 @@
     <Property Name="inventoryType" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
     <Property Name="branchId" Type="Int32" />
     <Property Name="posId" Type="Int32" />
+    <Property Name="mainInventoryId" Type="Int32" />
     <NavigationProperty Name="branches" Relationship="Self.FK_Inventory_branches" FromRole="Inventory" ToRole="branches" />
     <NavigationProperty Name="pos" Relationship="Self.FK_Inventory_pos" FromRole="Inventory" ToRole="pos" />
     <NavigationProperty Name="users" Relationship="Self.FK_Inventory_users" FromRole="Inventory" ToRole="users" />
@@ -440,10 +443,13 @@
     <Property Name="isActive" Type="Byte" />
     <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="cause" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="isFalls" Type="Boolean" Nullable="false" />
+    <Property Name="fallCause" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="Inventory" Relationship="Self.FK_inventoryItemLocation_Inventory" FromRole="inventoryItemLocation" ToRole="Inventory" />
     <NavigationProperty Name="itemsLocations" Relationship="Self.FK_inventoryItemLocation_itemsLocations" FromRole="inventoryItemLocation" ToRole="itemsLocations" />
     <NavigationProperty Name="users" Relationship="Self.FK_inventoryItemLocation_users" FromRole="inventoryItemLocation" ToRole="users" />
     <NavigationProperty Name="users1" Relationship="Self.FK_inventoryItemLocation_users1" FromRole="inventoryItemLocation" ToRole="users" />
+    <NavigationProperty Name="itemsTransfer" Relationship="Self.FK_itemsTransfer_inventoryItemLocation" FromRole="inventoryItemLocation" ToRole="itemsTransfer" />
   </EntityType>
   <EntityType Name="invoices">
     <Key>
@@ -480,6 +486,7 @@
     <Property Name="branchCreatorId" Type="Int32" />
     <Property Name="shipUserId" Type="Int32" />
     <Property Name="prevStatus" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="userId" Type="Int32" />
     <NavigationProperty Name="agents" Relationship="Self.FK_invoices_agents" FromRole="invoices" ToRole="agents" />
     <NavigationProperty Name="branches" Relationship="Self.FK_invoices_branches" FromRole="invoices" ToRole="branches" />
     <NavigationProperty Name="branches1" Relationship="Self.FK_invoices_branches1" FromRole="invoices" ToRole="branches" />
@@ -494,6 +501,7 @@
     <NavigationProperty Name="users2" Relationship="Self.FK_invoices_users2" FromRole="invoices" ToRole="users" />
     <NavigationProperty Name="users3" Relationship="Self.FK_invoices_users3" FromRole="invoices" ToRole="users" />
     <NavigationProperty Name="users4" Relationship="Self.FK_invoices_users4" FromRole="invoices" ToRole="users" />
+    <NavigationProperty Name="users5" Relationship="Self.FK_invoices_users5" FromRole="invoices" ToRole="users" />
     <NavigationProperty Name="invoiceStatus" Relationship="Self.FK_invoiceStatus_invoices" FromRole="invoices" ToRole="invoiceStatus" />
     <NavigationProperty Name="itemsTransfer" Relationship="Self.FK_itemsTransfer_invoices" FromRole="invoices" ToRole="itemsTransfer" />
   </EntityType>
@@ -636,7 +644,9 @@
     <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="price" Type="Decimal" Precision="20" Scale="2" />
     <Property Name="itemUnitId" Type="Int32" />
-    <Property Name="itemSerial" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="itemSerial" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="inventoryItemLocId" Type="Int32" />
+    <NavigationProperty Name="inventoryItemLocation" Relationship="Self.FK_itemsTransfer_inventoryItemLocation" FromRole="itemsTransfer" ToRole="inventoryItemLocation" />
     <NavigationProperty Name="invoices" Relationship="Self.FK_itemsTransfer_invoices" FromRole="itemsTransfer" ToRole="invoices" />
     <NavigationProperty Name="itemsUnits" Relationship="Self.FK_itemsTransfer_itemsUnits" FromRole="itemsTransfer" ToRole="itemsUnits" />
     <NavigationProperty Name="locations" Relationship="Self.FK_itemsTransfer_locations" FromRole="itemsTransfer" ToRole="locations" />
@@ -662,6 +672,7 @@
     <Property Name="subUnitId" Type="Int32" />
     <Property Name="purchasePrice" Type="Decimal" Precision="20" Scale="2" />
     <Property Name="storageCostId" Type="Int32" />
+    <Property Name="isActive" Type="Byte" />
     <NavigationProperty Name="items" Relationship="Self.FK_itemsUnits_items" FromRole="itemsUnits" ToRole="items" />
     <NavigationProperty Name="itemsLocations" Relationship="Self.FK_itemsLocations_itemsUnits" FromRole="itemsUnits" ToRole="itemsLocations" />
     <NavigationProperty Name="itemsOffers" Relationship="Self.FK_itemsOffers_itemsUnits" FromRole="itemsUnits" ToRole="itemsOffers" />
@@ -1020,9 +1031,10 @@
     <Property Name="createUserId" Type="Int32" />
     <Property Name="updateUserId" Type="Int32" />
     <Property Name="isActive" Type="Byte" />
+    <Property Name="balance" Type="Decimal" Precision="20" Scale="3" Nullable="false" />
+    <Property Name="balanceType" Type="Byte" />
+    <NavigationProperty Name="cashTransfer" Relationship="Self.FK_cashTransfer_shippingCompanies" FromRole="shippingCompanies" ToRole="cashTransfer" />
     <NavigationProperty Name="invoices" Relationship="Self.FK_invoices_shippingCompanies" FromRole="shippingCompanies" ToRole="invoices" />
-    <NavigationProperty Name="users" Relationship="Self.FK_shippingCompanies_users1" FromRole="shippingCompanies" ToRole="users" />
-    <NavigationProperty Name="users1" Relationship="Self.FK_shippingCompanies_users2" FromRole="shippingCompanies" ToRole="users" />
   </EntityType>
   <EntityType Name="storageCost">
     <Key>
@@ -1181,6 +1193,7 @@
     <NavigationProperty Name="invoices2" Relationship="Self.FK_invoices_users2" FromRole="users" ToRole="invoices" />
     <NavigationProperty Name="invoices3" Relationship="Self.FK_invoices_users3" FromRole="users" ToRole="invoices" />
     <NavigationProperty Name="invoices4" Relationship="Self.FK_invoices_users4" FromRole="users" ToRole="invoices" />
+    <NavigationProperty Name="invoices5" Relationship="Self.FK_invoices_users5" FromRole="users" ToRole="invoices" />
     <NavigationProperty Name="invoiceStatus" Relationship="Self.FK_invoiceStatus_users" FromRole="users" ToRole="invoiceStatus" />
     <NavigationProperty Name="invoiceStatus1" Relationship="Self.FK_invoiceStatus_users1" FromRole="users" ToRole="invoiceStatus" />
     <NavigationProperty Name="items" Relationship="Self.FK_items_users" FromRole="users" ToRole="items" />
@@ -1226,8 +1239,6 @@
     <NavigationProperty Name="serials1" Relationship="Self.FK_serials_users1" FromRole="users" ToRole="serials" />
     <NavigationProperty Name="servicesCosts" Relationship="Self.FK_servicesCosts_users" FromRole="users" ToRole="servicesCosts" />
     <NavigationProperty Name="servicesCosts1" Relationship="Self.FK_servicesCosts_users1" FromRole="users" ToRole="servicesCosts" />
-    <NavigationProperty Name="shippingCompanies" Relationship="Self.FK_shippingCompanies_users1" FromRole="users" ToRole="shippingCompanies" />
-    <NavigationProperty Name="shippingCompanies1" Relationship="Self.FK_shippingCompanies_users2" FromRole="users" ToRole="shippingCompanies" />
     <NavigationProperty Name="sysEmails" Relationship="Self.FK_sysEmails_users" FromRole="users" ToRole="sysEmails" />
     <NavigationProperty Name="sysEmails1" Relationship="Self.FK_sysEmails_users1" FromRole="users" ToRole="sysEmails" />
     <NavigationProperty Name="units" Relationship="Self.FK_units_users" FromRole="users" ToRole="units" />
@@ -1758,6 +1769,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_cashTransfer_shippingCompanies">
+    <End Role="shippingCompanies" Type="Self.shippingCompanies" Multiplicity="0..1" />
+    <End Role="cashTransfer" Type="Self.cashTransfer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="shippingCompanies">
+        <PropertyRef Name="shippingCompanyId" />
+      </Principal>
+      <Dependent Role="cashTransfer">
+        <PropertyRef Name="shippingCompanyId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_cashTransfer_users">
     <End Role="users" Type="Self.users" Multiplicity="0..1" />
     <End Role="cashTransfer" Type="Self.cashTransfer" Multiplicity="*" />
@@ -2166,6 +2189,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_itemsTransfer_inventoryItemLocation">
+    <End Role="inventoryItemLocation" Type="Self.inventoryItemLocation" Multiplicity="0..1" />
+    <End Role="itemsTransfer" Type="Self.itemsTransfer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="inventoryItemLocation">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="itemsTransfer">
+        <PropertyRef Name="inventoryItemLocId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_invoices_invoices">
     <End Role="invoices" Type="Self.invoices" Multiplicity="0..1" />
     <End Role="invoices1" Type="Self.invoices" Multiplicity="*" />
@@ -2259,6 +2294,18 @@
       </Principal>
       <Dependent Role="invoices">
         <PropertyRef Name="shipUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_invoices_users5">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="invoices" Type="Self.invoices" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="invoices">
+        <PropertyRef Name="userId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -3210,30 +3257,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_shippingCompanies_users1">
-    <End Role="users" Type="Self.users" Multiplicity="0..1" />
-    <End Role="shippingCompanies" Type="Self.shippingCompanies" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="users">
-        <PropertyRef Name="userId" />
-      </Principal>
-      <Dependent Role="shippingCompanies">
-        <PropertyRef Name="updateUserId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_shippingCompanies_users2">
-    <End Role="users" Type="Self.users" Multiplicity="0..1" />
-    <End Role="shippingCompanies" Type="Self.shippingCompanies" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="users">
-        <PropertyRef Name="userId" />
-      </Principal>
-      <Dependent Role="shippingCompanies">
-        <PropertyRef Name="createUserId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK_sysEmails_users">
     <End Role="users" Type="Self.users" Multiplicity="0..1" />
     <End Role="sysEmails" Type="Self.sysEmails" Multiplicity="*" />
@@ -3552,6 +3575,10 @@
       <End Role="pos" EntitySet="pos" />
       <End Role="cashTransfer" EntitySet="cashTransfer" />
     </AssociationSet>
+    <AssociationSet Name="FK_cashTransfer_shippingCompanies" Association="Self.FK_cashTransfer_shippingCompanies">
+      <End Role="shippingCompanies" EntitySet="shippingCompanies" />
+      <End Role="cashTransfer" EntitySet="cashTransfer" />
+    </AssociationSet>
     <AssociationSet Name="FK_cashTransfer_users" Association="Self.FK_cashTransfer_users">
       <End Role="users" EntitySet="users" />
       <End Role="cashTransfer" EntitySet="cashTransfer" />
@@ -3688,6 +3715,10 @@
       <End Role="users" EntitySet="users" />
       <End Role="inventoryItemLocation" EntitySet="inventoryItemLocation" />
     </AssociationSet>
+    <AssociationSet Name="FK_itemsTransfer_inventoryItemLocation" Association="Self.FK_itemsTransfer_inventoryItemLocation">
+      <End Role="inventoryItemLocation" EntitySet="inventoryItemLocation" />
+      <End Role="itemsTransfer" EntitySet="itemsTransfer" />
+    </AssociationSet>
     <AssociationSet Name="FK_invoices_invoices" Association="Self.FK_invoices_invoices">
       <End Role="invoices" EntitySet="invoices" />
       <End Role="invoices1" EntitySet="invoices" />
@@ -3717,6 +3748,10 @@
       <End Role="invoices" EntitySet="invoices" />
     </AssociationSet>
     <AssociationSet Name="FK_invoices_users4" Association="Self.FK_invoices_users4">
+      <End Role="users" EntitySet="users" />
+      <End Role="invoices" EntitySet="invoices" />
+    </AssociationSet>
+    <AssociationSet Name="FK_invoices_users5" Association="Self.FK_invoices_users5">
       <End Role="users" EntitySet="users" />
       <End Role="invoices" EntitySet="invoices" />
     </AssociationSet>
@@ -4035,14 +4070,6 @@
     <AssociationSet Name="FK_userSetValues_setValues" Association="Self.FK_userSetValues_setValues">
       <End Role="setValues" EntitySet="setValues" />
       <End Role="userSetValues" EntitySet="userSetValues" />
-    </AssociationSet>
-    <AssociationSet Name="FK_shippingCompanies_users1" Association="Self.FK_shippingCompanies_users1">
-      <End Role="users" EntitySet="users" />
-      <End Role="shippingCompanies" EntitySet="shippingCompanies" />
-    </AssociationSet>
-    <AssociationSet Name="FK_shippingCompanies_users2" Association="Self.FK_shippingCompanies_users2">
-      <End Role="users" EntitySet="users" />
-      <End Role="shippingCompanies" EntitySet="shippingCompanies" />
     </AssociationSet>
     <AssociationSet Name="FK_sysEmails_users" Association="Self.FK_sysEmails_users">
       <End Role="users" EntitySet="users" />

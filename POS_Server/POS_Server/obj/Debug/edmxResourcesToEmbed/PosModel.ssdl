@@ -34,7 +34,7 @@
     <Property Name="image" Type="ntext" />
     <Property Name="type" Type="nvarchar" MaxLength="50" />
     <Property Name="accType" Type="nvarchar" MaxLength="50" />
-    <Property Name="balance" Type="decimal" Precision="20" Scale="2" />
+    <Property Name="balance" Type="decimal" Precision="20" Scale="3" />
     <Property Name="balanceType" Type="tinyint" />
     <Property Name="createDate" Type="datetime2" Precision="7" />
     <Property Name="updateDate" Type="datetime2" Precision="7" />
@@ -168,6 +168,7 @@
     <Property Name="processType" Type="nvarchar" MaxLength="50" />
     <Property Name="cardId" Type="int" />
     <Property Name="bondId" Type="int" />
+    <Property Name="shippingCompanyId" Type="int" />
   </EntityType>
   <EntityType Name="categories">
     <Key>
@@ -332,6 +333,7 @@
     <Property Name="inventoryType" Type="nvarchar" MaxLength="10" />
     <Property Name="branchId" Type="int" />
     <Property Name="posId" Type="int" />
+    <Property Name="mainInventoryId" Type="int" />
   </EntityType>
   <EntityType Name="inventoryItemLocation">
     <Key>
@@ -351,6 +353,8 @@
     <Property Name="isActive" Type="tinyint" />
     <Property Name="notes" Type="ntext" />
     <Property Name="cause" Type="ntext" />
+    <Property Name="isFalls" Type="bit" Nullable="false" />
+    <Property Name="fallCause" Type="ntext" />
   </EntityType>
   <EntityType Name="invoices">
     <Key>
@@ -387,6 +391,7 @@
     <Property Name="branchCreatorId" Type="int" />
     <Property Name="shipUserId" Type="int" />
     <Property Name="prevStatus" Type="nvarchar" MaxLength="10" />
+    <Property Name="userId" Type="int" />
   </EntityType>
   <EntityType Name="invoiceStatus">
     <Key>
@@ -493,7 +498,8 @@
     <Property Name="notes" Type="ntext" />
     <Property Name="price" Type="decimal" Precision="20" Scale="2" />
     <Property Name="itemUnitId" Type="int" />
-    <Property Name="itemSerial" Type="nvarchar" MaxLength="200" />
+    <Property Name="itemSerial" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="inventoryItemLocId" Type="int" />
   </EntityType>
   <EntityType Name="itemsUnits">
     <Key>
@@ -514,6 +520,7 @@
     <Property Name="subUnitId" Type="int" />
     <Property Name="purchasePrice" Type="decimal" Precision="20" Scale="2" />
     <Property Name="storageCostId" Type="int" />
+    <Property Name="isActive" Type="tinyint" />
   </EntityType>
   <EntityType Name="itemTransferOffer">
     <Key>
@@ -794,6 +801,8 @@
     <Property Name="createUserId" Type="int" />
     <Property Name="updateUserId" Type="int" />
     <Property Name="isActive" Type="tinyint" />
+    <Property Name="balance" Type="decimal" Precision="20" Scale="3" Nullable="false" />
+    <Property Name="balanceType" Type="tinyint" />
   </EntityType>
   <EntityType Name="storageCost">
     <Key>
@@ -1291,6 +1300,18 @@
       </Principal>
       <Dependent Role="cashTransfer">
         <PropertyRef Name="posIdCreator" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_cashTransfer_shippingCompanies">
+    <End Role="shippingCompanies" Type="Self.shippingCompanies" Multiplicity="0..1" />
+    <End Role="cashTransfer" Type="Self.cashTransfer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="shippingCompanies">
+        <PropertyRef Name="shippingCompanyId" />
+      </Principal>
+      <Dependent Role="cashTransfer">
+        <PropertyRef Name="shippingCompanyId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -1822,6 +1843,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_invoices_users5">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="invoices" Type="Self.invoices" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="invoices">
+        <PropertyRef Name="userId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_invoiceStatus_invoices">
     <End Role="invoices" Type="Self.invoices" Multiplicity="0..1" />
     <End Role="invoiceStatus" Type="Self.invoiceStatus" Multiplicity="*" />
@@ -2143,6 +2176,18 @@
       </Principal>
       <Dependent Role="itemsProp">
         <PropertyRef Name="updateUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_itemsTransfer_inventoryItemLocation">
+    <End Role="inventoryItemLocation" Type="Self.inventoryItemLocation" Multiplicity="0..1" />
+    <End Role="itemsTransfer" Type="Self.itemsTransfer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="inventoryItemLocation">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="itemsTransfer">
+        <PropertyRef Name="inventoryItemLocId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -2806,30 +2851,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_shippingCompanies_users1">
-    <End Role="users" Type="Self.users" Multiplicity="0..1" />
-    <End Role="shippingCompanies" Type="Self.shippingCompanies" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="users">
-        <PropertyRef Name="userId" />
-      </Principal>
-      <Dependent Role="shippingCompanies">
-        <PropertyRef Name="updateUserId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_shippingCompanies_users2">
-    <End Role="users" Type="Self.users" Multiplicity="0..1" />
-    <End Role="shippingCompanies" Type="Self.shippingCompanies" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="users">
-        <PropertyRef Name="userId" />
-      </Principal>
-      <Dependent Role="shippingCompanies">
-        <PropertyRef Name="createUserId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK_subscriptionFees_memberships">
     <End Role="memberships" Type="Self.memberships" Multiplicity="0..1" />
     <End Role="subscriptionFees" Type="Self.subscriptionFees" Multiplicity="*" />
@@ -3168,6 +3189,10 @@
       <End Role="pos" EntitySet="pos" />
       <End Role="cashTransfer" EntitySet="cashTransfer" />
     </AssociationSet>
+    <AssociationSet Name="FK_cashTransfer_shippingCompanies" Association="Self.FK_cashTransfer_shippingCompanies">
+      <End Role="shippingCompanies" EntitySet="shippingCompanies" />
+      <End Role="cashTransfer" EntitySet="cashTransfer" />
+    </AssociationSet>
     <AssociationSet Name="FK_cashTransfer_users" Association="Self.FK_cashTransfer_users">
       <End Role="users" EntitySet="users" />
       <End Role="cashTransfer" EntitySet="cashTransfer" />
@@ -3344,6 +3369,10 @@
       <End Role="users" EntitySet="users" />
       <End Role="invoices" EntitySet="invoices" />
     </AssociationSet>
+    <AssociationSet Name="FK_invoices_users5" Association="Self.FK_invoices_users5">
+      <End Role="users" EntitySet="users" />
+      <End Role="invoices" EntitySet="invoices" />
+    </AssociationSet>
     <AssociationSet Name="FK_invoiceStatus_invoices" Association="Self.FK_invoiceStatus_invoices">
       <End Role="invoices" EntitySet="invoices" />
       <End Role="invoiceStatus" EntitySet="invoiceStatus" />
@@ -3451,6 +3480,10 @@
     <AssociationSet Name="FK_itemsProp_users1" Association="Self.FK_itemsProp_users1">
       <End Role="users" EntitySet="users" />
       <End Role="itemsProp" EntitySet="itemsProp" />
+    </AssociationSet>
+    <AssociationSet Name="FK_itemsTransfer_inventoryItemLocation" Association="Self.FK_itemsTransfer_inventoryItemLocation">
+      <End Role="inventoryItemLocation" EntitySet="inventoryItemLocation" />
+      <End Role="itemsTransfer" EntitySet="itemsTransfer" />
     </AssociationSet>
     <AssociationSet Name="FK_itemsTransfer_invoices" Association="Self.FK_itemsTransfer_invoices">
       <End Role="invoices" EntitySet="invoices" />
@@ -3671,14 +3704,6 @@
     <AssociationSet Name="FK_setValues_setting" Association="Self.FK_setValues_setting">
       <End Role="setting" EntitySet="setting" />
       <End Role="setValues" EntitySet="setValues" />
-    </AssociationSet>
-    <AssociationSet Name="FK_shippingCompanies_users1" Association="Self.FK_shippingCompanies_users1">
-      <End Role="users" EntitySet="users" />
-      <End Role="shippingCompanies" EntitySet="shippingCompanies" />
-    </AssociationSet>
-    <AssociationSet Name="FK_shippingCompanies_users2" Association="Self.FK_shippingCompanies_users2">
-      <End Role="users" EntitySet="users" />
-      <End Role="shippingCompanies" EntitySet="shippingCompanies" />
     </AssociationSet>
     <AssociationSet Name="FK_subscriptionFees_memberships" Association="Self.FK_subscriptionFees_memberships">
       <End Role="memberships" EntitySet="memberships" />

@@ -353,7 +353,7 @@
     <Property Name="isActive" Type="tinyint" />
     <Property Name="notes" Type="ntext" />
     <Property Name="cause" Type="ntext" />
-    <Property Name="isFalls" Type="bit" />
+    <Property Name="isFalls" Type="bit" Nullable="false" />
     <Property Name="fallCause" Type="ntext" />
   </EntityType>
   <EntityType Name="invoices">

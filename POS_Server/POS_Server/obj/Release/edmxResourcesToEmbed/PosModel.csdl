@@ -443,7 +443,7 @@
     <Property Name="isActive" Type="Byte" />
     <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="cause" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="isFalls" Type="Boolean" />
+    <Property Name="isFalls" Type="Boolean" Nullable="false" />
     <Property Name="fallCause" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="Inventory" Relationship="Self.FK_inventoryItemLocation_Inventory" FromRole="inventoryItemLocation" ToRole="Inventory" />
     <NavigationProperty Name="itemsLocations" Relationship="Self.FK_inventoryItemLocation_itemsLocations" FromRole="inventoryItemLocation" ToRole="itemsLocations" />

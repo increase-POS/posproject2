@@ -56,6 +56,46 @@ namespace POS_Server.Controllers
             //else
             return NotFound();
         }
+        [HttpGet]
+        [Route("GetCount")]
+        public IHttpActionResult GetCount(string tableName , int tableId)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var docImageCount = entity.docImages.Where(x => x.tableName == tableName && x.tableId == tableId)
+                        .Select(b => new {
+                        b.id,
+                        b.docName,
+                        b.docnum,
+                        b.image,
+                        b.tableName,
+                        b.tableId,
+                        b.note,
+                        b.createDate,
+                        b.updateDate,
+                        b.createUserId,
+                        b.updateUserId,
+                    })
+                    .ToList().Count;
+
+                    return Ok(docImageCount);
+                }
+            }
+            //else
+            return NotFound();
+        }
         [Route("PostImage")]
         public IHttpActionResult PostImage()
         {

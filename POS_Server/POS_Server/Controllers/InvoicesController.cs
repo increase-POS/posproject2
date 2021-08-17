@@ -755,6 +755,82 @@ namespace POS_Server.Controllers
             return NotFound();
         }
         [HttpGet]
+        [Route("GetCountByCreator")]
+        public IHttpActionResult GetCountByCreator(string invType, int createUserId, int duration)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                string[] invTypeArray = invType.Split(',');
+                List<string> invTypeL = new List<string>();
+                foreach (string s in invTypeArray)
+                    invTypeL.Add(s.Trim());
+
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var searchPredicate = PredicateBuilder.New<invoices>();
+
+                    if (duration > 0)
+                    {
+                        DateTime dt = Convert.ToDateTime(DateTime.Today.AddDays(-duration).ToShortDateString());
+                        searchPredicate = searchPredicate.And(inv => inv.updateDate >= dt);
+                    }
+                    searchPredicate = searchPredicate.And(inv => invTypeL.Contains(inv.invType));
+                    searchPredicate = searchPredicate.And(inv => inv.createUserId == createUserId);
+
+                    var invoicesCount = (from b in entity.invoices.Where(searchPredicate)
+                                        join l in entity.branches on b.branchId equals l.branchId into lj
+                                        from x in lj.DefaultIfEmpty()
+                                        select new InvoiceModel()
+                                        {
+                                            invoiceId = b.invoiceId,
+                                            invNumber = b.invNumber,
+                                            agentId = b.agentId,
+                                            invType = b.invType,
+                                            total = b.total,
+                                            totalNet = b.totalNet,
+                                            paid = b.paid,
+                                            deserved = b.deserved,
+                                            deservedDate = b.deservedDate,
+                                            invDate = b.invDate,
+                                            invoiceMainId = b.invoiceMainId,
+                                            invCase = b.invCase,
+                                            invTime = b.invTime,
+                                            notes = b.notes,
+                                            vendorInvNum = b.vendorInvNum,
+                                            vendorInvDate = b.vendorInvDate,
+                                            createUserId = b.createUserId,
+                                            updateDate = b.updateDate,
+                                            updateUserId = b.updateUserId,
+                                            branchId = b.branchId,
+                                            discountValue = b.discountValue,
+                                            discountType = b.discountType,
+                                            tax = b.tax,
+                                            taxtype = b.taxtype,
+                                            name = b.name,
+                                            isApproved = b.isApproved,
+                                            branchName = x.name,
+                                            branchCreatorId = b.branchCreatorId,
+                                            shippingCompanyId = b.shippingCompanyId,
+                                            shipUserId = b.shipUserId,
+                                            userId = b.userId,
+                                        })
+                    .ToList().Count;
+                    return Ok(invoicesCount);
+                }
+            }
+            return NotFound();
+        }
+        [HttpGet]
         [Route("getBranchInvoices")]
         public IHttpActionResult getBranchInvoices(string invType, int branchCreatorId, int branchId)
         {
@@ -840,6 +916,80 @@ namespace POS_Server.Controllers
             return NotFound();
         }
         [HttpGet]
+        [Route("GetCountBranchInvoices")]
+        public IHttpActionResult GetCountBranchInvoices(string invType, int branchCreatorId, int branchId)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                string[] invTypeArray = invType.Split(',');
+                List<string> invTypeL = new List<string>();
+                foreach (string s in invTypeArray)
+                    invTypeL.Add(s.Trim());
+
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var searchPredicate = PredicateBuilder.New<invoices>();
+                    if (branchCreatorId != 0)
+                        searchPredicate = searchPredicate.And(inv => inv.branchCreatorId == branchCreatorId && invTypeL.Contains(inv.invType));
+                    // searchPredicate = searchPredicate.And(inv => invTypeL.Contains(inv.invType));
+                    if (branchId != 0)
+                        searchPredicate = searchPredicate.Or(inv => inv.branchId == branchId && invTypeL.Contains(inv.invType));
+
+                    var invoicesCount = (from b in entity.invoices.Where(searchPredicate)
+                                        join l in entity.branches on b.branchId equals l.branchId into lj
+                                        from x in lj.DefaultIfEmpty()
+                                        select new InvoiceModel()
+                                        {
+                                            invoiceId = b.invoiceId,
+                                            invNumber = b.invNumber,
+                                            agentId = b.agentId,
+                                            invType = b.invType,
+                                            total = b.total,
+                                            totalNet = b.totalNet,
+                                            paid = b.paid,
+                                            deserved = b.deserved,
+                                            deservedDate = b.deservedDate,
+                                            invDate = b.invDate,
+                                            invoiceMainId = b.invoiceMainId,
+                                            invCase = b.invCase,
+                                            invTime = b.invTime,
+                                            notes = b.notes,
+                                            vendorInvNum = b.vendorInvNum,
+                                            vendorInvDate = b.vendorInvDate,
+                                            createUserId = b.createUserId,
+                                            updateDate = b.updateDate,
+                                            updateUserId = b.updateUserId,
+                                            branchId = b.branchId,
+                                            discountValue = b.discountValue,
+                                            discountType = b.discountType,
+                                            tax = b.tax,
+                                            taxtype = b.taxtype,
+                                            name = b.name,
+                                            isApproved = b.isApproved,
+                                            branchName = x.name,
+                                            branchCreatorId = b.branchCreatorId,
+                                            shippingCompanyId = b.shippingCompanyId,
+                                            shipUserId = b.shipUserId,
+                                            userId = b.userId,
+                                        })
+                    .ToList().Count;
+                   
+                     return Ok(invoicesCount);
+                }
+            }
+            return NotFound();
+        }
+        [HttpGet]
         [Route("getDeliverOrders")]
         public IHttpActionResult getDeliverOrders(string invType, string status, int shipUserId)
         {
@@ -912,6 +1062,72 @@ namespace POS_Server.Controllers
                         return NotFound();
                     else
                         return Ok(invoicesList);
+                }
+            }
+            return NotFound();
+        }
+        [HttpGet]
+        [Route("getDeliverOrdersCount")]
+        public IHttpActionResult getDeliverOrdersCount(string invType, string status, int shipUserId)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                string[] invTypeArray = invType.Split(',');
+                List<string> invTypeL = new List<string>();
+                foreach (string s in invTypeArray)
+                    invTypeL.Add(s.Trim());
+
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var invoicesCount = (from b in entity.invoices.Where(x => invTypeL.Contains(x.invType) && x.shipUserId == shipUserId)
+                                        join s in entity.invoiceStatus on b.invoiceId equals s.invoiceId
+                                        where (s.status == status && s.invStatusId == entity.invoiceStatus.Where(x => x.invoiceId == b.invoiceId).Max(x => x.invStatusId))
+                                        select new InvoiceModel()
+                                        {
+                                            invoiceId = b.invoiceId,
+                                            invNumber = b.invNumber,
+                                            agentId = b.agentId,
+                                            invType = b.invType,
+                                            total = b.total,
+                                            totalNet = b.totalNet,
+                                            paid = b.paid,
+                                            deserved = b.deserved,
+                                            deservedDate = b.deservedDate,
+                                            invDate = b.invDate,
+                                            invoiceMainId = b.invoiceMainId,
+                                            invCase = b.invCase,
+                                            invTime = b.invTime,
+                                            notes = b.notes,
+                                            vendorInvNum = b.vendorInvNum,
+                                            vendorInvDate = b.vendorInvDate,
+                                            createUserId = b.createUserId,
+                                            updateDate = b.updateDate,
+                                            updateUserId = b.updateUserId,
+                                            branchId = b.branchId,
+                                            discountValue = b.discountValue,
+                                            discountType = b.discountType,
+                                            tax = b.tax,
+                                            taxtype = b.taxtype,
+                                            name = b.name,
+                                            isApproved = b.isApproved,
+                                            branchCreatorId = b.branchCreatorId,
+                                            shippingCompanyId = b.shippingCompanyId,
+                                            shipUserId = b.shipUserId,
+                                            userId = b.userId,
+                                        })
+                    .ToList().Count;
+                  
+                   return Ok(invoicesCount);
                 }
             }
             return NotFound();
