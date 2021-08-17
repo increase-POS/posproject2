@@ -112,7 +112,7 @@ namespace POS.View.reports
 
         public void paintInternalChilds()
         {
-           
+
         }
         private void isEnabledButtonsInternal()
         {
@@ -136,7 +136,7 @@ namespace POS.View.reports
 
         private void isEnabledButtons()
         {
-          
+
         }
         private int selectedStockTab = 0;
         IEnumerable<itemCombo> comboItems;
@@ -279,27 +279,27 @@ namespace POS.View.reports
         private void showSelectedTabColumn()
         {
             hideAllColumn();
-         
-                if (selectedTab == 0)
-                {
-                    hideAllColumn();
-                    col_branchFrom.Visibility = Visibility.Visible;
-                    col_branchTo.Visibility = Visibility.Visible;
-                    col_item.Visibility = Visibility.Visible;
-                    col_unit.Visibility = Visibility.Visible;
-                    col_quantity.Visibility = Visibility.Visible;
-                    col_invTypeNumber.Visibility = Visibility.Visible;
 
-                }
-                else if (selectedTab == 1)
-                {
-                    hideAllColumn();
-                    col_branch.Visibility = Visibility.Visible;
-                    col_item.Visibility = Visibility.Visible;
-                    col_unit.Visibility = Visibility.Visible;
-                    col_quantity.Visibility = Visibility.Visible;
-                    col_invTypeNumber.Visibility = Visibility.Visible;
-                }
+            if (selectedTab == 0)
+            {
+                hideAllColumn();
+                col_branchFrom.Visibility = Visibility.Visible;
+                col_branchTo.Visibility = Visibility.Visible;
+                col_item.Visibility = Visibility.Visible;
+                col_unit.Visibility = Visibility.Visible;
+                col_quantity.Visibility = Visibility.Visible;
+                col_invTypeNumber.Visibility = Visibility.Visible;
+
+            }
+            else if (selectedTab == 1)
+            {
+                hideAllColumn();
+                col_branch.Visibility = Visibility.Visible;
+                col_item.Visibility = Visibility.Visible;
+                col_unit.Visibility = Visibility.Visible;
+                col_quantity.Visibility = Visibility.Visible;
+                col_invTypeNumber.Visibility = Visibility.Visible;
+            }
 
             #endregion
 
@@ -307,7 +307,7 @@ namespace POS.View.reports
         /************************************************************************************************************************************/
         private int selectedTab = 0;
 
-       
+
         private void btn_internalItems_Click(object sender, RoutedEventArgs e)
         {
 
@@ -553,7 +553,7 @@ namespace POS.View.reports
         List<internalTypeCombo> comboInternalOperatorType;
         List<internalOperatorCombo> comboInternalOperatorOperator;
 
-     
+
 
 
         private void fillComboInternalItemsItems()
@@ -915,7 +915,7 @@ namespace POS.View.reports
        s.importBranch.Contains(txt_search.Text) ||
        s.itemName.Contains(txt_search.Text) ||
        s.unitName.Contains(txt_search.Text) ||
-       s.InvTypeNumber.Contains(txt_search.Text) 
+       s.InvTypeNumber.Contains(txt_search.Text)
        ));
             }
             else if (selectedTab == 1)
@@ -926,7 +926,7 @@ namespace POS.View.reports
        s.unitName.Contains(txt_search.Text) ||
        s.InvTypeNumber.Contains(txt_search.Text)
        ));
-             
+
             }
 
 
@@ -934,5 +934,29 @@ namespace POS.View.reports
 
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
+            if (selectedTab == 0)
+            {
+                cb_internalItemsFromBranches.SelectedItem = null;
+                cb_internalItemsToBranches.SelectedItem = null;
+                cb_internalItemsItems.SelectedItem = null;
+                cb_internalItemsUnits.SelectedItem = null;
+                chk_internalItemsTwoWay.IsChecked = false;
+                chk_internalItemsFromAllBranches.IsChecked = false;
+                chk_internalItemsToAllBranches.IsChecked = false;
+                chk_internalItemsAllItems.IsChecked = false;
+                chk_internalItemsAllUnits.IsChecked = false;
+                dp_internalItemsStartDate.SelectedDate = null;
+                dp_InternalItemsEndDate.SelectedDate = null;
+            }
+            else if (selectedTab == 1)
+            {
+                cb_internalOperaterFromBranches.SelectedItem = null;
+                cb_internalOperaterType.SelectedItem = null;
+                dp_internalOperatorStartDate.SelectedDate = null;
+                dp_InternalOperatorEndDate.SelectedDate = null;
+                chk_internalOperaterFromAllBranches.IsChecked = false;
+                chk_internalOperatorAllTypes.IsChecked = false;
+            }
         }
-    } }
+    }
+}

@@ -15,6 +15,9 @@ namespace POS.Classes
 {
     public class CashTransferSts
     {
+        private string description;
+        private string description1;
+
         public string bondNumber { get; set; }
         public Nullable<int> fromposId { get; set; }
         public string fromposName { get; set; }
@@ -116,8 +119,24 @@ namespace POS.Classes
         public string invNumber { get; set; }//
         public string invType { get; set; }//
         public Nullable<decimal> totalNet { get; set; }//
+        public string Description
+        {
+            get => processType == "cash" ? description = "Cash"
+                 : processType == "card" ? description = cardName + " Num : " + docNum
+                 : processType == "doc" ? description = "Bond" + " Num : " + bondNumber
+                 : processType == "cheque" ? description = "Cheque" + " Num : " + docNum
+                : "balance";
 
-
+            set => description = value;
+        }
+        public string Description1
+        {
+            get => description1 = (transType == "p" && processType != null) ? description1 = "ايصال دفع"
+                : description1 = (transType == "d" && processType != null) ? description1 = "ايصال قبض"
+                : invId > 0 ? description1 = "فاتورة رقم" + invNumber
+                : ""
+                ; set => description1 = value;
+        }
     }
 
     public class Storage
@@ -287,7 +306,7 @@ namespace POS.Classes
         public string inventoryNum { get; set; }
         public string inventoryType { get; set; }
         public Nullable<DateTime> inventoryDate { get; set; }
-        public int  itemCount { get; set; }
+        public int itemCount { get; set; }
         public Nullable<decimal> subTotal { get; set; }
         public string agentCompany { get; set; }
         public string itemName { get; set; }
@@ -2120,7 +2139,7 @@ namespace POS.Classes
                 updateUserAcc = obj.FirstOrDefault().updateUserAcc,
                 cardName = obj.FirstOrDefault().cardName,
                 bondDeserveDate = obj.FirstOrDefault().bondDeserveDate,
-
+                docNum = obj.FirstOrDefault().docNum,
                 shippingCompanyId = obj.FirstOrDefault().shippingCompanyId,
                 shippingCompanyName = obj.FirstOrDefault().shippingCompanyName,
                 userAcc = obj.FirstOrDefault().userAcc,

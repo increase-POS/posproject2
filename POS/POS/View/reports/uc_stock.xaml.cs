@@ -105,7 +105,7 @@ namespace POS.View.reports
 
      temp= fillList(storages, cb_branchesItem, cb_itemsItem, cb_unitsItem, dp_startDateItem, dp_endDateItem, chk_allBranchesItem, chk_allItemsItem, chk_allUnitsItem, chk_expireDateItem);
             dgStock.ItemsSource = temp;
-            fillPieChart(temp);
+            fillPieChart();
 
         }
 
@@ -296,7 +296,7 @@ namespace POS.View.reports
             fillComboItems(cb_branchesItem, cb_itemsItem);
            temp= fillList(storages, cb_branchesItem, cb_itemsItem, cb_unitsItem, dp_startDateItem, dp_endDateItem, chk_allBranchesItem, chk_allItemsItem, chk_allUnitsItem, chk_expireDateItem);
             dgStock.ItemsSource = temp;
-            fillPieChart(temp);
+            fillPieChart();
         }
 
         private void cb_itemsItem_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -306,14 +306,14 @@ namespace POS.View.reports
             fillComboUnits(cb_itemsItem, cb_unitsItem);
    temp= fillList(storages, cb_branchesItem, cb_itemsItem, cb_unitsItem, dp_startDateItem, dp_endDateItem, chk_allBranchesItem, chk_allItemsItem, chk_allUnitsItem, chk_expireDateItem);
             dgStock.ItemsSource = temp;
-            fillPieChart(temp);
+            fillPieChart();
         }
 
         private void cb_unitsItem_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
            temp= fillList(storages, cb_branchesItem, cb_itemsItem, cb_unitsItem, dp_startDateItem, dp_endDateItem, chk_allBranchesItem, chk_allItemsItem, chk_allUnitsItem, chk_expireDateItem);
             dgStock.ItemsSource = temp;
-            fillPieChart(temp);
+            fillPieChart();
         }
 
         private void chk_allBranchesItem_Checked(object sender, RoutedEventArgs e)
@@ -372,7 +372,7 @@ namespace POS.View.reports
             dp_startDateItem.IsEnabled = true;
         temp = fillList(storages, cb_branchesItem, cb_itemsItem, cb_unitsItem, dp_startDateItem, dp_endDateItem, chk_allBranchesItem, chk_allItemsItem, chk_allUnitsItem, chk_expireDateItem);
             dgStock.ItemsSource = temp;
-            fillPieChart(temp);
+            fillPieChart();
         }
 
         private void chk_expireDateItem_Unchecked(object sender, RoutedEventArgs e)
@@ -381,21 +381,21 @@ namespace POS.View.reports
             dp_startDateItem.IsEnabled = false;
             temp= fillList(storages, cb_branchesItem, cb_itemsItem, cb_unitsItem, dp_startDateItem, dp_endDateItem, chk_allBranchesItem, chk_allItemsItem, chk_allUnitsItem, chk_expireDateItem);
             dgStock.ItemsSource = temp;
-            fillPieChart(temp);
+            fillPieChart();
         }
 
         private void dp_startDateItem_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
             temp = fillList(storages, cb_branchesItem, cb_itemsItem, cb_unitsItem, dp_startDateItem, dp_endDateItem, chk_allBranchesItem, chk_allItemsItem, chk_allUnitsItem, chk_expireDateItem);
             dgStock.ItemsSource = temp;
-            fillPieChart(temp);
+            fillPieChart();
         }
 
         private void dp_endDateItem_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
     temp= fillList(storages, cb_branchesItem, cb_itemsItem, cb_unitsItem, dp_startDateItem, dp_endDateItem, chk_allBranchesItem, chk_allItemsItem, chk_allUnitsItem, chk_expireDateItem);
             dgStock.ItemsSource = temp;
-            fillPieChart(temp);
+            fillPieChart();
         }
 
         private void cb_branchesLocation_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -408,7 +408,7 @@ namespace POS.View.reports
             fillComboSection();
      temp = fillList(storages, cb_branchesLocation, cb_sectionsLocation, cb_locationsLocation, dp_startDateLocation, dp_endDateLocation, chk_allBranchesLocation, chk_allSectionsLocation, chk_allLocationsLocation, chk_expireDateLocation);
             dgStock.ItemsSource = temp;
-            fillPieChart(temp);
+            fillPieChart();
         }
 
         private void cb_sectionsLocation_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -418,14 +418,14 @@ namespace POS.View.reports
             fillComboLoaction();
             temp = fillList(storages, cb_branchesLocation, cb_sectionsLocation, cb_locationsLocation, dp_startDateLocation, dp_endDateLocation, chk_allBranchesLocation, chk_allSectionsLocation, chk_allLocationsLocation, chk_expireDateLocation);
             dgStock.ItemsSource = temp;
-            fillPieChart(temp);
+            fillPieChart();
         }
 
         private void cb_locationsLocation_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
            temp= fillList(storages, cb_branchesLocation, cb_sectionsLocation, cb_locationsLocation, dp_startDateLocation, dp_endDateLocation, chk_allBranchesLocation, chk_allSectionsLocation, chk_allLocationsLocation, chk_expireDateLocation);
             dgStock.ItemsSource = temp;
-            fillPieChart(temp);
+            fillPieChart();
         }
 
         private void chk_allBranchesLocation_Checked(object sender, RoutedEventArgs e)
@@ -482,7 +482,7 @@ namespace POS.View.reports
             dp_startDateLocation.IsEnabled = true;
             temp = fillList(storages, cb_branchesLocation, cb_sectionsLocation, cb_locationsLocation, dp_startDateLocation, dp_endDateLocation, chk_allBranchesLocation, chk_allSectionsLocation, chk_allLocationsLocation, chk_expireDateLocation);
             dgStock.ItemsSource = temp;
-            fillPieChart(temp);
+            fillPieChart();
         }
 
         private void chk_expireDateLocation_Unchecked(object sender, RoutedEventArgs e)
@@ -491,21 +491,21 @@ namespace POS.View.reports
             dp_startDateLocation.IsEnabled = false;
           temp = fillList(storages, cb_branchesLocation, cb_sectionsLocation, cb_locationsLocation, dp_startDateLocation, dp_endDateLocation, chk_allBranchesLocation, chk_allSectionsLocation, chk_allLocationsLocation, chk_expireDateLocation);
             dgStock.ItemsSource = temp;
-            fillPieChart(temp);
+            fillPieChart();
         }
 
         private void dp_endDateLocation_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
          temp = fillList(storages, cb_branchesLocation, cb_sectionsLocation, cb_locationsLocation, dp_startDateLocation, dp_endDateLocation, chk_allBranchesLocation, chk_allSectionsLocation, chk_allLocationsLocation, chk_expireDateLocation);
             dgStock.ItemsSource = temp;
-            fillPieChart(temp);
+            fillPieChart();
         }
 
         private void dp_startDateLocation_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
             temp = fillList(storages, cb_branchesLocation, cb_sectionsLocation, cb_locationsLocation, dp_startDateLocation, dp_endDateLocation, chk_allBranchesLocation, chk_allSectionsLocation, chk_allLocationsLocation, chk_expireDateLocation);
             dgStock.ItemsSource = temp;
-            fillPieChart(temp);
+            fillPieChart();
         }
 
         private void cb_branchesCollect_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -535,7 +535,7 @@ namespace POS.View.reports
                               maxUnitName = s.FirstOrDefault().maxUnitName + s.FirstOrDefault().max
                           });
             dgStock.ItemsSource = temp;
-            fillPieChart(temp);
+            fillPieChart();
         }
 
         private void cb_itemsCollect_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -561,7 +561,7 @@ namespace POS.View.reports
                               maxUnitName = s.FirstOrDefault().maxUnitName + s.FirstOrDefault().max
                           });
             dgStock.ItemsSource = temp;
-            fillPieChart(temp);
+            fillPieChart();
         }
 
         private void cb_unitsCollect_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -584,7 +584,7 @@ namespace POS.View.reports
                               maxUnitName = s.FirstOrDefault().maxUnitName + s.FirstOrDefault().max
                           });
             dgStock.ItemsSource = temp;
-            fillPieChart(temp);
+            fillPieChart();
         }
 
         private void chk_allBranchesCollect_Checked(object sender, RoutedEventArgs e)
@@ -651,7 +651,7 @@ namespace POS.View.reports
                 temp = fillList(storages, cb_branchesItem, cb_itemsItem, cb_unitsItem, dp_startDateItem, dp_endDateItem, chk_allBranchesItem, chk_allItemsItem, chk_allUnitsItem, chk_expireDateItem);
             dgStock.ItemsSource = temp;
             showSelectedTabColumn();
-            fillPieChart(temp);
+            fillPieChart();
         }
 
         private void btn_location_Click(object sender, RoutedEventArgs e)
@@ -671,7 +671,7 @@ namespace POS.View.reports
            
                 temp= fillList(storages, cb_branchesLocation, cb_sectionsLocation, cb_locationsLocation, dp_startDateLocation, dp_endDateLocation, chk_allBranchesLocation, chk_allSectionsLocation, chk_allLocationsLocation, chk_expireDateLocation);
             dgStock.ItemsSource = temp;
-            fillPieChart(temp);
+            fillPieChart();
         }
 
         private void btn_collect_Click(object sender, RoutedEventArgs e)
@@ -707,7 +707,7 @@ namespace POS.View.reports
                     maxUnitName = s.FirstOrDefault().maxUnitName + s.FirstOrDefault().max
                 });
             dgStock.ItemsSource = temp;
-            fillPieChart(temp);
+            fillPieChart();
         }
 
 
@@ -975,13 +975,130 @@ namespace POS.View.reports
 
 
 
-        private void fillPieChart(IEnumerable<Storage> List)
+        private void fillRowChart()
+        {
+            MyAxis.Labels = new List<string>();
+            List<string> names = new List<string>();
+            IEnumerable<decimal> pTemp = null;
+
+            var temp = fillList(storages, cb_branchesItem, cb_itemsItem, cb_unitsItem, dp_startDateItem, dp_endDateItem, chk_allBranchesItem, chk_allItemsItem, chk_allUnitsItem, chk_expireDateItem);
+
+            if (selectedStockTab == 1)
+            {
+                temp = fillList(storages, cb_branchesLocation, cb_sectionsLocation, cb_locationsLocation, dp_startDateLocation, dp_endDateLocation, chk_allBranchesLocation, chk_allSectionsLocation, chk_allLocationsLocation, chk_expireDateLocation);
+            }
+
+            if (selectedStockTab == 2)
+            {
+                temp = fillList(storages, cb_branchesCollect, cb_itemsCollect, cb_unitsCollect, null, null, chk_allBranchesCollect, chk_allItemsCollect, chk_allUnitsCollect, null);
+            }
+
+            var result = temp.GroupBy(s => new { s.sectionId, s.locationId }).Select(s => new
+            {
+                itemId = s.FirstOrDefault().itemId,
+                quantity = s.Sum(g => g.quantity)
+            }
+        );
+            var resultTotal = result.Select(x => new { x.itemId, total = x.quantity }).ToList();
+            pTemp = result.Select(x => (decimal)x.quantity);
+
+            var tempName = temp.GroupBy(s => new { s.locationId, s.Secname }).Select(s => new
+            {
+                locationName = s.FirstOrDefault().branchName + "\n" + s.FirstOrDefault().Secname + " - " + s.FirstOrDefault().x + s.FirstOrDefault().y + s.FirstOrDefault().z
+            });
+            names.AddRange(tempName.Select(nn => nn.locationName));
+
+            SeriesCollection rowChartData = new SeriesCollection();
+            List<decimal> purchase = new List<decimal>();
+            for (int i = 0; i < pTemp.Count(); i++)
+            {
+                purchase.Add(pTemp.ToList().Skip(i).FirstOrDefault());
+                MyAxis.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
+            }
+
+            rowChartData.Add(
+          new LineSeries
+          {
+              Values = purchase.AsChartValues(),
+              Title = "Items Quantity"
+
+          });
+            DataContext = this;
+            rowChart.Series = rowChartData;
+        }
+
+        private void fillColumnChart()
+        {
+            axcolumn.Labels = new List<string>();
+            List<string> names = new List<string>();
+
+            var temp = fillList(storages, cb_branchesItem, cb_itemsItem, cb_unitsItem, dp_startDateItem, dp_endDateItem, chk_allBranchesItem, chk_allItemsItem, chk_allUnitsItem, chk_expireDateItem);
+
+            if (selectedStockTab == 1)
+            {
+                temp = fillList(storages, cb_branchesLocation, cb_sectionsLocation, cb_locationsLocation, dp_startDateLocation, dp_endDateLocation, chk_allBranchesLocation, chk_allSectionsLocation, chk_allLocationsLocation, chk_expireDateLocation);
+            }
+            if (selectedStockTab == 2)
+            {
+                temp = fillList(storages, cb_branchesCollect, cb_itemsCollect, cb_unitsCollect, null, null, chk_allBranchesCollect, chk_allItemsCollect, chk_allUnitsCollect, null);
+            }
+
+            var result = temp.GroupBy(s => new { s.itemId, s.unitId }).Select(s => new Storage
+            {
+                branchId = s.FirstOrDefault().branchId,
+                itemId = s.FirstOrDefault().itemId,
+                unitId = s.FirstOrDefault().unitId,
+                quantity = s.Sum(g => g.quantity)
+            });
+            var cc = result.Select(m => new { m.itemId, m.quantity, m.unitId });
+
+            var tempName = temp.GroupBy(s => new { s.itemName, s.unitName }).Select(s => new
+            {
+                itemName = s.FirstOrDefault().itemName,
+                unitName = s.FirstOrDefault().unitName
+            });
+            names.AddRange(tempName.Select(nn => nn.itemName + " - " + nn.unitName));
+
+            List<string> lable = new List<string>();
+            SeriesCollection columnChartData = new SeriesCollection();
+            List<decimal> cP = new List<decimal>();
+            List<decimal> cPb = new List<decimal>();
+            List<decimal> cD = new List<decimal>();
+
+
+            for (int i = 0; i < cc.Count(); i++)
+            {
+                cP.Add(cc.ToList().Select(jj => (decimal)jj.quantity).Skip(i).FirstOrDefault());
+                axcolumn.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
+            }
+            columnChartData.Add(
+            new StackedColumnSeries
+            {
+                Values = cP.AsChartValues(),
+                Title = "Items Quantity",
+                DataLabels = true,
+            });
+            DataContext = this;
+            cartesianChart.Series = columnChartData;
+            fillRowChart();
+        }
+
+        private void fillPieChart()
         {
             List<string> titles = new List<string>();
             List<decimal> x = new List<decimal>();
             titles.Clear();
 
-             temp = List;
+            var temp = fillList(storages, cb_branchesItem, cb_itemsItem, cb_unitsItem, dp_startDateItem, dp_endDateItem, chk_allBranchesItem, chk_allItemsItem, chk_allUnitsItem, chk_expireDateItem);
+
+            if (selectedStockTab == 1)
+            {
+                temp = fillList(storages, cb_branchesLocation, cb_sectionsLocation, cb_locationsLocation, dp_startDateLocation, dp_endDateLocation, chk_allBranchesLocation, chk_allSectionsLocation, chk_allLocationsLocation, chk_expireDateLocation);
+            }
+            if (selectedStockTab == 2)
+            {
+                temp = fillList(storages, cb_branchesCollect, cb_itemsCollect, cb_unitsCollect, null, null, chk_allBranchesCollect, chk_allItemsCollect, chk_allUnitsCollect, null);
+            }
 
             var titleTemp = temp.GroupBy(m => m.branchName);
             titles.AddRange(titleTemp.Select(jj => jj.Key));
@@ -1029,8 +1146,9 @@ namespace POS.View.reports
 
             }
             chart1.Series = piechartData;
-            fillColumnChart(temp);
+            fillColumnChart();
         }
+
 
         private void txt_search_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -1044,7 +1162,6 @@ namespace POS.View.reports
   s.LoactionName.Contains(txt_search.Text)
   ));
                 dgStock.ItemsSource = temp;
-                fillPieChart(temp);
             }
             else if (selectedStockTab == 1)
             {
@@ -1058,7 +1175,6 @@ namespace POS.View.reports
   s.LoactionName.Contains(txt_search.Text)
   ));
                 dgStock.ItemsSource = temp;
-                fillPieChart(temp);
             }
 
 
@@ -1087,7 +1203,6 @@ namespace POS.View.reports
 
        ));
                 dgStock.ItemsSource = temp;
-                fillPieChart(temp);
             }
 
 
@@ -1098,43 +1213,39 @@ namespace POS.View.reports
             txt_search.Text = "";
             if (selectedStockTab == 0)
             {
-                temp = fillList(storages, cb_branchesItem, cb_itemsItem, cb_unitsItem, dp_startDateItem, dp_endDateItem, chk_allBranchesItem, chk_allItemsItem, chk_allUnitsItem, chk_expireDateItem)
-                  ;
-                    dgStock.ItemsSource = temp;
-                fillPieChart(temp);
+                cb_branchesItem.SelectedItem = null;
+                cb_itemsItem.SelectedItem = null;
+                cb_unitsItem.SelectedItem = null;
+                chk_allBranchesItem.IsChecked = false;
+                chk_allItemsItem.IsChecked = false;
+                chk_allUnitsItem.IsChecked = false;
+                chk_expireDateItem.IsChecked = false;
+                dp_endDateItem.SelectedDate = null;
+                dp_startDateItem.SelectedDate = null;
             }
             else if (selectedStockTab == 1)
             {
-
-                temp = fillList(storages, cb_branchesLocation, cb_sectionsLocation, cb_locationsLocation, dp_startDateLocation, dp_endDateLocation, chk_allBranchesLocation, chk_allSectionsLocation, chk_allLocationsLocation, chk_expireDateLocation);
-
-                dgStock.ItemsSource = temp;
-                fillPieChart(temp);
+                cb_branchesLocation.SelectedItem = null;
+                cb_locationsLocation.SelectedItem = null;
+                cb_sectionsLocation.SelectedItem = null;
+                chk_allBranchesLocation.IsChecked = false;
+                chk_allLocationsLocation.IsChecked = false;
+                chk_allSectionsLocation.IsChecked = false;
+                chk_expireDateLocation.IsChecked = false;
+                dp_endDateLocation.SelectedDate = null;
+                dp_startDateLocation.SelectedDate = null;
             }
-
-
             else
             {
-                temp = fillList(storages, cb_branchesCollect, cb_itemsCollect, cb_unitsCollect, null, null, chk_allBranchesCollect, chk_allItemsCollect, chk_allUnitsCollect, null).GroupBy(x => new { x.branchId, x.itemUnitId })
-               .Select(s => new Storage
-               {
-                   branchId = s.FirstOrDefault().branchId,
-                   branchName = s.FirstOrDefault().branchName,
-                   storeCost = s.FirstOrDefault().storeCost,
-                   itemUnitId = s.FirstOrDefault().itemUnitId,
-                   ItemUnits = s.FirstOrDefault().ItemUnits
-               ,
-                   itemId = s.FirstOrDefault().itemId,
-                   itemName = s.FirstOrDefault().itemName,
-                   unitId = s.FirstOrDefault().unitId,
-                   unitName = s.FirstOrDefault().unitName,
-                   quantity = s.Sum(g => g.quantity),
-                   minUnitName = s.FirstOrDefault().minUnitName + s.FirstOrDefault().min,
-                   maxUnitName = s.FirstOrDefault().maxUnitName + s.FirstOrDefault().max
-               });
-                  
-                dgStock.ItemsSource = temp;
-                fillPieChart(temp);
+                cb_branchesCollect.SelectedItem = null;
+                cb_itemsCollect.SelectedItem = null;
+                cb_unitsCollect.SelectedItem = null;
+                chk_allBranchesCollect.IsChecked = false;
+                chk_allItemsCollect.IsChecked = false;
+                chk_allUnitsCollect.IsChecked = false;
+                chk_expireDateCollect.IsChecked = false;
+                dp_endDateCollect.SelectedDate = null;
+                dp_startDateCollect.SelectedDate = null;
             }
         }
     }

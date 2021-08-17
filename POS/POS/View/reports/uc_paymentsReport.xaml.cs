@@ -1267,39 +1267,163 @@ namespace POS.View.reports
 
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
+            txt_search.Text = "";
             if (selectedTab == 0)
             {
+                cb_vendors.SelectedItem = null;
+                cb_vendorPayType.SelectedItem = null;
+                cb_vendorAccountant.SelectedItem = null;
+                chk_allVendors.IsChecked = false;
+                chk_allVendorsAccountant.IsChecked = false;
+                chk_allVendorsPaymentType.IsChecked = false;
+                dp_vendorEndDate.SelectedDate = null;
+                dp_vendorStartDate.SelectedDate = null;
                 fillVendorsEvents();
             }
            else if (selectedTab == 1)
             {
+                cb_customer.SelectedItem = null;
+                cb_customerPayType.SelectedItem = null;
+                cb_customerAccountant.SelectedItem = null;
+                chk_allCustomers.IsChecked = false;
+                chk_allCustomersPaymentType.IsChecked = false;
+                chk_allCustomersAccountant.IsChecked = false;
+                dp_customerEndDate.SelectedDate = null;
+                dp_customerStartDate.SelectedDate = null;
                 fillCustomersEvents();
             }
             else if (selectedTab == 2)
             {
+                cb_users.SelectedItem = null;
+                cb_userPayType.SelectedItem = null;
+                cb_userAccountant.SelectedItem = null;
+                chk_allUsers.IsChecked = false;
+                chk_allUsersPaymentType.IsChecked = false;
+                chk_allUsersAccountant.IsChecked = false;
+                dp_userEndDate.SelectedDate = null;
+                dp_userStartDate.SelectedDate = null;
                 fillUserEvents();
             }
             else if (selectedTab == 3)
             {
+                cb_salary.SelectedItem = null;
+                cb_salaryPayType.SelectedItem = null;
+                cb_salaryAccountant.SelectedItem = null;
+                chk_allSalaries.IsChecked = false;
+                chk_allSalariesPaymentType.IsChecked = false;
+                chk_allSalariesAccountant.IsChecked = false;
+                dp_salaryEndDate.SelectedDate = null;
+                dp_salaryStartDate.SelectedDate = null;
                 fillSalaryEvents();
             }
             else if (selectedTab == 4)
             {
+                cb_generalExpensesPayType.SelectedItem = null;
+                cb_generalExpensesAccountant.SelectedItem = null;
+                chk_allGeneralExpensesPaymentType.IsChecked = false;
+                chk_allGeneralExpensesAccountant.IsChecked = false;
+                dp_generalExpensesEndDate.SelectedDate = null;
+                dp_generalExpensesStartDate.SelectedDate = null;
                 fillGeneralExpensesEvents();
             }
             else if (selectedTab == 5)
             {
+                cb_administrativePullPayType.SelectedItem = null;
+                cb_administrativePullAccountant.SelectedItem = null;
+                chk_allAdministrativePullPaymentType.IsChecked = false;
+                chk_allAdministrativePullAccountant.IsChecked = false;
+                dp_administrativePullEndDate.SelectedDate = null;
+                dp_administrativePullStartDate.SelectedDate = null;
                 fillAdministrativePullEvents();
             }
             else if (selectedTab == 6)
             {
+                cb_shipping.SelectedItem = null;
+                cb_shippingPayType.SelectedItem = null;
+                cb_shippingAccountant.SelectedItem = null;
+                chk_allShippings.IsChecked = false;
+                chk_allShippingsPaymentType.IsChecked = false;
+                chk_allShippingsAccountant.IsChecked = false;
+                dp_shippingEndDate.SelectedDate = null;
+                dp_shippingStartDate.SelectedDate = null;
                 fillShippingEvents();
             }
         }
 
         private void Txt_search_TextChanged(object sender, TextChangedEventArgs e)
         {
+            if (selectedTab == 0)
+            {
+                var temp = fillList(payments, cb_vendors, cb_vendorPayType, cb_vendorAccountant, dp_vendorStartDate, dp_vendorEndDate).Where(x => x.side == "v" || x.side == "b");
+                dgPayments.ItemsSource = temp.Where(obj => (
+                obj.transNum.Contains(txt_search.Text) ||
+                obj.processType.Contains(txt_search.Text) ||
+                obj.updateUserAcc.Contains(txt_search.Text) ||
+                obj.agentCompany.Contains(txt_search.Text) ||
+                obj.agentName.Contains(txt_search.Text)
+                ));
+            }
+            else if (selectedTab == 1)
+            {
+                var temp = fillList(payments, cb_customer, cb_customerPayType, cb_customerAccountant, dp_customerStartDate, dp_customerEndDate).Where(x => x.side == "c" || x.side == "b");
 
+                dgPayments.ItemsSource = temp.Where(obj => (
+                    obj.transNum.Contains(txt_search.Text) ||
+                    obj.processType.Contains(txt_search.Text) ||
+                    obj.updateUserAcc.Contains(txt_search.Text) ||
+                    obj.agentCompany.Contains(txt_search.Text) ||
+                    obj.agentName.Contains(txt_search.Text)
+                    ));
+            }
+            else if (selectedTab == 2)
+            {
+                var temp = fillList(payments, cb_users, cb_userPayType, cb_userAccountant, dp_userStartDate, dp_userEndDate).Where(x => x.side == "u");
+                dgPayments.ItemsSource = temp.Where(obj => (
+                   obj.transNum.Contains(txt_search.Text) ||
+                   obj.processType.Contains(txt_search.Text) ||
+                   obj.updateUserAcc.Contains(txt_search.Text) ||
+                   obj.userAcc.Contains(txt_search.Text)
+                   ));
+            }
+            else if (selectedTab == 3)
+            {
+                var temp = fillList(payments, cb_salary, cb_salaryPayType, cb_salaryAccountant, dp_salaryStartDate, dp_salaryEndDate).Where(x => x.side == "s");
+                dgPayments.ItemsSource = temp.Where(obj => (
+                   obj.transNum.Contains(txt_search.Text) ||
+                   obj.processType.Contains(txt_search.Text) ||
+                   obj.updateUserAcc.Contains(txt_search.Text) ||
+                   obj.userAcc.Contains(txt_search.Text)
+                   ));
+            }
+            else if (selectedTab == 4)
+            {
+                var temp = fillList(payments, cb_generalExpenses, cb_generalExpensesPayType, cb_generalExpensesAccountant, dp_generalExpensesStartDate, dp_generalExpensesEndDate).Where(x => x.side == "e");
+                dgPayments.ItemsSource = temp.Where(obj => (
+                   obj.transNum.Contains(txt_search.Text) ||
+                   obj.processType.Contains(txt_search.Text) ||
+                   obj.updateUserAcc.Contains(txt_search.Text) 
+                   ));
+            }
+
+            else if (selectedTab == 5)
+            {
+                var temp = fillList(payments, cb_administrativePull, cb_administrativePullPayType, cb_administrativePullAccountant, dp_administrativePullStartDate, dp_administrativePullEndDate).Where(x => x.side == "m");
+                dgPayments.ItemsSource = temp.Where(obj => (
+                   obj.transNum.Contains(txt_search.Text) ||
+                   obj.processType.Contains(txt_search.Text) ||
+                   obj.updateUserAcc.Contains(txt_search.Text) 
+                   ));
+            }
+            else if (selectedTab == 6)
+            {
+                var temp = fillList(payments, cb_shipping, cb_shippingPayType, cb_shippingAccountant, dp_shippingStartDate, dp_shippingEndDate).Where(x => x.side == "sh");
+                dgPayments.ItemsSource = temp.Where(obj => (
+                   obj.transNum.Contains(txt_search.Text) ||
+                   obj.processType.Contains(txt_search.Text) ||
+                   obj.updateUserAcc.Contains(txt_search.Text) ||
+                   obj.shippingCompanyName.Contains(txt_search.Text)
+                   ));
+            }
         }
     }
 }

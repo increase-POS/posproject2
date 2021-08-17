@@ -586,17 +586,15 @@
                         </Style>
                     </DataGrid.Resources>
                     <DataGrid.Columns>
-                        <DataGridTextColumn x:Name="col_num" Width="*" Header="Operator Number" Binding="{Binding transNum}"/>
-
+                        <DataGridTextColumn x:Name="col_num" Width="*" Header="Num" Binding="{Binding transNum}"/>
                         <DataGridTextColumn x:Name="col_date" Width="*" Header="Date" Binding="{Binding updateDate,Converter={StaticResource dateFrameConverter}}"/>
-                     
-                        <DataGridTextColumn x:Name="col_invNum" Width="*" Header="Invoice Number" Binding="{Binding invNumber}"/>
-                        <DataGridTextColumn x:Name="col_invType" Width="*" Header="Invoice Type" Binding="{Binding invType}"/>
-                        <DataGridTextColumn x:Name="col_proccesType" Width="*" Header="Pay Type" Binding="{Binding processType}"/>
 
-                        <DataGridTextColumn x:Name="col_transType" Width="*" Header="Operator" Binding="{Binding transType}"/>
+                        <DataGridTextColumn x:Name="col_proccesType" Width="*" Header="Description" Binding="{Binding Description1}"/>
+
+                        <DataGridTextColumn  Width="*" Header="Payment" Binding="{Binding Description}"/>
                         <DataGridTextColumn x:Name="col_amount" Width="*" Header="Amount" Binding="{Binding cash}"/>
-                        <DataGridTextColumn x:Name="col_total" Width="*" Header="Total" Binding="{Binding cashTotal}"/>
+
+
 
                  
                     </DataGrid.Columns>

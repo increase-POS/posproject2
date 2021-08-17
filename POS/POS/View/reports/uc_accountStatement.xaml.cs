@@ -90,8 +90,6 @@ namespace POS.View.reports
                     firstYear++;
                 }
             }
-        
-
         }
 
         private List<CashTransferSts> fillList(List<CashTransferSts> payments, ComboBox vendor, ComboBox date)
@@ -245,13 +243,9 @@ namespace POS.View.reports
 
             col_date.Visibility = Visibility.Hidden;
 
-            col_transType.Visibility = Visibility.Hidden;
             col_amount.Visibility = Visibility.Hidden;
-            col_total.Visibility = Visibility.Hidden;
 
             col_proccesType.Visibility = Visibility.Hidden;
-            col_invNum.Visibility = Visibility.Hidden;
-            col_invType.Visibility = Visibility.Hidden;
 
             if (selectedTab == 0)
             {
@@ -260,13 +254,9 @@ namespace POS.View.reports
                 col_date.Visibility = Visibility.Visible;
 
 
-                col_transType.Visibility = Visibility.Visible;
                 col_amount.Visibility = Visibility.Visible;
-                col_total.Visibility = Visibility.Visible;
 
                 col_proccesType.Visibility = Visibility.Visible;
-                col_invNum.Visibility = Visibility.Visible;
-                col_invType.Visibility = Visibility.Visible;
             }
             else if (selectedTab == 1)
             {
@@ -275,13 +265,9 @@ namespace POS.View.reports
                 col_date.Visibility = Visibility.Visible;
 
 
-                col_transType.Visibility = Visibility.Visible;
                 col_amount.Visibility = Visibility.Visible;
-                col_total.Visibility = Visibility.Visible;
 
                 col_proccesType.Visibility = Visibility.Visible;
-                col_invNum.Visibility = Visibility.Visible;
-                col_invType.Visibility = Visibility.Visible;
             }
             else if (selectedTab == 2)
             {
@@ -290,13 +276,9 @@ namespace POS.View.reports
                 col_date.Visibility = Visibility.Visible;
 
 
-                col_transType.Visibility = Visibility.Visible;
                 col_amount.Visibility = Visibility.Visible;
-                col_total.Visibility = Visibility.Visible;
 
                 col_proccesType.Visibility = Visibility.Visible;
-                col_invNum.Visibility = Visibility.Visible;
-                col_invType.Visibility = Visibility.Visible;
             }
             else if (selectedTab == 6)
             {
@@ -305,13 +287,9 @@ namespace POS.View.reports
                 col_date.Visibility = Visibility.Visible;
 
 
-                col_transType.Visibility = Visibility.Visible;
                 col_amount.Visibility = Visibility.Visible;
-                col_total.Visibility = Visibility.Visible;
 
                 col_proccesType.Visibility = Visibility.Visible;
-                col_invNum.Visibility = Visibility.Visible;
-                col_invType.Visibility = Visibility.Visible;
             }
 
         }
@@ -465,7 +443,7 @@ namespace POS.View.reports
 
         /*Charts*/
         /*********************************************************************************/
-
+     
 
     }
 }
