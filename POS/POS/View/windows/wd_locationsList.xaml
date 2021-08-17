@@ -148,7 +148,7 @@
                            Foreground="#999999" FontWeight="SemiBold"  FontSize="16" x:Name="txt_location"/>
                 <Border Grid.Row="3"  Margin="10"   BorderBrush="#999999" BorderThickness="1">
                     <DataGrid HeadersVisibility="None" x:Name="lst_allLocations" Background="White" Visibility="Visible"
-                              IsReadOnly="False" CanUserAddRows="False"
+                              IsReadOnly="False" CanUserAddRows="False"  BeginningEdit="Grid_BeginningEdit" 
                               AutoGenerateColumns="False" ColumnWidth="SizeToHeader"
                               MouseDoubleClick="Lst_allLocations_MouseDoubleClick" >
                         <DataGrid.Columns>
@@ -238,7 +238,7 @@
                            Foreground="#999999" FontWeight="SemiBold"  FontSize="16" x:Name="txt_selectedLocations"/>
                 <Border  Margin="10" Grid.Row="3"  Grid.Column="4"  BorderBrush="#999999" BorderThickness="1"  >
                     <DataGrid  HeadersVisibility="Row"  x:Name="lst_selectedLocations"  Background="White" Visibility="Visible"
-                               IsReadOnly="False" CanUserAddRows="False"
+                               IsReadOnly="False" CanUserAddRows="False"  BeginningEdit="Grid_BeginningEdit" 
                                AutoGenerateColumns="False"  ColumnWidth="SizeToHeader"
                                MouseDoubleClick="Lst_selectedLocations_MouseDoubleClick">
                         <DataGrid.Columns>

@@ -165,7 +165,6 @@ namespace POS.View.windows
             if (user != null)
             {
                 allUsers.Remove(user);
-
                 selectedUsers.Add(user);
 
                 lst_allUsers.ItemsSource = allUsers;
@@ -221,6 +220,12 @@ namespace POS.View.windows
             {
 
             }
+        }
+        private void Grid_BeginningEdit(object sender, DataGridBeginningEditEventArgs e)
+        {
+            //// Have to do this in the unusual case where the border of the cell gets selected.
+            //// and causes a crash 'EditItem is not allowed'
+            e.Cancel = true;
         }
     }
 }

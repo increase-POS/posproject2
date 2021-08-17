@@ -99,7 +99,7 @@
                            Foreground="#999999" FontWeight="SemiBold"  FontSize="16" x:Name="txt_users"/>
                 <Border Grid.Row="3"  Margin="10"   BorderBrush="#999999" BorderThickness="1">
                     <DataGrid HeadersVisibility="None" x:Name="lst_allUsers" Background="White" Visibility="Visible"
-                              IsReadOnly="False" CanUserAddRows="False"
+                              IsReadOnly="False" CanUserAddRows="False"  BeginningEdit="Grid_BeginningEdit" 
                               AutoGenerateColumns="False" ColumnWidth="SizeToHeader"
                               MouseDoubleClick="Lst_allUsers_MouseDoubleClick" >
                         <DataGrid.Columns>
@@ -189,7 +189,7 @@
                            Foreground="#999999" FontWeight="SemiBold"  FontSize="16" x:Name="txt_selectedUsers"/>
                 <Border  Margin="10" Grid.Row="3"  Grid.Column="4"  BorderBrush="#999999" BorderThickness="1"  >
                     <DataGrid  HeadersVisibility="Row"  x:Name="lst_selectedUsers"  Background="White" Visibility="Visible"
-                               IsReadOnly="False" CanUserAddRows="False"
+                               IsReadOnly="False" CanUserAddRows="False"  BeginningEdit="Grid_BeginningEdit" 
                                AutoGenerateColumns="False"  ColumnWidth="SizeToHeader"
                                MouseDoubleClick="Lst_selectedUsers_MouseDoubleClick">
                         <DataGrid.Columns>

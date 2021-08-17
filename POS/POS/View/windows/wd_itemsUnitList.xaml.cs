@@ -178,7 +178,6 @@ namespace POS.View.windows
                 p.createUserId = MainWindow.userID;
              
                 allItemUnits.Remove(itemUnit);
-
                 allPackages.Add(p);
 
                 dg_allItems.ItemsSource = allItemUnits;
@@ -260,6 +259,12 @@ namespace POS.View.windows
         private void Dg_selectedItems_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
+        }
+        private void Grid_BeginningEdit(object sender, DataGridBeginningEditEventArgs e)
+        {
+            //// Have to do this in the unusual case where the border of the cell gets selected.
+            //// and causes a crash 'EditItem is not allowed'
+            e.Cancel = true;
         }
     }
 }

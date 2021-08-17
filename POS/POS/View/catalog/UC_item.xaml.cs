@@ -135,7 +135,7 @@ namespace POS.View
         {
             txt_itemData.Text = MainWindow.resourcemanager.GetString("trItemData");
             txt_properties.Text = MainWindow.resourcemanager.GetString("trProperties");
-            txt_barcode.Text = MainWindow.resourcemanager.GetString("trBarcode");
+            txt_barcode.Text = MainWindow.resourcemanager.GetString("trUnits");
 
             //MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
             //MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_search, MainWindow.resourcemanager.GetString("trPamentMethodHint"));
@@ -329,7 +329,7 @@ namespace POS.View
             cb_maxUnit.SelectedIndex = 0;
 
             tb_code.Focus();
-            generateBarcode("", true);
+            //generateBarcode("", true);
                 SectionData.EndAwait(grid_ucItem, this);
             }
             catch (Exception ex)
@@ -592,10 +592,14 @@ namespace POS.View
                     item.maxUnitId = maxUnitId;
 
                     string res = await itemModel.saveItem(item);
-                    if (!res.Equals("0"))
-                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
-                    else
-                        Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+                        if (!res.Equals("0"))
+                        {
+                            item.itemId = int.Parse(res);
+                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                        }
+                        else
+                            Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
                     int itemId = int.Parse(res);
 
@@ -604,7 +608,7 @@ namespace POS.View
 
                     await RefrishItems();
                     Txb_searchitems_TextChanged(null, null);
-                    btn_clear_Click(sender, e);
+                   // btn_clear_Click(sender, e);
                 }
                 tb_code.Focus();
             }
@@ -1785,7 +1789,7 @@ namespace POS.View
             itemUnit = new ItemUnit();
             dg_unit.SelectedIndex = -1;
             // set random barcode on image
-            generateBarcode("", true);
+           // generateBarcode("", true);
 
             SectionData.clearComboBoxValidate(cb_selectUnit, p_errorSelectUnit);
             SectionData.clearComboBoxValidate(cb_unit, p_errorUnit);
@@ -3017,7 +3021,8 @@ namespace POS.View
                    tb_count.Text = "1";
                 }
                 await fillSmallUnits(item.itemId,(int)cb_selectUnit.SelectedValue);
-                cb_unit.SelectedValue = itemUnit.subUnitId;
+                    generateBarcode("", true);
+                    cb_unit.SelectedValue = itemUnit.subUnitId;
             }
 
                 SectionData.EndAwait(grid_ucItem, this);

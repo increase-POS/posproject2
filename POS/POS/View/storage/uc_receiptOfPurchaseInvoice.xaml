@@ -19,17 +19,19 @@
                 <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition   Height="50" />
+                <RowDefinition   Height="60" />
                 <RowDefinition Height="*"/>
                 <!--<RowDefinition Height="1.2*"/>-->
             </Grid.RowDefinitions>
             <Border BorderThickness="0"  Height="auto"  Grid.Column="0"  Margin="10,0,5,0"
                     CornerRadius="7" BorderBrush="Black" Background="White" Padding="0">
-                <StackPanel  Orientation="Horizontal" Margin="5,0">
-
-                    <Button Grid.Column="8" BorderBrush="{x:Null}"  DockPanel.Dock="Right"   Click="Btn_items_Click"
-                    Background="{x:Null}" x:Name="btn_items" Padding="0"  Margin="7.5,5,7.5,0" IsEnabled="False"  >
-                        <Path Fill="#4E4E4E" Stretch="Fill"  x:Name="path_itemsIcon"
+                <StackPanel  Orientation="Horizontal"  >
+                    <Border Width="60" CornerRadius="5,0,0,5"  
+                           Background="#178DD2" >
+                        <Button Grid.Column="8" BorderBrush="{x:Null}"  DockPanel.Dock="Right"   Click="Btn_items_Click"
+                    Background="{x:Null}" x:Name="btn_items" Padding="0"  Margin="5,10,5,0" Height="auto" IsEnabled="False"  >
+                            <StackPanel>
+                                <Path Fill="White" Stretch="Fill"  x:Name="path_itemsIcon"
                          Height="30" Width="30"
                            FlowDirection="LeftToRight" Data="M473.2,341.6c-10.5-18.1-21-36.2-31.5-54.2c-1.9-3.3-3.8-6.6-5.8-9.9c2.1-3.7,3.3-8,3.3-12.8c0-7.7,0-15.4,0-23
 	c0-16.3-10.2-26.5-26.4-26.5c-102.3,0-204.6,0-306.9,0c-2,0-4.1,0-6.1,0.1c-13,0.6-23.2,11.1-23.3,24.2c-0.1,8.7-0.1,17.3,0,26
@@ -60,24 +62,21 @@
 	c-3.3,1.5-6.5,0-8.3-4c-9-20-18-39.9-26.9-59.9c-0.3-0.7-0.6-1.3-0.9-2c-1.9-3.8-4.7-4.9-8.6-3.2c-17.5,7.8-34.9,15.7-52.4,23.5
 	c-3.9,1.8-4.9,4.8-3.1,8.9c4.1,9.1,8.2,18.2,12.2,27.3c0.4,1,0.9,2,1.1,3.1c0.5,2.8-0.9,5.3-3.6,6.4c-2.6,1-5.4,0.2-7-2.2
 	c-0.4-0.7-0.8-1.5-1.1-2.2C81.1,196.2,77,187.1,72.9,178z M98.4,166.8c3.3,0,5.9,2.7,5.8,6c-0.1,3.2-2.6,5.7-5.8,5.7
-	c-3.3,0-5.9-2.7-5.9-6C92.6,169.3,95.3,166.7,98.4,166.8z"  >
-                            <Path.ToolTip>
-                                <ToolTip x:Name="tt_items" Content="Items"
-                                              Placement="left" 
-                                              HorizontalOffset="35"
-                                              PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="-10"/>
-                            </Path.ToolTip>
-                        </Path>
-                    </Button>
+	c-3.3,0-5.9-2.7-5.9-6C92.6,169.3,95.3,166.7,98.4,166.8z" />
+                                <TextBlock Text="items" x:Name="txt_items" Foreground="White" 
+                                           FontWeight="Regular" FontSize="8" TextAlignment="Center" Width="35"
+                                           HorizontalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
 
-                    <Border Grid.Column="6"  Background="White" Margin="7.5,5"   CornerRadius="0,0,0,0"  Width="1" BorderThickness="0,0,1,0" BorderBrush="#377EB8" DockPanel.Dock="Right"/>
-
-                    <materialDesign:Badged VerticalAlignment="Center" Margin="7.5,5,7.5,0"
-                     BadgeBackground="{StaticResource MainColorRed}"  BadgeForeground="White"  Badge="+9">
-                        <Button Grid.Column="4" BorderBrush="{x:Null}"   Padding="0"   
+                    </Border>
+                   
+                    <materialDesign:Badged VerticalAlignment="Center" Margin="5,10,5,0" 
+                     BadgeBackground="{StaticResource MainColorRed}"  BadgeForeground="White"  Name="md_invoiceCount">
+                        <Button Grid.Column="4" BorderBrush="{x:Null}"   Padding="0"   Height="auto"
                     Background="{x:Null}" x:Name="btn_invoices"  Click="Btn_invoices_Click" >
-                        <Path Fill="#4E4E4E" Stretch="Fill"  
+                            <StackPanel>
+                                <Path Fill="#4E4E4E" Stretch="Fill"  
                            Width="30" Height="30"  
                            Data="M110.2,2.4H17.8c-2.4,0-4.3,1.9-4.3,4.3v114.6c0,2.4,1.9,4.3,4.3,4.3c1.1,0,2.2-0.5,3.1-1.3l8.5-8.5l8.5,8.5
 	c1.7,1.7,4.4,1.7,6.1,0l8.5-8.5l8.5,8.5c1.7,1.7,4.4,1.7,6.1,0l8.5-8.5l8.5,8.5c1.7,1.7,4.4,1.7,6.1,0l8.5-8.5l8.5,8.5
@@ -92,34 +91,27 @@
 	c0.7,0.2,1.5,0.5,2.2,0.8l-1.2,4.5c-0.9-0.4-1.9-0.7-2.9-0.9c-1.2-0.3-2.3-0.4-3.5-0.4c-0.9-0.1-1.8,0.1-2.6,0.6
 	c-0.5,0.4-0.8,1-0.8,1.6c-0.1,0.3,0,0.7,0.2,1s0.5,0.6,0.8,0.8c0.4,0.3,0.8,0.5,1.3,0.7s1.2,0.4,1.9,0.7c1.1,0.4,2.1,0.8,3.1,1.3
 	c0.9,0.4,1.8,0.9,2.5,1.6c0.7,0.6,1.2,1.4,1.6,2.2c0.4,0.9,0.6,1.9,0.6,2.9C93.8,82.1,93.7,82.9,93.5,83.6z M0.5,60.8L0.5,60.8
-	l0-1.6h0V60.8z M127.3,71.6L127.3,71.6l0-1.6h0V71.6z"  >
-                            <Path.ToolTip>
-                                <ToolTip x:Name="tt_invoices" Content="Invoices"
-                                              Placement="left" 
-                                              HorizontalOffset="35"
-                                              PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="-10"/>
-                            </Path.ToolTip>
-                        </Path>
-                    </Button>
+	l0-1.6h0V60.8z M127.3,71.6L127.3,71.6l0-1.6h0V71.6z"  />
+                                <TextBlock Text="invoices" x:Name="txt_invoices" Foreground="#178DD2" 
+                                           FontWeight="Regular" FontSize="8" TextAlignment="Center" Width="35"
+                                           HorizontalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
                     </materialDesign:Badged>
-                    <materialDesign:Badged VerticalAlignment="Center" Margin="7.5,5,7.5,0"
-                      BadgeBackground="{StaticResource MainColorRed}"  BadgeForeground="White"  Badge="7">
-                        <Button Grid.Column="5" BorderBrush="{x:Null}" Padding="0"   
+                    <materialDesign:Badged VerticalAlignment="Center" Margin="5,10,5,0" 
+                      BadgeBackground="{StaticResource MainColorRed}"  BadgeForeground="White"  Name="md_returnsCount">
+                        <Button Grid.Column="5" BorderBrush="{x:Null}" Padding="0"   Height="auto"
                     Background="{x:Null}" x:Name="btn_returnInvoice" Click="Btn_returnInvoice_Click"  >
-                        <Path Fill="#4E4E4E" Stretch="Fill"  
+                            <StackPanel>
+                                <Path Fill="#4E4E4E" Stretch="Fill"  
                                        Width="30" Height="30"  
                            Data="M12,0C5.4,0,0,5.4,0,12s5.4,12,12,12s12-5.4,12-12S18.6,0,12,0z M15.2,18.9c5.7-5.9-0.6-10.8-5-7.7L12,13H6V7l1.8,1.8
-	C15.7,2.8,24,13.3,15.2,18.9z"  >
-                            <Path.ToolTip>
-                                <ToolTip x:Name="tt_returnInvoice" Content="Return"
-                                              Placement="left" 
-                                              HorizontalOffset="35"
-                                              PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="-10"/>
-                            </Path.ToolTip>
-                        </Path>
-                    </Button>
+	C15.7,2.8,24,13.3,15.2,18.9z" />
+                                <TextBlock Text="returnInvoice" x:Name="txt_returnInvoice" Foreground="#178DD2" 
+                                           FontWeight="Regular" FontSize="8" TextAlignment="Center" Width="35"
+                                           HorizontalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
                     </materialDesign:Badged>
 
                 </StackPanel>
@@ -127,33 +119,31 @@
             <Border BorderThickness="0"  Grid.Column="1"   Grid.ColumnSpan="2"
                     CornerRadius="7" BorderBrush="Black" Background="White" Padding="0" Margin="10,0,5,0">
                 <DockPanel   Margin="10,0" LastChildFill="False">
-                    <materialDesign:Badged VerticalAlignment="Center" Margin="7.5,5,7.5,0" DockPanel.Dock="Right" 
-                      BadgeBackground="{StaticResource MainColorRed}"  BadgeForeground="White"  Badge="+9">
-                        <Button Grid.Column="5" DockPanel.Dock="Right" BorderBrush="{x:Null}" Padding="0"  
+                    <materialDesign:Badged VerticalAlignment="Center" Margin="5,10,5,0" DockPanel.Dock="Right" 
+                      BadgeBackground="{StaticResource MainColorRed}"  BadgeForeground="White" >
+                        <Button Grid.Column="5" DockPanel.Dock="Right" BorderBrush="{x:Null}" Padding="0"   Height="auto" 
                     Background="{x:Null}" x:Name="btn_invoiceImages"   IsEnabled="False">
-                        <Path Fill="#4E4E4E" Stretch="Fill"  
+                            <StackPanel>
+                                <Path Fill="#4E4E4E" Stretch="Fill"  
                          Height="30" Width="30"
                            Data="M368,224c26.5,0,48-21.5,48-48s-21.5-48-48-48s-48,21.5-48,48S341.5,224,368,224z M452,64H60
 	c-15.6,0-28,12.7-28,28.3v327.4c0,15.6,12.4,28.3,28,28.3h392c15.6,0,28-12.7,28-28.3V92.3C480,76.7,467.6,64,452,64z M348.9,261.7
 	c-3-3.5-7.6-6.2-12.8-6.2c-5.1,0-8.7,2.4-12.8,5.7L304.6,277c-3.9,2.8-7,4.7-11.5,4.7c-4.3,0-8.2-1.6-11-4.1c-1-0.9-2.8-2.6-4.3-4.1
 	L224,215.3c-4-4.6-10-7.5-16.7-7.5s-12.9,3.3-16.8,7.8L64,368.2V107.7c1-6.8,6.3-11.7,13.1-11.7h357.7c6.9,0,12.5,5.1,12.9,12
-	l0.3,260.4L348.9,261.7z"  >
-                            <Path.ToolTip>
-                                <ToolTip x:Name="tt_invoiceImages" Content="Images"
-                                              Placement="left" 
-                                              HorizontalOffset="35"
-                                              PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="-10"/>
-                            </Path.ToolTip>
-                        </Path>
-                    </Button>
+	l0.3,260.4L348.9,261.7z" />
+                                <TextBlock Text="Images" x:Name="txt_invoiceImages" Foreground="#178DD2" 
+                                           FontWeight="Regular" FontSize="8" TextAlignment="Center" Width="35"
+                                           HorizontalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
                     </materialDesign:Badged>
 
-                    <Border Grid.Column="4" DockPanel.Dock="Right" Background="White"  Margin="7.5,5"   CornerRadius="0,0,0,0"  Width="1" BorderThickness="0,0,1,0" BorderBrush="#377EB8" />
+                    <Border Grid.Column="4" DockPanel.Dock="Right" Background="White"  Margin="7.5,10"   CornerRadius="0,0,0,0"  Width="1" BorderThickness="0,0,1,0" BorderBrush="#377EB8" />
 
-                    <Button DockPanel.Dock="Right" Grid.Column="3" BorderBrush="{x:Null}" Padding="0"  Margin="7.5,5,7.5,0"
+                    <Button DockPanel.Dock="Right" Grid.Column="3" BorderBrush="{x:Null}" Padding="0"  Margin="5,10,5,0" Height="auto"
                     Background="{x:Null}" x:Name="btn_preview"  Click="Btn_preview_Click"  >
-                        <Path Fill="#4E4E4E" Stretch="Fill"  
+                        <StackPanel>
+                            <Path Fill="#4E4E4E" Stretch="Fill"  
                         Height="30" Width="30" 
                            Data="M243,83.3c0,2.5,0,4.7,0,6.9c0,23.1,0,46.3,0,69.4c0,5.4,1.7,7.1,7.2,7.1c23.6,0,47.3,0,70.9,0c5.2,0,5.2,0,5.2,5
 	c0,31.9-0.1,63.8,0.1,95.6c0,3.6-1.1,4.6-4.6,4.6c-21.7-0.1-41.5,6.8-60.1,17.6c-13.3,7.8-25.5,17.2-36.2,28.3
@@ -180,19 +170,16 @@
 	 M320.8,361.8c17,0,30.6-13.4,30.7-30.3c0.1-16.3-14-30.4-30.4-30.3c-16.6,0-30,13.7-29.9,30.6C291.3,348.3,304.6,361.8,320.8,361.8
 	z M253.5,89.9c0,20.8,0.1,41.5-0.1,62.3c0,3.3,0.9,4.2,4.2,4.2c20-0.1,40-0.1,60-0.1c1.4,0,2.9,0,5.2,0
 	c-23.6-23.2-46.5-45.6-69.3-68C253.6,88.4,253.5,89.2,253.5,89.9z M341,331.2c-0.1-10.8-9.2-19.7-20-19.6
-	c-10.7,0.1-19.4,9-19.4,19.7c0,10.9,9,20,19.6,20C332.3,351.3,341.1,342.3,341,331.2z"  >
-                            <Path.ToolTip>
-                                <ToolTip x:Name="tt_preview" Content="Preview"
-                                              Placement="left" 
-                                              HorizontalOffset="35"
-                                              PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="-10"/>
-                            </Path.ToolTip>
-                        </Path>
+	c-10.7,0.1-19.4,9-19.4,19.7c0,10.9,9,20,19.6,20C332.3,351.3,341.1,342.3,341,331.2z" />
+                            <TextBlock Text="preview" x:Name="txt_preview" Foreground="#178DD2" 
+                                           FontWeight="Regular" FontSize="8" TextAlignment="Center" Width="35"
+                                           HorizontalAlignment="Center"/>
+                        </StackPanel>
                     </Button>
-                    <Button Grid.Column="2" DockPanel.Dock="Right" BorderBrush="{x:Null}" Padding="0"  Margin="7.5,5,7.5,0"
+                    <Button Grid.Column="2" DockPanel.Dock="Right" BorderBrush="{x:Null}" Padding="0"  Margin="5,10,5,0" Height="auto"
                     Background="{x:Null}" x:Name="btn_pdf" Click="Btn_pdf_Click"   >
-                        <Path Fill="#4E4E4E" Stretch="Fill"  
+                        <StackPanel>
+                            <Path Fill="#4E4E4E" Stretch="Fill"  
                          Height="30" Width="25" 
                            Data="M228,174h10v-18h16v-8h-16v-11h17v-8h-27V174z M213.3,133.5c-4.4-3.3-10.4-4.8-19-4.8c-5.2,0-9.3,0.3-14.3,0.9
 	v44.5c4,0.3,6.8,0.7,12.1,0.7c8.9,0,16.4-1.9,21.1-5.8c4.4-3.7,7.6-9.7,7.6-18.3C220.8,142.6,218,137,213.3,133.5z M194.6,166.7
@@ -209,33 +196,26 @@
 	s-42.7,24.4-49.1,15.7c-7.5-10.1-1.7-20.3,12.5-33.5s46.9-24.1,46.9-24.1s6.6-11.9,16.3-34.5c9.7-22.7,17-45.4,17-45.4
 	s-9.6-21.7-11.4-40.2c-2.1-20.6,0.2-34.5,16.1-34.6c15.8-0.2,20.8,11.7,21.3,32.3s-10.7,53.4-10.7,53.4c9.2,20,34.6,45.7,34.6,45.7
 	s8.2-2.1,42.2-3c34-0.8,35.5,18.3,35.6,19.9C394,360.5,395.4,375.7,368.3,376.7z M322.9,347.9c20.9,19.9,54.9,27.5,54.9,8.8
-	C377.8,337.9,322.9,347.9,322.9,347.9z"  >
-                            <Path.ToolTip>
-                                <ToolTip x:Name="tt_pdf" Content="PDF"
-                                              Placement="left" 
-                                              HorizontalOffset="35"
-                                              PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="-10"/>
-                            </Path.ToolTip>
-                        </Path>
+	C377.8,337.9,322.9,347.9,322.9,347.9z" />
+                            <TextBlock Text="pdf" x:Name="txt_pdf" Foreground="#178DD2" 
+                                           FontWeight="Regular" FontSize="8" TextAlignment="Center" Width="35"
+                                           HorizontalAlignment="Center"/>
+                        </StackPanel>
                     </Button>
-                    <Button Grid.Column="1" DockPanel.Dock="Right" BorderBrush="{x:Null}" Padding="0" Margin="7.5,5,7.5,0"
+                    <Button Grid.Column="1" DockPanel.Dock="Right" BorderBrush="{x:Null}" Padding="0" Margin="5,10,5,0" Height="auto"
                     Background="{x:Null}" x:Name="btn_printInvoice" Click="Btn_printInvoice_Click"  >
-                        <Path Fill="#4E4E4E" Stretch="Fill"  
+                        <StackPanel>
+                            <Path Fill="#4E4E4E" Stretch="Fill"  
                        Height="30" Width="30"
                            Data="M9,23.9v4.8c0,0.3,0.2,0.5,0.5,0.5h13.1c0.3,0,0.5-0.2,0.5-0.5v-4.8v-3c0-0.3-0.2-0.5-0.5-0.5H9.5
 	c-0.3,0-0.5,0.2-0.5,0.5V23.9z M10.8,22.1h10.5v1.7H10.8V22.1z M10.8,25.6h10.5v1.7H10.8V25.6z M23,8.1V2.9H9v5.2v3.5h14V8.1z
 	 M26.5,8.1h-1.8v3.5v1.8H7.3v-1.8V8.1H5.5C3.6,8.1,2,9.7,2,11.6v8.8c0,1.9,1.6,3.5,3.5,3.5h1.8v-3.5v-1.8h17.5v1.8v3.5h1.8
 	c1.9,0,3.5-1.6,3.5-3.5v-8.7C30,9.7,28.4,8.1,26.5,8.1z M26.1,10.4L26.1,10.4c0-0.5,0.4-1,1-1h0c0.5,0,1,0.4,1,1v0c0,0.5-0.4,1-1,1
-	h0C26.6,11.4,26.1,11,26.1,10.4z"  >
-                            <Path.ToolTip>
-                                <ToolTip x:Name="tt_printInvoice" Content="Print"
-                                              Placement="left" 
-                                              HorizontalOffset="35"
-                                              PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="-10"/>
-                            </Path.ToolTip>
-                        </Path>
+	h0C26.6,11.4,26.1,11,26.1,10.4z"  />
+                            <TextBlock Text="printInvoice" x:Name="txt_printInvoice" Foreground="#178DD2" 
+                                           FontWeight="Regular" FontSize="8" TextAlignment="Center" Width="35"
+                                           HorizontalAlignment="Center"/>
+                        </StackPanel>
                     </Button>
                     
                 </DockPanel>

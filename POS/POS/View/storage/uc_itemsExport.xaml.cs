@@ -177,6 +177,7 @@ namespace POS.View.storage
                 SectionData.fillBranches(cb_branch, "bs");
                 //await RefrishBranches();
                 await RefrishItems();
+                setNotifications();
                 #region datagridChange
                 CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(dg_billDetails.Items);
                 ((INotifyCollectionChanged)myCollectionView).CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
@@ -188,6 +189,42 @@ namespace POS.View.storage
                 SectionData.ExceptionMessage(ex);
             }
         }
+        #region notifications
+        private void setNotifications()
+        {
+            refreshDraftNotification();
+            refreshOrderWaitNotification();
+        }
+        private async void refreshDraftNotification()
+        {
+            string invoiceType = "imd ,exd";
+            int duration = 2;
+            int draftCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
+
+            if (draftCount > 9)
+            {
+                draftCount = 9;
+                md_draftsCount.Badge = "+" + draftCount.ToString();
+            }
+            else
+                md_draftsCount.Badge = draftCount.ToString();
+        }
+        private async void refreshOrderWaitNotification()
+        {
+            string invoiceType = "exw";
+            
+            int returnsCount = await invoice.GetCountBranchInvoices(invoiceType, 0, MainWindow.branchID.Value);
+
+            if (returnsCount > 9)
+            {
+                returnsCount = 9;
+                md_orderWaitCount.Badge = "+" + returnsCount.ToString();
+            }
+            else
+                md_orderWaitCount.Badge = returnsCount.ToString();
+        }
+
+        #endregion
 
         async Task RefrishItems()
         {
@@ -727,6 +764,7 @@ namespace POS.View.storage
                 SectionData.StartAwait(grid_main);
 
                 await saveDraft();
+                refreshDraftNotification();
                 SectionData.EndAwait(grid_main, this);
 
             }
@@ -1210,6 +1248,8 @@ namespace POS.View.storage
                                 await save();
                                 break;
                         }
+                        setNotifications();
+
                     }
                 }
                 else

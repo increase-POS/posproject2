@@ -223,6 +223,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to كمية النقص....
+        /// </summary>
+        internal static string trAmountShortageedHint {
+            get {
+                return ResourceManager.GetString("trAmountShortageedHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to معلومات أخرى.
         /// </summary>
         internal static string trAnotherInfomation {
@@ -237,6 +246,15 @@ namespace POS {
         internal static string trArabic {
             get {
                 return ResourceManager.GetString("trArabic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to أرشفة.
+        /// </summary>
+        internal static string trArchive {
+            get {
+                return ResourceManager.GetString("trArchive", resourceCulture);
             }
         }
         
@@ -1546,6 +1564,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to العملة لا يمكن أن تكون فارغة.
+        /// </summary>
+        internal static string trEmptyCurrency {
+            get {
+                return ResourceManager.GetString("trEmptyCurrency", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to العميل لا يمكن أن يكون فارغ.
         /// </summary>
         internal static string trEmptyCustomerToolTip {
@@ -2712,6 +2739,15 @@ namespace POS {
         internal static string trInstallationSettings {
             get {
                 return ResourceManager.GetString("trInstallationSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to الجرد.
+        /// </summary>
+        internal static string trInventory {
+            get {
+                return ResourceManager.GetString("trInventory", resourceCulture);
             }
         }
         
@@ -4148,6 +4184,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to طلبيات الشراء.
+        /// </summary>
+        internal static string trPurchaseOrders {
+            get {
+                return ResourceManager.GetString("trPurchaseOrders", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to طلبات الشراء.
         /// </summary>
         internal static string trPurchaseOrdersBill {
@@ -5026,6 +5071,24 @@ namespace POS {
         internal static string trStocktaking {
             get {
                 return ResourceManager.GetString("trStocktaking", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تفاصيل الجرد.
+        /// </summary>
+        internal static string trStocktakingDetails {
+            get {
+                return ResourceManager.GetString("trStocktakingDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to عناصر الجرد.
+        /// </summary>
+        internal static string trStocktakingItems {
+            get {
+                return ResourceManager.GetString("trStocktakingItems", resourceCulture);
             }
         }
         

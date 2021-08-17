@@ -175,7 +175,6 @@ namespace POS.View.windows
             if (location != null)
             {
                 allLocations.Remove(location);
-
                 selectedLocations.Add(location);
 
                 lst_allLocations.ItemsSource = allLocations;
@@ -234,6 +233,13 @@ namespace POS.View.windows
             {
 
             }
+        }
+
+        private void Grid_BeginningEdit(object sender, DataGridBeginningEditEventArgs e)
+        {
+            //// Have to do this in the unusual case where the border of the cell gets selected.
+            //// and causes a crash 'EditItem is not allowed'
+            e.Cancel = true;
         }
     }
 

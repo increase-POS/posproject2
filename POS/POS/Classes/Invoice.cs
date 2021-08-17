@@ -424,6 +424,35 @@ namespace POS.Classes
                 return invoices;
             }
         }
+        public async Task<int> GetCountByCreator(string invType,int createUserId, int duration )
+        {
+            // ... Use HttpClient.
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            using (var client = new HttpClient())
+            {
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                client.BaseAddress = new Uri(Global.APIUri);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+                HttpRequestMessage request = new HttpRequestMessage();
+                request.RequestUri = new Uri(Global.APIUri + "Invoices/GetCountByCreator?invType=" + invType+ "&createUserId=" + createUserId+"&duration="+duration);
+                request.Headers.Add("APIKey", Global.APIKey);
+                request.Method = HttpMethod.Get;
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var count = await response.Content.ReadAsStringAsync();
+                    return int.Parse(count);
+                }
+                else //web api sent error response 
+                {
+                    return 0;
+                }             
+            }
+        }
         public async Task<List<Invoice>> getBranchInvoices(string invType,int branchCreatorId, int branchId = 0 )
         {
             List<Invoice> invoices = null;
@@ -464,6 +493,33 @@ namespace POS.Classes
                 return invoices;
             }
         }
+        public async Task<int> GetCountBranchInvoices(string invType,int branchCreatorId, int branchId = 0 )
+        {
+            // ... Use HttpClient.
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            using (var client = new HttpClient())
+            {
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                client.BaseAddress = new Uri(Global.APIUri);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+                HttpRequestMessage request = new HttpRequestMessage();
+                request.RequestUri = new Uri(Global.APIUri + "Invoices/GetCountBranchInvoices?invType=" + invType+ "&branchCreatorId=" + branchCreatorId + "&branchId="+ branchId);
+                request.Headers.Add("APIKey", Global.APIKey);
+                request.Method = HttpMethod.Get;
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var count = await response.Content.ReadAsStringAsync();
+                    return int.Parse(count);
+                }
+               
+                return 0;
+            }
+        }
         public async Task<List<Invoice>> getDeliverOrders(string invType,string status, int userId)
         {
             List<Invoice> invoices = null;
@@ -502,6 +558,35 @@ namespace POS.Classes
                     invoices = new List<Invoice>();
                 }
                 return invoices;
+            }
+        }
+        public async Task<int> getDeliverOrdersCount(string invType,string status, int userId)
+        {
+            // ... Use HttpClient.
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            using (var client = new HttpClient())
+            {
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                client.BaseAddress = new Uri(Global.APIUri);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+                HttpRequestMessage request = new HttpRequestMessage();
+                request.RequestUri = new Uri(Global.APIUri + "Invoices/getDeliverOrdersCount?invType=" + invType +"&status="+status+ "&shipUserId=" + userId);
+                request.Headers.Add("APIKey", Global.APIKey);
+                request.Method = HttpMethod.Get;
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var count = await response.Content.ReadAsStringAsync();
+                    return int.Parse(count);
+                }
+                else //web api sent error response 
+                {
+                    return 0;
+                }
             }
         }
         public async Task<List<Invoice>> GetOrderByType(string invType,int branchId )
@@ -881,10 +966,12 @@ namespace POS.Classes
             #region pos Cash transfer
             CashTransfer posCash = new CashTransfer();
             posCash.posId = MainWindow.posID;
+            posCash.agentId = invoice.agentId;
             posCash.invId = invoice.invoiceId;
             posCash.createUserId = invoice.createUserId;
             posCash.processType = "balance";
             posCash.cash = invoice.totalNet;
+
             #endregion
             #region agent Cash transfer
             CashTransfer cashTrasnfer = new CashTransfer();

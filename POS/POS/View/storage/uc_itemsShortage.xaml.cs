@@ -124,6 +124,31 @@ namespace POS.View.storage
         private void translate()
         {
 
+            ////////////////////////////////----Grid----/////////////////////////////////
+            dg_itemShortage.Columns[0].Header = MainWindow.resourcemanager.GetString("trInventoryNum");
+            dg_itemShortage.Columns[1].Header = MainWindow.resourcemanager.GetString("trDate");
+            dg_itemShortage.Columns[2].Header = MainWindow.resourcemanager.GetString("trSectionLocation");
+            dg_itemShortage.Columns[3].Header = MainWindow.resourcemanager.GetString("trItemUnit");
+            dg_itemShortage.Columns[4].Header = MainWindow.resourcemanager.GetString("trAmount");
+
+            txt_itemsShortageHeader.Text = MainWindow.resourcemanager.GetString("trItemShortage");
+            txt_shortage.Text = MainWindow.resourcemanager.GetString("trShortage");
+
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_itemUnit, MainWindow.resourcemanager.GetString("trItemHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_amount, MainWindow.resourcemanager.GetString("trAmountShortageedHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_user, MainWindow.resourcemanager.GetString("trUserHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_reasonOfShortage, MainWindow.resourcemanager.GetString("trReasonOfShortageHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_notes, MainWindow.resourcemanager.GetString("trNoteHint"));
+
+            tt_clear.Content = MainWindow.resourcemanager.GetString("trClear");
+            tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
+            tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
+            tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
+            tt_search.Content = MainWindow.resourcemanager.GetString("trSearch");
+
+            btn_shortage.Content = MainWindow.resourcemanager.GetString("trShortage");
+            btn_refresh.ToolTip = MainWindow.resourcemanager.GetString("trRefresh");
 
         }
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
@@ -601,6 +626,9 @@ namespace POS.View.storage
             }
         }
 
-
+        private void Btn_refresh_Click(object sender, RoutedEventArgs e)
+        {
+            Tb_search_TextChanged(null,null);
+        }
     }
 }

@@ -151,14 +151,14 @@ namespace POS.View.sales
             txt_customer.Text = MainWindow.resourcemanager.GetString("trCustomer");
             txt_delivery.Text = MainWindow.resourcemanager.GetString("trDelivery");
 
-            tt_waitConfirmUser.Content = MainWindow.resourcemanager.GetString("trWaitConfirmUser");
-            tt_printInvoice.Content = MainWindow.resourcemanager.GetString("trPrint");
-            tt_preview.Content = MainWindow.resourcemanager.GetString("trPreview");
-            tt_invoiceImages.Content = MainWindow.resourcemanager.GetString("trImages");
-            tt_items.Content = MainWindow.resourcemanager.GetString("trItems");
-            tt_orders.Content = MainWindow.resourcemanager.GetString("trOrders");
-            tt_drafts.Content = MainWindow.resourcemanager.GetString("trDrafts");
-            tt_newDraft.Content = MainWindow.resourcemanager.GetString("trNewDraft");
+            txt_waitConfirmUser.Text = MainWindow.resourcemanager.GetString("trWaitConfirmUser");
+            txt_printInvoice.Text = MainWindow.resourcemanager.GetString("trPrint");
+            txt_preview.Text = MainWindow.resourcemanager.GetString("trPreview");
+            txt_invoiceImages.Text = MainWindow.resourcemanager.GetString("trImages");
+            txt_items.Text = MainWindow.resourcemanager.GetString("trItems");
+            txt_orders.Text = MainWindow.resourcemanager.GetString("trOrders");
+            txt_drafts.Text = MainWindow.resourcemanager.GetString("trDrafts");
+            txt_newDraft.Text = MainWindow.resourcemanager.GetString("trNewDraft");
 
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_barcode, MainWindow.resourcemanager.GetString("trBarcodeHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_branch, MainWindow.resourcemanager.GetString("trStore/BranchHint"));
@@ -197,6 +197,7 @@ namespace POS.View.sales
 
 
                 translate();
+                setNotifications();
                 await RefrishItems();
                 await RefrishCustomers();
                 await fillBarcodeList();
@@ -229,6 +230,54 @@ namespace POS.View.sales
                 SectionData.ExceptionMessage(ex);
             }
         }
+        #region notifications
+        private void setNotifications()
+        {
+            refreshDraftNotification();
+            refreshOrdersWaitNotification();
+        }
+        private async void refreshDraftNotification()
+        {
+            string invoiceType = "ord";
+            int duration = 2;
+            int draftCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
+         
+            if (draftCount > 9)
+            {
+                draftCount = 9;
+                md_draft.Badge = "+" + draftCount.ToString();
+            }
+            else
+                md_draft.Badge = draftCount.ToString();
+        }
+        private async void refreshOrdersWaitNotification()
+        {
+            string invoiceType = "s";
+            int ordersCount = await invoice.getDeliverOrdersCount(invoiceType, "ex", MainWindow.userID.Value);
+
+            if (ordersCount > 9)
+            {
+                ordersCount = 9;
+                md_ordersWait.Badge = "+" + ordersCount.ToString();
+            }
+            else
+                md_ordersWait.Badge = ordersCount.ToString();
+        }       
+        private async void refreshDocCount(int invoiceId)
+        {
+            DocImage doc = new DocImage();
+            int docCount = await doc.GetDocCount("Invoices", invoiceId);
+          
+            if (docCount > 9)
+            {
+                docCount = 9;
+                md_docImage.Badge = "+" + docCount.ToString();
+            }
+            else
+                md_docImage.Badge = docCount.ToString();
+        }
+      
+        #endregion
         async Task RefrishCustomers()
         {
                 SectionData.StartAwait(grid_ucOrders);
@@ -568,6 +617,7 @@ namespace POS.View.sales
                     if (billDetails.Count > 0 && available && valid)
                     {
                         await addInvoice(_InvoiceType);
+                        refreshDraftNotification();
                         clearInvoice();
                     }
                     else if (billDetails.Count == 0)
@@ -1007,6 +1057,7 @@ namespace POS.View.sales
                             //this.DataContext = invoice;
 
                             _InvoiceType = invoice.invType;
+                            refreshDocCount(invoice.invoiceId);
                             // set title to bill
                             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSaleOrderDraft");
 
@@ -1145,6 +1196,8 @@ SectionData.isAdminPermision())
                             this.DataContext = invoice;
 
                             _InvoiceType = invoice.invType;
+                            refreshDocCount(invoice.invoiceId);
+
                             // set title to bill
                             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSaleOrder");
 
@@ -1189,6 +1242,8 @@ SectionData.isAdminPermision())
                             this.DataContext = invoice;
 
                             _InvoiceType = invoice.invType;
+                            refreshDocCount(invoice.invoiceId);
+
                             // set title to bill
                             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSaleOrder");
 
@@ -1495,9 +1550,15 @@ SectionData.isAdminPermision())
                     if (valid)
                     {
                         if (_InvoiceType == "s")
+                        {
                             await saveOrderStatus(invoice.invoiceId, "tr");
+                            refreshOrdersWaitNotification();
+                        }
                         else
+                        {
                             await addInvoice("or");//quontation invoice
+                            refreshDraftNotification();
+                        }
                         clearInvoice();
                     }
                 }
@@ -1862,7 +1923,21 @@ SectionData.isAdminPermision())
         {
             try
             {
+                if (invoice != null && invoice.invoiceId != 0)
+                {
+                    Window.GetWindow(this).Opacity = 0.2;
 
+                    wd_uploadImage w = new wd_uploadImage();
+
+                    w.tableName = "invoices";
+                    w.tableId = invoice.invoiceId;
+                    w.docNum = invoice.invNumber;
+                    w.ShowDialog();
+                    refreshDocCount(invoice.invoiceId);
+                    Window.GetWindow(this).Opacity = 1;
+                }
+                else
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trChooseInvoiceToolTip"), animation: ToasterAnimation.FadeIn);
 
             }
             catch (Exception ex)

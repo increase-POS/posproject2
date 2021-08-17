@@ -122,6 +122,7 @@ namespace POS.View.storage
                 translate();
                 tb_barcode.Focus();
                 await RefrishVendors();
+                setNotifications();
                 //await RefrishBranches();
                 #region datagridChange
                 CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(dg_billDetails.Items);
@@ -135,6 +136,40 @@ namespace POS.View.storage
                 SectionData.ExceptionMessage(ex);
             }
         }
+        #region notifications
+        private void setNotifications()
+        {
+            refreshInvoiceNotification();
+            refreshReturnNotification();
+        }
+        private async void refreshInvoiceNotification()
+        {
+            string invoiceType = "pw"; 
+            int invoiceCount = await invoice.GetCountBranchInvoices(invoiceType,0, MainWindow.branchID.Value);
+
+            if (invoiceCount > 9)
+            {
+                invoiceCount = 9;
+                md_invoiceCount.Badge = "+" + invoiceCount.ToString();
+            }
+            else
+                md_invoiceCount.Badge = invoiceCount.ToString();
+        }
+        private async void refreshReturnNotification()
+        {
+            string invoiceType = "pbw";
+            int returnsCount = await invoice.GetCountBranchInvoices(invoiceType,0, MainWindow.branchID.Value);
+
+            if (returnsCount > 9)
+            {
+                returnsCount = 9;
+                md_returnsCount.Badge = "+" + returnsCount.ToString();
+            }
+            else
+                md_returnsCount.Badge = returnsCount.ToString();
+        }
+       
+        #endregion
         //async Task RefrishBranches()
         //{
         //    branches = await branchModel.GetBranchesActive("all");
@@ -773,9 +808,15 @@ namespace POS.View.storage
                 if (billDetails.Count > 0)
                 {
                     if (_InvoiceType == "pw") //p  wait purchase invoice
+                    {
                         await receiptInvoice();
+                        refreshInvoiceNotification();
+                    }
                     else if (_InvoiceType == "pbd")
+                    {
                         await returnInvoice("pb");
+                        refreshReturnNotification();
+                    }
 
                 }
                 clearInvoice();

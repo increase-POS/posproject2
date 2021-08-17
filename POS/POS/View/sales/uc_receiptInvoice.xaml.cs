@@ -173,18 +173,18 @@ namespace POS.View
             txt_delivery.Text = MainWindow.resourcemanager.GetString("trDelivery");
 
 
-            tt_printInvoice.Content = MainWindow.resourcemanager.GetString("trPrint");
-            tt_preview.Content = MainWindow.resourcemanager.GetString("trPreview");
-            tt_invoiceImages.Content = MainWindow.resourcemanager.GetString("trImages");
-            tt_items.Content = MainWindow.resourcemanager.GetString("trItems");
-            tt_drafts.Content = MainWindow.resourcemanager.GetString("trDrafts");
-            tt_newDraft.Content = MainWindow.resourcemanager.GetString("trNewDraft");
-            tt_emailMessage.Content = MainWindow.resourcemanager.GetString("trSendEmail");
-            tt_payments.Content = MainWindow.resourcemanager.GetString("trPayments");
-            tt_returnInvoice.Content = MainWindow.resourcemanager.GetString("trReturn");
-            tt_quotations.Content = MainWindow.resourcemanager.GetString("trQuotations");
-            tt_ordersWait.Content = MainWindow.resourcemanager.GetString("trOrders");
-            tt_invoices.Content = MainWindow.resourcemanager.GetString("trInvoices");
+            txt_printInvoice.Text = MainWindow.resourcemanager.GetString("trPrint");
+            txt_preview.Text = MainWindow.resourcemanager.GetString("trPreview");
+            txt_invoiceImages.Text = MainWindow.resourcemanager.GetString("trImages");
+            txt_items.Text = MainWindow.resourcemanager.GetString("trItems");
+            txt_drafts.Text = MainWindow.resourcemanager.GetString("trDrafts");
+            txt_newDraft.Text = MainWindow.resourcemanager.GetString("trNewDraft");
+            txt_emailMessage.Text = MainWindow.resourcemanager.GetString("trSendEmail");
+            txt_payments.Text = MainWindow.resourcemanager.GetString("trReceived");
+            txt_returnInvoice.Text = MainWindow.resourcemanager.GetString("trReturn");
+            txt_quotations.Text = MainWindow.resourcemanager.GetString("trQuotations");
+            txt_ordersWait.Text = MainWindow.resourcemanager.GetString("trOrders");
+            txt_invoices.Text = MainWindow.resourcemanager.GetString("trInvoices");
 
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_barcode, MainWindow.resourcemanager.GetString("trBarcodeHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_coupon, MainWindow.resourcemanager.GetString("trCoponHint"));
@@ -255,6 +255,7 @@ namespace POS.View
 
                 pos = await posModel.getPosById(MainWindow.posID.Value);
                 configurProcessType();
+                setNotifications();
                 await RefrishItems();
                 await RefrishCustomers();
                 await fillBarcodeList();
@@ -287,32 +288,89 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex);
             }
         }
+        #region notifications
+        private void setNotifications()
+        {
+            refreshDraftNotification();
+            refreshOrdersWaitNotification();
+            refreshQuotationNotification();
+            refreshPaymentsNotification();
+        }
+        private async void refreshDraftNotification()
+        {
+            string invoiceType = "sd ,sbd";
+            int duration = 2;
+            int draftCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
+      
+            if (draftCount > 9)
+            {
+                draftCount = 9;
+                md_draft.Badge = "+" + draftCount.ToString();
+            }
+            else
+                md_draft.Badge = draftCount.ToString();
+        }
+        private async void refreshOrdersWaitNotification()
+        {
+            string invoiceType = "or";
+            int ordersCount = await invoice.GetCountBranchInvoices(invoiceType,0, MainWindow.branchID.Value);
+    
+            if (ordersCount > 9)
+            {
+                ordersCount = 9;
+                md_ordersWait.Badge = "+" + ordersCount.ToString();
+            }
+            else
+                md_ordersWait.Badge = ordersCount.ToString();
+        }
+        private async void refreshQuotationNotification()
+        {
+            string invoiceType = "q";
+            int ordersCount = await invoice.GetCountBranchInvoices(invoiceType, MainWindow.branchID.Value);
+
+            if (ordersCount > 9)
+            {
+                ordersCount = 9;
+                md_quotations.Badge = "+" + ordersCount.ToString();
+            }
+            else
+                md_quotations.Badge = ordersCount.ToString();
+        }
+        private async void refreshDocCount(int invoiceId)
+        {
+            DocImage doc = new DocImage();
+            int docCount = await doc.GetDocCount("Invoices", invoiceId);
+            if (docCount > 9)
+            {
+                docCount = 9;
+                md_docImage.Badge = "+" + docCount.ToString();
+            }
+            else
+                md_docImage.Badge = docCount.ToString();
+        }
+        private async void refreshPaymentsNotification()
+        {
+            md_payments.Badge = "+9";
+        }
+        #endregion
         async Task RefrishCustomers()
         {
-            SectionData.StartAwait(grid_ucReceiptInvoice);
             customers = await agentModel.GetAgentsActive("c");
             cb_customer.ItemsSource = customers;
             cb_customer.DisplayMemberPath = "name";
             cb_customer.SelectedValuePath = "agentId";
-            SectionData.EndAwait(grid_ucReceiptInvoice, this);
         }
         async Task RefrishItems()
         {
-            SectionData.StartAwait(grid_ucReceiptInvoice);
             items = await itemModel.GetAllItems();
-            SectionData.EndAwait(grid_ucReceiptInvoice, this);
         }
         async Task fillBarcodeList()
         {
-            SectionData.StartAwait(grid_ucReceiptInvoice);
             barcodesList = await itemUnitModel.Getall();
-            SectionData.EndAwait(grid_ucReceiptInvoice, this);
         }
         async Task fillCouponsList()
         {
-            SectionData.StartAwait(grid_ucReceiptInvoice);
             coupons = await couponModel.GetCouponsAsync();
-            SectionData.EndAwait(grid_ucReceiptInvoice, this);
         }
         private void configurProcessType()
         {
@@ -340,21 +398,17 @@ namespace POS.View
         }
         private async Task fillShippingCompanies()
         {
-            SectionData.StartAwait(grid_ucReceiptInvoice);
             companies = await companyModel.Get();
             cb_company.ItemsSource = companies;
             cb_company.DisplayMemberPath = "name";
             cb_company.SelectedValuePath = "shippingCompanyId";
-            SectionData.EndAwait(grid_ucReceiptInvoice, this);
         }
         private async Task fillUsers()
         {
-            SectionData.StartAwait(grid_ucReceiptInvoice);
             users = await userModel.GetUsersActive();
             cb_user.ItemsSource = users;
             cb_user.DisplayMemberPath = "name";
             cb_user.SelectedValuePath = "userId";
-            SectionData.EndAwait(grid_ucReceiptInvoice, this);
         }
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
@@ -433,7 +487,6 @@ namespace POS.View
         #region Get Id By Click  Y
         public async Task ChangeItemIdEvent(int itemId)
         {
-            SectionData.StartAwait(grid_ucReceiptInvoice);
             if (items != null) item = items.ToList().Find(c => c.itemId == itemId);
 
             if (item != null)
@@ -459,7 +512,6 @@ namespace POS.View
                     refrishBillDetails();
                 }
             }
-            SectionData.EndAwait(grid_ucReceiptInvoice, this);
         }
         #endregion
 
@@ -494,7 +546,6 @@ namespace POS.View
         }
         private async Task<bool> validateInvoiceValues()
         {
-            SectionData.StartAwait(grid_ucReceiptInvoice);
             bool valid;
             bool available = true;
             SectionData.validateEmptyComboBox(cb_paymentProcessType, p_errorpaymentProcessType, tt_errorpaymentProcessType, "trErrorEmptyPaymentTypeToolTip");
@@ -526,7 +577,6 @@ namespace POS.View
                     valid = false;
                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorNoSerialToolTip"), animation: ToasterAnimation.FadeIn);
 
-            SectionData.EndAwait(grid_ucReceiptInvoice, this);
                     return valid;
                 }
             }
@@ -539,7 +589,6 @@ namespace POS.View
                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trSelectTheDeliveryMan"), animation: ToasterAnimation.FadeIn);
                 SectionData.validateEmptyComboBox(cb_user, p_errorUser, tt_errorUser, "trSelectTheDeliveryMan");
 
-            SectionData.EndAwait(grid_ucReceiptInvoice, this);
                 return valid;
             }
             #endregion
@@ -578,12 +627,10 @@ namespace POS.View
                     }
                 }
             }
-            SectionData.EndAwait(grid_ucReceiptInvoice, this);
             return valid;
         }
         private async Task<Boolean> checkItemsAmounts()
         {
-            SectionData.StartAwait(grid_ucReceiptInvoice);
             Boolean available = true;
             for (int i = 0; i < billDetails.Count; i++)
             {
@@ -592,11 +639,9 @@ namespace POS.View
                 {
                     available = false;
                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountNotAvailableFromToolTip") + " " + billDetails[i].Product, animation: ToasterAnimation.FadeIn);
-            SectionData.EndAwait(grid_ucReceiptInvoice, this);
                     return available;
                 }
             }
-            SectionData.EndAwait(grid_ucReceiptInvoice, this);
             return available;
         }
 
@@ -630,7 +675,6 @@ namespace POS.View
         #region save invoice
         private async Task saveSaleInvoice(string invType)
         {
-            SectionData.StartAwait(grid_ucReceiptInvoice);
             await addInvoice(invType);
             if (invoice.invoiceId != 0)
             {
@@ -639,30 +683,24 @@ namespace POS.View
                 if (cb_company.SelectedIndex == -1)
                     await saveOrderStatus(invoice.invoiceId, "rc"); // recieved
             }
-            SectionData.EndAwait(grid_ucReceiptInvoice, this);
         }
         private async Task saveOrder(string invType)
         {
-            SectionData.StartAwait(grid_ucReceiptInvoice);
             await addInvoice(invType);
             if (invoice.invoiceId != 0)
                 await saveOrderStatus(invoice.invoiceId, "ex");
-            SectionData.EndAwait(grid_ucReceiptInvoice, this);
         }
         private async Task saveOrderStatus(int invoiceId, string status)
         {
-            SectionData.StartAwait(grid_ucReceiptInvoice);
             invoiceStatus st = new invoiceStatus();
             st.status = status;
             st.invoiceId = invoiceId;
             st.createUserId = MainWindow.userLogin.userId;
             st.isActive = 1;
             await invoice.saveOrderStatus(st);
-            SectionData.EndAwait(grid_ucReceiptInvoice, this);
         }
         private async Task addInvoice(string invType)
         {
-            SectionData.StartAwait(grid_ucReceiptInvoice);
             if (invoice.invType == "s" && (invType == "sb" || invType == "sbd")) // invoice is sale and will be bounce sale  or sale bounce draft  , save another invoice in db
             {
                 invoice.invoiceMainId = invoice.invoiceId;
@@ -840,7 +878,6 @@ namespace POS.View
                 // }
             }
 
-            SectionData.EndAwait(grid_ucReceiptInvoice, this);
         }
 
         bool logInProcessing = true;
@@ -887,10 +924,12 @@ namespace POS.View
                             else if (_InvoiceType == "or")
                             {
                                 await saveOrder("s");
+                                refreshOrdersWaitNotification();
                             }
                             else//s  sale invoice
                             {
                                 await saveSaleInvoice("s");
+                                refreshDraftNotification();
                             }
                             clearInvoice();
                         }
@@ -934,6 +973,7 @@ namespace POS.View
                 if (billDetails.Count > 0 && available && valid)
                 {
                     await addInvoice(_InvoiceType);
+                    refreshDraftNotification();
                     clearInvoice();
                 }
                 else if (billDetails.Count == 0)
@@ -983,11 +1023,13 @@ namespace POS.View
             cb_paymentProcessType.IsEnabled = true;
             lst_coupons.Items.Clear();
             tb_discount.Text = "0";
+            md_docImage.Badge = "";
             //btn_updateCustomer.IsEnabled = false;
             gd_card.Visibility = Visibility.Collapsed;
             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesInvoice");
             SectionData.clearComboBoxValidate(cb_paymentProcessType, p_errorpaymentProcessType);
             SectionData.clearComboBoxValidate(cb_card, p_errorCard);
+            SectionData.clearComboBoxValidate(cb_user, p_errorUser);
             SectionData.clearValidate(tb_processNum, p_errorProcessNum);
             refrishBillDetails();
             tb_barcode.Focus();
@@ -1015,7 +1057,9 @@ namespace POS.View
                         invoice = w.invoice;
                         _InvoiceType = invoice.invType;
 
+                        refreshDocCount(invoice.invoiceId);
                         await fillInvoiceInputs(invoice);
+
                         // set title to bill
                         if (_InvoiceType == "sd")
                         {
@@ -1045,7 +1089,6 @@ namespace POS.View
         }
         private async Task getInvoiceCoupons(int invoiceId)
         {
-            SectionData.StartAwait(grid_ucReceiptInvoice);
             if (_InvoiceType != "sd")
                 selectedCoupons = await invoiceModel.getOriginalCoupons(invoiceId);
             else
@@ -1054,7 +1097,6 @@ namespace POS.View
             {
                 lst_coupons.Items.Add(invCoupon.couponCode);
             }
-            SectionData.EndAwait(grid_ucReceiptInvoice, this);
         }
         private async void Btn_invoices_Click(object sender, RoutedEventArgs e)
         {
@@ -1081,6 +1123,7 @@ namespace POS.View
                         this.DataContext = invoice;
 
                         _InvoiceType = invoice.invType;
+                        refreshDocCount(invoice.invoiceId);
                         // set title to bill
                         txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesInvoice");
                         // orange #FFA926 red #D22A17
@@ -1121,6 +1164,7 @@ namespace POS.View
                             this.DataContext = invoice;
 
                             _InvoiceType = invoice.invType;
+                            refreshDocCount(invoice.invoiceId);
                             // set title to bill
                             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSaleOrder");
                             // orange #FFA926 red #D22A17
@@ -1142,7 +1186,6 @@ namespace POS.View
         }
         public async Task fillInvoiceInputs(Invoice invoice)
         {
-            SectionData.StartAwait(grid_ucReceiptInvoice);
             configurProcessType();
 
             _Sum = (decimal)invoice.total;
@@ -1201,7 +1244,6 @@ namespace POS.View
             // build invoice details grid
             await buildInvoiceDetails(invoice.invoiceId);
             inputEditable();
-            SectionData.EndAwait(grid_ucReceiptInvoice, this);
 
         }
         private async void Btn_returnInvoice_Click(object sender, RoutedEventArgs e)
@@ -1225,7 +1267,7 @@ namespace POS.View
                             invoice = w.invoice;
 
                             this.DataContext = invoice;
-
+                            refreshDocCount(invoice.invoiceId);
                             await fillInvoiceInputs(invoice);
                             mainInvoiceItems = invoiceItems;
                             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesReturnInvoice");
@@ -1246,7 +1288,6 @@ namespace POS.View
         }
         private async Task buildInvoiceDetails(int invoiceId)
         {
-            SectionData.StartAwait(grid_ucReceiptInvoice);
             //get invoice items
             invoiceItems = await invoiceModel.GetInvoicesItems(invoiceId);
             // build invoice details grid
@@ -1285,7 +1326,6 @@ namespace POS.View
             tb_barcode.Focus();
 
             refrishBillDetails();
-            SectionData.EndAwait(grid_ucReceiptInvoice, this);
         }
         private void inputEditable()
         {
@@ -1428,6 +1468,7 @@ namespace POS.View
                     w.tableId = invoice.invoiceId;
                     w.docNum = invoice.invNumber;
                     w.ShowDialog();
+                    refreshDocCount(invoice.invoiceId);
                     Window.GetWindow(this).Opacity = 1;
                 }
                 else
@@ -1663,7 +1704,6 @@ namespace POS.View
         }
         private async Task dealWithBarcode(string barcode)
         {
-            SectionData.StartAwait(grid_ucReceiptInvoice);
             int codeindex = barcode.IndexOf("-");
             string prefix = "";
             if (codeindex >= 0)
@@ -1766,11 +1806,9 @@ namespace POS.View
             }
 
             tb_barcode.Clear();
-            SectionData.EndAwait(grid_ucReceiptInvoice, this);
         }
         private async Task addItemToBill(int itemId, int itemUnitId, string unitName, decimal price, bool valid)
         {
-            SectionData.StartAwait(grid_ucReceiptInvoice);
             item = items.ToList().Find(i => i.itemId == itemId);
             bool isValid = true;
 
@@ -1809,7 +1847,6 @@ namespace POS.View
 
             refreshTotalValue();
             refrishBillDetails();
-            SectionData.EndAwait(grid_ucReceiptInvoice, this);
         }
         private void Dg_billDetails_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
@@ -1852,7 +1889,6 @@ namespace POS.View
 
         private async Task addRowToBill(string itemName, int itemId, string unitName, int itemUnitId, int count, decimal price, decimal total, decimal tax, string type, bool valid, List<string> serialList = null)
         {
-            SectionData.StartAwait(grid_ucReceiptInvoice);
             // increase sequence for each read
             _SequenceNum++;
 
@@ -1874,7 +1910,6 @@ namespace POS.View
             _Sum += total;
             _Tax += tax;
 
-            SectionData.EndAwait(grid_ucReceiptInvoice, this);
         }
         #endregion billdetails
         private async void Cbm_unitItemDetails_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -2653,6 +2688,7 @@ namespace POS.View
                             this.DataContext = invoice;
 
                             _InvoiceType = invoice.invType;
+                            refreshDocCount(invoice.invoiceId);
                             // set title to bill
                             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trQuotations");
                             // orange #FFA926 red #D22A17

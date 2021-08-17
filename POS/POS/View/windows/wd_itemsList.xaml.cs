@@ -103,8 +103,10 @@ namespace POS.View.windows
             {
                 allItems.Remove(item);
                 selectedItems.Add(item);
+
                 lst_allItems.ItemsSource = allItems;
                 lst_selectedItems.ItemsSource = selectedItems;
+
                 lst_allItems.Items.Refresh();
                 lst_selectedItems.Items.Refresh();
             }
@@ -158,5 +160,6 @@ namespace POS.View.windows
 
             }
         }
+         
     }
 }

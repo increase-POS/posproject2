@@ -173,14 +173,7 @@ namespace POS.View.windows
 
                     selectedStoresByUser.Add(bu);
 
-                    //BranchesUserstable but = new BranchesUserstable();
-                    //but.branchsUsersId = 0;
-                    //but.branchId = branch.branchId;
-                    //but.userId = Id;
-                    ////but.bname = branch.name;
-                    //but.createUserId = MainWindow.userID;
-
-                    //selectedStoresByUser.Add(but);
+                    
                     dg_selectedStores.ItemsSource = selectedStoresByUser;
 
                 }
@@ -336,6 +329,12 @@ namespace POS.View.windows
             {
                 Btn_save_Click(null, null);
             }
+        }
+        private void Grid_BeginningEdit(object sender, DataGridBeginningEditEventArgs e)
+        {
+            //// Have to do this in the unusual case where the border of the cell gets selected.
+            //// and causes a crash 'EditItem is not allowed'
+            e.Cancel = true;
         }
     }
 }

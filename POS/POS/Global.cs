@@ -9,9 +9,9 @@ namespace POS
     class Global
     {
         public const string APIKey = "1234";
-        public const string APIUri = "http://localhost:44370/api/";
+        //public const string APIUri = "http://localhost:44370/api/";
         //public const string APIUri = "http://192.168.1.5:44370/api/";
-        //public const string APIUri = "http://192.168.1.37:44370/api/";
+        public const string APIUri = "http://192.168.1.37:44370/api/";
         //public const string APIUri = "http://192.168.1.9:44370/api/";
         //public const string APIUri = "http://141.95.1.58:44370/api/";
 

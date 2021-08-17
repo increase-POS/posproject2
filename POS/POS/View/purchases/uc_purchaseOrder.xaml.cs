@@ -69,20 +69,20 @@ namespace POS.View.purchases
                 w.userId = MainWindow.userLogin.userId;
                 w.duration = 1; // view purchase orders which created during  last one day 
 
-                w.title = MainWindow.resourcemanager.GetString("trPurchaseInvoices");
+                w.title = MainWindow.resourcemanager.GetString("trPurchaseOrders");
 
                 if (w.ShowDialog() == true)
                 {
                     if (w.invoice != null)
                     {
                         invoice = w.invoice;
-                        //this.DataContext = invoice;
                         _InvoiceType = invoice.invType;
 
                         await fillInvoiceInputs(invoice);
 
                         mainInvoiceItems = invoiceItems;
-                        txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaseOrdersBill");
+                        txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaceOrder");
+                        refreshDocCount(invoice.invoiceId);
                     }
                 }
                 Window.GetWindow(this).Opacity = 1;
@@ -159,29 +159,31 @@ namespace POS.View.purchases
         private void translate()
         {
             ////////////////////////////////----invoice----/////////////////////////////////
-            //txt_invoiceHeader.Text = MainWindow.resourcemanager.GetString("trInvoice");
-            //txt_invoice.Text = MainWindow.resourcemanager.GetString("trInvoice");
             dg_billDetails.Columns[1].Header = MainWindow.resourcemanager.GetString("trNum");
             dg_billDetails.Columns[2].Header = MainWindow.resourcemanager.GetString("trItem");
             dg_billDetails.Columns[3].Header = MainWindow.resourcemanager.GetString("trUnit");
             dg_billDetails.Columns[4].Header = MainWindow.resourcemanager.GetString("trQuantity");
-            //dg_billDetails.Columns[5].Header = MainWindow.resourcemanager.GetString("trPrice");
-            //dg_billDetails.Columns[6].Header = MainWindow.resourcemanager.GetString("trTotal");
+
+            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaceOrder");
+            txt_barcode.Text = MainWindow.resourcemanager.GetString("trBarcode");
+            txt_vendor.Text = MainWindow.resourcemanager.GetString("trVendor");
             txt_sum.Text = MainWindow.resourcemanager.GetString("trSum");
             tb_count.Text = MainWindow.resourcemanager.GetString("trCount:");
-            //txt_total.Text = MainWindow.resourcemanager.GetString("trTotal");
-            tt_preview.Content = MainWindow.resourcemanager.GetString("trPreview");
-            tt_pdf.Content = MainWindow.resourcemanager.GetString("trPdfBtn");
-            tt_printInvoice.Content = MainWindow.resourcemanager.GetString("trPrint");
 
-
-            ////////////////////////////////----vendor----/////////////////////////////////
-
-            txt_vendor.Text = MainWindow.resourcemanager.GetString("trVendor");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_barcode, MainWindow.resourcemanager.GetString("trBarcodeHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_vendor, MainWindow.resourcemanager.GetString("trVendorHint"));
-            //MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_paid, MainWindow.resourcemanager.GetString("trPaidHint"));
-            //MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_deserved, MainWindow.resourcemanager.GetString("trDeservedHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_note, MainWindow.resourcemanager.GetString("trNoteHint"));
+
+            txt_items.Text = MainWindow.resourcemanager.GetString("trItems");
+            txt_drafts.Text = MainWindow.resourcemanager.GetString("trDrafts");
+            txt_newDraft.Text = MainWindow.resourcemanager.GetString("trNewDraft");
+            txt_purchaseOrder.Text = MainWindow.resourcemanager.GetString("trPurchaseOrders");
+            txt_emailMessage.Text = MainWindow.resourcemanager.GetString("trSendEmail");
+            txt_preview.Text = MainWindow.resourcemanager.GetString("trPreview");
+            txt_pdf.Text = MainWindow.resourcemanager.GetString("trPdfBtn");
+            txt_printInvoice.Text = MainWindow.resourcemanager.GetString("trPrint");
+            txt_invoiceImages.Text = MainWindow.resourcemanager.GetString("trImages");
+
             btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
         }
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
@@ -235,6 +237,7 @@ namespace POS.View.purchases
 
                 translate();
                 //catigoriesAndItemsView.ucPayInvoice = this;
+                refreshDraftNotification();
                 await RefrishItems();
                 await RefrishVendors();
                 await fillBarcodeList();
@@ -314,7 +317,35 @@ namespace POS.View.purchases
         }
         #endregion
 
+        #region notification
+        private async void refreshDraftNotification()
+        {
+            string invoiceType = "pod";
+            int duration = 2;
+            int draftCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
 
+            if (draftCount > 9)
+            {
+                draftCount = 9;
+                md_draft.Badge = "+" + draftCount.ToString();
+            }
+            else
+                md_draft.Badge = draftCount.ToString();
+        }
+        private async void refreshDocCount(int invoiceId)
+        {
+            DocImage doc = new DocImage();
+            int docCount = await doc.GetDocCount("Invoices", invoiceId);
+            
+            if (docCount > 9)
+            {
+                docCount = 9;
+                md_docImage.Badge = "+" + docCount.ToString();
+            }
+            else
+                md_docImage.Badge = docCount.ToString();
+        }
+        #endregion
         private void Btn_updateVendor_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -527,7 +558,7 @@ namespace POS.View.purchases
                     invoiceItems.Add(itemT);
                 }
                 await invoiceModel.saveInvoiceItems(invoiceItems, invoiceId);
-
+                refreshDraftNotification();
                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
             }
             else
@@ -587,7 +618,6 @@ namespace POS.View.purchases
                         {
                             await addInvoice("po"); // po means purchase order
 
-                            // if (invoice.invoiceId == 0)
                             clearInvoice();
                         }
                         awaitSaveBtn(false);
@@ -656,9 +686,11 @@ namespace POS.View.purchases
             tb_total.Text = "";
             tb_sum.Text = null;
             btn_updateVendor.IsEnabled = false;
+            md_docImage.Badge = "";
             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaseOrder");
             refrishBillDetails();
             inputEditable();
+
         }
         #endregion
         private async void Btn_draft_Click(object sender, RoutedEventArgs e)
@@ -670,9 +702,7 @@ namespace POS.View.purchases
                 wd_invoice w = new wd_invoice();
 
                 // purchase drafts and purchase bounce drafts
-                // string[] typeArr = { "pd","pdbd" };
                 w.invoiceType = "pod";
-                //w.branchId = int.Parse(MainWindow.branchID.ToString());
                 w.userId = MainWindow.userLogin.userId;
                 w.duration = 2; // view drafts which created during 2 last days 
 
@@ -683,13 +713,13 @@ namespace POS.View.purchases
                     if (w.invoice != null)
                     {
                         invoice = w.invoice;
-                        //this.DataContext = invoice;
                         _InvoiceType = invoice.invType;
 
                         await fillInvoiceInputs(invoice);
 
                         mainInvoiceItems = invoiceItems;
-                        txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trDraftPurchaseBill");
+                        txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaceOrderDraft");
+                        refreshDocCount(invoice.invoiceId);
                     }
                 }
                 Window.GetWindow(this).Opacity = 1;
@@ -709,9 +739,7 @@ namespace POS.View.purchases
                 wd_invoice w = new wd_invoice();
 
                 // purchase invoices
-                //w.invoiceType = "pw";
                 w.invoiceType = "p , pw";
-                //w.branchCreatorId = MainWindow.branchID.Value;
                 w.userId = MainWindow.userLogin.userId;
                 w.duration = 1; // view drafts which created during 1 last days 
 
@@ -744,12 +772,10 @@ namespace POS.View.purchases
         public async Task fillInvoiceInputs(Invoice invoice)
         {
                 SectionData.StartAwait(grid_ucPayInvoice);
-            //_Sum = (decimal)invoice.total;
+
             txt_invNumber.Text = invoice.invNumber.ToString();
             cb_vendor.SelectedValue = invoice.agentId;
-            //tb_total.Text = Math.Round((double)invoice.totalNet, 2).ToString();
             tb_note.Text = invoice.notes;
-            // tb_sum.Text = invoice.total.ToString();
             await buildInvoiceDetails();
             inputEditable();
                 SectionData.EndAwait(grid_ucPayInvoice, this);
@@ -758,7 +784,6 @@ namespace POS.View.purchases
         private async Task buildInvoiceDetails()
         {
                 SectionData.StartAwait(grid_ucPayInvoice);
-            //_Count = 0;
 
             //get invoice items
             invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
@@ -828,6 +853,7 @@ namespace POS.View.purchases
                         w.tableId = invoice.invoiceId;
                         w.docNum = invoice.invNumber;
                         w.ShowDialog();
+                        refreshDocCount(invoice.invoiceId);
                         Window.GetWindow(this).Opacity = 1;
                     }
                     else
@@ -907,8 +933,6 @@ namespace POS.View.purchases
                 {
                     cb_vendor.SelectedValue = _SelectedVendor;
                 }
-                //if (cb_vendor.SelectedIndex != -1)
-                //    btn_updateVendor.IsEnabled = true;
             }
             catch (Exception ex)
             {
@@ -937,8 +961,6 @@ namespace POS.View.purchases
                 taxValue = SectionData.calcPercentage(total, taxInputVal);
 
             tb_sum.Text = _Sum.ToString();
-            //total = total + taxValue;
-            //tb_total.Text = Math.Round(total, 2).ToString();
         }
 
 
@@ -1477,7 +1499,7 @@ namespace POS.View.purchases
                                  || invoice.invType == "sbd" || invoice.invType == "pbd"
                                  || invoice.invType == "ord" || invoice.invType == "imd" || invoice.invType == "exd")
                     {
-                        MessageBox.Show("can not print Draft Invoice");
+                        MessageBox.Show(MainWindow.resourcemanager.GetString("trPrintDraftInvoice"));
                     }
                     else
                     {
@@ -1687,7 +1709,7 @@ namespace POS.View.purchases
                     }
                     else
                     {
-                        MessageBox.Show("save the invoice to preview");
+                        MessageBox.Show(MainWindow.resourcemanager.GetString("trSaveInvoiceToPreview"));
                     }
 
                 }

@@ -2077,4 +2077,25 @@ Please add Email in setting</value>
   <data name="trvalidity" xml:space="preserve">
     <value>Validity</value>
   </data>
+  <data name="trAmountShortageedHint" xml:space="preserve">
+    <value>Amount Shortageed...</value>
+  </data>
+  <data name="trArchive" xml:space="preserve">
+    <value>Archive</value>
+  </data>
+  <data name="trEmptyCurrency" xml:space="preserve">
+    <value>Currency cann't be empty</value>
+  </data>
+  <data name="trInventory" xml:space="preserve">
+    <value>Inventory</value>
+  </data>
+  <data name="trPurchaseOrders" xml:space="preserve">
+    <value>Purchase Orders</value>
+  </data>
+  <data name="trStocktakingDetails" xml:space="preserve">
+    <value>Stocktaking Details</value>
+  </data>
+  <data name="trStocktakingItems" xml:space="preserve">
+    <value>Stocktaking Items</value>
+  </data>
 </root>

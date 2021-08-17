@@ -21,12 +21,12 @@
                     CornerRadius="7,7,0,0"  Background="#178DD2">
                 <Grid>
 
-                    <Button   IsCancel="true"  HorizontalAlignment="Right" VerticalAlignment="Center" Background="{x:Null}" 
+                    <!--<Button   IsCancel="true"  HorizontalAlignment="Right" VerticalAlignment="Center" Background="{x:Null}" 
                              BorderBrush="{x:Null}"  Foreground="White" Margin="7.5,0"  x:Name="btn_colse" Click="Btn_colse_Click"
                              FontWeight="SemiBold" Width="24" Padding="0" ToolTip="Close"  FontSize="14">
                         <materialDesign:PackIcon Foreground="White" Kind="Close" 
                                          Width="20" Height="20"/>
-                    </Button>
+                    </Button>-->
                     <Grid  HorizontalAlignment="Center"  >
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
@@ -77,13 +77,15 @@
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
                 <!--#region  language-->
-                <ComboBox Grid.Row="0" x:Name="cb_language" Padding="10,5,5,5"    TextBlock.Foreground="#4E4E4E"
-                                  TabIndex="3"  TextBlock.FontSize="12" Height="40" Margin="10,5,10,5"  VerticalAlignment="Center"   
+                <ComboBox Grid.Row="0" x:Name="cb_language" TextBlock.Foreground="#4E4E4E" 
+                                  TabIndex="0"  TextBlock.FontSize="12" Height="40" Margin="10,5,10,5"  VerticalAlignment="Center"   
                                   Background="#f8f8f8"   BorderBrush="#737373"    
-                                  BorderThickness="0"  FontFamily="{StaticResource Font-cairo-light}" 
+                                  BorderThickness="0"  FontFamily="{StaticResource Font-cairo-light}"
+                                  Padding="10,0,5,0"
+                                  Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
                                    LostFocus="Tb_validateEmptyLostFocus">
                 </ComboBox>
-                <Path Fill="#E81123" Stretch="Fill" Margin="0,25,5,15" x:Name="p_errorLanguage"
+                <Path Fill="#E81123" Stretch="Fill" Margin="0,15,15,15" x:Name="p_errorLanguage"
                                   HorizontalAlignment="Right"  Grid.Row="0"  Visibility="Collapsed" 
                                   VerticalAlignment="Center" Width="15"  Height="15"
                                   Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
@@ -93,21 +95,16 @@
                 </Path>
                 <!--#endregion-->
                 <!--#region  region-->
-                <ComboBox Grid.Row="1" x:Name="cb_region" Padding="10,5,5,5"   TextBlock.Foreground="#4E4E4E"
-                                  TabIndex="3"  TextBlock.FontSize="12" Height="40" Margin="10,5,10,5"  VerticalAlignment="Center"   
+                <ComboBox Grid.Row="1" x:Name="cb_region" TextBlock.Foreground="#4E4E4E"
+                                  TabIndex="1"  TextBlock.FontSize="12" Height="40" Margin="10,5,10,5"  VerticalAlignment="Center"   
                                   Background="#f8f8f8"   BorderBrush="#737373"    
                                   BorderThickness="0"  
+                                  Padding="10,0,5,0" 
                                   FontFamily="{StaticResource Font-cairo-light}" 
-                                   LostFocus="Tb_validateEmptyLostFocus">
-                    <ComboBox.ToolTip>
-                        <ToolTip x:Name="tt_region" 
-                                                          Placement="left" 
-                                                          HorizontalOffset="35"
-                                                          PlacementRectangle="50,0,0,0"
-                                                          VerticalOffset="20"/>
-                    </ComboBox.ToolTip>
+                                  Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
+                                   LostFocus="Tb_validateEmptyLostFocus" SelectionChanged="Cb_region_SelectionChanged">
                 </ComboBox>
-                <Path Fill="#E81123" Stretch="Fill" Margin="0,25,5,15" x:Name="p_errorRegion"
+                <Path Fill="#E81123" Stretch="Fill" Margin="0,15,15,15" x:Name="p_errorRegion"
                                   HorizontalAlignment="Right"  Grid.Row="1"  Visibility="Collapsed" 
                                   VerticalAlignment="Center" Width="15"  Height="15"
                                   Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
@@ -117,11 +114,13 @@
                 </Path>
                 <!--#endregion-->
                 <!--#region  currency-->
-                <ComboBox Grid.Row="2" x:Name="cb_currency" Padding="10,5,5,5"  TextBlock.Foreground="#4E4E4E"
+                <ComboBox Grid.Row="2" x:Name="cb_currency"   TextBlock.Foreground="#4E4E4E"
                                   TabIndex="3"  TextBlock.FontSize="12" Height="40" Margin="10,5,10,5"  VerticalAlignment="Center"   
-                                  Background="#f8f8f8"   BorderBrush="#737373"    Visibility="Visible"
+                                  Background="#f8f8f8"   BorderBrush="#737373"    Visibility="Collapsed"
                                   BorderThickness="0"  FontFamily="{StaticResource Font-cairo-light}"
-                           LostFocus="Tb_validateEmptyLostFocus"/>
+                                  Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
+                                  Padding="10,0,5,0"
+                                  LostFocus="Tb_validateEmptyLostFocus"/>
                 <Path Fill="#E81123" Stretch="Fill" Margin="0,15,15,15" x:Name="p_errorCurrency"
                                   HorizontalAlignment="Right"  Grid.Row="2"  Visibility="Collapsed" 
                                   VerticalAlignment="Center" Width="15"  Height="15"
@@ -132,12 +131,13 @@
                 </Path>
                 <!--#endregion-->
                 <!--#region  tax-->
-                <TextBox x:Name="tb_tax" Padding="10,10,5,5" 
+                <TextBox x:Name="tb_tax" Padding="10,0,5,0" 
                                      BorderThickness="0,0,0,2"  
                                      Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                      BorderBrush="AliceBlue"  
                                      Height="40" Margin="10,5,10,5"  Grid.Row="3"
-                                     TabIndex="9"  
+                                     Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                                     TabIndex="2"  
                                      PreviewKeyDown="Tb_PreventSpaces" 
                                      PreviewTextInput="Tb_decimal_PreviewTextInput"
                                      TextChanged="Tb_validateEmptyTextChange" 
@@ -153,10 +153,13 @@
                 </Path>
                 <!--#endregion-->
                 <!--#region  dateForm-->
-                <ComboBox Grid.Row="4" x:Name="cb_dateForm" Padding="10,5,5,5"    TextBlock.Foreground="#4E4E4E"
+                <ComboBox Grid.Row="4" x:Name="cb_dateForm"   TextBlock.Foreground="#4E4E4E" 
                                   TabIndex="3"  TextBlock.FontSize="12" Height="40" Margin="10,5,10,5"  VerticalAlignment="Center"   
                                   Background="#f8f8f8"   BorderBrush="#737373"    
-                                  BorderThickness="0"  FontFamily="{StaticResource Font-cairo-light}" />
+                                  BorderThickness="0"  FontFamily="{StaticResource Font-cairo-light}"
+                                  Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
+                                  Padding="10,0,5,0"
+                                  LostFocus="Tb_validateEmptyLostFocus"/>
                 <Path Fill="#E81123" Stretch="Fill" Margin="0,15,15,15" x:Name="p_errorDateForm"
                                   HorizontalAlignment="Right"  Grid.Row="4"  Visibility="Collapsed"
                                   VerticalAlignment="Center" Width="15"  Height="15"
@@ -166,9 +169,9 @@
                     </Path.ToolTip>
                 </Path>
                 <!--#endregion-->
-                <Button Content="Next" Grid.Row="10" Grid.ColumnSpan="5"
-                       Margin="10,2.5" x:Name="btn_save" Click="Btn_save_Click"
-                          Background="#178DD2" BorderBrush="{x:Null}"  />
+                <Button Content="Next" Grid.Row="10"      Grid.ColumnSpan="5"    TabIndex="4"
+                        Margin="10,2.5" x:Name="btn_save" Click="Btn_save_Click"
+                        Background="#178DD2" BorderBrush="{x:Null}"  />
             </Grid>
 
         </Border>

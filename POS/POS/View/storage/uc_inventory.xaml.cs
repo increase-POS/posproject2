@@ -77,6 +77,32 @@ namespace POS.View.storage
             dg_items.Columns[3].Header = MainWindow.resourcemanager.GetString("trRealAmount");
             dg_items.Columns[4].Header = MainWindow.resourcemanager.GetString("trInventoryAmount");
             dg_items.Columns[5].Header = MainWindow.resourcemanager.GetString("trDestoryCount");
+
+            txt_inventoryDetails.Text = MainWindow.resourcemanager.GetString("trStocktakingDetails");
+            txt_titleDataGrid.Text = MainWindow.resourcemanager.GetString("trStocktakingItems");
+            btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
+            btn_archive.Content = MainWindow.resourcemanager.GetString("trArchive");
+
+            txt_newDraft.Text = MainWindow.resourcemanager.GetString("trNewDraft");
+            txt_drafts.Text = MainWindow.resourcemanager.GetString("trDraft");
+            txt_inventory.Text = MainWindow.resourcemanager.GetString("trInventory");
+            txt_printInvoice.Text = MainWindow.resourcemanager.GetString("trPrint");
+            txt_preview.Text = MainWindow.resourcemanager.GetString("trPreview");
+            txt_invoiceImages.Text = MainWindow.resourcemanager.GetString("trImages");
+
+        }
+        private async void refreshDocCount(int inventoryId)
+        {
+            DocImage doc = new DocImage();
+            int docCount = await doc.GetDocCount("Inventory", inventoryId);
+
+            if (docCount > 9)
+            {
+                docCount = 9;
+                md_docImage.Badge = "+" + docCount.ToString();
+            }
+            else
+                md_docImage.Badge = docCount.ToString();
         }
         private async Task fillInventoryDetails()
         {
@@ -162,10 +188,10 @@ namespace POS.View.storage
         private async Task clearInventory()
         {
             _InventoryType = "d";
-            //string num = await inventory.generateInvNumber("in", MainWindow.posID.Value);
             inventory = new Inventory();
             txt_inventoryDate.Text = "";
             txt_inventoryNum.Text = "";
+            md_docImage.Badge = "";
             txt_titleDataGrid.Text = MainWindow.resourcemanager.GetString("trInventoryDraft");
 
             inputEditable();
@@ -233,6 +259,7 @@ namespace POS.View.storage
             {
                 txt_titleDataGrid.Text = MainWindow.resourcemanager.GetString("trInventoryDraft"); 
                 _InventoryType = "d";
+                refreshDocCount(inventory.inventoryId);
                 await fillInventoryDetails();
             }
         }
@@ -265,6 +292,7 @@ namespace POS.View.storage
             {
                 txt_titleDataGrid.Text = MainWindow.resourcemanager.GetString("trStocktaking");
                 _InventoryType = "n";
+                refreshDocCount(inventory.inventoryId);
                 await fillInventoryDetails();
             }
         }
@@ -322,7 +350,29 @@ namespace POS.View.storage
 
         private void Btn_invoiceImage_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                if (inventory != null && inventory.inventoryId != 0)
+                {
+                    Window.GetWindow(this).Opacity = 0.2;
 
+                    wd_uploadImage w = new wd_uploadImage();
+
+                    w.tableName = "Inventory";
+                    w.tableId = inventory.inventoryId;
+                    w.docNum = inventory.num;
+                    w.ShowDialog();
+                    refreshDocCount(inventory.inventoryId);
+                    Window.GetWindow(this).Opacity = 1;
+                }
+                else
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trChooseInvoiceToolTip"), animation: ToasterAnimation.FadeIn);
+
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex);
+            }
         }
     }
 }

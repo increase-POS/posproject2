@@ -79,36 +79,41 @@ namespace POS.View
         }
         public UC_vendors()
         {
-            InitializeComponent();
-            if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1440)
+            try
             {
-                txt_deleteButton.Visibility = Visibility.Visible;
-                txt_addButton.Visibility = Visibility.Visible;
-                txt_updateButton.Visibility = Visibility.Visible;
-                txt_add_Icon.Visibility = Visibility.Visible;
-                txt_update_Icon.Visibility = Visibility.Visible;
-                txt_delete_Icon.Visibility = Visibility.Visible;
-            }
-            else if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1360)
-            {
-                txt_add_Icon.Visibility = Visibility.Collapsed;
-                txt_update_Icon.Visibility = Visibility.Collapsed;
-                txt_delete_Icon.Visibility = Visibility.Collapsed;
-                txt_deleteButton.Visibility = Visibility.Visible;
-                txt_addButton.Visibility = Visibility.Visible;
-                txt_updateButton.Visibility = Visibility.Visible;
+                InitializeComponent();
+                if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1440)
+                {
+                    txt_deleteButton.Visibility = Visibility.Visible;
+                    txt_addButton.Visibility = Visibility.Visible;
+                    txt_updateButton.Visibility = Visibility.Visible;
+                    txt_add_Icon.Visibility = Visibility.Visible;
+                    txt_update_Icon.Visibility = Visibility.Visible;
+                    txt_delete_Icon.Visibility = Visibility.Visible;
+                }
+                else if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1360)
+                {
+                    txt_add_Icon.Visibility = Visibility.Collapsed;
+                    txt_update_Icon.Visibility = Visibility.Collapsed;
+                    txt_delete_Icon.Visibility = Visibility.Collapsed;
+                    txt_deleteButton.Visibility = Visibility.Visible;
+                    txt_addButton.Visibility = Visibility.Visible;
+                    txt_updateButton.Visibility = Visibility.Visible;
 
-            }
-            else
-            {
-                txt_deleteButton.Visibility = Visibility.Collapsed;
-                txt_addButton.Visibility = Visibility.Collapsed;
-                txt_updateButton.Visibility = Visibility.Collapsed;
-                txt_add_Icon.Visibility = Visibility.Visible;
-                txt_update_Icon.Visibility = Visibility.Visible;
-                txt_delete_Icon.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    txt_deleteButton.Visibility = Visibility.Collapsed;
+                    txt_addButton.Visibility = Visibility.Collapsed;
+                    txt_updateButton.Visibility = Visibility.Collapsed;
+                    txt_add_Icon.Visibility = Visibility.Visible;
+                    txt_update_Icon.Visibility = Visibility.Visible;
+                    txt_delete_Icon.Visibility = Visibility.Visible;
 
+                }
             }
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
         }
         //area code methods
         async Task<IEnumerable<CountryCode>> RefreshCountry()
@@ -118,7 +123,6 @@ namespace POS.View
         }
         private async void fillCountries()
         {
-
             if (countrynum is null)
                 await RefreshCountry();
 
@@ -149,8 +153,6 @@ namespace POS.View
         {
             if (citynum is null)
                 await RefreshCity();
-
-
         }
 
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
@@ -165,7 +167,6 @@ namespace POS.View
             txt_vendor.Text = MainWindow.resourcemanager.GetString("trVendor");
 
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
-            //       MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_search, MainWindow.resourcemanager.GetString("trPamentMethodHint"));
             txt_baseInformation.Text = MainWindow.resourcemanager.GetString("trBaseInformation");
 
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_code, MainWindow.resourcemanager.GetString("trCodeHint"));
@@ -173,7 +174,6 @@ namespace POS.View
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_address, MainWindow.resourcemanager.GetString("trAdressHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_company, MainWindow.resourcemanager.GetString("trCompanyHint"));
             txt_contactInformation.Text = MainWindow.resourcemanager.GetString("trContactInformation");
-            //          MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_areaMobile, MainWindow.resourcemanager.GetString("trAreaHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_mobile, MainWindow.resourcemanager.GetString("trMobileHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_phone, MainWindow.resourcemanager.GetString("trPhoneHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_email, MainWindow.resourcemanager.GetString("trEmailHint"));
@@ -211,330 +211,344 @@ namespace POS.View
 
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
         {//clear
-            //SectionData.genRandomCode("v");
-            //tb_code.Text = SectionData.code;
+            try
+            {
+                agent.agentId = 0;
 
-            agent.agentId = 0;
+                tb_code.Text = "";
+                tb_address.Clear();
+                tb_fax.Clear();
+                tb_company.Clear();
+                tb_email.Clear();
+                tb_name.Clear();
+                tb_notes.Clear();
+                tb_mobile.Clear();
+                tb_phone.Clear();
+                cb_areaMobile.SelectedIndex = 8;
+                cb_areaPhone.SelectedIndex = 8;
+                cb_areaFax.SelectedIndex = 8;
+                //clear img
+                Uri resourceUri = new Uri("pic/no-image-icon-125x125.png", UriKind.Relative);
+                StreamResourceInfo streamInfo = Application.GetResourceStream(resourceUri);
+                BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
+                brush.ImageSource = temp;
+                img_vendor.Background = brush;
 
-            tb_code.Text = "";
-            tb_address.Clear();
-            tb_fax.Clear();
-            tb_company.Clear();
-            tb_email.Clear();
-            tb_name.Clear();
-            tb_notes.Clear();
-            tb_mobile.Clear();
-            tb_phone.Clear();
-            cb_areaMobile.SelectedIndex = 8;
-            cb_areaPhone.SelectedIndex = 8;
-            cb_areaFax.SelectedIndex = 8;
-            //clear img
-            Uri resourceUri = new Uri("pic/no-image-icon-125x125.png", UriKind.Relative);
-            StreamResourceInfo streamInfo = Application.GetResourceStream(resourceUri);
-            BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
-            brush.ImageSource = temp;
-            img_vendor.Background = brush;
+                p_errorName.Visibility = Visibility.Collapsed;
+                p_errorEmail.Visibility = Visibility.Collapsed;
+                p_errorMobile.Visibility = Visibility.Collapsed;
 
-            p_errorName.Visibility = Visibility.Collapsed;
-            p_errorEmail.Visibility = Visibility.Collapsed;
-            p_errorMobile.Visibility = Visibility.Collapsed;
-
-            var bc = new BrushConverter();
-            tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            tb_mobile.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            tb_email.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-
+                var bc = new BrushConverter();
+                tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                tb_mobile.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                tb_email.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            }
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
         }
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {//load
-            // for pagination onTop Always
-            btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
-            //CreateGridCardContainer();
-            catigoriesAndItemsView.ucVendors = this;
-
-            #region translate
-            if (MainWindow.lang.Equals("en"))
+            try
             {
-                MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
-                grid_ucVendor.FlowDirection = FlowDirection.LeftToRight;
+                SectionData.StartAwait(grid_ucVendor);
+                // for pagination onTop Always
+                btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
+                //CreateGridCardContainer();
+                catigoriesAndItemsView.ucVendors = this;
+
+                #region translate
+                if (MainWindow.lang.Equals("en"))
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                    grid_ucVendor.FlowDirection = FlowDirection.LeftToRight;
+                }
+                else
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                    grid_ucVendor.FlowDirection = FlowDirection.RightToLeft;
+                }
+
+                translate();
+                #endregion
+
+                this.Dispatcher.Invoke(() =>
+                {
+                    Tb_search_TextChanged(null, null);
+                });
+
+                fillCountries();
+
+                fillCity();
+
+                Keyboard.Focus(tb_name);
+
+                //default img
+                Uri resourceUri = new Uri("pic/no-image-icon-125x125.png", UriKind.Relative);
+                StreamResourceInfo streamInfo = Application.GetResourceStream(resourceUri);
+                BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
+                brush.ImageSource = temp;
+                img_vendor.Background = brush;
+                SectionData.EndAwait(grid_ucVendor , this);
             }
-            else
+            catch(Exception ex)
             {
-                MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
-                grid_ucVendor.FlowDirection = FlowDirection.RightToLeft;
+                SectionData.EndAwait(grid_ucVendor , this);
+                SectionData.ExceptionMessage(ex);
             }
-
-            translate();
-            #endregion
-
-            this.Dispatcher.Invoke(() =>
-            {
-                Tb_search_TextChanged(null, null);
-            });
-
-            fillCountries();
-
-            fillCity();
-
-            Keyboard.Focus(tb_name);
-
-            //SectionData.genRandomCode("v");
-            //tb_code.Text = SectionData.code;
-
-            //default img
-            Uri resourceUri = new Uri("pic/no-image-icon-125x125.png", UriKind.Relative);
-            StreamResourceInfo streamInfo = Application.GetResourceStream(resourceUri);
-            BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
-            brush.ImageSource = temp;
-            img_vendor.Background = brush;
-
         }
 
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//add
-            Button button = sender as Button;
-            
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects,"add") || SectionData.isAdminPermision())
+            try
+            {
+                SectionData.StartAwait(grid_ucVendor);
+                Button button = sender as Button;
+
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add") || SectionData.isAdminPermision())
                 {
-                agent.agentId = 0;
-                //chk empty name
-                SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
-                //chk empty mobile
-                SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
-                //validate email
-                SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
+                    agent.agentId = 0;
 
-                string phoneStr = "";
-                if (!tb_phone.Text.Equals("")) //phoneStr = cb_areaPhone.Text + cb_areaPhoneLocal.Text + tb_phone.Text;
-                    phoneStr = cb_areaPhone.Text + "-" + cb_areaPhoneLocal.Text + "-" + tb_phone.Text;
-                string faxStr = "";
-                if (!tb_fax.Text.Equals("")) //faxStr = cb_areaFax.Text + cb_areaFaxLocal.Text + tb_fax.Text;
-                    faxStr = cb_areaFax.Text + "-" + cb_areaFaxLocal.Text + "-" + tb_fax.Text;
-                bool emailError = false;
-                if (!tb_email.Text.Equals(""))
-                    if (!ValidatorExtensions.IsValid(tb_email.Text))
-                        emailError = true;
+                    #region validate
+                    //chk empty name
+                    SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
+                    //chk empty mobile
+                    SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
+                    //validate email
+                    SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
 
-                decimal maxDeserveValue = 0;
-                //if (!tb_upperLimit.Text.Equals(""))
-                //    maxDeserveValue = decimal.Parse(tb_upperLimit.Text);
+                    string phoneStr = "";
+                    if (!tb_phone.Text.Equals(""))
+                        phoneStr = cb_areaPhone.Text + "-" + cb_areaPhoneLocal.Text + "-" + tb_phone.Text;
+                    string faxStr = "";
+                    if (!tb_fax.Text.Equals(""))
+                        faxStr = cb_areaFax.Text + "-" + cb_areaFaxLocal.Text + "-" + tb_fax.Text;
+                    bool emailError = false;
+                    if (!tb_email.Text.Equals(""))
+                        if (!ValidatorExtensions.IsValid(tb_email.Text))
+                            emailError = true;
+                    #endregion
 
-                if ((!tb_name.Text.Equals("")) && (!tb_mobile.Text.Equals("")))
-                {
-                    if (emailError)
-                        //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trErrorEmailToolTip"));
-                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorEmailToolTip"), animation: ToasterAnimation.FadeIn);
-                    else
+                    decimal maxDeserveValue = 0;
+
+                    if ((!tb_name.Text.Equals("")) && (!tb_mobile.Text.Equals("")))
                     {
-                        //SectionData.genRandomCode("v");
-                        //tb_code.Text = SectionData.code;
-                        tb_code.Text = await agentModel.generateCodeNumber("v");
-
-                        agent.name = tb_name.Text;
-                        agent.code = tb_code.Text;
-                        agent.company = tb_company.Text;
-                        agent.address = tb_address.Text;
-                        agent.email = tb_email.Text;
-                        agent.phone = phoneStr;
-                        agent.mobile = cb_areaMobile.Text + "-" + tb_mobile.Text;
-                        agent.image = "";
-                        agent.type = "v";
-                        agent.accType = "";
-                        agent.balance = 0;
-                        agent.createUserId = MainWindow.userID;
-                        agent.updateUserId = MainWindow.userID;
-                        agent.notes = tb_notes.Text;
-                        agent.isActive = 1;
-                        agent.fax = faxStr;
-                        agent.maxDeserve = maxDeserveValue;
-
-                        string s = await agentModel.saveAgent(agent);
-
-                        if (!s.Equals("0"))   //{SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd")); Btn_clear_Click(null, null);}  
+                        if (emailError)
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorEmailToolTip"), animation: ToasterAnimation.FadeIn);
+                        else
                         {
-                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
-                            Btn_clear_Click(null, null);
-                        }
-                        else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                            tb_code.Text = await agentModel.generateCodeNumber("v");
 
-                        if (isImgPressed)
-                        {
-                            int agentId = int.Parse(s);
-                            string b = await agentModel.uploadImage(imgFileName, Md5Encription.MD5Hash("Inc-m" + agentId.ToString()), agentId);
-                            agent.image = b;
-                            isImgPressed = false;
-                            if (!b.Equals(""))
+                            agent.name = tb_name.Text;
+                            agent.code = tb_code.Text;
+                            agent.company = tb_company.Text;
+                            agent.address = tb_address.Text;
+                            agent.email = tb_email.Text;
+                            agent.phone = phoneStr;
+                            agent.mobile = cb_areaMobile.Text + "-" + tb_mobile.Text;
+                            agent.image = "";
+                            agent.type = "v";
+                            agent.accType = "";
+                            agent.balance = 0;
+                            agent.createUserId = MainWindow.userID;
+                            agent.updateUserId = MainWindow.userID;
+                            agent.notes = tb_notes.Text;
+                            agent.isActive = 1;
+                            agent.fax = faxStr;
+                            agent.maxDeserve = maxDeserveValue;
+
+                            string s = await agentModel.saveAgent(agent);
+
+                            if (!s.Equals("0"))
                             {
-                                // brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
-                                //img_vendor.Background = brush;
-                                //getImg();
+                                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                                Btn_clear_Click(null, null);
                             }
                             else
+                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+                            if (isImgPressed)
                             {
-                                MessageBox.Show("حدث خطأ في تحميل الصورة");
+                                int agentId = int.Parse(s);
+                                string b = await agentModel.uploadImage(imgFileName, Md5Encription.MD5Hash("Inc-m" + agentId.ToString()), agentId);
+                                agent.image = b;
+                                isImgPressed = false;
                             }
+                            await RefreshVendorsList();
+                            Tb_search_TextChanged(null, null);
                         }
-                        await RefreshVendorsList();
-                        Tb_search_TextChanged(null, null);
                     }
                 }
-            } else
-            Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                SectionData.EndAwait(grid_ucVendor, this);
+            }
+            catch(Exception ex)
+            {
+                SectionData.EndAwait(grid_ucVendor , this);
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
 
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
         {//update
-            Button button = sender as Button;
-            
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update") || SectionData.isAdminPermision())
-                {
-                //chk empty name
-                SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
-            //chk empty mobile
-            SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
-            //validate email
-            SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
-
-            string phoneStr = "";
-            if (!tb_phone.Text.Equals("")) phoneStr = cb_areaPhone.Text + "-" + cb_areaPhoneLocal.Text + "-" + tb_phone.Text;
-
-            string faxStr = "";
-            if (!tb_fax.Text.Equals("")) faxStr = cb_areaFax.Text + "-" + cb_areaFaxLocal.Text + "-" + tb_fax.Text;
-
-            bool emailError = false;
-            if (!tb_email.Text.Equals(""))
-                if (!ValidatorExtensions.IsValid(tb_email.Text))
-                    emailError = true;
-
-            decimal maxDeserveValue = 0;
-            //if (!tb_upperLimit.Text.Equals(""))
-            //    maxDeserveValue = decimal.Parse(tb_upperLimit.Text);
-
-            if ((!tb_name.Text.Equals("")) && (!tb_mobile.Text.Equals("")))
+            try
             {
-                if (emailError)
-                    //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trErrorEmailToolTip"));
-                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorEmailToolTip"), animation: ToasterAnimation.FadeIn);
-                else
+                SectionData.StartAwait(grid_ucVendor);
+                Button button = sender as Button;
+
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update") || SectionData.isAdminPermision())
                 {
-                    agent.name = tb_name.Text;
-                    agent.code = tb_code.Text;
-                    agent.company = tb_company.Text;
-                    agent.address = tb_address.Text;
-                    agent.email = tb_email.Text;
-                    agent.phone = phoneStr;
-                    agent.mobile = cb_areaMobile.Text + "-" + tb_mobile.Text;
-                    //agent.image = "";
-                    agent.updateUserId = MainWindow.userID;
-                    agent.notes = tb_notes.Text;
-                    agent.fax = faxStr;
-                    agent.maxDeserve = maxDeserveValue;
+                    #region validate
+                    //chk empty name
+                    SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
+                    //chk empty mobile
+                    SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
+                    //validate email
+                    SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
 
-                    string s = await agentModel.saveAgent(agent);
+                    string phoneStr = "";
+                    if (!tb_phone.Text.Equals("")) phoneStr = cb_areaPhone.Text + "-" + cb_areaPhoneLocal.Text + "-" + tb_phone.Text;
 
-                    if (!s.Equals("0")) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));
-                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
-                    else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    string faxStr = "";
+                    if (!tb_fax.Text.Equals("")) faxStr = cb_areaFax.Text + "-" + cb_areaFaxLocal.Text + "-" + tb_fax.Text;
 
-                    if (isImgPressed)
+                    bool emailError = false;
+                    if (!tb_email.Text.Equals(""))
+                        if (!ValidatorExtensions.IsValid(tb_email.Text))
+                            emailError = true;
+
+                    decimal maxDeserveValue = 0;
+                    #endregion
+
+                    if ((!tb_name.Text.Equals("")) && (!tb_mobile.Text.Equals("")))
                     {
-                        int agentId = int.Parse(s);
-                        string b = await agentModel.uploadImage(imgFileName, Md5Encription.MD5Hash("Inc-m" + agentId.ToString()), agentId);
-                        agent.image = b;
-                        isImgPressed = false;
-                        if (!b.Equals(""))
-                        {
-                            // brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
-                            //img_vendor.Background = brush;
-                            //getImg();
-                        }
+                        if (emailError)
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorEmailToolTip"), animation: ToasterAnimation.FadeIn);
                         else
                         {
-                            SectionData.clearImg(img_vendor);
-                            MessageBox.Show("حدث خطأ في تحميل الصورة");
+                            agent.name = tb_name.Text;
+                            agent.code = tb_code.Text;
+                            agent.company = tb_company.Text;
+                            agent.address = tb_address.Text;
+                            agent.email = tb_email.Text;
+                            agent.phone = phoneStr;
+                            agent.mobile = cb_areaMobile.Text + "-" + tb_mobile.Text;
+                            agent.updateUserId = MainWindow.userID;
+                            agent.notes = tb_notes.Text;
+                            agent.fax = faxStr;
+                            agent.maxDeserve = maxDeserveValue;
+
+                            string s = await agentModel.saveAgent(agent);
+
+                            if (!s.Equals("0"))
+                                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
+                            else
+                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+                            if (isImgPressed)
+                            {
+                                int agentId = int.Parse(s);
+                                string b = await agentModel.uploadImage(imgFileName, Md5Encription.MD5Hash("Inc-m" + agentId.ToString()), agentId);
+                                agent.image = b;
+                                isImgPressed = false;
+                                if (!b.Equals(""))
+                                {
+                                }
+                                else
+                                {
+                                    SectionData.clearImg(img_vendor);
+                                }
+                            }
+
+                            SectionData.getMobile(agent.mobile, cb_areaMobile, tb_mobile);
+
+                            SectionData.getPhone(agent.phone, cb_areaPhone, cb_areaPhoneLocal, tb_phone);
+
+                            SectionData.getPhone(agent.fax, cb_areaFax, cb_areaFaxLocal, tb_fax);
+
+                            await RefreshVendorsList();
+                            Tb_search_TextChanged(null, null);
                         }
                     }
-
-                    SectionData.getMobile(agent.mobile, cb_areaMobile, tb_mobile);
-
-                    SectionData.getPhone(agent.phone, cb_areaPhone, cb_areaPhoneLocal, tb_phone);
-
-                    SectionData.getPhone(agent.fax, cb_areaFax, cb_areaFaxLocal, tb_fax);
-
-                    //dg_vendor.UnselectAll();
-                    ////Btn_clear_Click(null, null);
-                    //dg_vendor.SelectedIndex = index;
-                    await RefreshVendorsList();
-                    Tb_search_TextChanged(null, null);
                 }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                SectionData.EndAwait(grid_ucVendor, this);
             }
+            catch(Exception ex)
+            {
+                SectionData.EndAwait(grid_ucVendor , this);
+                SectionData.ExceptionMessage(ex);
             }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-
         }
 
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {//delete
-            Button button = sender as Button;
-            
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete") || SectionData.isAdminPermision())
-                {
-                if (agent.agentId != 0)
+            try
             {
-                if ((!agent.canDelete) && (agent.isActive == 0))
+                SectionData.StartAwait(grid_ucVendor);
+                Button button = sender as Button;
+
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete") || SectionData.isAdminPermision())
                 {
-                    #region
-                    Window.GetWindow(this).Opacity = 0.2;
-                    wd_acceptCancelPopup w = new wd_acceptCancelPopup();
-                    w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
-                    w.ShowDialog();
-                    Window.GetWindow(this).Opacity = 1;
-                    #endregion
-                    if (w.isOk)
-                        activate();
+                    if (agent.agentId != 0)
+                    {
+                        if ((!agent.canDelete) && (agent.isActive == 0))
+                        {
+                            #region
+                            Window.GetWindow(this).Opacity = 0.2;
+                            wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                            w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
+                            w.ShowDialog();
+                            Window.GetWindow(this).Opacity = 1;
+                            #endregion
+                            if (w.isOk)
+                                activate();
+                        }
+                        else
+                        {
+                            #region
+                            Window.GetWindow(this).Opacity = 0.2;
+                            wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                            if (agent.canDelete)
+                                w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDelete");
+                            if (!agent.canDelete)
+                                w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDeactivate");
+                            w.ShowDialog();
+                            Window.GetWindow(this).Opacity = 1;
+                            #endregion
+                            if (w.isOk)
+                            {
+                                string popupContent = "";
+                                if (agent.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
+                                if ((!agent.canDelete) && (agent.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
+
+                                bool b = await agentModel.deleteAgent(agent.agentId, agent.canDelete);
+
+                                if (b)
+                                    Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
+                                else
+                                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                            }
+                        }
+
+                        await RefreshVendorsList();
+                        Tb_search_TextChanged(null, null);
+                    }
+                    //clear textBoxs
+                    Btn_clear_Click(sender, e);
                 }
                 else
-                {
-                    #region
-                    Window.GetWindow(this).Opacity = 0.2;
-                    wd_acceptCancelPopup w = new wd_acceptCancelPopup();
-                    if (agent.canDelete)
-                        w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDelete");
-                    if (!agent.canDelete)
-                        w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDeactivate");
-                    w.ShowDialog();
-                    Window.GetWindow(this).Opacity = 1;
-                    #endregion
-                    if (w.isOk)
-                    {
-                        string popupContent = "";
-                        if (agent.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
-                        if ((!agent.canDelete) && (agent.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
-
-                        bool b = await agentModel.deleteAgent(agent.agentId, agent.canDelete);
-
-                        if (b) //SectionData.popUpResponse("", popupContent);
-                            Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
-                        else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-                    }
-                }
-
-                await RefreshVendorsList();
-                Tb_search_TextChanged(null, null);
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                SectionData.EndAwait(grid_ucVendor, this);
             }
-            //clear textBoxs
-            Btn_clear_Click(sender, e);
+            catch(Exception ex)
+            {
+                SectionData.EndAwait(grid_ucVendor , this);
+                SectionData.ExceptionMessage(ex);
             }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-
         }
 
         private async void activate()
@@ -543,48 +557,70 @@ namespace POS.View
 
             string s = await agentModel.saveAgent(agent);
 
-            if (s.Equals("true")) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopActive"));
+            if (s.Equals("true")) 
                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
-            else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+            else 
                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
             await RefreshVendorsList();
             Tb_search_TextChanged(null, null);
 
-
         }
 
         private void tb_name_TextChanged(object sender, TextChangedEventArgs e)
         {
-            SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
+            try
+            {
+                SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
+            }
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
         }
         private void Tb_email_LostFocus(object sender, RoutedEventArgs e)
         {
-            SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
+            try
+            {
+                SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
+            }
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
         }
-
-
 
         private void tb_mobile_LostFocus(object sender, RoutedEventArgs e)
         {
-            SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
+            try
+            {
+                SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
+            }
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
         }
 
         private void tb_mobile_TextChanged(object sender, TextChangedEventArgs e)
         {
-            SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
+            try
+            {
+                SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
+            }
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
         }
 
         private void tb_name_LostFocus(object sender, RoutedEventArgs e)
         {
-            SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
+            try
+            {
+                SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
+            }
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
         }
 
         async Task<IEnumerable<Agent>> RefreshVendorsList()
         {
-            MainWindow.mainWindow.StartAwait();
+            SectionData.StartAwait(grid_ucVendor);
             agents = await agentModel.GetAgentsAsync("v");
-            MainWindow.mainWindow.EndAwait();
+            SectionData.EndAwait(grid_ucVendor , this);
             return agents;
         }
         void RefreshVendorView()
@@ -611,12 +647,17 @@ namespace POS.View
 
         private void btn_vendorExportToExcel_Click(object sender, RoutedEventArgs e)
         {
-            this.Dispatcher.Invoke(() =>
+            try
             {
-                Thread t1 = new Thread(FN_ExportToExcel);
-                t1.SetApartmentState(ApartmentState.STA);
-                t1.Start();
-            });
+                this.Dispatcher.Invoke(() =>
+                {
+                    Thread t1 = new Thread(FN_ExportToExcel);
+                    t1.SetApartmentState(ApartmentState.STA);
+                    t1.Start();
+                });
+            }
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
         }
 
         void FN_ExportToExcel()
@@ -651,35 +692,56 @@ namespace POS.View
 
         private async void tgl_vendorIsActive_Checked(object sender, RoutedEventArgs e)
         {
-            if (agents is null)
-                await RefreshVendorsList();
-            tgl_vendorState = 1;
-            Tb_search_TextChanged(null, null);
+            try
+            {
+                SectionData.StartAwait(grid_ucVendor);
+                if (agents is null)
+                    await RefreshVendorsList();
+                tgl_vendorState = 1;
+                Tb_search_TextChanged(null, null);
+                SectionData.EndAwait(grid_ucVendor, this);
+            }
+            catch(Exception ex)
+            {
+                SectionData.EndAwait(grid_ucVendor , this);
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         private async void tgl_vendorIsActive_Unchecked(object sender, RoutedEventArgs e)
         {
-            if (agents is null)
-                await RefreshVendorsList();
-            tgl_vendorState = 0;
-            Tb_search_TextChanged(null, null);
+            try
+            {
+                SectionData.StartAwait(grid_ucVendor);
+                if (agents is null)
+                    await RefreshVendorsList();
+                tgl_vendorState = 0;
+                Tb_search_TextChanged(null, null);
+                SectionData.EndAwait(grid_ucVendor, this);
+            }
+            catch(Exception ex)
+            {
+                SectionData.EndAwait(grid_ucVendor , this);
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
 
         private void tb_search_GotFocus(object sender, RoutedEventArgs e)
         {
-            var bc = new BrushConverter();
+            try
+            {
+                var bc = new BrushConverter();
 
-            p_errorName.Visibility = Visibility.Collapsed;
-            tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                p_errorName.Visibility = Visibility.Collapsed;
+                tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            }
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
         }
 
         private void UserControl_LostFocus(object sender, RoutedEventArgs e)
         {
-            //var bc = new BrushConverter();
-
-            //p_errorName.Visibility = Visibility.Collapsed;
-            //tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
         }
 
         private void tb_email_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -689,93 +751,114 @@ namespace POS.View
 
         private void Cb_areaPhone_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
-            if (firstchange == true)
+            try
             {
-                if (cb_areaPhone.SelectedValue != null)
+                if (firstchange == true)
                 {
-                    if (cb_areaPhone.SelectedIndex >= 0)
-                        countryid = int.Parse(cb_areaPhone.SelectedValue.ToString());
-
-                    citynumofcountry = citynum.Where(b => b.countryId == countryid).OrderBy(b => b.cityCode).ToList();
-
-                    cb_areaPhoneLocal.ItemsSource = citynumofcountry;
-                    cb_areaPhoneLocal.SelectedValuePath = "cityId";
-                    cb_areaPhoneLocal.DisplayMemberPath = "cityCode";
-                    if (citynumofcountry.Count() > 0)
+                    if (cb_areaPhone.SelectedValue != null)
                     {
+                        if (cb_areaPhone.SelectedIndex >= 0)
+                            countryid = int.Parse(cb_areaPhone.SelectedValue.ToString());
 
-                        cb_areaPhoneLocal.Visibility = Visibility.Visible;
-                    }
-                    else
-                    {
-                        cb_areaPhoneLocal.Visibility = Visibility.Collapsed;
-                    }
+                        citynumofcountry = citynum.Where(b => b.countryId == countryid).OrderBy(b => b.cityCode).ToList();
 
+                        cb_areaPhoneLocal.ItemsSource = citynumofcountry;
+                        cb_areaPhoneLocal.SelectedValuePath = "cityId";
+                        cb_areaPhoneLocal.DisplayMemberPath = "cityCode";
+                        if (citynumofcountry.Count() > 0)
+                        {
+
+                            cb_areaPhoneLocal.Visibility = Visibility.Visible;
+                        }
+                        else
+                        {
+                            cb_areaPhoneLocal.Visibility = Visibility.Collapsed;
+                        }
+
+                    }
+                }
+                else
+                {
+                    firstchange = true;
                 }
             }
-            else
-            {
-                firstchange = true;
-            }
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
         }
 
         private void Cb_areaFax_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (firstchangefax == true)
+            try
             {
-                if (cb_areaFax.SelectedValue != null)
+                if (firstchangefax == true)
                 {
-                    if (cb_areaFax.SelectedIndex >= 0)
-                        countryid = int.Parse(cb_areaFax.SelectedValue.ToString());
-
-                    citynumofcountry = citynum.Where(b => b.countryId == countryid).OrderBy(b => b.cityCode).ToList();
-
-                    cb_areaFaxLocal.ItemsSource = citynumofcountry;
-                    cb_areaFaxLocal.SelectedValuePath = "cityId";
-                    cb_areaFaxLocal.DisplayMemberPath = "cityCode";
-                    if (citynumofcountry.Count() > 0)
+                    if (cb_areaFax.SelectedValue != null)
                     {
+                        if (cb_areaFax.SelectedIndex >= 0)
+                            countryid = int.Parse(cb_areaFax.SelectedValue.ToString());
 
-                        cb_areaFaxLocal.Visibility = Visibility.Visible;
-                    }
-                    else
-                    {
-                        cb_areaFaxLocal.Visibility = Visibility.Collapsed;
-                    }
+                        citynumofcountry = citynum.Where(b => b.countryId == countryid).OrderBy(b => b.cityCode).ToList();
 
+                        cb_areaFaxLocal.ItemsSource = citynumofcountry;
+                        cb_areaFaxLocal.SelectedValuePath = "cityId";
+                        cb_areaFaxLocal.DisplayMemberPath = "cityCode";
+                        if (citynumofcountry.Count() > 0)
+                        {
+
+                            cb_areaFaxLocal.Visibility = Visibility.Visible;
+                        }
+                        else
+                        {
+                            cb_areaFaxLocal.Visibility = Visibility.Collapsed;
+                        }
+
+                    }
+                }
+                else
+                {
+                    firstchangefax = true;
                 }
             }
-            else
-            {
-                firstchangefax = true;
-            }
-
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
         }
 
         private void Img_vendor_Click(object sender, RoutedEventArgs e)
         {//select image
-            isImgPressed = true;
-            openFileDialog.Filter = "Images|*.png;*.jpg;*.bmp;*.jpeg;*.jfif";
-            if (openFileDialog.ShowDialog() == true)
+            try
             {
-                brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
-                img_vendor.Background = brush;
-                imgFileName = openFileDialog.FileName;
+                isImgPressed = true;
+                openFileDialog.Filter = "Images|*.png;*.jpg;*.bmp;*.jpeg;*.jfif";
+                if (openFileDialog.ShowDialog() == true)
+                {
+                    brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
+                    img_vendor.Background = brush;
+                    imgFileName = openFileDialog.FileName;
+                }
             }
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
         }
 
         private async void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
-            
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
+            try
+            {
+                SectionData.StartAwait(grid_ucVendor);
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
                 {
-                await RefreshVendorsList();
-                Tb_search_TextChanged(null, null);
+                    await RefreshVendorsList();
+                    Tb_search_TextChanged(null, null);
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                SectionData.EndAwait(grid_ucVendor, this);
             }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-
+            catch(Exception ex)
+            {
+                SectionData.EndAwait(grid_ucVendor , this);
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         private async Task getImg()
@@ -810,104 +893,111 @@ namespace POS.View
                     }
                     else
                         SectionData.clearImg(img_vendor);
-
-
                 }
             }
-            catch { }
+            catch(Exception ex) { SectionData.ExceptionMessage(ex); }
         }
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {
-            Button button = sender as Button;
+            try
+            {
+                Button button = sender as Button;
 
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
-            {
-                this.Dispatcher.Invoke(() =>
-            {
-                Thread t1 = new Thread(FN_ExportToExcel);
-                t1.SetApartmentState(ApartmentState.STA);
-                t1.Start();
-            });
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
+                {
+                    this.Dispatcher.Invoke(() =>
+                {
+                    Thread t1 = new Thread(FN_ExportToExcel);
+                    t1.SetApartmentState(ApartmentState.STA);
+                    t1.Start();
+                });
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
             }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-
-            //string s = await agentModel.generateCodeNumber("v");
-            // MessageBox.Show(s);
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
 
         }
 
 
         private void Btn_print_Click(object sender, RoutedEventArgs e)
         {
-            Button button = sender as Button;
-            
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
-                {
-                List<ReportParameter> paramarr = new List<ReportParameter>();
-
-                string addpath;
-            bool isArabic = ReportCls.checkLang();
-            if (isArabic)
+            try
             {
-                addpath = @"\Reports\SectionData\Ar\ArVendorReport.rdlc";
+                Button button = sender as Button;
+
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
+                {
+                    List<ReportParameter> paramarr = new List<ReportParameter>();
+
+                    string addpath;
+                    bool isArabic = ReportCls.checkLang();
+                    if (isArabic)
+                    {
+                        addpath = @"\Reports\SectionData\Ar\ArVendorReport.rdlc";
+                    }
+                    else addpath = @"\Reports\SectionData\En\VendorReport.rdlc";
+                    string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+                    ReportCls.checkLang();
+
+                    clsReports.vendorReport(agentsQuery, rep, reppath);
+                    clsReports.setReportLanguage(paramarr);
+                    clsReports.Header(paramarr);
+
+                    rep.SetParameters(paramarr);
+                    rep.Refresh();
+                    LocalReportExtensions.PrintToPrinter(rep);
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
             }
-            else addpath = @"\Reports\SectionData\En\VendorReport.rdlc";
-            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-            ReportCls.checkLang();
-
-            clsReports.vendorReport(agentsQuery, rep, reppath);
-            clsReports.setReportLanguage(paramarr);
-            clsReports.Header(paramarr);
-
-            rep.SetParameters(paramarr);
-            rep.Refresh();
-            LocalReportExtensions.PrintToPrinter(rep);
-            }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
         }
 
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {
-            Button button = sender as Button;
-            
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
+            try
+            {
+                Button button = sender as Button;
+
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
                 {
-                List<ReportParameter> paramarr = new List<ReportParameter>();
+                    List<ReportParameter> paramarr = new List<ReportParameter>();
 
-                string addpath;
-            bool isArabic = ReportCls.checkLang();
-            if (isArabic)
-            {
-                addpath = @"\Reports\SectionData\Ar\ArVendorReport.rdlc";
+                    string addpath;
+                    bool isArabic = ReportCls.checkLang();
+                    if (isArabic)
+                    {
+                        addpath = @"\Reports\SectionData\Ar\ArVendorReport.rdlc";
+                    }
+                    else addpath = @"\Reports\SectionData\En\VendorReport.rdlc";
+                    string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+                    ReportCls.checkLang();
+
+                    clsReports.vendorReport(agentsQuery, rep, reppath);
+                    clsReports.setReportLanguage(paramarr);
+                    clsReports.Header(paramarr);
+
+                    rep.SetParameters(paramarr);
+
+                    rep.Refresh();
+
+                    saveFileDialog.Filter = "PDF|*.pdf;";
+                    if (saveFileDialog.ShowDialog() == true)
+                    {
+                        string filepath = saveFileDialog.FileName;
+                        LocalReportExtensions.ExportToPDF(rep, filepath);
+                    }
+
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
             }
-            else addpath = @"\Reports\SectionData\En\VendorReport.rdlc";
-            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-            ReportCls.checkLang();
-
-            clsReports.vendorReport(agentsQuery, rep, reppath);
-            clsReports.setReportLanguage(paramarr);
-            clsReports.Header(paramarr);
-
-            rep.SetParameters(paramarr);
-
-            rep.Refresh();
-
-            saveFileDialog.Filter = "PDF|*.pdf;";
-            //saveFileDialog.Filter = "WORD|*.doc;";
-            if (saveFileDialog.ShowDialog() == true)
-            {
-                string filepath = saveFileDialog.FileName;
-                LocalReportExtensions.ExportToPDF(rep, filepath);
-            }
-
-            }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
         }
 
         private void Tb_email_PreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -928,68 +1018,77 @@ namespace POS.View
         #region Get Id By Click  Y
         private async void DG_supplier_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//selection
-            p_errorName.Visibility = Visibility.Collapsed;
-            p_errorEmail.Visibility = Visibility.Collapsed;
-            p_errorMobile.Visibility = Visibility.Collapsed;
-            var bc = new BrushConverter();
-            tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            tb_fax.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            tb_email.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            tb_mobile.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-
-            if (dg_vendor.SelectedIndex != -1)
+            try
             {
-                agent = dg_vendor.SelectedItem as Agent;
-                this.DataContext = agent;
-            }
-            if (agent != null)
-            {
-                tb_code.Text = agent.code;
+                SectionData.StartAwait(grid_ucVendor);
+                p_errorName.Visibility = Visibility.Collapsed;
+                p_errorEmail.Visibility = Visibility.Collapsed;
+                p_errorMobile.Visibility = Visibility.Collapsed;
+                var bc = new BrushConverter();
+                tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                tb_fax.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                tb_email.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                tb_mobile.Background = (Brush)bc.ConvertFrom("#f8f8f8");
 
-                SectionData.getMobile(agent.mobile, cb_areaMobile, tb_mobile);
-
-                SectionData.getPhone(agent.phone, cb_areaPhone, cb_areaPhoneLocal, tb_phone);
-
-                SectionData.getPhone(agent.fax, cb_areaFax, cb_areaFaxLocal, tb_fax);
-
-                #region delete
-                if (agent.canDelete)
+                if (dg_vendor.SelectedIndex != -1)
                 {
-                    txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trDelete");
-                    txt_delete_Icon.Kind =
-                             MaterialDesignThemes.Wpf.PackIconKind.Delete;
-                    tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
-
+                    agent = dg_vendor.SelectedItem as Agent;
+                    this.DataContext = agent;
                 }
-
-                else
+                if (agent != null)
                 {
-                    if (agent.isActive == 0)
+                    tb_code.Text = agent.code;
+
+                    SectionData.getMobile(agent.mobile, cb_areaMobile, tb_mobile);
+
+                    SectionData.getPhone(agent.phone, cb_areaPhone, cb_areaPhoneLocal, tb_phone);
+
+                    SectionData.getPhone(agent.fax, cb_areaFax, cb_areaFaxLocal, tb_fax);
+
+                    #region delete
+                    if (agent.canDelete)
                     {
-                        txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trActive");
+                        txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trDelete");
                         txt_delete_Icon.Kind =
-                         MaterialDesignThemes.Wpf.PackIconKind.Check;
-                        tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trActive");
+                                 MaterialDesignThemes.Wpf.PackIconKind.Delete;
+                        tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
 
                     }
+
                     else
                     {
-                        txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trInActive");
-                        txt_delete_Icon.Kind =
-                             MaterialDesignThemes.Wpf.PackIconKind.Cancel;
-                        tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trInActive");
+                        if (agent.isActive == 0)
+                        {
+                            txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trActive");
+                            txt_delete_Icon.Kind =
+                             MaterialDesignThemes.Wpf.PackIconKind.Check;
+                            tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trActive");
+
+                        }
+                        else
+                        {
+                            txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trInActive");
+                            txt_delete_Icon.Kind =
+                                 MaterialDesignThemes.Wpf.PackIconKind.Cancel;
+                            tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trInActive");
+
+                        }
 
                     }
+                    #endregion
 
+                    await getImg();
+
+
+                    index = dg_vendor.SelectedIndex;
                 }
-                #endregion
-
-               await getImg();
-
-
-                index = dg_vendor.SelectedIndex;
+                SectionData.EndAwait(grid_ucVendor, this);
             }
-
+            catch(Exception ex)
+            {
+                SectionData.EndAwait(grid_ucVendor , this);
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
         public async void ChangeItemIdEvent(int userId)
@@ -1048,24 +1147,34 @@ namespace POS.View
         #region Switch Card/DataGrid Y
         private void Btn_itemsInCards_Click(object sender, RoutedEventArgs e)
         {
-            grid_datagrid.Visibility = Visibility.Collapsed;
-            grid_cards.Visibility = Visibility.Visible;
-            grid_pagination.Visibility = Visibility.Visible;
-            path_itemsInCards.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
-            path_itemsInGrid.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
+            try
+            {
+                grid_datagrid.Visibility = Visibility.Collapsed;
+                grid_cards.Visibility = Visibility.Visible;
+                grid_pagination.Visibility = Visibility.Visible;
+                path_itemsInCards.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+                path_itemsInGrid.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
 
-            Tb_search_TextChanged(null, null);
+                Tb_search_TextChanged(null, null);
+            }
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
         }
 
         private void Btn_itemsInGrid_Click(object sender, RoutedEventArgs e)
         {
-            grid_cards.Visibility = Visibility.Collapsed;
-            grid_pagination.Visibility = Visibility.Collapsed;
-            grid_datagrid.Visibility = Visibility.Visible;
-            path_itemsInGrid.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
-            path_itemsInCards.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
+            try
+            {
+                grid_cards.Visibility = Visibility.Collapsed;
+                grid_pagination.Visibility = Visibility.Collapsed;
+                grid_datagrid.Visibility = Visibility.Visible;
+                path_itemsInGrid.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+                path_itemsInCards.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
 
-            Tb_search_TextChanged(null, null);
+                Tb_search_TextChanged(null, null);
+            }
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
         }
         #endregion
         #region Search Y
@@ -1079,27 +1188,36 @@ namespace POS.View
         /// 
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
         {
-            
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
+            try
+            {
+                SectionData.StartAwait(grid_ucVendor);
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
                 {
-                var bc = new BrushConverter();
-            p_errorName.Visibility = Visibility.Collapsed;
-            tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            if (agents is null)
-                await RefreshVendorsList();
-            pageIndex = 1;
-            searchText = tb_search.Text.ToLower();
-            #region
-            agentsQuery = agents.Where(s => (s.code.ToLower().Contains(searchText) ||
-            s.name.ToLower().Contains(searchText) ||
-            s.company.ToLower().Contains(searchText) ||
-            s.mobile.ToLower().Contains(searchText)
-            ) && s.isActive == tgl_vendorState);
-            if (btns is null)
-                btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
-            RefrishItemsCard(pagination.refrishPagination(agentsQuery, pageIndex, btns));
-            #endregion
-            RefreshVendorView();
+                    var bc = new BrushConverter();
+                    p_errorName.Visibility = Visibility.Collapsed;
+                    tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                    if (agents is null)
+                        await RefreshVendorsList();
+                    pageIndex = 1;
+                    searchText = tb_search.Text.ToLower();
+                    #region
+                    agentsQuery = agents.Where(s => (s.code.ToLower().Contains(searchText) ||
+                    s.name.ToLower().Contains(searchText) ||
+                    s.company.ToLower().Contains(searchText) ||
+                    s.mobile.ToLower().Contains(searchText)
+                    ) && s.isActive == tgl_vendorState);
+                    if (btns is null)
+                        btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
+                    RefrishItemsCard(pagination.refrishPagination(agentsQuery, pageIndex, btns));
+                    #endregion
+                    RefreshVendorView();
+                }
+                SectionData.EndAwait(grid_ucVendor, this);
+            }
+            catch(Exception ex)
+            {
+                SectionData.EndAwait(grid_ucVendor , this);
+                SectionData.ExceptionMessage(ex);
             }
         }
 
@@ -1111,106 +1229,140 @@ namespace POS.View
 
         private void Tb_pageNumberSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
-
-            agentsQuery = agents.Where(x => x.isActive == tgl_vendorState);
-
-            if (tb_pageNumberSearch.Text.Equals(""))
+            try
             {
-                pageIndex = 1;
-            }
-            else if (((agentsQuery.Count() - 1) / 12) + 1 < int.Parse(tb_pageNumberSearch.Text))
-            {
-                pageIndex = ((agentsQuery.Count() - 1) / 12) + 1;
-            }
-            else
-            {
-                pageIndex = int.Parse(tb_pageNumberSearch.Text);
-            }
+                SectionData.StartAwait(grid_ucVendor);
+                agentsQuery = agents.Where(x => x.isActive == tgl_vendorState);
 
-            #region
-            agentsQuery = agents.Where(s => (s.code.Contains(searchText) ||
-            s.name.Contains(searchText) ||
-            s.company.Contains(searchText) ||
-            s.mobile.Contains(searchText)
-            ) && s.isActive == tgl_vendorState);
-            if (btns is null)
-                btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
-            RefrishItemsCard(pagination.refrishPagination(agentsQuery, pageIndex, btns));
-            #endregion
+                if (tb_pageNumberSearch.Text.Equals(""))
+                {
+                    pageIndex = 1;
+                }
+                else if (((agentsQuery.Count() - 1) / 12) + 1 < int.Parse(tb_pageNumberSearch.Text))
+                {
+                    pageIndex = ((agentsQuery.Count() - 1) / 12) + 1;
+                }
+                else
+                {
+                    pageIndex = int.Parse(tb_pageNumberSearch.Text);
+                }
 
+                #region
+                agentsQuery = agents.Where(s => (s.code.Contains(searchText) ||
+                s.name.Contains(searchText) ||
+                s.company.Contains(searchText) ||
+                s.mobile.Contains(searchText)
+                ) && s.isActive == tgl_vendorState);
+                if (btns is null)
+                    btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
+                RefrishItemsCard(pagination.refrishPagination(agentsQuery, pageIndex, btns));
+                #endregion
+
+                SectionData.EndAwait(grid_ucVendor, this);
+            }
+            catch(Exception ex)
+            {
+                SectionData.EndAwait(grid_ucVendor , this);
+                SectionData.ExceptionMessage(ex);
+            }
         }
 
 
         private void Btn_firstPage_Click(object sender, RoutedEventArgs e)
         {
-            pageIndex = 1;
-            #region
-            agentsQuery = agents.Where(s => (s.code.Contains(searchText) ||
-            s.name.Contains(searchText) ||
-            s.company.Contains(searchText) ||
-            s.mobile.Contains(searchText)
-            ) && s.isActive == tgl_vendorState);
-            if (btns is null)
-                btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
-            RefrishItemsCard(pagination.refrishPagination(agentsQuery, pageIndex, btns));
-            #endregion
+            try
+            {
+                pageIndex = 1;
+                #region
+                agentsQuery = agents.Where(s => (s.code.Contains(searchText) ||
+                s.name.Contains(searchText) ||
+                s.company.Contains(searchText) ||
+                s.mobile.Contains(searchText)
+                ) && s.isActive == tgl_vendorState);
+                if (btns is null)
+                    btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
+                RefrishItemsCard(pagination.refrishPagination(agentsQuery, pageIndex, btns));
+                #endregion
+            }
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
         }
         private void Btn_prevPage_Click(object sender, RoutedEventArgs e)
         {
-            pageIndex = int.Parse(btn_prevPage.Content.ToString());
-            #region
-            agentsQuery = agents.Where(s => (s.code.Contains(searchText) ||
-            s.name.Contains(searchText) ||
-            s.company.Contains(searchText) ||
-            s.mobile.Contains(searchText)
-            ) && s.isActive == tgl_vendorState);
-            if (btns is null)
-                btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
-            RefrishItemsCard(pagination.refrishPagination(agentsQuery, pageIndex, btns));
-            #endregion
+            try
+            {
+                pageIndex = int.Parse(btn_prevPage.Content.ToString());
+                #region
+                agentsQuery = agents.Where(s => (s.code.Contains(searchText) ||
+                s.name.Contains(searchText) ||
+                s.company.Contains(searchText) ||
+                s.mobile.Contains(searchText)
+                ) && s.isActive == tgl_vendorState);
+                if (btns is null)
+                    btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
+                RefrishItemsCard(pagination.refrishPagination(agentsQuery, pageIndex, btns));
+                #endregion
+            }
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
         }
         private void Btn_activePage_Click(object sender, RoutedEventArgs e)
         {
-            pageIndex = int.Parse(btn_activePage.Content.ToString());
-            #region
-            agentsQuery = agents.Where(s => (s.code.Contains(searchText) ||
-            s.name.Contains(searchText) ||
-            s.company.Contains(searchText) ||
-            s.mobile.Contains(searchText)
-            ) && s.isActive == tgl_vendorState);
-            if (btns is null)
-                btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
-            RefrishItemsCard(pagination.refrishPagination(agentsQuery, pageIndex, btns));
-            #endregion
+            try
+            {
+                pageIndex = int.Parse(btn_activePage.Content.ToString());
+                #region
+                agentsQuery = agents.Where(s => (s.code.Contains(searchText) ||
+                s.name.Contains(searchText) ||
+                s.company.Contains(searchText) ||
+                s.mobile.Contains(searchText)
+                ) && s.isActive == tgl_vendorState);
+                if (btns is null)
+                    btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
+                RefrishItemsCard(pagination.refrishPagination(agentsQuery, pageIndex, btns));
+                #endregion
+            }
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
         }
         private void Btn_nextPage_Click(object sender, RoutedEventArgs e)
         {
-            pageIndex = int.Parse(btn_nextPage.Content.ToString());
-            #region
-            agentsQuery = agents.Where(s => (s.code.Contains(searchText) ||
-            s.name.Contains(searchText) ||
-            s.company.Contains(searchText) ||
-            s.mobile.Contains(searchText)
-            ) && s.isActive == tgl_vendorState);
-            if (btns is null)
-                btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
-            RefrishItemsCard(pagination.refrishPagination(agentsQuery, pageIndex, btns));
-            #endregion
+            try
+            {
+                pageIndex = int.Parse(btn_nextPage.Content.ToString());
+                #region
+                agentsQuery = agents.Where(s => (s.code.Contains(searchText) ||
+                s.name.Contains(searchText) ||
+                s.company.Contains(searchText) ||
+                s.mobile.Contains(searchText)
+                ) && s.isActive == tgl_vendorState);
+                if (btns is null)
+                    btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
+                RefrishItemsCard(pagination.refrishPagination(agentsQuery, pageIndex, btns));
+                #endregion
+            }
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
         }
         private void Btn_lastPage_Click(object sender, RoutedEventArgs e)
         {
-            agentsQuery = agents.Where(x => x.isActive == tgl_vendorState);
-            pageIndex = ((agentsQuery.Count() - 1) / 12) + 1;
-            #region
-            agentsQuery = agents.Where(s => (s.code.Contains(searchText) ||
-            s.name.Contains(searchText) ||
-            s.company.Contains(searchText) ||
-            s.mobile.Contains(searchText)
-            ) && s.isActive == tgl_vendorState);
-            if (btns is null)
-                btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
-            RefrishItemsCard(pagination.refrishPagination(agentsQuery, pageIndex, btns));
-            #endregion
+            try
+            {
+                agentsQuery = agents.Where(x => x.isActive == tgl_vendorState);
+                pageIndex = ((agentsQuery.Count() - 1) / 12) + 1;
+                #region
+                agentsQuery = agents.Where(s => (s.code.Contains(searchText) ||
+                s.name.Contains(searchText) ||
+                s.company.Contains(searchText) ||
+                s.mobile.Contains(searchText)
+                ) && s.isActive == tgl_vendorState);
+                if (btns is null)
+                    btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
+                RefrishItemsCard(pagination.refrishPagination(agentsQuery, pageIndex, btns));
+                #endregion
+            }
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
         }
         #endregion
 
@@ -1218,31 +1370,33 @@ namespace POS.View
 
         private void Grid_containerCard_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            //if (e.PreviousSize.Height != 0)
-            //{
-            //    if (!(e.PreviousSize.Width -25 < e.NewSize.Width &&
-            //      e.NewSize.Width < e.PreviousSize.Width + 25))
-            //    {
-            RefrishItemsCard(pagination.refrishPagination(agentsQuery, pageIndex, btns));
-            //    }
-            //}
+            try
+            {
+                RefrishItemsCard(pagination.refrishPagination(agentsQuery, pageIndex, btns));
+            }
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
         }
 
         private void btn_pieChart_Click(object sender, RoutedEventArgs e)
         {
-            Button button = sender as Button;
-            
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
+            try
+            {
+                Button button = sender as Button;
+
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
                 {
 
-                Window.GetWindow(this).Opacity = 0.2;
-            win_lvc win = new win_lvc(agentsQuery, 1, false);
-            win.ShowDialog();
-            Window.GetWindow(this).Opacity = 1;
+                    Window.GetWindow(this).Opacity = 0.2;
+                    win_lvc win = new win_lvc(agentsQuery, 1, false);
+                    win.ShowDialog();
+                    Window.GetWindow(this).Opacity = 1;
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
             }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex); }
         }
     }
 }

@@ -121,7 +121,7 @@
                            Foreground="#999999" FontWeight="SemiBold"  FontSize="16" x:Name="txt_invoices"/>
                 <Border Grid.Row="3"  Margin="10"   BorderBrush="#999999" BorderThickness="1">
                     <DataGrid  x:Name="lst_allInvoices" Background="White" Visibility="Visible"
-                              IsReadOnly="False" CanUserAddRows="False"
+                              IsReadOnly="False" CanUserAddRows="False"  BeginningEdit="Grid_BeginningEdit" 
                               AutoGenerateColumns="False" ColumnWidth="SizeToHeader"
                               MouseDoubleClick="Lst_allInvoices_MouseDoubleClick" >
                         <DataGrid.Columns>
@@ -212,7 +212,7 @@
                            Foreground="#999999" FontWeight="SemiBold"  FontSize="16" x:Name="txt_selectedInvoices"/>
                 <Border  Margin="10" Grid.Row="3"  Grid.Column="4"  BorderBrush="#999999" BorderThickness="1"  >
                     <DataGrid    x:Name="lst_selectedInvoices"  Background="White" Visibility="Visible"
-                               IsReadOnly="False" CanUserAddRows="False"
+                               IsReadOnly="False" CanUserAddRows="False"  BeginningEdit="Grid_BeginningEdit" 
                                AutoGenerateColumns="False"  ColumnWidth="SizeToHeader"
                                MouseDoubleClick="Lst_selectedInvoices_MouseDoubleClick">
                         <DataGrid.Columns>

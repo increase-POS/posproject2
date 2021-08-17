@@ -2539,50 +2539,7 @@
 
             <!--Search-->
             <!--#region -->
-            <!--<Border Background="White" CornerRadius="7" Margin="5,0,5,0">
-                <DockPanel LastChildFill="False"  >
-                
-                    <Border  >
-                        <TabControl  SelectionChanged="TabControl_SelectionChanged"
-                        >
-                           
-                          
-                            
-
-
-                                
-                            <TabItem x:Name="ti_storage" >
-                              
-                                
-                            </TabItem>
-                            <TabItem x:Name="ti_purchases"  >
-                              
-                                <TextBlock Text="1" />
-                            </TabItem>
-                            <TabItem x:Name="ti_sales"  >
-                             
-                                <TextBlock Text="1" />
-                            </TabItem>
-                            <TabItem x:Name="ti_accounting" >
-                              
-                                <TextBlock Text="1" />
-                            </TabItem>
-                            <TabItem x:Name="ti_reports"  >
-                            
-                                <TextBlock Text="1" />
-                            </TabItem>
-                            <TabItem x:Name="ti_sectionData"  >
-                              
-                                <TextBlock Text="1" />
-                            </TabItem>
-                            <TabItem x:Name="ti_settings"  >
-                              
-                                <TextBlock Text="1" />
-                            </TabItem>
-                        </TabControl>
-                    </Border>
-                </DockPanel>
-            </Border>-->
+     
             <Border Margin="5,10,5,0" Grid.Row="1"  Background="White" CornerRadius="7,7,0,0">
                 <DataGrid  Margin="5,5,5,17.5"  Grid.Row="5"  IsReadOnly="False"  Background="White"
                       materialDesign:DataGridAssist.CornerRadius="5" 

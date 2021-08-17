@@ -129,7 +129,7 @@
                     <DataGrid x:Name="dg_allItems"  Background="White"
                     Visibility="Visible" HeadersVisibility="None"
                          IsReadOnly="False" CanUserAddRows="False"
-                        AutoGenerateColumns="False" 
+                        AutoGenerateColumns="False"   BeginningEdit="Grid_BeginningEdit" 
                         ColumnWidth="SizeToHeader" MouseDoubleClick="Dg_allItems_MouseDoubleClick" SelectionChanged="Dg_allItems_SelectionChanged" >
                         <DataGrid.Columns>
                             <DataGridTextColumn  Width="*" IsReadOnly="True"  Header="Item" Binding="{Binding Path=itemName}"/>
@@ -219,7 +219,7 @@
                     <DataGrid x:Name="dg_selectedItems"  Background="White"
                     Visibility="Visible" HeadersVisibility="None" 
                          IsReadOnly="False" CanUserAddRows="False"
-                        AutoGenerateColumns="False" 
+                        AutoGenerateColumns="False"   BeginningEdit="Grid_BeginningEdit" 
                         ColumnWidth="SizeToHeader" MouseDoubleClick="Dg_selectedItems_MouseDoubleClick" SelectionChanged="Dg_selectedItems_SelectionChanged"  >
                         <DataGrid.Columns >
                             <DataGridTextColumn  Width="3*" IsReadOnly="True"  Header="Item" Binding="{Binding Path=notes}" />
