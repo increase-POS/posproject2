@@ -2823,3 +2823,5 @@ D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\wd_setupGeneralSetting.baml
 D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\wd_setupServer.baml
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_cashTransfer.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_cashTransfer.baml
+D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\wd_cashTransfer.g.cs
+D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\wd_cashTransfer.baml

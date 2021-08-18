@@ -2637,50 +2637,86 @@ namespace POS.View
             {
                 if (MainWindow.groupObject.HasPermissionAction(sendEmailPermission, MainWindow.groupObjects, "one"))
                 {
-                    SysEmails email = new SysEmails();
-                    EmailClass mailtosend = new EmailClass();
-                    email = await email.GetByBranchIdandSide((int)MainWindow.branchID, "mg");
-                    Agent toAgent = new Agent();
-                    toAgent = customers.Where(x => x.agentId == invoice.agentId).FirstOrDefault();
-                    //  int? itemcount = invoiceItems.Count();
-                    if (email.emailId == 0)
-                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoEmailForThisDept"), animation: ToasterAnimation.FadeIn);
+                    if (invoice.invType == "pd" || invoice.invType == "sd" || invoice.invType == "qd"
+                     || invoice.invType == "sbd" || invoice.invType == "pbd"
+                     || invoice.invType == "ord" || invoice.invType == "imd" || invoice.invType == "exd")
+                    {
+                        MessageBox.Show("can not send Draft Invoice");
+                    }
                     else
                     {
-                        if (invoice.invoiceId == 0)
-                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trThereIsNoOrderToSen"), animation: ToasterAnimation.FadeIn);
+                        SysEmails email = new SysEmails();
+                        EmailClass mailtosend = new EmailClass();
+                        email = await email.GetByBranchIdandSide((int)MainWindow.branchID, "mg");
+                        Agent toAgent = new Agent();
+                        toAgent = customers.Where(x => x.agentId == invoice.agentId).FirstOrDefault();
+                        if (toAgent == null)
+                        {
+                            //edit warning message to customer
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trTheVendorHasNoEmail"), animation: ToasterAnimation.FadeIn);
+
+                        }
                         else
                         {
-                            if (invoiceItems == null || invoiceItems.Count() == 0)
-                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trThereIsNoItemsToSend"), animation: ToasterAnimation.FadeIn);
+
+
+                            //  int? itemcount = invoiceItems.Count();
+                            if (email.emailId == 0)
+                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoEmailForThisDept"), animation: ToasterAnimation.FadeIn);
                             else
                             {
-                                if (toAgent.email.Trim() == "")
-                                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trTheVendorHasNoEmail"), animation: ToasterAnimation.FadeIn);
+                                if (invoice.invoiceId == 0)
+                                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trThereIsNoOrderToSen"), animation: ToasterAnimation.FadeIn);
                                 else
                                 {
-                                    SetValues setvmodel = new SetValues();
-
-                                    string pdfpath = await SavePurOrderpdf();
-                                    mailtosend.AddAttachTolist(pdfpath);
-                                    List<SetValues> setvlist = new List<SetValues>();
-                                    setvlist = await setvmodel.GetBySetName("pur_order_email_temp");
-
-                                    mailtosend = mailtosend.fillOrderTempData(invoice, invoiceItems, email, toAgent, setvlist);
-
-                                    string msg = mailtosend.Sendmail();
-                                    if (msg == "Failure sending mail.")
-                                    {
-                                        // msg = "No Internet connection";
-                                        //  MessageBox.Show("");
-                                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoInternetConnection"), animation: ToasterAnimation.FadeIn);
-                                    }
-                                    else if (msg == "mailsent")
-                                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trMailSent"), animation: ToasterAnimation.FadeIn);
+                                    if (invoiceItems == null || invoiceItems.Count() == 0)
+                                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trThereIsNoItemsToSend"), animation: ToasterAnimation.FadeIn);
                                     else
-                                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trMailNotSent"), animation: ToasterAnimation.FadeIn);
+                                    {
+
+                                        if (toAgent.email.Trim() == "")
+                                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trTheVendorHasNoEmail"), animation: ToasterAnimation.FadeIn);
+                                        else
+                                        {
+                                            SetValues setvmodel = new SetValues();
+
+                                            string pdfpath = await SavePurOrderpdf();
+                                            mailtosend.AddAttachTolist(pdfpath);
+                                            List<SetValues> setvlist = new List<SetValues>();
+                                            if (invoice.invType == "s")
+                                            {
+                                                setvlist = await setvmodel.GetBySetName("sale_email_temp");
+                                            }
+                                            else if (invoice.invType == "or")
+                                            {
+                                                setvlist = await setvmodel.GetBySetName("sale_order_email_temp");
+                                            }
+                                            else if (invoice.invType == "q")
+                                            {
+                                                setvlist = await setvmodel.GetBySetName("quotation_email_temp");
+                                            }
+                                            else
+                                            {
+                                                setvlist = await setvmodel.GetBySetName("sale_email_temp");
+                                            }
+                                            mailtosend = mailtosend.fillSaleTempData(invoice, invoiceItems, email, toAgent, setvlist);
+
+                                            string msg = "";
+                                             msg = mailtosend.Sendmail();// temp comment
+                                            if (msg == "Failure sending mail.")
+                                            {
+                                                // msg = "No Internet connection";
+                                                //  MessageBox.Show("");
+                                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoInternetConnection"), animation: ToasterAnimation.FadeIn);
+                                            }
+                                            else if (msg == "mailsent")
+                                                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trMailSent"), animation: ToasterAnimation.FadeIn);
+                                            else
+                                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trMailNotSent"), animation: ToasterAnimation.FadeIn);
 
 
+                                        }
+                                    }
                                 }
                             }
                         }
