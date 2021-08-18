@@ -272,6 +272,20 @@
     <Property Name="updateUserId" Type="int" />
     <Property Name="tableId" Type="int" />
   </EntityType>
+  <EntityType Name="error">
+    <Key>
+      <PropertyRef Name="errorId" />
+    </Key>
+    <Property Name="errorId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="num" Type="nvarchar" MaxLength="200" />
+    <Property Name="msg" Type="ntext" />
+    <Property Name="windowName" Type="ntext" />
+    <Property Name="sender" Type="ntext" />
+    <Property Name="posId" Type="int" />
+    <Property Name="branchId" Type="int" />
+    <Property Name="createDate" Type="datetime2" Precision="7" />
+    <Property Name="createUserId" Type="int" />
+  </EntityType>
   <EntityType Name="Expenses">
     <Key>
       <PropertyRef Name="exId" />
@@ -601,6 +615,35 @@
     <Property Name="createUserId" Type="int" />
     <Property Name="updateUserId" Type="int" />
     <Property Name="isActive" Type="tinyint" />
+  </EntityType>
+  <EntityType Name="notification">
+    <Key>
+      <PropertyRef Name="notId" />
+    </Key>
+    <Property Name="notId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="title" Type="nvarchar" MaxLength="500" />
+    <Property Name="ncontent" Type="nvarchar" MaxLength="1000" />
+    <Property Name="side" Type="nvarchar" MaxLength="10" />
+    <Property Name="msgType" Type="nvarchar" MaxLength="10" />
+    <Property Name="path" Type="nvarchar" MaxLength="500" />
+    <Property Name="createDate" Type="datetime2" Precision="7" />
+    <Property Name="updateDate" Type="datetime2" Precision="7" />
+    <Property Name="createUserId" Type="int" />
+    <Property Name="updateUserId" Type="int" />
+    <Property Name="isActive" Type="tinyint" />
+  </EntityType>
+  <EntityType Name="notificationUser">
+    <Key>
+      <PropertyRef Name="notUserId" />
+    </Key>
+    <Property Name="notUserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="notId" Type="int" />
+    <Property Name="userId" Type="int" />
+    <Property Name="isRead" Type="bit" Nullable="false" />
+    <Property Name="createDate" Type="datetime2" Precision="7" />
+    <Property Name="updateDate" Type="datetime2" Precision="7" />
+    <Property Name="createUserId" Type="int" />
+    <Property Name="updateUserId" Type="int" />
   </EntityType>
   <EntityType Name="objects">
     <Key>
@@ -1528,6 +1571,42 @@
       </Principal>
       <Dependent Role="docImages">
         <PropertyRef Name="updateUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_error_branches">
+    <End Role="branches" Type="Self.branches" Multiplicity="0..1" />
+    <End Role="error" Type="Self.error" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="branches">
+        <PropertyRef Name="branchId" />
+      </Principal>
+      <Dependent Role="error">
+        <PropertyRef Name="branchId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_error_pos">
+    <End Role="pos" Type="Self.pos" Multiplicity="0..1" />
+    <End Role="error" Type="Self.error" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="pos">
+        <PropertyRef Name="posId" />
+      </Principal>
+      <Dependent Role="error">
+        <PropertyRef Name="posId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_error_users">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="error" Type="Self.error" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="error">
+        <PropertyRef Name="createUserId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -2491,6 +2570,78 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_notification_users">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="notification" Type="Self.notification" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="notification">
+        <PropertyRef Name="updateUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_notification_users1">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="notification" Type="Self.notification" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="notification">
+        <PropertyRef Name="createUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_notificationUser_notification">
+    <End Role="notification" Type="Self.notification" Multiplicity="0..1" />
+    <End Role="notificationUser" Type="Self.notificationUser" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="notification">
+        <PropertyRef Name="notId" />
+      </Principal>
+      <Dependent Role="notificationUser">
+        <PropertyRef Name="notId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_notificationUser_users">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="notificationUser" Type="Self.notificationUser" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="notificationUser">
+        <PropertyRef Name="userId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_notificationUser_users1">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="notificationUser" Type="Self.notificationUser" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="notificationUser">
+        <PropertyRef Name="createUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_notificationUser_users2">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="notificationUser" Type="Self.notificationUser" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="notificationUser">
+        <PropertyRef Name="updateUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_objects_objects">
     <End Role="objects" Type="Self.objects" Multiplicity="0..1" />
     <End Role="objects1" Type="Self.objects" Multiplicity="*" />
@@ -3024,6 +3175,7 @@
     <EntitySet Name="coupons" EntityType="Self.coupons" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="couponsInvoices" EntityType="Self.couponsInvoices" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="docImages" EntityType="Self.docImages" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="error" EntityType="Self.error" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Expenses" EntityType="Self.Expenses" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="groupObject" EntityType="Self.groupObject" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="groups" EntityType="Self.groups" Schema="dbo" store:Type="Tables" />
@@ -3043,6 +3195,8 @@
     <EntitySet Name="medalAgent" EntityType="Self.medalAgent" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="medals" EntityType="Self.medals" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="memberships" EntityType="Self.memberships" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="notification" EntityType="Self.notification" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="notificationUser" EntityType="Self.notificationUser" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="objects" EntityType="Self.objects" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="offers" EntityType="Self.offers" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="packages" EntityType="Self.packages" Schema="dbo" store:Type="Tables" />
@@ -3264,6 +3418,18 @@
     <AssociationSet Name="FK_docImages_users1" Association="Self.FK_docImages_users1">
       <End Role="users" EntitySet="users" />
       <End Role="docImages" EntitySet="docImages" />
+    </AssociationSet>
+    <AssociationSet Name="FK_error_branches" Association="Self.FK_error_branches">
+      <End Role="branches" EntitySet="branches" />
+      <End Role="error" EntitySet="error" />
+    </AssociationSet>
+    <AssociationSet Name="FK_error_pos" Association="Self.FK_error_pos">
+      <End Role="pos" EntitySet="pos" />
+      <End Role="error" EntitySet="error" />
+    </AssociationSet>
+    <AssociationSet Name="FK_error_users" Association="Self.FK_error_users">
+      <End Role="users" EntitySet="users" />
+      <End Role="error" EntitySet="error" />
     </AssociationSet>
     <AssociationSet Name="FK_Expenses_users" Association="Self.FK_Expenses_users">
       <End Role="users" EntitySet="users" />
@@ -3584,6 +3750,30 @@
     <AssociationSet Name="FK_memberships_users1" Association="Self.FK_memberships_users1">
       <End Role="users" EntitySet="users" />
       <End Role="memberships" EntitySet="memberships" />
+    </AssociationSet>
+    <AssociationSet Name="FK_notification_users" Association="Self.FK_notification_users">
+      <End Role="users" EntitySet="users" />
+      <End Role="notification" EntitySet="notification" />
+    </AssociationSet>
+    <AssociationSet Name="FK_notification_users1" Association="Self.FK_notification_users1">
+      <End Role="users" EntitySet="users" />
+      <End Role="notification" EntitySet="notification" />
+    </AssociationSet>
+    <AssociationSet Name="FK_notificationUser_notification" Association="Self.FK_notificationUser_notification">
+      <End Role="notification" EntitySet="notification" />
+      <End Role="notificationUser" EntitySet="notificationUser" />
+    </AssociationSet>
+    <AssociationSet Name="FK_notificationUser_users" Association="Self.FK_notificationUser_users">
+      <End Role="users" EntitySet="users" />
+      <End Role="notificationUser" EntitySet="notificationUser" />
+    </AssociationSet>
+    <AssociationSet Name="FK_notificationUser_users1" Association="Self.FK_notificationUser_users1">
+      <End Role="users" EntitySet="users" />
+      <End Role="notificationUser" EntitySet="notificationUser" />
+    </AssociationSet>
+    <AssociationSet Name="FK_notificationUser_users2" Association="Self.FK_notificationUser_users2">
+      <End Role="users" EntitySet="users" />
+      <End Role="notificationUser" EntitySet="notificationUser" />
     </AssociationSet>
     <AssociationSet Name="FK_objects_objects" Association="Self.FK_objects_objects">
       <End Role="objects" EntitySet="objects" />

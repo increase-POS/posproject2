@@ -267,6 +267,7 @@
     <Compile Include="Controllers\ItemsUnitsController.cs" />
     <Compile Include="Controllers\MedalAgentController.cs" />
     <Compile Include="Controllers\MembershipsController.cs" />
+    <Compile Include="Controllers\notificationUserController.cs" />
     <Compile Include="Controllers\ObjectsController.cs" />
     <Compile Include="Controllers\PackageController.cs" />
     <Compile Include="Controllers\PointsController.cs" />
@@ -301,6 +302,9 @@
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>
     <Compile Include="docImages.cs">
+      <DependentUpon>PosModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="error.cs">
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Expenses.cs">
@@ -406,6 +410,12 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\itemsPropModel.cs" />
+    <Compile Include="notification.cs">
+      <DependentUpon>PosModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="notificationUser.cs">
+      <DependentUpon>PosModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="objects.cs">
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>

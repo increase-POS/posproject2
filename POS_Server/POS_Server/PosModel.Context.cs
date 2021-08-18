@@ -82,5 +82,8 @@ namespace POS_Server
         public virtual DbSet<users> users { get; set; }
         public virtual DbSet<userSetValues> userSetValues { get; set; }
         public virtual DbSet<usersLogs> usersLogs { get; set; }
+        public virtual DbSet<error> error { get; set; }
+        public virtual DbSet<notification> notification { get; set; }
+        public virtual DbSet<notificationUser> notificationUser { get; set; }
     }
 }

@@ -68,6 +68,60 @@ namespace POS_Server.Controllers
             return NotFound();
         }
         [HttpGet]
+        [Route("GetById")]
+        public IHttpActionResult GetById(int itemUnitId)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var itemUnitsList = (from IU in entity.itemsUnits
+                                         where (IU.itemUnitId == itemUnitId )
+                                         join u in entity.units on IU.unitId equals u.unitId into lj
+                                         from v in lj.DefaultIfEmpty()
+                                         join u1 in entity.units on IU.subUnitId equals u1.unitId into tj
+                                         from v1 in tj.DefaultIfEmpty()
+                                         select new ItemUnitModel()
+                                         {
+                                             itemUnitId = IU.itemUnitId,
+                                             unitId = IU.unitId,
+                                             itemId = IU.itemId,
+                                             createDate = IU.createDate,
+                                             createUserId = IU.createUserId,
+                                             defaultPurchase = IU.defaultPurchase,
+                                             defaultSale = IU.defaultSale,
+                                             price = IU.price,
+                                             subUnitId = IU.subUnitId,
+
+                                             unitValue = IU.unitValue,
+                                             barcode = IU.barcode,
+                                             updateDate = IU.updateDate,
+                                             updateUserId = IU.updateUserId,
+                                           storageCostId =IU.storageCostId,
+                                           isActive = IU.isActive,
+    })
+                                         .FirstOrDefault();
+
+                    if (itemUnitsList == null)
+                        return NotFound();
+                    else
+                        return Ok(itemUnitsList);
+                }
+            }
+            //else
+            return NotFound();
+        }
+        [HttpGet]
         [Route("GetAll")]
         public IHttpActionResult GetAll(int itemId)
         {

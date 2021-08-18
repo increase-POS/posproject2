@@ -235,6 +235,18 @@
         <AssociationConnector Association="incposdbModel.FK_userSetValues_users1" ManuallyRouted="false" />
         <AssociationConnector Association="incposdbModel.FK_userSetValues_users2" ManuallyRouted="false" />
         <AssociationConnector Association="incposdbModel.FK_usersLogs_users" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="incposdbModel.error" Width="1.5" PointX="18.5" PointY="86.25" />
+        <EntityTypeShape EntityType="incposdbModel.notification" Width="1.5" PointX="3" PointY="99.375" />
+        <EntityTypeShape EntityType="incposdbModel.notificationUser" Width="1.5" PointX="20.25" PointY="95.75" />
+        <AssociationConnector Association="incposdbModel.FK_error_branches" />
+        <AssociationConnector Association="incposdbModel.FK_error_pos" />
+        <AssociationConnector Association="incposdbModel.FK_error_users" />
+        <AssociationConnector Association="incposdbModel.FK_notification_users" />
+        <AssociationConnector Association="incposdbModel.FK_notification_users1" />
+        <AssociationConnector Association="incposdbModel.FK_notificationUser_notification" />
+        <AssociationConnector Association="incposdbModel.FK_notificationUser_users" />
+        <AssociationConnector Association="incposdbModel.FK_notificationUser_users1" />
+        <AssociationConnector Association="incposdbModel.FK_notificationUser_users2" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
