@@ -147,7 +147,6 @@ namespace POS.View.purchases
          
         private async void fillDgPos(CheckBox chkInvoice,CheckBox chkReturn,CheckBox chkDraft,ComboBox comboBox,CheckBox all,DatePicker startDate,DatePicker endDate,TimePicker startTime, TimePicker endTime,TextBox search)
         {
-            SectionData.StartAwait(grid_statistic);
             fillDatesBranches(startDate,endDate,startTime,endTime);
             var temp = cb_branches.SelectedItem as Branch;
             Branches = await statisticModel.GetinvInBranch();
@@ -159,7 +158,6 @@ namespace POS.View.purchases
 || x.discountType.Contains(search.Text) || x.branchName.Contains(search.Text)) : true))
 ;
             dgInvoice.ItemsSource = dgData;
-            SectionData.EndAwait(grid_statistic, this);
         }
         private void fillDatesBranches(DatePicker startDate,DatePicker endDate,TimePicker startTime,TimePicker endTime)
         {
@@ -190,7 +188,6 @@ namespace POS.View.purchases
 
         private async void fillPieChartBranches()
         {
-            SectionData.StartAwait(grid_statistic);
             //fillDatesBranches();
             var temp = cb_branches.SelectedItem as Branch;
             Branches = await statisticModel.GetinvInBranch();
@@ -224,12 +221,10 @@ namespace POS.View.purchases
               );
             }
             chart1.Series = piechartData;
-            SectionData.EndAwait(grid_statistic, this);
         }
 
         private async void fillRowChart()
         {
-            SectionData.StartAwait(grid_statistic);
             //fillDatesBranches();
             var temp = cb_branches.SelectedItem as Branch;
             Branches = await statisticModel.GetinvInBranch();
@@ -276,12 +271,10 @@ namespace POS.View.purchases
             DataContext = this;
             rowChart.Series = rowChartData;
 
-            SectionData.EndAwait(grid_statistic, this);
         }
 
         private async void fillColumnChart()
         {
-            SectionData.StartAwait(grid_statistic);
             //fillDatesBranches();
             var temp = cb_branches.SelectedItem as Branch;
             Branches = await statisticModel.GetinvInBranch();
@@ -338,7 +331,6 @@ namespace POS.View.purchases
             #endregion
             DataContext = this;
             cartesianChart.Series = columnChartData;
-            SectionData.EndAwait(grid_statistic, this);
         }
         #endregion
 

@@ -74,7 +74,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this);
             }
         }
         string searchText = "";
@@ -128,7 +128,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this, sender);
             }
         }
         List<int> ids = new List<int>();
@@ -164,7 +164,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private void Tb_name_TextChanged(object sender, TextChangedEventArgs e)
@@ -186,7 +186,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private void translate()
@@ -221,7 +221,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -249,7 +249,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private void validateEmptyValues()
@@ -260,6 +260,7 @@ namespace POS.View
         {//add
             try
             {
+
                 SectionData.StartAwait(grid_ucUnit);
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add") || SectionData.isAdminPermision())
                 {
@@ -306,7 +307,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
@@ -366,7 +367,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private async Task activate()
@@ -424,7 +425,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         void refreshUnitsGrid()
@@ -436,9 +437,7 @@ namespace POS.View
         }
         async Task<IEnumerable<Unit>> RefreshUnitsList()
         {
-            MainWindow.mainWindow.StartAwait();
             units = await unitModel.GetUnitsAsync();
-            MainWindow.mainWindow.EndAwait();
             return units;
         }
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
@@ -456,7 +455,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
@@ -474,7 +473,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private async void Tgl_isActive_Checked(object sender, RoutedEventArgs e)
@@ -490,7 +489,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private async void Tgl_isActive_Unchecked(object sender, RoutedEventArgs e)
@@ -506,7 +505,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
@@ -527,7 +526,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         void FN_ExportToExcel()

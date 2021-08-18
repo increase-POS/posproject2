@@ -27,6 +27,7 @@ namespace POS.View.windows
         public wd_items()
         {
             InitializeComponent();
+            
         }
         /// <summary>
         /// item is select

@@ -113,7 +113,10 @@ namespace POS.View.windows
         }
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {//save
-           
+            Window.GetWindow(this).Opacity = 0.2;
+            wd_selectPos w = new wd_selectPos();
+            w.ShowDialog();
+            Window.GetWindow(this).Opacity = 1;
 
         }
 

@@ -76,33 +76,7 @@ namespace POS
         public static string logoImage;
         ImageBrush myBrush = new ImageBrush();
 
-        /// <summary>
-        /// //////// relative screen test
-        /// </summary>
-
-        //public static double mainUcWidth, mainUcHeight, gridFormWidth, gridFormHeight,
-        //    windowHeight, windowWidth, ucControlFormSectionWidth, ucControlFormSectionHeight,
-        //    ucControlViewSectionWidth, ucControlViewSectionHeight;
-        //private void generateResponsiveVariables()
-        //{
-        //    // MainWindow Size
-        //    windowHeight = this.Height;
-        //    windowWidth = this.Width;
-        //    // uc_****  Size in the window
-        //    mainUcHeight = windowHeight - 63;
-        //    mainUcWidth = windowWidth - 75;
-        //    // Form section Size
-        //    ucControlFormSectionWidth = (mainUcWidth / 3) - 20;
-        //    ucControlFormSectionHeight = mainUcHeight - 20;
-        //    // View section Size { dataGrid + Cards + Searsh}
-        //    ucControlViewSectionWidth = ((mainUcWidth / 3) * 2) - 20;
-        //    ucControlViewSectionHeight = mainUcHeight - 20;
-        //}
-
-        /// <summary>
-        /// ////////
-        /// </summary>
-
+       
         public static DispatcherTimer timer;
         DispatcherTimer idletimer;//  logout timer
         DispatcherTimer threadtimer;//  repeat timer for check other login
@@ -111,9 +85,7 @@ namespace POS
          public MainWindow()
         {
             InitializeComponent();
-            //MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
-            //MaxWidth = SystemParameters.MaximizedPrimaryScreenWidth;
-            //generateResponsiveVariables();
+
             mainWindow = this;
             windowFlowDirection();
 
@@ -121,10 +93,7 @@ namespace POS
 
       async  void windowFlowDirection()
         {
-            //if (Properties.Settings.Default.Lang.Equals(""))
-            //    lang = await getDefaultLanguage();
-            //else lang = Properties.Settings.Default.Lang;
-            //translate
+            #region translate
             if (lang.Equals("en"))
             {
                 resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
@@ -135,13 +104,19 @@ namespace POS
                 resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
                 grid_mainWindow.FlowDirection = FlowDirection.RightToLeft;
             }
-
+            #endregion
         }
+
         public async void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
             StartAwait();
             grid_mainWindow.IsEnabled = false;
-            
+
+            //MessageBox.Show(MainWindow.lang +"-"+ MainWindow.Region.name +"-"+ MainWindow.Currency+"-"+MainWindow.tax +"-");
+            //MessageBox.Show(MainWindow.lang + "-" + MainWindow.Region.name + "-" + MainWindow.Currency + "-" + MainWindow.tax + "-" + MainWindow.dateFormat);
+
+            //MessageBox.Show(MainWindow.posID.ToString()+"-"+MainWindow.branchID.ToString());
+
             #region bonni
 #pragma warning disable CS0436 // Type conflicts with imported type
             TabTipAutomation.IgnoreHardwareKeyboard = HardwareKeyboardIgnoreOptions.IgnoreAll;
@@ -172,7 +147,7 @@ namespace POS
             threadtimer.Start();
 
 
-        
+
 
             #endregion
 
@@ -181,11 +156,10 @@ namespace POS
 
             tax = decimal.Parse(await getDefaultTax());
 
-            //dateFormat = await getDefaultDateForm();
+            dateFormat = await getDefaultDateForm();
            
             CountryCode c = await getDefaultRegion();
             Region = c;
-
             Currency = c.currency;
 
             StorageCost = decimal.Parse(await getDefaultStorageCost());
@@ -201,41 +175,56 @@ namespace POS
             set = settingsCls.Where(s => s.name == "com_name").FirstOrDefault<SettingCls>();
             nameId = set.settingId;
             setV = settingsValues.Where(i => i.settingId == nameId).FirstOrDefault();
-            companyName = setV.value;
+            if(setV != null)
+                companyName = setV.value;
             //get company address
             set = settingsCls.Where(s => s.name == "com_address").FirstOrDefault<SettingCls>();
             addressId = set.settingId;
             setV = settingsValues.Where(i => i.settingId == addressId).FirstOrDefault();
-            Address = setV.value;
+            if (setV != null)
+                Address = setV.value;
             //get company email
             set = settingsCls.Where(s => s.name == "com_email").FirstOrDefault<SettingCls>();
             emailId = set.settingId;
             setV = settingsValues.Where(i => i.settingId == emailId).FirstOrDefault();
-            Email = setV.value;
+            if (setV != null)
+                Email = setV.value;
             //get company mobile
             set = settingsCls.Where(s => s.name == "com_mobile").FirstOrDefault<SettingCls>();
             mobileId = set.settingId;
             setV = settingsValues.Where(i => i.settingId == mobileId).FirstOrDefault();
-            charsToRemove.ForEach(x => setV.value = setV.value.Replace(x.ToString(), String.Empty));
-            Mobile = setV.value;
+            if (setV != null)
+            {
+                charsToRemove.ForEach(x => setV.value = setV.value.Replace(x.ToString(), String.Empty));
+                Mobile = setV.value;
+            }
             //get company phone
             set = settingsCls.Where(s => s.name == "com_phone").FirstOrDefault<SettingCls>();
             phoneId = set.settingId;
             setV = settingsValues.Where(i => i.settingId == phoneId).FirstOrDefault();
-            charsToRemove.ForEach(x => setV.value = setV.value.Replace(x.ToString(), String.Empty));
-            Phone = setV.value;
+            if (setV != null)
+            {
+                charsToRemove.ForEach(x => setV.value = setV.value.Replace(x.ToString(), String.Empty));
+                Phone = setV.value;
+            }
             //get company fax
             set = settingsCls.Where(s => s.name == "com_fax").FirstOrDefault<SettingCls>();
             faxId = set.settingId;
             setV = settingsValues.Where(i => i.settingId == faxId).FirstOrDefault();
-            charsToRemove.ForEach(x => setV.value = setV.value.Replace(x.ToString(), String.Empty));
-            Fax = setV.value;
+            if (setV != null)
+            {
+                charsToRemove.ForEach(x => setV.value = setV.value.Replace(x.ToString(), String.Empty));
+                Fax = setV.value;
+            }
             //get company logo
             set = settingsCls.Where(s => s.name == "com_logo").FirstOrDefault<SettingCls>();
             logoId = set.settingId;
             setV = settingsValues.Where(i => i.settingId == logoId).FirstOrDefault();
-            logoImage = setV.value;      
-            await setV.getImg(logoImage);
+            if (setV != null)
+            {
+                logoImage = setV.value;
+                await setV.getImg(logoImage);
+            }
             #endregion
 
             translate();
@@ -243,7 +232,6 @@ namespace POS
             #region user personal info
             txt_userName.Text = userLogin.name;
             txt_userJob.Text = userLogin.job;
-
            
             try
             {
@@ -279,6 +267,7 @@ namespace POS
             groupObjects = await groupObject.GetUserpermission(userLogin.userId);
 
             #endregion
+
             //#region
             //Pos pos = new Pos();
             //pos = await pos.getPosById((int)posID);
@@ -288,6 +277,7 @@ namespace POS
             // branch = await branch.getBranchById((int)MainWindow.branchID);
             //txt_branchLogin.Text = branch.name;
             //#endregion
+
             BTN_Home_Click(null, null);
             grid_mainWindow.IsEnabled = true;
             EndAwait();
@@ -369,7 +359,7 @@ namespace POS
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this);
                 //grid_mainWindow.IsEnabled = false;
                 //StartAwait();
             }

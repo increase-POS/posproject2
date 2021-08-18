@@ -420,7 +420,7 @@ namespace POS.View.accounts
                 }
                 catch (Exception ex)
                 {
-                    SectionData.ExceptionMessage(ex);
+                    SectionData.ExceptionMessage(ex,this,sender);
                 }
             }
             else

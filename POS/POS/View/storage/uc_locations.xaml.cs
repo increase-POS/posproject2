@@ -77,7 +77,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this);
             }
         }
 
@@ -161,7 +161,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -174,7 +174,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -199,7 +199,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         bool validate(Location location = null)
@@ -261,7 +261,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
@@ -298,7 +298,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
@@ -361,12 +361,11 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private async void activate()
         {//activate
-                SectionData.StartAwait(grid_main);
             location.isActive = 1;
 
             string s = await locationModel.saveLocation(location);
@@ -378,7 +377,6 @@ namespace POS.View
 
             await RefreshLocationsList();
             Tb_search_TextChanged(null, null);
-                SectionData.EndAwait(grid_main, this);
         }
         private void Dg_location_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -437,7 +435,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private void validationControl_LostFocus(object sender, RoutedEventArgs e)
@@ -456,7 +454,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private void validationTextbox_TextChanged(object sender, TextChangedEventArgs e)
@@ -475,7 +473,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         void handleSpace_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -486,7 +484,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private async void Tgl_isActive_Checked(object sender, RoutedEventArgs e)
@@ -502,7 +500,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private async void Tgl_isActive_Unchecked(object sender, RoutedEventArgs e)
@@ -518,15 +516,13 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         async Task<IEnumerable<Location>> RefreshLocationsList()
         {
-            SectionData.StartAwait(grid_main);
             locations = await locationModel.Get();
             locations = locations.Where(x => x.branchId  == MainWindow.branchID && x.isFreeZone != 1);
-                SectionData.EndAwait(grid_main, this);
             return locations;
         }
         void RefreshLocationView()
@@ -556,7 +552,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -575,7 +571,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -597,7 +593,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -633,7 +629,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 

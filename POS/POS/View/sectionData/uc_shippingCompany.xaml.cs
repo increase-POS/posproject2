@@ -1,8 +1,11 @@
-﻿using netoaster;
+﻿using Microsoft.Reporting.WinForms;
+using Microsoft.Win32;
+using netoaster;
 using POS.Classes;
 using POS.View.windows;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
@@ -81,7 +84,7 @@ namespace POS.View.sectionData
                 }
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this); }
         }
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
         {//search
@@ -105,35 +108,21 @@ namespace POS.View.sectionData
             catch(Exception ex)
             {
                 SectionData.EndAwait(grid_shipping , this);
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
         async Task<IEnumerable<ShippingCompanies>> RefreshShComList()
         {
-            try
-            {
-                SectionData.StartAwait(grid_ucShippingCompany);
-
                 shComs = await shCompaniesModel.Get();
-                SectionData.EndAwait(grid_ucShippingCompany , this);
-            }
-            catch(Exception ex)
-            {
-                SectionData.ExceptionMessage(ex);
-                SectionData.EndAwait(grid_ucShippingCompany , this);
-            }
             return shComs;
         }
         void RefreshshComView()
         {
-            try
-            {
+            
                 dg_shippingCompany.ItemsSource = shComQuery;
                 txt_count.Text = shComQuery.Count().ToString();
-            }
-            catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            
         }
         private async void Tgl_isActive_Checked(object sender, RoutedEventArgs e)
         {//active
@@ -149,7 +138,7 @@ namespace POS.View.sectionData
             catch(Exception ex)
             {
                 SectionData.EndAwait(grid_ucShippingCompany, this);
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -167,7 +156,7 @@ namespace POS.View.sectionData
             catch(Exception ex)
             {
                 SectionData.EndAwait(grid_ucShippingCompany , this);
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -188,7 +177,7 @@ namespace POS.View.sectionData
             catch(Exception ex)
             {
                 SectionData.EndAwait(grid_ucShippingCompany , this);
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -209,13 +198,12 @@ namespace POS.View.sectionData
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
         }
 
         void FN_ExportToExcel()
         {
-            try
-            {
+           
                 var QueryExcel = shComQuery.AsEnumerable().Select(x => new
                 {
                     Name = x.name,
@@ -232,9 +220,7 @@ namespace POS.View.sectionData
                 DTForExcel.Columns[4].Caption = MainWindow.resourcemanager.GetString("trNote");
 
                 ExportToExcel.Export(DTForExcel);
-            }
-            catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+           
         }
 
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
@@ -253,7 +239,7 @@ namespace POS.View.sectionData
                 SectionData.clearComboBoxValidate(cb_deliveryType, p_errorDeliveryType);
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
         }
 
         private void validationControl_LostFocus(object sender, RoutedEventArgs e)
@@ -264,7 +250,7 @@ namespace POS.View.sectionData
                 validateEmpty(name, sender);
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
         }
 
         private void validationTextbox_TextChanged(object sender, TextChangedEventArgs e)
@@ -278,7 +264,7 @@ namespace POS.View.sectionData
                     SectionData.InputJustNumber(ref txb);
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
         }
 
         private void Tb_validateEmptyLostFocus(object sender, RoutedEventArgs e)
@@ -289,7 +275,7 @@ namespace POS.View.sectionData
                 validateEmpty(name, sender);
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
         }
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//add
@@ -343,7 +329,7 @@ namespace POS.View.sectionData
             catch(Exception ex)
             {
                 SectionData.EndAwait(grid_ucShippingCompany , this);
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -393,7 +379,7 @@ namespace POS.View.sectionData
             catch(Exception ex)
             {
                 SectionData.EndAwait(grid_ucShippingCompany , this);
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -462,15 +448,13 @@ namespace POS.View.sectionData
             catch(Exception ex)
             {
                 SectionData.EndAwait(grid_ucShippingCompany , this);
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
         private async void activate()
         {//activate
-            try
-            {
-                SectionData.StartAwait(grid_ucShippingCompany);
+           
                 shCompany.isActive = 1;
 
                 string s = await shCompaniesModel.Save(shCompany);
@@ -482,13 +466,7 @@ namespace POS.View.sectionData
 
                 await RefreshShComList();
                 Tb_search_TextChanged(null, null);
-                SectionData.EndAwait(grid_ucShippingCompany , this);
-            }
-            catch(Exception ex)
-            {
-                SectionData.EndAwait(grid_ucShippingCompany , this);
-                SectionData.ExceptionMessage(ex);
-            }
+               
         }
 
         private void Dg_shippingCompany_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -541,7 +519,7 @@ namespace POS.View.sectionData
             }
             catch(Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -574,14 +552,13 @@ namespace POS.View.sectionData
             catch(Exception ex)
             {
                 SectionData.EndAwait(grid_ucShippingCompany , this);
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
         private void translat()
         {
-            try
-            {
+          
                 txt_active.Text = MainWindow.resourcemanager.GetString("trActive");
                 MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
                 txt_shippingCompany.Text = MainWindow.resourcemanager.GetString("trShippingCompanies");
@@ -610,14 +587,7 @@ namespace POS.View.sectionData
                 tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
                 tt_search.Content = MainWindow.resourcemanager.GetString("trSearch");
 
-                //tt_name.Content = MainWindow.resourcemanager.GetString("trName");
-                //tt_realDeliveryCost.Content = MainWindow.resourcemanager.GetString("trRealDeliveryCost");
-                //tt_deliveryCost.Content = MainWindow.resourcemanager.GetString("trDeliveryCost");
-                //tt_deliveryType.Content = MainWindow.resourcemanager.GetString("trDeliveryType");
-                //tt_notes.Content = MainWindow.resourcemanager.GetString("trNote");
-            }
-            catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            
         }
 
         private void Tb_PreventSpaces(object sender, KeyEventArgs e)
@@ -655,8 +625,85 @@ namespace POS.View.sectionData
                 }
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
+        }
+        ReportCls reportclass = new ReportCls();
+        LocalReport rep = new LocalReport();
+        SaveFileDialog saveFileDialog = new SaveFileDialog();
+        private void Btn_pdf_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
+                {
+                    List<ReportParameter> paramarr = new List<ReportParameter>();
+
+                    string addpath;
+                    bool isArabic = ReportCls.checkLang();
+                    if (isArabic)
+                    {
+                        addpath = @"\Reports\SectionData\Ar\ArShippingReport.rdlc";
+                    }
+                    else addpath = @"\Reports\SectionData\EN\ShippingReport.rdlc";
+                    string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+                    ReportCls.checkLang();
+
+                    clsReports.shippingReport(shComQuery, rep, reppath);
+                    clsReports.setReportLanguage(paramarr);
+                    clsReports.Header(paramarr);
+
+                    rep.SetParameters(paramarr);
+
+                    rep.Refresh();
+
+                    saveFileDialog.Filter = "PDF|*.pdf;";
+
+                    if (saveFileDialog.ShowDialog() == true)
+                    {
+                        string filepath = saveFileDialog.FileName;
+                        LocalReportExtensions.ExportToPDF(rep, filepath);
+                    }
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+            }
+            catch (Exception ex)
+            { SectionData.ExceptionMessage(ex,this,sender); }
         }
 
+        private void Btn_print_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
+                {
+                    List<ReportParameter> paramarr = new List<ReportParameter>();
+
+                    string addpath;
+                    bool isArabic = ReportCls.checkLang();
+                    if (isArabic)
+                    {
+                        addpath = @"\Reports\SectionData\Ar\ArShippingReport.rdlc";
+                    }
+                    else addpath = @"\Reports\SectionData\EN\ShippingReport.rdlc";
+                    string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+                    ReportCls.checkLang();
+
+                    clsReports.shippingReport(shComQuery, rep, reppath);
+                    clsReports.setReportLanguage(paramarr);
+                    clsReports.Header(paramarr);
+
+                    rep.SetParameters(paramarr);
+                    rep.Refresh();
+                    LocalReportExtensions.PrintToPrinter(rep);
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+            }
+            catch (Exception ex)
+            { SectionData.ExceptionMessage(ex,this,sender); }
+        }
     }
 }

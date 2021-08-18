@@ -46,7 +46,7 @@ namespace POS.View.storage
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this);
             }
         }
         string savePermission = "shortage_save";
@@ -97,17 +97,15 @@ namespace POS.View.storage
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private async Task fillUsers()
         {
-            SectionData.StartAwait(grid_main);
             users = await userModel.GetUsersActive();
             cb_user.ItemsSource = users;
             cb_user.DisplayMemberPath = "name";
             cb_user.SelectedValuePath = "userId";
-            SectionData.EndAwait(grid_main, this);
         }
         IEnumerable<Item> items;
         // item object
@@ -115,9 +113,7 @@ namespace POS.View.storage
         ItemUnit itemUnit = new ItemUnit();
         async Task<IEnumerable<Item>> RefrishItems()
         {
-            SectionData.StartAwait(grid_main);
             items = await item.GetItemsWichHasUnits();
-            SectionData.EndAwait(grid_main, this);
             return items;
         }
 
@@ -161,7 +157,7 @@ namespace POS.View.storage
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         #region Excel
@@ -184,7 +180,7 @@ namespace POS.View.storage
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -223,7 +219,7 @@ namespace POS.View.storage
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private bool validateDistroy()
@@ -245,7 +241,6 @@ namespace POS.View.storage
         }
         private async Task recordCash(Invoice invoice)
         {
-            SectionData.StartAwait(grid_main);
             User user = new User();
             float newBalance = 0;
             user = await user.getUserById((int)cb_user.SelectedValue);
@@ -290,7 +285,6 @@ namespace POS.View.storage
                 user.balance = newBalance;
                 await user.saveUser(user);
             }
-            SectionData.EndAwait(grid_main, this);
         }
         private async void Btn_shortage_Click(object sender, RoutedEventArgs e)
         {
@@ -392,22 +386,18 @@ namespace POS.View.storage
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
         private async Task refreshShortageDetails()
         {
-            SectionData.StartAwait(grid_main);
             inventoriesItems = await invItemLocModel.GetShortageItem(MainWindow.branchID.Value);
             dg_itemShortage.ItemsSource = inventoriesItems;
-            SectionData.EndAwait(grid_main, this);
         }
         async Task<IEnumerable<InventoryItemLocation>> RefreshinvItemList()
         {
-            SectionData.StartAwait(grid_main);
             inventoriesItems = await invItemLocModel.GetShortageItem(MainWindow.branchID.Value);
-            SectionData.EndAwait(grid_main, this);
             return inventoriesItems;
         }
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
@@ -434,7 +424,7 @@ namespace POS.View.storage
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -460,7 +450,7 @@ namespace POS.View.storage
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
@@ -477,7 +467,7 @@ namespace POS.View.storage
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private void Btn_print_Click(object sender, RoutedEventArgs e)
@@ -494,7 +484,7 @@ namespace POS.View.storage
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private void Btn_pieChart_Click(object sender, RoutedEventArgs e)
@@ -511,7 +501,7 @@ namespace POS.View.storage
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -525,7 +515,7 @@ namespace POS.View.storage
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -547,7 +537,7 @@ namespace POS.View.storage
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private void Tgl_IsActive_Checked(object sender, RoutedEventArgs e)
@@ -560,7 +550,7 @@ namespace POS.View.storage
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -574,7 +564,7 @@ namespace POS.View.storage
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private void Btn_clearSerial_Click(object sender, RoutedEventArgs e)
@@ -587,7 +577,7 @@ namespace POS.View.storage
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -622,7 +612,7 @@ namespace POS.View.storage
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 

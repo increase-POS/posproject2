@@ -193,6 +193,7 @@
     <Compile Include="Classes\Medal.cs" />
     <Compile Include="Classes\MedalAgent.cs" />
     <Compile Include="Classes\Memberships.cs" />
+    <Compile Include="Classes\NotificationUser.cs" />
     <Compile Include="Classes\Object.cs" />
     <Compile Include="Classes\Offer.cs" />
     <Compile Include="Classes\Package.cs" />
@@ -475,6 +476,9 @@
     </Compile>
     <Compile Include="View\windows\wd_branchesList.xaml.cs">
       <DependentUpon>wd_branchesList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\windows\wd_cashTransfer.xaml.cs">
+      <DependentUpon>wd_cashTransfer.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\windows\wd_changePassword.xaml.cs">
       <DependentUpon>wd_changePassword.xaml</DependentUpon>
@@ -890,6 +894,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\windows\wd_branchesList.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\windows\wd_cashTransfer.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

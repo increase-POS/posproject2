@@ -45,7 +45,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this);
             }
         }
         private void translate()
@@ -76,7 +76,7 @@ namespace POS.View
                 }
                 catch (Exception ex)
                 {
-                    SectionData.ExceptionMessage(ex);
+                    SectionData.ExceptionMessage(ex,this,sender);
                 }
             }
             void permission()
@@ -137,7 +137,7 @@ namespace POS.View
                     }
                     catch (Exception ex)
                     {
-                        SectionData.ExceptionMessage(ex);
+                        SectionData.ExceptionMessage(ex,this,sender);
                     }
                 }
                 private void Btn_purchaseOrder_Click(object sender, RoutedEventArgs e)
@@ -152,7 +152,7 @@ namespace POS.View
                         }
                         catch (Exception ex)
                         {
-                            SectionData.ExceptionMessage(ex);
+                            SectionData.ExceptionMessage(ex,this,sender);
                         }
                     }
                     private void Btn_statistic_Click(object sender, RoutedEventArgs e)
@@ -167,7 +167,7 @@ namespace POS.View
                             }
                             catch (Exception ex)
                             {
-                                SectionData.ExceptionMessage(ex);
+                                SectionData.ExceptionMessage(ex,this,sender);
                             }
                         }
 

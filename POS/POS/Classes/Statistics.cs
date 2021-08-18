@@ -131,9 +131,9 @@ namespace POS.Classes
         }
         public string Description1
         {
-            get => description1 = (transType == "p" && processType != null) ? description1 = "ايصال دفع"
-                : description1 = (transType == "d" && processType != null) ? description1 = "ايصال قبض"
-                : invId > 0 ? description1 = "فاتورة رقم" + invNumber
+            get => description1 = (transType == "p" && processType != "inv") ? description1 = "ايصال دفع"
+                : description1 = (transType == "d" && processType != "inv") ? description1 = "ايصال قبض"
+                : invId > 0&&processType == "inv" ? description1 = "فاتورة رقم" + invNumber
                 : ""
                 ; set => description1 = value;
         }

@@ -107,7 +107,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this);
             }
         }
 
@@ -131,7 +131,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private void Tb_propertyName_TextChanged(object sender, TextChangedEventArgs e)
@@ -154,7 +154,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -215,7 +215,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -250,7 +250,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         //************************************************
@@ -286,7 +286,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -307,7 +307,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         //************************************************
@@ -369,14 +369,13 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
         private async Task activateProperty()
         {//activate
 
-            SectionData.StartAwait(grid_ucProperty);
             property.isActive = 1;
 
             Boolean s = await propertyModel.saveProperty(property);
@@ -386,12 +385,10 @@ namespace POS.View
             else
                 Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
-                SectionData.EndAwait(grid_ucProperty, this);
         }
         private async Task activatePropertyItem()
         {//activate
 
-            SectionData.StartAwait(grid_ucProperty);
             propertyItem.isActive = 1;
             propertyItem.name = propertyItem.propertyItemName;
 
@@ -401,7 +398,6 @@ namespace POS.View
                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
             else
                 Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-            SectionData.EndAwait(grid_ucProperty, this);
 
         }
         async void Dg_property_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
@@ -460,7 +456,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -516,7 +512,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -552,7 +548,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -611,7 +607,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -657,7 +653,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -673,9 +669,7 @@ namespace POS.View
         async Task<IEnumerable<Property>> RefreshPropertiesList()
         {
 
-            SectionData.StartAwait(grid_ucProperty);
             properties = await propertyModel.getProperty();
-            SectionData.EndAwait(grid_ucProperty, this);
             return properties;
         }
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
@@ -695,7 +689,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
@@ -714,7 +708,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private async void Tgl_isActive_Checked(object sender, RoutedEventArgs e)
@@ -731,7 +725,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private async void Tgl_isActive_Unchecked(object sender, RoutedEventArgs e)
@@ -747,7 +741,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
@@ -768,7 +762,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 

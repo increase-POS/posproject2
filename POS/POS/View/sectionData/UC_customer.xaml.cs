@@ -123,30 +123,17 @@ namespace POS.View
                 }
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this); }
         }
         //area code methods
         async Task<IEnumerable<CountryCode>> RefreshCountry()
         {
-            try
-            {
-                SectionData.StartAwait(grid_ucCustomer);
                 countrynum = await countrycodes.GetAllCountries();
-                SectionData.EndAwait(grid_ucCustomer , this);
-            }
-            catch(Exception ex)
-            {
-                SectionData.EndAwait(grid_ucCustomer , this);
-                SectionData.ExceptionMessage(ex);
-            }
-
             return countrynum;
         }
         private async void fillCountries()
         {
-            try
-            {
-                SectionData.StartAwait(grid_ucCustomer);
+            
                 if (countrynum is null)
                     await RefreshCountry();
 
@@ -165,50 +152,23 @@ namespace POS.View
                 cb_areaMobile.SelectedValue = MainWindow.Region.countryId;
                 cb_areaPhone.SelectedIndex = MainWindow.Region.countryId;
                 cb_areaFax.SelectedIndex = MainWindow.Region.countryId;
-                SectionData.EndAwait(grid_ucCustomer , this);
-            }
-            catch(Exception ex)
-            {
-                SectionData.ExceptionMessage(ex);
-                SectionData.EndAwait(grid_ucCustomer , this);
-            }
+               
         }
 
         async Task<IEnumerable<City>> RefreshCity()
         {
-            try
-            {
-                SectionData.StartAwait(grid_ucCustomer);
                 citynum = await cityCodes.Get();
-                SectionData.EndAwait(grid_ucCustomer, this);
-            }
-            catch(Exception ex)
-            {
-                SectionData.EndAwait(grid_ucCustomer , this);
-                SectionData.ExceptionMessage(ex);
-            }
             return citynum;
         }
         private async void fillCity()
         {
-            try
-            {
-                SectionData.StartAwait(grid_ucCustomer);
                 if (citynum is null)
                     await RefreshCity();
-                SectionData.EndAwait(grid_ucCustomer , this);
-            }
-            catch(Exception ex)
-            {
-                SectionData.EndAwait(grid_ucCustomer , this);
-                SectionData.ExceptionMessage(ex);
-            }
         }
         //end areacod
         private void translate()
         {
-            try
-            {
+            
                 txt_customer.Text = MainWindow.resourcemanager.GetString("trCustomer");
 
                 MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
@@ -238,24 +198,12 @@ namespace POS.View
                 dg_customer.Columns[3].Header = MainWindow.resourcemanager.GetString("trMobile");
                 btn_clear.ToolTip = MainWindow.resourcemanager.GetString("trClear");
 
-                //tt_code.Content = MainWindow.resourcemanager.GetString("trCode");
-                //tt_name.Content = MainWindow.resourcemanager.GetString("trName");
-                //tt_company.Content = MainWindow.resourcemanager.GetString("trCompany");
-                //tt_mobile.Content = MainWindow.resourcemanager.GetString("trMobile");
-                //tt_phone.Content = MainWindow.resourcemanager.GetString("trPhone");
-                //tt_fax.Content = MainWindow.resourcemanager.GetString("trFax");
-                //tt_email.Content = MainWindow.resourcemanager.GetString("trEmail");
-                //tt_address.Content = MainWindow.resourcemanager.GetString("trAddress");
-                //tt_upperLimit.Content = MainWindow.resourcemanager.GetString("trUpperLimit");
-                //tt_notes.Content = MainWindow.resourcemanager.GetString("trNote");
                 tt_clear.Content = MainWindow.resourcemanager.GetString("trClear");
                 tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
                 tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
                 tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
                 tt_search.Content = MainWindow.resourcemanager.GetString("trSearch");
-            }
-            catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+           
         }
 
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
@@ -295,7 +243,7 @@ namespace POS.View
                 tb_mobile.Background = (System.Windows.Media.Brush)bc.ConvertFrom("#f8f8f8");
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
         }
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
@@ -407,7 +355,7 @@ namespace POS.View
             catch(Exception ex)
             {
                 SectionData.EndAwait(grid_ucCustomer , this);
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -452,7 +400,7 @@ namespace POS.View
             catch(Exception ex)
             {
                 SectionData.EndAwait(grid_ucCustomer , this);
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -540,16 +488,14 @@ namespace POS.View
             catch(Exception ex)
             {
                 SectionData.EndAwait(grid_ucCustomer , this);
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
 
         }
 
         private async void getImg()
         {
-            try
-            {
-                SectionData.StartAwait(grid_ucCustomer);
+           
                 if (string.IsNullOrEmpty(agent.image))
                 {
                     SectionData.clearImg(img_customer);
@@ -579,13 +525,7 @@ namespace POS.View
                     else
                         SectionData.clearImg(img_customer);
                 }
-                SectionData.EndAwait(grid_ucCustomer , this);
-            }
-            catch(Exception ex)
-            {
-                SectionData.EndAwait(grid_ucCustomer , this);
-                SectionData.ExceptionMessage(ex);
-            }
+            
         }
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {//delete
@@ -647,15 +587,13 @@ namespace POS.View
             catch(Exception ex)
             {
                 SectionData.EndAwait(grid_ucCustomer , this);
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
         private async void activate()
         {//activate
-            try
-            {
-                SectionData.StartAwait(grid_ucCustomer);
+            
                 agent.isActive = 1;
 
                 string s = await agentModel.saveAgent(agent);
@@ -667,13 +605,6 @@ namespace POS.View
 
                 await RefreshCustomersList();
                 Tb_search_TextChanged(null, null);
-                SectionData.EndAwait(grid_ucCustomer , this);
-            }
-            catch(Exception ex)
-            {
-                SectionData.EndAwait(grid_ucCustomer , this);
-                SectionData.ExceptionMessage(ex);
-            }
         }
 
         private void tb_name_LostFocus(object sender, RoutedEventArgs e)
@@ -683,7 +614,7 @@ namespace POS.View
                 SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
         }
 
         private void tb_name_TextChanged(object sender, TextChangedEventArgs e)
@@ -693,7 +624,7 @@ namespace POS.View
                 SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
         }
         private void Tb_email_LostFocus(object sender, RoutedEventArgs e)
         {
@@ -702,7 +633,7 @@ namespace POS.View
                 SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
         }
 
         private void Tb_mobile_LostFocus(object sender, RoutedEventArgs e)
@@ -712,7 +643,7 @@ namespace POS.View
                 SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
         }
 
         private void tb_mobile_TextChanged(object sender, TextChangedEventArgs e)
@@ -722,7 +653,7 @@ namespace POS.View
                 SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
         }
 
         private async void Tgl_customerIsActive_Checked(object sender, RoutedEventArgs e)
@@ -739,7 +670,7 @@ namespace POS.View
             catch(Exception ex)
             {
                 SectionData.EndAwait(grid_ucCustomer , this);
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -757,34 +688,21 @@ namespace POS.View
             catch(Exception ex)
             {
                 SectionData.EndAwait(grid_ucCustomer , this);
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         async Task<IEnumerable<Agent>> RefreshCustomersList()
         {
-            try
-            {
-                SectionData.StartAwait(grid_ucCustomer);
                 if (agents is null)
                     agents = await agentModel.GetAgentsAsync("c");
-                SectionData.EndAwait(grid_ucCustomer, this);
-            }
-            catch(Exception ex)
-            {
-                SectionData.ExceptionMessage(ex);
-                SectionData.EndAwait(grid_ucCustomer , this);
-            }
                 return agents;
         }
         void RefreshCustomerView()
         {
-            try
-            {
+           
                 dg_customer.ItemsSource = agentsQuery;
                 txt_count.Text = agentsQuery.Count().ToString();
-            }
-            catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+          
         }
 
 
@@ -820,7 +738,7 @@ namespace POS.View
                 tb_name.Background = (System.Windows.Media.Brush)bc.ConvertFrom("#f8f8f8");
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
         }
 
         private void UserControl_LostFocus(object sender, RoutedEventArgs e)
@@ -873,7 +791,7 @@ namespace POS.View
             catch(Exception ex)
             {
                 SectionData.EndAwait(grid_ucCustomer , this);
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -916,7 +834,7 @@ namespace POS.View
             catch(Exception ex)
             {
                 SectionData.EndAwait(grid_ucCustomer, this);
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -934,7 +852,7 @@ namespace POS.View
                 }
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
         }
 
         private async void Btn_refresh_Click(object sender, RoutedEventArgs e)
@@ -955,7 +873,7 @@ namespace POS.View
             catch(Exception ex)
             {
                 SectionData.EndAwait(grid_ucCustomer,this);
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -971,14 +889,11 @@ namespace POS.View
         #region Refrish Y
         void RefrishItemsCard(IEnumerable<Agent> _agent)
         {
-            try
-            {
+           
                 grid_containerCard.Children.Clear();
                 catigoriesAndItemsView.gridCatigorieItems = grid_containerCard;
                 catigoriesAndItemsView.FN_refrishAgents(_agent.ToList(), "en", "Agent");
-            }
-            catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+           
         }
         #endregion
         #region Get Id By Click  Y
@@ -1040,14 +955,13 @@ namespace POS.View
                 }
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
         }
 
         public void ChangeItemIdEvent(int userId)
         {
 
-            try
-            {
+          
                 #region
 
                 //selection
@@ -1103,9 +1017,7 @@ namespace POS.View
                 }
 
                 #endregion
-            }
-            catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+           
 
         }
         #endregion
@@ -1122,7 +1034,7 @@ namespace POS.View
                 Tb_search_TextChanged(null, null);
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
         }
 
         private void Btn_itemsInGrid_Click(object sender, RoutedEventArgs e)
@@ -1137,7 +1049,7 @@ namespace POS.View
                 Tb_search_TextChanged(null, null);
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
         }
         #endregion
         #region Search Y
@@ -1177,7 +1089,7 @@ namespace POS.View
             catch(Exception ex)
             {
                 SectionData.EndAwait(grid_ucCustomer , this);
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -1220,7 +1132,7 @@ namespace POS.View
                 #endregion
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
         }
 
 
@@ -1241,7 +1153,7 @@ namespace POS.View
                 #endregion
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
         }
         private void Btn_prevPage_Click(object sender, RoutedEventArgs e)
         {
@@ -1260,7 +1172,7 @@ namespace POS.View
                 #endregion
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
         }
         private void Btn_activePage_Click(object sender, RoutedEventArgs e)
         {
@@ -1279,7 +1191,7 @@ namespace POS.View
                 #endregion
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
         }
         private void Btn_nextPage_Click(object sender, RoutedEventArgs e)
         {
@@ -1298,7 +1210,7 @@ namespace POS.View
                 #endregion
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
         }
         private void Btn_lastPage_Click(object sender, RoutedEventArgs e)
         {
@@ -1318,7 +1230,7 @@ namespace POS.View
                 #endregion
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
         }
         #endregion
 
@@ -1331,7 +1243,7 @@ namespace POS.View
                 RefrishItemsCard(pagination.refrishPagination(agentsQuery, pageIndex, btns));
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
         }
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {
@@ -1351,12 +1263,11 @@ namespace POS.View
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
         }
         void FN_ExportToExcel()
         {
-            try
-            {
+           
                 var QueryExcel = agentsQuery.AsEnumerable().Select(x => new
                 {
                     Code = x.code,
@@ -1385,9 +1296,7 @@ namespace POS.View
 
 
                 ExportToExcel.Export(DTForExcel);
-            }
-            catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+           
         }
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {
@@ -1429,7 +1338,7 @@ namespace POS.View
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
         }
 
         private void Btn_print_Click(object sender, RoutedEventArgs e)
@@ -1463,7 +1372,7 @@ namespace POS.View
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
         }
 
         private void btn_pieChart_Click(object sender, RoutedEventArgs e)
@@ -1481,7 +1390,7 @@ namespace POS.View
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
         }
     }
 }

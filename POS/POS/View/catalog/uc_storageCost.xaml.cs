@@ -76,7 +76,7 @@ namespace POS.View.catalog
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this);
             }
         }
         StorageCost storageCost = new StorageCost();
@@ -107,15 +107,13 @@ namespace POS.View.catalog
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
         async Task<IEnumerable<StorageCost>> RefreshStorageCostList()
         {
-            SectionData.StartAwait(grid_ucStorageCost);
             storageCosts = await storageCostModel.Get();
-            SectionData.EndAwait(grid_ucStorageCost, this);
             return storageCosts;
         }
         void RefreshstorageCostView()
@@ -136,7 +134,7 @@ namespace POS.View.catalog
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -153,7 +151,7 @@ namespace POS.View.catalog
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -174,7 +172,7 @@ namespace POS.View.catalog
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -196,7 +194,7 @@ namespace POS.View.catalog
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -229,7 +227,7 @@ namespace POS.View.catalog
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -242,7 +240,7 @@ namespace POS.View.catalog
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -258,7 +256,7 @@ namespace POS.View.catalog
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -271,7 +269,7 @@ namespace POS.View.catalog
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
@@ -315,7 +313,7 @@ namespace POS.View.catalog
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -357,7 +355,7 @@ namespace POS.View.catalog
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -424,13 +422,12 @@ namespace POS.View.catalog
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
         private async void activate()
         {//activate
-            SectionData.StartAwait(grid_ucStorageCost);
             storageCost.isActive = 1;
 
             string s = await storageCostModel.Save(storageCost);
@@ -442,7 +439,6 @@ namespace POS.View.catalog
 
             await RefreshStorageCostList();
             Tb_search_TextChanged(null, null);
-            SectionData.EndAwait(grid_ucStorageCost, this);
 
         }
 
@@ -490,7 +486,7 @@ namespace POS.View.catalog
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -514,7 +510,7 @@ namespace POS.View.catalog
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -558,7 +554,7 @@ namespace POS.View.catalog
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -574,7 +570,7 @@ namespace POS.View.catalog
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -592,7 +588,7 @@ namespace POS.View.catalog
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
     }

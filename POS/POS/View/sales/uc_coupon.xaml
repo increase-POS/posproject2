@@ -91,7 +91,7 @@
                                               VerticalOffset="15"/>
                         </Button.ToolTip>
                     </Button>
-                        <ToggleButton DockPanel.Dock="Right"  x:Name="tgl_isActive"  
+                    <ToggleButton DockPanel.Dock="Right"  x:Name="tgl_isActive"  
                                       Checked="Tgl_isActive_Checked" 
                                       Unchecked="Tgl_isActive_Unchecked"
                              VerticalAlignment="Center" Padding="10,15,5,5"  IsChecked="True" 
@@ -194,8 +194,8 @@
                 <Border BorderThickness="0,0,0,1" BorderBrush="#178DD2" Margin="10,0,10,10" Width="auto" HorizontalAlignment="Left">
                     <StackPanel  Orientation="Horizontal" >
 
-                        <Button x:Name="btn_pdf"   Background="{x:Null}"   Margin="10,0,5,0"
-                          Padding="0" Height="35" 
+                        <Button x:Name="btn_pdf"   Background="{x:Null}"   Margin="10,0,5,-1"
+                          Padding="0" Height="Auto" 
                           BorderBrush="{x:Null}" Click="Btn_pdf_Click" >
                             <materialDesign:PackIcon Foreground="#D20A0A" Kind="FilePdf"  
                                 
@@ -467,7 +467,7 @@
                                             Stretch="Fill"   />
 
                         <StackPanel Grid.Row="5" Orientation="Horizontal">
-                        <TextBlock x:Name="txt_isActive" Grid.Column="0" 
+                            <TextBlock x:Name="txt_isActive" Grid.Column="0" 
                                 Margin="10,5,5,5" Text="is Active" Foreground="#6e6e6e"
                             HorizontalAlignment="Left" VerticalAlignment="Center"
                                   FontSize="12"/>
@@ -476,10 +476,10 @@
                                               Margin="0,5,0,5" Height="13" Width="28" />
                         </StackPanel>
                         <DockPanel Grid.Row="6" LastChildFill="True">
-                        <TextBlock Text="Details" Foreground="#737373"
+                            <TextBlock Text="Details" Foreground="#737373"
                                      FontSize="10"      VerticalAlignment="Center" x:Name="txt_details"
                                       Margin="5,5,0,5"/>
-                        <Separator Background="#999999"    Margin="5,0,5,0"
+                            <Separator Background="#999999"    Margin="5,0,5,0"
                                            />
                         </DockPanel>
 
@@ -573,8 +573,8 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
-                         
-                                <DatePicker  x:Name="dp_startDate" 
+
+                            <DatePicker  x:Name="dp_startDate" 
                                                          BorderBrush="#737373"  BorderThickness="0" 
                                                                       Style="{StaticResource MaterialDesignDatePicker}" 
 
@@ -586,27 +586,27 @@
                                                          Foreground="#4E4E4E"  TextBlock.FontSize="12"  Background="#f8f8f8"
                                                          LostFocus="Tb_validateEmptyLostFocus" 
                                                Height="40"  Margin="10,5,0,5" >
-                                    <DatePicker.ToolTip>
-                                        <ToolTip x:Name="tt_startDate" Content="Start Date"
+                                <DatePicker.ToolTip>
+                                    <ToolTip x:Name="tt_startDate" Content="Start Date"
                                                          Placement="left" 
                                                          HorizontalOffset="35"
                                                          PlacementRectangle="50,0,0,0"
                                                          VerticalOffset="20"/>
-                                    </DatePicker.ToolTip>
-                                </DatePicker>
-                                <Path Fill="#E81123" Stretch="Fill" Margin="5,5,22.5,5"
+                                </DatePicker.ToolTip>
+                            </DatePicker>
+                            <Path Fill="#E81123" Stretch="Fill" Margin="5,5,22.5,5"
                                                           x:Name="p_errorStartDate"
                                                           HorizontalAlignment="Right" Grid.Column="0"  Visibility="Collapsed"   
                                                           VerticalAlignment="Center" Width="15"  Height="15"
                                                           Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 
                                                       L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
-                                    <Path.ToolTip>
-                                        <ToolTip  x:Name="tt_errorStartDate"  Style="{StaticResource ToolTipError}"/>
-                                    </Path.ToolTip>
-                                </Path>
-                     
-                           
-                                <DatePicker  x:Name="dp_endDate"  
+                                <Path.ToolTip>
+                                    <ToolTip  x:Name="tt_errorStartDate"  Style="{StaticResource ToolTipError}"/>
+                                </Path.ToolTip>
+                            </Path>
+
+
+                            <DatePicker  x:Name="dp_endDate"  
                                                                       Style="{StaticResource MaterialDesignDatePicker}" 
 
                                                          BorderBrush="#737373"  BorderThickness="0" 
@@ -618,25 +618,25 @@
                                Foreground="#4E4E4E"  TextBlock.FontSize="12"  Background="#f8f8f8"
                                LostFocus="Tb_validateEmptyLostFocus" 
                             Grid.Column="1"  Height="40"  Margin="5,5,10,5" >
-                                    <DatePicker.ToolTip>
-                                        <ToolTip x:Name="tt_endDate" Content="End Date"
+                                <DatePicker.ToolTip>
+                                    <ToolTip x:Name="tt_endDate" Content="End Date"
                                                          Placement="left" 
                                                          HorizontalOffset="35"
                                                          PlacementRectangle="50,0,0,0"
                                                          VerticalOffset="20"/>
-                                    </DatePicker.ToolTip>
-                                </DatePicker>
-                                <Path Fill="#E81123" Stretch="Fill" Margin="5,5,30,5"
+                                </DatePicker.ToolTip>
+                            </DatePicker>
+                            <Path Fill="#E81123" Stretch="Fill" Margin="5,5,30,5"
                                                    x:Name="p_errorEndDate"
                                   HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                              VerticalAlignment="Center" Width="15"  Height="15"
                                   Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 
                                       L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
-                                    <Path.ToolTip>
-                                        <ToolTip  x:Name="tt_errorEndDate"  Style="{StaticResource ToolTipError}"/>
-                                    </Path.ToolTip>
-                                </Path>
-                   
+                                <Path.ToolTip>
+                                    <ToolTip  x:Name="tt_errorEndDate"  Style="{StaticResource ToolTipError}"/>
+                                </Path.ToolTip>
+                            </Path>
+
                         </Grid>
 
 
@@ -651,8 +651,8 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                           
-                                <TextBox x:Name="tb_MinInvoiceValue"  Text="{Binding invMin, Mode=OneWay}" Padding="10,0,5,0"  
+
+                            <TextBox x:Name="tb_MinInvoiceValue"  Text="{Binding invMin, Mode=OneWay}" Padding="10,0,5,0"  
                                                                   Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
 
                                          BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Minimum invoice value..."    
@@ -664,27 +664,27 @@
                                                      PreviewTextInput="Tb_Decimal_PreviewTextInput"
                                           TextChanged="Tb_validateEmptyTextChange" 
                                              LostFocus="Tb_validateEmptyLostFocus">
-                                    <TextBox.ToolTip>
-                                        <ToolTip x:Name="tt_minInvoiceValue" Content="Minimum Invoice Value"
+                                <TextBox.ToolTip>
+                                    <ToolTip x:Name="tt_minInvoiceValue" Content="Minimum Invoice Value"
                                                          Placement="left" 
                                                          HorizontalOffset="35"
                                                          PlacementRectangle="50,0,0,0"
                                                          VerticalOffset="20"/>
-                                    </TextBox.ToolTip>
-                                </TextBox>
+                                </TextBox.ToolTip>
+                            </TextBox>
 
-                                <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5" 
+                            <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5" 
                                   HorizontalAlignment="Right"  Grid.Column="0"  Visibility="Collapsed" 
                              VerticalAlignment="Center" Width="15"  Height="15"
                                                    x:Name="p_errorMinInvoiceValue"
                                   Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
-                                    <Path.ToolTip>
-                                        <ToolTip  x:Name="tt_errorMinInvoiceValue"  Style="{StaticResource ToolTipError}"/>
-                                    </Path.ToolTip>
-                                </Path>
-                         
-                            
-                                <TextBox  x:Name="tb_MaxInvoiceValue" Text="{Binding invMax, Mode=OneWay}" Padding="10,0,5,0"  
+                                <Path.ToolTip>
+                                    <ToolTip  x:Name="tt_errorMinInvoiceValue"  Style="{StaticResource ToolTipError}"/>
+                                </Path.ToolTip>
+                            </Path>
+
+
+                            <TextBox  x:Name="tb_MaxInvoiceValue" Text="{Binding invMax, Mode=OneWay}" Padding="10,0,5,0"  
                                                                    Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
 
                                          BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Maximum invoice value..."    
@@ -696,24 +696,24 @@
                                                       PreviewTextInput="Tb_Decimal_PreviewTextInput"
                                            TextChanged="Tb_validateEmptyTextChange" 
                                              LostFocus="Tb_validateEmptyLostFocus">
-                                    <TextBox.ToolTip>
-                                        <ToolTip x:Name="tt_maxInvoiceValue" Content="Maximum Invoice Value"
+                                <TextBox.ToolTip>
+                                    <ToolTip x:Name="tt_maxInvoiceValue" Content="Maximum Invoice Value"
                                                          Placement="left" 
                                                          HorizontalOffset="35"
                                                          PlacementRectangle="50,0,0,0"
                                                          VerticalOffset="20"/>
-                                    </TextBox.ToolTip>
-                                </TextBox>
+                                </TextBox.ToolTip>
+                            </TextBox>
 
-                                <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5" 
+                            <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5" 
                                   HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed" 
                              VerticalAlignment="Center" Width="15"  Height="15"
                                                   x:Name="p_errorMaxInvoiceValue"
                                   Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
-                                    <Path.ToolTip>
-                                        <ToolTip    x:Name="tt_errorMaxInvoiceValue" Style="{StaticResource ToolTipError}"/>
-                                    </Path.ToolTip>
-                                </Path>
+                                <Path.ToolTip>
+                                    <ToolTip    x:Name="tt_errorMaxInvoiceValue" Style="{StaticResource ToolTipError}"/>
+                                </Path.ToolTip>
+                            </Path>
 
                         </Grid>
 

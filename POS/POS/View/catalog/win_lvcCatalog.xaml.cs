@@ -60,7 +60,7 @@ namespace POS.View.catalog
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -336,7 +336,7 @@ namespace POS.View.catalog
                 }
                 catch (Exception ex)
                 {
-                    SectionData.ExceptionMessage(ex);
+                    SectionData.ExceptionMessage(ex,this,sender);
                 }
             }
 
@@ -356,7 +356,7 @@ namespace POS.View.catalog
                     }
                     catch (Exception ex)
                     {
-                        SectionData.ExceptionMessage(ex);
+                        SectionData.ExceptionMessage(ex,this,sender);
                     }
                 }
 
@@ -371,7 +371,7 @@ namespace POS.View.catalog
                         }
                         catch (Exception ex)
                         {
-                            SectionData.ExceptionMessage(ex);
+                            SectionData.ExceptionMessage(ex,this,sender);
                         }
                     }
 
@@ -391,7 +391,7 @@ namespace POS.View.catalog
                             }
                             catch (Exception ex)
                             {
-                                SectionData.ExceptionMessage(ex);
+                                SectionData.ExceptionMessage(ex,this,sender);
                             }
                         }
 
@@ -411,14 +411,13 @@ namespace POS.View.catalog
                                 }
                                 catch (Exception ex)
                                 {
-                                    SectionData.ExceptionMessage(ex);
+                                    SectionData.ExceptionMessage(ex,this,sender);
                                 }
                             }
 
         private void fillSelectedChart()
                                 {
-                                    try
-                                    {
+                                   
                                         grid1.Visibility = Visibility.Hidden;
             grd_pieChart.Visibility = Visibility.Hidden;
             grd_columnChart.Visibility = Visibility.Hidden;
@@ -446,11 +445,7 @@ namespace POS.View.catalog
                 fillColumnChart();
 
             }
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        SectionData.ExceptionMessage(ex);
-                                    }
+                                    
                                 }
 
         private void btn_rowChart_Click(object sender, RoutedEventArgs e)
@@ -462,7 +457,7 @@ namespace POS.View.catalog
                                         }
                                         catch (Exception ex)
                                         {
-                                            SectionData.ExceptionMessage(ex);
+                                            SectionData.ExceptionMessage(ex,this,sender);
                                         }
                                     }
 
@@ -475,7 +470,7 @@ namespace POS.View.catalog
                                             }
                                             catch (Exception ex)
                                             {
-                                                SectionData.ExceptionMessage(ex);
+                                                SectionData.ExceptionMessage(ex,this,sender);
                                             }
                                         }
 
@@ -488,7 +483,7 @@ namespace POS.View.catalog
                                                 }
                                                 catch (Exception ex)
                                                 {
-                                                    SectionData.ExceptionMessage(ex);
+                                                    SectionData.ExceptionMessage(ex,this,sender);
                                                 }
                                             }
     }

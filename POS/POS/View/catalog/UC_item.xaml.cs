@@ -126,7 +126,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this);
             }
         }
         CatigoriesAndItemsView catigoriesAndItemsView = new CatigoriesAndItemsView();
@@ -271,7 +271,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
@@ -335,7 +335,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -357,8 +357,7 @@ namespace POS.View
 
         private void generateBarcode(string barcodeString, Boolean defaultBarcode)
         {
-            try
-            {
+           
                 if (barcodeString == "" && defaultBarcode)
             {
                 barcodeString = generateRandomBarcode();
@@ -370,17 +369,11 @@ namespace POS.View
                 tb_barcode.Text = barcodeString;
             }
             drawBarcode(tb_barcode.Text);
-            }
-            catch (Exception ex)
-            {
-
-                SectionData.ExceptionMessage(ex);
-            }
+            
         }
         private void drawBarcode(string barcodeStr)
         {
-            try
-            {
+           
                 // configur check sum metrics
                 BarcodeSymbology s = BarcodeSymbology.CodeEan13;
 
@@ -405,12 +398,7 @@ namespace POS.View
             }
             else
                 img_barcode.Source = null;
-            }
-            catch (Exception ex)
-            {
-
-                SectionData.ExceptionMessage(ex);
-            }
+           
         }
 
         static public string generateRandomBarcode()
@@ -435,15 +423,14 @@ namespace POS.View
             try
             {
                 dg_barcode.Visibility = grid_properties.Visibility = Visibility.Collapsed;
-            grid_itemData.Visibility = Visibility.Visible;
-            brd_barcodeTab.BorderBrush = brd_propertiesTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
-            brd_itemDataTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
-            tb_code.Focus();
+                grid_itemData.Visibility = Visibility.Visible;
+                brd_barcodeTab.BorderBrush = brd_propertiesTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
+                brd_itemDataTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+                tb_code.Focus();
             }
             catch (Exception ex)
             {
-
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
@@ -465,7 +452,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -486,7 +473,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -510,7 +497,6 @@ namespace POS.View
         }
         private async Task<Boolean> checkCodeAvailabiltiy(string oldCode = "")
         {
-            SectionData.StartAwait(grid_ucItem);
 
             List<string> itemsCodes = await itemModel.GetItemsCodes();
             string code = tb_code.Text;
@@ -521,13 +507,11 @@ namespace POS.View
             if (match != "" && match != null)
             {
                 SectionData.validateDuplicateCode(tb_code, p_errorCode, tt_errorCode, "trDuplicateCodeToolTip");
-            SectionData.EndAwait(grid_ucItem, this);
                 return false;
             }
             else
             {
                 SectionData.clearValidate(tb_code, p_errorCode);
-            SectionData.EndAwait(grid_ucItem, this);
                 return true;
             }
         }
@@ -619,7 +603,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -707,7 +691,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -742,7 +726,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -810,16 +794,14 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
         private async void activate()
         {//activate
 
-            try
-            {
-                SectionData.StartAwait(grid_ucItem);
+           
                 item.isActive = 1;
 
             string s = await itemModel.saveItem(item);
@@ -831,26 +813,13 @@ namespace POS.View
             await RefrishItems();
             Txb_searchitems_TextChanged(null, null);
             tb_barcode.Focus();
-                SectionData.EndAwait(grid_ucItem, this);
-            }
-            catch (Exception ex)
-            {
-
-                SectionData.ExceptionMessage(ex);
-            }
+           
         }
         private void validatePropertyValues()
         {
-            try
-            {
+           
                 SectionData.validateEmptyComboBox(cb_selectProperties, p_errorProperty, tt_errorProperty, "trEmptyPropertyToolTip");
             SectionData.validateEmptyComboBox(cb_value, p_errorValue, tt_errorValue, "trEmptyValueToolTip");
-            }
-            catch (Exception ex)
-            {
-
-                SectionData.ExceptionMessage(ex);
-            }
         }
         async void Btn_addProperties_Click(object sender, RoutedEventArgs e)
         {
@@ -897,22 +866,16 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
         private void validateServiceValues()
         {
-            try
-            {
+           
                 SectionData.validateEmptyTextBox(tb_serviceName, p_errorServiceName, tt_errorServiceName, "trEmptyNameToolTip");
             SectionData.validateEmptyTextBox(tb_costVal, p_errorCostVal, tt_errorCostVal, "trEmptyValueToolTip");
-            }
-            catch (Exception ex)
-            {
-
-                SectionData.ExceptionMessage(ex);
-            }
+            
         }
         // add service to item
         async void Btn_addService_Click(object sender, RoutedEventArgs e)
@@ -949,20 +912,14 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private void validateSerialValues()
         {
-            try
-            {
+           
                 SectionData.validateEmptyTextBox(tb_serial, p_errorSerial, tt_errorSerial, "trEmptyCodeToolTip");
-            }
-            catch (Exception ex)
-            {
-
-                SectionData.ExceptionMessage(ex);
-            }
+            
         }
         // add serial to item
         async void Btn_addSerial_Click(object sender, RoutedEventArgs e)
@@ -1003,7 +960,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         async void Btn_deleteProperties_Click(object sender, RoutedEventArgs e)
@@ -1035,7 +992,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         async void Btn_deleteSerial_Click(object sender, RoutedEventArgs e)
@@ -1063,7 +1020,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         async void Btn_updateService_Click(object sender, RoutedEventArgs e)
@@ -1092,7 +1049,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -1103,8 +1060,7 @@ namespace POS.View
         //*****************************************8
         private void validateUnitValues()
         {
-            try
-            {
+            
                 SectionData.validateEmptyComboBox(cb_selectUnit, p_errorSelectUnit, tt_errorSelectUnit, "trErrorEmptyUnitToolTip");
             SectionData.validateEmptyComboBox(cb_storageCost, p_errorStorageCost, tt_errorStorageCost, "trEmptyStoreCost");
             SectionData.validateEmptyTextBox(tb_count, p_errorCount, tt_errorCount, "trErrorEmptyCountToolTip");
@@ -1112,12 +1068,7 @@ namespace POS.View
             SectionData.validateEmptyTextBox(tb_price, p_errorPrice, tt_errorPrice, "trErrorEmptyPriceToolTip");
             SectionData.validateEmptyTextBox(tb_barcode, p_errorBarcode, tt_errorBarcode, "trEmptyBarcodeToolTip");
 
-            }
-            catch (Exception ex)
-            {
-
-                SectionData.ExceptionMessage(ex);
-            }
+           
         }
         // add barcode to item
         async void Btn_addBarcode_Click(object sender, RoutedEventArgs e)
@@ -1222,7 +1173,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         //**********************************************
@@ -1327,7 +1278,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         //**********************************************
@@ -1335,9 +1286,7 @@ namespace POS.View
         private async Task activateBarcode()
         {//activate
 
-            try
-            {
-                SectionData.StartAwait(grid_ucItem);
+        
                 itemUnit.isActive = 1;
             itemUnit.updateUserId = MainWindow.userID.Value;
 
@@ -1347,13 +1296,7 @@ namespace POS.View
                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
             else
                 Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-                SectionData.EndAwait(grid_ucItem, this);
-            }
-            catch (Exception ex)
-            {
-
-                SectionData.ExceptionMessage(ex);
-            }
+                
         }
         async  void Btn_deleteBarcode_Click(object sender, RoutedEventArgs e)
         {
@@ -1423,7 +1366,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -1484,7 +1427,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -1498,7 +1441,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private void tb_count_LostFocus(object sender, RoutedEventArgs e)
@@ -1510,7 +1453,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private void cb_barcode_LostFocus(object sender, RoutedEventArgs e)
@@ -1530,7 +1473,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -1555,7 +1498,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -1573,7 +1516,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private void space_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -1585,7 +1528,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
        
@@ -1616,7 +1559,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -1646,7 +1589,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         #endregion
@@ -1654,27 +1597,22 @@ namespace POS.View
         #region fill
         async void fillCategories()
         {
-            SectionData.StartAwait(grid_ucItem);
             categories = await categoryModel.GetAllCategories();
             if (categories != null)
                 cb_categorie.ItemsSource = categories.ToList();
             cb_categorie.SelectedValuePath = "categoryId";
             cb_categorie.DisplayMemberPath = "name";
-            SectionData.EndAwait(grid_ucItem, this);
         }
         async void fillStorageCost()
         {
-            SectionData.StartAwait(grid_ucItem);
             storageCosts = await storageCost.Get();
             cb_storageCost.ItemsSource = storageCosts.ToList();
             cb_storageCost.SelectedValuePath = "storageCostId";
             cb_storageCost.DisplayMemberPath = "name";
-            SectionData.EndAwait(grid_ucItem, this);
         }
 
         private async void fillUnits()
         {
-            SectionData.StartAwait(grid_ucItem);
             units = await unitModel.GetUnitsAsync();
             cb_minUnit.ItemsSource = units.ToList();
             cb_minUnit.SelectedValuePath = "unitId";
@@ -1687,31 +1625,24 @@ namespace POS.View
             cb_selectUnit.ItemsSource = units.ToList();
             cb_selectUnit.SelectedValuePath = "unitId";
             cb_selectUnit.DisplayMemberPath = "name";
-            SectionData.EndAwait(grid_ucItem, this);
         }
         private async Task fillSmallUnits(int itemId, int unitId)
         {
-            SectionData.StartAwait(grid_ucItem);
             List<Unit> units = await unitModel.getSmallUnits(itemId, unitId);
             cb_unit.ItemsSource = units.ToList();
             cb_unit.SelectedValuePath = "unitId";
             cb_unit.DisplayMemberPath = "name";
-            SectionData.EndAwait(grid_ucItem, this);
         }
         async void fillProperties()
         {
-            SectionData.StartAwait(grid_ucItem);
             properties = await propertyModel.getProperty();
             cb_selectProperties.ItemsSource = properties.ToList();
             cb_selectProperties.SelectedValuePath = "propertyId";
             cb_selectProperties.DisplayMemberPath = "name";
-            SectionData.EndAwait(grid_ucItem, this);
         }
         async void fillBarcodeList()
         {
-            SectionData.StartAwait(grid_ucItem);
             barcodesList = await itemUnitModel.getAllBarcodes();
-            SectionData.EndAwait(grid_ucItem, this);
         }
 
         #endregion
@@ -1749,7 +1680,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private void btn_clearPropertiesClick(object sender, RoutedEventArgs e)
@@ -1769,7 +1700,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private void Btn_unitClear(object sender, RoutedEventArgs e)
@@ -1800,69 +1731,35 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         async void refreshSerials(int itemId)
         {
-            try
-            {
-                SectionData.StartAwait(grid_ucItem);
+           
                 // get all item serials
                 itemSerials = await serialModel.GetItemSerials(itemId);
             dg_serials.ItemsSource = itemSerials;
-                SectionData.EndAwait(grid_ucItem, this);
-            }
-            catch (Exception ex)
-            {
-
-                SectionData.ExceptionMessage(ex);
-            }
+           
         }
         async void refreshPropertiesGrid(int itemId)
         {
-            try
-            {
-                SectionData.StartAwait(grid_ucItem);
+           
                 itemsProp = await itemsPropModel.Get(item.itemId);
             dg_properties.ItemsSource = itemsProp.ToList();
-                SectionData.EndAwait(grid_ucItem, this);
-            }
-            catch (Exception ex)
-            {
-
-                SectionData.ExceptionMessage(ex);
-            }
+               
         }
         async Task refreshItemUnitsGrid(int itemId)
         {
-            try
-            {
-                SectionData.StartAwait(grid_ucItem);
                 itemUnits = await itemUnitModel.GetAllItemUnits(itemId);
             dg_unit.ItemsSource = itemUnits.ToList();
-                SectionData.EndAwait(grid_ucItem, this);
-            }
-            catch (Exception ex)
-            {
-
-                SectionData.ExceptionMessage(ex);
-            }
         }
         async void refreshServicesGrid(int itemId)
         {
-            try
-            {
-                SectionData.StartAwait(grid_ucItem);
+           
                 services = await serviceModel.GetItemServices(item.itemId);
             dg_service.ItemsSource = services.ToList();
-                SectionData.EndAwait(grid_ucItem, this);
-            }
-            catch (Exception ex)
-            {
-
-                SectionData.ExceptionMessage(ex);
-            }
+                
         }
         #endregion
 
@@ -1938,7 +1835,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private void dg_propertiesSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -1960,7 +1857,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private void dg_serials_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -1981,7 +1878,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private void dg_services_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -2005,7 +1902,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private async void Cb_parentItem_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -2049,7 +1946,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         async void Cb_selectProperties_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -2071,7 +1968,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         async void Cb_categorie_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -2092,7 +1989,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private void CB_type_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -2138,7 +2035,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         #endregion
@@ -2152,35 +2049,22 @@ namespace POS.View
         /// <returns></returns>
         async Task<IEnumerable<Category>> RefrishCategories()
         {
-          
-                SectionData.StartAwait(grid_ucItem);
                 categories = await categoryModel.GetAllCategories();
-                SectionData.EndAwait(grid_ucItem, this);
             return categories;
         }
         async void RefrishCategoriesCard()
         {
-            try
-            {
-                SectionData.StartAwait(grid_ucItem);
+            
                 if (categories is null)
                 await RefrishCategories();
             categoriesQuery = categories.Where(x => x.isActive == tglCategoryState && x.parentId == categoryParentId);
             catigoriesAndItemsView.gridCatigories = grid_categoryCards;
             generateCoulmnCategoriesGrid(categoriesQuery.Count());
             catigoriesAndItemsView.FN_refrishCatalogCard(categoriesQuery.ToList(), -1);
-                SectionData.EndAwait(grid_ucItem, this);
-            }
-            catch (Exception ex)
-            {
-
-                SectionData.ExceptionMessage(ex);
-            }
         }
         void generateCoulmnCategoriesGrid(int column)
         {
-            try
-            {
+            
                 #region
                 grid_categoryCards.ColumnDefinitions.Clear();
             ColumnDefinition[] cd = new ColumnDefinition[column];
@@ -2191,12 +2075,7 @@ namespace POS.View
                 grid_categoryCards.ColumnDefinitions.Add(cd[i]);
             }
                 #endregion
-            }
-            catch (Exception ex)
-            {
-
-                SectionData.ExceptionMessage(ex);
-            }
+           
         }
         /// <summary>
         /// Item
@@ -2205,11 +2084,9 @@ namespace POS.View
 
         async Task<IEnumerable<Item>> RefrishItems()
         {
-            SectionData.StartAwait(grid_ucItem);
             if (category.categoryId == 0)
                 items = await itemModel.GetAllItems();
             else items = await itemModel.GetItemsInCategoryAndSub(category.categoryId);
-            SectionData.EndAwait(grid_ucItem, this);
             return items;
 
         }
@@ -2234,7 +2111,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         #endregion
@@ -2325,14 +2202,12 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private async void getImg()
         {
-            try
-            {
-                SectionData.StartAwait(grid_ucItem);
+           
                 
                 if (string.IsNullOrEmpty(item.image))
             {
@@ -2361,22 +2236,11 @@ namespace POS.View
                 tmpPath = System.IO.Path.Combine(tmpPath, item.image);
                 openFileDialog.FileName = tmpPath;
             }
-                SectionData.EndAwait(grid_ucItem, this);
-            }
-            catch (Exception ex)
-            {
-
-                SectionData.ExceptionMessage(ex);
-            }
+            
         }
         public async void ChangeCategoryIdEvent(int categoryId)
         {
-            try
-            {
-                SectionData.StartAwait(grid_ucItem);
-               
                 category = categories.ToList().Find(c => c.categoryId == categoryId);
-
             if (categories.Where(x =>
             x.isActive == tglCategoryState && x.parentId == category.categoryId).Count() != 0)
             {
@@ -2388,22 +2252,13 @@ namespace POS.View
             generateTrack(categoryId);
             await RefrishItems();
             Txb_searchitems_TextChanged(null, null);
-                SectionData.EndAwait(grid_ucItem, this);
-            }
-            catch (Exception ex)
-            {
-
-                SectionData.ExceptionMessage(ex);
-            }
+           
         }
 
         public async void ChangeItemIdEvent(int itemId)
         {
 
-            try
-            {
-                SectionData.StartAwait(grid_ucItem);
-                
+           
                 p_errorName.Visibility = Visibility.Collapsed;
             p_errorCode.Visibility = Visibility.Collapsed;
             var bc = new BrushConverter();
@@ -2482,13 +2337,7 @@ namespace POS.View
                 getImg();
             }
             tb_barcode.Focus();
-                SectionData.EndAwait(grid_ucItem, this);
-            }
-            catch (Exception ex)
-            {
-
-                SectionData.ExceptionMessage(ex);
-            }
+           
         }
 
         #endregion
@@ -2511,7 +2360,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private void Tgl_itemIsActive_Unchecked(object sender, RoutedEventArgs e)
@@ -2525,7 +2374,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         #endregion
@@ -2548,7 +2397,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -2569,7 +2418,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         #endregion
@@ -2609,7 +2458,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -2651,7 +2500,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -2673,7 +2522,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private void Btn_prevPage_Click(object sender, RoutedEventArgs e)
@@ -2693,7 +2542,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private void Btn_activePage_Click(object sender, RoutedEventArgs e)
@@ -2713,7 +2562,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private void Btn_nextPage_Click(object sender, RoutedEventArgs e)
@@ -2733,7 +2582,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private void Btn_lastPage_Click(object sender, RoutedEventArgs e)
@@ -2754,7 +2603,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         #endregion
@@ -2762,9 +2611,7 @@ namespace POS.View
 
         async void generateTrack(int categorypaPathId)
         {
-            try
-            {
-                SectionData.StartAwait(grid_ucItem);
+            
                 grid_categoryControlPath.Children.Clear();
             IEnumerable<Category> categoriesPath = await
             categoryModel.GetCategoryTreeByID(categorypaPathId);
@@ -2794,13 +2641,7 @@ namespace POS.View
             }
             tb_barcode.Focus();
 
-                SectionData.EndAwait(grid_ucItem, this);
-            }
-            catch (Exception ex)
-            {
-
-                SectionData.ExceptionMessage(ex);
-            }
+           
         }
         private async void getCategoryIdFromPath(object sender, RoutedEventArgs e)
         {
@@ -2828,7 +2669,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private async void Btn_getAllCategory_Click(object sender, RoutedEventArgs e)
@@ -2850,7 +2691,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -2876,7 +2717,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -2908,8 +2749,7 @@ namespace POS.View
         }
         string convertItemType(string s)
         {
-            try
-            {
+            
                 switch (s)
             {
                 case "n": s = MainWindow.resourcemanager.GetString("trNormalItem");
@@ -2924,12 +2764,7 @@ namespace POS.View
                     break;
             }
             return s;
-            }
-            catch (Exception ex)
-            {
-                return s;
-                SectionData.ExceptionMessage(ex);
-            }
+           
         }
     #endregion
 
@@ -2950,7 +2785,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private void Img_item_Click(object sender, RoutedEventArgs e)
@@ -2968,7 +2803,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private void Tb_textBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -2983,7 +2818,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -3004,7 +2839,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
    
@@ -3030,7 +2865,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -3047,7 +2882,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -3060,7 +2895,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -3074,14 +2909,12 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private async void fillParentItemCombo()
         {
-            try
-            {
-                SectionData.StartAwait(grid_ucItem);
+           
                 if (items is null)
                 await RefrishItems();
 
@@ -3094,13 +2927,7 @@ namespace POS.View
             cb_parentItem.ItemsSource = listCa;
             cb_parentItem.SelectedValuePath = "itemId";
             cb_parentItem.DisplayMemberPath = "name";
-                SectionData.EndAwait(grid_ucItem, this);
-            }
-            catch (Exception ex)
-            {
-
-                SectionData.ExceptionMessage(ex);
-            }
+               
         }
 
       

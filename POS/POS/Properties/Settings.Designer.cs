@@ -70,5 +70,17 @@ namespace POS.Properties {
                 this["password"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string pos {
+            get {
+                return ((string)(this["pos"]));
+            }
+            set {
+                this["pos"] = value;
+            }
+        }
     }
 }

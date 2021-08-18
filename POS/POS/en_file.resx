@@ -2098,4 +2098,16 @@ Please add Email in setting</value>
   <data name="trStocktakingItems" xml:space="preserve">
     <value>Stocktaking Items</value>
   </data>
+  <data name="trDepositor/Recipient" xml:space="preserve">
+    <value>Depositor/Recipient</value>
+  </data>
+  <data name="trPayments/Received" xml:space="preserve">
+    <value>Payments/Received</value>
+  </data>
+  <data name="trSalesInvoices" xml:space="preserve">
+    <value>Sales Invoices</value>
+  </data>
+  <data name="trSelect" xml:space="preserve">
+    <value>Select</value>
+  </data>
 </root>

@@ -44,7 +44,7 @@ namespace POS.View.reports
         {
             statement = await statisticModel.GetStatement();
 
-            vendorCombo = statisticModel.getVendorCombo(statement, "v").Where(x=>x.VendorId!=null);
+            vendorCombo = statisticModel.getVendorCombo(statement, "v").Where(x => x.VendorId != null);
             customerCombo = statisticModel.getVendorCombo(statement, "c");
             userCombo = statisticModel.getUserAcc(statement, "u");
             ShippingCombo = statisticModel.getShippingCombo(statement);
@@ -80,7 +80,7 @@ namespace POS.View.reports
         private void fillDateCombo(ComboBox cb)
         {
             cb.Items.Clear();
-            if (statement.Count()>0)
+            if (statement.Count() > 0)
             {
                 int firstYear = statement.Min(obj => obj.updateDate.Value.Year);
                 int presentYear = DateTime.Now.Year;
@@ -347,6 +347,7 @@ namespace POS.View.reports
 
         private void Btn_shipping_Click(object sender, RoutedEventArgs e)
         {
+            cb_vendors.SelectedItem = null;
             selectedTab = 6;
             paint();
             bdr_shipping.Background = Brushes.White;
@@ -355,11 +356,12 @@ namespace POS.View.reports
             isEnabledButtons();
             btn_shipping.IsEnabled = false;
             btn_shipping.Opacity = 1;
-            fillShippingEvents();
+
             hideAllColumn();
 
             fillDateCombo(cb_shippingDate);
             fillShippingCombo(ShippingCombo, cb_shipping);
+            fillShippingEvents();
         }
 
         /*Fill Events*/
@@ -369,8 +371,8 @@ namespace POS.View.reports
         {
             temp = statisticModel.getstate(fillList(statement, cb_vendors, cb_vendorsDate));
             dgPayments.ItemsSource = temp;
-            decimal cashTotal = temp.Select(x=>x.cashTotal).LastOrDefault();
-            if (cashTotal>0)
+            decimal cashTotal = temp.Select(x => x.cashTotal).LastOrDefault();
+            if (cashTotal > 0)
             {
                 txt_total.Text = cashTotal.ToString();
                 txt_for.Text = "Worthy";
@@ -383,7 +385,9 @@ namespace POS.View.reports
                 txt_for.Text = "Required";
                 tb_moneyIcon.Text = MainWindow.Currency;
             }
-
+            fillRowChart();
+            fillColumnChart();
+            fillPieChart();
         }
 
         private void fillCustomersEvents()
@@ -402,6 +406,9 @@ namespace POS.View.reports
                 txt_total.Text = cashTotal.ToString();
                 txt_for.Text = "Required";
             }
+            fillRowChart();
+            fillColumnChart();
+            fillPieChart();
         }
 
         private void fillUserEvents()
@@ -420,6 +427,9 @@ namespace POS.View.reports
                 txt_total.Text = cashTotal.ToString();
                 txt_for.Text = "Required";
             }
+            fillRowChart();
+            fillColumnChart();
+            fillPieChart();
         }
 
         private void fillShippingEvents()
@@ -438,12 +448,263 @@ namespace POS.View.reports
                 txt_total.Text = cashTotal.ToString();
                 txt_for.Text = "Required";
             }
+            fillRowChart();
+            fillColumnChart();
+            fillPieChart();
         }
 
 
         /*Charts*/
         /*********************************************************************************/
-     
+        private void fillRowChart()
+        {
+            MyAxis.Labels = new List<string>();
+            List<string> names = new List<string>(12);
+            List<CashTransferSts> resultList = new List<CashTransferSts>();
+            int year = DateTime.Now.Year;
+            if (cb_vendorsDate.SelectedItem != null)
+            {
+                year = (int)cb_vendorsDate.SelectedItem;
+            }
 
+            var temp = statisticModel.getstate(fillList(statement, cb_vendors, cb_vendorsDate));
+            if (selectedTab == 1)
+            {
+                temp = statisticModel.getstate(fillList(statement, cb_customer, cb_customerDate));
+            }
+            else if (selectedTab == 2)
+            {
+                temp = statisticModel.getstate(fillList(statement, cb_users, cb_userDate));
+            }
+            else if (selectedTab == 6)
+            {
+                temp = statisticModel.getstate(fillList(statement, cb_shipping, cb_shippingDate));
+            }
+
+            SeriesCollection rowChartData = new SeriesCollection();
+
+
+            List<string> lable = new List<string>();
+            SeriesCollection columnChartData = new SeriesCollection();
+            List<decimal> cash = new List<decimal>();
+
+            LineSeries l = new LineSeries();
+            for (int month = 1; month <= 12; month++)
+            {
+                var firstOfThisMonth = new DateTime(year, month, 1);
+                var firstOfNextMonth = firstOfThisMonth.AddMonths(1);
+                var drawCash = temp.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth).Select(x => x.cashTotal).LastOrDefault();
+                if (drawCash > 0)
+                {
+                    names.Add("Worthy");
+                }
+                else
+                {
+                    names.Add("Required");
+                }
+                cash.Add(drawCash);
+
+
+                MyAxis.Labels.Add(CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month) + "/" + 2021);
+            }
+            l.Values = cash.AsChartValues();
+            rowChartData.Add(l);
+
+            DataContext = this;
+            rowChart.Series = rowChartData;
+        }
+
+        private void fillColumnChart()
+        {
+            axcolumn.Labels = new List<string>();
+            List<string> names = new List<string>();
+            List<CashTransferSts> resultList = new List<CashTransferSts>();
+
+            var temp = statisticModel.getstate(fillList(statement, cb_vendors, cb_vendorsDate));
+            if (selectedTab == 1)
+            {
+                temp = statisticModel.getstate(fillList(statement, cb_customer, cb_customerDate));
+            }
+            else if (selectedTab == 2)
+            {
+                temp = statisticModel.getstate(fillList(statement, cb_users, cb_userDate));
+            }
+            else if (selectedTab == 6)
+            {
+                temp = statisticModel.getstate(fillList(statement, cb_shipping, cb_shippingDate));
+            }
+
+
+            List<string> lable = new List<string>();
+            SeriesCollection columnChartData = new SeriesCollection();
+            List<int> cash = new List<int>();
+            List<int> card = new List<int>();
+            List<int> doc = new List<int>();
+            List<int> cheque = new List<int>();
+            List<int> balance = new List<int>();
+            List<int> inv = new List<int>();
+
+
+            cash.Add(temp.Where(x => x.processType == "cash").Count());
+            card.Add(temp.Where(x => x.processType == "card").Count());
+            doc.Add(temp.Where(x => x.processType == "doc").Count());
+            cheque.Add(temp.Where(x => x.processType == "cheque").Count());
+            balance.Add(temp.Where(x => x.processType == "balance").Count());
+            inv.Add(temp.Where(x => x.processType == "inv").Count());
+
+
+            columnChartData.Add(
+            new ColumnSeries
+            {
+                Values = cash.AsChartValues(),
+                DataLabels = true,
+                Title = "Cash"
+            });
+            columnChartData.Add(
+           new ColumnSeries
+           {
+               Values = card.AsChartValues(),
+               DataLabels = true,
+               Title = "Card"
+           });
+            columnChartData.Add(
+           new ColumnSeries
+           {
+               Values = doc.AsChartValues(),
+               DataLabels = true,
+               Title = "Document"
+           });
+            columnChartData.Add(
+           new ColumnSeries
+           {
+               Values = cheque.AsChartValues(),
+               DataLabels = true,
+               Title = "Cheque"
+           });
+            columnChartData.Add(
+           new ColumnSeries
+           {
+               Values = balance.AsChartValues(),
+               DataLabels = true,
+               Title = "Balance"
+           });
+
+
+
+            DataContext = this;
+            cartesianChart.Series = columnChartData;
+        }
+
+        private void fillPieChart()
+        {
+            List<string> titles = new List<string>();
+            List<int> resultList = new List<int>();
+            titles.Clear();
+            var temp = statisticModel.getstate(fillList(statement, cb_vendors, cb_vendorsDate));
+            if (selectedTab == 1)
+            {
+                temp = statisticModel.getstate(fillList(statement, cb_customer, cb_customerDate));
+            }
+            else if (selectedTab == 2)
+            {
+                temp = statisticModel.getstate(fillList(statement, cb_users, cb_userDate));
+            }
+            else if (selectedTab == 6)
+            {
+                temp = statisticModel.getstate(fillList(statement, cb_shipping, cb_shippingDate));
+            }
+
+            resultList.Add(temp.Where(x => x.processType != "inv" && x.transType == "p").Count());
+            resultList.Add(temp.Where(x => x.processType != "inv" && x.transType == "d").Count());
+            resultList.Add(temp.Where(x => x.processType == "inv").Count());
+            SeriesCollection piechartData = new SeriesCollection();
+            for (int i = 0; i < resultList.Count(); i++)
+            {
+                List<int> final = new List<int>();
+                List<string> lable = new List<string>()
+                {
+                    "Payment",
+                    "Deposite",
+                    "Invoice"
+                };
+                final.Add(resultList.Skip(i).FirstOrDefault());
+                piechartData.Add(
+                  new PieSeries
+                  {
+                      Values = final.AsChartValues(),
+                      Title = lable.Skip(i).FirstOrDefault(),
+                      DataLabels = true,
+                  }
+              );
+
+            }
+            chart1.Series = piechartData;
+        }
+
+        private void Btn_refresh_Click(object sender, RoutedEventArgs e)
+        {
+            txt_search.Text = "";
+            if (selectedTab == 0)
+            {
+                cb_vendors.SelectedItem = null;
+                cb_vendorsDate.SelectedItem = null;
+                chk_allVendors.IsChecked = false;
+                fillVendorsEvents();
+            }
+            else if (selectedTab == 1)
+            {
+                cb_customer.SelectedItem = null;
+                cb_customerDate.SelectedItem = null;
+                chk_allCustomers.IsChecked = false;
+                fillCustomersEvents();
+            }
+            else if (selectedTab == 2)
+            {
+                cb_users.SelectedItem = null;
+                cb_userDate.SelectedItem = null;
+                chk_allUsers.IsChecked = false;
+                fillUserEvents();
+            }
+            else if (selectedTab == 3)
+            {
+                cb_shipping.SelectedItem = null;
+                cb_shippingDate.SelectedItem = null;
+                chk_allShippings.IsChecked = false;
+                fillShippingEvents();
+            }
+
+        }
+
+        private void Txt_search_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (selectedTab == 0)
+            {
+                temp = statisticModel.getstate(fillList(statement, cb_vendors, cb_vendorsDate));
+                dgPayments.ItemsSource = temp.Where(obj => obj.transNum.Contains(txt_search.Text) ||
+                obj.Description.Contains(txt_search.Text) ||
+                obj.Description1.Contains(txt_search.Text));
+            }
+            else if (selectedTab == 1)
+            {
+                temp = statisticModel.getstate(fillList(statement, cb_customer, cb_customerDate));
+                dgPayments.ItemsSource = temp.Where(obj => obj.transNum.Contains(txt_search.Text) ||
+                obj.Description.Contains(txt_search.Text) ||
+                obj.Description1.Contains(txt_search.Text));
+            }
+            else if (selectedTab == 2)
+            {
+                temp = statisticModel.getstate(fillList(statement, cb_users, cb_userDate));
+                dgPayments.ItemsSource = temp.Where(obj => obj.transNum.Contains(txt_search.Text) ||
+                obj.Description.Contains(txt_search.Text) ||
+                obj.Description1.Contains(txt_search.Text));
+            }
+            else if (selectedTab == 3)
+            {
+                temp = statisticModel.getstate(fillList(statement, cb_shipping, cb_shippingDate));
+                dgPayments.ItemsSource = temp.Where(obj => obj.transNum.Contains(txt_search.Text) ||
+                obj.Description.Contains(txt_search.Text) ||
+                obj.Description1.Contains(txt_search.Text));
+            }
+        }
     }
 }

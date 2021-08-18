@@ -962,17 +962,7 @@ namespace POS.Classes
             Agent agent = new Agent();
             float newBalance = 0;
             agent = await agent.getAgentById(invoice.agentId.Value);
-
-            #region pos Cash transfer
-            CashTransfer posCash = new CashTransfer();
-            posCash.posId = MainWindow.posID;
-            posCash.agentId = invoice.agentId;
-            posCash.invId = invoice.invoiceId;
-            posCash.createUserId = invoice.createUserId;
-            posCash.processType = "balance";
-            posCash.cash = invoice.totalNet;
-
-            #endregion
+  
             #region agent Cash transfer
             CashTransfer cashTrasnfer = new CashTransfer();
             cashTrasnfer.posId = MainWindow.posID;
@@ -986,26 +976,18 @@ namespace POS.Classes
                 #region purchase
                 case "pi"://purchase invoice
                 case "sb"://sale bounce
-                    posCash.transType = "d";
                     cashTrasnfer.transType = "p";
                     if (invType.Equals("pi"))
                     {
-                        posCash.side = "v"; // vendor
-                        posCash.transNum = await cashTrasnfer.generateCashNumber("dv");
-
-                        cashTrasnfer.side = "v"; // vendor
+                       cashTrasnfer.side = "v"; // vendor
                         cashTrasnfer.transNum = await cashTrasnfer.generateCashNumber("pv"); 
                     }
                     else
                     {
-                        posCash.side = "c"; // vendor
-                        posCash.transNum = await cashTrasnfer.generateCashNumber("dc");
-
                         cashTrasnfer.side = "c"; // vendor                        
                         cashTrasnfer.transNum = await cashTrasnfer.generateCashNumber("pc");
 
                     }
-                    await cashTrasnfer.Save(posCash); //add pos cash transfer
                     if (agent.balanceType == 1)
                     {
                         if (invoice.totalNet <= (decimal)agent.balance)
@@ -1044,25 +1026,19 @@ namespace POS.Classes
                 #region purchase bounce
                 case "pb"://purchase bounce invoice
                 case "si"://sale invoice
-                    posCash.transType = "p";
                     cashTrasnfer.transType = "d";
 
                     if (invType.Equals("pb"))
                     {
-                        posCash.side = "v"; // vendor
-                        posCash.transNum = await cashTrasnfer.generateCashNumber("pv");
                         cashTrasnfer.side = "v"; // vendor
                         cashTrasnfer.transNum = await cashTrasnfer.generateCashNumber("dv");
 
                     }
                     else
                     {
-                        posCash.side = "c"; // customer
-                        posCash.transNum = await cashTrasnfer.generateCashNumber("pc");
                         cashTrasnfer.side = "c"; // customer
                         cashTrasnfer.transNum = await cashTrasnfer.generateCashNumber("dc");
                     }
-                    await cashTrasnfer.Save(posCash); //add pos cash transfer
                     if (agent.balanceType == 0)
                     {
                         if (invoice.totalNet <= (decimal)agent.balance)
@@ -1099,6 +1075,61 @@ namespace POS.Classes
                     }
                     break;
                 #endregion  
+            }
+
+            return invoice;
+        }
+        public async Task<Invoice> recordPosCashTransfer(Invoice invoice, string invType)
+        {
+            #region pos Cash transfer
+            CashTransfer posCash = new CashTransfer();
+            posCash.posId = MainWindow.posID;
+            posCash.agentId = invoice.agentId;
+            posCash.invId = invoice.invoiceId;
+            posCash.createUserId = invoice.createUserId;
+            posCash.processType = "inv";
+            posCash.cash = invoice.totalNet;
+
+            #endregion
+            switch (invType)
+            {
+                #region purchase
+                case "pi"://purchase invoice
+                case "sb"://sale bounce
+                    posCash.transType = "d";
+                    if (invType.Equals("pi"))
+                    {
+                        posCash.side = "v"; // vendor
+                        posCash.transNum = await posCash.generateCashNumber("dv");
+                    }
+                    else
+                    {
+                        posCash.side = "c"; // vendor
+                        posCash.transNum = await posCash.generateCashNumber("dc");
+
+                    }
+                    await posCash.Save(posCash); //add pos cash transfer
+                    break;
+                #endregion
+                #region purchase bounce
+                case "pb"://purchase bounce invoice
+                case "si"://sale invoice
+                    posCash.transType = "p";
+
+                    if (invType.Equals("pb"))
+                    {
+                        posCash.side = "v"; // vendor
+                        posCash.transNum = await posCash.generateCashNumber("pv");
+                    }
+                    else
+                    {
+                        posCash.side = "c"; // customer
+                        posCash.transNum = await posCash.generateCashNumber("pc");
+                    }
+                    await posCash.Save(posCash); //add pos cash transfer
+                    
+                    break;
+                    #endregion
             }
 
             return invoice;

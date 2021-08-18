@@ -84,7 +84,7 @@ namespace POS.View.sales
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this);
             }
         }
 
@@ -118,7 +118,7 @@ namespace POS.View.sales
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private void translate()
@@ -181,7 +181,7 @@ namespace POS.View.sales
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -201,7 +201,7 @@ namespace POS.View.sales
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -224,7 +224,7 @@ namespace POS.View.sales
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -241,7 +241,7 @@ namespace POS.View.sales
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -258,7 +258,7 @@ namespace POS.View.sales
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -281,7 +281,7 @@ namespace POS.View.sales
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -326,7 +326,7 @@ namespace POS.View.sales
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -389,7 +389,7 @@ namespace POS.View.sales
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -446,7 +446,7 @@ namespace POS.View.sales
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -513,14 +513,13 @@ namespace POS.View.sales
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
 
         private async void activate()
         {//activate
-                SectionData.StartAwait(grid_ucMedals);
             medal.isActive = 1;
 
             string s = await medalModel.Save(medal);
@@ -532,7 +531,6 @@ namespace POS.View.sales
 
             await RefreshMedalsList();
             Tb_search_TextChanged(null, null);
-                SectionData.EndAwait(grid_ucMedals, this);
         }
 
         private async void Tgl_isActive_Checked(object sender, RoutedEventArgs e)
@@ -548,7 +546,7 @@ namespace POS.View.sales
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -566,17 +564,14 @@ namespace POS.View.sales
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
         async Task<IEnumerable<Medal>> RefreshMedalsList()
         {
              
-                SectionData.StartAwait(grid_ucMedals);
             medals = await medalModel.GetAll();
-                SectionData.EndAwait(grid_ucMedals, this);
-
             return medals;
         }
         void RefreshMedalView()
@@ -599,7 +594,7 @@ namespace POS.View.sales
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -612,7 +607,7 @@ namespace POS.View.sales
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -628,7 +623,7 @@ namespace POS.View.sales
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -681,7 +676,7 @@ namespace POS.View.sales
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -692,7 +687,7 @@ namespace POS.View.sales
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -704,7 +699,7 @@ namespace POS.View.sales
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -717,7 +712,7 @@ namespace POS.View.sales
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -734,7 +729,7 @@ namespace POS.View.sales
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
 
         }

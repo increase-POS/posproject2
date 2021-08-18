@@ -273,10 +273,7 @@ namespace POS.View.windows
         }
         async Task<IEnumerable<Item>> RefrishItems()
         {
-            SectionData.StartAwait(grid_mainGrid);
             items = await item.GetItemsWichHasUnits();
-
-            SectionData.EndAwait(grid_mainGrid,this);
             return items;
         }
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)

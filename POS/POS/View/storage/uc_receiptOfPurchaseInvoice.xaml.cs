@@ -49,7 +49,7 @@ namespace POS.View.storage
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this);
             }
         }
         ObservableCollection<BillDetails> billDetails = new ObservableCollection<BillDetails>();
@@ -88,7 +88,7 @@ namespace POS.View.storage
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -133,7 +133,7 @@ namespace POS.View.storage
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         #region notifications
@@ -184,7 +184,7 @@ namespace POS.View.storage
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         #region bill
@@ -204,9 +204,7 @@ namespace POS.View.storage
         #endregion
         async Task RefrishVendors()
         {
-            SectionData.StartAwait(grid_main);
             vendors = await agentModel.GetAgentsActive("v");
-                SectionData.EndAwait(grid_main, this);
         }
         private async void HandleKeyPress(object sender, KeyEventArgs e)
         {
@@ -290,12 +288,11 @@ namespace POS.View.storage
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private async Task dealWithBarcode(string barcode)
         {
-            SectionData.StartAwait(grid_main);
             int codeindex = barcode.IndexOf("-");
             string prefix = "";
             if (codeindex >= 0)
@@ -345,7 +342,6 @@ namespace POS.View.storage
             }
 
             tb_barcode.Clear();
-                SectionData.EndAwait(grid_main, this);
         }
         #region Button In DataGrid
         void deleteRowFromInvoiceItems(object sender, RoutedEventArgs e)
@@ -378,7 +374,7 @@ namespace POS.View.storage
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         #endregion
@@ -428,7 +424,7 @@ namespace POS.View.storage
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -452,13 +448,12 @@ namespace POS.View.storage
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private void clearInvoice()
         {
-            try
-            {
+          
                 _SequenceNum = 0;
                 _Count = 0;
                 _InvoiceType = "pbd";
@@ -469,11 +464,7 @@ namespace POS.View.storage
                 tb_count.Text = "";
                 refrishBillDetails();
                 inputEditable();
-            }
-            catch (Exception ex)
-            {
-                SectionData.ExceptionMessage(ex);
-            }
+            
         }
         private void Cbm_unitItemDetails_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -486,7 +477,7 @@ namespace POS.View.storage
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private void Cbm_unitItemDetails_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -502,7 +493,7 @@ namespace POS.View.storage
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private void DataGrid_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -534,7 +525,7 @@ namespace POS.View.storage
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private void space_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -545,7 +536,7 @@ namespace POS.View.storage
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private void DecimalValidationTextBox(object sender, TextCompositionEventArgs e)
@@ -561,7 +552,7 @@ namespace POS.View.storage
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private void Btn_items_Click(object sender, RoutedEventArgs e)
@@ -585,7 +576,7 @@ namespace POS.View.storage
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -597,34 +588,13 @@ namespace POS.View.storage
 
         public async void ChangeCategoryIdEvent(int categoryId)
         {
-            try
-            {
-                SectionData.StartAwait(grid_main);
-
-
-                SectionData.EndAwait(grid_main, this);
-            }
-            catch (Exception ex)
-            {
-                SectionData.ExceptionMessage(ex);
-            }
+            
         }
 
 
         public async void ChangeItemIdEvent(int itemId)
         {
-            try
-            {
-                SectionData.StartAwait(grid_main);
-
-
-                SectionData.EndAwait(grid_main, this);
-
-            }
-            catch (Exception ex)
-            {
-                SectionData.ExceptionMessage(ex);
-            }
+           
         }
 
 
@@ -675,24 +645,21 @@ namespace POS.View.storage
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
         private async Task fillInvoiceInputs(Invoice invoice)
         {
-            SectionData.StartAwait(grid_main);
             txt_branch.Text = invoice.branchName;
             txt_invNumber.Text = invoice.invNumber;
 
             // build invoice details grid
             await buildInvoiceDetails(invoice.invoiceId);
             inputEditable();
-                SectionData.EndAwait(grid_main, this);
         }
         private async Task buildInvoiceDetails(int invoiceId)
         {
-            SectionData.StartAwait(grid_main);
             invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
             // build invoice details grid
             _SequenceNum = 0;
@@ -721,7 +688,6 @@ namespace POS.View.storage
             tb_barcode.Focus();
 
             refrishBillDetails();
-                SectionData.EndAwait(grid_main, this);
         }
         void refrishBillDetails()
         {
@@ -794,7 +760,7 @@ namespace POS.View.storage
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -824,14 +790,13 @@ namespace POS.View.storage
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
         private async Task returnInvoice(string type)
         {
 
-            SectionData.StartAwait(grid_main);
             invoiceItems = new List<ItemTransfer>();
             ItemTransfer itemT;
             decimal returnValue = 0;
@@ -887,6 +852,7 @@ namespace POS.View.storage
                     int invoiceId = int.Parse(await invoiceModel.saveInvoice(invoiceModel));
                     if (invoiceId != 0)
                     {
+                        await invoice.recordPosCashTransfer(invoice, "pb");
                         await invoice.recordCashTransfer(invoice, "pb");
                         await invoiceModel.saveInvoiceItems(invoiceItems, invoiceId);
                         for (int i = 0; i < readyItemsLoc.Count; i++)
@@ -922,16 +888,13 @@ namespace POS.View.storage
                 Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
             }
 
-                SectionData.EndAwait(grid_main, this);
         }
         private async Task receiptInvoice()
         {
-            SectionData.StartAwait(grid_main);
             invoice.invType = "p";
             invoice.updateUserId = MainWindow.userID.Value;
             await invoiceModel.saveInvoice(invoice);
             await itemLocationModel.recieptInvoice(invoiceItems, MainWindow.branchID.Value, MainWindow.userID.Value); // increase item quantity in DB
-                SectionData.EndAwait(grid_main, this);
         }
 
 
@@ -947,7 +910,7 @@ namespace POS.View.storage
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -964,7 +927,7 @@ namespace POS.View.storage
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
@@ -980,7 +943,7 @@ namespace POS.View.storage
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 

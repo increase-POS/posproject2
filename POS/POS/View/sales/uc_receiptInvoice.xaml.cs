@@ -26,6 +26,7 @@ using System.IO;
 using Microsoft.Reporting.WinForms;
 using Microsoft.Win32;
 using System.Globalization;
+using System.Windows.Threading;
 
 namespace POS.View
 {
@@ -59,7 +60,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this);
             }
         }
         ObservableCollection<BillDetails> billDetails = new ObservableCollection<BillDetails>();
@@ -93,7 +94,7 @@ namespace POS.View
         Pos pos;
         List<ItemTransfer> invoiceItems;
         List<ItemTransfer> mainInvoiceItems;
-
+        CashTransfer cashTransfer = new CashTransfer();
         ItemLocation itemLocationModel = new ItemLocation();
 
         ShippingCompanies companyModel = new ShippingCompanies();
@@ -101,6 +102,7 @@ namespace POS.View
         User userModel = new User();
         List<User> users;
 
+        private static DispatcherTimer timer;
         #region//to handle barcode characters
         static private int _SelectedCustomer = -1;
         static private string _SelectedPaymentType = "cash";
@@ -129,12 +131,7 @@ namespace POS.View
         LocalReport rep = new LocalReport();
         SaveFileDialog saveFileDialog = new SaveFileDialog();
         #region bill
-        //public class Bill
-        //{
-        //    public int Id { get; set; }
-        //    public int Total { get; set; }
-
-        //}
+       
         public class BillDetails
         {
             public int ID { get; set; }
@@ -224,10 +221,11 @@ namespace POS.View
                 }
                 else
                     clearInvoice();
+                timer.Stop();
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         public async void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -251,6 +249,7 @@ namespace POS.View
                 }
 
                 translate();
+               
                 catigoriesAndItemsView.ucReceiptInvoice = this;
 
                 pos = await posModel.getPosById(MainWindow.posID.Value);
@@ -262,6 +261,7 @@ namespace POS.View
                 await fillCouponsList();
                 await fillShippingCompanies();
                 await fillUsers();
+                setTimer();
                 #region fill card combo
                 cards = await cardModel.GetAll();
                 cb_card.ItemsSource = cards;
@@ -285,72 +285,135 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
+
+        #region timer to refresh notifications
+        private void setTimer()
+        {
+            timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(30);
+            timer.Tick += timer_Tick;
+            timer.Start();
+        }
+        async void timer_Tick(object sendert, EventArgs et)
+        {
+            setNotifications();
+            if (invoice.invoiceId != 0)
+            {
+                refreshDocCount(invoice.invoiceId);
+                if(_InvoiceType == "s" || _InvoiceType == "sb")
+                    refreshPaymentsNotification(invoice.invoiceId);
+            }
+        }
+        #endregion
         #region notifications
         private void setNotifications()
         {
             refreshDraftNotification();
             refreshOrdersWaitNotification();
             refreshQuotationNotification();
-            refreshPaymentsNotification();
         }
         private async void refreshDraftNotification()
         {
             string invoiceType = "sd ,sbd";
             int duration = 2;
             int draftCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
-      
-            if (draftCount > 9)
+
+            int previouseCount = 0;
+            if(md_draft.Badge != null && md_draft.Badge.ToString() != "") previouseCount = int.Parse(md_draft.Badge.ToString());
+
+            if (draftCount != previouseCount)
             {
-                draftCount = 9;
-                md_draft.Badge = "+" + draftCount.ToString();
+                if (draftCount > 9)
+                {
+                    draftCount = 9;
+                    md_draft.Badge = "+" + draftCount.ToString();
+                }
+                else if (draftCount == 0) md_draft.Badge = "";
+                else
+                    md_draft.Badge = draftCount.ToString();
             }
-            else
-                md_draft.Badge = draftCount.ToString();
         }
         private async void refreshOrdersWaitNotification()
         {
             string invoiceType = "or";
             int ordersCount = await invoice.GetCountBranchInvoices(invoiceType,0, MainWindow.branchID.Value);
-    
-            if (ordersCount > 9)
+
+            int previouseCount = 0;
+            if (md_ordersWait.Badge != null && md_ordersWait.Badge.ToString() != "") previouseCount = int.Parse(md_ordersWait.Badge.ToString());
+
+            if (ordersCount != previouseCount)
             {
-                ordersCount = 9;
-                md_ordersWait.Badge = "+" + ordersCount.ToString();
+                if (ordersCount > 9)
+                {
+                    ordersCount = 9;
+                    md_ordersWait.Badge = "+" + ordersCount.ToString();
+                }
+                else if (ordersCount == 0) md_ordersWait.Badge = "";
+                else
+                    md_ordersWait.Badge = ordersCount.ToString();
             }
-            else
-                md_ordersWait.Badge = ordersCount.ToString();
         }
         private async void refreshQuotationNotification()
         {
             string invoiceType = "q";
             int ordersCount = await invoice.GetCountBranchInvoices(invoiceType, MainWindow.branchID.Value);
 
-            if (ordersCount > 9)
+            int previouseCount = 0;
+            if (md_quotations.Badge != null && md_quotations.Badge.ToString() != "") previouseCount = int.Parse(md_quotations.Badge.ToString());
+
+            if (ordersCount != previouseCount)
             {
-                ordersCount = 9;
-                md_quotations.Badge = "+" + ordersCount.ToString();
+                if (ordersCount > 9)
+                {
+                    ordersCount = 9;
+                    md_quotations.Badge = "+" + ordersCount.ToString();
+                }
+                else if (ordersCount == 0) md_quotations.Badge = "";
+                else
+                    md_quotations.Badge = ordersCount.ToString();
             }
-            else
-                md_quotations.Badge = ordersCount.ToString();
         }
         private async void refreshDocCount(int invoiceId)
         {
             DocImage doc = new DocImage();
             int docCount = await doc.GetDocCount("Invoices", invoiceId);
-            if (docCount > 9)
+
+            int previouseCount = 0;
+            if (md_docImage.Badge != null && md_docImage.Badge != "") previouseCount = int.Parse(md_docImage.Badge.ToString());
+
+            if (docCount != previouseCount)
             {
-                docCount = 9;
-                md_docImage.Badge = "+" + docCount.ToString();
+                if (docCount > 9)
+                {
+                    docCount = 9;
+                    md_docImage.Badge = "+" + docCount.ToString();
+                }
+                else if (docCount == 0) md_docImage.Badge = "";
+                else
+                    md_docImage.Badge = docCount.ToString();
             }
-            else
-                md_docImage.Badge = docCount.ToString();
         }
-        private async void refreshPaymentsNotification()
+        private async void refreshPaymentsNotification(int invoiceId)
         {
-            md_payments.Badge = "+9";
+            int paymentsCount = await cashTransfer.GetCashCount(invoice.invoiceId); 
+            int previouseCount = 0;
+            if (md_payments.Badge != null && md_payments.Badge.ToString() != "") previouseCount = int.Parse(md_payments.Badge.ToString());
+
+            if (paymentsCount != previouseCount)
+            {
+                if (paymentsCount > 9)
+                {
+                    paymentsCount = 9;
+                    md_payments.Badge = "+" + paymentsCount.ToString();
+                }
+                else if (paymentsCount == 0) md_payments.Badge = "";
+                else
+                    md_payments.Badge = paymentsCount.ToString();
+            }
+
         }
         #endregion
         async Task RefrishCustomers()
@@ -419,7 +482,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -460,7 +523,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         #endregion
@@ -481,7 +544,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         #region Get Id By Click  Y
@@ -530,7 +593,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private void space_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -541,7 +604,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private async Task<bool> validateInvoiceValues()
@@ -668,7 +731,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         #endregion
@@ -790,7 +853,7 @@ namespace POS.View
                     if (invType == "s")
                     {
                         await itemLocationModel.decreaseAmounts(invoiceItems, MainWindow.branchID.Value, MainWindow.userID.Value); // update item quantity in DB
-                                                                                                                                   //if (paid > 0)
+                        await invoice.recordPosCashTransfer(invoice,"si");                                                                                                         //if (paid > 0)
                                                                                                                                    //{
                         switch (cb_paymentProcessType.SelectedIndex)
                         {
@@ -826,7 +889,7 @@ namespace POS.View
                     else if (invType == "sb")
                     {
                         await itemLocationModel.recieptInvoice(invoiceItems, MainWindow.branchID.Value, MainWindow.userID.Value); // update item quantity in DB
-
+                        await invoice.recordPosCashTransfer(invoice, "sb");
                         switch (cb_paymentProcessType.SelectedIndex)
                         {
                             case 0:
@@ -943,7 +1006,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private bool validateItemUnits()
@@ -985,7 +1048,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private void clearInvoice()
@@ -1024,6 +1087,7 @@ namespace POS.View
             lst_coupons.Items.Clear();
             tb_discount.Text = "0";
             md_docImage.Badge = "";
+            md_payments.Badge = "";
             //btn_updateCustomer.IsEnabled = false;
             gd_card.Visibility = Visibility.Collapsed;
             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesInvoice");
@@ -1056,6 +1120,7 @@ namespace POS.View
                     {
                         invoice = w.invoice;
                         _InvoiceType = invoice.invType;
+                        md_payments.Badge = "";
 
                         refreshDocCount(invoice.invoiceId);
                         await fillInvoiceInputs(invoice);
@@ -1084,7 +1149,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private async Task getInvoiceCoupons(int invoiceId)
@@ -1123,13 +1188,16 @@ namespace POS.View
                         this.DataContext = invoice;
 
                         _InvoiceType = invoice.invType;
-                        refreshDocCount(invoice.invoiceId);
+                       
                         // set title to bill
                         txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesInvoice");
                         // orange #FFA926 red #D22A17
                         brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
                         await fillInvoiceInputs(invoice);
                         mainInvoiceItems = invoiceItems;
+
+                        refreshDocCount(invoice.invoiceId);
+                        refreshPaymentsNotification(invoice.invoiceId);
                     }
                 }
                 Window.GetWindow(this).Opacity = 1;
@@ -1137,7 +1205,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private async void Btn_ordersWait_Click(object sender, RoutedEventArgs e)
@@ -1164,13 +1232,15 @@ namespace POS.View
                             this.DataContext = invoice;
 
                             _InvoiceType = invoice.invType;
-                            refreshDocCount(invoice.invoiceId);
+                           
                             // set title to bill
                             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSaleOrder");
                             // orange #FFA926 red #D22A17
                             brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
                             await fillInvoiceInputs(invoice);
                             mainInvoiceItems = invoiceItems;
+                            refreshDocCount(invoice.invoiceId);
+                            md_payments.Badge = "";
                         }
                     }
                     Window.GetWindow(this).Opacity = 1;
@@ -1181,7 +1251,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         public async Task fillInvoiceInputs(Invoice invoice)
@@ -1267,12 +1337,14 @@ namespace POS.View
                             invoice = w.invoice;
 
                             this.DataContext = invoice;
-                            refreshDocCount(invoice.invoiceId);
                             await fillInvoiceInputs(invoice);
                             mainInvoiceItems = invoiceItems;
                             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesReturnInvoice");
                             // orange #FFA926 red #D22A17
                             brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D22A17"));
+                            md_payments.Badge = "";
+                            refreshDocCount(invoice.invoiceId);
+
                         }
                     }
                     Window.GetWindow(this).Opacity = 1;
@@ -1283,7 +1355,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private async Task buildInvoiceDetails(int invoiceId)
@@ -1476,7 +1548,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -1507,7 +1579,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -1519,7 +1591,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -1532,7 +1604,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -1555,7 +1627,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private void Tb_textBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -1566,7 +1638,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private void tb_discount_TextChanged(object sender, TextChangedEventArgs e)
@@ -1579,7 +1651,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private void refreshTotalValue()
@@ -1699,7 +1771,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private async Task dealWithBarcode(string barcode)
@@ -1856,7 +1928,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private async void Tb_barcode_KeyDown(object sender, KeyEventArgs e)
@@ -1883,7 +1955,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -1986,7 +2058,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private void Cbm_unitItemDetails_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -2005,7 +2077,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         #region
@@ -2085,7 +2157,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -2195,7 +2267,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -2208,7 +2280,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private void moveControlToBarcode(object sender, KeyEventArgs e)
@@ -2225,7 +2297,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -2371,7 +2443,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -2450,7 +2522,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -2554,7 +2626,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -2619,7 +2691,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -2649,7 +2721,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -2661,7 +2733,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -2688,13 +2760,15 @@ namespace POS.View
                             this.DataContext = invoice;
 
                             _InvoiceType = invoice.invType;
-                            refreshDocCount(invoice.invoiceId);
                             // set title to bill
                             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trQuotations");
                             // orange #FFA926 red #D22A17
                             brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
                             await fillInvoiceInputs(invoice);
                             mainInvoiceItems = invoiceItems;
+                            md_payments.Badge = "";
+                            refreshDocCount(invoice.invoiceId);
+
                         }
                     }
                     Window.GetWindow(this).Opacity = 1;
@@ -2705,7 +2779,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -2746,7 +2820,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private void PreventSpaces(object sender, KeyEventArgs e)
@@ -2757,7 +2831,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -2775,7 +2849,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -2795,7 +2869,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -2819,7 +2893,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -2835,7 +2909,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -2872,7 +2946,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -2883,7 +2957,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -2892,18 +2966,26 @@ namespace POS.View
         {
             try
             {
-                if (MainWindow.groupObject.HasPermissionAction(paymentsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+                if (invoice != null && invoice.invoiceId != 0)
                 {
+                    if (MainWindow.groupObject.HasPermissionAction(paymentsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+                    {
+                        Window.GetWindow(this).Opacity = 0.2;
+                        wd_cashTransfer w = new wd_cashTransfer();
 
+                        w.invId = invoice.invoiceId;
 
+                        w.ShowDialog();
 
+                        Window.GetWindow(this).Opacity = 1;
+                    }
+                    else
+                        Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
                 }
-                else
-                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private void serialItemsRow(object sender, RoutedEventArgs e)
@@ -2935,7 +3017,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private void Cb_user_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -2957,7 +3039,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 

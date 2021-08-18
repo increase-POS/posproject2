@@ -59,7 +59,7 @@ namespace POS.View.storage
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this);
             }
         }
 
@@ -113,7 +113,7 @@ namespace POS.View.storage
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
@@ -148,7 +148,7 @@ namespace POS.View.storage
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private void Tgl_IsActive_Checked(object sender, RoutedEventArgs e)
@@ -160,7 +160,7 @@ namespace POS.View.storage
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -175,20 +175,16 @@ namespace POS.View.storage
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private async Task refreshItemsLocations()
         {
-                SectionData.StartAwait(grid_main);
             itemLocationList = await itemLocation.get(MainWindow.branchID.Value);
-                SectionData.EndAwait(grid_main, this);
         }
         private async Task refreshFreeZoneItemsLocations()
         {
-                SectionData.StartAwait(grid_main);
             itemLocationList = await itemLocation.GetFreeZoneItems(MainWindow.branchID.Value);
-            SectionData.EndAwait(grid_main, this);
         }
         private void translate()
         {
@@ -198,7 +194,6 @@ namespace POS.View.storage
 
         private async Task refreshLocations()
         {
-                SectionData.StartAwait(grid_main);
             if (cb_section.SelectedIndex != -1)
             {
                 locations = await locationModel.getLocsBySectionId((int)cb_section.SelectedValue);
@@ -206,16 +201,13 @@ namespace POS.View.storage
                 cb_XYZ.SelectedValuePath = "locationId";
                 cb_XYZ.DisplayMemberPath = "name";
             }
-                SectionData.EndAwait(grid_main, this);
         }
         private async Task fillSections()
         {
-                SectionData.StartAwait(grid_main);
             sections = await sectionModel.getBranchSections(MainWindow.branchID.Value);
             cb_section.ItemsSource = sections.ToList();
             cb_section.SelectedValuePath = "sectionId";
             cb_section.DisplayMemberPath = "name";
-                SectionData.EndAwait(grid_main, this);
         }
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
@@ -227,7 +219,7 @@ namespace POS.View.storage
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private void space_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -239,7 +231,7 @@ namespace POS.View.storage
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
@@ -256,7 +248,7 @@ namespace POS.View.storage
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -275,7 +267,7 @@ namespace POS.View.storage
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -292,7 +284,7 @@ namespace POS.View.storage
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -307,7 +299,7 @@ namespace POS.View.storage
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -382,7 +374,7 @@ namespace POS.View.storage
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private async void Cb_section_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -396,7 +388,7 @@ namespace POS.View.storage
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -440,7 +432,7 @@ namespace POS.View.storage
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -460,7 +452,7 @@ namespace POS.View.storage
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private void clearInputs()
@@ -502,7 +494,7 @@ namespace POS.View.storage
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -534,7 +526,7 @@ namespace POS.View.storage
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 

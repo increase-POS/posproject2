@@ -107,16 +107,12 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this);
             }
 
         }
         private async void fillCategories()
         {
-            try
-            {
-                SectionData.StartAwait(grid_ucCategorie);
-
                 if (categories is null)
                     await RefrishCategories();
                 var listCa = categories.ToList();
@@ -129,13 +125,6 @@ namespace POS.View
                 cb_parentCategorie.ItemsSource = listCa;
                 cb_parentCategorie.SelectedValuePath = "categoryId";
                 cb_parentCategorie.DisplayMemberPath = "name";
-                SectionData.EndAwait(grid_ucCategorie, this);
-            }
-            catch (Exception ex)
-            {
-
-                SectionData.ExceptionMessage(ex);
-            }
 
         }
         private void translate()
@@ -209,7 +198,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
 
         }
@@ -229,7 +218,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
 
         }
@@ -247,7 +236,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
 
         }
@@ -262,7 +251,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -277,7 +266,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -291,7 +280,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
@@ -310,7 +299,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         #endregion
@@ -397,7 +386,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
@@ -485,7 +474,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -517,7 +506,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
@@ -583,15 +572,13 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
         private async void activate()
         {//activate
-            try
-            {
-                SectionData.StartAwait(grid_ucCategorie);
+           
                 category.isActive = 1;
 
                 string s = await categoryModel.saveCategory(category);
@@ -600,18 +587,9 @@ namespace POS.View
                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
                 else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-
                 await RefrishCategories();
-
                 Txb_searchcategories_TextChanged(null, null);
-
-                SectionData.EndAwait(grid_ucCategorie, this);
-            }
-            catch (Exception ex)
-            {
-
-                SectionData.ExceptionMessage(ex);
-            }
+           
         }
         #endregion
 
@@ -620,9 +598,7 @@ namespace POS.View
         #region Refrish Y
         async Task<IEnumerable<Category>> RefrishCategories()
         {
-            SectionData.StartAwait(grid_ucCategorie);
             categories = await categoryModel.GetAllCategories();
-            SectionData.EndAwait(grid_ucCategorie, this);
             return categories;
         }
 
@@ -716,15 +692,13 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
         public async void ChangeCategorieIdEvent(int categoryId)
         {
-            try
-            {
-                SectionData.StartAwait(grid_ucCategorie);
+           
             //////////////
             p_errorName.Visibility = Visibility.Collapsed;
             p_errorCode.Visibility = Visibility.Collapsed;
@@ -783,12 +757,7 @@ namespace POS.View
 
             }
             #endregion
-            SectionData.EndAwait(grid_ucCategorie, this);
-        }
-            catch (Exception ex)
-            {
-                SectionData.ExceptionMessage(ex);
-            }
+           
         }
 
         #endregion
@@ -808,7 +777,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
 
         }
@@ -826,7 +795,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         #endregion
@@ -846,7 +815,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
 
         }
@@ -865,7 +834,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         #endregion
@@ -899,7 +868,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -939,7 +908,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -960,7 +929,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private void Btn_prevPage_Click(object sender, RoutedEventArgs e)
@@ -979,7 +948,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private void Btn_activePage_Click(object sender, RoutedEventArgs e)
@@ -998,7 +967,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private void Btn_nextPage_Click(object sender, RoutedEventArgs e)
@@ -1017,7 +986,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         private void Btn_lastPage_Click(object sender, RoutedEventArgs e)
@@ -1037,7 +1006,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         #endregion
@@ -1060,7 +1029,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -1093,7 +1062,6 @@ namespace POS.View
         async void generateTrack(int categorypaPathId)
         {
                                     
-                                        SectionData.StartAwait(grid_ucCategorie);
             grid_categoryControlPath.Children.Clear();
 
             IEnumerable<Category> categoriesPath = await
@@ -1126,7 +1094,6 @@ namespace POS.View
                     grid_categoryControlPath.Children.Add(b);
                 }
             }
-            SectionData.EndAwait(grid_ucCategorie, this);
         }
         private void getCategoryIdFromPath(object sender, RoutedEventArgs e)
         {
@@ -1150,7 +1117,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -1164,7 +1131,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -1187,15 +1154,13 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
         private async void getImg()
         {
-            try
-            {
-                SectionData.StartAwait(grid_ucCategorie);
+           
                 if (string.IsNullOrEmpty(category.image))
                 {
                     SectionData.clearImg(img_category);
@@ -1216,17 +1181,7 @@ namespace POS.View
                     img_category.Background = new ImageBrush(bitmapImage);
 
                 }
-                SectionData.EndAwait(grid_ucCategorie, this);
-            }
-            catch
-            {
-                Uri resourceUri = new Uri("pic/no-image-icon-125x125.png", UriKind.Relative);
-                StreamResourceInfo streamInfo = Application.GetResourceStream(resourceUri);
-
-                BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
-                brush.ImageSource = temp;
-                img_category.Background = brush;
-            }
+                
         }
 
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
@@ -1244,7 +1199,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -1259,7 +1214,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -1275,7 +1230,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -1288,7 +1243,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -1305,7 +1260,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -1318,7 +1273,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -1334,7 +1289,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
     }

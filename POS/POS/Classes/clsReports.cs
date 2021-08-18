@@ -38,6 +38,35 @@ namespace POS.Classes
             rep.DataSources.Clear();
             rep.DataSources.Add(new ReportDataSource("DataSetBank", banksQuery));
         }
+
+        public static void couponReport(IEnumerable<Coupon> CouponQuery, LocalReport rep, string reppath)
+        {
+            rep.ReportPath = reppath;
+            rep.EnableExternalImages = true;
+            rep.DataSources.Clear();
+            rep.DataSources.Add(new ReportDataSource("DataSetCoupon", CouponQuery));
+        }
+        public static void couponReport(IEnumerable<Offer> OfferQuery, LocalReport rep, string reppath)
+        {
+            rep.ReportPath = reppath;
+            rep.EnableExternalImages = true;
+            rep.DataSources.Clear();
+            rep.DataSources.Add(new ReportDataSource("DataSetOffer", OfferQuery));
+        }
+        public static void cardReport(IEnumerable<Card> cardsQuery, LocalReport rep, string reppath)
+        {
+            rep.ReportPath = reppath;
+            rep.EnableExternalImages = true;
+            rep.DataSources.Clear();
+            rep.DataSources.Add(new ReportDataSource("DataSetCard", cardsQuery));
+        }
+        public static void shippingReport(IEnumerable<ShippingCompanies> shippingCompanies, LocalReport rep, string reppath)
+        {
+            rep.ReportPath = reppath;
+            rep.EnableExternalImages = true;
+            rep.DataSources.Clear();
+            rep.DataSources.Add(new ReportDataSource("DataSetShipping", shippingCompanies));
+        }
         public static void PurStsReport(IEnumerable<ItemTransferInvoice> tempquery, LocalReport rep, string reppath)
         {
             rep.ReportPath = reppath;

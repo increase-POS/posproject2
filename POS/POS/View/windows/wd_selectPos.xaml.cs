@@ -25,7 +25,12 @@ namespace POS.View.windows
     {
         public wd_selectPos()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
+            }
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex,this); }
         }
         BrushConverter bc = new BrushConverter();
         public int branchID = 0;
@@ -34,31 +39,40 @@ namespace POS.View.windows
         Branch branch = new Branch();
         IEnumerable<Branch> branches;
         IEnumerable<Pos> poss;
+
+        SetValues valueModel = new SetValues();
+        SettingCls setModel = new SettingCls();
+        public int settingsPoSId = 0;
+        public int userId;
         private void Btn_colse_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
-
-            #region translate
-
-            if (winLogIn.lang.Equals("en"))
+            try
             {
-                winLogIn.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
-                grid_changePassword.FlowDirection = FlowDirection.LeftToRight;
-            }
-            else
-            {
-                winLogIn.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
-                grid_changePassword.FlowDirection = FlowDirection.RightToLeft;
-            }
+                #region translate
 
-            translate();
-            #endregion
+                //if (winLogIn.lang.Equals("en"))
+                //{
+                //    winLogIn.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                //    grid_changePassword.FlowDirection = FlowDirection.LeftToRight;
+                //}
+                //else
+                //{
+                //    winLogIn.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                //    grid_changePassword.FlowDirection = FlowDirection.RightToLeft;
+                //}
 
-            fillBranch();
+                //translate();
+                #endregion
+
+                fillBranch();
+            }
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex,this,sender); }
         }
 
         private async void fillBranch()
@@ -83,30 +97,47 @@ namespace POS.View.windows
 
         private void HandleKeyPress(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Return)
+            try
             {
-                Btn_save_Click(null, null);
+                if (e.Key == Key.Return)
+                {
+                    Btn_save_Click(null, null);
+                }
             }
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex,this,sender); }
         }
 
-        SetValues valueModel = new SetValues();
-        List<SetValues> values = new List<SetValues>();
-        UsersLogs userLogsModel = new UsersLogs();
-        UserSetValues uSetValuesModel = new UserSetValues();
-
-        public int settingsPoSId = 0;
-        public int userId;
+        List<SettingCls> set = new List<SettingCls>();
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {//save
+
             #region validate
             validateEmptyComboBox(cb_branch, p_errorBranch, tt_errorBranch, "trEmptyBranchToolTip");
             validateEmptyComboBox(cb_pos , p_errorPos , tt_errorPos , "trErrorEmptyPosToolTip");
             #endregion
 
-            MainWindow.posID = Convert.ToInt32(cb_pos.SelectedValue);
-            MainWindow.branchID = Convert.ToInt32(cb_branch.SelectedValue);
+            if (!cb_pos.Text.Equals(""))
+            {
+                //update pos and branch in main window
+                MainWindow.branchID = Convert.ToInt32(cb_branch.SelectedValue);
+                MainWindow.posID = Convert.ToInt32(cb_pos.SelectedValue);
+                
+                //save pos and branch to settings file
+                Properties.Settings.Default.pos = cb_pos.SelectedValue.ToString();
+                Properties.Settings.Default.Save();
 
-            this.Close();
+                Window.GetWindow(this).Opacity = 0.2;
+                wd_setupGeneralSetting w = new wd_setupGeneralSetting();
+                w.ShowDialog();
+                Window.GetWindow(this).Opacity = 1;
+
+                this.Close();
+            }
+            else
+            {
+            }
+           
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -123,8 +154,6 @@ namespace POS.View.windows
             string name = sender.GetType().Name;
             validateEmpty(name, sender);
         }
-
-       
 
         private void validateEmpty(string name, object sender)
         {

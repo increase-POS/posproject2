@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -699,8 +700,30 @@ namespace POS.Classes
                 txb.Focus();
             }
         }
-        static public void ExceptionMessage(Exception ex)
+        
+        static public void ExceptionMessage(Exception ex ,object window, object sender = null)
         {
+            string _window , _sender = "";
+
+            _window = window.GetType().Name;
+
+            if (!string.IsNullOrEmpty(sender.ToString()))
+                if (sender.GetType().Name == "TextBox")
+                    _sender = (sender as TextBox).Name;
+                else if (sender.GetType().Name == "ComboBox")
+                    _sender = (sender as ComboBox).Name;
+                else if (sender.GetType().Name == "DatePicker")
+                    _sender = (sender as DatePicker).Name;
+                else if (sender.GetType().Name == "DataGrid")
+                    _sender = (sender as DataGrid).Name;
+                else if (sender.GetType().Name == "ToggleButton")
+                    _sender = (sender as ToggleButton).Name;
+                else
+                    _sender = sender.GetType().Name;
+
+           
+
+            //Message
             if (ex.HResult == -2146233088)
                 Toaster.ShowWarning(MainWindow.mainWindow, message: MainWindow.resourcemanager.GetString("trNoInternetConnection"), animation: ToasterAnimation.FadeIn);
             else

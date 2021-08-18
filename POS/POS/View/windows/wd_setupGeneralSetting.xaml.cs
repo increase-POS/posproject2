@@ -32,7 +32,7 @@ namespace POS.View.windows
                 InitializeComponent();
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this); }
         }
 
         List<SetValues> languages = new List<SetValues>();
@@ -64,7 +64,7 @@ namespace POS.View.windows
             catch(Exception ex)
             {
                 SectionData.EndAwait(grid_mainGrid, this);
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -102,10 +102,11 @@ namespace POS.View.windows
         private async void fillLanguages()
         {
             languages = await valueModel.GetBySetName("language");
-            foreach (var v in languages)
+           foreach(var v in languages)
             {
-                v.value = "English";
-                 v.value = "Arabic";
+                if (v.value == "en")      v.value = "English";
+                else if (v.value == "ar") v.value = "Arabic";
+
             }
             cb_language.ItemsSource = languages;
             cb_language.DisplayMemberPath = "value";
@@ -196,6 +197,7 @@ namespace POS.View.windows
 
                 //move to next pabe
                 wd_companyInfo comInfo = new wd_companyInfo();
+                comInfo.isFirstTime = true;
                 this.Close();
                 comInfo.ShowDialog();
                 SectionData.EndAwait(grid_mainGrid, this);
@@ -203,7 +205,7 @@ namespace POS.View.windows
             catch(Exception ex)
             {
                 SectionData.EndAwait(grid_mainGrid, this);
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -337,7 +339,7 @@ namespace POS.View.windows
                 cb_currency.SelectedValue = cb_region.SelectedValue;
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
         }
     }
 }

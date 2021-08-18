@@ -2077,4 +2077,16 @@
   <data name="trStocktakingItems" xml:space="preserve">
     <value>عناصر الجرد</value>
   </data>
+  <data name="trDepositor/Recipient" xml:space="preserve">
+    <value>المودع/المستلم</value>
+  </data>
+  <data name="trPayments/Received" xml:space="preserve">
+    <value>المدفوعات/المقبوضات</value>
+  </data>
+  <data name="trSalesInvoices" xml:space="preserve">
+    <value>فواتير المبيعات</value>
+  </data>
+  <data name="trSelect" xml:space="preserve">
+    <value>اختيار</value>
+  </data>
 </root>

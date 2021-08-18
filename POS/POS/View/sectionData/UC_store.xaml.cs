@@ -111,7 +111,7 @@ namespace POS.View
                 }
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this); }
         }
         //area code methods
         async Task<IEnumerable<CountryCode>> RefreshCountry()
@@ -216,7 +216,7 @@ namespace POS.View
                 }
         }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
 
     }
     private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
@@ -232,7 +232,7 @@ namespace POS.View
                 SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
     }
     private void Tb_name_LostFocus(object sender, RoutedEventArgs e)
     {
@@ -241,7 +241,7 @@ namespace POS.View
                 SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
     }
     private void Tb_email_LostFocus(object sender, RoutedEventArgs e)
     {
@@ -250,7 +250,7 @@ namespace POS.View
                 SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
     }
 
     private void translate()
@@ -330,7 +330,7 @@ namespace POS.View
                 tb_email.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
     }
 
     private async void Btn_add_Click(object sender, RoutedEventArgs e)
@@ -409,7 +409,7 @@ namespace POS.View
             catch(Exception ex)
             {
                 SectionData.EndAwait(grid_ucStore , this);
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         async void AddFreeThone(int branchId)
@@ -535,7 +535,7 @@ namespace POS.View
             catch(Exception ex)
             {
                 SectionData.EndAwait(grid_ucStore , this);
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -609,7 +609,7 @@ namespace POS.View
             catch(Exception ex)
             {
                 SectionData.EndAwait(grid_ucStore , this);
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
     private async void activate()
@@ -666,7 +666,7 @@ namespace POS.View
             catch(Exception ex)
             {
                 SectionData.EndAwait(grid_ucStore , this);
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
     }
         async void fillComboBranchParent()
@@ -701,7 +701,7 @@ namespace POS.View
             catch(Exception ex)
             {
                 SectionData.EndAwait(grid_ucStore , this);
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -738,7 +738,7 @@ namespace POS.View
             catch(Exception ex)
             {
                 SectionData.EndAwait(grid_ucStore , this);
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
     }
 
@@ -756,7 +756,7 @@ namespace POS.View
             catch(Exception ex)
             {
                 SectionData.EndAwait(grid_ucStore , this);
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
     }
 
@@ -767,7 +767,7 @@ namespace POS.View
                 SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
     }
 
     private void tb_mobile_LostFocus(object sender, RoutedEventArgs e)
@@ -777,7 +777,7 @@ namespace POS.View
                 SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
     }
 
     
@@ -804,7 +804,7 @@ namespace POS.View
                 SectionData.validateEmptyTextBox(tb_code, p_errorCode, tt_errorCode, "trEmptyCodeToolTip");
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
     }
 
     private void tb_code_TextChanged(object sender, TextChangedEventArgs e)
@@ -814,7 +814,7 @@ namespace POS.View
                 SectionData.validateEmptyTextBox(tb_code, p_errorCode, tt_errorCode, "trEmptyCodeToolTip");
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
 
     }
 
@@ -825,7 +825,7 @@ namespace POS.View
                 SectionData.validateEmptyComboBox(cb_branch, p_errorBranch, tt_errorBranch, "trEmptyBranchToolTip");
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
     }
 
     private async void Cb_areaPhone_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -867,7 +867,7 @@ namespace POS.View
             catch(Exception ex)
             {
                 SectionData.EndAwait(grid_ucStore , this);
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
     }
 
@@ -884,7 +884,7 @@ namespace POS.View
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
     }
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {
@@ -903,7 +903,7 @@ namespace POS.View
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
         }
 
         void FN_ExportToExcel()
@@ -973,7 +973,7 @@ namespace POS.View
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
             }
 
             private void Btn_print_Click(object sender, RoutedEventArgs e)
@@ -1009,7 +1009,7 @@ namespace POS.View
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
                 }
                 private void btn_pieChart_Click(object sender, RoutedEventArgs e)
         {
@@ -1027,7 +1027,7 @@ namespace POS.View
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
                     }
                     private void Tb_code_PreviewTextInput(object sender, TextCompositionEventArgs e)
     {
@@ -1074,7 +1074,7 @@ namespace POS.View
             }
             catch(Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
             }
         

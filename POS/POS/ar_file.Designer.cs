@@ -1114,6 +1114,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to المودع/المستلم.
+        /// </summary>
+        internal static string trDepositor_Recipient {
+            get {
+                return ResourceManager.GetString("trDepositor/Recipient", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to المودع....
         /// </summary>
         internal static string trDepositorHint {
@@ -3707,6 +3716,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to المدفوعات/المقبوضات.
+        /// </summary>
+        internal static string trPayments_Received {
+            get {
+                return ResourceManager.GetString("trPayments/Received", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to نوع الدفع....
         /// </summary>
         internal static string trPaymentTypeHint {
@@ -4535,6 +4553,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to فواتير المبيعات.
+        /// </summary>
+        internal static string trSalesInvoices {
+            get {
+                return ResourceManager.GetString("trSalesInvoices", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to مندوب المبيعات.
         /// </summary>
         internal static string trSalesMan {
@@ -4684,6 +4711,15 @@ namespace POS {
         internal static string trSectionLocation {
             get {
                 return ResourceManager.GetString("trSectionLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to اختيار.
+        /// </summary>
+        internal static string trSelect {
+            get {
+                return ResourceManager.GetString("trSelect", resourceCulture);
             }
         }
         

@@ -71,7 +71,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
         void permission()
@@ -120,17 +120,11 @@ namespace POS.View
 
         void refreashBachgroundClick(Button btn)
         {
-            try
-            {
+           
                 refreashBackground();
                 btn.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
                 btn.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
-            }
-            catch (Exception ex)
-            {
-
-                SectionData.ExceptionMessage(ex);
-            }
+           
         }
 
 
@@ -147,7 +141,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -164,7 +158,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -182,7 +176,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -198,7 +192,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
 
@@ -215,7 +209,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex);
+                SectionData.ExceptionMessage(ex,this,sender);
             }
         }
     }

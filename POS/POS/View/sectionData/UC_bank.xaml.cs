@@ -100,22 +100,19 @@ namespace POS.View
                 }
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this); }
         }
 
         //area code methods
         async Task<IEnumerable<CountryCode>> RefreshCountry()
         {
-            SectionData.StartAwait(grid_ucBank);
             countrynum = await countrycodes.GetAllCountries();
-            SectionData.EndAwait(grid_ucBank, this);
 
             return countrynum;
         }
         private async void fillCountries()
         {
-            try
-            {
+           
                 if (countrynum is null)
                     await RefreshCountry();
 
@@ -129,28 +126,21 @@ namespace POS.View
 
                 cb_area.SelectedIndex = MainWindow.Region.countryId;
                 cb_areaPhone.SelectedIndex = MainWindow.Region.countryId;
-            }
-            catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+         
 
         }
 
         async Task<IEnumerable<City>> RefreshCity()
         {
-            SectionData.StartAwait(grid_ucBank);
             citynum = await cityCodes.Get();
-            SectionData.EndAwait(grid_ucBank , this);
             return citynum;
         }
         private async void fillCity()
         {
-            try
-            {
+           
                 if (citynum is null)
                     await RefreshCity();
-            }
-            catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+           
 
         }
         //end areacod
@@ -225,7 +215,7 @@ namespace POS.View
                 });
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
 
         }
 
@@ -236,7 +226,7 @@ namespace POS.View
                 SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
         }
 
         private void Tb_name_LostFocus(object sender, RoutedEventArgs e)
@@ -246,7 +236,7 @@ namespace POS.View
                 SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
         }
 
         private void Tb_accNum_TextChanged(object sender, TextChangedEventArgs e)
@@ -256,7 +246,7 @@ namespace POS.View
                 SectionData.validateEmptyTextBox(tb_accNumber, p_errorAccNum, tt_errorAccNum, "trEmptyAccNumToolTip");
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
         }
 
 
@@ -267,7 +257,7 @@ namespace POS.View
                 SectionData.validateEmptyTextBox(tb_accNumber, p_errorAccNum, tt_errorAccNum, "trEmptyAccNumToolTip");
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
         }
 
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
@@ -302,7 +292,7 @@ namespace POS.View
 
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
         }
 
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
@@ -373,7 +363,7 @@ namespace POS.View
                 SectionData.EndAwait(grid_ucBank, this);
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
         }
 
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
@@ -445,7 +435,7 @@ namespace POS.View
 
             }
             catch (Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
         }
 
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
@@ -508,14 +498,12 @@ namespace POS.View
                 SectionData.EndAwait(grid_ucBank , this);
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
         }
 
         private async void activate()
         {//activate
-            try
-            {
-                SectionData.StartAwait(grid_ucBank);
+           
                 bank.isActive = 1;
 
                 string s = await bankModel.saveBank(bank);
@@ -527,10 +515,7 @@ namespace POS.View
 
                 await RefreshBanksList();
                 Tb_search_TextChanged(null, null);
-                SectionData.EndAwait(grid_ucBank , this);
-            }
-            catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+               
 
         }
         private void Dg_bank_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -590,7 +575,7 @@ namespace POS.View
                 }
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
         }
 
         private void tb_mobile_LostFocus(object sender, RoutedEventArgs e)
@@ -600,7 +585,7 @@ namespace POS.View
                 SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
         }
 
         private void tb_mobile_TextChanged(object sender, TextChangedEventArgs e)
@@ -610,7 +595,7 @@ namespace POS.View
                 SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
         }
 
         private void tb_phone_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -625,7 +610,7 @@ namespace POS.View
                 SectionData.validateEmptyTextBox(tb_phone, p_errorPhone, tt_errorPhone, "trEmptyPhoneToolTip");
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
         }
 
         private void Tb_phone_LostFocus(object sender, RoutedEventArgs e)
@@ -635,7 +620,7 @@ namespace POS.View
                 SectionData.validateEmptyTextBox(tb_phone, p_errorPhone, tt_errorPhone, "trEmptyPhoneToolTip");
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
         }
 
         private void Tb_mobile_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -650,8 +635,7 @@ namespace POS.View
 
         void FN_ExportToExcel()
         {
-            try
-            {
+            
                 var QueryExcel = banksQuery.AsEnumerable().Select(x => new
                 {
                     Name = x.name,
@@ -670,9 +654,7 @@ namespace POS.View
                 DTForExcel.Columns[5].Caption = MainWindow.resourcemanager.GetString("trNote");
 
                 ExportToExcel.Export(DTForExcel);
-            }
-            catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+           
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -687,7 +669,7 @@ namespace POS.View
                 });
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
         }
 
         private async void Tgl_bankIsActive_Checked(object sender, RoutedEventArgs e)
@@ -700,7 +682,7 @@ namespace POS.View
                 Tb_search_TextChanged(null, null);
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
         }
 
         private async void Tgl_bankIsActive_Unchecked(object sender, RoutedEventArgs e)
@@ -715,30 +697,22 @@ namespace POS.View
                 SectionData.EndAwait(grid_ucBank , this);
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
         }
 
         async Task<IEnumerable<Bank>> RefreshBanksList()
         {
-            try
-            {
-                MainWindow.mainWindow.StartAwait();
+             
                 banks = await bankModel.GetBanksAsync();
-                MainWindow.mainWindow.EndAwait();
-            }
-            catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+               
             return banks;
         }
         void RefreshBankView()
         {
-            try
-            {
+            
                 dg_bank.ItemsSource = banksQuery;
                 txt_count.Text = banksQuery.Count().ToString();
-            }
-            catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+           
         }
 
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
@@ -763,7 +737,7 @@ namespace POS.View
                 SectionData.EndAwait(grid_ucBank , this);
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
         }
 
         private void Cb_areaPhone_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -803,7 +777,7 @@ namespace POS.View
                 }
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
         }
 
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
@@ -820,7 +794,7 @@ namespace POS.View
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
 
         }
 
@@ -828,8 +802,7 @@ namespace POS.View
         {
             bool b = false;
 
-            try
-            {
+           
                 List<Bank> banks = await bankModel.GetBanksAsync();
                 Bank bank1 = new Bank();
 
@@ -841,9 +814,7 @@ namespace POS.View
                         (bank1.bankId != bank.bankId))
                     { b = true; break; }
                 }
-            }
-            catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            
             return b;
         }
 
@@ -864,7 +835,7 @@ namespace POS.View
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
         }
 
 
@@ -907,7 +878,7 @@ namespace POS.View
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
         }
 
 
@@ -942,7 +913,7 @@ namespace POS.View
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
         }
 
 
@@ -961,7 +932,7 @@ namespace POS.View
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            { SectionData.ExceptionMessage(ex,this,sender); }
         }
 
     }

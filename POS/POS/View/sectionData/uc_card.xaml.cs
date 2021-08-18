@@ -62,7 +62,7 @@ namespace POS.View.sectionData
             try
             {
                 InitializeComponent();
-            
+
                 if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1440)
                 {
                     txt_deleteButton.Visibility = Visibility.Visible;
@@ -93,15 +93,14 @@ namespace POS.View.sectionData
 
                 }
             }
-            catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            catch (Exception ex)
+            { SectionData.ExceptionMessage(ex,this); }
         }
 
 
         private void translate()
         {
-            try
-            {
+          
                 MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
                 txt_baseInformation.Text = MainWindow.resourcemanager.GetString("trBaseInformation");
                 MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_name, MainWindow.resourcemanager.GetString("trCardNameHint"));
@@ -123,8 +122,7 @@ namespace POS.View.sectionData
                 tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
                 tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
                 tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
-            }
-            catch(Exception ex) { SectionData.ExceptionMessage(ex); }
+           
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -154,8 +152,8 @@ namespace POS.View.sectionData
                 });
                 MainWindow mw = new MainWindow();
             }
-            catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            catch (Exception ex)
+            { SectionData.ExceptionMessage(ex,this,sender); }
         }
 
         private void Tb_name_TextChanged(object sender, TextChangedEventArgs e)
@@ -164,7 +162,7 @@ namespace POS.View.sectionData
             {
                 SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
             }
-            catch(Exception ex) { SectionData.ExceptionMessage(ex); }
+            catch (Exception ex) { SectionData.ExceptionMessage(ex,this,sender); }
         }
 
         private void Tb_name_LostFocus(object sender, RoutedEventArgs e)
@@ -173,7 +171,7 @@ namespace POS.View.sectionData
             {
                 SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
             }
-            catch(Exception ex) { SectionData.ExceptionMessage(ex); }
+            catch (Exception ex) { SectionData.ExceptionMessage(ex,this,sender); }
         }
 
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
@@ -194,7 +192,7 @@ namespace POS.View.sectionData
 
                 tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             }
-            catch(Exception ex) { SectionData.ExceptionMessage(ex); }
+            catch (Exception ex) { SectionData.ExceptionMessage(ex,this,sender); }
         }
 
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
@@ -229,12 +227,12 @@ namespace POS.View.sectionData
 
                             string s = await cardModel.Save(card);
 
-                            if (s.Equals("true")) 
+                            if (s.Equals("true"))
                             {
                                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                                 Btn_clear_Click(null, null);
                             }
-                            else 
+                            else
                                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
                             await RefreshCardsList();
@@ -246,10 +244,10 @@ namespace POS.View.sectionData
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
                 SectionData.EndAwait(grid_ucCard, this);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
-                SectionData.EndAwait(grid_ucCard , this);
+                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.EndAwait(grid_ucCard, this);
             }
         }
 
@@ -296,12 +294,12 @@ namespace POS.View.sectionData
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-                SectionData.EndAwait(grid_ucCard , this);
+                SectionData.EndAwait(grid_ucCard, this);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
-                SectionData.EndAwait(grid_ucCard , this);
+                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.EndAwait(grid_ucCard, this);
             }
         }
 
@@ -346,9 +344,9 @@ namespace POS.View.sectionData
 
                                 bool b = await cardModel.deleteCard(card.cardId, MainWindow.userID.Value, card.canDelete);
 
-                                if (b) 
+                                if (b)
                                     Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
-                                else 
+                                else
                                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
                             }
@@ -361,20 +359,18 @@ namespace POS.View.sectionData
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-                SectionData.EndAwait(grid_ucCard , this);
+                SectionData.EndAwait(grid_ucCard, this);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
-                SectionData.EndAwait(grid_ucCard , this);
+                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.EndAwait(grid_ucCard, this);
             }
         }
 
         private async void activate()
         {//activate
-            try
-            {
-                SectionData.StartAwait(grid_ucCard);
+           
                 card.isActive = 1;
 
                 string s = await cardModel.Save(card);
@@ -386,13 +382,6 @@ namespace POS.View.sectionData
 
                 await RefreshCardsList();
                 Tb_search_TextChanged(null, null);
-                SectionData.EndAwait(grid_ucCard , this);
-            }
-            catch(Exception ex)
-            {
-                SectionData.ExceptionMessage(ex);
-                SectionData.EndAwait(grid_ucCard , this);
-            }
 
         }
         private void Dg_card_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -443,8 +432,8 @@ namespace POS.View.sectionData
                     #endregion
                 }
             }
-            catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            catch (Exception ex)
+            { SectionData.ExceptionMessage(ex,this,sender); }
         }
 
         private void tb_phone_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -464,8 +453,7 @@ namespace POS.View.sectionData
 
         void FN_ExportToExcel()
         {
-            try
-            {
+           
                 var QueryExcel = cardsQuery.AsEnumerable().Select(x => new
                 {
                     Name = x.name,
@@ -476,9 +464,7 @@ namespace POS.View.sectionData
                 DTForExcel.Columns[1].Caption = MainWindow.resourcemanager.GetString("trNote");
 
                 ExportToExcel.Export(DTForExcel);
-            }
-            catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+           
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -492,8 +478,8 @@ namespace POS.View.sectionData
                     t1.Start();
                 });
             }
-            catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            catch (Exception ex)
+            { SectionData.ExceptionMessage(ex,this,sender); }
         }
 
         private async void Tgl_cardIsActive_Checked(object sender, RoutedEventArgs e)
@@ -505,12 +491,12 @@ namespace POS.View.sectionData
                     await RefreshCardsList();
                 tgl_cardState = 1;
                 Tb_search_TextChanged(null, null);
-                SectionData.EndAwait(grid_ucCard , this);
+                SectionData.EndAwait(grid_ucCard, this);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
-                SectionData.EndAwait(grid_ucCard , this);
+                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.EndAwait(grid_ucCard, this);
             }
         }
 
@@ -523,39 +509,30 @@ namespace POS.View.sectionData
                     await RefreshCardsList();
                 tgl_cardState = 0;
                 Tb_search_TextChanged(null, null);
-                SectionData.EndAwait(grid_ucCard , this);
+                SectionData.EndAwait(grid_ucCard, this);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
-                SectionData.EndAwait(grid_ucCard , this);
+                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.EndAwait(grid_ucCard, this);
             }
         }
 
         async Task<IEnumerable<Card>> RefreshCardsList()
         {
-            try
-            {
+           
                 MainWindow.mainWindow.StartAwait();
                 cards = await cardModel.GetAll();
                 MainWindow.mainWindow.EndAwait();
-            }
-            catch(Exception ex)
-            {
-                SectionData.ExceptionMessage(ex);
-                SectionData.EndAwait(grid_ucCard , this);
-            }
+           
             return cards;
         }
         void RefreshCardView()
         {
-            try
-            {
+           
                 dg_card.ItemsSource = cardsQuery;
                 txt_count.Text = cardsQuery.Count().ToString();
-            }
-            catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+           
         }
 
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
@@ -579,10 +556,10 @@ namespace POS.View.sectionData
                 }
                 SectionData.EndAwait(grid_ucCard, this);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex);
-                SectionData.EndAwait(grid_ucCard , this);
+                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.EndAwait(grid_ucCard, this);
             }
 
         }
@@ -601,17 +578,15 @@ namespace POS.View.sectionData
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
             }
-            catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
-          
+            catch (Exception ex)
+            { SectionData.ExceptionMessage(ex,this,sender); }
+
         }
 
         private async Task<bool> chkDuplicateCard()
         {
             bool b = false;
-            try
-            {
-                SectionData.StartAwait(grid_ucCard);
+          
                 List<Card> cards = await cardModel.GetAll();
                 Card card1 = new Card();
                 for (int i = 0; i < cards.Count(); i++)
@@ -620,13 +595,6 @@ namespace POS.View.sectionData
                     if ((card1.name.Equals(tb_name.Text.Trim())))
                     { b = true; break; }
                 }
-                SectionData.EndAwait(grid_ucCard , this);
-            }
-            catch(Exception ex)
-            {
-                SectionData.ExceptionMessage(ex);
-                SectionData.EndAwait(grid_ucCard , this);
-            }
             return b;
         }
 
@@ -646,8 +614,8 @@ namespace POS.View.sectionData
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
             }
-            catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            catch (Exception ex)
+            { SectionData.ExceptionMessage(ex,this,sender); }
         }
 
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
@@ -656,12 +624,40 @@ namespace POS.View.sectionData
             {
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
                 {
+                    List<ReportParameter> paramarr = new List<ReportParameter>();
+
+                    string addpath;
+                    bool isArabic = ReportCls.checkLang();
+                    if (isArabic)
+                    {
+                        addpath = @"\Reports\SectionData\Ar\ArBankReport.rdlc";
+                    }
+                    else addpath = @"\Reports\SectionData\EN\CardReport.rdlc";
+                    string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+                    ReportCls.checkLang();
+
+                    clsReports.cardReport(cardsQuery, rep, reppath);
+                    clsReports.setReportLanguage(paramarr);
+                    clsReports.Header(paramarr);
+
+                    rep.SetParameters(paramarr);
+
+                    rep.Refresh();
+
+                    saveFileDialog.Filter = "PDF|*.pdf;";
+
+                    if (saveFileDialog.ShowDialog() == true)
+                    {
+                        string filepath = saveFileDialog.FileName;
+                        LocalReportExtensions.ExportToPDF(rep, filepath);
+                    }
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
             }
-            catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            catch (Exception ex)
+            { SectionData.ExceptionMessage(ex,this,sender); }
         }
 
         private void Btn_print_Click(object sender, RoutedEventArgs e)
@@ -670,12 +666,31 @@ namespace POS.View.sectionData
             {
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
                 {
+                    List<ReportParameter> paramarr = new List<ReportParameter>();
+
+                    string addpath;
+                    bool isArabic = ReportCls.checkLang();
+                    if (isArabic)
+                    {
+                        addpath = @"\Reports\SectionData\Ar\ArBankReport.rdlc";
+                    }
+                    else addpath = @"\Reports\SectionData\EN\CardReport.rdlc";
+                    string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+                    ReportCls.checkLang();
+                    clsReports.cardReport(cardsQuery, rep, reppath);
+                    clsReports.setReportLanguage(paramarr);
+                    clsReports.Header(paramarr);
+
+                    rep.SetParameters(paramarr);
+                    rep.Refresh();
+                    LocalReportExtensions.PrintToPrinter(rep);
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
             }
-            catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            catch (Exception ex)
+            { SectionData.ExceptionMessage(ex,this,sender); }
         }
 
         private void btn_pieChart_Click(object sender, RoutedEventArgs e)
@@ -692,8 +707,8 @@ namespace POS.View.sectionData
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
             }
-            catch(Exception ex)
-            { SectionData.ExceptionMessage(ex); }
+            catch (Exception ex)
+            { SectionData.ExceptionMessage(ex,this,sender); }
         }
     }
 }
