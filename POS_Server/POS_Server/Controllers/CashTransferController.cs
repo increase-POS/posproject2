@@ -1290,6 +1290,7 @@ namespace POS_Server.Controllers
                                                          from jpp in jp.DefaultIfEmpty()
                                                          from juu in ju.DefaultIfEmpty()
                                                          from jpcc in jpcr.DefaultIfEmpty()
+
                                                          select new CashTransferModel()
                                                          {
                                                              cashTransId = C.cashTransId,
@@ -1323,7 +1324,7 @@ namespace POS_Server.Controllers
                                                              cardId = C.cardId,
                                                              bondId = C.bondId,
                                                              shippingCompanyId = C.shippingCompanyId,
-                                                         }).Where(C => C.invId == invId).ToList();
+                                                         }).Where(C => C.invId == invId && C.processType != "inv").ToList();
 
 
 
@@ -1341,6 +1342,39 @@ namespace POS_Server.Controllers
 
 
 
+        [HttpGet]
+        [Route("GetCountByInvId")]
+        public IHttpActionResult GetCountByInvId(int invId)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid)
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+
+                    int cachtrans = entity.cashTransfer.Where(C => C.invId == invId && C.processType != "inv").ToList().Count();
+
+                    if (cachtrans == null)
+                        return NotFound();
+                    else
+                        return Ok(cachtrans);
+
+                }
+            }
+            else
+                return NotFound();
+        }
         /// <summary>
         /// /////////////
         /// </summary>
