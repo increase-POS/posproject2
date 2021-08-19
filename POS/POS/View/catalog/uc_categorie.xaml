@@ -9,7 +9,7 @@
              d:DesignHeight="675" d:DesignWidth="985"
              Loaded="UserControl_Loaded">
     <!--Main grid-->
-            <Grid x:Name="grid_ucCategorie">
+    <Grid x:Name="grid_main">
 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="2.54*"/>

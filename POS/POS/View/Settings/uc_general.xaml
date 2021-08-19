@@ -900,7 +900,7 @@
                                 Background="White" HorizontalAlignment="Center">
                         <Button Background="Transparent" BorderThickness="0"
                                  Padding="0" VerticalAlignment="Center" HorizontalAlignment="Center"
-                       Height="auto" Width="auto" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                       Height="auto" Width="auto" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="Button_Click">
                             <Path       VerticalAlignment="Center" HorizontalAlignment="Center"
                                     Height="25" Width="25"  
                                 Fill="#178DD2" Stretch="Fill" 

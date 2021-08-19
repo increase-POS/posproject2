@@ -2089,4 +2089,52 @@
   <data name="trSelect" xml:space="preserve">
     <value>اختيار</value>
   </data>
+  <data name="trAccountStatement" xml:space="preserve">
+    <value>كشف حساب</value>
+  </data>
+  <data name="trAll" xml:space="preserve">
+    <value>الكل</value>
+  </data>
+  <data name="trDateHint" xml:space="preserve">
+    <value>التاريخ ...</value>
+  </data>
+  <data name="trDescription" xml:space="preserve">
+    <value>الوصف</value>
+  </data>
+  <data name="trFromToPosHint" xml:space="preserve">
+    <value>من نقطة بيع ,إلى نقطة بيع , ...</value>
+  </data>
+  <data name="trOneDeposit" xml:space="preserve">
+    <value>قبضة</value>
+  </data>
+  <data name="trOnePayment" xml:space="preserve">
+    <value>دفعة</value>
+  </data>
+  <data name="trPayment" xml:space="preserve">
+    <value>الدفعة</value>
+  </data>
+  <data name="trPaymentsRecipientHint" xml:space="preserve">
+    <value>المدفوعات,المستلمين, ...</value>
+  </data>
+  <data name="trRequired" xml:space="preserve">
+    <value>المطلوب</value>
+  </data>
+  <data name="trShippingCompanyHint" xml:space="preserve">
+    <value>شركة الشحن ...</value>
+  </data>
+  <data name="trVendorCustomerUserHint" xml:space="preserve">
+    <value>مورد,زبون,مستخدم ...</value>
+  </data>
+  <data name="trWorthy" xml:space="preserve">
+    <value>المستحق</value>
+  </data>
+  <data name="tr_Balance" xml:space="preserve">
+    <value>رصيد</value>
+  </data>
+  <data name="tr_Card" xml:space="preserve">
+    <value>بطاقة</value>
+  </data>
+  <data name="tr_Invoice" xml:space="preserve">
+    <value>فاتورة</value>
+  </data>
 </root>

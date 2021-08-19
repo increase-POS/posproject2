@@ -170,6 +170,7 @@
     <Compile Include="Classes\DataGridHelper.cs" />
     <Compile Include="Classes\DocImage.cs" />
     <Compile Include="Classes\EmailClass.cs" />
+    <Compile Include="Classes\ErrorClass.cs" />
     <Compile Include="Classes\ExportToExcel.cs" />
     <Compile Include="Classes\fillPurchaseStatistic.cs" />
     <Compile Include="Classes\FindVisualChildren.cs" />

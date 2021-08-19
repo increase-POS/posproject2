@@ -64,7 +64,7 @@ namespace POS.View
             try
             {
                 InitializeComponent();
-            
+
                 if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1440)
                 {
                     txt_deleteButton.Visibility = Visibility.Visible;
@@ -95,24 +95,25 @@ namespace POS.View
 
                 }
             }
-            catch(Exception ex)
-            { SectionData.ExceptionMessage(ex,this); }
+            catch (Exception ex)
+            { SectionData.ExceptionMessage(ex, this); }
         }
 
         private async void fillBranches()
         {
-           
-                var branches = await branchModel.GetAllWithoutMain("all");
-                cb_branch.ItemsSource = branches;
-                cb_branch.SelectedValuePath = "branchId";
-                cb_branch.DisplayMemberPath = "name";
+
+            var branches = await branchModel.GetAllWithoutMain("all");
+            cb_branch.ItemsSource = branches;
+            cb_branch.SelectedValuePath = "branchId";
+            cb_branch.DisplayMemberPath = "name";
         }
 
         private async void DG_pos_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try
             {
-                SectionData.StartAwait(grid_ucPos);
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
                 p_errorName.Visibility = Visibility.Collapsed;
                 p_errorCode.Visibility = Visibility.Collapsed;
                 p_errorSelectBranch.Visibility = Visibility.Collapsed;
@@ -163,12 +164,14 @@ namespace POS.View
                         }
                     }
                 }
-                SectionData.EndAwait(grid_ucPos, this);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                SectionData.EndAwait(grid_ucPos , this);
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
@@ -178,8 +181,8 @@ namespace POS.View
             {
                 SectionData.validateEmptyTextBox(tb_code, p_errorCode, tt_errorCode, "trEmptyCodeToolTip");
             }
-            catch(Exception ex)
-            { SectionData.ExceptionMessage(ex,this,sender); }
+            catch (Exception ex)
+            { SectionData.ExceptionMessage(ex, this, sender); }
         }
 
         private void Tb_code_LostFocus(object sender, RoutedEventArgs e)
@@ -188,8 +191,8 @@ namespace POS.View
             {
                 SectionData.validateEmptyTextBox(tb_code, p_errorCode, tt_errorCode, "trEmptyCodeToolTip");
             }
-            catch(Exception ex)
-            { SectionData.ExceptionMessage(ex,this,sender); }
+            catch (Exception ex)
+            { SectionData.ExceptionMessage(ex, this, sender); }
         }
 
         private void Tb_name_TextChanged(object sender, TextChangedEventArgs e)
@@ -198,8 +201,8 @@ namespace POS.View
             {
                 SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
             }
-            catch(Exception ex)
-            { SectionData.ExceptionMessage(ex,this,sender); }
+            catch (Exception ex)
+            { SectionData.ExceptionMessage(ex, this, sender); }
         }
 
         private void Tb_name_LostFocus(object sender, RoutedEventArgs e)
@@ -208,8 +211,8 @@ namespace POS.View
             {
                 SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
             }
-            catch(Exception ex)
-            { SectionData.ExceptionMessage(ex,this,sender); }
+            catch (Exception ex)
+            { SectionData.ExceptionMessage(ex, this, sender); }
         }
 
         private void Cb_branchId_LostFocus(object sender, RoutedEventArgs e)
@@ -218,8 +221,8 @@ namespace POS.View
             {
                 SectionData.validateEmptyComboBox(cb_branch, p_errorSelectBranch, tt_errorSelectBranch, "trEmptyBranchToolTip");
             }
-            catch(Exception ex)
-            { SectionData.ExceptionMessage(ex,this,sender); }
+            catch (Exception ex)
+            { SectionData.ExceptionMessage(ex, this, sender); }
         }
 
         private void Cb_branchId_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -228,54 +231,56 @@ namespace POS.View
             {
                 SectionData.validateEmptyComboBox(cb_branch, p_errorSelectBranch, tt_errorSelectBranch, "trEmptyBranchToolTip");
             }
-            catch(Exception ex)
-            { SectionData.ExceptionMessage(ex,this,sender); }
+            catch (Exception ex)
+            { SectionData.ExceptionMessage(ex, this, sender); }
         }
         private void translate()
         {
-           
-                txt_pos.Text = MainWindow.resourcemanager.GetString("trPOS");
-                MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
-                txt_baseInformation.Text = MainWindow.resourcemanager.GetString("trBaseInformation");
-                MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_name, MainWindow.resourcemanager.GetString("trPosNameHint"));
-                MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_code, MainWindow.resourcemanager.GetString("trPosCodeHint"));
-                MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_branch, MainWindow.resourcemanager.GetString("trSelectPosBranchHint"));
 
-                txt_addButton.Text = MainWindow.resourcemanager.GetString("trAdd");
-                txt_updateButton.Text = MainWindow.resourcemanager.GetString("trUpdate");
-                txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trDelete");
-                dg_pos.Columns[0].Header = MainWindow.resourcemanager.GetString("trPosName");
-                dg_pos.Columns[1].Header = MainWindow.resourcemanager.GetString("trPosCode");
-                dg_pos.Columns[2].Header = MainWindow.resourcemanager.GetString("trBranchName");
-                dg_pos.Columns[3].Header = MainWindow.resourcemanager.GetString("trNote");
+            txt_pos.Text = MainWindow.resourcemanager.GetString("trPOS");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
+            txt_baseInformation.Text = MainWindow.resourcemanager.GetString("trBaseInformation");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_name, MainWindow.resourcemanager.GetString("trPosNameHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_code, MainWindow.resourcemanager.GetString("trPosCodeHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_branch, MainWindow.resourcemanager.GetString("trSelectPosBranchHint"));
 
-              
+            txt_addButton.Text = MainWindow.resourcemanager.GetString("trAdd");
+            txt_updateButton.Text = MainWindow.resourcemanager.GetString("trUpdate");
+            txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trDelete");
+            dg_pos.Columns[0].Header = MainWindow.resourcemanager.GetString("trPosName");
+            dg_pos.Columns[1].Header = MainWindow.resourcemanager.GetString("trPosCode");
+            dg_pos.Columns[2].Header = MainWindow.resourcemanager.GetString("trBranchName");
+            dg_pos.Columns[3].Header = MainWindow.resourcemanager.GetString("trNote");
 
-                tt_add_Button.Content = MainWindow.resourcemanager.GetString("trAdd");
-                tt_update_Button.Content = MainWindow.resourcemanager.GetString("trUpdate");
-                tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
 
-                tt_clear.Content = MainWindow.resourcemanager.GetString("trClear");
-                tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
-                tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
-                tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
-           
+
+            tt_add_Button.Content = MainWindow.resourcemanager.GetString("trAdd");
+            tt_update_Button.Content = MainWindow.resourcemanager.GetString("trUpdate");
+            tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
+
+            tt_clear.Content = MainWindow.resourcemanager.GetString("trClear");
+            tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
+            tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
+            tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
+
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             try
             {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
                 #region translate
                 if (MainWindow.lang.Equals("en"))
                 {
                     MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
-                    grid_ucPos.FlowDirection = FlowDirection.LeftToRight;
+                    grid_main.FlowDirection = FlowDirection.LeftToRight;
                 }
                 else
                 {
                     MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
-                    grid_ucPos.FlowDirection = FlowDirection.RightToLeft;
+                    grid_main.FlowDirection = FlowDirection.RightToLeft;
                 }
 
                 translate();
@@ -290,16 +295,24 @@ namespace POS.View
                 {
                     Tb_search_TextChanged(null, null);
                 });
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
             }
-            catch(Exception ex)
-            { SectionData.ExceptionMessage(ex,this,sender); }
-         
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+
         }
 
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
         {//clear
             try
             {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
                 tb_name.Clear();
                 tb_code.Clear();
                 tb_notes.Clear();
@@ -312,9 +325,15 @@ namespace POS.View
                 tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
                 tb_code.Background = (Brush)bc.ConvertFrom("#f8f8f8");
                 cb_branch.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
             }
-            catch(Exception ex)
-            { SectionData.ExceptionMessage(ex,this,sender); }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
@@ -327,7 +346,8 @@ namespace POS.View
         {//add
             try
             {
-                SectionData.StartAwait(grid_ucPos);
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add") || SectionData.isAdminPermision())
                 {
                     pos.posId = 0;
@@ -357,12 +377,12 @@ namespace POS.View
 
                             string s = await posModel.savePos(pos);
 
-                            if (s.Equals("Pos Is Added Successfully")) 
+                            if (s.Equals("Pos Is Added Successfully"))
                             {
                                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                                 Btn_clear_Click(null, null);
                             }
-                            else 
+                            else
                                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
                             await RefreshPosList();
@@ -372,21 +392,23 @@ namespace POS.View
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-                SectionData.EndAwait(grid_ucPos, this);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                SectionData.EndAwait(grid_ucPos , this);
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-
         }
 
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
         {//update
             try
             {
-                SectionData.StartAwait(grid_ucPos);
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update") || SectionData.isAdminPermision())
                 {
                     #region validate
@@ -414,9 +436,9 @@ namespace POS.View
 
                             string s = await posModel.savePos(pos);
 
-                            if (s.Equals("Pos Is Updated Successfully"))  
+                            if (s.Equals("Pos Is Updated Successfully"))
                                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
-                            else 
+                            else
                                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
                             await RefreshPosList();
@@ -426,12 +448,14 @@ namespace POS.View
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-                SectionData.EndAwait(grid_ucPos, this);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                SectionData.EndAwait(grid_ucPos , this);
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
@@ -439,7 +463,8 @@ namespace POS.View
         {//delete
             try
             {
-                SectionData.StartAwait(grid_ucPos);
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete") || SectionData.isAdminPermision())
                 {
                     if (pos.posId != 1)
@@ -489,7 +514,7 @@ namespace POS.View
                             Tb_search_TextChanged(null, null);
 
                             //clear textBoxs
-                            Btn_clear_Click(sender, e);
+                            Btn_clear_Click(null, null);
 
                         }
                     }
@@ -499,51 +524,54 @@ namespace POS.View
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-                SectionData.EndAwait(grid_ucPos, this);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                SectionData.EndAwait(grid_ucPos , this);
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
         private async void activate()
         {//activate
-           
-                pos.isActive = 1;
 
-                string s = await posModel.savePos(pos);
+            pos.isActive = 1;
 
-                if (s.Equals("Pos Is Updated Successfully"))
-                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
-                else
-                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+            string s = await posModel.savePos(pos);
 
-                await RefreshPosList();
-                Tb_search_TextChanged(null, null);
-              
+            if (s.Equals("Pos Is Updated Successfully"))
+                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
+            else
+                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+            await RefreshPosList();
+            Tb_search_TextChanged(null, null);
+
         }
 
         async Task<IEnumerable<Pos>> RefreshPosList()
         {
-                poss = await posModel.GetPosAsync();
+            poss = await posModel.GetPosAsync();
             return poss;
         }
         void RefreshPosView()
         {
-          
-                dg_pos.ItemsSource = possQuery;
-                txt_count.Text = possQuery.Count().ToString();
-                cb_branch.SelectedIndex = -1;
-            
+
+            dg_pos.ItemsSource = possQuery;
+            txt_count.Text = possQuery.Count().ToString();
+            cb_branch.SelectedIndex = -1;
+
         }
 
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
         {//search
             try
             {
-                SectionData.StartAwait(grid_ucPos);
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
                 {
                     p_errorName.Visibility = Visibility.Collapsed;
@@ -557,12 +585,14 @@ namespace POS.View
                     ) && s.isActive == tgl_posState);
                     RefreshPosView();
                 }
-                SectionData.EndAwait(grid_ucPos, this);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                SectionData.EndAwait(grid_ucPos , this);
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
@@ -570,17 +600,20 @@ namespace POS.View
         {//Active
             try
             {
-                SectionData.StartAwait(grid_ucPos);
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
                 if (poss is null)
                     await RefreshPosList();
                 tgl_posState = 1;
                 Tb_search_TextChanged(null, null);
-                SectionData.EndAwait(grid_ucPos , this);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                SectionData.EndAwait(grid_ucPos , this);
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
@@ -588,23 +621,29 @@ namespace POS.View
         {//inActive
             try
             {
-                SectionData.StartAwait(grid_ucPos);
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
                 if (poss is null)
                     await RefreshPosList();
                 tgl_posState = 0;
                 Tb_search_TextChanged(null, null);
-                SectionData.EndAwait(grid_ucPos , this);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                SectionData.EndAwait(grid_ucPos , this);
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {//refresh
             try
             {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
                 {
                     RefreshPosList();
@@ -612,38 +651,44 @@ namespace POS.View
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-           
         }
         void FN_ExportToExcel()
         {
-           
-                var QueryExcel = possQuery.AsEnumerable().Select(x => new
-                {
-                    Name = x.name,
-                    Code = x.code,
-                    Branch = x.branchName,
-                    Notes = x.note
-                });
-                var DTForExcel = QueryExcel.ToDataTable();
 
-                DTForExcel.Columns[0].Caption = MainWindow.resourcemanager.GetString("trName");
-                DTForExcel.Columns[1].Caption = MainWindow.resourcemanager.GetString("trCode");
-                DTForExcel.Columns[2].Caption = MainWindow.resourcemanager.GetString("trBranch");
-                DTForExcel.Columns[3].Caption = MainWindow.resourcemanager.GetString("trNote");
+            var QueryExcel = possQuery.AsEnumerable().Select(x => new
+            {
+                Name = x.name,
+                Code = x.code,
+                Branch = x.branchName,
+                Notes = x.note
+            });
+            var DTForExcel = QueryExcel.ToDataTable();
 
-                ExportToExcel.Export(DTForExcel);
-           
+            DTForExcel.Columns[0].Caption = MainWindow.resourcemanager.GetString("trName");
+            DTForExcel.Columns[1].Caption = MainWindow.resourcemanager.GetString("trCode");
+            DTForExcel.Columns[2].Caption = MainWindow.resourcemanager.GetString("trBranch");
+            DTForExcel.Columns[3].Caption = MainWindow.resourcemanager.GetString("trNote");
+
+            ExportToExcel.Export(DTForExcel);
+
         }
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {
             try
             {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
                 {
                     this.Dispatcher.Invoke(() =>
@@ -655,9 +700,15 @@ namespace POS.View
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
             }
-            catch(Exception ex)
-            { SectionData.ExceptionMessage(ex,this,sender); }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
 
@@ -666,6 +717,9 @@ namespace POS.View
         {
             try
             {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
                 {
                     List<ReportParameter> paramarr = new List<ReportParameter>();
@@ -697,16 +751,24 @@ namespace POS.View
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
             }
-            catch(Exception ex)
-            { SectionData.ExceptionMessage(ex,this,sender); }
-
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
+        }
 
-            private void Btn_print_Click(object sender, RoutedEventArgs e)
+        private void Btn_print_Click(object sender, RoutedEventArgs e)
         {
             try
             {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
                 {
                     List<ReportParameter> paramarr = new List<ReportParameter>();
@@ -730,14 +792,23 @@ namespace POS.View
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
             }
-            catch(Exception ex)
-            { SectionData.ExceptionMessage(ex,this,sender); }
-                }
-                private void btn_pieChart_Click(object sender, RoutedEventArgs e)
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
+        private void btn_pieChart_Click(object sender, RoutedEventArgs e)
         {
             try
             {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
 
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
                 {
@@ -748,10 +819,16 @@ namespace POS.View
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
             }
-            catch(Exception ex)
-            { SectionData.ExceptionMessage(ex,this,sender); }
-                    }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
         private void Tb_code_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             e.Handled = e.Key == Key.Space;
@@ -764,6 +841,6 @@ namespace POS.View
                 e.Handled = true;
         }
 
-        
+
     }
 }

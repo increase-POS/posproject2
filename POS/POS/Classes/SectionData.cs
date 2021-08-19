@@ -707,7 +707,7 @@ namespace POS.Classes
 
             _window = window.GetType().Name;
 
-            if (!string.IsNullOrEmpty(sender.ToString()))
+            if (sender != null)
                 if (sender.GetType().Name == "TextBox")
                     _sender = (sender as TextBox).Name;
                 else if (sender.GetType().Name == "ComboBox")
@@ -742,21 +742,47 @@ namespace POS.Classes
             grid.Children.Add(progressRing);
 
         }
+        static public void EndAwait(Grid grid)
+        {
+            MahApps.Metro.Controls.ProgressRing progressRing = FindControls.FindVisualChildren<MahApps.Metro.Controls.ProgressRing>(grid)
+                .Where(x => x.Name == "prg_awaitRing").FirstOrDefault();
+            grid.Children.Remove(progressRing);
+
+            var progressRingList = FindControls.FindVisualChildren<MahApps.Metro.Controls.ProgressRing>(grid)
+                 .Where(x => x.Name == "prg_awaitRing");
+            if (progressRingList.Count() == 0)
+            {
+                grid.IsEnabled = true;
+                grid.Opacity = 1;
+            }
+        }
         static public void EndAwait(Grid grid, Window window)
         {
-            grid.IsEnabled = true;
-            grid.Opacity = 1;
             MahApps.Metro.Controls.ProgressRing progressRing = FindControls.FindVisualChildren<MahApps.Metro.Controls.ProgressRing>(window)
                 .Where(x => x.Name == "prg_awaitRing").FirstOrDefault();
             grid.Children.Remove(progressRing);
-        }
+
+            var progressRingList = FindControls.FindVisualChildren<MahApps.Metro.Controls.ProgressRing>(window)
+                 .Where(x => x.Name == "prg_awaitRing");
+            if(progressRingList.Count() == 0)
+            {
+                grid.IsEnabled = true;
+                grid.Opacity = 1;
+            }
+         }
         static public void EndAwait(Grid grid, UserControl window)
         {
-            grid.IsEnabled = true;
-            grid.Opacity = 1;
             MahApps.Metro.Controls.ProgressRing progressRing = FindControls.FindVisualChildren<MahApps.Metro.Controls.ProgressRing>(window)
                 .Where(x => x.Name == "prg_awaitRing").FirstOrDefault();
             grid.Children.Remove(progressRing);
+
+            var progressRingList = FindControls.FindVisualChildren<MahApps.Metro.Controls.ProgressRing>(window)
+                 .Where(x => x.Name == "prg_awaitRing");
+            if (progressRingList.Count() == 0)
+            {
+                grid.IsEnabled = true;
+                grid.Opacity = 1;
+            }
         }
 
     }

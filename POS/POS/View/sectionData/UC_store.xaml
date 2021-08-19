@@ -8,7 +8,7 @@
             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              d:DesignHeight="675" d:DesignWidth="985" Loaded="UserControl_Loaded" >
     <!--Main grid-->
-    <Grid x:Name="grid_ucStore" >
+    <Grid x:Name="grid_main" >
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2.54*"/>
             <ColumnDefinition x:Name="gridWidth" Width="*" MinWidth="225"/>
@@ -441,7 +441,7 @@
                                       Height="40"  Background="#f8f8f8" 
                                       BorderBrush="#737373"       BorderThickness="0" 
                                       FontFamily="{StaticResource Font-cairo-light}"   
-                                      Grid.Row="3" SelectionChanged="cb_branch_SelectionChanged" LostFocus="cb_branch_LostFocus" >
+                                      Grid.Row="3"   LostFocus="cb_branch_LostFocus" >
                             <ComboBox.ToolTip>
                                 <ToolTip x:Name="tt_branch" Content="Branch"
                                          Placement="left" 

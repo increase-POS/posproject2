@@ -33,31 +33,20 @@ namespace POS.View
     /// </summary>
     public partial class uc_categorie : UserControl
     {
-        //public int _categorieId;
-        //public int categoryPathId = 0;
         Category categoryModel = new Category();
         Category category = new Category();
         int? categoryParentId = 0;
         IEnumerable<Category> categories;
         IEnumerable<Category> categoriesQuery;
         CatigoriesAndItemsView catigoriesAndItemsView = new CatigoriesAndItemsView();
-
-
         int parentCategorieSelctedValue = 0;
         public byte tglCategoryState;
         public string txtCategorySearch;
-
         OpenFileDialog openFileDialog = new OpenFileDialog();
-
         ImageBrush brush = new ImageBrush();
-
         BrushConverter bc = new BrushConverter();
-
         string imgFileName = "pic/no-image-icon-125x125.png";
-
         bool isImgPressed = false;
-
-
         string basicsPermission = "categories_basics";
         private static uc_categorie _instance;
         public static uc_categorie Instance
@@ -73,7 +62,6 @@ namespace POS.View
         {
             try
             {
-
                 InitializeComponent();
                 if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1440)
                 {
@@ -107,24 +95,24 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this);
+                SectionData.ExceptionMessage(ex, this);
             }
 
         }
         private async void fillCategories()
         {
-                if (categories is null)
-                    await RefrishCategories();
-                var listCa = categories.ToList();
+            if (categories is null)
+                await RefrishCategories();
+            var listCa = categories.ToList();
 
-                var cat = new Category();
-                cat.categoryId = 0;
-                cat.name = "-";
-                listCa.Insert(0, cat);
+            var cat = new Category();
+            cat.categoryId = 0;
+            cat.name = "-";
+            listCa.Insert(0, cat);
 
-                cb_parentCategorie.ItemsSource = listCa;
-                cb_parentCategorie.SelectedValuePath = "categoryId";
-                cb_parentCategorie.DisplayMemberPath = "name";
+            cb_parentCategorie.ItemsSource = listCa;
+            cb_parentCategorie.SelectedValuePath = "categoryId";
+            cb_parentCategorie.DisplayMemberPath = "name";
 
         }
         private void translate()
@@ -167,6 +155,8 @@ namespace POS.View
         {
             try
             {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
                 ///////// on Top Always
                 btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
@@ -176,12 +166,12 @@ namespace POS.View
                 if (MainWindow.lang.Equals("en"))
                 {
                     MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
-                    grid_ucCategorie.FlowDirection = FlowDirection.LeftToRight;
+                    grid_main.FlowDirection = FlowDirection.LeftToRight;
                 }
                 else
                 {
                     MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
-                    grid_ucCategorie.FlowDirection = FlowDirection.RightToLeft;
+                    grid_main.FlowDirection = FlowDirection.RightToLeft;
                 }
                 translate();
 
@@ -189,18 +179,15 @@ namespace POS.View
 
                 fillCategories();
 
-
-                //this.Dispatcher.Invoke(() =>
-                //{
-                //    Txb_searchcategories_TextChanged(null, null);
-                //});
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-
         }
         private void Cb_parentCategorie_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -218,7 +205,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
 
         }
@@ -236,7 +223,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
 
         }
@@ -251,7 +238,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
@@ -266,7 +253,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
@@ -280,7 +267,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
@@ -299,7 +286,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
         #endregion
@@ -308,8 +295,9 @@ namespace POS.View
         {//add 
             try
             {
-                SectionData.StartAwait(grid_ucCategorie);
-                
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add") || SectionData.isAdminPermision())
                 {
                     category.categoryId = 0;
@@ -381,19 +369,22 @@ namespace POS.View
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-                SectionData.EndAwait(grid_ucCategorie, this);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
         {//update
             try
             {
-                SectionData.StartAwait(grid_ucCategorie);
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update") || SectionData.isAdminPermision())
                 {
                     //duplicate
@@ -469,12 +460,14 @@ namespace POS.View
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-                SectionData.EndAwait(grid_ucCategorie, this);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
@@ -482,6 +475,9 @@ namespace POS.View
         {//clear
             try
             {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
 
                 tb_name.Clear();
                 tb_taxes.Clear();
@@ -501,19 +497,22 @@ namespace POS.View
 
                 tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
                 tb_categoryCode.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {//delete
             try
             {
-                SectionData.StartAwait(grid_ucCategorie);
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete") || SectionData.isAdminPermision())
                 {
                     if (category.categoryId != 0)
@@ -562,34 +561,36 @@ namespace POS.View
                         Txb_searchcategories_TextChanged(null, null);
                     }
                     //clear textBoxs
-                    Btn_clear_Click(sender, e);
+                    Btn_clear_Click(null, null);
 
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-                SectionData.EndAwait(grid_ucCategorie, this);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
         private async void activate()
         {//activate
-           
-                category.isActive = 1;
 
-                string s = await categoryModel.saveCategory(category);
+            category.isActive = 1;
 
-                if (!s.Equals("0")) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopActive"));
-                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
-                else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-                await RefrishCategories();
-                Txb_searchcategories_TextChanged(null, null);
-           
+            string s = await categoryModel.saveCategory(category);
+
+            if (!s.Equals("0")) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopActive"));
+                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
+            else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+            await RefrishCategories();
+            Txb_searchcategories_TextChanged(null, null);
+
         }
         #endregion
 
@@ -624,7 +625,8 @@ namespace POS.View
 
             try
             {
-                SectionData.StartAwait(grid_ucCategorie);
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
                 if (dg_categories.SelectedItem as Category == null || dg_categories.SelectedIndex == -1)
                     return;
                 if (datagridSelectedItemId == (dg_categories.SelectedItem as Category).categoryId)
@@ -688,17 +690,20 @@ namespace POS.View
                 }
                 //grid_categoryControlPath.Children.Clear();
                 generateTrack(category.categoryId);
-                SectionData.EndAwait(grid_ucCategorie, this);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
         public async void ChangeCategorieIdEvent(int categoryId)
         {
-           
+
             //////////////
             p_errorName.Visibility = Visibility.Collapsed;
             p_errorCode.Visibility = Visibility.Collapsed;
@@ -757,45 +762,51 @@ namespace POS.View
 
             }
             #endregion
-           
+
         }
 
         #endregion
-        
+
         #region Toggle Button Y
 
         private void Tgl_categoryIsActive_Checked(object sender, RoutedEventArgs e)
         {
             try
             {
-                //if (categories is null)
-                //    await RefrishCategories();
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
                 tglCategoryState = 1;
-            //tgl_categoryCardIsActive.IsChecked =
-            //    tgl_categoryDatagridIsActive.IsChecked = true;
-            Txb_searchcategories_TextChanged(null, null);
+
+                Txb_searchcategories_TextChanged(null, null);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-
         }
         private void Tgl_categorIsActive_Unchecked(object sender, RoutedEventArgs e)
         {
-                try
-                {
-                    //if (categories is null)
-                    //    await RefrishCategories();
-                    //categoriesQuery = categories.Where(x => x.isActive == 0);
-                    tglCategoryState = 0;
-            //tgl_categoryCardIsActive.IsChecked =
-            //    tgl_categoryDatagridIsActive.IsChecked = false;
-            Txb_searchcategories_TextChanged(null, null);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                tglCategoryState = 0;
+
+                Txb_searchcategories_TextChanged(null, null);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
         #endregion
@@ -803,38 +814,51 @@ namespace POS.View
 
         private void Btn_categoriesInCards_Click(object sender, RoutedEventArgs e)
         {
-                    try
-                    {
-                        grid_categoriesDatagrid.Visibility = Visibility.Collapsed;
-            grid_categoryCards.Visibility = Visibility.Visible;
-            path_categoriesInCards.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
-            path_categoriesInGrid.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
-            tgl_categoryIsActive.IsChecked = (tglCategoryState == 1) ? true : false;
-            Txb_searchcategories_TextChanged(null, null);
+                grid_categoriesDatagrid.Visibility = Visibility.Collapsed;
+                grid_categoryCards.Visibility = Visibility.Visible;
+                path_categoriesInCards.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+                path_categoriesInGrid.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
+
+                tgl_categoryIsActive.IsChecked = (tglCategoryState == 1) ? true : false;
+                Txb_searchcategories_TextChanged(null, null);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-
         }
 
         private void Btn_categoriesInGrid_Click(object sender, RoutedEventArgs e)
         {
-                        try
-                        {
-                            grid_categoryCards.Visibility = Visibility.Collapsed;
-            grid_categoriesDatagrid.Visibility = Visibility.Visible;
-            path_categoriesInGrid.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
-            path_categoriesInCards.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
-            tgl_categoryIsActive.IsChecked = (tglCategoryState == 1) ? true : false;
-            Txb_searchcategories_TextChanged(null, null);
+                grid_categoryCards.Visibility = Visibility.Collapsed;
+                grid_categoriesDatagrid.Visibility = Visibility.Visible;
+                path_categoriesInGrid.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+                path_categoriesInCards.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
+
+                tgl_categoryIsActive.IsChecked = (tglCategoryState == 1) ? true : false;
+                Txb_searchcategories_TextChanged(null, null);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
         #endregion
@@ -843,32 +867,36 @@ namespace POS.View
         {//search
             try
             {
-                SectionData.StartAwait(grid_ucCategorie);
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
-            {
-                if (categories is null)
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
+                {
+                    if (categories is null)
 
-                    await RefrishCategories();
+                        await RefrishCategories();
 
-                txtCategorySearch = txb_searchcategories.Text.ToLower();
+                    txtCategorySearch = txb_searchcategories.Text.ToLower();
 
-                categoriesQuery = categories.Where(x => (x.categoryCode.ToLower().Contains(txtCategorySearch) ||
-                x.name.ToLower().Contains(txtCategorySearch) ||
-                x.details.ToLower().Contains(txtCategorySearch)
-                ) && x.isActive == tglCategoryState && x.parentId == categoryParentId);
-                txt_count.Text = categoriesQuery.Count().ToString();
+                    categoriesQuery = categories.Where(x => (x.categoryCode.ToLower().Contains(txtCategorySearch) ||
+                    x.name.ToLower().Contains(txtCategorySearch) ||
+                    x.details.ToLower().Contains(txtCategorySearch)
+                    ) && x.isActive == tglCategoryState && x.parentId == categoryParentId);
+                    txt_count.Text = categoriesQuery.Count().ToString();
 
 
-                RefrishCategoriesDatagrid(categoriesQuery);
-                if (btns is null)
-                    btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
-                RefrishCategoriesCard(pagination.refrishPagination(categoriesQuery, pageIndex, btns));
-            }
-            SectionData.EndAwait(grid_ucCategorie, this);
+                    RefrishCategoriesDatagrid(categoriesQuery);
+                    if (btns is null)
+                        btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
+                    RefrishCategoriesCard(pagination.refrishPagination(categoriesQuery, pageIndex, btns));
+                }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
@@ -882,131 +910,173 @@ namespace POS.View
         {
             try
             {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
                 categoriesQuery = categories.Where(x => x.isActive == tglCategoryState);
 
-            if (tb_pageNumberSearch.Text.Equals(""))
-            {
-                pageIndex = 1;
-            }
-            else if (((categoriesQuery.Count() - 1) / 15) + 1 < int.Parse(tb_pageNumberSearch.Text))
-            {
-                pageIndex = ((categoriesQuery.Count() - 1) / 15) + 1;
-            }
-            else
-            {
-                pageIndex = int.Parse(tb_pageNumberSearch.Text);
-            }
+                if (tb_pageNumberSearch.Text.Equals(""))
+                {
+                    pageIndex = 1;
+                }
+                else if (((categoriesQuery.Count() - 1) / 15) + 1 < int.Parse(tb_pageNumberSearch.Text))
+                {
+                    pageIndex = ((categoriesQuery.Count() - 1) / 15) + 1;
+                }
+                else
+                {
+                    pageIndex = int.Parse(tb_pageNumberSearch.Text);
+                }
 
-            #region
-            categoriesQuery = categories.Where(x => (x.categoryCode.ToLower().Contains(txtCategorySearch) ||
-             x.name.ToLower().Contains(txtCategorySearch) ||
-             x.details.ToLower().Contains(txtCategorySearch)
-             ) && x.isActive == tglCategoryState && x.parentId == categoryParentId);
-            txt_count.Text = categoriesQuery.Count().ToString();
-            RefrishCategoriesCard(pagination.refrishPagination(categoriesQuery, pageIndex, btns));
+                #region
+                categoriesQuery = categories.Where(x => (x.categoryCode.ToLower().Contains(txtCategorySearch) ||
+                 x.name.ToLower().Contains(txtCategorySearch) ||
+                 x.details.ToLower().Contains(txtCategorySearch)
+                 ) && x.isActive == tglCategoryState && x.parentId == categoryParentId);
+                txt_count.Text = categoriesQuery.Count().ToString();
+                RefrishCategoriesCard(pagination.refrishPagination(categoriesQuery, pageIndex, btns));
                 #endregion
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
 
         private void Btn_firstPage_Click(object sender, RoutedEventArgs e)
         {
-                try
-                {
-                    pageIndex = 1;
-            #region
-            categoriesQuery = categories.Where(x => (x.categoryCode.ToLower().Contains(txtCategorySearch) ||
-             x.name.ToLower().Contains(txtCategorySearch) ||
-             x.details.ToLower().Contains(txtCategorySearch)
-             ) && x.isActive == tglCategoryState && x.parentId == categoryParentId);
-            txt_count.Text = categoriesQuery.Count().ToString();
-            RefrishCategoriesCard(pagination.refrishPagination(categoriesQuery, pageIndex, btns));
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                pageIndex = 1;
+                #region
+                categoriesQuery = categories.Where(x => (x.categoryCode.ToLower().Contains(txtCategorySearch) ||
+                 x.name.ToLower().Contains(txtCategorySearch) ||
+                 x.details.ToLower().Contains(txtCategorySearch)
+                 ) && x.isActive == tglCategoryState && x.parentId == categoryParentId);
+                txt_count.Text = categoriesQuery.Count().ToString();
+                RefrishCategoriesCard(pagination.refrishPagination(categoriesQuery, pageIndex, btns));
                 #endregion
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
         private void Btn_prevPage_Click(object sender, RoutedEventArgs e)
         {
-                    try
-                    {
-                        pageIndex = int.Parse(btn_prevPage.Content.ToString());
-            #region
-            categoriesQuery = categories.Where(x => (x.categoryCode.ToLower().Contains(txtCategorySearch) ||
-             x.name.ToLower().Contains(txtCategorySearch) ||
-             x.details.ToLower().Contains(txtCategorySearch)
-             ) && x.isActive == tglCategoryState && x.parentId == categoryParentId);
-            txt_count.Text = categoriesQuery.Count().ToString();
-            RefrishCategoriesCard(pagination.refrishPagination(categoriesQuery, pageIndex, btns));
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                pageIndex = int.Parse(btn_prevPage.Content.ToString());
+                #region
+                categoriesQuery = categories.Where(x => (x.categoryCode.ToLower().Contains(txtCategorySearch) ||
+                 x.name.ToLower().Contains(txtCategorySearch) ||
+                 x.details.ToLower().Contains(txtCategorySearch)
+                 ) && x.isActive == tglCategoryState && x.parentId == categoryParentId);
+                txt_count.Text = categoriesQuery.Count().ToString();
+                RefrishCategoriesCard(pagination.refrishPagination(categoriesQuery, pageIndex, btns));
                 #endregion
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
         private void Btn_activePage_Click(object sender, RoutedEventArgs e)
         {
-                        try
-                        {
-                            pageIndex = int.Parse(btn_activePage.Content.ToString());
-            #region
-            categoriesQuery = categories.Where(x => (x.categoryCode.ToLower().Contains(txtCategorySearch) ||
-             x.name.ToLower().Contains(txtCategorySearch) ||
-             x.details.ToLower().Contains(txtCategorySearch)
-             ) && x.isActive == tglCategoryState && x.parentId == categoryParentId);
-            txt_count.Text = categoriesQuery.Count().ToString();
-            RefrishCategoriesCard(pagination.refrishPagination(categoriesQuery, pageIndex, btns));
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                pageIndex = int.Parse(btn_activePage.Content.ToString());
+                #region
+                categoriesQuery = categories.Where(x => (x.categoryCode.ToLower().Contains(txtCategorySearch) ||
+                 x.name.ToLower().Contains(txtCategorySearch) ||
+                 x.details.ToLower().Contains(txtCategorySearch)
+                 ) && x.isActive == tglCategoryState && x.parentId == categoryParentId);
+                txt_count.Text = categoriesQuery.Count().ToString();
+                RefrishCategoriesCard(pagination.refrishPagination(categoriesQuery, pageIndex, btns));
                 #endregion
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
         private void Btn_nextPage_Click(object sender, RoutedEventArgs e)
         {
-                            try
-                            {
-                                pageIndex = int.Parse(btn_nextPage.Content.ToString());
-            #region
-            categoriesQuery = categories.Where(x => (x.categoryCode.ToLower().Contains(txtCategorySearch) ||
-             x.name.ToLower().Contains(txtCategorySearch) ||
-             x.details.ToLower().Contains(txtCategorySearch)
-             ) && x.isActive == tglCategoryState && x.parentId == categoryParentId);
-            txt_count.Text = categoriesQuery.Count().ToString();
-            RefrishCategoriesCard(pagination.refrishPagination(categoriesQuery, pageIndex, btns));
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                pageIndex = int.Parse(btn_nextPage.Content.ToString());
+                #region
+                categoriesQuery = categories.Where(x => (x.categoryCode.ToLower().Contains(txtCategorySearch) ||
+                 x.name.ToLower().Contains(txtCategorySearch) ||
+                 x.details.ToLower().Contains(txtCategorySearch)
+                 ) && x.isActive == tglCategoryState && x.parentId == categoryParentId);
+                txt_count.Text = categoriesQuery.Count().ToString();
+                RefrishCategoriesCard(pagination.refrishPagination(categoriesQuery, pageIndex, btns));
                 #endregion
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
         private void Btn_lastPage_Click(object sender, RoutedEventArgs e)
         {
-                                try
-                                {
-                                    categoriesQuery = categories.Where(x => x.isActive == tglCategoryState);
-            pageIndex = ((categoriesQuery.Count() - 1) / 15) + 1;
-            #region
-            categoriesQuery = categories.Where(x => (x.categoryCode.ToLower().Contains(txtCategorySearch) ||
-             x.name.ToLower().Contains(txtCategorySearch) ||
-             x.details.ToLower().Contains(txtCategorySearch)
-             ) && x.isActive == tglCategoryState && x.parentId == categoryParentId);
-            txt_count.Text = categoriesQuery.Count().ToString();
-            RefrishCategoriesCard(pagination.refrishPagination(categoriesQuery, pageIndex, btns));
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                categoriesQuery = categories.Where(x => x.isActive == tglCategoryState);
+                pageIndex = ((categoriesQuery.Count() - 1) / 15) + 1;
+                #region
+                categoriesQuery = categories.Where(x => (x.categoryCode.ToLower().Contains(txtCategorySearch) ||
+                 x.name.ToLower().Contains(txtCategorySearch) ||
+                 x.details.ToLower().Contains(txtCategorySearch)
+                 ) && x.isActive == tglCategoryState && x.parentId == categoryParentId);
+                txt_count.Text = categoriesQuery.Count().ToString();
+                RefrishCategoriesCard(pagination.refrishPagination(categoriesQuery, pageIndex, btns));
                 #endregion
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
         #endregion
@@ -1015,21 +1085,27 @@ namespace POS.View
         {
             try
             {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
-            {
-                this.Dispatcher.Invoke(() =>
-            {
-                Thread t1 = new Thread(FN_ExportToExcel);
-                t1.SetApartmentState(ApartmentState.STA);
-                t1.Start();
-            });
-            }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                {
+                    this.Dispatcher.Invoke(() =>
+                {
+                    Thread t1 = new Thread(FN_ExportToExcel);
+                    t1.SetApartmentState(ApartmentState.STA);
+                    t1.Start();
+                });
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
@@ -1061,7 +1137,7 @@ namespace POS.View
 
         async void generateTrack(int categorypaPathId)
         {
-                                    
+
             grid_categoryControlPath.Children.Clear();
 
             IEnumerable<Category> categoriesPath = await
@@ -1097,41 +1173,41 @@ namespace POS.View
         }
         private void getCategoryIdFromPath(object sender, RoutedEventArgs e)
         {
-                                    try
-                                    {
-                                        Button b = (Button)sender;
-
-            if (!string.IsNullOrEmpty(b.Tag.ToString()))
-                generateTrack(int.Parse(b.Tag.ToString()));
-
-            if (categories.Where(x => (x.categoryCode.Contains(txtCategorySearch) ||
-             x.name.Contains(txtCategorySearch) ||
-             x.details.Contains(txtCategorySearch)
-             ) && x.isActive == tglCategoryState && x.parentId == int.Parse(b.Tag.ToString())).Count() != 0)
+            try
             {
-                categoryParentId = int.Parse(b.Tag.ToString());
-                Txb_searchcategories_TextChanged(null, null);
+                Button b = (Button)sender;
 
-            }
-            datagridSelectedItemId = 0;
+                if (!string.IsNullOrEmpty(b.Tag.ToString()))
+                    generateTrack(int.Parse(b.Tag.ToString()));
+
+                if (categories.Where(x => (x.categoryCode.Contains(txtCategorySearch) ||
+                 x.name.Contains(txtCategorySearch) ||
+                 x.details.Contains(txtCategorySearch)
+                 ) && x.isActive == tglCategoryState && x.parentId == int.Parse(b.Tag.ToString())).Count() != 0)
+                {
+                    categoryParentId = int.Parse(b.Tag.ToString());
+                    Txb_searchcategories_TextChanged(null, null);
+
+                }
+                datagridSelectedItemId = 0;
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
         private void Btn_getAllCategory_Click(object sender, RoutedEventArgs e)
         {
-                                        try
-                                        {
-                                            categoryParentId = 0;
-            Txb_searchcategories_TextChanged(null, null);
-            grid_categoryControlPath.Children.Clear();
+            try
+            {
+                categoryParentId = 0;
+                Txb_searchcategories_TextChanged(null, null);
+                grid_categoryControlPath.Children.Clear();
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
@@ -1141,53 +1217,63 @@ namespace POS.View
 
         private void Img_calegorieImg_Click(object sender, RoutedEventArgs e)
         {//select image
-                                            try
-                                            {
-                                                isImgPressed = true;
-            openFileDialog.Filter = "Images|*.png;*.jpg;*.bmp;*.jpeg;*.jfif";
-            if (openFileDialog.ShowDialog() == true)
+            try
             {
-                brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
-                imgFileName = openFileDialog.FileName;
-                img_category.Background = brush;
-            }
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                isImgPressed = true;
+                openFileDialog.Filter = "Images|*.png;*.jpg;*.bmp;*.jpeg;*.jfif";
+                if (openFileDialog.ShowDialog() == true)
+                {
+                    brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
+                    imgFileName = openFileDialog.FileName;
+                    img_category.Background = brush;
+                }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
         private async void getImg()
         {
-           
-                if (string.IsNullOrEmpty(category.image))
+
+            if (string.IsNullOrEmpty(category.image))
+            {
+                SectionData.clearImg(img_category);
+            }
+            else
+            {
+                byte[] imageBuffer = await categoryModel.downloadImage(category.image); // read this as BLOB from your DB
+
+                var bitmapImage = new BitmapImage();
+
+                using (var memoryStream = new MemoryStream(imageBuffer))
                 {
-                    SectionData.clearImg(img_category);
+                    bitmapImage.BeginInit();
+                    bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                    bitmapImage.StreamSource = memoryStream;
+                    bitmapImage.EndInit();
                 }
-                else
-                {
-                    byte[] imageBuffer = await categoryModel.downloadImage(category.image); // read this as BLOB from your DB
+                img_category.Background = new ImageBrush(bitmapImage);
 
-                    var bitmapImage = new BitmapImage();
+            }
 
-                    using (var memoryStream = new MemoryStream(imageBuffer))
-                    {
-                        bitmapImage.BeginInit();
-                        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                        bitmapImage.StreamSource = memoryStream;
-                        bitmapImage.EndInit();
-                    }
-                    img_category.Background = new ImageBrush(bitmapImage);
-
-                }
-                
         }
 
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
             try
             {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
                 {
                     RefrishCategories();
@@ -1195,11 +1281,14 @@ namespace POS.View
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
@@ -1214,7 +1303,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
@@ -1230,7 +1319,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
@@ -1243,7 +1332,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
@@ -1252,15 +1341,21 @@ namespace POS.View
         {
             try
             {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
                 Window.GetWindow(this).Opacity = 0.2;
                 win_lvcCatalog win = new win_lvcCatalog(categoriesQuery, 1);
                 win.ShowDialog();
                 Window.GetWindow(this).Opacity = 1;
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
@@ -1273,7 +1368,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
@@ -1289,7 +1384,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
     }

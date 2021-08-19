@@ -1148,7 +1148,7 @@ namespace POS.View
 
                         await RefrishItems();
                         Txb_searchitems_TextChanged(null, null);
-                        btn_clear_Click(sender, e);
+                        btn_clear_Click(null, null);
                     }
 
                     tb_code.Focus();
@@ -1300,7 +1300,7 @@ namespace POS.View
                         Txb_searchitems_TextChanged(null, null);
                     }
                     //clear textBoxs
-                    btn_clear_Click(sender, e);
+                    btn_clear_Click(null, null);
                     tb_code.Focus();
                     SectionData.clearValidate(tb_code, p_errorCode);
 

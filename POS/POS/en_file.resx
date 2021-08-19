@@ -2110,4 +2110,52 @@ Please add Email in setting</value>
   <data name="trSelect" xml:space="preserve">
     <value>Select</value>
   </data>
+  <data name="trAccountStatement" xml:space="preserve">
+    <value>Account Statement</value>
+  </data>
+  <data name="trAll" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="trDateHint" xml:space="preserve">
+    <value>Date ...</value>
+  </data>
+  <data name="trDescription" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="trFromToPosHint" xml:space="preserve">
+    <value>From pos , To pos , ...</value>
+  </data>
+  <data name="trOneDeposit" xml:space="preserve">
+    <value>Deposit</value>
+  </data>
+  <data name="trOnePayment" xml:space="preserve">
+    <value>Payment</value>
+  </data>
+  <data name="trPayment" xml:space="preserve">
+    <value>Payment</value>
+  </data>
+  <data name="trPaymentsRecipientHint" xml:space="preserve">
+    <value>Payments,Recipients, ...</value>
+  </data>
+  <data name="trRequired" xml:space="preserve">
+    <value>Required</value>
+  </data>
+  <data name="trShippingCompanyHint" xml:space="preserve">
+    <value>Shipping company ...</value>
+  </data>
+  <data name="trVendorCustomerUserHint" xml:space="preserve">
+    <value>Vendor,Customer,User ...</value>
+  </data>
+  <data name="trWorthy" xml:space="preserve">
+    <value>Worthy</value>
+  </data>
+  <data name="tr_Balance" xml:space="preserve">
+    <value>Balance</value>
+  </data>
+  <data name="tr_Card" xml:space="preserve">
+    <value>Card</value>
+  </data>
+  <data name="tr_Invoice" xml:space="preserve">
+    <value>Invoice</value>
+  </data>
 </root>

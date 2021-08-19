@@ -64,10 +64,11 @@ namespace POS.View.Settings
         {
             if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
             {
-        Window.GetWindow(this).Opacity = 0.2;
-            wd_companyInfo w = new wd_companyInfo();
-            w.ShowDialog();
-            Window.GetWindow(this).Opacity = 1;
+                Window.GetWindow(this).Opacity = 0.2;
+                wd_companyInfo w = new wd_companyInfo();
+                w.isFirstTime = false;
+                w.ShowDialog();
+                Window.GetWindow(this).Opacity = 1;
             }
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -75,6 +76,7 @@ namespace POS.View.Settings
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {//load
+
             #region translate
             if (MainWindow.lang.Equals("en"))
             {
@@ -96,8 +98,8 @@ namespace POS.View.Settings
             await getDefaultRegion();
             if (region != null)
             {
-                int index = cb_region.Items.IndexOf(region);
-                test.Text = index.ToString();
+                //int index = cb_region.Items.IndexOf(region);
+                //test.Text = index.ToString();
                 cb_region.SelectedValue = region.countryId;
                 cb_region.Text = region.name;
             }
@@ -505,6 +507,12 @@ namespace POS.View.Settings
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
 
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            wd_setupServer w = new wd_setupServer();
+            w.ShowDialog();
         }
 
         private void Cb_dateForm_SelectionChanged(object sender, SelectionChangedEventArgs e)

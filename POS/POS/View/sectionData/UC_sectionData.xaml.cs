@@ -37,8 +37,14 @@ namespace POS.View
         }
         public UC_SectionData()
         {
-            InitializeComponent();
-
+            try
+            {
+                InitializeComponent();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
         void refreashBackground()
         {
@@ -80,39 +86,51 @@ namespace POS.View
 
         private void BTN_Customers_Click(object sender, RoutedEventArgs e)
         {
-            refreashBachgroundClick(btn_customers);
-
-            grid_main.Children.Clear();
-            grid_main.Children.Add(UC_Customer.Instance);
-
-            //UC_Customer uc = new UC_Customer();
-            //grid_main.Children.Add(uc);
-            Button button = sender as Button;
-            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
+            try
+            {
+                refreashBachgroundClick(btn_customers);
+                grid_main.Children.Clear();
+                grid_main.Children.Add(UC_Customer.Instance);
+                Button button = sender as Button;
+                MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Btn_suppliers_Click(object sender, RoutedEventArgs e)
         {
-            refreashBachgroundClick(btn_suppliers);
-
-
-            grid_main.Children.Clear();
-            grid_main.Children.Add(UC_vendors.Instance);
-
-            //UC_vendors uc = new UC_vendors();
-            //grid_main.Children.Add(uc);
-            Button button = sender as Button;
-            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
+            try
+            {
+                refreashBachgroundClick(btn_suppliers);
+                grid_main.Children.Clear();
+                grid_main.Children.Add(UC_vendors.Instance);
+                Button button = sender as Button;
+                MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.lang.Equals("en"))
-            { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly()); grid_ucSectionData.FlowDirection = FlowDirection.LeftToRight; }
-            else
-            { MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly()); grid_ucSectionData.FlowDirection = FlowDirection.RightToLeft; }
-            translate();
-            permission();
+            try
+            {
+                if (MainWindow.lang.Equals("en"))
+                { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly()); grid_ucSectionData.FlowDirection = FlowDirection.LeftToRight; }
+                else
+                { MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly()); grid_ucSectionData.FlowDirection = FlowDirection.RightToLeft; }
+                translate();
+                permission();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         void permission()
         {
@@ -149,93 +167,119 @@ namespace POS.View
             btn_cards.Content = MainWindow.resourcemanager.GetString("trCard");
             btn_shippingCompany.Content = MainWindow.resourcemanager.GetString("trShippingCompanies");
         }
-        
+
 
         private void Btn_users_Click(object sender, RoutedEventArgs e)
         {
-            refreashBachgroundClick(btn_users);
-
-
-            grid_main.Children.Clear();
-            grid_main.Children.Add(UC_users.Instance);
-
-            //UC_users uc = new UC_users();
-            //grid_main.Children.Add(uc);
-            Button button = sender as Button;
-            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
+            try
+            {
+                refreashBachgroundClick(btn_users);
+                grid_main.Children.Clear();
+                grid_main.Children.Add(UC_users.Instance);
+                Button button = sender as Button;
+                MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Btn_branches_Click(object sender, RoutedEventArgs e)
         {
-            refreashBachgroundClick(btn_branches);
-
-
-            grid_main.Children.Clear();
-            grid_main.Children.Add(UC_branch.Instance);
-
-            //UC_branch uc = new UC_branch();
-            //grid_main.Children.Add(uc);
-            Button button = sender as Button;
-            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
+            try
+            {
+                refreashBachgroundClick(btn_branches);
+                grid_main.Children.Clear();
+                grid_main.Children.Add(UC_branch.Instance);
+                Button button = sender as Button;
+                MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Btn_stores_Click(object sender, RoutedEventArgs e)
         {
-            refreashBachgroundClick(btn_stores);
-
-
-            grid_main.Children.Clear();
-            grid_main.Children.Add(UC_store.Instance);
-
-            //UC_store uc = new UC_store();
-            //grid_main.Children.Add(uc);
-            Button button = sender as Button;
-            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
+            try
+            {
+                refreashBachgroundClick(btn_stores);
+                grid_main.Children.Clear();
+                grid_main.Children.Add(UC_store.Instance);
+                Button button = sender as Button;
+                MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Btn_pos_Click(object sender, RoutedEventArgs e)
         {
-            refreashBachgroundClick(btn_pos);
-
-
-            grid_main.Children.Clear();
-            grid_main.Children.Add(UC_posAccounts.Instance);
-
-            //UC_posAccounts uc = new UC_posAccounts();
-            //grid_main.Children.Add(uc);
-            Button button = sender as Button;
-            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
+            try
+            {
+                refreashBachgroundClick(btn_pos);
+                grid_main.Children.Clear();
+                grid_main.Children.Add(UC_posAccounts.Instance);
+                Button button = sender as Button;
+                MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Btn_banks_Click(object sender, RoutedEventArgs e)
         {
-            refreashBachgroundClick(btn_banks);
-            grid_main.Children.Clear();
-            grid_main.Children.Add(UC_bank.Instance);
-
-            //UC_bank uc = new UC_bank();
-            //grid_main.Children.Add(uc);
-            Button button = sender as Button;
-            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
+            try
+            {
+                refreashBachgroundClick(btn_banks);
+                grid_main.Children.Clear();
+                grid_main.Children.Add(UC_bank.Instance);
+                Button button = sender as Button;
+                MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Btn_cards_Click(object sender, RoutedEventArgs e)
         {
-            refreashBachgroundClick(btn_cards);
-            grid_main.Children.Clear();
-            grid_main.Children.Add(uc_card.Instance);
-            Button button = sender as Button;
-            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
+            try
+            {
+                refreashBachgroundClick(btn_cards);
+                grid_main.Children.Clear();
+                grid_main.Children.Add(uc_card.Instance);
+                Button button = sender as Button;
+                MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Btn_shippingCompany_Click(object sender, RoutedEventArgs e)
         {
-            refreashBachgroundClick(btn_shippingCompany);
-            grid_main.Children.Clear();
-            grid_main.Children.Add(uc_shippingCompany.Instance);
-            Button button = sender as Button;
-            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
+            try
+            {
+                refreashBachgroundClick(btn_shippingCompany);
+                grid_main.Children.Clear();
+                grid_main.Children.Add(uc_shippingCompany.Instance);
+                Button button = sender as Button;
+                MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
- 
+
     }
 }

@@ -361,7 +361,7 @@ namespace POS.View
 
                     await RefreshPropertiesList();
                     Tb_search_TextChanged(null, null);
-                    Btn_clear_Click(sender, e);
+                    Btn_clear_Click(null, null);
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);

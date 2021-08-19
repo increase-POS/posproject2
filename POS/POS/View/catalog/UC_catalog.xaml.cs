@@ -37,8 +37,14 @@ namespace POS.View
         }
         public UC_catalog()
         {
-            InitializeComponent();
-
+            try
+            {
+                InitializeComponent();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         private void translate()
@@ -67,11 +73,12 @@ namespace POS.View
 
                 translate();
                 permission();
+
+               
             }
             catch (Exception ex)
             {
-
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
         void permission()

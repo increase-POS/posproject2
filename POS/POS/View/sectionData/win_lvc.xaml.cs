@@ -24,7 +24,7 @@ namespace POS.View.sectionData.Charts
     /// </summary>
     public partial class win_lvc : Window
     {
-        int selectedChart=1;
+        int selectedChart = 1;
         IEnumerable<Agent> agentsQuery;
         IEnumerable<Bank> banksQuery;
         IEnumerable<User> usersQuery;
@@ -44,55 +44,110 @@ namespace POS.View.sectionData.Charts
 
         public win_lvc(IEnumerable<Agent> _agentsQuery, int _sectionDate, bool _isSameList)
         {
-            InitializeComponent();
-            agentsQuery = _agentsQuery;
-            sectionDate = _sectionDate;
-            isSameList = _isSameList;
+            try
+            {
+                InitializeComponent();
+                agentsQuery = _agentsQuery;
+                sectionDate = _sectionDate;
+                isSameList = _isSameList;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         public win_lvc(IEnumerable<Bank> _banksQuery, int _sectionDate)
         {
-            InitializeComponent();
-            banksQuery = _banksQuery;
-            sectionDate = _sectionDate;
+            try
+            {
+                InitializeComponent();
+                banksQuery = _banksQuery;
+                sectionDate = _sectionDate;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         public win_lvc(IEnumerable<User> _usersQuery, int _sectionDate)
         {
-            InitializeComponent();
-            usersQuery = _usersQuery;
-            sectionDate = _sectionDate;
+            try
+            {
+                InitializeComponent();
+                usersQuery = _usersQuery;
+                sectionDate = _sectionDate;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         public win_lvc(IEnumerable<Branch> _branchesQuery, int _sectionDate, bool _isSameList)
         {
-            InitializeComponent();
-            branchesQuery = _branchesQuery;
-            sectionDate = _sectionDate;
-            isSameList = _isSameList;
+            try
+            {
+                InitializeComponent();
+                branchesQuery = _branchesQuery;
+                sectionDate = _sectionDate;
+                isSameList = _isSameList;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         public win_lvc(IEnumerable<Pos> _possQuery, int _sectionDate)
         {
-            InitializeComponent();
-            possQuery = _possQuery;
-            sectionDate = _sectionDate;
+            try
+            {
+                InitializeComponent();
+                possQuery = _possQuery;
+                sectionDate = _sectionDate;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         public win_lvc(IEnumerable<Card> _cardsQuery, int _sectionDate)
         {
-            InitializeComponent();
-            cardsQuery = _cardsQuery;
-            sectionDate = _sectionDate;
+            try
+            {
+                InitializeComponent();
+                cardsQuery = _cardsQuery;
+                sectionDate = _sectionDate;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            chartList = new List<double>();
-            PiechartList = new List<double>();
-            ColumnchartList = new List<double>();
-            fillDates();
-            fillSelectedChart();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                chartList = new List<double>();
+                PiechartList = new List<double>();
+                ColumnchartList = new List<double>();
+                fillDates();
+                fillSelectedChart();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         public void fillDates()
@@ -101,9 +156,20 @@ namespace POS.View.sectionData.Charts
             dpStrtDate.SelectedDate = dpEndDate.SelectedDate.Value.AddYears(-1);
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e) { this.Close(); }
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
 
-        private void Window_MouseDown(object sender, MouseButtonEventArgs e) { try { DragMove(); } catch (Exception) { } }
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                DragMove();
+            }
+            catch (Exception)
+            { }
+        }
 
         public void fillChart()
         {
@@ -533,74 +599,145 @@ namespace POS.View.sectionData.Charts
 
                  }
              );
-        
-        //for (int i = 0; i < ColumnchartList.Count(); i++)
-        //{
-        //    List<double> final = new List<double>();
-        //    List<string> lable = new List<string>();
-        //    final.Add(ColumnchartList.ToList().Skip(i).FirstOrDefault());
-        //    columnchartData.Add(
-        //      new ColumnSeries
-        //      {
-        //          Values = final.AsChartValues(),
 
-        //      }
-        //  );
-        //}
-        columnChart.Series = columnchartData;
+            //for (int i = 0; i < ColumnchartList.Count(); i++)
+            //{
+            //    List<double> final = new List<double>();
+            //    List<string> lable = new List<string>();
+            //    final.Add(ColumnchartList.ToList().Skip(i).FirstOrDefault());
+            //    columnchartData.Add(
+            //      new ColumnSeries
+            //      {
+            //          Values = final.AsChartValues(),
+
+            //      }
+            //  );
+            //}
+            columnChart.Series = columnchartData;
         }
 
         private void dpStrtDate_CalendarClosed(object sender, RoutedEventArgs e)
         {
-            if (dpEndDate.SelectedDate.Value.Year - dpStrtDate.SelectedDate.Value.Year > 1)
+            try
             {
-                rdoYear.IsChecked = true;
-                fillSelectedChart();
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                if (dpEndDate.SelectedDate.Value.Year - dpStrtDate.SelectedDate.Value.Year > 1)
+                {
+                    rdoYear.IsChecked = true;
+                    fillSelectedChart();
+                }
+                else
+                {
+                    fillSelectedChart();
+                }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
             }
-            else
+            catch (Exception ex)
             {
-                fillSelectedChart();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
         private void dpEndDate_CalendarClosed(object sender, RoutedEventArgs e)
         {
-            if (dpEndDate.SelectedDate.Value.Year - dpStrtDate.SelectedDate.Value.Year > 1)
+            try
             {
-                rdoYear.IsChecked = true;
-                fillSelectedChart();
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                if (dpEndDate.SelectedDate.Value.Year - dpStrtDate.SelectedDate.Value.Year > 1)
+                {
+                    rdoYear.IsChecked = true;
+                    fillSelectedChart();
+                }
+                else
+                {
+                    fillSelectedChart();
+                }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
             }
-            else
+            catch (Exception ex)
             {
-                fillSelectedChart();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
-        private void btn_refresh_Click(object sender, RoutedEventArgs e) { selectedChart = 1; rdoMonth.IsChecked = true; fillDates(); fillSelectedChart(); }
+        private void btn_refresh_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                selectedChart = 1;
+                rdoMonth.IsChecked = true;
+                fillDates();
+                fillSelectedChart();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
 
         private void rdoYear_Click(object sender, RoutedEventArgs e)
         {
-            if (dpEndDate.SelectedDate.Value.Year - dpStrtDate.SelectedDate.Value.Year > 1)
+            try
             {
-                rdoYear.IsChecked = true;
-                fillSelectedChart();
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                if (dpEndDate.SelectedDate.Value.Year - dpStrtDate.SelectedDate.Value.Year > 1)
+                {
+                    rdoYear.IsChecked = true;
+                    fillSelectedChart();
+                }
+                else
+                {
+                    fillSelectedChart();
+                }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
             }
-            else
+            catch (Exception ex)
             {
-                fillSelectedChart();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
         private void rdoMonth_Click(object sender, RoutedEventArgs e)
         {
-            if (dpEndDate.SelectedDate.Value.Year - dpStrtDate.SelectedDate.Value.Year > 1)
+            try
             {
-                rdoYear.IsChecked = true;
-                fillSelectedChart();
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                if (dpEndDate.SelectedDate.Value.Year - dpStrtDate.SelectedDate.Value.Year > 1)
+                {
+                    rdoYear.IsChecked = true;
+                    fillSelectedChart();
+                }
+                else
+                {
+                    fillSelectedChart();
+                }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
             }
-            else
+            catch (Exception ex)
             {
-                fillSelectedChart();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
@@ -631,26 +768,65 @@ namespace POS.View.sectionData.Charts
                 grd_columnChart.Visibility = Visibility.Visible;
                 icon_columnChar.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
                 fillColumnChart();
-               
+
             }
         }
 
         private void btn_rowChart_Click(object sender, RoutedEventArgs e)
         {
-            selectedChart = 1;
-            fillSelectedChart();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                selectedChart = 1;
+                fillSelectedChart();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void btn_pieChart_Click(object sender, RoutedEventArgs e)
         {
-            selectedChart = 2;
-            fillSelectedChart();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                selectedChart = 2;
+                fillSelectedChart();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void btn_columnChart_Click(object sender, RoutedEventArgs e)
         {
-            selectedChart = 3;
-            fillSelectedChart();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                selectedChart = 3;
+                fillSelectedChart();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
     }
 }

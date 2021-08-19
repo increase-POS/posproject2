@@ -10,7 +10,7 @@
              Loaded="UserControl_Loaded" Unloaded="UserControl_Unloaded"
              d:DesignHeight="700" d:DesignWidth="1000">
     <ScrollViewer>
-        <Grid x:Name="grid_ucReceiptInvoice" Margin="0,15,15,15"  >
+        <Grid x:Name="grid_main" Margin="0,15,15,15"  >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="4*"/>
                 <ColumnDefinition Width="1.1*"/>
@@ -604,7 +604,7 @@
                                   Grid.Column="0" Height="40"   Margin="10,5,10,0"
                                   BorderBrush="#737373" BorderThickness="0" 
                                   SelectionChanged="Cb_company_SelectionChanged" 
-                                  LostFocus="Cb_company_LostFocus" VerticalAlignment="Top">
+                                  VerticalAlignment="Top">
                                 <ComboBox.ToolTip>
                                     <ToolTip x:Name="tt_company" Content="Company"
                                                           Placement="left" 
@@ -819,7 +819,7 @@
                                        HorizontalAlignment="Right" Margin="5,10,10,5"/>
                         <DataGrid x:Name="dg_billDetails"  Margin="5,5" Grid.Row="1"   Grid.ColumnSpan="2"    Background="White"
                       materialDesign:DataGridAssist.CornerRadius="5" Visibility="Visible"
-                         IsReadOnly="False" CanUserAddRows="False"  MouseDoubleClick="Dg_billDetails_MouseDoubleClick"
+                         IsReadOnly="False" CanUserAddRows="False"  
                         AutoGenerateColumns="False" CellEditEnding="Dg_billDetails_CellEditEnding"
                         ColumnWidth="SizeToHeader">
                             <DataGrid.Resources>

@@ -9,7 +9,7 @@
         mc:Ignorable="d"
         Title="lvcVendor" Height="600" Width="800" WindowStyle="None" Loaded="Window_Loaded" Background="Transparent" AllowsTransparency="True" MouseDown="Window_MouseDown" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
     <Border CornerRadius="15" Background="#E8E8E8">
-        <Grid>
+        <Grid x:Name="grid_main">
             <Grid.RowDefinitions>
                 <RowDefinition Height="40"/>
                 <RowDefinition Height="auto"/>
@@ -26,8 +26,6 @@
                     </StackPanel>
                 </DockPanel>
             </Border>
-
-
             <Border Grid.Row="1" Background="White" CornerRadius="7" Margin="10">
                 <DockPanel LastChildFill="False" >
 
@@ -136,7 +134,6 @@
                     </Grid>
                 </Grid>
             </Border>
-
         </Grid>
     </Border>
 </Window>

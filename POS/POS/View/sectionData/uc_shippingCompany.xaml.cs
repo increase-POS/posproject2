@@ -90,7 +90,8 @@ namespace POS.View.sectionData
         {//search
             try
             {
-                SectionData.StartAwait(grid_shipping);
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
                 {
                     if (shComs is null)
@@ -103,12 +104,14 @@ namespace POS.View.sectionData
                     ) && s.isActive == tgl_shComState);
                     RefreshshComView();
                 }
-                SectionData.EndAwait(grid_shipping, this);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                SectionData.EndAwait(grid_shipping , this);
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
@@ -128,17 +131,20 @@ namespace POS.View.sectionData
         {//active
             try
             {
-                SectionData.StartAwait(grid_ucShippingCompany);
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
                 if (shComs is null)
                     await RefreshShComList();
                 tgl_shComState = 1;
                 Tb_search_TextChanged(null, null);
-                SectionData.EndAwait(grid_ucShippingCompany , this);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                SectionData.EndAwait(grid_ucShippingCompany, this);
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
@@ -146,17 +152,20 @@ namespace POS.View.sectionData
         {//inactive
             try
             {
-                SectionData.StartAwait(grid_ucShippingCompany);
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
                 if (shComs is null)
                     await RefreshShComList();
                 tgl_shComState = 0;
                 Tb_search_TextChanged(null, null);
-                SectionData.EndAwait(grid_ucShippingCompany, this);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                SectionData.EndAwait(grid_ucShippingCompany , this);
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
@@ -164,7 +173,8 @@ namespace POS.View.sectionData
         {//refresh
             try
             {
-                SectionData.StartAwait(grid_ucShippingCompany);
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
                 {
                     await RefreshShComList();
@@ -172,12 +182,14 @@ namespace POS.View.sectionData
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-                SectionData.EndAwait(grid_ucShippingCompany, this);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                SectionData.EndAwait(grid_ucShippingCompany , this);
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
@@ -185,6 +197,9 @@ namespace POS.View.sectionData
         {//export
             try
             {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
                 {
                     this.Dispatcher.Invoke(() =>
@@ -196,9 +211,15 @@ namespace POS.View.sectionData
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
             }
-            catch(Exception ex)
-            { SectionData.ExceptionMessage(ex,this,sender); }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         void FN_ExportToExcel()
@@ -227,6 +248,9 @@ namespace POS.View.sectionData
         {//clear
             try
             {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
                 tb_name.Clear();
                 tb_realDeliveryCost.Clear();
                 tb_deliveryCost.Clear();
@@ -237,9 +261,15 @@ namespace POS.View.sectionData
                 SectionData.clearValidate(tb_deliveryCost, p_errorDeliveryCost);
                 SectionData.clearValidate(tb_realDeliveryCost, p_errorRealDeliveryCost);
                 SectionData.clearComboBoxValidate(cb_deliveryType, p_errorDeliveryType);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
             }
-            catch(Exception ex)
-            { SectionData.ExceptionMessage(ex,this,sender); }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void validationControl_LostFocus(object sender, RoutedEventArgs e)
@@ -281,7 +311,8 @@ namespace POS.View.sectionData
         {//add
             try
             {
-                SectionData.StartAwait(grid_ucShippingCompany);
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add") || SectionData.isAdminPermision())
                 {
                     #region validate
@@ -324,12 +355,14 @@ namespace POS.View.sectionData
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-                SectionData.EndAwait(grid_ucShippingCompany, this);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                SectionData.EndAwait(grid_ucShippingCompany , this);
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
@@ -337,7 +370,8 @@ namespace POS.View.sectionData
         {//update
             try
             {
-                SectionData.StartAwait(grid_ucShippingCompany);
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update") || SectionData.isAdminPermision())
                 {
                     #region validate
@@ -374,12 +408,14 @@ namespace POS.View.sectionData
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-                SectionData.EndAwait(grid_ucShippingCompany, this);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                SectionData.EndAwait(grid_ucShippingCompany , this);
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
@@ -387,7 +423,8 @@ namespace POS.View.sectionData
         {//delete
             try
             {
-                SectionData.StartAwait(grid_ucShippingCompany);
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete") || SectionData.isAdminPermision())
                 {
                     if (shCompany.shippingCompanyId != 0)
@@ -438,17 +475,19 @@ namespace POS.View.sectionData
                         Tb_search_TextChanged(null, null);
 
                         //clear textBoxs
-                        Btn_clear_Click(sender, e);
+                        Btn_clear_Click(null, null);
                     }
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-                SectionData.EndAwait(grid_ucShippingCompany, this);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                SectionData.EndAwait(grid_ucShippingCompany , this);
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
@@ -473,6 +512,9 @@ namespace POS.View.sectionData
         {//selection
             try
             {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
                 SectionData.clearValidate(tb_name, p_errorName);
                 SectionData.clearValidate(tb_realDeliveryCost, p_errorRealDeliveryCost);
                 SectionData.clearValidate(tb_deliveryCost, p_errorDeliveryCost);
@@ -516,10 +558,14 @@ namespace POS.View.sectionData
 
                     }
                 }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
@@ -527,11 +573,14 @@ namespace POS.View.sectionData
         {//load
             try
             {
-                SectionData.StartAwait(grid_ucShippingCompany);
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
                 if (MainWindow.lang.Equals("en"))
-                { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly()); grid_shipping.FlowDirection = FlowDirection.LeftToRight; }
+                { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                    grid_main.FlowDirection = FlowDirection.LeftToRight; }
                 else
-                { MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly()); grid_shipping.FlowDirection = FlowDirection.RightToLeft; }
+                { MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                    grid_main.FlowDirection = FlowDirection.RightToLeft; }
 
                 translat();
 
@@ -547,12 +596,14 @@ namespace POS.View.sectionData
 
                 await RefreshShComList();
                 Tb_search_TextChanged(null, null);
-                SectionData.EndAwait(grid_ucShippingCompany, this);
+                 if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                SectionData.EndAwait(grid_ucShippingCompany , this);
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
@@ -634,6 +685,9 @@ namespace POS.View.sectionData
         {
             try
             {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
                 {
                     List<ReportParameter> paramarr = new List<ReportParameter>();
@@ -667,15 +721,24 @@ namespace POS.View.sectionData
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
             }
             catch (Exception ex)
-            { SectionData.ExceptionMessage(ex,this,sender); }
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Btn_print_Click(object sender, RoutedEventArgs e)
         {
             try
             {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
                 {
                     List<ReportParameter> paramarr = new List<ReportParameter>();
@@ -701,9 +764,15 @@ namespace POS.View.sectionData
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
             }
             catch (Exception ex)
-            { SectionData.ExceptionMessage(ex,this,sender); }
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
     }
 }

@@ -20,6 +20,8 @@ using System.Resources;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using netoaster;
+using MaterialDesignThemes.Wpf;
+using System.Windows.Controls.Primitives;
 
 namespace POS.View.windows
 {
@@ -55,12 +57,7 @@ namespace POS.View.windows
         public bool isFirstTime = false;
         public wd_companyInfo()
         {
-            try
-            {
                 InitializeComponent();
-            }
-            catch(Exception ex)
-            { SectionData.ExceptionMessage(ex,this); }
         }
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
@@ -72,6 +69,41 @@ namespace POS.View.windows
                 fillCountries();
 
                 fillCity();
+
+                List<SettingCls> settingsCls = await setModel.GetAll();
+                List<SetValues> settingsValues = await valueModel.GetAll();
+
+                #region get settings Ids
+
+                //get company name id
+                set = settingsCls.Where(s => s.name == "com_name").FirstOrDefault<SettingCls>();
+                nameId = set.settingId;
+                setVName = settingsValues.Where(i => i.settingId == nameId).FirstOrDefault();
+                //get company address id
+                set = settingsCls.Where(s => s.name == "com_address").FirstOrDefault<SettingCls>();
+                addressId = set.settingId;
+                setVAddress = settingsValues.Where(i => i.settingId == addressId).FirstOrDefault();
+                //get company email id
+                set = settingsCls.Where(s => s.name == "com_email").FirstOrDefault<SettingCls>();
+                emailId = set.settingId;
+                setVEmail = settingsValues.Where(i => i.settingId == emailId).FirstOrDefault();
+                //get company mobile id
+                set = settingsCls.Where(s => s.name == "com_mobile").FirstOrDefault<SettingCls>();
+                mobileId = set.settingId;
+                setVMobile = settingsValues.Where(i => i.settingId == mobileId).FirstOrDefault();
+                //get company phone id
+                set = settingsCls.Where(s => s.name == "com_phone").FirstOrDefault<SettingCls>();
+                phoneId = set.settingId;
+                setVPhone = settingsValues.Where(i => i.settingId == phoneId).FirstOrDefault();
+                //get company fax id
+                set = settingsCls.Where(s => s.name == "com_fax").FirstOrDefault<SettingCls>();
+                faxId = set.settingId;
+                setVFax = settingsValues.Where(i => i.settingId == faxId).FirstOrDefault();
+                //get company logo id
+                set = settingsCls.Where(s => s.name == "com_logo").FirstOrDefault<SettingCls>();
+                logoId = set.settingId;
+                setVLogo = settingsValues.Where(i => i.settingId == logoId).FirstOrDefault();
+                #endregion
 
                 if (!isFirstTime)
                 {
@@ -90,46 +122,24 @@ namespace POS.View.windows
                     translate();
                     #endregion
 
-                    #region get settings Ids
-                    List<SettingCls> settingsCls = await setModel.GetAll();
-                    List<SetValues> settingsValues = await valueModel.GetAll();
-
+                    #region get values
+                  
                     //get company name
-                    set = settingsCls.Where(s => s.name == "com_name").FirstOrDefault<SettingCls>();
-                    nameId = set.settingId;
-                    setVName = settingsValues.Where(i => i.settingId == nameId).FirstOrDefault();
                     tb_name.Text = setVName.value;
                     //get company address
-                    set = settingsCls.Where(s => s.name == "com_address").FirstOrDefault<SettingCls>();
-                    addressId = set.settingId;
-                    setVAddress = settingsValues.Where(i => i.settingId == addressId).FirstOrDefault();
                     tb_address.Text = setVAddress.value;
                     //get company email
-                    set = settingsCls.Where(s => s.name == "com_email").FirstOrDefault<SettingCls>();
-                    emailId = set.settingId;
-                    setVEmail = settingsValues.Where(i => i.settingId == emailId).FirstOrDefault();
                     tb_email.Text = setVEmail.value;
                     //get company mobile
-                    set = settingsCls.Where(s => s.name == "com_mobile").FirstOrDefault<SettingCls>();
-                    mobileId = set.settingId;
-                    setVMobile = settingsValues.Where(i => i.settingId == mobileId).FirstOrDefault();
                     SectionData.getMobile(setVMobile.value, cb_areaMobile, tb_mobile);
                     //get company phone
-                    set = settingsCls.Where(s => s.name == "com_phone").FirstOrDefault<SettingCls>();
-                    phoneId = set.settingId;
-                    setVPhone = settingsValues.Where(i => i.settingId == phoneId).FirstOrDefault();
                     SectionData.getPhone(setVPhone.value, cb_areaPhone, cb_areaPhoneLocal, tb_phone);
                     //get company fax
-                    set = settingsCls.Where(s => s.name == "com_fax").FirstOrDefault<SettingCls>();
-                    faxId = set.settingId;
-                    setVFax = settingsValues.Where(i => i.settingId == faxId).FirstOrDefault();
                     SectionData.getPhone(setVFax.value, cb_areaFax, cb_areaFaxLocal, tb_fax);
                     //get company logo
-                    set = settingsCls.Where(s => s.name == "com_logo").FirstOrDefault<SettingCls>();
-                    logoId = set.settingId;
-                    setVLogo = settingsValues.Where(i => i.settingId == logoId).FirstOrDefault();
                     await getImg();
                     #endregion
+
                 }
                 SectionData.EndAwait(grid_ucCompanyInfo, this);
             }
@@ -148,12 +158,12 @@ namespace POS.View.windows
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_phone, MainWindow.resourcemanager.GetString("trPhoneHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_email, MainWindow.resourcemanager.GetString("trEmailHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_fax, MainWindow.resourcemanager.GetString("trFaxHint"));
-            tt_name.Content = MainWindow.resourcemanager.GetString("trName");
-            tt_mobile.Content = MainWindow.resourcemanager.GetString("trMobile");
-            tt_phone.Content = MainWindow.resourcemanager.GetString("trPhone");
-            tt_fax.Content = MainWindow.resourcemanager.GetString("trFax");
-            tt_email.Content = MainWindow.resourcemanager.GetString("trEmail");
-            tt_address.Content = MainWindow.resourcemanager.GetString("trAddress");
+            //tt_name.Content = MainWindow.resourcemanager.GetString("trName");
+            //tt_mobile.Content = MainWindow.resourcemanager.GetString("trMobile");
+            //tt_phone.Content = MainWindow.resourcemanager.GetString("trPhone");
+            //tt_fax.Content = MainWindow.resourcemanager.GetString("trFax");
+            //tt_email.Content = MainWindow.resourcemanager.GetString("trEmail");
+            //tt_address.Content = MainWindow.resourcemanager.GetString("trAddress");
             btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
         }
       
@@ -161,7 +171,10 @@ namespace POS.View.windows
         {
             try
             {
-                SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
+                if(isFirstTime)
+                    validateEmail(tb_email, p_errorEmail, tt_errorEmail);
+                else
+                    SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
             }
             catch(Exception ex)
             { SectionData.ExceptionMessage(ex,this,sender); }
@@ -371,16 +384,26 @@ namespace POS.View.windows
                 {
                     if ((sender as TextBox).Name == "tb_name")
                         SectionData.validateEmptyTextBox((TextBox)sender, p_errorName, tt_errorName, "trEmptyNameToolTip");
-                    else if ((sender as TextBox).Name == "tb_address")
-                        SectionData.validateEmptyTextBox((TextBox)sender, p_errorAddress, tt_errorAddress, "trEmptyAddress");
-                    else if ((sender as TextBox).Name == "tb_email")
-                        SectionData.validateEmptyTextBox((TextBox)sender, p_errorEmail, tt_errorEmail, "trEmptyEmailToolTip");
-                    else if ((sender as TextBox).Name == "tb_phone")
-                        SectionData.validateEmptyTextBox((TextBox)sender, p_errorPhone, tt_errorPhone, "trEmptyPhoneToolTip");
+                    //else if ((sender as TextBox).Name == "tb_address")
+                    //    SectionData.validateEmptyTextBox((TextBox)sender, p_errorAddress, tt_errorAddress, "trEmptyAddress");
+                    //else if ((sender as TextBox).Name == "tb_email")
+                    //    SectionData.validateEmptyTextBox((TextBox)sender, p_errorEmail, tt_errorEmail, "trEmptyEmailToolTip");
+                    //else if ((sender as TextBox).Name == "tb_phone")
+                    //    SectionData.validateEmptyTextBox((TextBox)sender, p_errorPhone, tt_errorPhone, "trEmptyPhoneToolTip");
                     else if ((sender as TextBox).Name == "tb_mobile")
                         SectionData.validateEmptyTextBox((TextBox)sender, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
-                    else if ((sender as TextBox).Name == "tb_fax")
-                        SectionData.validateEmptyTextBox((TextBox)sender, p_errorFax, tt_errorFax, "trEmptyFaxToolTip");
+                    //else if ((sender as TextBox).Name == "tb_fax")
+                    //    SectionData.validateEmptyTextBox((TextBox)sender, p_errorFax, tt_errorFax, "trEmptyFaxToolTip");
+                }
+            }
+            else
+            {
+                if (name == "TextBox")
+                {
+                    if ((sender as TextBox).Name == "tb_name")
+                        validateEmptyTextBox((TextBox)sender, p_errorName, tt_errorName, "Name cann't be empty");
+                    else if ((sender as TextBox).Name == "tb_mobile")
+                        validateEmptyTextBox((TextBox)sender, p_errorMobile, tt_errorMobile, "Mobile number cann't be empty");
                 }
             }
         }
@@ -405,39 +428,80 @@ namespace POS.View.windows
                 Btn_save_Click(null, null);
             }
         }
-       
+        private bool validateEmail(TextBox tb, System.Windows.Shapes.Path p_error, ToolTip tt_error)
+        {
+            bool isValid = true;
+            if (!tb.Text.Equals(""))
+            {
+                if (!ValidatorExtensions.IsValid(tb.Text))
+                {
+                    p_error.Visibility = Visibility.Visible;
+                    tt_error.Content = ("Email address is not valid");
+                    tb.Background = (Brush)bc.ConvertFrom("#15FF0000");
+                    isValid = false;
+                }
+                else
+                {
+                    p_error.Visibility = Visibility.Collapsed;
+                    tb.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                    isValid = true;
+                }
+            }
+            return isValid;
+        }
+        public bool validateEmptyTextBox(TextBox tb, System.Windows.Shapes.Path p_error, ToolTip tt_error, string tr)
+        {
+            bool isValid = true;
+            if (tb.Text.Equals(""))
+            {
+                p_error.Visibility = Visibility.Visible;
+                tt_error.Content = (tr);
+                tb.Background = (Brush)bc.ConvertFrom("#15FF0000");
+                isValid = false;
+            }
+            else
+            {
+                tb.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                p_error.Visibility = Visibility.Collapsed;
+            }
+            return isValid;
+        }
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {//save
             try
             {
                 SectionData.StartAwait(grid_ucCompanyInfo);
-                
+
                 #region validate
-                //chk empty name
-                SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
-                //chk empty address
-                //SectionData.validateEmptyTextBox(tb_address, p_errorAddress, tt_errorAddress, "trEmptyAddressToolTip");
-                //chk empty email
-                //SectionData.validateEmptyTextBox(tb_email, p_errorEmail, tt_errorEmail, "trEmptyEmailToolTip");
-                //validate email
-                SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
                 bool emailError = false;
-                if (!tb_email.Text.Equals(""))
-                    if (!ValidatorExtensions.IsValid(tb_email.Text))
-                        emailError = true;
-                //chk empty mobile
-                SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
-                //chk empty phone
-                //SectionData.validateEmptyTextBox(tb_phone, p_errorPhone, tt_errorPhone, "trEmptyPhoneToolTip");
-                //chk empty fax
-                //SectionData.validateEmptyTextBox(tb_fax, p_errorFax, tt_errorFax, "trEmptyFaxToolTip");
+                if (!isFirstTime)
+                {
+                    //chk empty name
+                    SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
+                    //validate email
+                    SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
+                    if (!tb_email.Text.Equals(""))
+                        if (!ValidatorExtensions.IsValid(tb_email.Text))
+                            emailError = true;
+                    //chk empty mobile
+                    SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
+                }
+                else
+                {
+                    //chk empty name
+                    validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "Name cann't be empty");
+                    //validate email
+                    validateEmail(tb_email, p_errorEmail, tt_errorEmail);
+                    if (!tb_email.Text.Equals(""))
+                        if (!ValidatorExtensions.IsValid(tb_email.Text))
+                            emailError = true;
+                    //chk empty mobile
+                    validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "Mobile number cann't be empty");
+                }
                 #endregion
 
                 #region save
-                if ((!tb_name.Text.Equals("")) && (!tb_address.Text.Equals("")) &&
-                   (!tb_email.Text.Equals("")) && (!tb_mobile.Text.Equals("")) &&
-                   (!tb_phone.Text.Equals("")) && (!tb_fax.Text.Equals("")) &&
-                   !emailError)
+                if ((!tb_name.Text.Equals("")) && (!tb_mobile.Text.Equals("")) && !emailError)
                 {
                     //save name
                     if (!tb_name.Text.Equals(""))
@@ -448,7 +512,7 @@ namespace POS.View.windows
                         setVName.settingId = nameId;
                         string sName = await valueModel.Save(setVName);
                         //MessageBox.Show("name : " + sName);
-                        if(!sName.Equals("0"))
+                        if (!sName.Equals("0"))
                             MainWindow.companyName = tb_name.Text;
                     }
                     //save address
@@ -517,45 +581,40 @@ namespace POS.View.windows
                     string sLogo = "";
                     if (isImgPressed)
                     {
-                        int valId = setVLogo.valId;
-                        string b = await setVLogo.uploadImage(imgFileName, Md5Encription.MD5Hash("Inc-m" + valId.ToString()), valId);
-                        setVLogo.value = b;
                         isImgPressed = false;
-                        if (!b.Equals(""))
-                        {
 
-                            setVLogo.value = b;
-                            setVLogo.isSystem = 1;
-                            setVLogo.isDefault = 1;
-                            setVLogo.settingId = logoId;
-                            sLogo = await valueModel.Save(setVLogo);
+                        setVLogo.value = sLogo;
+                        setVLogo.isSystem = 1;
+                        setVLogo.isDefault = 1;
+                        setVLogo.settingId = logoId;
+                        sLogo = await valueModel.Save(setVLogo);
+                        //MessageBox.Show("logo : " + sLogo);
+                        if (!sLogo.Equals(""))
+                        {
                             MainWindow.logoImage = setVLogo.value;
+                            string b = await setVLogo.uploadImage(imgFileName, Md5Encription.MD5Hash("Inc-m" + sLogo), int.Parse(sLogo));
+                            setVLogo.value = b;
+                            sLogo = await valueModel.Save(setVLogo);
                             await valueModel.getImg(setVLogo.value);
-
                         }
-                        else
-                        {
-                            //MessageBox.Show("حدث خطأ في تحميل الصورة");
-                        }
-
-                  
                     }
 
-                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
-                    await Task.Delay(1500);
+                    #endregion
+                    if (!isFirstTime)
+                    {
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
+                        await Task.Delay(1500);
+                    }
                     this.Close();
-
-
                 }
-                #endregion
-
                 SectionData.EndAwait(grid_ucCompanyInfo, this);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-                SectionData.EndAwait(grid_ucCompanyInfo , this);
-                SectionData.ExceptionMessage(ex,this,sender);
+                if(!isFirstTime)
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                SectionData.EndAwait(grid_ucCompanyInfo, this);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
 
         }

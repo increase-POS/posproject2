@@ -501,7 +501,7 @@ namespace POS.View.accounts
                     {
                         Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
                         //clear textBoxs
-                        Btn_clear_Click(sender, e);
+                        Btn_clear_Click(null, null);
                     }
                     else if (b == "0")
                         Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopCanNotDeleteRequest"), animation: ToasterAnimation.FadeIn);

@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              d:DesignHeight="675" d:DesignWidth="985" Loaded="UserControl_Loaded" >
-    <Grid x:Name="grid_ucBranch" >
+    <Grid x:Name="grid_main" >
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2.54*"/>
             <ColumnDefinition Width="*" MinWidth="225"/>
