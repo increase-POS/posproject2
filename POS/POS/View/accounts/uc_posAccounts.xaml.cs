@@ -1,8 +1,11 @@
-﻿using netoaster;
+﻿using Microsoft.Reporting.WinForms;
+using Microsoft.Win32;
+using netoaster;
 using POS.Classes;
 using POS.View.windows;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
@@ -501,7 +504,7 @@ namespace POS.View.accounts
                     {
                         Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
                         //clear textBoxs
-                        Btn_clear_Click(null, null);
+                        Btn_clear_Click(sender, e);
                     }
                     else if (b == "0")
                         Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopCanNotDeleteRequest"), animation: ToasterAnimation.FadeIn);
@@ -758,6 +761,84 @@ namespace POS.View.accounts
                     SectionData.validateEmptyComboBox((ComboBox)sender, p_errorToBranch, tt_errorToBranch, "trEmptyBranchToolTip");
             }
                
+        }
+        ReportCls reportclass = new ReportCls();
+        LocalReport rep = new LocalReport();
+        SaveFileDialog saveFileDialog = new SaveFileDialog();
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
+                {
+                    List<ReportParameter> paramarr = new List<ReportParameter>();
+
+                    string addpath;
+                    bool isArabic = ReportCls.checkLang();
+                    if (isArabic)
+                    {
+                        addpath = @"\Reports\Account\Ar\ArPosAccReport.rdlc";
+                    }
+                    else addpath = @"\Reports\Account\EN\PosAccReport.rdlc";
+                    string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+                    ReportCls.checkLang();
+
+                    clsReports.bankAccReport(cashesQuery, rep, reppath);
+                    clsReports.setReportLanguage(paramarr);
+                    clsReports.Header(paramarr);
+
+                    rep.SetParameters(paramarr);
+
+                    rep.Refresh();
+
+                    saveFileDialog.Filter = "PDF|*.pdf;";
+
+                    if (saveFileDialog.ShowDialog() == true)
+                    {
+                        string filepath = saveFileDialog.FileName;
+                        LocalReportExtensions.ExportToPDF(rep, filepath);
+                    }
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+            }
+            catch (Exception ex)
+            { SectionData.ExceptionMessage(ex, this, sender); }
+        }
+
+        private void Btn_print_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
+                {
+                    List<ReportParameter> paramarr = new List<ReportParameter>();
+
+                    string addpath;
+                    bool isArabic = ReportCls.checkLang();
+                    if (isArabic)
+                    {
+                        addpath = @"\Reports\Account\Ar\ArPosAccReport.rdlc";
+                    }
+                    else addpath = @"\Reports\Account\EN\PosAccReport.rdlc";
+                    string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+                    ReportCls.checkLang();
+
+                    clsReports.bankAccReport(cashesQuery, rep, reppath);
+                    clsReports.setReportLanguage(paramarr);
+                    clsReports.Header(paramarr);
+
+                    rep.SetParameters(paramarr);
+                    rep.Refresh();
+                    LocalReportExtensions.PrintToPrinter(rep);
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+            }
+            catch (Exception ex)
+            { SectionData.ExceptionMessage(ex, this, sender); }
         }
     }
 }

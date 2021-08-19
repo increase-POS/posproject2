@@ -1,8 +1,11 @@
-﻿using netoaster;
+﻿using Microsoft.Reporting.WinForms;
+using Microsoft.Win32;
+using netoaster;
 using POS.Classes;
 using POS.View.windows;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
@@ -453,40 +456,7 @@ namespace POS.View.storage
                 SectionData.ExceptionMessage(ex,this,sender);
             }
         }
-        private void Btn_pdf_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-
-                if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
-                {
-
-                }
-                else
-                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-            }
-            catch (Exception ex)
-            {
-                SectionData.ExceptionMessage(ex,this,sender);
-            }
-        }
-        private void Btn_print_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-
-                if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
-                {
-
-                }
-                else
-                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-            }
-            catch (Exception ex)
-            {
-                SectionData.ExceptionMessage(ex,this,sender);
-            }
-        }
+      
         private void Btn_pieChart_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -619,6 +589,89 @@ namespace POS.View.storage
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
             Tb_search_TextChanged(null,null);
+        }
+        ReportCls reportclass = new ReportCls();
+        LocalReport rep = new LocalReport();
+        SaveFileDialog saveFileDialog = new SaveFileDialog();
+        private void Btn_pdf_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+
+                if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+                {
+                    List<ReportParameter> paramarr = new List<ReportParameter>();
+
+                    string addpath;
+                    bool isArabic = ReportCls.checkLang();
+                    if (isArabic)
+                    {
+                        addpath = @"\Reports\SectionData\Ar\ArBankReport.rdlc";
+                    }
+                    else addpath = @"\Reports\SectionData\EN\BankReport.rdlc";
+                    string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+                    ReportCls.checkLang();
+
+                    clsReports.invItem(invItemsQuery, rep, reppath);
+                    clsReports.setReportLanguage(paramarr);
+                    clsReports.Header(paramarr);
+
+                    rep.SetParameters(paramarr);
+
+                    rep.Refresh();
+
+                    saveFileDialog.Filter = "PDF|*.pdf;";
+
+                    if (saveFileDialog.ShowDialog() == true)
+                    {
+                        string filepath = saveFileDialog.FileName;
+                        LocalReportExtensions.ExportToPDF(rep, filepath);
+                    }
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
+        private void Btn_print_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+
+                if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+                {
+                    List<ReportParameter> paramarr = new List<ReportParameter>();
+
+                    string addpath;
+                    bool isArabic = ReportCls.checkLang();
+                    if (isArabic)
+                    {
+                        addpath = @"\Reports\SectionData\Ar\ArBankReport.rdlc";
+                    }
+                    else addpath = @"\Reports\SectionData\EN\BankReport.rdlc";
+                    string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+                    ReportCls.checkLang();
+
+                    clsReports.invItem(invItemsQuery, rep, reppath);
+                    clsReports.setReportLanguage(paramarr);
+                    clsReports.Header(paramarr);
+
+                    rep.SetParameters(paramarr);
+                    rep.Refresh();
+                    LocalReportExtensions.PrintToPrinter(rep);
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
     }
 }

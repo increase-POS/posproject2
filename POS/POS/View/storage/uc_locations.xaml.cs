@@ -20,6 +20,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using POS.View.windows;
+using Microsoft.Reporting.WinForms;
+using Microsoft.Win32;
+using System.IO;
 
 namespace POS.View
 {
@@ -353,7 +356,7 @@ namespace POS.View
                 Tb_search_TextChanged(null, null);
             }
             //clear textBoxs
-            Btn_clear_Click(null, null);
+            Btn_clear_Click(sender, e);
                     }
                     else
                         Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -632,6 +635,80 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex,this,sender);
             }
         }
+        ReportCls reportclass = new ReportCls();
+        LocalReport rep = new LocalReport();
+        SaveFileDialog saveFileDialog = new SaveFileDialog();
+        private void Btn_pdf_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
 
+                    List<ReportParameter> paramarr = new List<ReportParameter>();
+
+                    string addpath;
+                    bool isArabic = ReportCls.checkLang();
+                    if (isArabic)
+                    {
+                        addpath = @"\Reports\SectionData\Ar\ArBankReport.rdlc";
+                    }
+                    else addpath = @"\Reports\SectionData\EN\BankReport.rdlc";
+                    string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+                    ReportCls.checkLang();
+
+                    clsReports.location(locationsQuery, rep, reppath);
+                    clsReports.setReportLanguage(paramarr);
+                    clsReports.Header(paramarr);
+
+                    rep.SetParameters(paramarr);
+
+                    rep.Refresh();
+
+                    saveFileDialog.Filter = "PDF|*.pdf;";
+
+                    if (saveFileDialog.ShowDialog() == true)
+                    {
+                        string filepath = saveFileDialog.FileName;
+                        LocalReportExtensions.ExportToPDF(rep, filepath);
+                    }
+                }
+             
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
+
+        private void Btn_print_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                    List<ReportParameter> paramarr = new List<ReportParameter>();
+
+                    string addpath;
+                    bool isArabic = ReportCls.checkLang();
+                    if (isArabic)
+                    {
+                        addpath = @"\Reports\SectionData\Ar\ArBankReport.rdlc";
+                    }
+                    else addpath = @"\Reports\SectionData\EN\BankReport.rdlc";
+                    string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+                    ReportCls.checkLang();
+
+                    clsReports.location(locationsQuery, rep, reppath);
+                    clsReports.setReportLanguage(paramarr);
+                    clsReports.Header(paramarr);
+
+                    rep.SetParameters(paramarr);
+                    rep.Refresh();
+                    LocalReportExtensions.PrintToPrinter(rep);
+                }
+              
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
     }
 }

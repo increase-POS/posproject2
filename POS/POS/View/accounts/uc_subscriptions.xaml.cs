@@ -1,7 +1,10 @@
-﻿using netoaster;
+﻿using Microsoft.Reporting.WinForms;
+using Microsoft.Win32;
+using netoaster;
 using POS.Classes;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -160,6 +163,16 @@ namespace POS.View.accounts
         private void Cb_paymentProcessType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
+        }
+        ReportCls reportclass = new ReportCls();
+        LocalReport rep = new LocalReport();
+        SaveFileDialog saveFileDialog = new SaveFileDialog();
+        private void Btn_pdf_Click(object sender, RoutedEventArgs e)
+        {
+        }
+
+        private void Btn_print_Click(object sender, RoutedEventArgs e)
+        {
         }
     }
 }

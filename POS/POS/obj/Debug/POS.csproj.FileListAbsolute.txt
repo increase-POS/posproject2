@@ -2825,3 +2825,9 @@ E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_cashTransfer.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_cashTransfer.baml
 D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\wd_cashTransfer.g.cs
 D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\wd_cashTransfer.baml
+C:\Users\HP\Documents\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_cashTransfer.g.cs
+C:\Users\HP\Documents\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_setupGeneralSetting.g.cs
+C:\Users\HP\Documents\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_setupServer.g.cs
+C:\Users\HP\Documents\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_cashTransfer.baml
+C:\Users\HP\Documents\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_setupGeneralSetting.baml
+C:\Users\HP\Documents\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_setupServer.baml

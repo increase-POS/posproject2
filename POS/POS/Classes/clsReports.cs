@@ -31,6 +31,63 @@ namespace POS.Classes
             paramarr.Add(new ReportParameter("logoImage", "file:\\" + rep.GetLogoImagePath()));
            
         }
+        public static void bankdg(List<ReportParameter> paramarr)
+        {
+
+            ReportCls rep = new ReportCls();
+            paramarr.Add(new ReportParameter("trTransferNumber",MainWindow.resourcemanagerreport.GetString("trTransferNumberTooltip")));
+        
+
+        }
+        public static void bondsReport(IEnumerable<Bonds> bondsQuery, LocalReport rep, string reppath)
+        {
+            rep.ReportPath = reppath;
+            rep.EnableExternalImages = true;
+            rep.DataSources.Clear();
+            rep.DataSources.Add(new ReportDataSource("DataSetBond", bondsQuery));
+        }
+        public static void orderReport(IEnumerable<Invoice> invoiceQuery, LocalReport rep, string reppath)
+        {
+            rep.ReportPath = reppath;
+            rep.EnableExternalImages = true;
+            rep.DataSources.Clear();
+            rep.DataSources.Add(new ReportDataSource("DataSetInvoice", invoiceQuery));
+        }
+        public static void bankAccReport(IEnumerable<CashTransfer> cash, LocalReport rep, string reppath)
+        {
+            rep.ReportPath = reppath;
+            rep.EnableExternalImages = true;
+            rep.DataSources.Clear();
+            rep.DataSources.Add(new ReportDataSource("DataSetBankAcc", cash));
+        }
+        public static void invItem(IEnumerable<InventoryItemLocation> itemLocations, LocalReport rep, string reppath)
+        {
+            rep.ReportPath = reppath;
+            rep.EnableExternalImages = true;
+            rep.DataSources.Clear();
+            rep.DataSources.Add(new ReportDataSource("DataSetInvItemLocation", itemLocations));
+        }
+        public static void section(IEnumerable<Section> sections, LocalReport rep, string reppath)
+        {
+            rep.ReportPath = reppath;
+            rep.EnableExternalImages = true;
+            rep.DataSources.Clear();
+            rep.DataSources.Add(new ReportDataSource("DataSetSection", sections));
+        }
+        public static void location(IEnumerable<Location> locations, LocalReport rep, string reppath)
+        {
+            rep.ReportPath = reppath;
+            rep.EnableExternalImages = true;
+            rep.DataSources.Clear();
+            rep.DataSources.Add(new ReportDataSource("DataSetLocation", locations));
+        }
+        public static void itemLocation(IEnumerable<ItemLocation> itemLocations, LocalReport rep, string reppath)
+        {
+            rep.ReportPath = reppath;
+            rep.EnableExternalImages = true;
+            rep.DataSources.Clear();
+            rep.DataSources.Add(new ReportDataSource("DataSetItemLocation", itemLocations));
+        }
         public static void bankReport(IEnumerable<Bank> banksQuery, LocalReport rep, string reppath)
         {
             rep.ReportPath = reppath;
