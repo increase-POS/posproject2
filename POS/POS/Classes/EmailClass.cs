@@ -221,10 +221,10 @@ namespace POS.Classes
             bool isArabic = ReportCls.checkLang();
             if (isArabic)
             {
-              invheader = repm.ReadFile(@"EmailTemplates\ordertemplate\ar\invheader.tmp");
+                invheader = repm.ReadFile(@"EmailTemplates\ordertemplate\ar\invheader.tmp");
                 invfooter = repm.ReadFile(@"EmailTemplates\ordertemplate\ar\invfooter.tmp");
-                 invbody = repm.ReadFile(@"EmailTemplates\ordertemplate\ar\invbody.tmp");
-                 invitemtable = repm.ReadFile(@"EmailTemplates\ordertemplate\ar\invitemtable.tmp");
+                invbody = repm.ReadFile(@"EmailTemplates\ordertemplate\ar\invbody.tmp");
+                invitemtable = repm.ReadFile(@"EmailTemplates\ordertemplate\ar\invitemtable.tmp");
                 invitemrow = repm.ReadFile(@"EmailTemplates\ordertemplate\ar\invitemrow.tmp");
 
 
@@ -233,13 +233,13 @@ namespace POS.Classes
             { // en
                 invheader = repm.ReadFile(@"EmailTemplates\ordertemplate\en\invheader.tmp");
                 invfooter = repm.ReadFile(@"EmailTemplates\ordertemplate\en\invfooter.tmp");
-                 invbody = repm.ReadFile(@"EmailTemplates\ordertemplate\en\invbody.tmp");
-                 invitemtable = repm.ReadFile(@"EmailTemplates\ordertemplate\en\invitemtable.tmp");
-               invitemrow = repm.ReadFile(@"EmailTemplates\ordertemplate\en\invitemrow.tmp");
+                invbody = repm.ReadFile(@"EmailTemplates\ordertemplate\en\invbody.tmp");
+                invitemtable = repm.ReadFile(@"EmailTemplates\ordertemplate\en\invitemtable.tmp");
+                invitemrow = repm.ReadFile(@"EmailTemplates\ordertemplate\en\invitemrow.tmp");
 
             }
 
-    
+
             //header info
 
             invheader = invheader.Replace("[[companyname]]", MainWindow.companyName.Trim());
@@ -253,7 +253,7 @@ namespace POS.Classes
 
 
             //BODY
-       
+
             // string title = "Purchase Order";
             string title = setvlist.Where(x => x.notes == "title").FirstOrDefault() is null ? ""
                 : setvlist.Where(x => x.notes == "title").FirstOrDefault().value.ToString();
@@ -395,11 +395,11 @@ namespace POS.Classes
 
         public EmailClass fillSaleTempData(Invoice invoice, List<ItemTransfer> invoiceItems, SysEmails email, Agent toAgent, List<SetValues> setvlist)
         {
-            string invheader="";
-            string invfooter="";
-            string invbody="";
-            string invitemtable="";
-            string invitemrow="";
+            string invheader = "";
+            string invfooter = "";
+            string invbody = "";
+            string invitemtable = "";
+            string invitemrow = "";
 
             EmailClass mailtosend = new EmailClass();
 
@@ -424,12 +424,13 @@ namespace POS.Classes
                 invheader = repm.ReadFile(@"EmailTemplates\ordertemplate\ar\invheader.tmp");
                 invfooter = repm.ReadFile(@"EmailTemplates\ordertemplate\ar\invfooter.tmp");
 
-                if(invoice.invType=="s")
+                if (invoice.invType == "s")
                 {
                     invbody = repm.ReadFile(@"EmailTemplates\saletemplate\ar\invbody.tmp");
                     invitemtable = repm.ReadFile(@"EmailTemplates\saletemplate\ar\invitemtable.tmp");
                     invitemrow = repm.ReadFile(@"EmailTemplates\saletemplate\ar\invitemrow.tmp");
-                }else if (invoice.invType == "or")
+                }
+                else if (invoice.invType == "or")
                 {
                     invbody = repm.ReadFile(@"EmailTemplates\saleordertemplate\ar\invbody.tmp");
                     invitemtable = repm.ReadFile(@"EmailTemplates\saleordertemplate\ar\invitemtable.tmp");
@@ -441,7 +442,7 @@ namespace POS.Classes
                     invitemtable = repm.ReadFile(@"EmailTemplates\quotationtemplate\ar\invitemtable.tmp");
                     invitemrow = repm.ReadFile(@"EmailTemplates\quotationtemplate\ar\invitemrow.tmp");
                 }
-            
+
 
             }
             else
@@ -454,8 +455,8 @@ namespace POS.Classes
                 {
 
                     invbody = repm.ReadFile(@"EmailTemplates\saletemplate\en\invbody.tmp");
-                invitemtable = repm.ReadFile(@"EmailTemplates\saletemplate\en\invitemtable.tmp");
-                invitemrow = repm.ReadFile(@"EmailTemplates\saletemplate\en\invitemrow.tmp");
+                    invitemtable = repm.ReadFile(@"EmailTemplates\saletemplate\en\invitemtable.tmp");
+                    invitemrow = repm.ReadFile(@"EmailTemplates\saletemplate\en\invitemrow.tmp");
                 }
                 else if (invoice.invType == "or")
                 {
@@ -520,7 +521,7 @@ namespace POS.Classes
 
             invitemtable = invitemtable.Replace("[[tritems]]", MainWindow.resourcemanagerreport.GetString("trItem").Trim());
             invitemtable = invitemtable.Replace("[[trunit]]", MainWindow.resourcemanagerreport.GetString("trUnit").Trim());
-         invitemtable = invitemtable.Replace("[[trprice]]", MainWindow.resourcemanagerreport.GetString("trPrice").Trim());
+            invitemtable = invitemtable.Replace("[[trprice]]", MainWindow.resourcemanagerreport.GetString("trPrice").Trim());
             invitemtable = invitemtable.Replace("[[trquantity]]", MainWindow.resourcemanagerreport.GetString("trQuantity").Trim());
             invitemtable = invitemtable.Replace("[[trtotalrow]]", MainWindow.resourcemanagerreport.GetString("trTotal").Trim());
 
@@ -577,10 +578,10 @@ namespace POS.Classes
                 rowhtml = rowhtml.Replace("[[col2]]", row.unitName.Trim());
                 rowhtml = rowhtml.Replace("[[col3]]", row.price.ToString());
                 rowhtml = rowhtml.Replace("[[col4]]", row.quantity.ToString());
-            
-                rowhtml = rowhtml.Replace("[[col5]]",(row.quantity* row.price).ToString());
+
+                rowhtml = rowhtml.Replace("[[col5]]", (row.quantity * row.price).ToString());
                 //     rowhtml = rowhtml.Replace("[[col4]]", (row.quantity * row.price).ToString());
-              
+
                 datarows += rowhtml;
 
             }
@@ -638,12 +639,12 @@ namespace POS.Classes
         }
 
 
-        public EmailClass fillRequirdTempData(string total,string emailto, SysEmails email, List<SetValues> setvlist)
+        public EmailClass fillRequirdTempData(string total, string emailto, SysEmails email, List<SetValues> setvlist)
         {// 
             string invheader = "";
             string invfooter = "";
             string invbody = "";
-        
+
 
             EmailClass mailtosend = new EmailClass();
 
@@ -668,11 +669,11 @@ namespace POS.Classes
                 invheader = repm.ReadFile(@"EmailTemplates\ordertemplate\ar\invheader.tmp");
                 invfooter = repm.ReadFile(@"EmailTemplates\ordertemplate\ar\invfooter.tmp");
 
-               
-                    invbody = repm.ReadFile(@"EmailTemplates\reqtemplate\ar\invbody.tmp");
-                
-            
-               
+
+                invbody = repm.ReadFile(@"EmailTemplates\reqtemplate\ar\invbody.tmp");
+
+
+
 
             }
             else
@@ -681,11 +682,11 @@ namespace POS.Classes
 
                 invheader = repm.ReadFile(@"EmailTemplates\ordertemplate\en\invheader.tmp");
                 invfooter = repm.ReadFile(@"EmailTemplates\ordertemplate\en\invfooter.tmp");
-              
 
-                    invbody = repm.ReadFile(@"EmailTemplates\reqtemplate\en\invbody.tmp");
- 
-              
+
+                invbody = repm.ReadFile(@"EmailTemplates\reqtemplate\en\invbody.tmp");
+
+
             }
 
 
@@ -703,8 +704,17 @@ namespace POS.Classes
 
             // string title = "Purchase Order";Required Amount: [[trreqamount]] [[reqamount]]
             //BODY
-            invbody = invbody.Replace("[[trreqamount]]", MainWindow.resourcemanagerreport.GetString("trRequired").Trim() + ": ");
-            invbody = invbody.Replace("[[reqamount]]",total.Trim()+" "+ MainWindow.Currency );
+            if (isArabic)
+            {
+                invbody = invbody.Replace("[[trreqamount]]", " " + ":" + MainWindow.resourcemanagerreport.GetString("trRequired").Trim());
+
+            }
+            else
+            {
+                invbody = invbody.Replace("[[trreqamount]]", MainWindow.resourcemanagerreport.GetString("trRequired").Trim() + ": ");
+
+            }
+            invbody = invbody.Replace("[[reqamount]]", total.Trim() + " " + MainWindow.Currency);
             string title = setvlist.Where(x => x.notes == "title").FirstOrDefault() is null ? ""
                 : setvlist.Where(x => x.notes == "title").FirstOrDefault().value.ToString();
             invheader = invheader.Replace("[[title]]", title.Trim());
@@ -719,7 +729,7 @@ namespace POS.Classes
 
 
 
-     
+
             // string invoicenote = "Thank you for your cooperation. We have also enclosed our procurement specifications and conditions for your review <br/> Sincerely";
             string invoicenote = setvlist.Where(x => x.notes == "text2").FirstOrDefault() is null ? ""
                 : setvlist.Where(x => x.notes == "text2").FirstOrDefault().value.ToString();
@@ -752,9 +762,9 @@ namespace POS.Classes
 
             //  invitemtable
             // foreach
-    
+
             // end foreach
-   
+
 
             string mailbody = invheader + invbody + invfooter;
 
