@@ -1085,6 +1085,8 @@
     <EmbeddedResource Include="Reports\StatisticReport\Sale\En\EnPurSts.rdlc" />
     <EmbeddedResource Include="Reports\StatisticReport\Sale\En\EnPurUserSts.rdlc" />
     <EmbeddedResource Include="Reports\StatisticReport\Sale\En\EnPurVendorSts.rdlc" />
+    <EmbeddedResource Include="Reports\Store\Ar\ArDestroyReport.rdlc" />
+    <EmbeddedResource Include="Reports\Store\En\DestroyReport.rdlc" />
     <Resource Include="fonts\cairo-font\cairo bold.ttf" />
     <Resource Include="fonts\cairo-font\cairo-light.ttf" />
     <Resource Include="fonts\barcodeFont.ttf" />

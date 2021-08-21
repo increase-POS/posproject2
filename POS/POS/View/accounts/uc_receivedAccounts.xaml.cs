@@ -1215,14 +1215,7 @@ namespace POS.View.accounts
             else
                 btn_invoices.IsEnabled = false;
         }
-        private async void Button_Click(object sender, RoutedEventArgs e)
-        {
-            //string s = await cashModel.generateCashNumber("pv");
-            //MessageBox.Show(s);
-
-            await cashModel.generateCashNumber("pv");
-
-        }
+       
 
         private void Tb_EnglishDigit_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {//only english and digits
@@ -1230,6 +1223,75 @@ namespace POS.View.accounts
             if (!regex.IsMatch(e.Text))
                 e.Handled = true;
 
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                List<ReportParameter> paramarr = new List<ReportParameter>();
+
+                string addpath;
+                bool isArabic = ReportCls.checkLang();
+                if (isArabic)
+                {
+                    addpath = @"\Reports\Account\Ar\ArReceiptAccReport.rdlc";
+                }
+                else addpath = @"\Reports\Account\EN\ReceiptAccReport.rdlc";
+                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+                ReportCls.checkLang();
+
+                clsReports.bankAccReport(cashesQuery, rep, reppath);
+                clsReports.setReportLanguage(paramarr);
+                clsReports.Header(paramarr);
+                clsReports.bankdg(paramarr);
+
+                rep.SetParameters(paramarr);
+
+                rep.Refresh();
+
+                saveFileDialog.Filter = "PDF|*.pdf;";
+
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    string filepath = saveFileDialog.FileName;
+                    LocalReportExtensions.ExportToPDF(rep, filepath);
+                }
+
+            }
+            catch (Exception ex)
+            { SectionData.ExceptionMessage(ex, this, sender); }
+
+        }
+
+        private void Btn_print_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                List<ReportParameter> paramarr = new List<ReportParameter>();
+
+                string addpath;
+                bool isArabic = ReportCls.checkLang();
+                if (isArabic)
+                {
+                    addpath = @"\Reports\Account\Ar\ArReceiptAccReport.rdlc";
+                }
+                else addpath = @"\Reports\Account\EN\ReceiptAccReport.rdlc";
+                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+                ReportCls.checkLang();
+
+                clsReports.bankAccReport(cashesQuery, rep, reppath);
+                clsReports.setReportLanguage(paramarr);
+                clsReports.Header(paramarr);
+
+                rep.SetParameters(paramarr);
+                rep.Refresh();
+                LocalReportExtensions.PrintToPrinter(rep);
+            }
+            catch (Exception ex)
+            { SectionData.ExceptionMessage(ex, this, sender); }
         }
     }
 }

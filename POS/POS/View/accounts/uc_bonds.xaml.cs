@@ -1,8 +1,11 @@
-﻿using netoaster;
+﻿using Microsoft.Reporting.WinForms;
+using Microsoft.Win32;
+using netoaster;
 using POS.Classes;
 using POS.View.windows;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
@@ -88,7 +91,7 @@ namespace POS.View.accounts
                     btn_image.IsEnabled = true;
 
                     tb_number.Text = bond.number;
-                 
+
                     if (bond.isRecieved == 1)
                     {
                         btn_pay.Content = MainWindow.resourcemanager.GetString("trPaid");
@@ -127,12 +130,12 @@ namespace POS.View.accounts
                     else
                     {
                         tb_depositor.Visibility = Visibility.Visible;
-                        
+
                         cb_depositorV.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_depositorV, p_errordepositor);
                         cb_depositorC.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_depositorC, p_errordepositor);
                         cb_depositorU.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_depositorU, p_errordepositor);
-                    
-                        switch(bond.ctside)
+
+                        switch (bond.ctside)
                         {
                             case "s": tb_depositor.Text = MainWindow.resourcemanager.GetString("trSalary"); break;
                             case "e": tb_depositor.Text = MainWindow.resourcemanager.GetString("trGeneralExpenses"); break;
@@ -148,7 +151,7 @@ namespace POS.View.accounts
                     }
                     if (bond.isRecieved == 1)
                     {
-                        var query = await cashModel.GetCashTransferAsync("all" , "bnd");
+                        var query = await cashModel.GetCashTransferAsync("all", "bnd");
                         CashTransfer ca = new CashTransfer();
                         ca = query.Where(c => c.bondId == bond.bondId).FirstOrDefault();
                         cb_paymentProcessType.SelectedValue = ca.processType;
@@ -183,7 +186,7 @@ namespace POS.View.accounts
                 SectionData.validateEmptyComboBox(cb_paymentProcessType, p_errorpaymentProcessType, tt_errorpaymentProcessType, "trErrorEmptyPaymentTypeToolTip");
                 //chk enough money
                 bool enoughMoney = true;
-                if ((!cb_paymentProcessType.Text.Equals("")) && (cb_paymentProcessType.SelectedValue.ToString().Equals("cash")) && 
+                if ((!cb_paymentProcessType.Text.Equals("")) && (cb_paymentProcessType.SelectedValue.ToString().Equals("cash")) &&
                     (bond.type.Equals("p")) && (!await chkEnoughBalance(decimal.Parse(tb_amount.Text))))
                 {
                     enoughMoney = false;
@@ -256,12 +259,12 @@ namespace POS.View.accounts
         }
 
         Pos posModel = new Pos();
-        private async void calcBalance(string _type , decimal ammount)
+        private async void calcBalance(string _type, decimal ammount)
         {//balance for pos
             string s = "";
             //increase pos balance
             Pos pos = await posModel.getPosById(MainWindow.posID.Value);
-            if(_type.Equals("p"))
+            if (_type.Equals("p"))
                 pos.balance -= ammount;
             else
                 pos.balance += ammount;
@@ -273,9 +276,9 @@ namespace POS.View.accounts
         {
             Pos pos = await posModel.getPosById(MainWindow.posID.Value);
             if (pos.balance.Value >= ammount)
-            { return true;  }
-            else { return false;  }
-            
+            { return true; }
+            else { return false; }
+
         }
 
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
@@ -284,20 +287,20 @@ namespace POS.View.accounts
                 await RefreshBondsList();
             //this.Dispatcher.Invoke(() =>
             //{
-                searchText = tb_search.Text.ToLower();
+            searchText = tb_search.Text.ToLower();
 
-                bondsQuery = bonds.Where(s => (
-                s.number.ToLower().Contains(searchText)
-                ||
-                s.amount.ToString().ToLower().Contains(searchText)
-                || s.type.ToString().ToLower().Contains(searchText)
-                )
-                && s.updateDate.Value.Date >= sDate
-                && s.updateDate.Value.Date <= eDate
-                //&& s.deserveDate.Value.Date >= sDate
-                //&& s.deserveDate.Value.Date <= eDate
-                && s.isRecieved == tgl_bondState
-                );
+            bondsQuery = bonds.Where(s => (
+            s.number.ToLower().Contains(searchText)
+            ||
+            s.amount.ToString().ToLower().Contains(searchText)
+            || s.type.ToString().ToLower().Contains(searchText)
+            )
+            && s.updateDate.Value.Date >= sDate
+            && s.updateDate.Value.Date <= eDate
+            //&& s.deserveDate.Value.Date >= sDate
+            //&& s.deserveDate.Value.Date <= eDate
+            && s.isRecieved == tgl_bondState
+            );
 
             //});
 
@@ -351,7 +354,7 @@ namespace POS.View.accounts
             cb_paymentProcessType.SelectedIndex = -1;
             cb_card.SelectedIndex = -1;
             dp_deservecDate.SelectedDate = null;
-          
+
             cb_depositorV.Visibility = Visibility.Collapsed;
             cb_depositorC.Visibility = Visibility.Collapsed;
             cb_depositorU.Visibility = Visibility.Collapsed;
@@ -371,7 +374,7 @@ namespace POS.View.accounts
         {
             if (name == "TextBox")
             {
-                
+
             }
             else if (name == "ComboBox")
             {
@@ -398,13 +401,13 @@ namespace POS.View.accounts
                 }
                 catch (Exception ex)
                 {
-                    SectionData.ExceptionMessage(ex,this,sender);
+                    SectionData.ExceptionMessage(ex, this, sender);
                 }
             }
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
-        
+
         void FN_ExportToExcel()
         {
             var QueryExcel = bondsQueryExcel.AsEnumerable().Select(x => new
@@ -412,7 +415,7 @@ namespace POS.View.accounts
                 TransNum = x.number,
                 Ammount = x.amount,
                 Recipient = x.type,
-                Notes   = x.notes
+                Notes = x.notes
             });
             var DTForExcel = QueryExcel.ToDataTable();
             DTForExcel.Columns[0].Caption = MainWindow.resourcemanager.GetString("trTransferNumberTooltip");
@@ -435,19 +438,19 @@ namespace POS.View.accounts
             {
 
 
-            
-            if (bonds != null || bond.bondId != 0)
-            {
-                //  (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 0.2;
 
-                wd_uploadImage w = new wd_uploadImage();
+                if (bonds != null || bond.bondId != 0)
+                {
+                    //  (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 0.2;
 
-                w.tableName = "bondes";
-                w.tableId = bond.bondId;
-                w.docNum = bond.number;
-                w.ShowDialog();
-                // (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity =1;
-            }
+                    wd_uploadImage w = new wd_uploadImage();
+
+                    w.tableName = "bondes";
+                    w.tableId = bond.bondId;
+                    w.docNum = bond.number;
+                    w.ShowDialog();
+                    // (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity =1;
+                }
             }
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -528,7 +531,7 @@ namespace POS.View.accounts
             await RefreshBondsList();
             Tb_search_TextChanged(null, null);
         }
-        DateTime sDate , eDate;
+        DateTime sDate, eDate;
         private async void dp_SelectedStartDateChanged(object sender, SelectionChangedEventArgs e)
         {
             sDate = dp_startSearchDate.SelectedDate.Value;
@@ -658,6 +661,8 @@ namespace POS.View.accounts
             cb_depositorC.SelectedValuePath = "agentId";
         }
 
+
+
         private async void fillUsers()
         {
             users = await userModel.GetUsersActive();
@@ -665,6 +670,68 @@ namespace POS.View.accounts
             cb_depositorU.ItemsSource = users;
             cb_depositorU.DisplayMemberPath = "username";
             cb_depositorU.SelectedValuePath = "userId";
+        }
+
+        private void Btn_print_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+
+                List<ReportParameter> paramarr = new List<ReportParameter>();
+
+                string addpath;
+                bool isArabic = ReportCls.checkLang();
+                if (isArabic)
+                {
+                    addpath = @"\Reports\Account\Ar\ArBondAccReport.rdlc";
+                }
+                else addpath = @"\Reports\Account\EN\BondAccReport.rdlc";
+                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+                ReportCls.checkLang();
+
+                clsReports.bondsReport(bondsQuery, rep, reppath);
+                clsReports.setReportLanguage(paramarr);
+                clsReports.Header(paramarr);
+
+                rep.SetParameters(paramarr);
+                rep.Refresh();
+                LocalReportExtensions.PrintToPrinter(rep);
+            }
+            catch (Exception ex)
+            { SectionData.ExceptionMessage(ex, this, sender); }
+        }
+        ReportCls reportclass = new ReportCls();
+        LocalReport rep = new LocalReport();
+        SaveFileDialog saveFileDialog = new SaveFileDialog();
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                    List<ReportParameter> paramarr = new List<ReportParameter>();
+                    string addpath;
+                    bool isArabic = ReportCls.checkLang();
+                    if (isArabic)
+                    {
+                        addpath = @"\Reports\Account\Ar\ArBondAccReport.rdlc";
+                    }
+                    else addpath = @"\Reports\Account\EN\BondAccReport.rdlc";
+                    string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+                    ReportCls.checkLang();
+                    clsReports.bondsReport(bondsQuery, rep, reppath);
+                    clsReports.setReportLanguage(paramarr);
+                    clsReports.Header(paramarr);
+                    rep.SetParameters(paramarr);
+                    rep.Refresh();
+                    saveFileDialog.Filter = "PDF|*.pdf;";
+                    if (saveFileDialog.ShowDialog() == true)
+                    {
+                        string filepath = saveFileDialog.FileName;
+                        LocalReportExtensions.ExportToPDF(rep, filepath);
+                    }
+                }
+            catch (Exception ex)
+            { SectionData.ExceptionMessage(ex, this, sender); }
         }
 
     }

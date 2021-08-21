@@ -170,7 +170,7 @@
                         </Button>
                         <Button   Background="{x:Null}"    Margin="5,0,5,0"
                           Padding="0" Height="35"  x:Name="btn_print"
-                          BorderBrush="{x:Null}" >
+                          BorderBrush="{x:Null}" Click="Btn_print_Click" >
                             <materialDesign:PackIcon Foreground="#313131" Kind="Printer"  
                               HorizontalAlignment="Center" 
                       Width="22" Height="22">

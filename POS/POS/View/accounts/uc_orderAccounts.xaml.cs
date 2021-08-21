@@ -1,8 +1,11 @@
-﻿using netoaster;
+﻿using Microsoft.Reporting.WinForms;
+using Microsoft.Win32;
+using netoaster;
 using POS.Classes;
 using POS.View.windows;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
@@ -73,7 +76,7 @@ namespace POS.View.accounts
         }
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {//load
-         
+
             //SectionData.fillBranches(cb_branch, "bs");/////permissions
 
             #region fill branch combo1
@@ -162,7 +165,7 @@ namespace POS.View.accounts
             cb_salesMan.SelectedValuePath = "userId";
             cb_salesMan.SelectedIndex = -1;
             #endregion
-           
+
             #region fill status combo
             var statuslist = new[] {
             new { Text = MainWindow.resourcemanager.GetString("trInDelivery")  , Value = "rc" },
@@ -173,7 +176,7 @@ namespace POS.View.accounts
             cb_state.ItemsSource = statuslist;
             #endregion
 
-         
+
             await RefreshInvoiceList();
             Tb_search_TextChanged(null, null);
 
@@ -333,7 +336,7 @@ namespace POS.View.accounts
 
             return s;
         }
-        
+
         private async void calcBalance(decimal ammount)
         {
             string s = "";
@@ -420,7 +423,7 @@ namespace POS.View.accounts
                 }
                 catch (Exception ex)
                 {
-                    SectionData.ExceptionMessage(ex,this,sender);
+                    SectionData.ExceptionMessage(ex, this, sender);
                 }
             }
             else
@@ -452,19 +455,19 @@ namespace POS.View.accounts
             {
 
 
-            
-            if (cashtrans != null || cashtrans.cashTransId != 0)
-            {
-                //  (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 0.2;
 
-                wd_uploadImage w = new wd_uploadImage();
+                if (cashtrans != null || cashtrans.cashTransId != 0)
+                {
+                    //  (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 0.2;
 
-                w.tableName = "invoices";
-                w.tableId = invoice.invoiceId;
-                w.docNum = invoice.invNumber;
-                w.ShowDialog();
-                // (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity =1;
-            }
+                    wd_uploadImage w = new wd_uploadImage();
+
+                    w.tableName = "invoices";
+                    w.tableId = invoice.invoiceId;
+                    w.docNum = invoice.invNumber;
+                    w.ShowDialog();
+                    // (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity =1;
+                }
             }
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -689,7 +692,7 @@ namespace POS.View.accounts
         {
             if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one"))
             {
-           
+
             }
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -722,11 +725,13 @@ namespace POS.View.accounts
 
         private void Cb_branch_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//select branch
-            
+
             //invoiceQuery = invoiceQuery.Where(u => u.branchId == Convert.ToInt32(cb_branch.SelectedValue));
             //invoiceQueryExcel = invoiceQuery;
             //RefreshInvoiceView();
         }
+
+
 
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {//save
@@ -735,8 +740,8 @@ namespace POS.View.accounts
                 #region validate
                 //chk empty cash
                 bool acceptedAmmount = true;
-              
-                if(tb_cash.Text.Equals(""))
+
+                if (tb_cash.Text.Equals(""))
                     SectionData.validateEmptyTextBox(tb_cash, p_errorCash, tt_errorCash, "trEmptyCashToolTip");
                 else
                 {
@@ -747,7 +752,7 @@ namespace POS.View.accounts
                         acceptedAmmount = false;
                         SectionData.showTextBoxValidate(tb_cash, p_errorCash, tt_errorCash, "trZeroAmmount");
                     }
-                    else if(ammount > invoice.deserved)
+                    else if (ammount > invoice.deserved)
                     {
                         acceptedAmmount = false;
                         SectionData.showTextBoxValidate(tb_cash, p_errorCash, tt_errorCash, "trGreaterAmmount");
@@ -833,7 +838,7 @@ namespace POS.View.accounts
                     }
 
                     string s = await cashModel.payOrderInvoice(invoice.invoiceId, invoice.invStatusId, cash.cash.Value, processType, cash);
-                   // MessageBox.Show(s);
+                    // MessageBox.Show(s);
                     if (!s.Equals(""))
                     {
                         if (cb_paymentProcessType.SelectedValue.ToString().Equals("cash"))
@@ -851,6 +856,77 @@ namespace POS.View.accounts
             }
             else
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+        }
+        ReportCls reportclass = new ReportCls();
+        LocalReport rep = new LocalReport();
+        SaveFileDialog saveFileDialog = new SaveFileDialog();
+        private void Btn_print_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+
+                List<ReportParameter> paramarr = new List<ReportParameter>();
+
+                string addpath;
+                bool isArabic = ReportCls.checkLang();
+                if (isArabic)
+                {
+                    addpath = @"\Reports\Account\Ar\ArOrderAccReport.rdlc";
+                }
+                else addpath = @"\Reports\Account\EN\OrderAccReport.rdlc";
+                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+                ReportCls.checkLang();
+
+                clsReports.orderReport(invoiceQuery, rep, reppath);
+                clsReports.setReportLanguage(paramarr);
+                clsReports.Header(paramarr);
+
+                rep.SetParameters(paramarr);
+                rep.Refresh();
+                LocalReportExtensions.PrintToPrinter(rep);
+            }
+
+            catch (Exception ex)
+            { SectionData.ExceptionMessage(ex, this, sender); }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                List<ReportParameter> paramarr = new List<ReportParameter>();
+
+                string addpath;
+                bool isArabic = ReportCls.checkLang();
+                if (isArabic)
+                {
+                    addpath = @"\Reports\Account\Ar\ArOrderAccReport.rdlc";
+                }
+                else addpath = @"\Reports\Account\EN\OrderAccReport.rdlc";
+                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+                ReportCls.checkLang();
+
+                clsReports.orderReport(invoiceQuery, rep, reppath);
+                clsReports.setReportLanguage(paramarr);
+                clsReports.Header(paramarr);
+
+                rep.SetParameters(paramarr);
+
+                rep.Refresh();
+
+                saveFileDialog.Filter = "PDF|*.pdf;";
+
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    string filepath = saveFileDialog.FileName;
+                    LocalReportExtensions.ExportToPDF(rep, filepath);
+                }
+            }
+
+            catch (Exception ex)
+            { SectionData.ExceptionMessage(ex, this, sender); }
         }
 
     }
