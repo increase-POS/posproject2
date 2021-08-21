@@ -15,6 +15,15 @@ namespace POS.Classes
 {
     public class CashTransferSts
     {
+
+        public Nullable<decimal> agentBalance { get; set; }
+
+        public Nullable<byte> agentBType { get; set; }
+        public Nullable<decimal> userBalance { get; set; }
+        public Nullable<byte> userBType { get; set; }
+        public Nullable<decimal> shippingBalance { get; set; }
+        public Nullable<byte> shippingCompaniesBType { get; set; }
+
         private string description;
         private string description1;
 

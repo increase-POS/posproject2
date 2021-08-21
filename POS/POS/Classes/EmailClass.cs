@@ -637,6 +637,179 @@ namespace POS.Classes
 
         }
 
+
+        public EmailClass fillRequirdTempData(string total,string emailto, SysEmails email, List<SetValues> setvlist)
+        {// 
+            string invheader = "";
+            string invfooter = "";
+            string invbody = "";
+        
+
+            EmailClass mailtosend = new EmailClass();
+
+            mailtosend.from = email.email;
+            mailtosend.smtpclient = email.smtpClient;
+            mailtosend.port = (int)email.port;
+
+            mailtosend.password = Encoding.UTF8.GetString(Convert.FromBase64String(email.password));
+            mailtosend.isSSl = (bool)email.isSSL;
+            mailtosend.AddTolist(emailto);
+            mailtosend.subject = "Reqierment" + DateTime.Now.ToString();
+
+
+
+            // data
+            ReportCls repm = new ReportCls();
+            List<MailimageClass> imgs = new List<MailimageClass>();
+            MailimageClass img = new MailimageClass();
+            bool isArabic = ReportCls.checkLang();
+            if (isArabic)
+            {
+                invheader = repm.ReadFile(@"EmailTemplates\ordertemplate\ar\invheader.tmp");
+                invfooter = repm.ReadFile(@"EmailTemplates\ordertemplate\ar\invfooter.tmp");
+
+               
+                    invbody = repm.ReadFile(@"EmailTemplates\reqtemplate\ar\invbody.tmp");
+                
+            
+               
+
+            }
+            else
+            { // en
+
+
+                invheader = repm.ReadFile(@"EmailTemplates\ordertemplate\en\invheader.tmp");
+                invfooter = repm.ReadFile(@"EmailTemplates\ordertemplate\en\invfooter.tmp");
+              
+
+                    invbody = repm.ReadFile(@"EmailTemplates\reqtemplate\en\invbody.tmp");
+ 
+              
+            }
+
+
+            //header info
+
+            invheader = invheader.Replace("[[companyname]]", MainWindow.companyName.Trim());
+            invheader = invheader.Replace("[[phone]]", MainWindow.Phone.Trim());
+            invheader = invheader.Replace("[[Email]]", MainWindow.Email.Trim());
+            invheader = invheader.Replace("[[fax]]", MainWindow.Fax.Trim());
+            invheader = invheader.Replace("[[address]]", MainWindow.Address.Trim());
+            invheader = invheader.Replace("[[trphone]]", MainWindow.resourcemanagerreport.GetString("trPhone").Trim() + ": ");
+            invheader = invheader.Replace("[[trfax]]", MainWindow.resourcemanagerreport.GetString("trFax").Trim() + ": ");
+            invheader = invheader.Replace("[[traddress]]", MainWindow.resourcemanagerreport.GetString("trAddress").Trim() + ": ");
+
+
+            // string title = "Purchase Order";Required Amount: [[trreqamount]] [[reqamount]]
+            //BODY
+            invbody = invbody.Replace("[[trreqamount]]", MainWindow.resourcemanagerreport.GetString("trRequired").Trim() + ": ");
+            invbody = invbody.Replace("[[reqamount]]",total.Trim()+" "+ MainWindow.Currency );
+            string title = setvlist.Where(x => x.notes == "title").FirstOrDefault() is null ? ""
+                : setvlist.Where(x => x.notes == "title").FirstOrDefault().value.ToString();
+            invheader = invheader.Replace("[[title]]", title.Trim());
+
+
+
+            invbody = invbody.Replace("[[thankstitle]]", title);
+            //   string thankstext = "Please provide to us,with a price list,along with your terms and conditions of sale, applicable discounts, shipping dates and additional sales and corporate policies. Should the information you provide be acceptable and competitive. ";
+            string thankstext = setvlist.Where(x => x.notes == "text1").FirstOrDefault() is null ? ""
+                  : setvlist.Where(x => x.notes == "text1").FirstOrDefault().value.ToString();
+            invbody = invbody.Replace("[[thankstext]]", thankstext);
+
+
+
+     
+            // string invoicenote = "Thank you for your cooperation. We have also enclosed our procurement specifications and conditions for your review <br/> Sincerely";
+            string invoicenote = setvlist.Where(x => x.notes == "text2").FirstOrDefault() is null ? ""
+                : setvlist.Where(x => x.notes == "text2").FirstOrDefault().value.ToString();
+            invbody = invbody.Replace("[[invoicenote]]", invoicenote);
+            string link1 = setvlist.Where(x => x.notes == "link1text").FirstOrDefault() is null ? ""
+                : setvlist.Where(x => x.notes == "link1text").FirstOrDefault().value.ToString();
+
+            string link2 = setvlist.Where(x => x.notes == "link2text").FirstOrDefault() is null ? ""
+                 : setvlist.Where(x => x.notes == "link2text").FirstOrDefault().value.ToString();
+            string link3 = setvlist.Where(x => x.notes == "link3text").FirstOrDefault() is null ? ""
+                : setvlist.Where(x => x.notes == "link3text").FirstOrDefault().value.ToString();
+
+            invfooter = invfooter.Replace("[[support]]", link1);
+            invfooter = invfooter.Replace("[[returnpolicy]]", link2);
+            invfooter = invfooter.Replace("[[aboutus]]", link3);
+            string link1url = setvlist.Where(x => x.notes == "link1url").FirstOrDefault() is null ? ""
+                       : setvlist.Where(x => x.notes == "link1url").FirstOrDefault().value.ToString();
+            string link2url = setvlist.Where(x => x.notes == "link2url").FirstOrDefault() is null ? ""
+                       : setvlist.Where(x => x.notes == "link2url").FirstOrDefault().value.ToString();
+            string link3url = setvlist.Where(x => x.notes == "link3url").FirstOrDefault() is null ? ""
+                       : setvlist.Where(x => x.notes == "link3url").FirstOrDefault().value.ToString();
+
+            invfooter = invfooter.Replace("[[supporturl]]", link1url);
+            invfooter = invfooter.Replace("[[returnpolicyurl]]", link2url);
+            invfooter = invfooter.Replace("[[aboutusurl]]", link3url);
+
+            invfooter = invfooter.Replace("[[year]]", DateTime.Now.Year.ToString());
+
+
+
+            //  invitemtable
+            // foreach
+    
+            // end foreach
+   
+
+            string mailbody = invheader + invbody + invfooter;
+
+
+
+            AlternateView htmlView = AlternateView.CreateAlternateViewFromString(mailbody, null, "text/html");
+            string testpath = repm.GetPath(@"EmailTemplates\mail.html");
+            //
+            if (!File.Exists(testpath))
+            {
+                // Create a file to write to.
+                string createText = mailbody;
+                File.WriteAllText(testpath, createText);
+            }
+            else
+            {
+                File.Delete(testpath);
+                // Create a file to write to.
+                string createText = mailbody;
+                File.WriteAllText(testpath, createText);
+            }
+
+
+
+            img.path = repm.GetLogoImagePath();
+            img.imageId = "logo";
+            imgs.Add(img);
+            img = new MailimageClass();
+            img.path = repm.GetPath(@"EmailTemplates\images\req2.gif");
+
+            img.imageId = "image-2";
+            imgs.Add(img);
+            img = new MailimageClass();
+            img.path = repm.GetPath(@"EmailTemplates\images\req1.png");
+
+            img.imageId = "image-3";
+            imgs.Add(img);
+
+            foreach (MailimageClass row in imgs)
+            {
+                htmlView.LinkedResources.Add(mailtosend.Linkimage(@row.path, row.imageId));
+            }
+
+            // 
+
+            mailtosend.htmlView = htmlView;
+
+
+            return mailtosend;
+
+
+
+
+        }
+
     }
 }
 

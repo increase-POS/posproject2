@@ -2366,65 +2366,78 @@ namespace POS.View
             }
         }
 
-        public async Task<string> SavePurOrderpdf()
+        public async Task<string> SaveSalepdf()
         {
             List<ReportParameter> paramarr = new List<ReportParameter>();
             string pdfpath = "";
 
             //
-
-            if (invoice.invoiceId > 0)
+            if (invoice.invType == "pd" || invoice.invType == "sd" || invoice.invType == "qd"
+                                       || invoice.invType == "sbd" || invoice.invType == "pbd"
+                                       || invoice.invType == "ord" || invoice.invType == "imd" || invoice.invType == "exd")
             {
-                pdfpath = @"\Thumb\report\File.pdf";
-                pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
-                string reppath = reportclass.GetpayInvoiceRdlcpath(invoice);
-                invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
-                if (invoice.agentId != null)
+                MessageBox.Show("can not print Draft Invoice");
+            }
+            else
+            {
+                //  ReportCls rr = new ReportCls();
+                // MessageBox.Show(rr.GetLogoImagePath());
+
+
+
+                if (invoice.invoiceId > 0)
                 {
-                    Agent agentinv = new Agent();
-                    agentinv = customers.Where(X => X.agentId == invoice.agentId).FirstOrDefault();
+                    pdfpath = @"\Thumb\report\File.pdf";
+                    pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
 
-                    invoice.agentCode = agentinv.code;
-                    //new lines
-                    invoice.agentName = agentinv.name;
-                    invoice.agentCompany = agentinv.company;
+                    invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
+
+                    User employ = new User();
+                    employ = await userModel.getUserById((int)invoice.updateUserId);
+                    invoice.uuserName = employ.name;
+                    invoice.uuserLast = employ.lastname;
+                    //  agentinv = customers.Where(X => X.agentId == invoice.agentId).FirstOrDefault();
+
+                    //  invoice.agentCode = agentinv.code;
+                    if (invoice.agentId != null)
+                    {
+                        Agent agentinv = new Agent();
+                        agentinv = customers.Where(X => X.agentId == invoice.agentId).FirstOrDefault();
+
+
+                        invoice.agentCode = agentinv.code;
+                        //new lines
+                        invoice.agentName = agentinv.name;
+                        invoice.agentCompany = agentinv.company;
+                    }
+                    else
+                    {
+                        invoice.agentCode = "-";
+                        invoice.agentName = "-";
+                        invoice.agentCompany = "-";
+                    }
+                    string reppath = reportclass.GetreceiptInvoiceRdlcpath(invoice);
+                    ReportCls.checkLang();
+                    Branch branch = new Branch();
+                    branch = await branchModel.getBranchById((int)invoice.branchCreatorId);
+                    if (branch.branchId > 0)
+                    {
+                        invoice.branchName = branch.name;
+                    }
+
+                    clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
+                    clsReports.setReportLanguage(paramarr);
+                    clsReports.Header(paramarr);
+                    paramarr = reportclass.fillSaleInvReport(invoice, paramarr);
+
+                    rep.SetParameters(paramarr);
+                    rep.Refresh();
+
+                    LocalReportExtensions.ExportToPDF(rep, pdfpath);
+
                 }
-                else
-                {
-
-                    invoice.agentCode = "-";
-                    //new lines
-                    invoice.agentName = "-";
-                    invoice.agentCompany = "-";
-                }
-
-                invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
-                Branch branch = new Branch();
-                branch = await branchModel.getBranchById((int)invoice.branchCreatorId);
-                if (branch.branchId > 0)
-                {
-                    invoice.branchName = branch.name;
-                }
-
-                User employ = new User();
-                employ = await employ.getUserById((int)invoice.updateUserId);
-                invoice.uuserName = employ.name;
-                invoice.uuserLast = employ.lastname;
-
-                ReportCls.checkLang();
-
-                clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
-                clsReports.setReportLanguage(paramarr);
-                clsReports.Header(paramarr);
-                paramarr = reportclass.fillPurInvReport(invoice, paramarr);
-
-                rep.SetParameters(paramarr);
-                rep.Refresh();
-
-                LocalReportExtensions.ExportToPDF(rep, pdfpath);
 
             }
-
             return pdfpath;
         }
         private async void Btn_pdf_Click(object sender, RoutedEventArgs e)
@@ -2716,8 +2729,8 @@ namespace POS.View
                 if (MainWindow.groupObject.HasPermissionAction(sendEmailPermission, MainWindow.groupObjects, "one"))
                 {
                     if (invoice.invType == "pd" || invoice.invType == "sd" || invoice.invType == "qd"
-                     || invoice.invType == "sbd" || invoice.invType == "pbd"
-                     || invoice.invType == "ord" || invoice.invType == "imd" || invoice.invType == "exd")
+                    || invoice.invType == "sbd" || invoice.invType == "pbd"
+                    || invoice.invType == "ord" || invoice.invType == "imd" || invoice.invType == "exd")
                     {
                         MessageBox.Show("can not send Draft Invoice");
                     }
@@ -2758,8 +2771,7 @@ namespace POS.View
                                         {
                                             SetValues setvmodel = new SetValues();
 
-                                            string pdfpath = await SavePurOrderpdf();
-                                            mailtosend.AddAttachTolist(pdfpath);
+
                                             List<SetValues> setvlist = new List<SetValues>();
                                             if (invoice.invType == "s")
                                             {
@@ -2778,9 +2790,10 @@ namespace POS.View
                                                 setvlist = await setvmodel.GetBySetName("sale_email_temp");
                                             }
                                             mailtosend = mailtosend.fillSaleTempData(invoice, invoiceItems, email, toAgent, setvlist);
-
+                                            string pdfpath = await SaveSalepdf();
+                                            mailtosend.AddAttachTolist(pdfpath);
                                             string msg = "";
-                                             msg = mailtosend.Sendmail();// temp comment
+                                            msg = mailtosend.Sendmail();// temp comment
                                             if (msg == "Failure sending mail.")
                                             {
                                                 // msg = "No Internet connection";
@@ -2800,6 +2813,7 @@ namespace POS.View
                         }
                     }
                 }
+
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
                 if (sender != null)
