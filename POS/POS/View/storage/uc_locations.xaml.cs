@@ -48,39 +48,39 @@ namespace POS.View
             try
             {
                 InitializeComponent();
-            if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1440)
-            {
-                txt_deleteButton.Visibility = Visibility.Visible;
-                txt_addButton.Visibility = Visibility.Visible;
-                txt_updateButton.Visibility = Visibility.Visible;
-                txt_add_Icon.Visibility = Visibility.Visible;
-                txt_update_Icon.Visibility = Visibility.Visible;
-                txt_delete_Icon.Visibility = Visibility.Visible;
-            }
-            else if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1360)
-            {
-                txt_add_Icon.Visibility = Visibility.Collapsed;
-                txt_update_Icon.Visibility = Visibility.Collapsed;
-                txt_delete_Icon.Visibility = Visibility.Collapsed;
-                txt_deleteButton.Visibility = Visibility.Visible;
-                txt_addButton.Visibility = Visibility.Visible;
-                txt_updateButton.Visibility = Visibility.Visible;
+                if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1440)
+                {
+                    txt_deleteButton.Visibility = Visibility.Visible;
+                    txt_addButton.Visibility = Visibility.Visible;
+                    txt_updateButton.Visibility = Visibility.Visible;
+                    txt_add_Icon.Visibility = Visibility.Visible;
+                    txt_update_Icon.Visibility = Visibility.Visible;
+                    txt_delete_Icon.Visibility = Visibility.Visible;
+                }
+                else if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1360)
+                {
+                    txt_add_Icon.Visibility = Visibility.Collapsed;
+                    txt_update_Icon.Visibility = Visibility.Collapsed;
+                    txt_delete_Icon.Visibility = Visibility.Collapsed;
+                    txt_deleteButton.Visibility = Visibility.Visible;
+                    txt_addButton.Visibility = Visibility.Visible;
+                    txt_updateButton.Visibility = Visibility.Visible;
 
-            }
-            else
-            {
-                txt_deleteButton.Visibility = Visibility.Collapsed;
-                txt_addButton.Visibility = Visibility.Collapsed;
-                txt_updateButton.Visibility = Visibility.Collapsed;
-                txt_add_Icon.Visibility = Visibility.Visible;
-                txt_update_Icon.Visibility = Visibility.Visible;
-                txt_delete_Icon.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    txt_deleteButton.Visibility = Visibility.Collapsed;
+                    txt_addButton.Visibility = Visibility.Collapsed;
+                    txt_updateButton.Visibility = Visibility.Collapsed;
+                    txt_add_Icon.Visibility = Visibility.Visible;
+                    txt_update_Icon.Visibility = Visibility.Visible;
+                    txt_delete_Icon.Visibility = Visibility.Visible;
 
-            }
+                }
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -91,10 +91,10 @@ namespace POS.View
         byte tgl_locationState;
         string searchText = "";
         BrushConverter bc = new BrushConverter();
-       
+
         private void translate()
         {
-            
+
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_x, MainWindow.resourcemanager.GetString("trXHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_y, MainWindow.resourcemanager.GetString("trYHint"));
@@ -133,76 +133,76 @@ namespace POS.View
             dg_location.Columns[2].Header = MainWindow.resourcemanager.GetString("trNote");
         }
 
-        private  void UserControl_Loaded(object sender, RoutedEventArgs e)
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-                try
-                {//load
-                    if (MainWindow.lang.Equals("en"))
-            {
-                MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
-                grid_main.FlowDirection = FlowDirection.LeftToRight;
-            }
-            else
-            {
-                MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
-                grid_main.FlowDirection = FlowDirection.RightToLeft;
-            }
+            try
+            {//load
+                if (MainWindow.lang.Equals("en"))
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                    grid_main.FlowDirection = FlowDirection.LeftToRight;
+                }
+                else
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                    grid_main.FlowDirection = FlowDirection.RightToLeft;
+                }
 
-            translate();
+                translate();
 
-            //btn_addRange.IsEnabled = false;
+                //btn_addRange.IsEnabled = false;
 
-            Keyboard.Focus(tb_x);
+                Keyboard.Focus(tb_x);
 
-            SectionData.clearValidate(tb_x, p_errorX);
+                SectionData.clearValidate(tb_x, p_errorX);
 
-            this.Dispatcher.Invoke(() =>
-            {
-                Tb_search_TextChanged(null, null);
-            });
+                this.Dispatcher.Invoke(() =>
+                {
+                    Tb_search_TextChanged(null, null);
+                });
 
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
-                    try
-                    {
-                        Regex regex = new Regex("[^0-9]+");
-            e.Handled = regex.IsMatch(e.Text);
+            try
+            {
+                Regex regex = new Regex("[^0-9]+");
+                e.Handled = regex.IsMatch(e.Text);
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
         {
-                        try
-                        {//clear
-                            tb_x.Clear();
-            tb_y.Clear();
-            tb_z.Clear();
-            tb_notes.Clear();
+            try
+            {//clear
+                tb_x.Clear();
+                tb_y.Clear();
+                tb_z.Clear();
+                tb_notes.Clear();
 
-            p_errorX.Visibility = Visibility.Collapsed;
-            p_errorY.Visibility = Visibility.Collapsed;
-            p_errorZ.Visibility = Visibility.Collapsed;
+                p_errorX.Visibility = Visibility.Collapsed;
+                p_errorY.Visibility = Visibility.Collapsed;
+                p_errorZ.Visibility = Visibility.Collapsed;
 
-            //btn_addRange.IsEnabled = false;
+                //btn_addRange.IsEnabled = false;
 
-            tb_x.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            tb_y.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            tb_z.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                tb_x.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                tb_y.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                tb_z.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
         bool validate(Location location = null)
@@ -220,80 +220,43 @@ namespace POS.View
         }
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {
-                            try
-                            {//add
+            try
+            {//add
                 SectionData.StartAwait(grid_main);
 
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add") || SectionData.isAdminPermision())
-            {
-                location.locationId = 0;
-            if (validate(location))
-            {
-                if (locations.Where(x => x.name == location.name && x.branchId == MainWindow.branchID).Count() == 0)
                 {
-                    location.x = tb_x.Text;
-                    location.y = tb_y.Text;
-                    location.z = tb_z.Text;
-                    location.note = tb_notes.Text;
-                    location.createUserId = MainWindow.userID;
-                    location.updateUserId = MainWindow.userID;
-                    location.isActive = 1;
-                    location.sectionId = null;
-                    location.branchId = MainWindow.branchID;
-
-                    string s = await locationModel.saveLocation(location);
-
-                    if (!s.Equals("-1"))
-                    {
-                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
-                        Btn_clear_Click(null, null);
-                    }
-                    else
-                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-
-                    await RefreshLocationsList();
-                    Tb_search_TextChanged(null, null);
-                }
-                else
-                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trDublicateLocation"), animation: ToasterAnimation.FadeIn);
-            }
-            }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-                SectionData.EndAwait(grid_main, this);
-            }
-            catch (Exception ex)
-            {
-                SectionData.ExceptionMessage(ex,this,sender);
-            }
-        }
-        private async void Btn_update_Click(object sender, RoutedEventArgs e)
-        {
-                                try
-                                {//update
-                SectionData.StartAwait(grid_main);
-                                    if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update") || SectionData.isAdminPermision())
-                {
+                    location.locationId = 0;
                     if (validate(location))
-            {
-                location.x=  tb_x.Text;
-                location.y = tb_y.Text;
-                location.z = tb_z.Text;
-                location.note = tb_notes.Text;
-                location.updateUserId = MainWindow.userID;
+                    {
+                        if (locations.Where(x => x.name == location.name && x.branchId == MainWindow.branchID).Count() == 0)
+                        {
+                            location.x = tb_x.Text;
+                            location.y = tb_y.Text;
+                            location.z = tb_z.Text;
+                            location.note = tb_notes.Text;
+                            location.createUserId = MainWindow.userID;
+                            location.updateUserId = MainWindow.userID;
+                            location.isActive = 1;
+                            location.sectionId = null;
+                            location.branchId = MainWindow.branchID;
 
-                string s = await locationModel.saveLocation(location);
+                            string s = await locationModel.saveLocation(location);
 
-                if (!s.Equals("-1")) 
-                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
-                else 
-                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                            if (!s.Equals("-1"))
+                            {
+                                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                                Btn_clear_Click(null, null);
+                            }
+                            else
+                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
-                await RefreshLocationsList();
-                Tb_search_TextChanged(null, null);
-
-
-            }
+                            await RefreshLocationsList();
+                            Tb_search_TextChanged(null, null);
+                        }
+                        else
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trDublicateLocation"), animation: ToasterAnimation.FadeIn);
+                    }
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -301,70 +264,107 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
-        private async void Btn_delete_Click(object sender, RoutedEventArgs e)
+        private async void Btn_update_Click(object sender, RoutedEventArgs e)
         {
-                                    try
-                                    {//delete
+            try
+            {//update
                 SectionData.StartAwait(grid_main);
-                                        if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete") || SectionData.isAdminPermision())
-                    {
-                        if (location.locationId != 0)
-            {
-                if ((!location.canDelete) && (location.isActive == 0))
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update") || SectionData.isAdminPermision())
                 {
-                    #region
-                    Window.GetWindow(this).Opacity = 0.2;
-                    wd_acceptCancelPopup w = new wd_acceptCancelPopup();
-                    w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
-                    w.ShowDialog();
-                    Window.GetWindow(this).Opacity = 1;
-                    #endregion
-                    if (w.isOk)
-                activate();
+                    if (validate(location))
+                    {
+                        location.x = tb_x.Text;
+                        location.y = tb_y.Text;
+                        location.z = tb_z.Text;
+                        location.note = tb_notes.Text;
+                        location.updateUserId = MainWindow.userID;
+
+                        string s = await locationModel.saveLocation(location);
+
+                        if (!s.Equals("-1"))
+                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
+                        else
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+                        await RefreshLocationsList();
+                        Tb_search_TextChanged(null, null);
+
+
+                    }
                 }
                 else
-                {
-
-                    #region
-                    Window.GetWindow(this).Opacity = 0.2;
-                    wd_acceptCancelPopup w = new wd_acceptCancelPopup();
-                    if (location.canDelete)
-                        w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDelete");
-                    if (!location.canDelete)
-                        w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDeactivate");
-                    w.ShowDialog();
-                    Window.GetWindow(this).Opacity = 1;
-                    #endregion
-                    if (w.isOk)
-                    {
-                        string popupContent = "";
-                        if (location.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
-                        if ((!location.canDelete) && (location.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
-
-                        bool b = await locationModel.Delete(location.locationId, MainWindow.userID.Value, location.canDelete);
-
-                        if (b) //SectionData.popUpResponse("", popupContent);
-                            Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
-                        else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-                    }
-                }
-                await RefreshLocationsList();
-                Tb_search_TextChanged(null, null);
-            }
-            //clear textBoxs
-            Btn_clear_Click(sender, e);
-                    }
-                    else
-                        Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
                 SectionData.EndAwait(grid_main, this);
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
+        private async void Btn_delete_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {//delete
+                SectionData.StartAwait(grid_main);
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete") || SectionData.isAdminPermision())
+                {
+                    if (location.locationId != 0)
+                    {
+                        if ((!location.canDelete) && (location.isActive == 0))
+                        {
+                            #region
+                            Window.GetWindow(this).Opacity = 0.2;
+                            wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                            w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
+                            w.ShowDialog();
+                            Window.GetWindow(this).Opacity = 1;
+                            #endregion
+                            if (w.isOk)
+                                activate();
+                        }
+                        else
+                        {
+
+                            #region
+                            Window.GetWindow(this).Opacity = 0.2;
+                            wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                            if (location.canDelete)
+                                w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDelete");
+                            if (!location.canDelete)
+                                w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDeactivate");
+                            w.ShowDialog();
+                            Window.GetWindow(this).Opacity = 1;
+                            #endregion
+                            if (w.isOk)
+                            {
+                                string popupContent = "";
+                                if (location.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
+                                if ((!location.canDelete) && (location.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
+
+                                bool b = await locationModel.Delete(location.locationId, MainWindow.userID.Value, location.canDelete);
+
+                                if (b) //SectionData.popUpResponse("", popupContent);
+                                    Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
+                                else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                            }
+                        }
+                        await RefreshLocationsList();
+                        Tb_search_TextChanged(null, null);
+                    }
+                    //clear textBoxs
+                    Btn_clear_Click(sender, e);
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                SectionData.EndAwait(grid_main, this);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
         private async void activate()
@@ -383,149 +383,149 @@ namespace POS.View
         }
         private void Dg_location_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-                                        try
-                                        {//selection
-                                            p_errorX.Visibility = Visibility.Collapsed;
-            p_errorY.Visibility = Visibility.Collapsed;
-            p_errorZ.Visibility = Visibility.Collapsed;
+            try
+            {//selection
+                p_errorX.Visibility = Visibility.Collapsed;
+                p_errorY.Visibility = Visibility.Collapsed;
+                p_errorZ.Visibility = Visibility.Collapsed;
 
-            tb_x.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            tb_y.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            tb_z.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                tb_x.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                tb_y.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                tb_z.Background = (Brush)bc.ConvertFrom("#f8f8f8");
 
-            if (dg_location.SelectedIndex != -1)
-            {
-                location = dg_location.SelectedItem as Location;
-                this.DataContext = location;
-            }
-
-            if (location != null)
-            {
-                //btn_addRange.IsEnabled = true;
-
-                #region delete
-                if (location.canDelete)
+                if (dg_location.SelectedIndex != -1)
                 {
-                    txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trDelete");
-                    txt_delete_Icon.Kind =
-                             MaterialDesignThemes.Wpf.PackIconKind.Delete;
-                    tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
-
+                    location = dg_location.SelectedItem as Location;
+                    this.DataContext = location;
                 }
 
-                else
+                if (location != null)
                 {
-                    if (location.isActive == 0)
+                    //btn_addRange.IsEnabled = true;
+
+                    #region delete
+                    if (location.canDelete)
                     {
-                        txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trActive");
+                        txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trDelete");
                         txt_delete_Icon.Kind =
-                         MaterialDesignThemes.Wpf.PackIconKind.Check;
-                        tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trActive");
+                                 MaterialDesignThemes.Wpf.PackIconKind.Delete;
+                        tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
 
                     }
+
                     else
                     {
-                        txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trInActive");
-                        txt_delete_Icon.Kind =
-                             MaterialDesignThemes.Wpf.PackIconKind.Cancel;
-                        tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trInActive");
+                        if (location.isActive == 0)
+                        {
+                            txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trActive");
+                            txt_delete_Icon.Kind =
+                             MaterialDesignThemes.Wpf.PackIconKind.Check;
+                            tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trActive");
 
+                        }
+                        else
+                        {
+                            txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trInActive");
+                            txt_delete_Icon.Kind =
+                                 MaterialDesignThemes.Wpf.PackIconKind.Cancel;
+                            tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trInActive");
+
+                        }
                     }
+                    #endregion
                 }
-                #endregion 
-            }
 
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
         private void validationControl_LostFocus(object sender, RoutedEventArgs e)
         {
-                                            try
-                                            {
-                                                if ((sender as Control).Name == "tb_x")
-            //chk empty name
-            SectionData.validateEmptyTextBox(tb_x, p_errorX, tt_errorX, "trEmptyNameToolTip");
-           else if((sender as Control).Name == "tb_y")
-                //chk empty mobile
-                SectionData.validateEmptyTextBox(tb_y, p_errorY, tt_errorY, "trEmptyMobileToolTip");
-            else if ((sender as Control).Name == "tb_z")
-                //chk empty phone
-                SectionData.validateEmptyTextBox(tb_z, p_errorZ, tt_errorZ, "trEmptyPhoneToolTip");
+            try
+            {
+                if ((sender as Control).Name == "tb_x")
+                    //chk empty name
+                    SectionData.validateEmptyTextBox(tb_x, p_errorX, tt_errorX, "trEmptyNameToolTip");
+                else if ((sender as Control).Name == "tb_y")
+                    //chk empty mobile
+                    SectionData.validateEmptyTextBox(tb_y, p_errorY, tt_errorY, "trEmptyMobileToolTip");
+                else if ((sender as Control).Name == "tb_z")
+                    //chk empty phone
+                    SectionData.validateEmptyTextBox(tb_z, p_errorZ, tt_errorZ, "trEmptyPhoneToolTip");
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
         private void validationTextbox_TextChanged(object sender, TextChangedEventArgs e)
         {
-                                                try
-                                                {
-                                                    if ((sender as TextBox).Name == "tb_x")
-                //chk empty x
-                SectionData.validateEmptyTextBox(tb_x, p_errorX, tt_errorX, "trEmptyNameToolTip");
-            else if ((sender as TextBox).Name == "tb_y")
-                //chk empty y
-                SectionData.validateEmptyTextBox(tb_y, p_errorY, tt_errorY, "trEmptyMobileToolTip");
-            else if ((sender as TextBox).Name == "tb_z")
-                //chk empty z
-                SectionData.validateEmptyTextBox(tb_z, p_errorZ, tt_errorZ, "trEmptyPhoneToolTip");
+            try
+            {
+                if ((sender as TextBox).Name == "tb_x")
+                    //chk empty x
+                    SectionData.validateEmptyTextBox(tb_x, p_errorX, tt_errorX, "trEmptyNameToolTip");
+                else if ((sender as TextBox).Name == "tb_y")
+                    //chk empty y
+                    SectionData.validateEmptyTextBox(tb_y, p_errorY, tt_errorY, "trEmptyMobileToolTip");
+                else if ((sender as TextBox).Name == "tb_z")
+                    //chk empty z
+                    SectionData.validateEmptyTextBox(tb_z, p_errorZ, tt_errorZ, "trEmptyPhoneToolTip");
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
         void handleSpace_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-                                                    try
-                                                    {
-                                                        e.Handled = e.Key == Key.Space;
+            try
+            {
+                e.Handled = e.Key == Key.Space;
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
         private async void Tgl_isActive_Checked(object sender, RoutedEventArgs e)
         {
-                                                        try
-                                                        {
+            try
+            {
                 SectionData.StartAwait(grid_main);
-                                                            if (locations is null)
-                await RefreshLocationsList();
-            tgl_locationState = 1;
-            Tb_search_TextChanged(null, null);
+                if (locations is null)
+                    await RefreshLocationsList();
+                tgl_locationState = 1;
+                Tb_search_TextChanged(null, null);
                 SectionData.EndAwait(grid_main, this);
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
         private async void Tgl_isActive_Unchecked(object sender, RoutedEventArgs e)
         {
-                                                            try
-                                                            {
+            try
+            {
                 SectionData.StartAwait(grid_main);
                 if (locations is null)
-                await RefreshLocationsList();
-            tgl_locationState = 0;
-            Tb_search_TextChanged(null, null);
+                    await RefreshLocationsList();
+                tgl_locationState = 0;
+                Tb_search_TextChanged(null, null);
                 SectionData.EndAwait(grid_main, this);
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
         async Task<IEnumerable<Location>> RefreshLocationsList()
         {
             locations = await locationModel.Get();
-            locations = locations.Where(x => x.branchId  == MainWindow.branchID && x.isFreeZone != 1);
+            locations = locations.Where(x => x.branchId == MainWindow.branchID && x.isFreeZone != 1);
             return locations;
         }
         void RefreshLocationView()
@@ -536,73 +536,73 @@ namespace POS.View
 
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
         {
-                                                                try
-                                                                {//search
+            try
+            {//search
                 SectionData.StartAwait(grid_main);
-                                                                    if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
-            {
-                if (locations is null)
-                await RefreshLocationsList();
-            searchText = tb_search.Text.ToLower();
-            locationsQuery = locations.Where(s => (s.x.ToLower().Contains(searchText) ||
-            s.y.ToLower().Contains(searchText) ||
-            s.z.ToLower().Contains(searchText)
-            ) && s.isActive == tgl_locationState && s.isFreeZone != 1);
-            RefreshLocationView();
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
+                {
+                    if (locations is null)
+                        await RefreshLocationsList();
+                    searchText = tb_search.Text.ToLower();
+                    locationsQuery = locations.Where(s => (s.x.ToLower().Contains(searchText) ||
+                    s.y.ToLower().Contains(searchText) ||
+                    s.z.ToLower().Contains(searchText)
+                    ) && s.isActive == tgl_locationState && s.isFreeZone != 1);
+                    RefreshLocationView();
 
-            }
+                }
                 SectionData.EndAwait(grid_main, this);
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
-                                                                    try
-                                                                    {
-                                                                        if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
+            try
             {
-                RefreshLocationsList();
-                Tb_search_TextChanged(null, null);
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
+                {
+                    RefreshLocationsList();
+                    Tb_search_TextChanged(null, null);
 
-            }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {
-                                                                        try
-                                                                        {
-                                                                            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
+            try
             {
-                this.Dispatcher.Invoke(() =>
-            {
-                Thread t1 = new Thread(FN_ExportToExcel);
-                t1.SetApartmentState(ApartmentState.STA);
-                t1.Start();
-            });
-            }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
+                {
+                    this.Dispatcher.Invoke(() =>
+                {
+                    Thread t1 = new Thread(FN_ExportToExcel);
+                    t1.SetApartmentState(ApartmentState.STA);
+                    t1.Start();
+                });
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
         void FN_ExportToExcel()
         {
-            
+
             var QueryExcel = locationsQuery.AsEnumerable().Select(x => new
             {
                 Name = x.name,
@@ -617,22 +617,22 @@ namespace POS.View
 
         private void Btn_addRange_Click(object sender, RoutedEventArgs e)
         {
-                                                                            try
-                                                                            {
-                                                                                if (MainWindow.groupObject.HasPermissionAction(addRangePermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+            try
             {
-                Window.GetWindow(this).Opacity = 0.2;
-            wd_locationAddRange w = new wd_locationAddRange();
-            w.ShowDialog();
-            Window.GetWindow(this).Opacity = 1;
-            Btn_refresh_Click(null, null);
-            }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                if (MainWindow.groupObject.HasPermissionAction(addRangePermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+                {
+                    Window.GetWindow(this).Opacity = 0.2;
+                    wd_locationAddRange w = new wd_locationAddRange();
+                    w.ShowDialog();
+                    Window.GetWindow(this).Opacity = 1;
+                    Btn_refresh_Click(null, null);
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
         ReportCls reportclass = new ReportCls();
@@ -643,36 +643,36 @@ namespace POS.View
             try
             {
 
-                    List<ReportParameter> paramarr = new List<ReportParameter>();
+                List<ReportParameter> paramarr = new List<ReportParameter>();
 
-                    string addpath;
-                    bool isArabic = ReportCls.checkLang();
-                    if (isArabic)
-                    {
-                        addpath = @"\Reports\SectionData\Ar\ArBankReport.rdlc";
-                    }
-                    else addpath = @"\Reports\SectionData\EN\BankReport.rdlc";
-                    string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-                    ReportCls.checkLang();
-
-                    clsReports.location(locationsQuery, rep, reppath);
-                    clsReports.setReportLanguage(paramarr);
-                    clsReports.Header(paramarr);
-
-                    rep.SetParameters(paramarr);
-
-                    rep.Refresh();
-
-                    saveFileDialog.Filter = "PDF|*.pdf;";
-
-                    if (saveFileDialog.ShowDialog() == true)
-                    {
-                        string filepath = saveFileDialog.FileName;
-                        LocalReportExtensions.ExportToPDF(rep, filepath);
-                    }
+                string addpath;
+                bool isArabic = ReportCls.checkLang();
+                if (isArabic)
+                {
+                    addpath = @"\Reports\Store\Ar\ArLocationReport.rdlc";
                 }
-             
+                else addpath = @"\Reports\Store\EN\LocationReport.rdlc";
+                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+                ReportCls.checkLang();
+
+                clsReports.location(locationsQuery, rep, reppath);
+                clsReports.setReportLanguage(paramarr);
+                clsReports.Header(paramarr);
+
+                rep.SetParameters(paramarr);
+
+                rep.Refresh();
+
+                saveFileDialog.Filter = "PDF|*.pdf;";
+
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    string filepath = saveFileDialog.FileName;
+                    LocalReportExtensions.ExportToPDF(rep, filepath);
+                }
+            }
+
             catch (Exception ex)
             {
                 SectionData.ExceptionMessage(ex, this, sender);
@@ -683,28 +683,28 @@ namespace POS.View
         {
             try
             {
-                    List<ReportParameter> paramarr = new List<ReportParameter>();
+                List<ReportParameter> paramarr = new List<ReportParameter>();
 
-                    string addpath;
-                    bool isArabic = ReportCls.checkLang();
-                    if (isArabic)
-                    {
-                        addpath = @"\Reports\SectionData\Ar\ArBankReport.rdlc";
-                    }
-                    else addpath = @"\Reports\SectionData\EN\BankReport.rdlc";
-                    string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-                    ReportCls.checkLang();
-
-                    clsReports.location(locationsQuery, rep, reppath);
-                    clsReports.setReportLanguage(paramarr);
-                    clsReports.Header(paramarr);
-
-                    rep.SetParameters(paramarr);
-                    rep.Refresh();
-                    LocalReportExtensions.PrintToPrinter(rep);
+                string addpath;
+                bool isArabic = ReportCls.checkLang();
+                if (isArabic)
+                {
+                    addpath = @"\Reports\Store\Ar\ArLocationReport.rdlc";
                 }
-              
+                else addpath = @"\Reports\Store\EN\LocationReport.rdlc";
+                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+                ReportCls.checkLang();
+
+                clsReports.location(locationsQuery, rep, reppath);
+                clsReports.setReportLanguage(paramarr);
+                clsReports.Header(paramarr);
+
+                rep.SetParameters(paramarr);
+                rep.Refresh();
+                LocalReportExtensions.PrintToPrinter(rep);
+            }
+
             catch (Exception ex)
             {
                 SectionData.ExceptionMessage(ex, this, sender);

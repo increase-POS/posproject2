@@ -606,9 +606,9 @@ namespace POS.View.storage
                     bool isArabic = ReportCls.checkLang();
                     if (isArabic)
                     {
-                        addpath = @"\Reports\SectionData\Ar\ArBankReport.rdlc";
+                        addpath = @"\Reports\Store\Ar\ArShortageReport.rdlc";
                     }
-                    else addpath = @"\Reports\SectionData\EN\BankReport.rdlc";
+                    else addpath = @"\Reports\Store\EN\ShortageReport.rdlc";
                     string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                     ReportCls.checkLang();
@@ -650,9 +650,9 @@ namespace POS.View.storage
                     bool isArabic = ReportCls.checkLang();
                     if (isArabic)
                     {
-                        addpath = @"\Reports\SectionData\Ar\ArBankReport.rdlc";
+                        addpath = @"\Reports\Store\Ar\ArShortageReport.rdlc";
                     }
-                    else addpath = @"\Reports\SectionData\EN\BankReport.rdlc";
+                    else addpath = @"\Reports\Store\EN\ShortageReport.rdlc";
                     string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                     ReportCls.checkLang();
