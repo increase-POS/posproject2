@@ -17,6 +17,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace POS.View.storage
 {
@@ -32,11 +33,13 @@ namespace POS.View.storage
         List<InventoryItemLocation> invItemsLocations = new List<InventoryItemLocation>();
 
         Inventory inventory = new Inventory();
+        private static DispatcherTimer timer;
 
         string _InventoryType = "d";
         string createInventoryPermission = "inventory_createInventory";
         string archivingPermission = "inventory_archiving";
         string reportsPermission = "inventory_reports";
+
         public static uc_inventory Instance
         {
             get
@@ -51,7 +54,10 @@ namespace POS.View.storage
         {
             InitializeComponent();
         }
-
+        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
+        {               
+            timer.Stop();
+        }
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             if (MainWindow.lang.Equals("en"))
@@ -66,7 +72,8 @@ namespace POS.View.storage
             }
 
             translate();
-            await fillInventoryDetails();
+            setTimer();
+            //await fillInventoryDetails();
         }
         private void translate()
         {
@@ -91,6 +98,22 @@ namespace POS.View.storage
             txt_invoiceImages.Text = MainWindow.resourcemanager.GetString("trImages");
 
         }
+        #region timer to refresh notifications
+        private void setTimer()
+        {
+            timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(30);
+            timer.Tick += timer_Tick;
+            timer.Start();
+        }
+        private void timer_Tick(object sendert, EventArgs et)
+        {
+            if (inventory.inventoryId != 0)
+            {
+                refreshDocCount(inventory.inventoryId);
+            }
+        }
+        #endregion
         private async void refreshDocCount(int inventoryId)
         {
             DocImage doc = new DocImage();
@@ -103,6 +126,44 @@ namespace POS.View.storage
             }
             else
                 md_docImage.Badge = docCount.ToString();
+        }
+        private async Task fillItemLocations()
+        {
+            int sequence = 0;
+            invItemsLocations.Clear();
+
+            inventory = await inventory.getByBranch("d", MainWindow.branchID.Value);
+            if (inventory.inventoryId == 0)// there is no draft in branch
+            {
+                itemsLocations = await itemLocationModel.getAll(MainWindow.branchID.Value);
+
+                foreach (ItemLocation il in itemsLocations)
+                {
+                    sequence++;
+                    InventoryItemLocation iil = new InventoryItemLocation();
+                    iil.sequence = sequence;
+                    iil.itemName = il.itemName;
+                    iil.section = il.section;
+                    iil.location = il.location;
+                    iil.unitName = il.unitName;
+                    iil.quantity = (int)il.quantity;
+                    iil.itemLocationId = il.itemsLocId;
+                    iil.isDestroyed = false;
+                    iil.isFalls = false;
+                    iil.amountDestroyed = 0;
+                    iil.amount = 0;
+                    iil.createUserId = MainWindow.userLogin.userId;
+
+                    invItemsLocations.Add(iil);
+                }
+                inputEditable();
+                dg_items.ItemsSource = invItemsLocations.ToList();
+            }
+            else
+            {
+                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trDraftExist"), animation: ToasterAnimation.FadeIn);
+
+            }
         }
         private async Task fillInventoryDetails()
         {
@@ -193,9 +254,9 @@ namespace POS.View.storage
             txt_inventoryNum.Text = "";
             md_docImage.Badge = "";
             txt_titleDataGrid.Text = MainWindow.resourcemanager.GetString("trInventoryDraft");
-
+            dg_items.ItemsSource = null;
             inputEditable();
-           await fillInventoryDetails();
+          // await fillInventoryDetails();
         }
         private async Task addInventory(string invType)
         {
@@ -224,10 +285,16 @@ namespace POS.View.storage
         }
         private async void Btn_newInventory_Click(object sender, RoutedEventArgs e)
         {
-            if (!_InventoryType.Equals("n"))
+            //if (inventory.inventoryId != 0 && inventory != null)
+            //{
+            if (!_InventoryType.Equals("n") && invItemsLocations.Count > 0)
+            {
                 await addInventory("d"); // d:draft
+                clearInventory();
+            }
             else
-                await clearInventory();
+                //}
+                await fillItemLocations();
         }
         private async void Btn_draft_Click(object sender, RoutedEventArgs e)
         {
