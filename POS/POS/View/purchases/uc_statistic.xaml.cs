@@ -69,7 +69,6 @@ namespace POS.View.purchases
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {//load
-            SectionData.StartAwait(grid_statistic);
             #region translate
             if (MainWindow.lang.Equals("en"))
             {
@@ -96,7 +95,6 @@ namespace POS.View.purchases
             chk_usersInvoice.IsChecked = true;
             fillDgPos(chk_invoice, chk_return, chk_drafs, cb_branches, chk_allBranches, dp_startDate, dp_endDate, dt_startTime, dt_endTime, txt_search);
 
-            SectionData.EndAwait(grid_statistic, this);
         }
 
         private void translate()

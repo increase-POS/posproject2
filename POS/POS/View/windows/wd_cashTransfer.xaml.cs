@@ -43,30 +43,33 @@ namespace POS.View.windows
         {//load
             try
             {
-                SectionData.StartAwait(grid_ucCashTransfer);
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
                 #region translate
                 if (MainWindow.lang.Equals("en"))
                 {
                     MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
-                    grid_ucCashTransfer.FlowDirection = FlowDirection.LeftToRight;
+                    grid_main.FlowDirection = FlowDirection.LeftToRight;
                 }
                 else
                 {
                     MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
-                    grid_ucCashTransfer.FlowDirection = FlowDirection.RightToLeft;
+                    grid_main.FlowDirection = FlowDirection.RightToLeft;
                 }
 
                 translate();
                 #endregion
 
                 Txb_search_TextChanged(null, null);
-
-                SectionData.EndAwait(grid_ucCashTransfer, this);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                SectionData.EndAwait(grid_ucCashTransfer , this);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
@@ -106,7 +109,8 @@ namespace POS.View.windows
         {//search
             try
             {
-                SectionData.StartAwait(grid_ucCashTransfer);
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
                 if (cashes is null)
                     await RefreshCashesList();
                 this.Dispatcher.Invoke(() =>
@@ -122,16 +126,18 @@ namespace POS.View.windows
                 });
 
                 RefreshCashView();
-                SectionData.EndAwait(grid_ucCashTransfer, this);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                SectionData.EndAwait(grid_ucCashTransfer , this);
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
-        void RefreshCashView()
+            void RefreshCashView()
         {
             dg_accounts.ItemsSource = cashesQuery;
             //cashes = cashes.Where(x => x.processType != "balance");
@@ -139,15 +145,51 @@ namespace POS.View.windows
 
         private void HandleKeyPress(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Return)
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                if (e.Key == Key.Return)
             {
                 Btn_select_Click(null, null);
+                }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
         private void Btn_select_Click(object sender, RoutedEventArgs e)
         {//select
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
+
+                //
+                //enter your code here
+                //
+
+
+
+
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Btn_colse_Click(object sender, RoutedEventArgs e)

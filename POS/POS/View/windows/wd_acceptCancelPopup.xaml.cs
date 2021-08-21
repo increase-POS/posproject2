@@ -1,4 +1,5 @@
-﻿using System;
+﻿using POS.Classes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -26,14 +27,25 @@ namespace POS.View.windows
         public bool isOk;
         public wd_acceptCancelPopup()
         {
-            InitializeComponent();
-            this.DataContext = this;
-            //"Do you really want to delete this Item ?"
+            try
+            {
+                InitializeComponent();
+                this.DataContext = this;
+            }
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex, this); }
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.lang.Equals("en"))
+            try
+            {
+               
+                if (sender != null)
+                    SectionData.StartAwait(grid_wdAcceptCancelPopup);
+
+                #region translate
+                if (MainWindow.lang.Equals("en"))
             {
                 MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
                 grid_wdAcceptCancelPopup.FlowDirection = FlowDirection.LeftToRight;
@@ -43,18 +55,45 @@ namespace POS.View.windows
                 MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
                 grid_wdAcceptCancelPopup.FlowDirection = FlowDirection.RightToLeft;
             }
+            translate();
+            #endregion
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex,this, sender);
+            }
+    }
+
+        private void translate()
+        {
+            btn_ok.Content = MainWindow.resourcemanager.GetString("trOK");
+            btn_cancel.Content = MainWindow.resourcemanager.GetString("trCancel");
         }
 
         private void Btn_cancel_Click(object sender, RoutedEventArgs e)
         {
-            isOk = false;
-            this.Close();
+            try
+            {
+                isOk = false;
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Btn_ok_Click(object sender, RoutedEventArgs e)
         {
-            isOk = true;
-            this.Close();
+            try
+            {
+                isOk = true;
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         #region contentText

@@ -2137,4 +2137,10 @@
   <data name="tr_Invoice" xml:space="preserve">
     <value>فاتورة</value>
   </data>
+  <data name="trCancel" xml:space="preserve">
+    <value>إلغاء الأمر</value>
+  </data>
+  <data name="trOK" xml:space="preserve">
+    <value>موافق</value>
+  </data>
 </root>

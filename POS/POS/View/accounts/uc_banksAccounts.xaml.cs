@@ -65,7 +65,12 @@ namespace POS.View.accounts
 
         public uc_banksAccounts()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
+            }
+            catch(Exception ex)
+            { SectionData.ExceptionMessage(ex ,this); }
         }
 
         private void translate()
@@ -91,15 +96,15 @@ namespace POS.View.accounts
             dg_bankAccounts.Columns[2].Header = MainWindow.resourcemanager.GetString("trDepositeNumTooltip");
             dg_bankAccounts.Columns[3].Header = MainWindow.resourcemanager.GetString("trCashTooltip");
 
-            tt_code.Content = MainWindow.resourcemanager.GetString("trTransferNumberTooltip");
-            tt_opperationType.Content = MainWindow.resourcemanager.GetString("trOpperationTypeToolTip");
-            tt_user.Content = MainWindow.resourcemanager.GetString("trUser");
-            tt_bank.Content = MainWindow.resourcemanager.GetString("trBank");
-            tt_cash.Content = MainWindow.resourcemanager.GetString("trCashTooltip");
-            tt_user.Content = MainWindow.resourcemanager.GetString("trUser");
-            tt_DepREcNum.Content = MainWindow.resourcemanager.GetString("trDepositeNumTooltip");
+            //tt_code.Content = MainWindow.resourcemanager.GetString("trTransferNumberTooltip");
+            //tt_opperationType.Content = MainWindow.resourcemanager.GetString("trOpperationTypeToolTip");
+            //tt_user.Content = MainWindow.resourcemanager.GetString("trUser");
+            //tt_bank.Content = MainWindow.resourcemanager.GetString("trBank");
+            //tt_cash.Content = MainWindow.resourcemanager.GetString("trCashTooltip");
+            //tt_user.Content = MainWindow.resourcemanager.GetString("trUser");
+            //tt_DepREcNum.Content = MainWindow.resourcemanager.GetString("trDepositeNumTooltip");
             tt_search.Content = MainWindow.resourcemanager.GetString("trSearch");
-            tt_notes.Content = MainWindow.resourcemanager.GetString("trNote");
+            //tt_notes.Content = MainWindow.resourcemanager.GetString("trNote");
             tt_confirmUser.Content = MainWindow.resourcemanager.GetString("trConfirmUserTooltip");
             tt_clear.Content = MainWindow.resourcemanager.GetString("trClear");
             tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
@@ -123,94 +128,140 @@ namespace POS.View.accounts
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {//load
 
-            btn_add.IsEnabled = true;
-            dp_endSearchDate.SelectedDate = DateTime.Now;
-            dp_startSearchDate.SelectedDate = DateTime.Now;
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_ucBankAccounts);
+                btn_add.IsEnabled = true;
+                dp_endSearchDate.SelectedDate = DateTime.Now;
+                dp_startSearchDate.SelectedDate = DateTime.Now;
 
-            #region fill operation type
-            var dislist = new[] {
+                #region fill operation type
+                var dislist = new[] {
             new { Text = MainWindow.resourcemanager.GetString("trDeposit"), Value = "d" },
             new { Text = MainWindow.resourcemanager.GetString("trPull"), Value = "p" },
              };
 
-            cb_opperationType.DisplayMemberPath = "Text";
-            cb_opperationType.SelectedValuePath = "Value";
-            cb_opperationType.ItemsSource = dislist;
-            #endregion
+                cb_opperationType.DisplayMemberPath = "Text";
+                cb_opperationType.SelectedValuePath = "Value";
+                cb_opperationType.ItemsSource = dislist;
+                #endregion
 
-            #region fill users combo
-            users = await userModel.GetUsersActive();
-            cb_user.ItemsSource = users;
-            cb_user.DisplayMemberPath = "username";
-            cb_user.SelectedValuePath = "userId";
-            cb_user.SelectedIndex = -1;
-            #endregion
+                #region fill users combo
+                users = await userModel.GetUsersActive();
+                cb_user.ItemsSource = users;
+                cb_user.DisplayMemberPath = "username";
+                cb_user.SelectedValuePath = "userId";
+                cb_user.SelectedIndex = -1;
+                #endregion
 
-            #region fill banks combo
-            banks = await bankModel.GetBanksAsync();
-            banksQuery = banks.Where(s => s.isActive == 1);
-            cb_bank.ItemsSource = banksQuery;
-            cb_bank.DisplayMemberPath = "name";
-            cb_bank.SelectedValuePath = "bankId";
-            cb_bank.SelectedIndex = -1;
-            #endregion
+                #region fill banks combo
+                banks = await bankModel.GetBanksAsync();
+                banksQuery = banks.Where(s => s.isActive == 1);
+                cb_bank.ItemsSource = banksQuery;
+                cb_bank.DisplayMemberPath = "name";
+                cb_bank.SelectedValuePath = "bankId";
+                cb_bank.SelectedIndex = -1;
+                #endregion
 
-            #region translate
+                #region translate
 
-            if (MainWindow.lang.Equals("en"))
-            {
-                MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
-                grid_ucBankAccounts.FlowDirection = FlowDirection.LeftToRight;
+                if (MainWindow.lang.Equals("en"))
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                    grid_ucBankAccounts.FlowDirection = FlowDirection.LeftToRight;
 
+                }
+                else
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                    grid_ucBankAccounts.FlowDirection = FlowDirection.RightToLeft;
+
+                }
+
+                translate();
+                #endregion
+
+                #region Style Date
+                /////////////////////////////////////////////////////////////
+                SectionData.defaultDatePickerStyle(dp_startSearchDate);
+                SectionData.defaultDatePickerStyle(dp_endSearchDate);
+                /////////////////////////////////////////////////////////////
+                #endregion
+
+                #region prevent editting on date and time
+                //TextBox tbStartDate = (TextBox)dp_startSearchDate.Template.FindName("PART_TextBox", dp_startSearchDate);
+                //tbStartDate.IsReadOnly = true;
+                //TextBox tbEndDate = (TextBox)dp_endSearchDate.Template.FindName("PART_TextBox", dp_endSearchDate);
+                //tbEndDate.IsReadOnly = true;
+                #endregion
+
+                dp_startSearchDate.SelectedDateChanged += this.dp_SelectedStartDateChanged;
+                dp_endSearchDate.SelectedDateChanged += this.dp_SelectedEndDateChanged;
+
+                btn_image.IsEnabled = false;
+
+                await RefreshCashesList();
+                Tb_search_TextChanged(null, null);
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucBankAccounts);
             }
-            else
+            catch(Exception ex)
             {
-                MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
-                grid_ucBankAccounts.FlowDirection = FlowDirection.RightToLeft;
-
+                SectionData.EndAwait(grid_ucBankAccounts);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-
-            translate();
-            #endregion
-
-            #region Style Date
-            /////////////////////////////////////////////////////////////
-            SectionData.defaultDatePickerStyle(dp_startSearchDate);
-            SectionData.defaultDatePickerStyle(dp_endSearchDate);
-            /////////////////////////////////////////////////////////////
-            #endregion
-
-            #region prevent editting on date and time
-            //TextBox tbStartDate = (TextBox)dp_startSearchDate.Template.FindName("PART_TextBox", dp_startSearchDate);
-            //tbStartDate.IsReadOnly = true;
-            //TextBox tbEndDate = (TextBox)dp_endSearchDate.Template.FindName("PART_TextBox", dp_endSearchDate);
-            //tbEndDate.IsReadOnly = true;
-            #endregion
-
-            dp_startSearchDate.SelectedDateChanged += this.dp_SelectedStartDateChanged;
-            dp_endSearchDate.SelectedDateChanged += this.dp_SelectedEndDateChanged;
-
-            btn_image.IsEnabled = false;
-
-            await RefreshCashesList();
-            Tb_search_TextChanged(null, null);
         }
 
         private async void dp_SelectedStartDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            await RefreshCashesList();
-            Tb_search_TextChanged(null, null);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_ucBankAccounts);
+
+                await RefreshCashesList();
+                Tb_search_TextChanged(null, null);
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucBankAccounts);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucBankAccounts);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private async void dp_SelectedEndDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            await RefreshCashesList();
-            Tb_search_TextChanged(null, null);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_ucBankAccounts);
+
+                await RefreshCashesList();
+                Tb_search_TextChanged(null, null);
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucBankAccounts);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucBankAccounts);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private async void Dg_bankAccounts_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//selection
-            SectionData.clearValidate(tb_cash, p_errorCash);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_ucBankAccounts);
+                SectionData.clearValidate(tb_cash, p_errorCash);
             SectionData.clearValidate(tb_depositNumber, p_errorDepositNumber);
             SectionData.clearComboBoxValidate(cb_opperationType, p_errorOpperationType);
             SectionData.clearComboBoxValidate(cb_user, p_errorUser);
@@ -253,120 +304,155 @@ namespace POS.View.accounts
 
                 }
             }
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucBankAccounts);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucBankAccounts);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
         {//search
-            if (cashes is null)
-                await RefreshCashesList();
-            this.Dispatcher.Invoke(() =>
+            try
             {
-                searchText = tb_search.Text.ToLower();
-                cashesQuery = cashes.Where(s => (s.transNum.ToLower().Contains(searchText)
-                || s.cash.ToString().ToLower().Contains(searchText)
-                || s.bankName.ToLower().Contains(searchText)
-                //|| s.docNum.Contains(searchText)////?????because of empty values
-                )
-                && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
-                && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
-                );
-            });
-            RefreshCashView();
+                if (sender != null)
+                    SectionData.StartAwait(grid_ucBankAccounts);
 
+                if (cashes is null)
+                    await RefreshCashesList();
+
+                this.Dispatcher.Invoke(() =>
+                {
+                    searchText = tb_search.Text.ToLower();
+                    cashesQuery = cashes.Where(s => (s.transNum.ToLower().Contains(searchText)
+                    || s.cash.ToString().ToLower().Contains(searchText)
+                    || s.bankName.ToLower().Contains(searchText)
+                    || s.docNum.Contains(searchText)
+                    )
+                    && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
+                    && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
+                    );
+                });
+                RefreshCashView();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucBankAccounts);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucBankAccounts);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//save
-            if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+            try
             {
+                if (sender != null)
+                    SectionData.StartAwait(grid_ucBankAccounts);
 
-
-
-                if (cashtrans.cashTransId == 0)
+                if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
-                    //chk empty cash
-                    SectionData.validateEmptyTextBox(tb_cash, p_errorCash, tt_errorCash, "trEmptyCashToolTip");
-                    //chk empty dicount type
-                    SectionData.validateEmptyComboBox(cb_opperationType, p_errorOpperationType, tt_errorOpperationType, "trErrorEmptyOpperationTypeToolTip");
-                    //chk empty user
-                    SectionData.validateEmptyComboBox(cb_user, p_errorUser, tt_errorUser, "trErrorEmptyUserToolTip");
-                    //chk empty bank
-                    SectionData.validateEmptyComboBox(cb_bank, p_errorBank, tt_errorBank, "trErrorEmptyBankToolTip");
-                    //chk user confirmation
-                    bool isuserConfirmed = w.isOk;
-
-                    if ((!tb_cash.Text.Equals("")) &&
-                        //(!tb_depositNumber.Text.Equals("")) &&
-                        (!cb_opperationType.Text.Equals("")) && (!cb_user.Text.Equals("")) &&
-                        (!cb_bank.Text.Equals("")) &&
-                        (isuserConfirmed)
-                        )
-
+                    if (cashtrans.cashTransId == 0)
                     {
+                        #region validate
+                        //chk empty cash
+                        SectionData.validateEmptyTextBox(tb_cash, p_errorCash, tt_errorCash, "trEmptyCashToolTip");
+                        //chk empty dicount type
+                        SectionData.validateEmptyComboBox(cb_opperationType, p_errorOpperationType, tt_errorOpperationType, "trErrorEmptyOpperationTypeToolTip");
+                        //chk empty user
+                        SectionData.validateEmptyComboBox(cb_user, p_errorUser, tt_errorUser, "trErrorEmptyUserToolTip");
+                        //chk empty bank
+                        SectionData.validateEmptyComboBox(cb_bank, p_errorBank, tt_errorBank, "trErrorEmptyBankToolTip");
+                        //chk user confirmation
+                        bool isuserConfirmed = w.isOk;
+                        #endregion
 
-                        CashTransfer cash = new CashTransfer();
+                        #region add
+                        if ((!tb_cash.Text.Equals("")) &&
+                            (!cb_opperationType.Text.Equals("")) && (!cb_user.Text.Equals("")) &&
+                            (!cb_bank.Text.Equals("")) &&
+                            (isuserConfirmed)
+                            )
 
-                        cash.transType = cb_opperationType.SelectedValue.ToString();
-                        cash.userId = Convert.ToInt32(cb_user.SelectedValue);
-                        //cash.transNum = await generateNumber();
-                        //cash.transNum = await SectionData.generateNumber(Convert.ToChar(cb_opperationType.SelectedValue), "bn");
-                        cash.transNum = await cashModel.generateCashNumber(cb_opperationType.SelectedValue.ToString() + "bn");
-                        cash.cash = decimal.Parse(tb_cash.Text);
-                        cash.createUserId = MainWindow.userID.Value;
-                        cash.notes = tb_note.Text;
-                        cash.posId = MainWindow.posID.Value;
-                        cash.side = "bn";
-                        cash.bankId = Convert.ToInt32(cb_bank.SelectedValue);
-                        //cash.docNum = tb_depositNumber.Text;
-
-                        string s = await cashModel.Save(cash);
-
-                        if (!s.Equals("0"))
                         {
-                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
-                            Btn_clear_Click(null, null);
+                            CashTransfer cash = new CashTransfer();
 
-                            dg_bankAccounts.ItemsSource = await RefreshCashesList();
-                            Tb_search_TextChanged(null, null);
-                        }
-                        else
-                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-                    }
-                }
-                else
-                {
-                    if (btn_add.IsEnabled)
-                    {
-                        //chk empty deposite number
-                        SectionData.validateEmptyTextBox(tb_depositNumber, p_errorDepositNumber, tt_errorDepositNumber, "trEmptyDepositNumberToolTip");
-                        if (!tb_depositNumber.Text.Equals(""))
-                        {
-                            cashtrans.isConfirm = 1;
-                            cashtrans.docNum = tb_depositNumber.Text;
+                            cash.transType = cb_opperationType.SelectedValue.ToString();
+                            cash.userId = Convert.ToInt32(cb_user.SelectedValue);
+                            cash.transNum = await cashModel.generateCashNumber(cb_opperationType.SelectedValue.ToString() + "bn");
+                            cash.cash = decimal.Parse(tb_cash.Text);
+                            cash.createUserId = MainWindow.userID.Value;
+                            cash.notes = tb_note.Text;
+                            cash.posId = MainWindow.posID.Value;
+                            cash.side = "bn";
+                            cash.bankId = Convert.ToInt32(cb_bank.SelectedValue);
 
-                            string s = await cashModel.Save(cashtrans);
+                            string s = await cashModel.Save(cash);
 
                             if (!s.Equals("0"))
                             {
-                                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trCompleted"), animation: ToasterAnimation.FadeIn);
-                                btn_add.IsEnabled = false;
-                                btn_add.Content = MainWindow.resourcemanager.GetString("trCompleted");
+                                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                                Btn_clear_Click(null, null);
 
                                 dg_bankAccounts.ItemsSource = await RefreshCashesList();
                                 Tb_search_TextChanged(null, null);
-
-                                decimal ammount = cashtrans.cash.Value;
-                                if (cashtrans.transType.Equals("d")) ammount *= -1;
-                                calcBalance(ammount);
                             }
                             else
                                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                         }
                     }
+                    else
+                    {
+                        if (btn_add.IsEnabled)
+                        {
+                            //chk empty deposite number
+                            SectionData.validateEmptyTextBox(tb_depositNumber, p_errorDepositNumber, tt_errorDepositNumber, "trEmptyDepositNumberToolTip");
+                            if (!tb_depositNumber.Text.Equals(""))
+                            {
+                                cashtrans.isConfirm = 1;
+                                cashtrans.docNum = tb_depositNumber.Text;
+
+                                string s = await cashModel.Save(cashtrans);
+
+                                if (!s.Equals("0"))
+                                {
+                                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trCompleted"), animation: ToasterAnimation.FadeIn);
+                                    btn_add.IsEnabled = false;
+                                    btn_add.Content = MainWindow.resourcemanager.GetString("trCompleted");
+
+                                    dg_bankAccounts.ItemsSource = await RefreshCashesList();
+                                    Tb_search_TextChanged(null, null);
+
+                                    decimal ammount = cashtrans.cash.Value;
+                                    if (cashtrans.transType.Equals("d")) ammount *= -1;
+                                    calcBalance(ammount);
+                                }
+                                else
+                                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                            }
+                        }
+                        #endregion
+                    }
                 }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucBankAccounts);
             }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucBankAccounts);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private async void calcBalance(decimal ammount)
@@ -377,10 +463,6 @@ namespace POS.View.accounts
 
             string s = await posModel.savePos(pos);
 
-            //if (s.Equals("Pos Is Updated Successfully"))
-            //    MessageBox.Show(pos.balance.ToString());
-            //else
-            //    MessageBox.Show("error");
         }
 
         private void Btn_update_Click(object sender, RoutedEventArgs e)
@@ -395,37 +477,55 @@ namespace POS.View.accounts
 
         private async void Btn_clear_Click(object sender, RoutedEventArgs e)
         {//clear
-            cashtrans.cashTransId = 0;
-            tb_transNum.Text = await SectionData.generateNumber(Convert.ToChar(cb_opperationType.SelectedValue), "bn");
-            btn_add.IsEnabled = true;
-            cb_opperationType.IsEnabled = true;
-            cb_user.IsEnabled = true;
-            cb_bank.IsEnabled = true;
-            tb_cash.IsEnabled = true;
-            tb_depositNumber.IsEnabled = false;
-            tb_note.IsEnabled = true;
-            btn_image.IsEnabled = false;
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_ucBankAccounts);
 
-            tb_cash.Clear();
-            tb_depositNumber.Clear();
-            cb_opperationType.SelectedIndex = -1;
-            cb_bank.SelectedIndex = -1;
-            cb_user.SelectedIndex = -1;
-            tb_note.Clear();
+                cashtrans.cashTransId = 0;
+                tb_transNum.Text = await SectionData.generateNumber(Convert.ToChar(cb_opperationType.SelectedValue), "bn");
+                btn_add.IsEnabled = true;
+                cb_opperationType.IsEnabled = true;
+                cb_user.IsEnabled = true;
+                cb_bank.IsEnabled = true;
+                tb_cash.IsEnabled = true;
+                tb_depositNumber.IsEnabled = false;
+                tb_note.IsEnabled = true;
+                btn_image.IsEnabled = false;
 
-            SectionData.clearValidate(tb_cash, p_errorCash);
-            SectionData.clearValidate(tb_depositNumber, p_errorDepositNumber);
-            SectionData.clearComboBoxValidate(cb_opperationType, p_errorOpperationType);
-            SectionData.clearComboBoxValidate(cb_user, p_errorUser);
-            SectionData.clearComboBoxValidate(cb_bank, p_errorBank);
-            p_confirmUser.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#E65B65"));
+                tb_cash.Clear();
+                tb_depositNumber.Clear();
+                cb_opperationType.SelectedIndex = -1;
+                cb_bank.SelectedIndex = -1;
+                cb_user.SelectedIndex = -1;
+                tb_note.Clear();
+
+                SectionData.clearValidate(tb_cash, p_errorCash);
+                SectionData.clearValidate(tb_depositNumber, p_errorDepositNumber);
+                SectionData.clearComboBoxValidate(cb_opperationType, p_errorOpperationType);
+                SectionData.clearComboBoxValidate(cb_user, p_errorUser);
+                SectionData.clearComboBoxValidate(cb_bank, p_errorBank);
+                p_confirmUser.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#E65B65"));
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucBankAccounts);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucBankAccounts);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {//export
-            if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+            try
             {
-                try
+                if (sender != null)
+                    SectionData.StartAwait(grid_ucBankAccounts);
+
+                if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
                     this.Dispatcher.Invoke(() =>
                     {
@@ -433,14 +533,19 @@ namespace POS.View.accounts
                         t1.SetApartmentState(ApartmentState.STA);
                         t1.Start();
                     });
+              
                 }
-                catch (Exception ex)
-                {
-                    SectionData.ExceptionMessage(ex, this, sender);
-                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                    if (sender != null)
+                        SectionData.EndAwait(grid_ucBankAccounts);
             }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucBankAccounts);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         void FN_ExportToExcel()
@@ -463,29 +568,55 @@ namespace POS.View.accounts
 
         private void Btn_image_Click(object sender, RoutedEventArgs e)
         {//image
-            if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+            try
             {
-                if (cashtrans != null || cashtrans.cashTransId != 0)
+                if (sender != null)
+                    SectionData.StartAwait(grid_ucBankAccounts);
+
+                if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
-                    //  (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 0.2;
+                    if (cashtrans != null || cashtrans.cashTransId != 0)
+                    {
+                        wd_uploadImage w = new wd_uploadImage();
 
-                    wd_uploadImage w = new wd_uploadImage();
-
-                    w.tableName = "cashTransfer";
-                    w.tableId = cashtrans.cashTransId;
-                    w.docNum = cashtrans.docNum;
-                    w.ShowDialog();
-                    // (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity =1;
+                        w.tableName = "cashTransfer";
+                        w.tableId = cashtrans.cashTransId;
+                        w.docNum = cashtrans.docNum;
+                        w.ShowDialog();
+                    }
                 }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucBankAccounts);
             }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucBankAccounts);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private async void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {//refresh
-            await RefreshCashesList();
-            Tb_search_TextChanged(null, null);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_ucBankAccounts);
+
+                await RefreshCashesList();
+                Tb_search_TextChanged(null, null);
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucBankAccounts);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucBankAccounts);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void PreventSpaces(object sender, KeyEventArgs e)
@@ -511,8 +642,6 @@ namespace POS.View.accounts
 
         }
 
-
-
         private void validateEmpty(string name, object sender)
         {
             if (name == "TextBox")
@@ -535,39 +664,66 @@ namespace POS.View.accounts
 
         private void Tb_validateEmptyTextChange(object sender, TextChangedEventArgs e)
         {
-            string name = sender.GetType().Name;
-            validateEmpty(name, sender);
+            try
+            {
+                string name = sender.GetType().Name;
+                validateEmpty(name, sender);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Tb_validateEmptyLostFocus(object sender, RoutedEventArgs e)
         {
-            string name = sender.GetType().Name;
-            validateEmpty(name, sender);
+            try
+            { 
+                string name = sender.GetType().Name;
+                validateEmpty(name, sender);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
 
         private void Tb_validateEmptyTextChangeCash(object sender, TextChangedEventArgs e)
         {
-            string name = sender.GetType().Name;
-            validateEmpty(name, sender);
-            var txb = sender as TextBox;
-            if ((sender as TextBox).Name == "tb_cash")
-                SectionData.InputJustNumber(ref txb);
-            Cb_user_SelectionChanged(null, null);
+            try
+            { 
+                string name = sender.GetType().Name;
+                validateEmpty(name, sender);
+                var txb = sender as TextBox;
+                if ((sender as TextBox).Name == "tb_cash")
+                    SectionData.InputJustNumber(ref txb);
+                Cb_user_SelectionChanged(null, null);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
 
         }
 
         private void Tb_validateEmptyLostFocusCash(object sender, RoutedEventArgs e)
         {
-            string name = sender.GetType().Name;
-            validateEmpty(name, sender);
-            Cb_user_SelectionChanged(null, null);
+            try
+            { 
+                string name = sender.GetType().Name;
+                validateEmpty(name, sender);
+                Cb_user_SelectionChanged(null, null);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         async Task<IEnumerable<CashTransfer>> RefreshCashesList()
         {
             cashes = await cashModel.GetCashTransferAsync("all", "bn");
-            //MessageBox.Show(cashes.Count().ToString());
             return cashes;
         }
         void RefreshCashView()
@@ -586,35 +742,56 @@ namespace POS.View.accounts
 
         private void Cb_opperationType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (cb_opperationType.SelectedValue == "d")
-                btn_add.Content = MainWindow.resourcemanager.GetString("trDeposit");
-            else
-                btn_add.Content = MainWindow.resourcemanager.GetString("trPull");
+            try
+            { 
+                if (cb_opperationType.SelectedValue == "d")
+                    btn_add.Content = MainWindow.resourcemanager.GetString("trDeposit");
+                else
+                    btn_add.Content = MainWindow.resourcemanager.GetString("trPull");
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Btn_confirmUser_Click(object sender, RoutedEventArgs e)
-        {
-            Window.GetWindow(this).Opacity = 0.2;
-            w.tb_userName.Text = cb_user.Text;
-            w.userID = Convert.ToInt32(cb_user.SelectedValue);
-            w.ShowDialog();
-            //w.Show();
+        {//confirm user
+            try
+            { 
+                Window.GetWindow(this).Opacity = 0.2;
 
-            Window.GetWindow(this).Opacity = 1;
-            //System.Windows.MessageBox.Show(w.isOk.ToString());
+                w.tb_userName.Text = cb_user.Text;
+                w.userID = Convert.ToInt32(cb_user.SelectedValue);
+                w.ShowDialog();
 
-            if (w.isOk == true)
-                p_confirmUser.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#2BB673"));
-            else p_confirmUser.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#E65B65"));
+                Window.GetWindow(this).Opacity = 1;
+
+                if (w.isOk == true)
+                    p_confirmUser.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#2BB673"));
+                else p_confirmUser.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#E65B65"));
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Cb_user_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if ((cb_user.SelectedIndex != -1) && (!tb_cash.Text.Equals("")))
-                btn_confirmUser.IsEnabled = true;
-            else
-                btn_confirmUser.IsEnabled = false;
+        {//select user
+            try
+            { 
+                if ((cb_user.SelectedIndex != -1) && (!tb_cash.Text.Equals("")))
+                    btn_confirmUser.IsEnabled = true;
+                else
+                    btn_confirmUser.IsEnabled = false;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
+
         ReportCls reportclass = new ReportCls();
         LocalReport rep = new LocalReport();
         SaveFileDialog saveFileDialog = new SaveFileDialog();
@@ -623,6 +800,9 @@ namespace POS.View.accounts
         {
             try
             {
+                if (sender != null)
+                    SectionData.StartAwait(grid_ucBankAccounts);
+
                 List<ReportParameter> paramarr = new List<ReportParameter>();
 
                 string addpath;
@@ -653,15 +833,25 @@ namespace POS.View.accounts
                     LocalReportExtensions.ExportToPDF(rep, filepath);
                 }
 
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucBankAccounts);
+
             }
             catch (Exception ex)
-            { SectionData.ExceptionMessage(ex, this, sender); }
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucBankAccounts);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Btn_print_Click(object sender, RoutedEventArgs e)
         {
             try
             {
+                if (sender != null)
+                    SectionData.StartAwait(grid_ucBankAccounts);
+
                 List<ReportParameter> paramarr = new List<ReportParameter>();
 
                 string addpath;
@@ -682,9 +872,16 @@ namespace POS.View.accounts
                 rep.SetParameters(paramarr);
                 rep.Refresh();
                 LocalReportExtensions.PrintToPrinter(rep);
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucBankAccounts);
             }
             catch (Exception ex)
-            { SectionData.ExceptionMessage(ex, this, sender); }
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucBankAccounts);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
     }
 }

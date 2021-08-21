@@ -38,29 +38,52 @@ namespace POS.View.catalog
 
         public win_lvcCatalog(IEnumerable<Category> _categoriesQuery, int _catalog)
         {
-            InitializeComponent();
-            categoriesQuery = _categoriesQuery;
-            catalog = _catalog;
+            try
+            {
+                InitializeComponent();
+                categoriesQuery = _categoriesQuery;
+                catalog = _catalog;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+
         }
         public win_lvcCatalog(IEnumerable<Item> _itemsQuery, int _catalog)
         {
-            InitializeComponent();
-            itemsQuery = _itemsQuery;
-            catalog = _catalog;
+            try
+            {
+                InitializeComponent();
+                itemsQuery = _itemsQuery;
+                catalog = _catalog;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             try
             {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
                 chartList = new List<double>();
-            PiechartList = new List<double>();
-            ColumnchartList = new List<double>();
-            fillDates();
-            fillSelectedChart();
+                PiechartList = new List<double>();
+                ColumnchartList = new List<double>();
+                fillDates();
+                fillSelectedChart();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
@@ -70,16 +93,19 @@ namespace POS.View.catalog
             dpStrtDate.SelectedDate = dpEndDate.SelectedDate.Value.AddYears(-1);
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e) {
-                this.Close();
-            }
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
 
-        private void Window_MouseDown(object sender, MouseButtonEventArgs e) {
-                try {
-                    DragMove();
-                }
-                catch (Exception) { }
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                DragMove();
             }
+            catch (Exception) { }
+        }
 
         public void fillChart()
         {
@@ -164,7 +190,7 @@ namespace POS.View.catalog
 
         public void fillPieChart()
         {
-        
+
             PiechartList.Clear();
             SeriesCollection piechartData = new SeriesCollection();
             List<string> titles = new List<string>();
@@ -321,104 +347,139 @@ namespace POS.View.catalog
         }
 
         private void dpStrtDate_CalendarClosed(object sender, RoutedEventArgs e)
+        {
+            try
             {
-                try
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                if (dpEndDate.SelectedDate.Value.Year - dpStrtDate.SelectedDate.Value.Year > 1)
                 {
-                    if (dpEndDate.SelectedDate.Value.Year - dpStrtDate.SelectedDate.Value.Year > 1)
-            {
-                rdoYear.IsChecked = true;
-                fillSelectedChart();
-            }
-            else
-            {
-                fillSelectedChart();
-            }
+                    rdoYear.IsChecked = true;
+                    fillSelectedChart();
                 }
-                catch (Exception ex)
+                else
                 {
-                    SectionData.ExceptionMessage(ex,this,sender);
+                    fillSelectedChart();
                 }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
 
         private void dpEndDate_CalendarClosed(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                if (dpEndDate.SelectedDate.Value.Year - dpStrtDate.SelectedDate.Value.Year > 1)
                 {
-                    try
-                    {
-                        if (dpEndDate.SelectedDate.Value.Year - dpStrtDate.SelectedDate.Value.Year > 1)
-            {
-                rdoYear.IsChecked = true;
-                fillSelectedChart();
-            }
-            else
-            {
-                fillSelectedChart();
-            }
-                    }
-                    catch (Exception ex)
-                    {
-                        SectionData.ExceptionMessage(ex,this,sender);
-                    }
+                    rdoYear.IsChecked = true;
+                    fillSelectedChart();
                 }
+                else
+                {
+                    fillSelectedChart();
+                }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
 
         private void btn_refresh_Click(object sender, RoutedEventArgs e)
-                    {
-                        try
-                        {
-                            rdoMonth.IsChecked = true; 
-            fillDates();
-            selectedChart = 1;
-            fillSelectedChart();
-                        }
-                        catch (Exception ex)
-                        {
-                            SectionData.ExceptionMessage(ex,this,sender);
-                        }
-                    }
+        {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                rdoMonth.IsChecked = true;
+                fillDates();
+                selectedChart = 1;
+                fillSelectedChart();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
 
         private void rdoYear_Click(object sender, RoutedEventArgs e)
-                        {
-                            try
-                            {
-                                if (dpEndDate.SelectedDate.Value.Year - dpStrtDate.SelectedDate.Value.Year > 1)
+        {
+            try
             {
-                rdoYear.IsChecked = true;
-                fillSelectedChart();
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                if (dpEndDate.SelectedDate.Value.Year - dpStrtDate.SelectedDate.Value.Year > 1)
+                {
+                    rdoYear.IsChecked = true;
+                    fillSelectedChart();
+                }
+                else
+                {
+                    fillSelectedChart();
+                }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
-            else
+            catch (Exception ex)
             {
-                fillSelectedChart();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-                            }
-                            catch (Exception ex)
-                            {
-                                SectionData.ExceptionMessage(ex,this,sender);
-                            }
-                        }
+        }
 
         private void rdoMonth_Click(object sender, RoutedEventArgs e)
-                            {
-                                try
-                                {
-                                    if (dpEndDate.SelectedDate.Value.Year - dpStrtDate.SelectedDate.Value.Year > 1)
+        {
+            try
             {
-                rdoYear.IsChecked = true;
-                fillSelectedChart();
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                if (dpEndDate.SelectedDate.Value.Year - dpStrtDate.SelectedDate.Value.Year > 1)
+                {
+                    rdoYear.IsChecked = true;
+                    fillSelectedChart();
+                }
+                else
+                {
+                    fillSelectedChart();
+                }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
-            else
+            catch (Exception ex)
             {
-                fillSelectedChart();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-                                }
-                                catch (Exception ex)
-                                {
-                                    SectionData.ExceptionMessage(ex,this,sender);
-                                }
-                            }
+        }
 
         private void fillSelectedChart()
-                                {
-                                   
-                                        grid1.Visibility = Visibility.Hidden;
+        {
+
+            grid1.Visibility = Visibility.Hidden;
             grd_pieChart.Visibility = Visibility.Hidden;
             grd_columnChart.Visibility = Visibility.Hidden;
 
@@ -445,46 +506,67 @@ namespace POS.View.catalog
                 fillColumnChart();
 
             }
-                                    
-                                }
+
+        }
 
         private void btn_rowChart_Click(object sender, RoutedEventArgs e)
-                                    {
-                                        try
-                                        {
-                                            selectedChart = 1;
-            fillSelectedChart();
-                                        }
-                                        catch (Exception ex)
-                                        {
-                                            SectionData.ExceptionMessage(ex,this,sender);
-                                        }
-                                    }
+        {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                selectedChart = 1;
+                fillSelectedChart();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
 
         private void btn_pieChart_Click(object sender, RoutedEventArgs e)
-                                        {
-                                            try
-                                            {
-                                                selectedChart = 2;
-            fillSelectedChart();
-                                            }
-                                            catch (Exception ex)
-                                            {
-                                                SectionData.ExceptionMessage(ex,this,sender);
-                                            }
-                                        }
+        {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                selectedChart = 2;
+                fillSelectedChart();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
 
         private void btn_columnChart_Click(object sender, RoutedEventArgs e)
-                                            {
-                                                try
-                                                {
-                                                    selectedChart = 3;
-            fillSelectedChart();
-                                                }
-                                                catch (Exception ex)
-                                                {
-                                                    SectionData.ExceptionMessage(ex,this,sender);
-                                                }
-                                            }
+        {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                selectedChart = 3;
+                fillSelectedChart();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
     }
 }

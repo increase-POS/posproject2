@@ -65,6 +65,9 @@ namespace POS.View
         {
             try
             {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
                 if (MainWindow.lang.Equals("en"))
                 {
                     MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
@@ -78,9 +81,13 @@ namespace POS.View
 
                 translate();
                 permission();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }

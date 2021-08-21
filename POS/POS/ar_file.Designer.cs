@@ -520,6 +520,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to إلغاء الأمر.
+        /// </summary>
+        internal static string trCancel {
+            get {
+                return ResourceManager.GetString("trCancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to لا يمكن حذف الفرع الرئيسي.
         /// </summary>
         internal static string trCannotDeleteTheMainBranch {
@@ -3595,6 +3604,15 @@ namespace POS {
         internal static string trOffer {
             get {
                 return ResourceManager.GetString("trOffer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to موافق.
+        /// </summary>
+        internal static string trOK {
+            get {
+                return ResourceManager.GetString("trOK", resourceCulture);
             }
         }
         

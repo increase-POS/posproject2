@@ -140,17 +140,19 @@ namespace POS.View
         {
             try
             {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
                 //load
                 btn_locations.IsEnabled = false;
                 if (MainWindow.lang.Equals("en"))
                 {
                     MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
-                    grid_ucSection.FlowDirection = FlowDirection.LeftToRight;
+                    grid_main.FlowDirection = FlowDirection.LeftToRight;
                 }
                 else
                 {
                     MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
-                    grid_ucSection.FlowDirection = FlowDirection.RightToLeft;
+                    grid_main.FlowDirection = FlowDirection.RightToLeft;
                 }
 
                 translate();
@@ -164,12 +166,15 @@ namespace POS.View
                     Tb_search_TextChanged(null, null);
                 });
 
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
-
         }
 
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
@@ -230,7 +235,8 @@ namespace POS.View
         {
             try
             {
-                SectionData.StartAwait(grid_ucSection);
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
                 //add
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add") || SectionData.isAdminPermision())
@@ -261,20 +267,23 @@ namespace POS.View
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-                SectionData.EndAwait(grid_ucSection, this);
-
+ 
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
-
         }
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                SectionData.StartAwait(grid_ucSection);
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
                 //update
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update") || SectionData.isAdminPermision())
                 {
@@ -300,19 +309,22 @@ namespace POS.View
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-                SectionData.EndAwait(grid_ucSection, this);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
-
         }
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                SectionData.StartAwait(grid_ucSection);
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
                 //delete
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete") || SectionData.isAdminPermision())
                 {
@@ -365,13 +377,15 @@ namespace POS.View
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-                SectionData.EndAwait(grid_ucSection, this);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
-
         }
         private async void activate()
         {//activate
@@ -391,7 +405,8 @@ namespace POS.View
         {
             try
             {
-                SectionData.StartAwait(grid_ucSection);
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
                 //selection
                 p_errorName.Visibility = Visibility.Collapsed;
                 p_errorSelectBranch.Visibility = Visibility.Collapsed;
@@ -448,13 +463,15 @@ namespace POS.View
                     }
                     #endregion
                 }
-                SectionData.EndAwait(grid_ucSection, this);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
-
         }
         private void validationCompobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -524,15 +541,19 @@ namespace POS.View
         {
             try
             {
-                SectionData.StartAwait(grid_ucSection);
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
                 if (sections is null)
                     await RefreshSectionsList();
                 tgl_sectionState = 1;
                 Tb_search_TextChanged(null, null);
-                SectionData.EndAwait(grid_ucSection, this);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
 
@@ -541,18 +562,21 @@ namespace POS.View
         {
             try
             {
-                SectionData.StartAwait(grid_ucSection);
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
                 if (sections is null)
                     await RefreshSectionsList();
                 tgl_sectionState = 0;
                 Tb_search_TextChanged(null, null);
-                SectionData.EndAwait(grid_ucSection, this);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
-
         }
         async Task<IEnumerable<Section>> RefreshSectionsList()
         {
@@ -569,7 +593,8 @@ namespace POS.View
         {
             try
             {
-                SectionData.StartAwait(grid_ucSection);
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
                 //search
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
                 {
@@ -580,19 +605,23 @@ namespace POS.View
                     ) && s.isActive == tgl_sectionState && s.isFreeZone != 1);
                     RefreshSectionView();
                 }
-                SectionData.EndAwait(grid_ucSection, this);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
-
         }
 
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
             try
             {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
                 {
@@ -601,17 +630,22 @@ namespace POS.View
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
-
         }
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {
             try
             {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
                 {
@@ -625,12 +659,15 @@ namespace POS.View
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
-
         }
 
         void FN_ExportToExcel()
@@ -654,7 +691,8 @@ namespace POS.View
         {
             try
             {
-                SectionData.StartAwait(grid_ucSection);
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
                 //locations
                 if (MainWindow.groupObject.HasPermissionAction(selectLocationPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
@@ -680,13 +718,15 @@ namespace POS.View
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
 
-                SectionData.EndAwait(grid_ucSection, this);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
-
         }
         ReportCls reportclass = new ReportCls();
         LocalReport rep = new LocalReport();
@@ -695,6 +735,8 @@ namespace POS.View
         {
             try
             {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
 
                 List<ReportParameter> paramarr = new List<ReportParameter>();
@@ -725,10 +767,13 @@ namespace POS.View
                     string filepath = saveFileDialog.FileName;
                     LocalReportExtensions.ExportToPDF(rep, filepath);
                 }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
-
             catch (Exception ex)
             {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
@@ -737,6 +782,8 @@ namespace POS.View
         {
             try
             {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
 
                 List<ReportParameter> paramarr = new List<ReportParameter>();
@@ -759,10 +806,13 @@ namespace POS.View
                 rep.SetParameters(paramarr);
                 rep.Refresh();
                 LocalReportExtensions.PrintToPrinter(rep);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
-
             catch (Exception ex)
             {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }

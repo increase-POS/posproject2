@@ -529,6 +529,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        internal static string trCancel {
+            get {
+                return ResourceManager.GetString("trCancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot delete the main branch.
         /// </summary>
         internal static string trCannotDeleteTheMainBranch {
@@ -3640,6 +3649,15 @@ namespace POS {
         internal static string trOfferNameHint {
             get {
                 return ResourceManager.GetString("trOfferNameHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ok.
+        /// </summary>
+        internal static string trOK {
+            get {
+                return ResourceManager.GetString("trOK", resourceCulture);
             }
         }
         

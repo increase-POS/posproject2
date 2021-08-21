@@ -24,23 +24,37 @@ namespace POS.View.windows
     {
         public wd_acceptUser()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
+            }
+            catch(Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
         BrushConverter bc = new BrushConverter();
         public bool isOk { get; set; }
         private void Btn_colse_Click(object sender, RoutedEventArgs e)
         {
-            isOk = false;
-            this.Close();
-        }
+            try
+            {
+                isOk = false;
+                this.Close();
+            }
+            catch(Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+    }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            SectionData.StartAwait(grid_mainGrid);
+            try
+            {
+                #region translate
 
-            #region translate
-
-            if (MainWindow.lang.Equals("en"))
+                if (MainWindow.lang.Equals("en"))
             {
                 MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
                 grid_acceptUser.FlowDirection = FlowDirection.LeftToRight;
@@ -54,8 +68,13 @@ namespace POS.View.windows
             }
 
             translate();
-            #endregion
-            SectionData.EndAwait(grid_mainGrid,this);
+                #endregion
+              
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void translate()
@@ -71,8 +90,6 @@ namespace POS.View.windows
 
             btn_confirmation.Content = MainWindow.resourcemanager.GetString("trConfirm");
 
-
-
         }
 
         public int userID = 0;
@@ -80,14 +97,36 @@ namespace POS.View.windows
 
         private void Btn_confirmation_Click(object sender, RoutedEventArgs e)
         {
-            chkUser();
-           
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_acceptUser);
+
+                chkUser();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_acceptUser);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_acceptUser);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+
         }
         private void HandleKeyPress(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Return)
+            try
             {
-                Btn_confirmation_Click(null, null);
+                if (e.Key == Key.Return)
+                {
+                    Btn_confirmation_Click(null, null);
+                }
+            }
+            catch(Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
         private async void chkUser()
@@ -113,55 +152,111 @@ namespace POS.View.windows
 
         private void P_showPassword_MouseEnter(object sender, MouseEventArgs e)
         {
-            tb_password.Text = pb_password.Password;
-            tb_password.Visibility = Visibility.Visible;
-            pb_password.Visibility = Visibility.Collapsed;
+            try
+            {
+                tb_password.Text = pb_password.Password;
+                tb_password.Visibility = Visibility.Visible;
+                pb_password.Visibility = Visibility.Collapsed;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         private void P_showPassword_MouseLeave(object sender, MouseEventArgs e)
         {
-            tb_password.Visibility = Visibility.Collapsed;
-            pb_password.Visibility = Visibility.Visible;
+            try
+            { 
+                tb_password.Visibility = Visibility.Collapsed;
+                pb_password.Visibility = Visibility.Visible;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         private void Tb_userName_LostFocus(object sender, RoutedEventArgs e)
         {
-            SectionData.validateEmptyTextBox(tb_userName, p_errorUserName, tt_errorUserName, "trEmptyUserNameToolTip");
+            try
+            { 
+                SectionData.validateEmptyTextBox(tb_userName, p_errorUserName, tt_errorUserName, "trEmptyUserNameToolTip");
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         private void Tb_userName_TextChanged(object sender, TextChangedEventArgs e)
         {
-            SectionData.validateEmptyTextBox(tb_userName, p_errorUserName, tt_errorUserName, "trEmptyUserNameToolTip");
+            try
+            {
+                SectionData.validateEmptyTextBox(tb_userName, p_errorUserName, tt_errorUserName, "trEmptyUserNameToolTip");
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         private void Tb_password_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (pb_password.Password.Equals(""))
+            try
             {
-                p_errorPassword.Visibility = Visibility.Visible;
-                tt_errorPassword.Content = MainWindow.resourcemanager.GetString("trEmptyPasswordToolTip");
-                pb_password.Background = (Brush)bc.ConvertFrom("#15FF0000");
-                p_showPassword.Visibility = Visibility.Collapsed;
+                if (pb_password.Password.Equals(""))
+                {
+                    p_errorPassword.Visibility = Visibility.Visible;
+                    tt_errorPassword.Content = MainWindow.resourcemanager.GetString("trEmptyPasswordToolTip");
+                    pb_password.Background = (Brush)bc.ConvertFrom("#15FF0000");
+                    p_showPassword.Visibility = Visibility.Collapsed;
+                }
+                else
+                {
+                    pb_password.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                    p_errorPassword.Visibility = Visibility.Collapsed;
+                    p_showPassword.Visibility = Visibility.Visible;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                pb_password.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-                p_errorPassword.Visibility = Visibility.Collapsed;
-                p_showPassword.Visibility = Visibility.Visible;
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
         private void Tb_password_TextChanged(object sender, TextChangedEventArgs e)
         {
-            SectionData.clearValidate(tb_password, p_errorPassword);
+            try
+            {
+                SectionData.clearValidate(tb_password, p_errorPassword);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         private void Pb_password_PasswordChanged(object sender, RoutedEventArgs e)
         {
-            SectionData.clearPasswordValidate(pb_password, p_errorPassword);
+            try
+            {
+                SectionData.clearPasswordValidate(pb_password, p_errorPassword);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            tb_userName.Clear();
-            pb_password.Clear();
-            tb_password.Clear();
-            e.Cancel = true;
-            this.Visibility = Visibility.Hidden;
+            try
+            {
+                tb_userName.Clear();
+                pb_password.Clear();
+                tb_password.Clear();
+                e.Cancel = true;
+                this.Visibility = Visibility.Hidden;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
     }
 }

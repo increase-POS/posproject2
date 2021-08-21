@@ -174,6 +174,9 @@ namespace POS.View
         {
             try
             {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
                 MainWindow.mainWindow.KeyDown -= HandleKeyPress;
                 if (billDetails.Count > 0 && _InvoiceType == "pd")
                 {
@@ -193,17 +196,22 @@ namespace POS.View
                 else
                     clearInvoice();
                 timer.Stop();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
         public async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             try
             {
-                SectionData.StartAwait(grid_ucPayInvoice);
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
                 MainWindow.mainWindow.KeyDown += HandleKeyPress;
                 tb_moneyIcon.Text = MainWindow.Currency;
@@ -215,12 +223,12 @@ namespace POS.View
                 if (MainWindow.lang.Equals("en"))
                 {
                     MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
-                    grid_ucPayInvoice.FlowDirection = FlowDirection.LeftToRight;
+                    grid_main.FlowDirection = FlowDirection.LeftToRight;
                 }
                 else
                 {
                     MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
-                    grid_ucPayInvoice.FlowDirection = FlowDirection.RightToLeft;
+                    grid_main.FlowDirection = FlowDirection.RightToLeft;
                 }
 
                 translate();
@@ -241,11 +249,14 @@ namespace POS.View
                 CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(dg_billDetails.Items);
                 ((INotifyCollectionChanged)myCollectionView).CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
                 #endregion
-                SectionData.EndAwait(grid_ucPayInvoice, this);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
         private void configureDiscountType()
@@ -286,6 +297,11 @@ namespace POS.View
         #region Button In DataGrid
         void deleteRowFromInvoiceItems(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                if (sender != null)
+                SectionData.StartAwait(grid_main);
+
             for (var vis = sender as Visual; vis != null; vis = VisualTreeHelper.GetParent(vis) as Visual)
                 if (vis is DataGridRow)
                 {
@@ -312,8 +328,16 @@ namespace POS.View
                 billDetails[i].ID = _SequenceNum;
             }
             refrishBillDetails();
-
+            if (sender != null)
+                SectionData.EndAwait(grid_main);
         }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this, sender);
+        }
+    }
         #endregion
         #region timer to refresh notifications
         private void setTimer()
@@ -325,12 +349,19 @@ namespace POS.View
         }
         private void timer_Tick(object sendert, EventArgs et)
         {
-            refreshOrdersNotification();
+            try
+            {
+                refreshOrdersNotification();
             if (invoice.invoiceId != 0)
             {
                 refreshDocCount(invoice.invoiceId);
                 if (_InvoiceType == "pw" || _InvoiceType == "p" || _InvoiceType == "pb" || _InvoiceType == "pbw")
                     refreshPaymentsNotification(invoice.invoiceId);
+            }
+            }
+            catch (Exception ex)
+            {
+                 SectionData.ExceptionMessage(ex, this, sendert);
             }
         }
         #endregion
@@ -427,6 +458,9 @@ namespace POS.View
         {
             try
             {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
                 if (cb_vendor.SelectedIndex != -1)
                 {
 
@@ -440,10 +474,14 @@ namespace POS.View
                     Window.GetWindow(this).Opacity = 1;
                 }
 
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
         #region Categor and Item
@@ -593,6 +631,7 @@ namespace POS.View
 
         private async Task addInvoice(string invType, string invCode)
         {
+
             if (invoice.invType == "p" && (invType == "pbw" || invType == "pbd")) // invoice is purchase and will be bounce purchase  or purchase bounce draft , save another invoice in db
             {
                 invoice.invoiceMainId = invoice.invoiceId;
@@ -739,7 +778,8 @@ namespace POS.View
         {
             try
             {
-            SectionData.StartAwait(grid_ucPayInvoice);
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
                 if (MainWindow.groupObject.HasPermissionAction(invoicePermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
 
                 {
@@ -775,11 +815,14 @@ namespace POS.View
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
 
-                SectionData.EndAwait(grid_ucPayInvoice, this);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
@@ -802,7 +845,8 @@ namespace POS.View
         {
             try
             {
-            SectionData.StartAwait(grid_ucPayInvoice);
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
                 bool valid = validateItemUnits();
                 if (billDetails.Count > 0 && valid)
                 {
@@ -812,12 +856,14 @@ namespace POS.View
                 }
                 else if (billDetails.Count == 0)
                     clearInvoice();
-                SectionData.EndAwait(grid_ucPayInvoice, this);
-
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
         private void clearInvoice()
@@ -862,7 +908,8 @@ namespace POS.View
         {
             try
             {
-            SectionData.StartAwait(grid_ucPayInvoice);
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
                 Window.GetWindow(this).Opacity = 0.2;
                 wd_invoice w = new wd_invoice();
 
@@ -898,19 +945,22 @@ namespace POS.View
                     }
                 }
                 Window.GetWindow(this).Opacity = 1;
-
-                SectionData.EndAwait(grid_ucPayInvoice, this);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
         private async void Btn_invoices_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-            SectionData.StartAwait(grid_ucPayInvoice);
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
                 Window.GetWindow(this).Opacity = 0.2;
                 wd_invoice w = new wd_invoice();
 
@@ -942,19 +992,22 @@ namespace POS.View
                     }
                 }
                 Window.GetWindow(this).Opacity = 1;
-
-                SectionData.EndAwait(grid_ucPayInvoice, this);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
         private async void Btn_purchaseOrder_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-            SectionData.StartAwait(grid_ucPayInvoice);
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
                 Window.GetWindow(this).Opacity = 0.2;
                 wd_invoice w = new wd_invoice();
 
@@ -984,12 +1037,14 @@ namespace POS.View
                     }
                 }
                 Window.GetWindow(this).Opacity = 1;
-
-                SectionData.EndAwait(grid_ucPayInvoice, this);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
         public async Task fillInvoiceInputs(Invoice invoice)
@@ -1023,7 +1078,8 @@ namespace POS.View
         {
             try
             {
-            SectionData.StartAwait(grid_ucPayInvoice);
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
                 if (MainWindow.groupObject.HasPermissionAction(returnPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
                     Window.GetWindow(this).Opacity = 0.2;
@@ -1056,12 +1112,14 @@ namespace POS.View
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-
-                SectionData.EndAwait(grid_ucPayInvoice, this);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
@@ -1155,6 +1213,9 @@ namespace POS.View
         {
             try
             {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
                 if (invoice != null && invoice.invoiceId != 0)
                 {
                     Window.GetWindow(this).Opacity = 0.2;
@@ -1170,11 +1231,14 @@ namespace POS.View
                 }
                 else
                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trChooseInvoiceToolTip"), animation: ToasterAnimation.FadeIn);
-
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
@@ -1182,6 +1246,9 @@ namespace POS.View
         {
             try
             {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
                 _SequenceNum = 0;
                 billDetails.Clear();
                 foreach (ItemTransfer itemT in invoiceItems)
@@ -1202,11 +1269,14 @@ namespace POS.View
                 tb_barcode.Focus();
 
                 refrishBillDetails();
-
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
  
@@ -1359,7 +1429,8 @@ namespace POS.View
             try
             {
 
-            SectionData.StartAwait(grid_ucPayInvoice);
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
                 if (e.KeyboardDevice.IsKeyDown(Key.LeftCtrl) || e.KeyboardDevice.IsKeyDown(Key.RightCtrl))
                 {
                     switch (e.Key)
@@ -1437,12 +1508,14 @@ namespace POS.View
                     cb_branch.SelectedValue = _SelectedBranch;
                 }
                 _Sender = null;
-
-                SectionData.EndAwait(grid_ucPayInvoice, this);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
         private async Task dealWithBarcode(string barcode)
@@ -1540,7 +1613,8 @@ namespace POS.View
         {
             try
             {
-            SectionData.StartAwait(grid_ucPayInvoice);
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
                 if (e.Key == Key.Return)
                 {
                     string barcode = "";
@@ -1551,12 +1625,14 @@ namespace POS.View
                     }
 
                 }
-
-                SectionData.EndAwait(grid_ucPayInvoice, this);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
@@ -1618,6 +1694,9 @@ namespace POS.View
         {
             try
             {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
                 //billDetails
                 int count = 0;
                 foreach (var item in billDetails)
@@ -1640,11 +1719,14 @@ namespace POS.View
                     }
                 }
 
-
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
@@ -1652,6 +1734,9 @@ namespace POS.View
         {
             try
             {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
                 TextBox t = e.EditingElement as TextBox;  // Assumes columns are all TextBoxes
                 var columnName = e.Column.Header.ToString();
 
@@ -1721,11 +1806,14 @@ namespace POS.View
                     billDetails[index].Price = newPrice;
                     billDetails[index].Total = total;
                 }
-
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
@@ -1734,19 +1822,28 @@ namespace POS.View
         {
             try
             {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
                 _Sender = sender;
                 moveControlToBarcode(sender, e);
-
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
         private void moveControlToBarcode(object sender, KeyEventArgs e)
         {
             try
             {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
                 DatePicker dt = sender as DatePicker;
                 TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
                 if (elapsed.TotalMilliseconds < 100)
@@ -1754,11 +1851,14 @@ namespace POS.View
                     tb_barcode.Focus();
                     HandleKeyPress(sender, e);
                 }
-
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
@@ -1769,6 +1869,9 @@ namespace POS.View
 
             try
             {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
                 if (invoice.invType == "pd" || invoice.invType == "sd" || invoice.invType == "qd"
                || invoice.invType == "sbd" || invoice.invType == "pbd"
                || invoice.invType == "ord" || invoice.invType == "imd" || invoice.invType == "exd")
@@ -1834,18 +1937,23 @@ namespace POS.View
 
                 }
 
-            }
-            catch
-            {
-
-            }
-
-
+              if (sender != null)
+                SectionData.EndAwait(grid_main);
         }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this, sender);
+        }
+    }
         private async void btn_printInvoice_Click(object sender, RoutedEventArgs e)
         {
             try
             {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
                 if (invoice.invType == "pd" || invoice.invType == "sd" || invoice.invType == "qd"
                              || invoice.invType == "sbd" || invoice.invType == "pbd"
                              || invoice.invType == "ord" || invoice.invType == "imd" || invoice.invType == "exd")
@@ -1900,10 +2008,14 @@ namespace POS.View
                         LocalReportExtensions.PrintToPrinter(rep);
                     }
                 }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
-            catch
+            catch (Exception ex)
             {
-
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
 
         }
@@ -1914,6 +2026,8 @@ namespace POS.View
 
             try
             {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
 
                 if (invoice.invoiceId > 0)
@@ -2005,10 +2119,14 @@ namespace POS.View
                     MessageBox.Show(MainWindow.resourcemanager.GetString("trSaveInvoiceToPreview"));
 
                 }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
-            catch
+            catch (Exception ex)
             {
-
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
@@ -2016,7 +2134,8 @@ namespace POS.View
         {
             try
             {
-            SectionData.StartAwait(grid_ucPayInvoice);
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
                 //items
 
                 Window.GetWindow(this).Opacity = 0.2;
@@ -2036,12 +2155,14 @@ namespace POS.View
                 }
 
                 Window.GetWindow(this).Opacity = 1;
-
-                SectionData.EndAwait(grid_ucPayInvoice, this);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
@@ -2049,12 +2170,18 @@ namespace POS.View
         {
             try
             {
-                clearInvoice();
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
+                clearInvoice();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
@@ -2077,6 +2204,9 @@ namespace POS.View
 
             try
             {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
                 if (invoice != null && invoice.invoiceId != 0)
                 {
                     if (MainWindow.groupObject.HasPermissionAction(paymentsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
@@ -2093,10 +2223,14 @@ namespace POS.View
                     else
                         Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
                 }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 

@@ -701,7 +701,7 @@ namespace POS.Classes
             }
         }
         
-        static public void ExceptionMessage(Exception ex ,object window, object sender = null)
+        static async public void ExceptionMessage(Exception ex ,object window, object sender = null)
         {
             string _window , _sender = "";
 
@@ -721,7 +721,17 @@ namespace POS.Classes
                 else
                     _sender = sender.GetType().Name;
 
-           
+            ErrorClass errorClass = new ErrorClass();
+            errorClass.num = ex.HResult.ToString();
+            errorClass.msg = ex.Message;
+            errorClass.windowName = _window;
+            errorClass.sender = _sender;
+            errorClass.posId = MainWindow.posID;
+            errorClass.branchId = MainWindow.branchID;
+            errorClass.createUserId = MainWindow.userLogin.userId;
+
+
+        await errorClass.Save(errorClass);
 
             //Message
             if (ex.HResult == -2146233088)

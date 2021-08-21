@@ -57,14 +57,22 @@ namespace POS.View.windows
         public bool isFirstTime = false;
         public wd_companyInfo()
         {
+            try
+            {
                 InitializeComponent();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
             try
             {
-                SectionData.StartAwait(grid_ucCompanyInfo);
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
                 fillCountries();
 
@@ -111,12 +119,12 @@ namespace POS.View.windows
                     if (MainWindow.lang.Equals("en"))
                     {
                         MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
-                        grid_ucCompanyInfo.FlowDirection = FlowDirection.LeftToRight;
+                        grid_main.FlowDirection = FlowDirection.LeftToRight;
                     }
                     else
                     {
                         MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
-                        grid_ucCompanyInfo.FlowDirection = FlowDirection.RightToLeft;
+                        grid_main.FlowDirection = FlowDirection.RightToLeft;
                     }
 
                     translate();
@@ -141,12 +149,14 @@ namespace POS.View.windows
                     #endregion
 
                 }
-                SectionData.EndAwait(grid_ucCompanyInfo, this);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                SectionData.EndAwait(grid_ucCompanyInfo , this);
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
         private void translate()
@@ -203,7 +213,8 @@ namespace POS.View.windows
         {
             try
             {
-                SectionData.StartAwait(grid_ucCompanyInfo);
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
                 if (firstchange == true)
                 {
                     if (cb_areaPhone.SelectedValue != null)
@@ -234,12 +245,14 @@ namespace POS.View.windows
                 {
                     firstchange = true;
                 }
-                SectionData.EndAwait(grid_ucCompanyInfo, this);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                SectionData.EndAwait(grid_ucCompanyInfo , this);
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
@@ -285,6 +298,9 @@ namespace POS.View.windows
         {//select image
             try
             {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
                 isImgPressed = true;
                 openFileDialog.Filter = "Images|*.png;*.jpg;*.bmp;*.jpeg;*.jfif";
                 if (openFileDialog.ShowDialog() == true)
@@ -293,9 +309,15 @@ namespace POS.View.windows
                     img_customer.Background = brush;
                     imgFileName = openFileDialog.FileName;
                 }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
-            catch(Exception ex)
-            { SectionData.ExceptionMessage(ex,this,sender); }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         private void Tb_email_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
@@ -378,7 +400,9 @@ namespace POS.View.windows
 
         private void validateEmpty(string name, object sender)
         {
-            if (!isFirstTime)
+            try
+            {
+                if (!isFirstTime)
             {
                 if (name == "TextBox")
                 {
@@ -406,15 +430,28 @@ namespace POS.View.windows
                         validateEmptyTextBox((TextBox)sender, p_errorMobile, tt_errorMobile, "Mobile number cann't be empty");
                 }
             }
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {//decimal
-            var regex = new Regex(@"^[0-9]*(?:\.[0-9]*)?$");
+            try
+            {
+
+                var regex = new Regex(@"^[0-9]*(?:\.[0-9]*)?$");
             if (regex.IsMatch(e.Text) && !(e.Text == "." && ((TextBox)sender).Text.Contains(e.Text)))
                 e.Handled = false;
 
             else
                 e.Handled = true;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Btn_colse_Click(object sender, RoutedEventArgs e)
@@ -423,9 +460,24 @@ namespace POS.View.windows
         }
         private void HandleKeyPress(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Return)
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+
+                if (e.Key == Key.Return)
             {
                 Btn_save_Click(null, null);
+            }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
         private bool validateEmail(TextBox tb, System.Windows.Shapes.Path p_error, ToolTip tt_error)
@@ -470,7 +522,8 @@ namespace POS.View.windows
         {//save
             try
             {
-                SectionData.StartAwait(grid_ucCompanyInfo);
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
                 #region validate
                 bool emailError = false;
@@ -607,16 +660,15 @@ namespace POS.View.windows
                     }
                     this.Close();
                 }
-                SectionData.EndAwait(grid_ucCompanyInfo, this);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                if(!isFirstTime)
-                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-                SectionData.EndAwait(grid_ucCompanyInfo, this);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
-
         }
 
 

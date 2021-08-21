@@ -2158,4 +2158,10 @@ Please add Email in setting</value>
   <data name="tr_Invoice" xml:space="preserve">
     <value>Invoice</value>
   </data>
+  <data name="trCancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="trOK" xml:space="preserve">
+    <value>Ok</value>
+  </data>
 </root>

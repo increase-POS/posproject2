@@ -23,10 +23,10 @@ namespace POS.View
     /// Interaction logic for uc_purchases.xaml
     /// </summary>
     /// 
-    
+
     public partial class uc_purchases : UserControl
     {
-        
+
         private static uc_purchases _instance;
         public static uc_purchases Instance
         {
@@ -45,7 +45,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void translate()
@@ -53,33 +53,40 @@ namespace POS.View
             btn_payInvoice.Content = MainWindow.resourcemanager.GetString("trInvoice");
             btn_purchaseOrder.Content = MainWindow.resourcemanager.GetString("trOrders");
             btn_purchaseStatistic.Content = MainWindow.resourcemanager.GetString("trStatistic");
-           
+
 
         }
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-                try
-                {
-                    if (MainWindow.lang.Equals("en"))
+            try
             {
-                MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
-                grid_ucPurchases.FlowDirection = FlowDirection.LeftToRight;
-            }
-            else
-            {
-                MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
-                grid_ucPurchases.FlowDirection = FlowDirection.RightToLeft;
-            }
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
-            translate();
-            permission();
-                }
-                catch (Exception ex)
+                if (MainWindow.lang.Equals("en"))
                 {
-                    SectionData.ExceptionMessage(ex,this,sender);
+                    MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                    grid_ucPurchases.FlowDirection = FlowDirection.LeftToRight;
                 }
+                else
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                    grid_ucPurchases.FlowDirection = FlowDirection.RightToLeft;
+                }
+
+                translate();
+                permission();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
-            void permission()
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
+        void permission()
         {
             bool loadWindow = false;
             if (!SectionData.isAdminPermision())
@@ -124,53 +131,53 @@ namespace POS.View
         }
         public void btn_payInvoice_Click(object sender, RoutedEventArgs e)
         {
-                    try
-                    {
-                        refreashBachgroundClick(btn_payInvoice);
+            try
+            {
+                refreashBachgroundClick(btn_payInvoice);
 
-            grid_main.Children.Clear();
-            grid_main.Children.Add(uc_payInvoice.Instance);
-            //uc_payInvoice uc = new uc_payInvoice();
-            //grid_main.Children.Add(uc);
-            Button button = sender as Button;
-            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
-                    }
-                    catch (Exception ex)
-                    {
-                        SectionData.ExceptionMessage(ex,this,sender);
-                    }
-                }
-                private void Btn_purchaseOrder_Click(object sender, RoutedEventArgs e)
+                grid_main.Children.Clear();
+                grid_main.Children.Add(uc_payInvoice.Instance);
+                //uc_payInvoice uc = new uc_payInvoice();
+                //grid_main.Children.Add(uc);
+                Button button = sender as Button;
+                MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
+        private void Btn_purchaseOrder_Click(object sender, RoutedEventArgs e)
         {
-                        try
-                        {
-                            refreashBachgroundClick(btn_purchaseOrder);
-            grid_main.Children.Clear();
-            grid_main.Children.Add(uc_purchaseOrder.Instance);
-            Button button = sender as Button;
-            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
-                        }
-                        catch (Exception ex)
-                        {
-                            SectionData.ExceptionMessage(ex,this,sender);
-                        }
-                    }
-                    private void Btn_statistic_Click(object sender, RoutedEventArgs e)
+            try
+            {
+                refreashBachgroundClick(btn_purchaseOrder);
+                grid_main.Children.Clear();
+                grid_main.Children.Add(uc_purchaseOrder.Instance);
+                Button button = sender as Button;
+                MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
+        private void Btn_statistic_Click(object sender, RoutedEventArgs e)
         {
-                            try
-                            {
-                                refreashBachgroundClick(btn_purchaseStatistic);
-            grid_main.Children.Clear();
-            grid_main.Children.Add(uc_statistic.Instance);
-            Button button = sender as Button;
-            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
-                            }
-                            catch (Exception ex)
-                            {
-                                SectionData.ExceptionMessage(ex,this,sender);
-                            }
-                        }
+            try
+            {
+                refreashBachgroundClick(btn_purchaseStatistic);
+                grid_main.Children.Clear();
+                grid_main.Children.Add(uc_statistic.Instance);
+                Button button = sender as Button;
+                MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
 
 
-                    }
+    }
 }

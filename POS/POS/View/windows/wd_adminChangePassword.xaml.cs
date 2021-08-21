@@ -25,7 +25,14 @@ namespace POS.View.windows
     {
         public wd_adminChangePassword()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
         BrushConverter bc = new BrushConverter();
         public int userID = 0;
@@ -39,11 +46,14 @@ namespace POS.View.windows
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
-            SectionData.StartAwait(grid_mainGrid);
-            
-            #region translate
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_changePassword);
 
-            if (MainWindow.lang.Equals("en"))
+                #region translate
+
+                if (MainWindow.lang.Equals("en"))
             {
                 MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
                 grid_changePassword.FlowDirection = FlowDirection.LeftToRight;
@@ -57,8 +67,17 @@ namespace POS.View.windows
             translate();
             #endregion
 
-            fillUsers();
-            SectionData.EndAwait(grid_mainGrid,this);
+                fillUsers();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_changePassword);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_changePassword);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private async void fillUsers()
@@ -83,9 +102,16 @@ namespace POS.View.windows
 
         private void HandleKeyPress(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Return)
+            try
             {
-                Btn_save_Click(null, null);
+                if (e.Key == Key.Return)
+                {
+                    Btn_save_Click(null, null);
+                }
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
@@ -98,84 +124,133 @@ namespace POS.View.windows
         }
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {//save
-            bool wrongPasswordLength = false;
-            //chk empty user
-            SectionData.validateEmptyComboBox(cb_user , p_errorUser , tt_errorUser , "trEmptyUser");
-            //chk empty password
-            if (pb_password.Password.Equals(""))
-                SectionData.showPasswordValidate(pb_password, p_errorPassword, tt_errorPassword, "trEmptyPasswordToolTip");
-            else
+            try
             {
-                //chk password length
-                wrongPasswordLength = chkPasswordLength(pb_password.Password);
-                if (wrongPasswordLength)
-                    SectionData.showPasswordValidate(pb_password, p_errorPassword, tt_errorPassword, "trErrorPasswordLengthToolTip");
+                if (sender != null)
+                    SectionData.StartAwait(grid_changePassword);
+
+                bool wrongPasswordLength = false;
+                //chk empty user
+                SectionData.validateEmptyComboBox(cb_user , p_errorUser , tt_errorUser , "trEmptyUser");
+                //chk empty password
+                if (pb_password.Password.Equals(""))
+                    SectionData.showPasswordValidate(pb_password, p_errorPassword, tt_errorPassword, "trEmptyPasswordToolTip");
                 else
-                    SectionData.clearPasswordValidate(pb_password, p_errorPassword);
-            }
-
-            if ((!cb_user.Text.Equals("")) &&(!pb_password.Password.Equals("")) && (!wrongPasswordLength))
-            {
-                if (user != null)
                 {
-                    string password = Md5Encription.MD5Hash("Inc-m" + pb_password.Password);
-
-                    user.password = password ;
-
-                    string s = await userModel.saveUser(user);
-
-                    if (!s.Equals("0"))
-                    {
-                        if (Properties.Settings.Default.password != string.Empty)
-                        {
-                            Properties.Settings.Default.password = pb_password.Password;
-                            Properties.Settings.Default.Save();
-                        }
-                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopPasswordChanged"), animation: ToasterAnimation.FadeIn);
-                        await Task.Delay(2000);
-                        this.Close();
-
-                        userID = int.Parse(s);
-                       
-                    }
+                    //chk password length
+                    wrongPasswordLength = chkPasswordLength(pb_password.Password);
+                    if (wrongPasswordLength)
+                        SectionData.showPasswordValidate(pb_password, p_errorPassword, tt_errorPassword, "trErrorPasswordLengthToolTip");
                     else
-                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                        SectionData.clearPasswordValidate(pb_password, p_errorPassword);
                 }
+
+                if ((!cb_user.Text.Equals("")) &&(!pb_password.Password.Equals("")) && (!wrongPasswordLength))
+                {
+                    if (user != null)
+                    {
+                        string password = Md5Encription.MD5Hash("Inc-m" + pb_password.Password);
+
+                        user.password = password ;
+
+                        string s = await userModel.saveUser(user);
+
+                        if (!s.Equals("0"))
+                        {
+                            if (Properties.Settings.Default.password != string.Empty)
+                            {
+                                Properties.Settings.Default.password = pb_password.Password;
+                                Properties.Settings.Default.Save();
+                            }
+                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopPasswordChanged"), animation: ToasterAnimation.FadeIn);
+                            await Task.Delay(2000);
+                            this.Close();
+
+                            userID = int.Parse(s);
+                       
+                        }
+                        else
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    }
+                }
+                if (sender != null)
+                    SectionData.EndAwait(grid_changePassword);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_changePassword);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
       
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            cb_user.SelectedIndex = -1;
-            pb_password.Clear();
-            tb_password.Clear();
-            e.Cancel = true;
-            this.Visibility = Visibility.Hidden;
+            try
+            {
+                cb_user.SelectedIndex = -1;
+                pb_password.Clear();
+                tb_password.Clear();
+                e.Cancel = true;
+                this.Visibility = Visibility.Hidden;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void P_showPassword_MouseEnter(object sender, MouseEventArgs e)
         {
-            tb_password.Text = pb_password.Password;
-            tb_password.Visibility = Visibility.Visible;
-            pb_password.Visibility = Visibility.Collapsed;
+            try
+            { 
+                tb_password.Text = pb_password.Password;
+                tb_password.Visibility = Visibility.Visible;
+                pb_password.Visibility = Visibility.Collapsed;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void P_showPassword_MouseLeave(object sender, MouseEventArgs e)
         {
-            tb_password.Visibility = Visibility.Collapsed;
-            pb_password.Visibility = Visibility.Visible;
+            try
+            { 
+                tb_password.Visibility = Visibility.Collapsed;
+                pb_password.Visibility = Visibility.Visible;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Tb_validateEmptyLostFocus(object sender, RoutedEventArgs e)
         {
-            string name = sender.GetType().Name;
-            validateEmpty(name, sender);
+            try
+            { 
+                string name = sender.GetType().Name;
+                validateEmpty(name, sender);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Tb_validateEmptyTextChange(object sender, RoutedEventArgs e)
         {
-            string name = sender.GetType().Name;
-            validateEmpty(name, sender);
+            try
+            { 
+                string name = sender.GetType().Name;
+                validateEmpty(name, sender);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void validateEmpty(string name, object sender)
@@ -197,8 +272,16 @@ namespace POS.View.windows
 
         private async void Cb_user_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//select user
-            user = await userModel.getUserById(Convert.ToInt32(cb_user.SelectedValue));
-            //pb_password.Password = user.password;
+            try
+            {
+                user = await userModel.getUserById(Convert.ToInt32(cb_user.SelectedValue));
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+
+
         }
     }
 }

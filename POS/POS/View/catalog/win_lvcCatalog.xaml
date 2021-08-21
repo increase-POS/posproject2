@@ -9,7 +9,7 @@
         mc:Ignorable="d"
         Title="win_lvcCatalog" Height="600" Width="800" WindowStyle="None" Loaded="Window_Loaded" Background="Transparent" AllowsTransparency="True" MouseDown="Window_MouseDown" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
     <Border CornerRadius="15" Background="#E8E8E8">
-        <Grid>
+        <Grid x:Name="grid_main">
             <Grid.RowDefinitions>
                 <RowDefinition Height="40"/>
                 <RowDefinition Height="auto"/>

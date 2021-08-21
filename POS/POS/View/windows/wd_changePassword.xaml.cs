@@ -25,7 +25,14 @@ namespace POS.View.windows
     {
         public wd_changePassword()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         BrushConverter bc = new BrushConverter();
@@ -34,31 +41,55 @@ namespace POS.View.windows
 
         private void Btn_colse_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            try
+            {
+
+
+
+                this.Close();
+
+            }
+            catch (Exception ex)
+            {
+
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            SectionData.StartAwait(grid_mainGrid);
-
-            #region translate
-
-            if (MainWindow.lang.Equals("en"))
+            try
             {
-                MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
-                grid_changePassword.FlowDirection = FlowDirection.LeftToRight;
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
+
+                #region translate
+
+                if (MainWindow.lang.Equals("en"))
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                    grid_main.FlowDirection = FlowDirection.LeftToRight;
+
+                }
+                else
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                    grid_main.FlowDirection = FlowDirection.RightToLeft;
+
+                }
+
+                translate();
+                #endregion
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
-            else
+            catch (Exception ex)
             {
-                MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
-                grid_changePassword.FlowDirection = FlowDirection.RightToLeft;
-
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-
-            translate();
-            #endregion
-            SectionData.EndAwait(grid_mainGrid,this);
         }
 
         private void translate()
@@ -77,9 +108,24 @@ namespace POS.View.windows
 
         private void HandleKeyPress(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Return)
+            try
             {
-                Btn_save_Click(null, null);
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+
+                if (e.Key == Key.Return)
+                {
+                    Btn_save_Click(null, null);
+                }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
@@ -92,228 +138,284 @@ namespace POS.View.windows
         }
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {//save
-            bool wrongOldPasswordLength = false , wrongNewPasswordLength = false , wrongConfirmPasswordLength = false;
-            //chk empty old password
-            if (pb_oldPassword.Password.Equals(""))
-                SectionData.showPasswordValidate(pb_oldPassword, p_errorOldPassword, tt_errorOldPassword, "trEmptyPasswordToolTip");
-            else
+            try
             {
-                //chk password length
-                wrongOldPasswordLength = chkPasswordLength(pb_oldPassword.Password);
-                if (wrongOldPasswordLength)
-                    SectionData.showPasswordValidate(pb_oldPassword, p_errorOldPassword, tt_errorOldPassword, "trErrorPasswordLengthToolTip");
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                bool wrongOldPasswordLength = false, wrongNewPasswordLength = false, wrongConfirmPasswordLength = false;
+                //chk empty old password
+                if (pb_oldPassword.Password.Equals(""))
+                    SectionData.showPasswordValidate(pb_oldPassword, p_errorOldPassword, tt_errorOldPassword, "trEmptyPasswordToolTip");
                 else
-                    SectionData.clearPasswordValidate(pb_oldPassword, p_errorOldPassword);
-            }
-            //chk empty new password
-            if (pb_newPassword.Password.Equals(""))
-                SectionData.showPasswordValidate(pb_newPassword, p_errorNewPassword, tt_errorNewPassword, "trEmptyPasswordToolTip");
-            else
-            {
-                //chk password length
-                wrongNewPasswordLength = chkPasswordLength(pb_newPassword.Password);
-                if (wrongNewPasswordLength)
-                    SectionData.showPasswordValidate(pb_newPassword, p_errorNewPassword, tt_errorNewPassword, "trErrorPasswordLengthToolTip");
-                else
-                    SectionData.clearPasswordValidate(pb_newPassword, p_errorNewPassword);
-            }
-            //chk empty confirm password
-            if (pb_confirmPassword.Password.Equals(""))
-                SectionData.showPasswordValidate(pb_confirmPassword, p_errorConfirmPassword, tt_errorConfirmPassword, "trEmptyPasswordToolTip");
-            else
-            {
-                //chk password length
-                wrongConfirmPasswordLength = chkPasswordLength(pb_confirmPassword.Password);
-                if (wrongConfirmPasswordLength)
-                    SectionData.showPasswordValidate(pb_confirmPassword, p_errorConfirmPassword, tt_errorConfirmPassword, "trErrorPasswordLengthToolTip");
-                else
-                    SectionData.clearPasswordValidate(pb_confirmPassword, p_errorConfirmPassword);
-            }
-
-
-            if ((!pb_oldPassword.Password.Equals("")) && (!wrongOldPasswordLength) &&
-               (!pb_newPassword.Password.Equals("")) && (!wrongNewPasswordLength) &&
-               (!pb_confirmPassword.Password.Equals("")) && (!wrongConfirmPasswordLength))
-            {
-                //get password for logined user
-                string loginPassword = MainWindow.userLogin.password;
-
-                string enteredPassword = Md5Encription.MD5Hash("Inc-m" + pb_oldPassword.Password);
-
-                if (!loginPassword.Equals(enteredPassword))
                 {
-                    SectionData.showPasswordValidate(pb_oldPassword, p_errorOldPassword, tt_errorOldPassword, "trWrongPassword");
+                    //chk password length
+                    wrongOldPasswordLength = chkPasswordLength(pb_oldPassword.Password);
+                    if (wrongOldPasswordLength)
+                        SectionData.showPasswordValidate(pb_oldPassword, p_errorOldPassword, tt_errorOldPassword, "trErrorPasswordLengthToolTip");
+                    else
+                        SectionData.clearPasswordValidate(pb_oldPassword, p_errorOldPassword);
                 }
+                //chk empty new password
+                if (pb_newPassword.Password.Equals(""))
+                    SectionData.showPasswordValidate(pb_newPassword, p_errorNewPassword, tt_errorNewPassword, "trEmptyPasswordToolTip");
                 else
                 {
-                    SectionData.clearPasswordValidate(pb_oldPassword, p_errorOldPassword);
-                    bool isNewEqualConfirmed = true;
-                    if (pb_newPassword.Password.Equals(pb_confirmPassword.Password)) isNewEqualConfirmed = true;
-                    else isNewEqualConfirmed = false;
+                    //chk password length
+                    wrongNewPasswordLength = chkPasswordLength(pb_newPassword.Password);
+                    if (wrongNewPasswordLength)
+                        SectionData.showPasswordValidate(pb_newPassword, p_errorNewPassword, tt_errorNewPassword, "trErrorPasswordLengthToolTip");
+                    else
+                        SectionData.clearPasswordValidate(pb_newPassword, p_errorNewPassword);
+                }
+                //chk empty confirm password
+                if (pb_confirmPassword.Password.Equals(""))
+                    SectionData.showPasswordValidate(pb_confirmPassword, p_errorConfirmPassword, tt_errorConfirmPassword, "trEmptyPasswordToolTip");
+                else
+                {
+                    //chk password length
+                    wrongConfirmPasswordLength = chkPasswordLength(pb_confirmPassword.Password);
+                    if (wrongConfirmPasswordLength)
+                        SectionData.showPasswordValidate(pb_confirmPassword, p_errorConfirmPassword, tt_errorConfirmPassword, "trErrorPasswordLengthToolTip");
+                    else
+                        SectionData.clearPasswordValidate(pb_confirmPassword, p_errorConfirmPassword);
+                }
 
-                    if (!isNewEqualConfirmed)
+
+                if ((!pb_oldPassword.Password.Equals("")) && (!wrongOldPasswordLength) &&
+                   (!pb_newPassword.Password.Equals("")) && (!wrongNewPasswordLength) &&
+                   (!pb_confirmPassword.Password.Equals("")) && (!wrongConfirmPasswordLength))
+                {
+                    //get password for logined user
+                    string loginPassword = MainWindow.userLogin.password;
+
+                    string enteredPassword = Md5Encription.MD5Hash("Inc-m" + pb_oldPassword.Password);
+
+                    if (!loginPassword.Equals(enteredPassword))
                     {
-                        SectionData.showPasswordValidate(pb_newPassword, p_errorNewPassword, tt_errorNewPassword, "trErrorNewPasswordNotEqualConfirmed");
-                        SectionData.showPasswordValidate(pb_confirmPassword, p_errorConfirmPassword, tt_errorConfirmPassword, "trErrorNewPasswordNotEqualConfirmed");
+                        SectionData.showPasswordValidate(pb_oldPassword, p_errorOldPassword, tt_errorOldPassword, "trWrongPassword");
                     }
                     else
                     {
-                        SectionData.clearPasswordValidate(pb_newPassword, p_errorNewPassword);
-                        SectionData.clearPasswordValidate(pb_confirmPassword, p_errorConfirmPassword);
-                        //change password
-                        string newPassword = Md5Encription.MD5Hash("Inc-m" + pb_newPassword.Password);
-                        MainWindow.userLogin.password = newPassword;
-                        string s = await userModel.saveUser(MainWindow.userLogin);
-                        if (!s.Equals("0"))
+                        SectionData.clearPasswordValidate(pb_oldPassword, p_errorOldPassword);
+                        bool isNewEqualConfirmed = true;
+                        if (pb_newPassword.Password.Equals(pb_confirmPassword.Password)) isNewEqualConfirmed = true;
+                        else isNewEqualConfirmed = false;
+
+                        if (!isNewEqualConfirmed)
                         {
-                            userID = int.Parse(s);
-                            if (!Properties.Settings.Default.password.Equals(""))
-                            {
-                                Properties.Settings.Default.password = pb_newPassword.Password;
-                                Properties.Settings.Default.Save();
-                            }
-                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopPasswordChanged"), animation: ToasterAnimation.FadeIn);
-                            this.Close();
+                            SectionData.showPasswordValidate(pb_newPassword, p_errorNewPassword, tt_errorNewPassword, "trErrorNewPasswordNotEqualConfirmed");
+                            SectionData.showPasswordValidate(pb_confirmPassword, p_errorConfirmPassword, tt_errorConfirmPassword, "trErrorNewPasswordNotEqualConfirmed");
                         }
                         else
-                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                        {
+                            SectionData.clearPasswordValidate(pb_newPassword, p_errorNewPassword);
+                            SectionData.clearPasswordValidate(pb_confirmPassword, p_errorConfirmPassword);
+                            //change password
+                            string newPassword = Md5Encription.MD5Hash("Inc-m" + pb_newPassword.Password);
+                            MainWindow.userLogin.password = newPassword;
+                            string s = await userModel.saveUser(MainWindow.userLogin);
+                            if (!s.Equals("0"))
+                            {
+                                userID = int.Parse(s);
+                                if (!Properties.Settings.Default.password.Equals(""))
+                                {
+                                    Properties.Settings.Default.password = pb_newPassword.Password;
+                                    Properties.Settings.Default.Save();
+                                }
+                                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopPasswordChanged"), animation: ToasterAnimation.FadeIn);
+                                this.Close();
+                            }
+                            else
+                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                        }
                     }
                 }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
-        private void Tb_oldPassword_LostFocus(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void Tb_oldPassword_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
-        private void Pb_oldPassword_PasswordChanged(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void Tb_newPassword_LostFocus(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void Tb_newPassword_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
-        private void Pb_newPassword_PasswordChanged(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void Tb_confirmPassword_LostFocus(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void Tb_confirmPassword_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
-        private void Pb_confirmPassword_PasswordChanged(object sender, RoutedEventArgs e)
-        {
-
-        }
 
         private void P_showOldPassword_MouseEnter(object sender, MouseEventArgs e)
         {
-            tb_oldPassword.Text = pb_oldPassword.Password;
-            tb_oldPassword.Visibility = Visibility.Visible;
-            pb_oldPassword.Visibility = Visibility.Collapsed;
+            try
+            {
+
+                tb_oldPassword.Text = pb_oldPassword.Password;
+                tb_oldPassword.Visibility = Visibility.Visible;
+                pb_oldPassword.Visibility = Visibility.Collapsed;
+
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void P_showOldPassword_MouseLeave(object sender, MouseEventArgs e)
         {
-            tb_oldPassword.Visibility = Visibility.Collapsed;
-            pb_oldPassword.Visibility = Visibility.Visible;
+            try
+            {
+
+
+                tb_oldPassword.Visibility = Visibility.Collapsed;
+                pb_oldPassword.Visibility = Visibility.Visible;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void P_showNewPassword_MouseEnter(object sender, MouseEventArgs e)
         {
-            tb_newPassword.Text = pb_newPassword.Password;
-            tb_newPassword.Visibility = Visibility.Visible;
-            pb_newPassword.Visibility = Visibility.Collapsed;
+            try
+            {
+
+
+                tb_newPassword.Text = pb_newPassword.Password;
+                tb_newPassword.Visibility = Visibility.Visible;
+                pb_newPassword.Visibility = Visibility.Collapsed;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void P_showNewPassword_MouseLeave(object sender, MouseEventArgs e)
         {
-            tb_newPassword.Visibility = Visibility.Collapsed;
-            pb_newPassword.Visibility = Visibility.Visible;
+            try
+            {
+
+
+                tb_newPassword.Visibility = Visibility.Collapsed;
+                pb_newPassword.Visibility = Visibility.Visible;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void P_showConfirmPassword_MouseEnter(object sender, MouseEventArgs e)
         {
-            tb_confirmPassword.Text = pb_confirmPassword.Password;
-            tb_confirmPassword.Visibility = Visibility.Visible;
-            pb_confirmPassword.Visibility = Visibility.Collapsed;
+            try
+            {
+
+
+                tb_confirmPassword.Text = pb_confirmPassword.Password;
+                tb_confirmPassword.Visibility = Visibility.Visible;
+                pb_confirmPassword.Visibility = Visibility.Collapsed;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void P_showConfirmPassword_MouseLeave(object sender, MouseEventArgs e)
         {
-            tb_confirmPassword.Visibility = Visibility.Collapsed;
-            pb_confirmPassword.Visibility = Visibility.Visible;
+            try
+            {
+
+
+                tb_confirmPassword.Visibility = Visibility.Collapsed;
+                pb_confirmPassword.Visibility = Visibility.Visible;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            pb_oldPassword.Clear();
-            tb_oldPassword.Clear();
-            pb_newPassword.Clear();
-            tb_newPassword.Clear();
-            pb_confirmPassword.Clear();
-            tb_confirmPassword.Clear();
-            e.Cancel = true;
-            this.Visibility = Visibility.Hidden;
+            try
+            {
+
+
+                pb_oldPassword.Clear();
+                tb_oldPassword.Clear();
+                pb_newPassword.Clear();
+                tb_newPassword.Clear();
+                pb_confirmPassword.Clear();
+                tb_confirmPassword.Clear();
+                e.Cancel = true;
+                this.Visibility = Visibility.Hidden;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
-        private void Window_KeyDown(object sender, KeyEventArgs e)
-        {
 
-        }
 
         private void Tb_validateEmptyTextChange(object sender, RoutedEventArgs e)
         {
-            string name = sender.GetType().Name;
-            validateEmpty(name, sender);
+            try
+            {
+
+                string name = sender.GetType().Name;
+                validateEmpty(name, sender);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Tb_validateEmptyLostFocus(object sender, RoutedEventArgs e)
         {
-            string name = sender.GetType().Name;
-            validateEmpty(name, sender);
+            try
+            {
+
+
+                string name = sender.GetType().Name;
+                validateEmpty(name, sender);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void validateEmpty(string name, object sender)
         {
-            if (name == "PasswordBox")
+            try
             {
-                if ((sender as PasswordBox).Name == "pb_oldPassword")
-                    if (((PasswordBox)sender).Password.Equals(""))
-                        SectionData.showPasswordValidate((PasswordBox)sender, p_errorOldPassword, tt_errorOldPassword, "trEmptyPasswordToolTip");
-                    else
-                        SectionData.clearPasswordValidate((PasswordBox)sender, p_errorOldPassword);
-                else if ((sender as PasswordBox).Name == "pb_newPassword")
-                    if (((PasswordBox)sender).Password.Equals(""))
-                        SectionData.showPasswordValidate((PasswordBox)sender, p_errorNewPassword, tt_errorNewPassword, "trEmptyPasswordToolTip");
-                    else
-                        SectionData.clearPasswordValidate((PasswordBox)sender, p_errorNewPassword);
-                else if ((sender as PasswordBox).Name == "pb_confirmPassword")
-                    if (((PasswordBox)sender).Password.Equals(""))
-                        SectionData.showPasswordValidate((PasswordBox)sender, p_errorConfirmPassword, tt_errorConfirmPassword, "trEmptyPasswordToolTip");
-                    else
-                        SectionData.clearPasswordValidate((PasswordBox)sender, p_errorConfirmPassword);
+
+
+                if (name == "PasswordBox")
+                {
+                    if ((sender as PasswordBox).Name == "pb_oldPassword")
+                        if (((PasswordBox)sender).Password.Equals(""))
+                            SectionData.showPasswordValidate((PasswordBox)sender, p_errorOldPassword, tt_errorOldPassword, "trEmptyPasswordToolTip");
+                        else
+                            SectionData.clearPasswordValidate((PasswordBox)sender, p_errorOldPassword);
+                    else if ((sender as PasswordBox).Name == "pb_newPassword")
+                        if (((PasswordBox)sender).Password.Equals(""))
+                            SectionData.showPasswordValidate((PasswordBox)sender, p_errorNewPassword, tt_errorNewPassword, "trEmptyPasswordToolTip");
+                        else
+                            SectionData.clearPasswordValidate((PasswordBox)sender, p_errorNewPassword);
+                    else if ((sender as PasswordBox).Name == "pb_confirmPassword")
+                        if (((PasswordBox)sender).Password.Equals(""))
+                            SectionData.showPasswordValidate((PasswordBox)sender, p_errorConfirmPassword, tt_errorConfirmPassword, "trEmptyPasswordToolTip");
+                        else
+                            SectionData.clearPasswordValidate((PasswordBox)sender, p_errorConfirmPassword);
+                }
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 

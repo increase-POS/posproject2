@@ -10,7 +10,7 @@
              Loaded="UserControl_Loaded" Unloaded="UserControl_Unloaded"
              d:DesignHeight="700" d:DesignWidth="1000" Margin="0">
     <ScrollViewer>
-        <Grid x:Name="grid_ucQuotations" Margin="0,15,15,15"  >
+        <Grid x:Name="grid_main" Margin="0,15,15,15"  >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="4*"/>
                 <ColumnDefinition Width="1.1*"/>
@@ -547,7 +547,7 @@
                                     TextBlock.FontSize="12"   Background="#f8f8f8" 
                                     Grid.Column="1" Height="40"   Margin="5,5"
                                     BorderBrush="#737373" BorderThickness="0"
-                                          LostFocus="input_LostFocus" SelectionChanged="Cb_customer_SelectionChanged"/>
+                                           />
                                 <Path Fill="#E81123" Stretch="Fill" Margin="5,5,45,5"
                                           Name="p_errorCustomer"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
@@ -565,7 +565,7 @@
                                     </Path.ToolTip>
                                 </Path>
                                 <Button   Padding="0" Width="20" ToolTip="تعديل بيانات المورد"
-                                    Background="{x:Null}" BorderBrush="{x:Null}" HorizontalAlignment="Right" x:Name="btn_updateCustomer" Click="Btn_updateCustomer_Click"
+                                    Background="{x:Null}" BorderBrush="{x:Null}" HorizontalAlignment="Right" x:Name="btn_updateCustomer"  
                                     Margin="0,0,25,0" IsEnabled="True">
                                     <materialDesign:PackIcon Foreground="#4E4E4E" Kind="FileDocumentEdit"  
                                   HorizontalAlignment="Center" Grid.Column="0"   

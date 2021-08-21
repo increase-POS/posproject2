@@ -349,16 +349,10 @@ namespace POS
         {
             try
             {
-                if (sendert != null)
-                    SectionData.StartAwait(grid_main);
-                setNotifications();              
-                if (sendert != null)
-                    SectionData.EndAwait(grid_main, this);
+                setNotifications();
             }
             catch (Exception ex)
             {
-                if (sendert != null)
-                    SectionData.EndAwait(grid_main, this);
                 SectionData.ExceptionMessage(ex, this, sendert);
             }
         }
@@ -398,29 +392,20 @@ namespace POS
         }
         async void timer_Thread(object sendert, EventArgs et)
         {
-
-            //  User thruser = new User();
-            UsersLogs thrlog = new UsersLogs();
             try
             {
+                UsersLogs thrlog = new UsersLogs();
                 thrlog = await thrlog.GetByID((int)userLogInID);
-                //grid_mainWindow.IsEnabled = true;
-                //EndAwait();
+                if (thrlog.sOutDate != null)
+                {
+                    BTN_logOut_Click(null, null);
+                    threadtimer.Stop();
+                }
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this);
-                //grid_mainWindow.IsEnabled = false;
-                //StartAwait();
+                SectionData.ExceptionMessage(ex, this);
             }
-
-            if (thrlog.sOutDate != null)
-            {
-                BTN_logOut_Click(null, null);
-                threadtimer.Stop();
-
-            }
-
         }
         public void StartAwait()
         {
@@ -484,6 +469,10 @@ namespace POS
         {
             close();
             Application.Current.Shutdown();
+        }
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            BTN_Close_Click(null, null);
         }
         //protected override void OnClosed(EventArgs e)
         //{
@@ -866,11 +855,7 @@ namespace POS
             initializationMainTrack(button.Tag.ToString(), 0);
         }
 
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            e.Cancel = true;
-            this.Visibility = Visibility.Hidden;
-        }
+       
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {

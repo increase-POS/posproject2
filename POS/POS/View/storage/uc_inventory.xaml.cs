@@ -52,32 +52,81 @@ namespace POS.View.storage
 
         public uc_inventory()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
-        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
-        {               
-            timer.Stop();
-        }
-        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
+        private async void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.lang.Equals("en"))
+            try
             {
-                MainWindow.resourcemanager = new ResourceManager("POS.en_file", assembly: Assembly.GetExecutingAssembly());
-                grid_ucItemsExport.FlowDirection = FlowDirection.LeftToRight;
-            }
-            else
-            {
-                MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
-                grid_ucItemsExport.FlowDirection = FlowDirection.RightToLeft;
-            }
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
-            translate();
-            setTimer();
-            //await fillInventoryDetails();
+                if (_InventoryType.Equals("d") && invItemsLocations.Count > 0)
+                {
+                    #region Accept
+                    MainWindow.mainWindow.Opacity = 0.2;
+                    wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                    //w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
+                    w.contentText = "Do you want save pay invoice in drafts?";
+                    w.ShowDialog();
+                    MainWindow.mainWindow.Opacity = 1;
+                    #endregion
+                    if (w.isOk)
+                        await addInventory("d"); // d:draft        
+                }
+                clearInventory();
+                timer.Stop();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                if (MainWindow.lang.Equals("en"))
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.en_file", assembly: Assembly.GetExecutingAssembly());
+                    grid_main.FlowDirection = FlowDirection.LeftToRight;
+                }
+                else
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                    grid_main.FlowDirection = FlowDirection.RightToLeft;
+                }
+
+                translate();
+                setTimer();
+                //await fillInventoryDetails();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         private void translate()
         {
-            ////////////////////////////////----Order----/////////////////////////////////
+            ////////////////////////////////----Inventory----/////////////////////////////////
             dg_items.Columns[0].Header = MainWindow.resourcemanager.GetString("trNum");
             dg_items.Columns[1].Header = MainWindow.resourcemanager.GetString("trSectionLocation");
             dg_items.Columns[2].Header = MainWindow.resourcemanager.GetString("trItemUnit");
@@ -108,9 +157,17 @@ namespace POS.View.storage
         }
         private void timer_Tick(object sendert, EventArgs et)
         {
-            if (inventory.inventoryId != 0)
+            try
             {
-                refreshDocCount(inventory.inventoryId);
+
+                if (inventory.inventoryId != 0)
+                {
+                    refreshDocCount(inventory.inventoryId);
+                }
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sendert);
             }
         }
         #endregion
@@ -119,11 +176,15 @@ namespace POS.View.storage
             DocImage doc = new DocImage();
             int docCount = await doc.GetDocCount("Inventory", inventoryId);
 
+            int previouseCount = 0;
+            if (md_docImage.Badge != null && md_docImage.Badge.ToString() != "") previouseCount = int.Parse(md_docImage.Badge.ToString());
+
             if (docCount > 9)
             {
                 docCount = 9;
                 md_docImage.Badge = "+" + docCount.ToString();
             }
+            else if (docCount == 0) md_docImage.Badge = "";
             else
                 md_docImage.Badge = docCount.ToString();
         }
@@ -199,7 +260,7 @@ namespace POS.View.storage
             {
                 txt_inventoryNum.Text = inventory.num;
                 txt_inventoryDate.Text = inventory.createDate.ToString();
-                invItemsLocations = await invItemModel.GetAll(inventory.inventoryId);              
+                invItemsLocations = await invItemModel.GetAll(inventory.inventoryId);
             }
             inputEditable();
             dg_items.ItemsSource = invItemsLocations.ToList();
@@ -208,15 +269,15 @@ namespace POS.View.storage
         {
             if (_InventoryType == "d") // draft
             {
-                dg_items.Columns[4].IsReadOnly = false; 
-                dg_items.Columns[5].IsReadOnly = false;            
+                dg_items.Columns[4].IsReadOnly = false;
+                dg_items.Columns[5].IsReadOnly = false;
                 btn_save.IsEnabled = true;
                 btn_archive.IsEnabled = false;
             }
             else if (_InventoryType == "n") // normal saved
             {
-                dg_items.Columns[4].IsReadOnly = true; 
-                dg_items.Columns[5].IsReadOnly = true; 
+                dg_items.Columns[4].IsReadOnly = true;
+                dg_items.Columns[5].IsReadOnly = true;
                 btn_save.IsEnabled = false;
                 bool shortageManipulated = await inventory.shortageIsManipulated(inventory.inventoryId);
                 if (shortageManipulated)
@@ -225,28 +286,42 @@ namespace POS.View.storage
                     btn_archive.IsEnabled = false;
             }
         }
-            private void Dg_items_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        private void Dg_items_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
-            TextBox t = new TextBox();
-            ItemLocation row = e.Row.Item as ItemLocation;
-            var index = e.Row.GetIndex();
-            if (dg_items.SelectedIndex != -1 && index < itemsLocations.Count)
+            try
             {
-                var columnName = e.Column.Header.ToString();
-                t = e.EditingElement as TextBox;
-                if (t != null &&  columnName == MainWindow.resourcemanager.GetString("trDestoryCount"))
-                {
-                    int destroyCount = int.Parse(t.Text);
-                    if (destroyCount > itemsLocations[index].quantity)
-                    {
-                        t.Text = "0";
-                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorDistroyMoreQuanToolTip"), animation: ToasterAnimation.FadeIn);
-                    }
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
+                TextBox t = new TextBox();
+                ItemLocation row = e.Row.Item as ItemLocation;
+                var index = e.Row.GetIndex();
+                if (dg_items.SelectedIndex != -1 && index < itemsLocations.Count)
+                {
+                    var columnName = e.Column.Header.ToString();
+                    t = e.EditingElement as TextBox;
+                    if (t != null && columnName == MainWindow.resourcemanager.GetString("trDestoryCount"))
+                    {
+                        int destroyCount = int.Parse(t.Text);
+                        if (destroyCount > itemsLocations[index].quantity)
+                        {
+                            t.Text = "0";
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorDistroyMoreQuanToolTip"), animation: ToasterAnimation.FadeIn);
+                        }
+
+                    }
                 }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
-        private async Task clearInventory()
+        private void clearInventory()
         {
             _InventoryType = "d";
             inventory = new Inventory();
@@ -256,169 +331,250 @@ namespace POS.View.storage
             txt_titleDataGrid.Text = MainWindow.resourcemanager.GetString("trInventoryDraft");
             dg_items.ItemsSource = null;
             inputEditable();
-          // await fillInventoryDetails();
+            // await fillInventoryDetails();
         }
         private async Task addInventory(string invType)
         {
-            if(inventory.inventoryId == 0)
-            {               
+            if (inventory.inventoryId == 0)
+            {
                 inventory.branchId = MainWindow.branchID.Value;
                 inventory.posId = MainWindow.posID.Value;
                 inventory.createUserId = MainWindow.userLogin.userId;
-            }   
-            if(invType == "n")
+            }
+            if (invType == "n")
                 inventory.num = await inventory.generateInvNumber("in");
-            inventory.inventoryType = invType;            
+            inventory.inventoryType = invType;
             inventory.updateUserId = MainWindow.userLogin.userId;
 
             int inventoryId = await inventory.Save(inventory);
 
-            if(inventoryId != 0)
+            if (inventoryId != 0)
             {
                 // add inventory details
-                string res =  await invItemModel.Save(invItemsLocations,inventoryId);
+                string res = await invItemModel.Save(invItemsLocations, inventoryId);
                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
-               await clearInventory();
+                clearInventory();
             }
             else
                 Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
         }
         private async void Btn_newInventory_Click(object sender, RoutedEventArgs e)
         {
-            //if (inventory.inventoryId != 0 && inventory != null)
-            //{
-            if (!_InventoryType.Equals("n") && invItemsLocations.Count > 0)
+            try
             {
-                await addInventory("d"); // d:draft
-                clearInventory();
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                //if (inventory.inventoryId != 0 && inventory != null)
+                //{
+                if (!_InventoryType.Equals("n") && invItemsLocations.Count > 0)
+                {
+                    await addInventory("d"); // d:draft
+                    clearInventory();
+                }
+                else
+                    //}
+                    await fillItemLocations();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
-            else
-                //}
-                await fillItemLocations();
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         private async void Btn_draft_Click(object sender, RoutedEventArgs e)
         {
-            //Window.GetWindow(this).Opacity = 0.2;
-            //wd_inventory w = new wd_inventory();
-
-            //w.inventoryType = "d";
-            //w.userId = MainWindow.userLogin.userId;
-
-            //w.title = MainWindow.resourcemanager.GetString("trDrafts");
-
-            //if (w.ShowDialog() == true)
-            //{
-            //    if (w.inventory != null)
-            //    {
-            //        inventory = w.inventory;
-            //        _InventoryType = "d";
-            //        await fillInventoryDetails();
-            //    }
-            //}
-            //Window.GetWindow(this).Opacity = 1;
-            inventory = await inventory.getByBranch("d", MainWindow.branchID.Value);
-            if (inventory.inventoryId == 0)
+            try
             {
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoDraft"), animation: ToasterAnimation.FadeIn);
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
+                inventory = await inventory.getByBranch("d", MainWindow.branchID.Value);
+                if (inventory.inventoryId == 0)
+                {
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoDraft"), animation: ToasterAnimation.FadeIn);
+
+                }
+                else
+                {
+                    txt_titleDataGrid.Text = MainWindow.resourcemanager.GetString("trInventoryDraft");
+                    _InventoryType = "d";
+                    refreshDocCount(inventory.inventoryId);
+                    await fillInventoryDetails();
+                }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
-            else
+            catch (Exception ex)
             {
-                txt_titleDataGrid.Text = MainWindow.resourcemanager.GetString("trInventoryDraft"); 
-                _InventoryType = "d";
-                refreshDocCount(inventory.inventoryId);
-                await fillInventoryDetails();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
         private async void Btn_Inventory_Click(object sender, RoutedEventArgs e)
         {
-            //Window.GetWindow(this).Opacity = 0.2;
-            //wd_inventory w = new wd_inventory();
-
-            //w.inventoryType = "n";
-            //w.branchId = MainWindow.branchID.Value;
-            //w.title = MainWindow.resourcemanager.GetString("trDrafts");
-
-            //if (w.ShowDialog() == true)
-            //{
-            //    if (w.inventory != null)
-            //    {
-            //        _InventoryType = "n";
-            //        inventory = w.inventory;
-            //        await fillInventoryDetails();  
-            //    }
-            //}
-            //Window.GetWindow(this).Opacity = 1;
-             inventory = await inventory.getByBranch("n", MainWindow.branchID.Value);
-            if (inventory.inventoryId == 0)
+            try
             {
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoInventory"), animation: ToasterAnimation.FadeIn);
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
+                if (_InventoryType.Equals("d") && invItemsLocations.Count > 0)
+                {
+                    await addInventory("d"); // d:draft
+                }
+                inventory = await inventory.getByBranch("n", MainWindow.branchID.Value);
+                if (inventory.inventoryId == 0)
+                {
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoInventory"), animation: ToasterAnimation.FadeIn);
+
+                }
+                else
+                {
+                    txt_titleDataGrid.Text = MainWindow.resourcemanager.GetString("trStocktaking");
+                    _InventoryType = "n";
+                    refreshDocCount(inventory.inventoryId);
+                    await fillInventoryDetails();
+                }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
-            else
+            catch (Exception ex)
             {
-                txt_titleDataGrid.Text = MainWindow.resourcemanager.GetString("trStocktaking");
-                _InventoryType = "n";
-                refreshDocCount(inventory.inventoryId);
-                await fillInventoryDetails();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(createInventoryPermission, MainWindow.groupObjects, "one"))
+            try
             {
-                var inv = await inventory.getByBranch("n", MainWindow.branchID.Value);
-                if(inv.inventoryId == 0)
-                    await addInventory("n"); // n:normal
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                if (MainWindow.groupObject.HasPermissionAction(createInventoryPermission, MainWindow.groupObjects, "one"))
+                {
+                    var inv = await inventory.getByBranch("n", MainWindow.branchID.Value);
+                    if (inv.inventoryId == 0)
+                        await addInventory("n"); // n:normal
+                    else
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trWarningOneInventory"), animation: ToasterAnimation.FadeIn);
+                }
                 else
-                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trWarningOneInventory"), animation: ToasterAnimation.FadeIn);
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         private async void Btn_archive_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(archivingPermission, MainWindow.groupObjects, "one"))
-                await addInventory("a"); // a:archived
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-        }
-        private void Btn_Images_Click(object sender, RoutedEventArgs e)
-        {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
+                if (MainWindow.groupObject.HasPermissionAction(archivingPermission, MainWindow.groupObjects, "one"))
+                    await addInventory("a"); // a:archived
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
+
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one"))
+            try
             {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
-            }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-        }
-        private void Btn_printInvoice_Click(object sender, RoutedEventArgs e)
-        {
-            if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one"))
-            {
-
-            }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-        }
-        private void Btn_preview_Click(object sender, RoutedEventArgs e)
-        {
                 if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one"))
                 {
 
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
+        private void Btn_printInvoice_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one"))
+                {
+
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
+        private void Btn_preview_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one"))
+                {
+
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Btn_invoiceImage_Click(object sender, RoutedEventArgs e)
         {
             try
             {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
                 if (inventory != null && inventory.inventoryId != 0)
                 {
                     Window.GetWindow(this).Opacity = 0.2;
@@ -434,12 +590,16 @@ namespace POS.View.storage
                 }
                 else
                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trChooseInvoiceToolTip"), animation: ToasterAnimation.FadeIn);
-
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
+
     }
 }

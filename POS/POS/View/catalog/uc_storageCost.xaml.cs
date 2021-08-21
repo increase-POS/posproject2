@@ -92,7 +92,8 @@ namespace POS.View.catalog
         {//search
             try
             {
-                SectionData.StartAwait(grid_ucStorageCost);
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
                 {
                     if (storageCosts is null)
@@ -103,11 +104,14 @@ namespace POS.View.catalog
                     ) && s.isActive == tgl_storageCostState);
                     RefreshstorageCostView();
                 }
-                SectionData.EndAwait(grid_ucStorageCost, this);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
@@ -125,16 +129,20 @@ namespace POS.View.catalog
         {//active
             try
             {
-            SectionData.StartAwait(grid_ucStorageCost);
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
                 if (storageCosts is null)
                     await RefreshStorageCostList();
                 tgl_storageCostState = 1;
                 Tb_search_TextChanged(null, null);
-                SectionData.EndAwait(grid_ucStorageCost, this);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
@@ -142,16 +150,20 @@ namespace POS.View.catalog
         {//inactive
             try
             {
-                SectionData.StartAwait(grid_ucStorageCost);
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
                 if (storageCosts is null)
                     await RefreshStorageCostList();
                 tgl_storageCostState = 0;
                 Tb_search_TextChanged(null, null);
-                SectionData.EndAwait(grid_ucStorageCost, this);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
@@ -159,7 +171,8 @@ namespace POS.View.catalog
         {//refresh
             try
             {
-                SectionData.StartAwait(grid_ucStorageCost);
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
                 {
                     await RefreshStorageCostList();
@@ -168,11 +181,14 @@ namespace POS.View.catalog
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
 
-                SectionData.EndAwait(grid_ucStorageCost, this);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
@@ -180,6 +196,9 @@ namespace POS.View.catalog
         {//export
             try
             {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
                 {
                     this.Dispatcher.Invoke(() =>
@@ -191,10 +210,14 @@ namespace POS.View.catalog
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
@@ -276,8 +299,10 @@ namespace POS.View.catalog
         {//add
             try
             {
-                SectionData.StartAwait(grid_ucStorageCost);
-                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add") || SectionData.isAdminPermision())
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add") || SectionData.isAdminPermision())
                 {
                     //chk empty name
                     SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
@@ -309,11 +334,14 @@ namespace POS.View.catalog
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-                SectionData.EndAwait(grid_ucStorageCost, this);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
@@ -321,8 +349,10 @@ namespace POS.View.catalog
         {//update
             try
             {
-                SectionData.StartAwait(grid_ucStorageCost);
-                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update") || SectionData.isAdminPermision())
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update") || SectionData.isAdminPermision())
                 {
                     //chk empty name
                     SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
@@ -351,11 +381,14 @@ namespace POS.View.catalog
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-                SectionData.EndAwait(grid_ucStorageCost, this);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
@@ -363,8 +396,10 @@ namespace POS.View.catalog
         {//delete
             try
             {
-                SectionData.StartAwait(grid_ucStorageCost);
-                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete") || SectionData.isAdminPermision())
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete") || SectionData.isAdminPermision())
                 {
                     if (storageCost.storageCostId != 0)
                     {
@@ -418,11 +453,14 @@ namespace POS.View.catalog
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-                SectionData.EndAwait(grid_ucStorageCost, this);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
@@ -446,6 +484,9 @@ namespace POS.View.catalog
         {//selection
             try
             {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
                 SectionData.clearValidate(tb_name, p_errorName);
                 SectionData.clearValidate(tb_cost, p_errorCost);
                 if (dg_storageCost.SelectedIndex != -1)
@@ -483,10 +524,14 @@ namespace POS.View.catalog
 
                     }
                 }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
@@ -494,8 +539,10 @@ namespace POS.View.catalog
         {//load
             try
             {
-                SectionData.StartAwait(grid_ucStorageCost);
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
+ 
                 if (MainWindow.lang.Equals("en"))
                 { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly()); grid_shipping.FlowDirection = FlowDirection.LeftToRight; }
                 else
@@ -506,11 +553,14 @@ namespace POS.View.catalog
 
                 await RefreshStorageCostList();
                 Tb_search_TextChanged(null, null);
-                SectionData.EndAwait(grid_ucStorageCost, this);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 

@@ -67,24 +67,15 @@ namespace POS.View
         Item itemModel = new Item();
         Item item = new Item();
         IEnumerable<Item> items;
-
         Card cardModel = new Card();
         IEnumerable<Card> cards;
-        // IEnumerable<Item> itemsQuery;
-
-        //Branch branchModel = new Branch();
-        //Branch branch;
-
         Agent agentModel = new Agent();
         IEnumerable<Agent> customers;
-
         ItemUnit itemUnitModel = new ItemUnit();
         List<ItemUnit> barcodesList;
         List<ItemUnit> itemUnits;
-
         Invoice invoiceModel = new Invoice();
         public Invoice invoice = new Invoice();
-
         Coupon couponModel = new Coupon();
         IEnumerable<Coupon> coupons;
         List<CouponInvoice> selectedCoupons = new List<CouponInvoice>();
@@ -96,12 +87,10 @@ namespace POS.View
         List<ItemTransfer> mainInvoiceItems;
         CashTransfer cashTransfer = new CashTransfer();
         ItemLocation itemLocationModel = new ItemLocation();
-
         ShippingCompanies companyModel = new ShippingCompanies();
         List<ShippingCompanies> companies;
         User userModel = new User();
         List<User> users;
-
         private static DispatcherTimer timer;
         #region//to handle barcode characters
         static private int _SelectedCustomer = -1;
@@ -203,7 +192,8 @@ namespace POS.View
         {
             try
             {
-                if (sender != null) SectionData.StartAwait(grid_main);
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
                 MainWindow.mainWindow.KeyDown -= HandleKeyPress;
                 if (billDetails.Count > 0 && _InvoiceType == "sd")
                 {
@@ -223,11 +213,13 @@ namespace POS.View
                 else
                     clearInvoice();
                 timer.Stop();
-                if (sender != null) SectionData.EndAwait(grid_main, this);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
             }
             catch (Exception ex)
             {
-                if (sender != null) SectionData.EndAwait(grid_main, this);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
@@ -236,7 +228,8 @@ namespace POS.View
             try
             {
 
-                 if (sender != null) SectionData.StartAwait(grid_main);
+                 if (sender != null)
+                    SectionData.StartAwait(grid_main);
                 MainWindow.mainWindow.KeyDown += HandleKeyPress;
                 tb_moneyIcon.Text = MainWindow.Currency;
                 tb_moneyIconTotal.Text = MainWindow.Currency;
@@ -284,11 +277,13 @@ namespace POS.View
                 ((INotifyCollectionChanged)myCollectionView).CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
                 #endregion
 
-                if (sender != null) SectionData.EndAwait(grid_main, this);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
             }
             catch (Exception ex)
             {
-                   if (sender != null) SectionData.EndAwait(grid_main, this);
+                   if (sender != null)
+                    SectionData.EndAwait(grid_main, this);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
@@ -556,7 +551,8 @@ namespace POS.View
         {
             try
             {
-                if (sender != null) SectionData.StartAwait(grid_main);
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
                 if (cb_customer.SelectedIndex != -1)
                 {
                     Window.GetWindow(this).Opacity = 0.2;
