@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -42,6 +44,20 @@ namespace POS.View.reports
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
+            #region translate
+            if (MainWindow.lang.Equals("en"))
+            {
+                MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                grid_ucAccountStatement.FlowDirection = FlowDirection.LeftToRight;
+            }
+            else
+            {
+                MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                grid_ucAccountStatement.FlowDirection = FlowDirection.RightToLeft;
+            }
+            translate();
+            #endregion
+
             statement = await statisticModel.GetStatement();
 
             vendorCombo = statisticModel.getVendorCombo(statement, "v").Where(x => x.VendorId != null);
@@ -56,6 +72,45 @@ namespace POS.View.reports
             fillVendorsEvents();
             hideAllColumn();
 
+        }
+
+        private void translate()
+        {
+            tt_vendor.Content = MainWindow.resourcemanager.GetString("trVendor");
+            tt_customer.Content = MainWindow.resourcemanager.GetString("trCustomer");
+            tt_user.Content = MainWindow.resourcemanager.GetString("trUser");
+            tt_shipping.Content = MainWindow.resourcemanager.GetString("trShippingCompany");
+
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(txt_search , MainWindow.resourcemanager.GetString("trSearchHint"));
+
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_vendors, MainWindow.resourcemanager.GetString("trVendorHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_vendorsDate, MainWindow.resourcemanager.GetString("trDateHint"));
+            chk_allVendors.Content = MainWindow.resourcemanager.GetString("trAll");
+
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_customer, MainWindow.resourcemanager.GetString("trCustomerHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_customerDate, MainWindow.resourcemanager.GetString("trDateHint"));
+            chk_allCustomers.Content = MainWindow.resourcemanager.GetString("trAll");
+           
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_users, MainWindow.resourcemanager.GetString("trUserHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_userDate, MainWindow.resourcemanager.GetString("trDateHint"));
+            chk_allUsers.Content = MainWindow.resourcemanager.GetString("trAll");
+            
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_shipping, MainWindow.resourcemanager.GetString("trShippingCompanyHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_shippingDate, MainWindow.resourcemanager.GetString("trDateHint"));
+            chk_allShippings.Content = MainWindow.resourcemanager.GetString("trAll");
+
+            dgPayments.Columns[0].Header = MainWindow.resourcemanager.GetString("trTransferNumberTooltip");
+            dgPayments.Columns[1].Header = MainWindow.resourcemanager.GetString("trDate");
+            dgPayments.Columns[2].Header = MainWindow.resourcemanager.GetString("trDescription");
+            dgPayments.Columns[3].Header = MainWindow.resourcemanager.GetString("trPayment");
+            dgPayments.Columns[4].Header = MainWindow.resourcemanager.GetString("trAmount");
+
+            tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
+            tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
+            tt_print.Content = MainWindow.resourcemanager.GetString("trPrint");
+            tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
+            tt_settings.Content = MainWindow.resourcemanager.GetString("trSettings");
+            tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
         }
 
         private void fillVendorCombo(IEnumerable<VendorCombo> list, ComboBox cb)
@@ -375,14 +430,16 @@ namespace POS.View.reports
             if (cashTotal > 0)
             {
                 txt_total.Text = cashTotal.ToString();
-                txt_for.Text = "Worthy";
+                //txt_for.Text = "Worthy";
+                txt_for.Text = MainWindow.resourcemanager.GetString("trWorthy");
                 tb_moneyIcon.Text = MainWindow.Currency;
             }
             else
             {
                 cashTotal = -cashTotal;
                 txt_total.Text = cashTotal.ToString();
-                txt_for.Text = "Required";
+                //txt_for.Text = "Required";
+                txt_for.Text = MainWindow.resourcemanager.GetString("trRequired");
                 tb_moneyIcon.Text = MainWindow.Currency;
             }
             fillRowChart();
@@ -398,13 +455,15 @@ namespace POS.View.reports
             if (cashTotal > 0)
             {
                 txt_total.Text = cashTotal.ToString();
-                txt_for.Text = "Worthy";
+                //txt_for.Text = "Worthy";
+                txt_for.Text = MainWindow.resourcemanager.GetString("trWorthy");
             }
             else
             {
                 cashTotal = -cashTotal;
                 txt_total.Text = cashTotal.ToString();
-                txt_for.Text = "Required";
+                //txt_for.Text = "Required";
+                txt_for.Text = MainWindow.resourcemanager.GetString("trRequired");
             }
             fillRowChart();
             fillColumnChart();
@@ -419,13 +478,15 @@ namespace POS.View.reports
             if (cashTotal > 0)
             {
                 txt_total.Text = cashTotal.ToString();
-                txt_for.Text = "Worthy";
+                //txt_for.Text = "Worthy";
+                txt_for.Text = MainWindow.resourcemanager.GetString("trWorthy");
             }
             else
             {
                 cashTotal = -cashTotal;
                 txt_total.Text = cashTotal.ToString();
-                txt_for.Text = "Required";
+                //txt_for.Text = "Required";
+                txt_for.Text = MainWindow.resourcemanager.GetString("trRequired");
             }
             fillRowChart();
             fillColumnChart();
@@ -440,13 +501,15 @@ namespace POS.View.reports
             if (cashTotal > 0)
             {
                 txt_total.Text = cashTotal.ToString();
-                txt_for.Text = "Worthy";
+                //txt_for.Text = "Worthy";
+                txt_for.Text = MainWindow.resourcemanager.GetString("trWorthy");
             }
             else
             {
                 cashTotal = -cashTotal;
                 txt_total.Text = cashTotal.ToString();
-                txt_for.Text = "Required";
+                //txt_for.Text = "Required";
+                txt_for.Text = MainWindow.resourcemanager.GetString("trRequired");
             }
             fillRowChart();
             fillColumnChart();
@@ -496,11 +559,13 @@ namespace POS.View.reports
                 var drawCash = temp.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth).Select(x => x.cashTotal).LastOrDefault();
                 if (drawCash > 0)
                 {
-                    names.Add("Worthy");
+                    //names.Add("Worthy");
+                    names.Add(MainWindow.resourcemanager.GetString("trWorthy"));
                 }
                 else
                 {
-                    names.Add("Required");
+                    //names.Add("Required");
+                    names.Add(MainWindow.resourcemanager.GetString("trRequired"));
                 }
                 cash.Add(drawCash);
 
@@ -558,38 +623,42 @@ namespace POS.View.reports
             {
                 Values = cash.AsChartValues(),
                 DataLabels = true,
-                Title = "Cash"
-            });
+                //Title = "Cash"
+                Title = MainWindow.resourcemanager.GetString("trCash")
+        });
             columnChartData.Add(
            new ColumnSeries
            {
                Values = card.AsChartValues(),
                DataLabels = true,
-               Title = "Card"
+               //Title = "Card"
+               Title = MainWindow.resourcemanager.GetString("tr_Card")
            });
             columnChartData.Add(
            new ColumnSeries
            {
                Values = doc.AsChartValues(),
                DataLabels = true,
-               Title = "Document"
+               //Title = "Document"
+               Title = MainWindow.resourcemanager.GetString("trDocument")
+
            });
             columnChartData.Add(
            new ColumnSeries
            {
                Values = cheque.AsChartValues(),
                DataLabels = true,
-               Title = "Cheque"
+               //Title = "Cheque"
+                Title = MainWindow.resourcemanager.GetString("trCheque")
            });
             columnChartData.Add(
            new ColumnSeries
            {
                Values = balance.AsChartValues(),
                DataLabels = true,
-               Title = "Balance"
+               //Title = "Balance"
+               Title = MainWindow.resourcemanager.GetString("tr_Balance")
            });
-
-
 
             DataContext = this;
             cartesianChart.Series = columnChartData;
@@ -623,9 +692,12 @@ namespace POS.View.reports
                 List<int> final = new List<int>();
                 List<string> lable = new List<string>()
                 {
-                    "Payment",
-                    "Deposite",
-                    "Invoice"
+                    //"Payment",
+                    MainWindow.resourcemanager.GetString("trOnePayment"),
+                    //"Deposite",
+                    MainWindow.resourcemanager.GetString("trOneDeposit"),
+                    //"Invoice"
+                    MainWindow.resourcemanager.GetString("tr_Invoice")
                 };
                 final.Add(resultList.Skip(i).FirstOrDefault());
                 piechartData.Add(

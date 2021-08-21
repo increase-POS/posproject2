@@ -8,7 +8,7 @@
              xmlns:local="clr-namespace:POS.View.reports"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" Loaded="UserControl_Loaded">
-    <Grid Margin="0,15,15,15">
+    <Grid Margin="0,15,15,15" x:Name="grid_ucAccountStatement">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*" ></ColumnDefinition>
             <ColumnDefinition Width="auto" ></ColumnDefinition>
@@ -100,9 +100,9 @@
                                         <ToolTip x:Name="tt_vendor"
                                                  Content="Vendor"
                                                  Placement="left" 
-                                                 HorizontalOffset="35"
+                                                 HorizontalOffset="10"
                                                  PlacementRectangle="50,0,0,0"
-                                                 VerticalOffset="-10"/>
+                                                 VerticalOffset="-35"/>
                                     </Path.ToolTip>
                                 </Path>
                             </Button>
@@ -159,9 +159,9 @@
                                         <ToolTip x:Name="tt_customer"
                                                  Content="Customer"
                                                  Placement="left" 
-                                                 HorizontalOffset="35"
+                                                 HorizontalOffset="10"
                                                  PlacementRectangle="50,0,0,0"
-                                                 VerticalOffset="-10"/>
+                                                 VerticalOffset="-35"/>
                                     </Path.ToolTip>
                                 </Path>
                             </Button>
@@ -219,9 +219,9 @@
                                     <Path.ToolTip>
                                         <ToolTip x:Name="tt_user" Content="User"
                                               Placement="left" 
-                                              HorizontalOffset="35"
+                                              HorizontalOffset="10"
                                               PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="-10"/>
+                                              VerticalOffset="-35"/>
                                     </Path.ToolTip>
                                 </Path>
                             </Button>
@@ -290,9 +290,9 @@
                                     <Path.ToolTip>
                                         <ToolTip x:Name="tt_shipping" Content="Shipping"
                                               Placement="left" 
-                                              HorizontalOffset="35"
+                                              HorizontalOffset="10"
                                               PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="-10"/>
+                                              VerticalOffset="-35"/>
                                     </Path.ToolTip>
                                 </Path>
                             </Button>
@@ -541,7 +541,7 @@
                         <Button FlowDirection="LeftToRight" DockPanel.Dock="Right" Width="40" Height="40" x:Name="btn_refresh" 
                             materialDesign:ButtonAssist.CornerRadius="15" Cursor="Hand"
                           Background="{x:Null}" BorderBrush="{x:Null}"   Style="{StaticResource SmallButtonCircleRotate}"
-                             Margin="5,1"  Content="إضافة"   ToolTip="Refresh"  RenderTransformOrigin="0.5,0.5"
+                             Margin="5,1"  RenderTransformOrigin="0.5,0.5"
                             DataContext="M896,0L896,0C401.2,0,0,401.2,0,896v0c0,494.8,401.2,896,896,896h0c494.8,0,896-401.2,896-896v0C1792,401.2,1390.8,0,896,0z
 	 M1451.3,1021c-31.9,133.7-98.8,242.1-200.6,325.2c-101.8,83.1-221,124.6-357.7,124.6c-72.8,0-143.3-13.7-211.4-41.2
 	s-128.8-66.6-182.2-117.5l-96.5,96.5c-9.5,9.5-20.7,14.2-33.7,14.2s-24.2-4.7-33.7-14.2c-9.5-9.5-14.2-20.7-14.2-33.7v-335.3
@@ -562,6 +562,14 @@
                                     <TranslateTransform/>
                                 </TransformGroup>
                             </Button.RenderTransform>
+                            <Button.ToolTip>
+                                <ToolTip x:Name="tt_refresh" Content="Refresh"
+                                              Placement="left" 
+                                              HorizontalOffset="15"
+                                              PlacementRectangle="50,0,0,0"
+                                              VerticalOffset="25"/>
+                            </Button.ToolTip>
+
                         </Button>
 
 
@@ -635,9 +643,9 @@
                                     <materialDesign:PackIcon.ToolTip>
                                         <ToolTip x:Name="tt_report" Content="Report"
                                               Placement="left" 
-                                              HorizontalOffset="5"
+                                              HorizontalOffset="10"
                                               PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="-10"/>
+                                              VerticalOffset="-35"/>
                                     </materialDesign:PackIcon.ToolTip>
                                 </materialDesign:PackIcon>
                             </Button>
@@ -650,9 +658,9 @@
                                     <materialDesign:PackIcon.ToolTip>
                                         <ToolTip x:Name="tt_print" Content="Print"
                                               Placement="left" 
-                                              HorizontalOffset="5"
+                                              HorizontalOffset="10"
                                               PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="-10"/>
+                                              VerticalOffset="-35"/>
                                     </materialDesign:PackIcon.ToolTip>
                                 </materialDesign:PackIcon>
                             </Button>
@@ -668,9 +676,9 @@
                                     <Path.ToolTip>
                                         <ToolTip x:Name="tt_excel" Content="Export to excel"
                                               Placement="left" 
-                                              HorizontalOffset="35"
+                                              HorizontalOffset="10"
                                               PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="-10"/>
+                                              VerticalOffset="-35"/>
                                     </Path.ToolTip>
                                 </Path>
                             </Button>
@@ -680,7 +688,13 @@
                                 <materialDesign:PackIcon 
                           Width="20" Height="20" 
                            FlowDirection="LeftToRight" Kind="Settings" Foreground="Gray"  >
-
+                                    <materialDesign:PackIcon.ToolTip>
+                                        <ToolTip x:Name="tt_settings" Content="Settings"
+                                              Placement="left" 
+                                              HorizontalOffset="15"
+                                              PlacementRectangle="50,25,0,0"
+                                              VerticalOffset="-55"/>
+                                    </materialDesign:PackIcon.ToolTip>
                                 </materialDesign:PackIcon>
                             </Button>
                             <TextBlock   Background="{x:Null}" x:Name="txt_count"   Grid.Column="4" Margin="0,0,0,5" 
@@ -688,9 +702,9 @@
                                 <TextBlock.ToolTip>
                                     <ToolTip x:Name="tt_count" Content="Customers Count"
                                               Placement="left" 
-                                              HorizontalOffset="35"
+                                              HorizontalOffset="10"
                                               PlacementRectangle="50,25,0,0"
-                                              VerticalOffset="-20"/>
+                                              VerticalOffset="-45"/>
                                 </TextBlock.ToolTip>
                             </TextBlock>
 

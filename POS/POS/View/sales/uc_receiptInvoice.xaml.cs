@@ -307,7 +307,8 @@ namespace POS.View
             {
                 if (sendert != null)
                     SectionData.StartAwait(grid_main);
-                setNotifications();
+                refreshOrdersWaitNotification();
+                refreshQuotationNotification();
                 if (invoice.invoiceId != 0)
                 {
                     refreshDocCount(invoice.invoiceId);

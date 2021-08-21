@@ -328,7 +328,6 @@ namespace POS.View.purchases
         }
         async void timer_Tick(object sendert, EventArgs et)
         {
-            refreshDraftNotification();
             if (invoice.invoiceId != 0)
             {
                 refreshDocCount(invoice.invoiceId);

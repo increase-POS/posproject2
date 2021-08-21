@@ -75,11 +75,12 @@ namespace POS
         static int nameId, addressId, emailId, mobileId, phoneId, faxId, logoId , taxId;
         public static string logoImage;
         ImageBrush myBrush = new ImageBrush();
-
+        NotificationUser notificationUser = new NotificationUser();
        
         public static DispatcherTimer timer;
         DispatcherTimer idletimer;//  logout timer
         DispatcherTimer threadtimer;//  repeat timer for check other login
+        DispatcherTimer notTimer;//  repeat timer for notifications
 
         static public MainWindow mainWindow;
          public MainWindow()
@@ -277,7 +278,8 @@ namespace POS
             // branch = await branch.getBranchById((int)MainWindow.branchID);
             //txt_branchLogin.Text = branch.name;
             //#endregion
-
+            setNotifications();
+            setTimer();
             BTN_Home_Click(null, null);
             grid_mainWindow.IsEnabled = true;
             EndAwait();
@@ -335,7 +337,55 @@ namespace POS
             //else btn_sectionData.Visibility = Visibility.Collapsed;
         }
 
+        #region notifications
+        private void setTimer()
+        {
+            notTimer = new DispatcherTimer();
+            notTimer.Interval = TimeSpan.FromSeconds(30);
+            notTimer.Tick += notTimer_Tick;
+            notTimer.Start();
+        }
+        private void notTimer_Tick(object sendert, EventArgs et)
+        {
+            try
+            {
+                if (sendert != null)
+                    SectionData.StartAwait(grid_main);
+                setNotifications();              
+                if (sendert != null)
+                    SectionData.EndAwait(grid_main, this);
+            }
+            catch (Exception ex)
+            {
+                if (sendert != null)
+                    SectionData.EndAwait(grid_main, this);
+                SectionData.ExceptionMessage(ex, this, sendert);
+            }
+        }
+        private void setNotifications()
+        {
+            refreshNotificationCount();
+        }
+        private async void refreshNotificationCount()
+        {
+            int notCount = await notificationUser.GetCountByUserId(userID.Value);
 
+            int previouseCount = 0;
+            if (md_notificationCount.Badge != null && md_notificationCount.Badge.ToString() != "") previouseCount = int.Parse(md_notificationCount.Badge.ToString());
+
+            if (notCount != previouseCount)
+            {
+                if (notCount > 9)
+                {
+                    notCount = 9;
+                    md_notificationCount.Badge = "+" + notCount.ToString();
+                }
+                else if (notCount == 0) md_notificationCount.Badge = "";
+                else
+                    md_notificationCount.Badge = notCount.ToString();
+            }
+        }
+        #endregion
         void timer_Idle(object sender, EventArgs e)
         {
             if (IdleClass.IdleTime.Minutes >= Idletime)

@@ -236,9 +236,8 @@ namespace POS.View.sales
             timer.Tick += timer_Tick;
             timer.Start();
         }
-        async void timer_Tick(object sendert, EventArgs et)
+        private void timer_Tick(object sendert, EventArgs et)
         {
-            refreshDraftNotification();
             if (invoice.invoiceId != 0)
             {
                 refreshDocCount(invoice.invoiceId);
