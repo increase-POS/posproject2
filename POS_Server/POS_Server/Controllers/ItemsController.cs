@@ -37,7 +37,7 @@ namespace POS_Server.Controllers
 
             Validation validation = new Validation();
             bool valid = validation.CheckApiKey(token);
-
+         
             if (valid)
             {
                 using (incposdbEntities entity = new incposdbEntities())

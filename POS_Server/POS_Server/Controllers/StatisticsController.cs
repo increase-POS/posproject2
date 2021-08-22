@@ -1777,7 +1777,7 @@ else
 
 
 
-                                       
+
 
                                         //username
 
@@ -2845,7 +2845,7 @@ notes
                         X.FirstOrDefault().inventoryId,
                         X.FirstOrDefault().isDestroyed,
                         DestroyedCount = X.Where(a => a.isDestroyed == true ? true : false).Count(),
-                        userFalls= X.FirstOrDefault().username,
+                        userFalls = X.FirstOrDefault().username,
 
                         X.FirstOrDefault().branchName,
                         X.FirstOrDefault().branchId,
@@ -3044,8 +3044,8 @@ notes
 
                                     select new
                                     {
-                                        causeDestroy=  IT.inventoryItemLocation.cause,
-                                        userdestroy= duu.username,
+                                        causeDestroy = IT.inventoryItemLocation.cause,
+                                        userdestroy = duu.username,
                                         I.userId,
                                         itemName = ITEM.name,
                                         unitName = UNIT.name,
@@ -3160,11 +3160,11 @@ notes
                                     {
 
 
-                                        inventoryNum=IT.inventoryItemLocation.Inventory.num,
+                                        inventoryNum = IT.inventoryItemLocation.Inventory.num,
                                         IT.inventoryItemLocation.Inventory.inventoryType,
-                                        inventoryDate= IT.inventoryItemLocation.Inventory.createDate,
-                                      //   itemCount
-                                      causeFalls =  IT.inventoryItemLocation.fallCause,
+                                        inventoryDate = IT.inventoryItemLocation.Inventory.createDate,
+                                        //   itemCount
+                                        causeFalls = IT.inventoryItemLocation.fallCause,
                                         userFalls = duu.username,
                                         I.userId,
                                         itemName = ITEM.name,
@@ -3174,7 +3174,7 @@ notes
 
                                         IU.itemId,
                                         IU.unitId,
-                                        itemCount=  IT.quantity,
+                                        itemCount = IT.quantity,
                                         IT.price,
                                         IU.barcode,
 
@@ -3646,7 +3646,7 @@ notes
                                     {
                                         cashTransId = C.cashTransId,
                                         transType = C.transType,
-                                      //  posId = C.posId,
+                                        //  posId = C.posId,
                                         userId = C.userId,
                                         agentId = C.agentId,
                                         invId = C.invId,
@@ -3709,13 +3709,13 @@ notes
 
 
 
-                                        fromposId = C.transType=="p"? C.posId:(C.transType == "d" ? C.cashTransfer2.posId :
+                                        fromposId = C.transType == "p" ? C.posId : (C.transType == "d" ? C.cashTransfer2.posId :
                                          entity.cashTransfer.Where(x2 => C.cashTransId == (int)x2.cashTransIdSource).FirstOrDefault().posId
                                         ),
-                                        fromposName = C.transType == "p" ? jpp.name:(C.transType == "d" ? C.cashTransfer2.pos.name :
+                                        fromposName = C.transType == "p" ? jpp.name : (C.transType == "d" ? C.cashTransfer2.pos.name :
                                         entity.cashTransfer.Where(x2 => C.cashTransId == (int)x2.cashTransIdSource).FirstOrDefault().pos.name
                                        ),
-                                        frombranchId = C.transType == "p" ? C.pos.branchId: C.transType == "d" ? C.cashTransfer2.pos.branchId :
+                                        frombranchId = C.transType == "p" ? C.pos.branchId : C.transType == "d" ? C.cashTransfer2.pos.branchId :
                                          entity.cashTransfer.Where(x2 => C.cashTransId == (int)x2.cashTransIdSource).FirstOrDefault().pos.branchId
                                        ,
                                         frombranchName = C.transType == "p" ? C.pos.branches.name : C.transType == "d" ? C.cashTransfer2.pos.branches.name :
@@ -3738,10 +3738,10 @@ notes
                                         tobranchName = C.transType == "d" ? C.pos.branches.name : C.transType == "d" ? C.cashTransfer2.pos.branches.name :
                                          entity.cashTransfer.Where(x2 => C.cashTransId == (int)x2.cashTransIdSource).FirstOrDefault().pos.branches.name
                                       ,
-                                   
+
                                     }).ToList();
 
-             
+
 
                     if (cachlist == null)
                         return NotFound();
@@ -3779,72 +3779,81 @@ notes
                 using (incposdbEntities entity = new incposdbEntities())
                 {
 
-                    List<CashTransferModel> cachlist = (from C in entity.cashTransfer
-                                                        join b in entity.banks on C.bankId equals b.bankId into jb
-                                                        join a in entity.agents on C.agentId equals a.agentId into ja
-                                                        join p in entity.pos on C.posId equals p.posId into jp
-                                                        join pc in entity.pos on C.posIdCreator equals pc.posId into jpcr
-                                                        join u in entity.users on C.userId equals u.userId into ju
-                                                        join uc in entity.users on C.updateUserId equals uc.userId into juc
-                                                        join cr in entity.cards on C.cardId equals cr.cardId into jcr
-                                                        join bo in entity.bondes on C.bondId equals bo.bondId into jbo
-                                                        from jbb in jb.DefaultIfEmpty()
-                                                        from jaa in ja.DefaultIfEmpty()
-                                                        from jpp in jp.DefaultIfEmpty()
-                                                        from juu in ju.DefaultIfEmpty()
-                                                        from jpcc in jpcr.DefaultIfEmpty()
-                                                        from jucc in juc.DefaultIfEmpty()
-                                                        from jcrd in jcr.DefaultIfEmpty()
-                                                        from jbbo in jbo.DefaultIfEmpty()
-                                                        where (C.side=="c"|| C.side == "v"|| C.side == "b"|| C.side == "u"||C.side == "sh")//( C.transType == "p" && C.side==Side)
-                                                        select new CashTransferModel()
-                                                        {
-                                                            cashTransId = C.cashTransId,
-                                                            transType = C.transType,
-                                                            posId = C.posId,
-                                                            userId = C.userId,
-                                                            agentId = C.agentId,
-                                                            invId = C.invId,
-                                                            transNum = C.transNum,
-                                                            createDate = C.createDate,
-                                                            updateDate = C.updateDate,
-                                                            cash = C.cash,
-                                                            updateUserId = C.updateUserId,
-                                                            createUserId = C.createUserId,
-                                                            notes = C.notes,
-                                                            posIdCreator = C.posIdCreator,
-                                                            isConfirm = C.isConfirm,
-                                                            cashTransIdSource = C.cashTransIdSource,
-                                                            side = C.side,
+                    var cachlist = (from C in entity.cashTransfer
+                                    join b in entity.banks on C.bankId equals b.bankId into jb
+                                    join a in entity.agents on C.agentId equals a.agentId into ja
+                                    join p in entity.pos on C.posId equals p.posId into jp
+                                    join pc in entity.pos on C.posIdCreator equals pc.posId into jpcr
+                                    join u in entity.users on C.userId equals u.userId into ju
+                                    join uc in entity.users on C.updateUserId equals uc.userId into juc
+                                    join cr in entity.cards on C.cardId equals cr.cardId into jcr
+                                    join bo in entity.bondes on C.bondId equals bo.bondId into jbo
+                                    join sh in entity.shippingCompanies on C.shippingCompanyId equals sh.shippingCompanyId into jsh
+                                    from jbb in jb.DefaultIfEmpty()
+                                    from jaa in ja.DefaultIfEmpty()
+                                    from jpp in jp.DefaultIfEmpty()
+                                    from juu in ju.DefaultIfEmpty()
+                                    from jpcc in jpcr.DefaultIfEmpty()
+                                    from jucc in juc.DefaultIfEmpty()
+                                    from jcrd in jcr.DefaultIfEmpty()
+                                    from jbbo in jbo.DefaultIfEmpty()
+                                    from jshh in jsh.DefaultIfEmpty()
+                                    where (C.side == "c" || C.side == "v" || C.side == "b" || C.side == "u" || C.side == "sh")//( C.transType == "p" && C.side==Side)
+                                    select new
+                                    {
+                                        cashTransId = C.cashTransId,
+                                        transType = C.transType,
+                                        posId = C.posId,
+                                        userId = C.userId,
+                                        agentId = C.agentId,
+                                        invId = C.invId,
+                                        transNum = C.transNum,
+                                        createDate = C.createDate,
+                                        updateDate = C.updateDate,
+                                        cash = C.cash,
+                                        updateUserId = C.updateUserId,
+                                        createUserId = C.createUserId,
+                                        notes = C.notes,
+                                        posIdCreator = C.posIdCreator,
+                                        isConfirm = C.isConfirm,
+                                        cashTransIdSource = C.cashTransIdSource,
+                                        side = C.side,
 
-                                                            docName = C.docName,
-                                                            docNum = C.docNum,
-                                                            docImage = C.docImage,
-                                                            bankId = C.bankId,
-                                                            bankName = jbb.name,
-                                                            agentName = jaa.name,
+                                        docName = C.docName,
+                                        docNum = C.docNum,
+                                        docImage = C.docImage,
+                                        bankId = C.bankId,
+                                        bankName = jbb.name,
+                                        agentName = jaa.name,
 
-                                                            usersName = juu.name,// side =u
-                                                            userAcc = juu.username,// side =u
-                                                            posName = jpp.name,
-                                                            posCreatorName = jpcc.name,
-                                                            processType = C.processType,
-                                                            cardId = C.cardId,
-                                                            bondId = C.bondId,
-                                                            usersLName = juu.lastname,// side =u
-                                                            updateUserName = jucc.name,
-                                                            updateUserLName = jucc.lastname,
-                                                            updateUserAcc = jucc.username,
-                                                            createUserJob = jucc.job,
-                                                            cardName = jcrd.name,
-                                                            bondDeserveDate = jbbo.deserveDate,
-                                                            bondIsRecieved = jbbo.isRecieved,
-                                                            agentCompany = jaa.company,
-                                                            shippingCompanyId = C.shippingCompanyId,
-                                                            shippingCompanyName = C.shippingCompanies.name,
+                                        usersName = juu.name,// side =u
+                                        userAcc = juu.username,// side =u
+                                        posName = jpp.name,
+                                        posCreatorName = jpcc.name,
+                                        processType = C.processType,
+                                        cardId = C.cardId,
+                                        bondId = C.bondId,
+                                        usersLName = juu.lastname,// side =u
+                                        updateUserName = jucc.name,
+                                        updateUserLName = jucc.lastname,
+                                        updateUserAcc = jucc.username,
+                                        createUserJob = jucc.job,
+                                        cardName = jcrd.name,
+                                        bondDeserveDate = jbbo.deserveDate,
+                                        bondIsRecieved = jbbo.isRecieved,
+                                        agentCompany = jaa.company,
+                                        shippingCompanyId = C.shippingCompanyId,
+                                        shippingCompanyName = C.shippingCompanies.name,
 
-                                                        }).ToList();
+                                        agentBalance = jaa.balance,
+                                        agentBType = jaa.balanceType,
+                                        userBalance = juu.balance,
+                                        userBType = juu.balanceType,
+                                        shippingBalance = (decimal?)jshh.balance,
 
+                                        shippingCompaniesBType = jshh.balanceType,
+
+                                    }).ToList();
                     /*
                     if (cachlist.Count > 0 )
                     {

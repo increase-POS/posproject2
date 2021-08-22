@@ -289,6 +289,21 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="error">
+      <EntityTypeMapping TypeName="incposdbModel.error">
+        <MappingFragment StoreEntitySet="error">
+          <ScalarProperty Name="errorId" ColumnName="errorId" />
+          <ScalarProperty Name="num" ColumnName="num" />
+          <ScalarProperty Name="msg" ColumnName="msg" />
+          <ScalarProperty Name="windowName" ColumnName="windowName" />
+          <ScalarProperty Name="sender" ColumnName="sender" />
+          <ScalarProperty Name="posId" ColumnName="posId" />
+          <ScalarProperty Name="branchId" ColumnName="branchId" />
+          <ScalarProperty Name="createDate" ColumnName="createDate" />
+          <ScalarProperty Name="createUserId" ColumnName="createUserId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="Expenses">
       <EntityTypeMapping TypeName="incposdbModel.Expenses">
         <MappingFragment StoreEntitySet="Expenses">
@@ -638,6 +653,37 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="notification">
+      <EntityTypeMapping TypeName="incposdbModel.notification">
+        <MappingFragment StoreEntitySet="notification">
+          <ScalarProperty Name="notId" ColumnName="notId" />
+          <ScalarProperty Name="title" ColumnName="title" />
+          <ScalarProperty Name="ncontent" ColumnName="ncontent" />
+          <ScalarProperty Name="side" ColumnName="side" />
+          <ScalarProperty Name="msgType" ColumnName="msgType" />
+          <ScalarProperty Name="path" ColumnName="path" />
+          <ScalarProperty Name="createDate" ColumnName="createDate" />
+          <ScalarProperty Name="updateDate" ColumnName="updateDate" />
+          <ScalarProperty Name="createUserId" ColumnName="createUserId" />
+          <ScalarProperty Name="updateUserId" ColumnName="updateUserId" />
+          <ScalarProperty Name="isActive" ColumnName="isActive" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="notificationUser">
+      <EntityTypeMapping TypeName="incposdbModel.notificationUser">
+        <MappingFragment StoreEntitySet="notificationUser">
+          <ScalarProperty Name="notUserId" ColumnName="notUserId" />
+          <ScalarProperty Name="notId" ColumnName="notId" />
+          <ScalarProperty Name="userId" ColumnName="userId" />
+          <ScalarProperty Name="isRead" ColumnName="isRead" />
+          <ScalarProperty Name="createDate" ColumnName="createDate" />
+          <ScalarProperty Name="updateDate" ColumnName="updateDate" />
+          <ScalarProperty Name="createUserId" ColumnName="createUserId" />
+          <ScalarProperty Name="updateUserId" ColumnName="updateUserId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="objects">
       <EntityTypeMapping TypeName="incposdbModel.objects">
         <MappingFragment StoreEntitySet="objects">
@@ -885,17 +931,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="sysdiagrams">
-      <EntityTypeMapping TypeName="incposdbModel.sysdiagrams">
-        <MappingFragment StoreEntitySet="sysdiagrams">
-          <ScalarProperty Name="name" ColumnName="name" />
-          <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-          <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-          <ScalarProperty Name="version" ColumnName="version" />
-          <ScalarProperty Name="definition" ColumnName="definition" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="sysEmails">
       <EntityTypeMapping TypeName="incposdbModel.sysEmails">
         <MappingFragment StoreEntitySet="sysEmails">
@@ -986,52 +1021,6 @@
           <ScalarProperty Name="sOutDate" ColumnName="sOutDate" />
           <ScalarProperty Name="posId" ColumnName="posId" />
           <ScalarProperty Name="userId" ColumnName="userId" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="error">
-      <EntityTypeMapping TypeName="incposdbModel.error">
-        <MappingFragment StoreEntitySet="error">
-          <ScalarProperty Name="createUserId" ColumnName="createUserId" />
-          <ScalarProperty Name="createDate" ColumnName="createDate" />
-          <ScalarProperty Name="branchId" ColumnName="branchId" />
-          <ScalarProperty Name="posId" ColumnName="posId" />
-          <ScalarProperty Name="sender" ColumnName="sender" />
-          <ScalarProperty Name="windowName" ColumnName="windowName" />
-          <ScalarProperty Name="msg" ColumnName="msg" />
-          <ScalarProperty Name="num" ColumnName="num" />
-          <ScalarProperty Name="errorId" ColumnName="errorId" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="notification">
-      <EntityTypeMapping TypeName="incposdbModel.notification">
-        <MappingFragment StoreEntitySet="notification">
-          <ScalarProperty Name="isActive" ColumnName="isActive" />
-          <ScalarProperty Name="updateUserId" ColumnName="updateUserId" />
-          <ScalarProperty Name="createUserId" ColumnName="createUserId" />
-          <ScalarProperty Name="updateDate" ColumnName="updateDate" />
-          <ScalarProperty Name="createDate" ColumnName="createDate" />
-          <ScalarProperty Name="path" ColumnName="path" />
-          <ScalarProperty Name="msgType" ColumnName="msgType" />
-          <ScalarProperty Name="side" ColumnName="side" />
-          <ScalarProperty Name="ncontent" ColumnName="ncontent" />
-          <ScalarProperty Name="title" ColumnName="title" />
-          <ScalarProperty Name="notId" ColumnName="notId" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="notificationUser">
-      <EntityTypeMapping TypeName="incposdbModel.notificationUser">
-        <MappingFragment StoreEntitySet="notificationUser">
-          <ScalarProperty Name="updateUserId" ColumnName="updateUserId" />
-          <ScalarProperty Name="createUserId" ColumnName="createUserId" />
-          <ScalarProperty Name="updateDate" ColumnName="updateDate" />
-          <ScalarProperty Name="createDate" ColumnName="createDate" />
-          <ScalarProperty Name="isRead" ColumnName="isRead" />
-          <ScalarProperty Name="userId" ColumnName="userId" />
-          <ScalarProperty Name="notId" ColumnName="notId" />
-          <ScalarProperty Name="notUserId" ColumnName="notUserId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

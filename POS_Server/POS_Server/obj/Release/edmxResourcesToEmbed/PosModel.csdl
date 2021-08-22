@@ -124,6 +124,7 @@
     <NavigationProperty Name="branchesUsers" Relationship="Self.FK_branchesUsers_branches" FromRole="branches" ToRole="branchesUsers" />
     <NavigationProperty Name="branchStore" Relationship="Self.FK_branchStore_branches" FromRole="branches" ToRole="branchStore" />
     <NavigationProperty Name="branchStore1" Relationship="Self.FK_branchStore_branches2" FromRole="branches" ToRole="branchStore" />
+    <NavigationProperty Name="error" Relationship="Self.FK_error_branches" FromRole="branches" ToRole="error" />
     <NavigationProperty Name="Inventory" Relationship="Self.FK_Inventory_branches" FromRole="branches" ToRole="Inventory" />
     <NavigationProperty Name="invoices" Relationship="Self.FK_invoices_branches" FromRole="branches" ToRole="invoices" />
     <NavigationProperty Name="invoices1" Relationship="Self.FK_invoices_branches1" FromRole="branches" ToRole="invoices" />
@@ -131,7 +132,6 @@
     <NavigationProperty Name="pos" Relationship="Self.FK_pos_branches" FromRole="branches" ToRole="pos" />
     <NavigationProperty Name="sections" Relationship="Self.FK_sections_branches" FromRole="branches" ToRole="sections" />
     <NavigationProperty Name="sysEmails" Relationship="Self.FK_sysEmails_branches" FromRole="branches" ToRole="sysEmails" />
-    <NavigationProperty Name="error" Relationship="incposdbModel.FK_error_branches" FromRole="branches" ToRole="error" />
   </EntityType>
   <EntityType Name="branchesUsers">
     <Key>
@@ -348,6 +348,23 @@
     <Property Name="tableId" Type="Int32" />
     <NavigationProperty Name="users" Relationship="Self.FK_docImages_users" FromRole="docImages" ToRole="users" />
     <NavigationProperty Name="users1" Relationship="Self.FK_docImages_users1" FromRole="docImages" ToRole="users" />
+  </EntityType>
+  <EntityType Name="error">
+    <Key>
+      <PropertyRef Name="errorId" />
+    </Key>
+    <Property Name="errorId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="num" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="msg" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="windowName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="sender" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="posId" Type="Int32" />
+    <Property Name="branchId" Type="Int32" />
+    <Property Name="createDate" Type="DateTime" Precision="7" />
+    <Property Name="createUserId" Type="Int32" />
+    <NavigationProperty Name="branches" Relationship="Self.FK_error_branches" FromRole="error" ToRole="branches" />
+    <NavigationProperty Name="pos" Relationship="Self.FK_error_pos" FromRole="error" ToRole="pos" />
+    <NavigationProperty Name="users" Relationship="Self.FK_error_users" FromRole="error" ToRole="users" />
   </EntityType>
   <EntityType Name="Expenses">
     <Key>
@@ -787,6 +804,42 @@
     <NavigationProperty Name="users1" Relationship="Self.FK_memberships_users1" FromRole="memberships" ToRole="users" />
     <NavigationProperty Name="subscriptionFees" Relationship="Self.FK_subscriptionFees_memberships" FromRole="memberships" ToRole="subscriptionFees" />
   </EntityType>
+  <EntityType Name="notification">
+    <Key>
+      <PropertyRef Name="notId" />
+    </Key>
+    <Property Name="notId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="title" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="ncontent" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="side" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="msgType" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="path" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="createDate" Type="DateTime" Precision="7" />
+    <Property Name="updateDate" Type="DateTime" Precision="7" />
+    <Property Name="createUserId" Type="Int32" />
+    <Property Name="updateUserId" Type="Int32" />
+    <Property Name="isActive" Type="Byte" />
+    <NavigationProperty Name="users" Relationship="Self.FK_notification_users" FromRole="notification" ToRole="users" />
+    <NavigationProperty Name="users1" Relationship="Self.FK_notification_users1" FromRole="notification" ToRole="users" />
+    <NavigationProperty Name="notificationUser" Relationship="Self.FK_notificationUser_notification" FromRole="notification" ToRole="notificationUser" />
+  </EntityType>
+  <EntityType Name="notificationUser">
+    <Key>
+      <PropertyRef Name="notUserId" />
+    </Key>
+    <Property Name="notUserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="notId" Type="Int32" />
+    <Property Name="userId" Type="Int32" />
+    <Property Name="isRead" Type="Boolean" Nullable="false" />
+    <Property Name="createDate" Type="DateTime" Precision="7" />
+    <Property Name="updateDate" Type="DateTime" Precision="7" />
+    <Property Name="createUserId" Type="Int32" />
+    <Property Name="updateUserId" Type="Int32" />
+    <NavigationProperty Name="notification" Relationship="Self.FK_notificationUser_notification" FromRole="notificationUser" ToRole="notification" />
+    <NavigationProperty Name="users" Relationship="Self.FK_notificationUser_users" FromRole="notificationUser" ToRole="users" />
+    <NavigationProperty Name="users1" Relationship="Self.FK_notificationUser_users1" FromRole="notificationUser" ToRole="users" />
+    <NavigationProperty Name="users2" Relationship="Self.FK_notificationUser_users2" FromRole="notificationUser" ToRole="users" />
+  </EntityType>
   <EntityType Name="objects">
     <Key>
       <PropertyRef Name="objectId" />
@@ -890,13 +943,13 @@
     <NavigationProperty Name="branches" Relationship="Self.FK_pos_branches" FromRole="pos" ToRole="branches" />
     <NavigationProperty Name="cashTransfer" Relationship="Self.FK_cashTransfer_pos" FromRole="pos" ToRole="cashTransfer" />
     <NavigationProperty Name="cashTransfer1" Relationship="Self.FK_cashTransfer_pos1" FromRole="pos" ToRole="cashTransfer" />
+    <NavigationProperty Name="error" Relationship="Self.FK_error_pos" FromRole="pos" ToRole="error" />
     <NavigationProperty Name="Inventory" Relationship="Self.FK_Inventory_pos" FromRole="pos" ToRole="Inventory" />
     <NavigationProperty Name="invoices" Relationship="Self.FK_invoices_pos" FromRole="pos" ToRole="invoices" />
     <NavigationProperty Name="users" Relationship="Self.FK_pos_users" FromRole="pos" ToRole="users" />
     <NavigationProperty Name="users1" Relationship="Self.FK_pos_users1" FromRole="pos" ToRole="users" />
     <NavigationProperty Name="posUsers" Relationship="Self.FK_posUsers_pos" FromRole="pos" ToRole="posUsers" />
     <NavigationProperty Name="usersLogs" Relationship="Self.FK_usersLogs_pos" FromRole="pos" ToRole="usersLogs" />
-    <NavigationProperty Name="error" Relationship="incposdbModel.FK_error_pos" FromRole="pos" ToRole="error" />
   </EntityType>
   <EntityType Name="posUsers">
     <Key>
@@ -1070,16 +1123,6 @@
     <NavigationProperty Name="agentMemberships" Relationship="Self.FK_agentMemberships_subscriptionFees" FromRole="subscriptionFees" ToRole="agentMemberships" />
     <NavigationProperty Name="memberships" Relationship="Self.FK_subscriptionFees_memberships" FromRole="subscriptionFees" ToRole="memberships" />
   </EntityType>
-  <EntityType Name="sysdiagrams">
-    <Key>
-      <PropertyRef Name="diagram_id" />
-    </Key>
-    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="principal_id" Type="Int32" Nullable="false" />
-    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="version" Type="Int32" />
-    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
-  </EntityType>
   <EntityType Name="sysEmails">
     <Key>
       <PropertyRef Name="emailId" />
@@ -1180,6 +1223,7 @@
     <NavigationProperty Name="couponsInvoices1" Relationship="Self.FK_couponsInvoices_users1" FromRole="users" ToRole="couponsInvoices" />
     <NavigationProperty Name="docImages" Relationship="Self.FK_docImages_users" FromRole="users" ToRole="docImages" />
     <NavigationProperty Name="docImages1" Relationship="Self.FK_docImages_users1" FromRole="users" ToRole="docImages" />
+    <NavigationProperty Name="error" Relationship="Self.FK_error_users" FromRole="users" ToRole="error" />
     <NavigationProperty Name="Expenses" Relationship="Self.FK_Expenses_users" FromRole="users" ToRole="Expenses" />
     <NavigationProperty Name="groupObject" Relationship="Self.FK_groupObject_users" FromRole="users" ToRole="groupObject" />
     <NavigationProperty Name="groupObject1" Relationship="Self.FK_groupObject_users1" FromRole="users" ToRole="groupObject" />
@@ -1222,6 +1266,11 @@
     <NavigationProperty Name="medals1" Relationship="Self.FK_medals_users1" FromRole="users" ToRole="medals" />
     <NavigationProperty Name="memberships" Relationship="Self.FK_memberships_users" FromRole="users" ToRole="memberships" />
     <NavigationProperty Name="memberships1" Relationship="Self.FK_memberships_users1" FromRole="users" ToRole="memberships" />
+    <NavigationProperty Name="notification" Relationship="Self.FK_notification_users" FromRole="users" ToRole="notification" />
+    <NavigationProperty Name="notification1" Relationship="Self.FK_notification_users1" FromRole="users" ToRole="notification" />
+    <NavigationProperty Name="notificationUser" Relationship="Self.FK_notificationUser_users" FromRole="users" ToRole="notificationUser" />
+    <NavigationProperty Name="notificationUser1" Relationship="Self.FK_notificationUser_users1" FromRole="users" ToRole="notificationUser" />
+    <NavigationProperty Name="notificationUser2" Relationship="Self.FK_notificationUser_users2" FromRole="users" ToRole="notificationUser" />
     <NavigationProperty Name="objects" Relationship="Self.FK_objects_users" FromRole="users" ToRole="objects" />
     <NavigationProperty Name="objects1" Relationship="Self.FK_objects_users1" FromRole="users" ToRole="objects" />
     <NavigationProperty Name="packages" Relationship="Self.FK_packages_users1" FromRole="users" ToRole="packages" />
@@ -1249,12 +1298,6 @@
     <NavigationProperty Name="userSetValues1" Relationship="Self.FK_userSetValues_users1" FromRole="users" ToRole="userSetValues" />
     <NavigationProperty Name="userSetValues2" Relationship="Self.FK_userSetValues_users2" FromRole="users" ToRole="userSetValues" />
     <NavigationProperty Name="usersLogs" Relationship="Self.FK_usersLogs_users" FromRole="users" ToRole="usersLogs" />
-    <NavigationProperty Name="error" Relationship="incposdbModel.FK_error_users" FromRole="users" ToRole="error" />
-    <NavigationProperty Name="notification" Relationship="incposdbModel.FK_notification_users" FromRole="users" ToRole="notification" />
-    <NavigationProperty Name="notification1" Relationship="incposdbModel.FK_notification_users1" FromRole="users" ToRole="notification" />
-    <NavigationProperty Name="notificationUser" Relationship="incposdbModel.FK_notificationUser_users" FromRole="users" ToRole="notificationUser" />
-    <NavigationProperty Name="notificationUser1" Relationship="incposdbModel.FK_notificationUser_users1" FromRole="users" ToRole="notificationUser" />
-    <NavigationProperty Name="notificationUser2" Relationship="incposdbModel.FK_notificationUser_users2" FromRole="users" ToRole="notificationUser" />
   </EntityType>
   <EntityType Name="userSetValues">
     <Key>
@@ -1569,6 +1612,18 @@
         <PropertyRef Name="branchId" />
       </Principal>
       <Dependent Role="branchStore">
+        <PropertyRef Name="branchId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_error_branches">
+    <End Role="branches" Type="Self.branches" Multiplicity="0..1" />
+    <End Role="error" Type="Self.error" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="branches">
+        <PropertyRef Name="branchId" />
+      </Principal>
+      <Dependent Role="error">
         <PropertyRef Name="branchId" />
       </Dependent>
     </ReferentialConstraint>
@@ -2014,6 +2069,30 @@
       </Principal>
       <Dependent Role="docImages">
         <PropertyRef Name="updateUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_error_pos">
+    <End Role="pos" Type="Self.pos" Multiplicity="0..1" />
+    <End Role="error" Type="Self.error" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="pos">
+        <PropertyRef Name="posId" />
+      </Principal>
+      <Dependent Role="error">
+        <PropertyRef Name="posId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_error_users">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="error" Type="Self.error" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="error">
+        <PropertyRef Name="createUserId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -2965,6 +3044,78 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_notification_users">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="notification" Type="Self.notification" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="notification">
+        <PropertyRef Name="updateUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_notification_users1">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="notification" Type="Self.notification" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="notification">
+        <PropertyRef Name="createUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_notificationUser_notification">
+    <End Role="notification" Type="Self.notification" Multiplicity="0..1" />
+    <End Role="notificationUser" Type="Self.notificationUser" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="notification">
+        <PropertyRef Name="notId" />
+      </Principal>
+      <Dependent Role="notificationUser">
+        <PropertyRef Name="notId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_notificationUser_users">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="notificationUser" Type="Self.notificationUser" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="notificationUser">
+        <PropertyRef Name="userId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_notificationUser_users1">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="notificationUser" Type="Self.notificationUser" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="notificationUser">
+        <PropertyRef Name="createUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_notificationUser_users2">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="notificationUser" Type="Self.notificationUser" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="notificationUser">
+        <PropertyRef Name="updateUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_objects_objects">
     <End Role="objects" Type="Self.objects" Multiplicity="0..1" />
     <End Role="objects1" Type="Self.objects" Multiplicity="*" />
@@ -3378,6 +3529,7 @@
     <EntitySet Name="coupons" EntityType="Self.coupons" />
     <EntitySet Name="couponsInvoices" EntityType="Self.couponsInvoices" />
     <EntitySet Name="docImages" EntityType="Self.docImages" />
+    <EntitySet Name="error" EntityType="Self.error" />
     <EntitySet Name="Expenses" EntityType="Self.Expenses" />
     <EntitySet Name="groupObject" EntityType="Self.groupObject" />
     <EntitySet Name="groups" EntityType="Self.groups" />
@@ -3397,6 +3549,8 @@
     <EntitySet Name="medalAgent" EntityType="Self.medalAgent" />
     <EntitySet Name="medals" EntityType="Self.medals" />
     <EntitySet Name="memberships" EntityType="Self.memberships" />
+    <EntitySet Name="notification" EntityType="Self.notification" />
+    <EntitySet Name="notificationUser" EntityType="Self.notificationUser" />
     <EntitySet Name="objects" EntityType="Self.objects" />
     <EntitySet Name="offers" EntityType="Self.offers" />
     <EntitySet Name="packages" EntityType="Self.packages" />
@@ -3413,7 +3567,6 @@
     <EntitySet Name="shippingCompanies" EntityType="Self.shippingCompanies" />
     <EntitySet Name="storageCost" EntityType="Self.storageCost" />
     <EntitySet Name="subscriptionFees" EntityType="Self.subscriptionFees" />
-    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
     <EntitySet Name="sysEmails" EntityType="Self.sysEmails" />
     <EntitySet Name="units" EntityType="Self.units" />
     <EntitySet Name="users" EntityType="Self.users" />
@@ -3514,6 +3667,10 @@
     <AssociationSet Name="FK_branchStore_branches2" Association="Self.FK_branchStore_branches2">
       <End Role="branches" EntitySet="branches" />
       <End Role="branchStore" EntitySet="branchStore" />
+    </AssociationSet>
+    <AssociationSet Name="FK_error_branches" Association="Self.FK_error_branches">
+      <End Role="branches" EntitySet="branches" />
+      <End Role="error" EntitySet="error" />
     </AssociationSet>
     <AssociationSet Name="FK_Inventory_branches" Association="Self.FK_Inventory_branches">
       <End Role="branches" EntitySet="branches" />
@@ -3662,6 +3819,14 @@
     <AssociationSet Name="FK_docImages_users1" Association="Self.FK_docImages_users1">
       <End Role="users" EntitySet="users" />
       <End Role="docImages" EntitySet="docImages" />
+    </AssociationSet>
+    <AssociationSet Name="FK_error_pos" Association="Self.FK_error_pos">
+      <End Role="pos" EntitySet="pos" />
+      <End Role="error" EntitySet="error" />
+    </AssociationSet>
+    <AssociationSet Name="FK_error_users" Association="Self.FK_error_users">
+      <End Role="users" EntitySet="users" />
+      <End Role="error" EntitySet="error" />
     </AssociationSet>
     <AssociationSet Name="FK_Expenses_users" Association="Self.FK_Expenses_users">
       <End Role="users" EntitySet="users" />
@@ -3979,6 +4144,30 @@
       <End Role="memberships" EntitySet="memberships" />
       <End Role="subscriptionFees" EntitySet="subscriptionFees" />
     </AssociationSet>
+    <AssociationSet Name="FK_notification_users" Association="Self.FK_notification_users">
+      <End Role="users" EntitySet="users" />
+      <End Role="notification" EntitySet="notification" />
+    </AssociationSet>
+    <AssociationSet Name="FK_notification_users1" Association="Self.FK_notification_users1">
+      <End Role="users" EntitySet="users" />
+      <End Role="notification" EntitySet="notification" />
+    </AssociationSet>
+    <AssociationSet Name="FK_notificationUser_notification" Association="Self.FK_notificationUser_notification">
+      <End Role="notification" EntitySet="notification" />
+      <End Role="notificationUser" EntitySet="notificationUser" />
+    </AssociationSet>
+    <AssociationSet Name="FK_notificationUser_users" Association="Self.FK_notificationUser_users">
+      <End Role="users" EntitySet="users" />
+      <End Role="notificationUser" EntitySet="notificationUser" />
+    </AssociationSet>
+    <AssociationSet Name="FK_notificationUser_users1" Association="Self.FK_notificationUser_users1">
+      <End Role="users" EntitySet="users" />
+      <End Role="notificationUser" EntitySet="notificationUser" />
+    </AssociationSet>
+    <AssociationSet Name="FK_notificationUser_users2" Association="Self.FK_notificationUser_users2">
+      <End Role="users" EntitySet="users" />
+      <End Role="notificationUser" EntitySet="notificationUser" />
+    </AssociationSet>
     <AssociationSet Name="FK_objects_objects" Association="Self.FK_objects_objects">
       <End Role="objects" EntitySet="objects" />
       <End Role="objects1" EntitySet="objects" />
@@ -4111,205 +4300,5 @@
       <End Role="users" EntitySet="users" />
       <End Role="usersLogs" EntitySet="usersLogs" />
     </AssociationSet>
-    <EntitySet Name="error" EntityType="incposdbModel.error" />
-    <EntitySet Name="notification" EntityType="incposdbModel.notification" />
-    <EntitySet Name="notificationUser" EntityType="incposdbModel.notificationUser" />
-    <AssociationSet Name="FK_error_branches" Association="incposdbModel.FK_error_branches">
-      <End Role="branches" EntitySet="branches" />
-      <End Role="error" EntitySet="error" />
-    </AssociationSet>
-    <AssociationSet Name="FK_error_pos" Association="incposdbModel.FK_error_pos">
-      <End Role="pos" EntitySet="pos" />
-      <End Role="error" EntitySet="error" />
-    </AssociationSet>
-    <AssociationSet Name="FK_error_users" Association="incposdbModel.FK_error_users">
-      <End Role="users" EntitySet="users" />
-      <End Role="error" EntitySet="error" />
-    </AssociationSet>
-    <AssociationSet Name="FK_notification_users" Association="incposdbModel.FK_notification_users">
-      <End Role="users" EntitySet="users" />
-      <End Role="notification" EntitySet="notification" />
-    </AssociationSet>
-    <AssociationSet Name="FK_notification_users1" Association="incposdbModel.FK_notification_users1">
-      <End Role="users" EntitySet="users" />
-      <End Role="notification" EntitySet="notification" />
-    </AssociationSet>
-    <AssociationSet Name="FK_notificationUser_notification" Association="incposdbModel.FK_notificationUser_notification">
-      <End Role="notification" EntitySet="notification" />
-      <End Role="notificationUser" EntitySet="notificationUser" />
-    </AssociationSet>
-    <AssociationSet Name="FK_notificationUser_users" Association="incposdbModel.FK_notificationUser_users">
-      <End Role="users" EntitySet="users" />
-      <End Role="notificationUser" EntitySet="notificationUser" />
-    </AssociationSet>
-    <AssociationSet Name="FK_notificationUser_users1" Association="incposdbModel.FK_notificationUser_users1">
-      <End Role="users" EntitySet="users" />
-      <End Role="notificationUser" EntitySet="notificationUser" />
-    </AssociationSet>
-    <AssociationSet Name="FK_notificationUser_users2" Association="incposdbModel.FK_notificationUser_users2">
-      <End Role="users" EntitySet="users" />
-      <End Role="notificationUser" EntitySet="notificationUser" />
-    </AssociationSet>
   </EntityContainer>
-  <EntityType Name="error">
-    <Key>
-      <PropertyRef Name="errorId" />
-    </Key>
-    <Property Name="errorId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="num" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-    <Property Name="msg" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="windowName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="sender" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="posId" Type="Int32" />
-    <Property Name="branchId" Type="Int32" />
-    <Property Name="createDate" Type="DateTime" Precision="7" />
-    <Property Name="createUserId" Type="Int32" />
-    <NavigationProperty Name="branches" Relationship="incposdbModel.FK_error_branches" FromRole="error" ToRole="branches" />
-    <NavigationProperty Name="pos" Relationship="incposdbModel.FK_error_pos" FromRole="error" ToRole="pos" />
-    <NavigationProperty Name="users" Relationship="incposdbModel.FK_error_users" FromRole="error" ToRole="users" />
-  </EntityType>
-  <EntityType Name="notification">
-    <Key>
-      <PropertyRef Name="notId" />
-    </Key>
-    <Property Name="notId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="title" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-    <Property Name="ncontent" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-    <Property Name="side" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-    <Property Name="msgType" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-    <Property Name="path" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-    <Property Name="createDate" Type="DateTime" Precision="7" />
-    <Property Name="updateDate" Type="DateTime" Precision="7" />
-    <Property Name="createUserId" Type="Int32" />
-    <Property Name="updateUserId" Type="Int32" />
-    <Property Name="isActive" Type="Byte" />
-    <NavigationProperty Name="users" Relationship="incposdbModel.FK_notification_users" FromRole="notification" ToRole="users" />
-    <NavigationProperty Name="users1" Relationship="incposdbModel.FK_notification_users1" FromRole="notification" ToRole="users" />
-    <NavigationProperty Name="notificationUser" Relationship="incposdbModel.FK_notificationUser_notification" FromRole="notification" ToRole="notificationUser" />
-  </EntityType>
-  <EntityType Name="notificationUser">
-    <Key>
-      <PropertyRef Name="notUserId" />
-    </Key>
-    <Property Name="notUserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="notId" Type="Int32" />
-    <Property Name="userId" Type="Int32" />
-    <Property Name="isRead" Type="Boolean" Nullable="false" />
-    <Property Name="createDate" Type="DateTime" Precision="7" />
-    <Property Name="updateDate" Type="DateTime" Precision="7" />
-    <Property Name="createUserId" Type="Int32" />
-    <Property Name="updateUserId" Type="Int32" />
-    <NavigationProperty Name="notification" Relationship="incposdbModel.FK_notificationUser_notification" FromRole="notificationUser" ToRole="notification" />
-    <NavigationProperty Name="users" Relationship="incposdbModel.FK_notificationUser_users" FromRole="notificationUser" ToRole="users" />
-    <NavigationProperty Name="users1" Relationship="incposdbModel.FK_notificationUser_users1" FromRole="notificationUser" ToRole="users" />
-    <NavigationProperty Name="users2" Relationship="incposdbModel.FK_notificationUser_users2" FromRole="notificationUser" ToRole="users" />
-  </EntityType>
-  <Association Name="FK_error_branches">
-    <End Type="incposdbModel.branches" Role="branches" Multiplicity="0..1" />
-    <End Type="incposdbModel.error" Role="error" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="branches">
-        <PropertyRef Name="branchId" />
-      </Principal>
-      <Dependent Role="error">
-        <PropertyRef Name="branchId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_error_pos">
-    <End Type="incposdbModel.pos" Role="pos" Multiplicity="0..1" />
-    <End Type="incposdbModel.error" Role="error" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="pos">
-        <PropertyRef Name="posId" />
-      </Principal>
-      <Dependent Role="error">
-        <PropertyRef Name="posId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_error_users">
-    <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
-    <End Type="incposdbModel.error" Role="error" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="users">
-        <PropertyRef Name="userId" />
-      </Principal>
-      <Dependent Role="error">
-        <PropertyRef Name="createUserId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_notification_users">
-    <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
-    <End Type="incposdbModel.notification" Role="notification" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="users">
-        <PropertyRef Name="userId" />
-      </Principal>
-      <Dependent Role="notification">
-        <PropertyRef Name="updateUserId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_notification_users1">
-    <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
-    <End Type="incposdbModel.notification" Role="notification" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="users">
-        <PropertyRef Name="userId" />
-      </Principal>
-      <Dependent Role="notification">
-        <PropertyRef Name="createUserId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_notificationUser_notification">
-    <End Type="incposdbModel.notification" Role="notification" Multiplicity="0..1" />
-    <End Type="incposdbModel.notificationUser" Role="notificationUser" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="notification">
-        <PropertyRef Name="notId" />
-      </Principal>
-      <Dependent Role="notificationUser">
-        <PropertyRef Name="notId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_notificationUser_users">
-    <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
-    <End Type="incposdbModel.notificationUser" Role="notificationUser" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="users">
-        <PropertyRef Name="userId" />
-      </Principal>
-      <Dependent Role="notificationUser">
-        <PropertyRef Name="userId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_notificationUser_users1">
-    <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
-    <End Type="incposdbModel.notificationUser" Role="notificationUser" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="users">
-        <PropertyRef Name="userId" />
-      </Principal>
-      <Dependent Role="notificationUser">
-        <PropertyRef Name="createUserId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_notificationUser_users2">
-    <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
-    <End Type="incposdbModel.notificationUser" Role="notificationUser" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="users">
-        <PropertyRef Name="userId" />
-      </Principal>
-      <Dependent Role="notificationUser">
-        <PropertyRef Name="updateUserId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
 </Schema>

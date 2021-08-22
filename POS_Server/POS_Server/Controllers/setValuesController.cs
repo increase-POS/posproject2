@@ -279,8 +279,12 @@ namespace POS_Server.Controllers
                     }
                     using (incposdbEntities entity = new incposdbEntities())
                     {
+                        setValues defItem = new setValues();
                         var sEntity = entity.Set<setValues>();
-                        setValues defItem = entity.setValues.Where(p => p.settingId == Object.settingId && p.isDefault == 1).FirstOrDefault();
+
+                        defItem = entity.setValues.Where(p => p.settingId == Object.settingId).FirstOrDefault();
+
+
 
                         if (Object.valId == 0)
                         {
@@ -312,13 +316,13 @@ namespace POS_Server.Controllers
                                 defItem.isDefault = 0;//reset the other default to 0 if exist
                             }
                             var tmps1 = sEntity.ToList();
-                            var tmps = tmps1.Where(p => p.notes == Object.notes).FirstOrDefault();
-                            tmps.valId = Object.valId;
-                           // tmps.notes = Object.notes;
+                            var tmps = tmps1.Where(p => p.notes == Object.notes && p.settingId == Object.settingId && p.valId == Object.valId).FirstOrDefault();
+                            //   tmps.valId = Object.valId;
+                            // tmps.notes = Object.notes;
                             tmps.value = Object.value;
                             tmps.isDefault = Object.isDefault;
                             tmps.isSystem = Object.isSystem;
-                         
+
                             tmps.settingId = Object.settingId;
                             entity.SaveChanges();
                             message = tmps.valId.ToString();
@@ -329,9 +333,9 @@ namespace POS_Server.Controllers
                     return message; ;
                 }
 
-                catch
+                catch (Exception ex)
                 {
-                    return "-1";
+                    return ex.ToString();
                 }
             }
             else

@@ -41,6 +41,7 @@ namespace POS_Server
         public virtual DbSet<coupons> coupons { get; set; }
         public virtual DbSet<couponsInvoices> couponsInvoices { get; set; }
         public virtual DbSet<docImages> docImages { get; set; }
+        public virtual DbSet<error> error { get; set; }
         public virtual DbSet<Expenses> Expenses { get; set; }
         public virtual DbSet<groupObject> groupObject { get; set; }
         public virtual DbSet<groups> groups { get; set; }
@@ -60,6 +61,8 @@ namespace POS_Server
         public virtual DbSet<medalAgent> medalAgent { get; set; }
         public virtual DbSet<medals> medals { get; set; }
         public virtual DbSet<memberships> memberships { get; set; }
+        public virtual DbSet<notification> notification { get; set; }
+        public virtual DbSet<notificationUser> notificationUser { get; set; }
         public virtual DbSet<objects> objects { get; set; }
         public virtual DbSet<offers> offers { get; set; }
         public virtual DbSet<packages> packages { get; set; }
@@ -76,14 +79,10 @@ namespace POS_Server
         public virtual DbSet<shippingCompanies> shippingCompanies { get; set; }
         public virtual DbSet<storageCost> storageCost { get; set; }
         public virtual DbSet<subscriptionFees> subscriptionFees { get; set; }
-        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<sysEmails> sysEmails { get; set; }
         public virtual DbSet<units> units { get; set; }
         public virtual DbSet<users> users { get; set; }
         public virtual DbSet<userSetValues> userSetValues { get; set; }
         public virtual DbSet<usersLogs> usersLogs { get; set; }
-        public virtual DbSet<error> error { get; set; }
-        public virtual DbSet<notification> notification { get; set; }
-        public virtual DbSet<notificationUser> notificationUser { get; set; }
     }
 }
