@@ -24,7 +24,14 @@ namespace POS.View.windows
     {
         public wd_usersList()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
 
@@ -49,14 +56,17 @@ namespace POS.View.windows
         /// <param name="e"></param>
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
-            SectionData.StartAwait(grid_mainGrid);
-            #region translate
-            if (MainWindow.lang.Equals("en"))
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                #region translate
+                if (MainWindow.lang.Equals("en"))
             { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
-                grid_users.FlowDirection = FlowDirection.LeftToRight; }
+                    grid_main.FlowDirection = FlowDirection.LeftToRight; }
             else
             { MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
-                grid_users.FlowDirection = FlowDirection.RightToLeft; }
+                    grid_main.FlowDirection = FlowDirection.RightToLeft; }
 
             translat();
             #endregion
@@ -87,7 +97,15 @@ namespace POS.View.windows
             lst_selectedUsers.ItemsSource = selectedUsers;
             lst_selectedUsers.SelectedValuePath = "fullName";
             lst_selectedUsers.DisplayMemberPath = "userId";
-            SectionData.EndAwait(grid_mainGrid,this);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void translat()
@@ -111,15 +129,33 @@ namespace POS.View.windows
 
         private void HandleKeyPress(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Return)
+                try
+                {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                if (e.Key == Key.Return)
             {
                 Btn_save_Click(null, null);
+            }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {//save
-            //get selcted ids
-            List<int> userIds = new List<int>();
+                    try
+                    {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                //get selcted ids
+                List<int> userIds = new List<int>();
             foreach (var u in selectedUsers)
                 userIds.Add(u.userId);
 
@@ -127,41 +163,102 @@ namespace POS.View.windows
 
             isActive = true;
             this.Close();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Btn_colse_Click(object sender, RoutedEventArgs e)
         {
-            isActive = false;
+                        try
+                        {
+                            isActive = false;
             this.Close();
-        }
+                }
+                catch (Exception ex)
+                {
+                    SectionData.ExceptionMessage(ex, this, sender);
+                }
+            }
 
         private void Lst_allUsers_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
 
-            Btn_selectedUser_Click(null, null);
+                            try
+                            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
+                Btn_selectedUser_Click(null, null);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Lst_selectedUsers_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            Btn_unSelectedUser_Click(null, null);
+                                try
+                                {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
+                Btn_unSelectedUser_Click(null, null);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
 
         private async void Btn_selectedAll_Click(object sender, RoutedEventArgs e)
         {//select all
-            int x = allUsers.Count;
+                                    try
+                                    {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                int x = allUsers.Count;
             for (int i = 0; i < x; i++)
             {
                 //MessageBox.Show(i.ToString());
                 lst_allUsers.SelectedIndex = 0;
                 Btn_selectedUser_Click(null, null);
             }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         private void Btn_selectedUser_Click(object sender, RoutedEventArgs e)
         {//select one
-            user = lst_allUsers.SelectedItem as User;
+                                        try
+                                        {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                user = lst_allUsers.SelectedItem as User;
             if (user != null)
             {
                 allUsers.Remove(user);
@@ -174,12 +271,26 @@ namespace POS.View.windows
                 lst_selectedUsers.Items.Refresh();
             }
 
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
 
         private void Btn_unSelectedUser_Click(object sender, RoutedEventArgs e)
         {//unselect one
-            user = lst_selectedUsers.SelectedItem as User;
+                                            try
+                                            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                user = lst_selectedUsers.SelectedItem as User;
             if (user != null)
             {
                 selectedUsers.Remove(user);
@@ -192,22 +303,58 @@ namespace POS.View.windows
                 lst_allUsers.Items.Refresh();
                 lst_selectedUsers.Items.Refresh();
             }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private async void Btn_unSelectedAll_Click(object sender, RoutedEventArgs e)
         {//unselect all
-            int x = selectedUsers.Count;
+                                                try
+                                                {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                int x = selectedUsers.Count;
             for (int i = 0; i < x; i++)
             {
                 lst_selectedUsers.SelectedIndex = 0;
                 Btn_unSelectedUser_Click(null, null);
             }
-
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Txb_search_TextChanged(object sender, TextChangedEventArgs e)
         {
-            lst_allUsers.ItemsSource = allUsers.Where(x => (x.fullName.ToLower().Contains(txb_search.Text.ToLower())) && x.isActive == 1);
+                                                    try
+                                                    {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                lst_allUsers.ItemsSource = allUsers.Where(x => (x.fullName.ToLower().Contains(txb_search.Text.ToLower())) && x.isActive == 1);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
@@ -223,9 +370,16 @@ namespace POS.View.windows
         }
         private void Grid_BeginningEdit(object sender, DataGridBeginningEditEventArgs e)
         {
-            //// Have to do this in the unusual case where the border of the cell gets selected.
-            //// and causes a crash 'EditItem is not allowed'
-            e.Cancel = true;
-        }
+                                                        //// Have to do this in the unusual case where the border of the cell gets selected.
+                                                        //// and causes a crash 'EditItem is not allowed'
+                                                        try
+                                                        {
+                                                            e.Cancel = true;
+                }
+                catch (Exception ex)
+                {
+                    SectionData.ExceptionMessage(ex, this, sender);
+                }
+            }
     }
 }

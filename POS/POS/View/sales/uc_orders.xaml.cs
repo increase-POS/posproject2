@@ -86,6 +86,7 @@ namespace POS.View.sales
         List<ShippingCompanies> companies;
         User userModel = new User();
         List<User> users;
+        Notification notification = new Notification();
         private static DispatcherTimer timer;
         #region//to handle barcode characters
         static private int _SelectedCustomer = -1;
@@ -622,8 +623,8 @@ namespace POS.View.sales
                 valid = false;
             if (valid)
                 valid = validateItemUnits();
-            if (valid == true && _InvoiceType == "ord")
-                valid = await checkItemsAmounts();
+            //if (valid == true && _InvoiceType == "ord")
+            //    valid = await checkItemsAmounts();
             return valid;
         }
         private bool validateItemUnits()
@@ -694,9 +695,10 @@ namespace POS.View.sales
             tb_barcode.Clear();
             cb_customer.SelectedIndex = -1;
             cb_customer.SelectedItem = "";
+            cb_branch.SelectedIndex = -1;
+            cb_branch.SelectedItem = "";
             dp_desrvedDate.Text = "";
             tb_note.Clear();
-            //txt_discount.Text = "0";
             billDetails.Clear();
             tb_total.Text = "0";
             tb_sum.Text = "0";
@@ -712,7 +714,6 @@ namespace POS.View.sales
             lst_coupons.Items.Clear();
             tb_discount.Text = "0";
 
-            //btn_updateCustomer.IsEnabled = false;
             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSaleOrder");
             SectionData.clearComboBoxValidate(cb_customer, p_errorCustomer);
             refrishBillDetails();
@@ -1318,7 +1319,7 @@ SectionData.isAdminPermision())
                     billDetails[dg_billDetails.SelectedIndex].itemUnitId = (int)cmb.SelectedValue;
                     //var unit = itemUnits.ToList().Find(x => x.itemUnitId == (int)cmb.SelectedValue);
                     var unit = await itemUnitModel.GetById((int)cmb.SelectedValue);
-                    int availableAmount = await itemLocationModel.getAmountInBranch(itemUnitId, MainWindow.branchID.Value);
+                   // int availableAmount = await itemLocationModel.getAmountInBranch(itemUnitId, MainWindow.branchID.Value);
 
                     int oldCount = 0;
                     long newCount = 0;
@@ -1326,20 +1327,20 @@ SectionData.isAdminPermision())
                     decimal newPrice = (decimal)unit.price;
 
                     //"tb_amont"
-                    tb = dg_billDetails.Columns[4].GetCellContent(dg_billDetails.Items[dg_billDetails.SelectedIndex]) as TextBlock;
-                    tb.Text = availableAmount.ToString();
+                    //tb = dg_billDetails.Columns[4].GetCellContent(dg_billDetails.Items[dg_billDetails.SelectedIndex]) as TextBlock;
+                   // tb.Text = availableAmount.ToString();
 
                     oldCount = billDetails[dg_billDetails.SelectedIndex].Count;
                     oldPrice = billDetails[dg_billDetails.SelectedIndex].Price;
 
-                    if (availableAmount < oldCount)
-                    {
-                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountNotAvailableToolTip"), animation: ToasterAnimation.FadeIn);
-                        newCount = availableAmount;
-                        tb = dg_billDetails.Columns[4].GetCellContent(dg_billDetails.Items[dg_billDetails.SelectedIndex]) as TextBlock;
-                        tb.Text = availableAmount.ToString();
-                    }
-                    else
+                    //if (availableAmount < oldCount)
+                    //{
+                    //    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountNotAvailableToolTip"), animation: ToasterAnimation.FadeIn);
+                    //    newCount = availableAmount;
+                    //    tb = dg_billDetails.Columns[4].GetCellContent(dg_billDetails.Items[dg_billDetails.SelectedIndex]) as TextBlock;
+                    //    tb.Text = availableAmount.ToString();
+                    //}
+                    //else
                         newCount = oldCount;
 
                     decimal total = oldPrice * oldCount;
@@ -1480,14 +1481,14 @@ SectionData.isAdminPermision())
 
                     oldCount = row.Count;
 
-                    int availableAmount = await itemLocationModel.getAmountInBranch(row.itemUnitId, MainWindow.branchID.Value);
-                    if (availableAmount < newCount)
-                    {
-                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountNotAvailableToolTip"), animation: ToasterAnimation.FadeIn);
-                        newCount = availableAmount;
-                        tb = dg_billDetails.Columns[4].GetCellContent(dg_billDetails.Items[index]) as TextBlock;
-                        tb.Text = newCount.ToString();
-                    }
+                    //int availableAmount = await itemLocationModel.getAmountInBranch(row.itemUnitId, MainWindow.branchID.Value);
+                    //if (availableAmount < newCount)
+                    //{
+                    //    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountNotAvailableToolTip"), animation: ToasterAnimation.FadeIn);
+                    //    newCount = availableAmount;
+                    //    tb = dg_billDetails.Columns[4].GetCellContent(dg_billDetails.Items[index]) as TextBlock;
+                    //    tb.Text = newCount.ToString();
+                    //}
 
                     if (columnName == MainWindow.resourcemanager.GetString("trPrice"))
                         newPrice = decimal.Parse(t.Text);
@@ -1576,21 +1577,21 @@ SectionData.isAdminPermision())
             }
         }
 
-        private async Task<Boolean> checkItemsAmounts()
-        {
-            Boolean available = true;
-            for (int i = 0; i < billDetails.Count; i++)
-            {
-                int availableAmount = await itemLocationModel.getAmountInBranch(billDetails[i].itemUnitId, MainWindow.branchID.Value);
-                if (availableAmount < billDetails[i].Count)
-                {
-                    available = false;
-                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountNotAvailableFromToolTip") + " " + billDetails[i].Product, animation: ToasterAnimation.FadeIn);
-                    return available;
-                }
-            }
-            return available;
-        }
+        //private async Task<Boolean> checkItemsAmounts()
+        //{
+        //    Boolean available = true;
+        //    for (int i = 0; i < billDetails.Count; i++)
+        //    {
+        //        int availableAmount = await itemLocationModel.getAmountInBranch(billDetails[i].itemUnitId, MainWindow.branchID.Value);
+        //        if (availableAmount < billDetails[i].Count)
+        //        {
+        //            available = false;
+        //            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountNotAvailableFromToolTip") + " " + billDetails[i].Product, animation: ToasterAnimation.FadeIn);
+        //            return available;
+        //        }
+        //    }
+        //    return available;
+        //}
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -1615,6 +1616,17 @@ SectionData.isAdminPermision())
                         else
                         {
                             await addInvoice("or");//quontation invoice
+                            #region notification Object
+                            Notification not = new Notification()
+                            {
+                                title = "trSalesOrderAlertTilte",
+                                ncontent = "trSalesOrderAlertContent",
+                                msgType = "alert",
+                                createUserId = MainWindow.userID.Value,
+                                updateUserId = MainWindow.userID.Value,
+                            };
+                            await notification.Save(not, (int)cb_branch.SelectedValue, "reciptInvoice_invoice", branch.name);
+                            #endregion
                             refreshDraftNotification();
                         }
                         clearInvoice();

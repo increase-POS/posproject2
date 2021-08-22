@@ -25,7 +25,14 @@ namespace POS.View.windows
     {
         public wd_itemsOfferList()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
+            }
+            catch(Exception ex)
+            {
+                SectionData.ExceptionMessage(ex , this);
+            }
         }
         public bool isActive;
 
@@ -57,47 +64,61 @@ namespace POS.View.windows
         /// <param name="e"></param>
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
-            SectionData.StartAwait(grid_mainGrid);
-            if (MainWindow.lang.Equals("en"))
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_offerList);
+
+                #region translate
+                if (MainWindow.lang.Equals("en"))
             { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly()); grid_offerList.FlowDirection = FlowDirection.LeftToRight; }
             else
             { MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly()); grid_offerList.FlowDirection = FlowDirection.RightToLeft; }
 
             translat();
+            #endregion
 
-            offer = await offerModel.getOfferById(offerId);
+                offer = await offerModel.getOfferById(offerId);
             
-            allItemsSource = await itemModel.Getall();
-            selectedItemsSource = await itemUnitOffer.GetItemsByOfferId(offerId);
+                allItemsSource = await itemModel.Getall();
+                selectedItemsSource = await itemUnitOffer.GetItemsByOfferId(offerId);
 
-            allItems.AddRange(allItemsSource);
+                allItems.AddRange(allItemsSource);
 
-            foreach (var i in allItems)
-            {
-                i.itemName = i.itemName + "-" + i.unitName;
+                foreach (var i in allItems)
+                {
+                    i.itemName = i.itemName + "-" + i.unitName;
+                }
+
+                selectedItems.AddRange(selectedItemsSource);
+                foreach (var i in selectedItems)
+                {
+                    i.itemName = i.itemName + "-" + i.unitName;
+                }
+                //remove selected items from all items
+                foreach (var i in selectedItems)
+                {
+                    itemUnit = allItemsSource.Where(s => s.itemUnitId == i.iuId).FirstOrDefault<ItemUnit>();
+                    allItems.Remove(itemUnit);
+                }
+
+                dg_allItems.ItemsSource = allItems;
+                dg_allItems.SelectedValuePath = "itemUnitId";
+                dg_allItems.DisplayMemberPath = "itemName";
+
+                dg_selectedItems.ItemsSource = selectedItems;
+                dg_selectedItems.SelectedValuePath = "itemUnitId";
+                dg_selectedItems.DisplayMemberPath = "itemName";
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_offerList);
             }
-
-            selectedItems.AddRange(selectedItemsSource);
-            foreach (var i in selectedItems)
+            catch (Exception ex)
             {
-                i.itemName = i.itemName + "-" + i.unitName;
+                if (sender != null)
+                    SectionData.EndAwait(grid_offerList);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-            //remove selected items from all items
-            foreach (var i in selectedItems)
-            {
-                itemUnit = allItemsSource.Where(s => s.itemUnitId == i.iuId).FirstOrDefault<ItemUnit>();
-                allItems.Remove(itemUnit);
-            }
-
-            dg_allItems.ItemsSource = allItems;
-            dg_allItems.SelectedValuePath = "itemUnitId";
-            dg_allItems.DisplayMemberPath = "itemName";
-
-            dg_selectedItems.ItemsSource = selectedItems;
-            dg_selectedItems.SelectedValuePath = "itemUnitId";
-            dg_selectedItems.DisplayMemberPath = "itemName";
-
-            SectionData.EndAwait(grid_mainGrid,this);
         }
 
         private void translat()
@@ -123,22 +144,39 @@ namespace POS.View.windows
         }
         private void HandleKeyPress(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Return)
+            try
             {
-                Btn_save_Click(null, null);
+                if (e.Key == Key.Return)
+                {
+                    Btn_save_Click(null, null);
+                }
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {//save
-           
-            //DataRowView dataRow = (DataRowView)dg_selectedItems.SelectedItem;
-            //int index = dg_selectedItems.CurrentCell.Column.DisplayIndex;
-            //string cellValue = dataRow.Row.ItemArray[index].ToString();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_offerList);
 
-            string s = await itemUnitOfferModel.updategroup(offerId, selectedItems, MainWindow.userID.Value);
+                string s = await itemUnitOfferModel.updategroup(offerId, selectedItems, MainWindow.userID.Value);
 
-            isActive = true;
-            this.Close();
+                isActive = true;
+                this.Close();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_offerList);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_offerList);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         private void Btn_colse_Click(object sender, RoutedEventArgs e)
         {
@@ -147,93 +185,134 @@ namespace POS.View.windows
         }
         private void Dg_allItems_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-
-            Btn_selectedItem_Click(null, null);
+            try
+            {
+                Btn_selectedItem_Click(null, null);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
 
         }
         private void Dg_selectedItems_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            Btn_unSelectedItem_Click(null, null);
-
+            try
+            {
+                Btn_unSelectedItem_Click(null, null);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         private async void Btn_selectedAll_Click(object sender, RoutedEventArgs e)
         {//select all
-            int x = allItems.Count;
-            for (int i = 0; i < x; i++)
+            try
             {
-                //MessageBox.Show(i.ToString());
-                dg_allItems.SelectedIndex = 0;
-                Btn_selectedItem_Click(null, null);
+                int x = allItems.Count;
+                for (int i = 0; i < x; i++)
+                {
+                    dg_allItems.SelectedIndex = 0;
+                    Btn_selectedItem_Click(null, null);
+                }
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
         private void Btn_selectedItem_Click(object sender, RoutedEventArgs e)
         {//select item
-            itemUnit = dg_allItems.SelectedItem as ItemUnit;
-            if (itemUnit != null)
+            try
             {
-                ItemUnitOffer iUO = new ItemUnitOffer();
-                iUO.ioId = 0;
-                iUO.iuId = itemUnit.itemUnitId;
-                iUO.offerId = offerId;
-                iUO.createUserId = MainWindow.userID;
-                iUO.quantity = 0;//dg_selectedItems.Columns[1];
-                iUO.offerName = offer.name;
-                iUO.unitName = itemUnit.unitName;
-                iUO.itemName = itemUnit.itemName;
-                //iUO.code = offer.code;///////////??????????offer/item
-                iUO.itemId = itemUnit.itemId;
-                iUO.unitId = itemUnit.unitId;
+                itemUnit = dg_allItems.SelectedItem as ItemUnit;
+                if (itemUnit != null)
+                {
+                    ItemUnitOffer iUO = new ItemUnitOffer();
+                    iUO.ioId = 0;
+                    iUO.iuId = itemUnit.itemUnitId;
+                    iUO.offerId = offerId;
+                    iUO.createUserId = MainWindow.userID;
+                    iUO.quantity = 0;
+                    iUO.offerName = offer.name;
+                    iUO.unitName = itemUnit.unitName;
+                    iUO.itemName = itemUnit.itemName;
+                    iUO.itemId = itemUnit.itemId;
+                    iUO.unitId = itemUnit.unitId;
 
-                allItems.Remove(itemUnit);
-                selectedItems.Add(iUO);
+                    allItems.Remove(itemUnit);
+                    selectedItems.Add(iUO);
 
-                dg_allItems.ItemsSource = allItems;
-                dg_selectedItems.ItemsSource = selectedItems;
+                    dg_allItems.ItemsSource = allItems;
+                    dg_selectedItems.ItemsSource = selectedItems;
 
-                dg_allItems.Items.Refresh();
-                dg_selectedItems.Items.Refresh();
+                    dg_allItems.Items.Refresh();
+                    dg_selectedItems.Items.Refresh();
+                }
             }
-
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         private void Btn_unSelectedItem_Click(object sender, RoutedEventArgs e)
         {//unselect item
-            itemUnitOffer = dg_selectedItems.SelectedItem as ItemUnitOffer;
-            ItemUnit i = new ItemUnit();
-            if (itemUnitOffer != null)
+            try
             {
-                i = allItemsSource.Where(s => s.itemUnitId == itemUnitOffer.iuId.Value).FirstOrDefault();
+                itemUnitOffer = dg_selectedItems.SelectedItem as ItemUnitOffer;
+                ItemUnit i = new ItemUnit();
+                if (itemUnitOffer != null)
+                {
+                    i = allItemsSource.Where(s => s.itemUnitId == itemUnitOffer.iuId.Value).FirstOrDefault();
 
-                allItems.Add(i);
+                    allItems.Add(i);
 
-                selectedItems.Remove(itemUnitOffer);
+                    selectedItems.Remove(itemUnitOffer);
 
-                dg_allItems.ItemsSource = allItems;
-                dg_selectedItems.ItemsSource = selectedItems;
+                    dg_allItems.ItemsSource = allItems;
+                    dg_selectedItems.ItemsSource = selectedItems;
 
-                dg_allItems.Items.Refresh();
-                dg_selectedItems.Items.Refresh();
+                    dg_allItems.Items.Refresh();
+                    dg_selectedItems.Items.Refresh();
+                }
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
         private async void Btn_unSelectedAll_Click(object sender, RoutedEventArgs e)
         {//unselect all
-            int x = selectedItems.Count;
-            for (int i = 0; i < x ; i++)
+            try
             {
-                dg_selectedItems.SelectedIndex = 0;
-                Btn_unSelectedItem_Click(null, null);
+                int x = selectedItems.Count;
+                for (int i = 0; i < x; i++)
+                {
+                    dg_selectedItems.SelectedIndex = 0;
+                    Btn_unSelectedItem_Click(null, null);
+                }
             }
-            
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+
         }
         private void Txb_searchitems_TextChanged(object sender, TextChangedEventArgs e)
         {//search
-            txtItemSearch = txb_searchitems.Text.ToLower();
+            try
+            {
+                txtItemSearch = txb_searchitems.Text.ToLower();
 
-            //if (allItems is null)
-            //    allItems = allItemsSource;
-            searchText = txb_searchitems.Text;
-            itemUnitQuery = allItems.Where(s => s.itemName.Contains(searchText) || s.unitName.Contains(searchText));
-            dg_allItems.ItemsSource = itemUnitQuery;
-
+                searchText = txb_searchitems.Text;
+                itemUnitQuery = allItems.Where(s => s.itemName.Contains(searchText) || s.unitName.Contains(searchText));
+                dg_allItems.ItemsSource = itemUnitQuery;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
@@ -242,16 +321,14 @@ namespace POS.View.windows
             {
                 DragMove();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
         private void Dg_selectedItems_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //ItemUnitOffer i = dg_selectedItems.SelectedItem as ItemUnitOffer;
-            //MessageBox.Show(i.quantity.ToString());
         }
         private void Grid_BeginningEdit(object sender, DataGridBeginningEditEventArgs e)
         {

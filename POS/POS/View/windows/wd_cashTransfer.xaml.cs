@@ -88,7 +88,6 @@ namespace POS.View.windows
         async Task<IEnumerable<CashTransfer>> RefreshCashesList()
         {
             cashes = await cashModel.GetListByInvId(invId);
-            //cashes = cashes.Where(x => x.processType != "balance");
             return cashes;
 
         }
@@ -140,7 +139,6 @@ namespace POS.View.windows
             void RefreshCashView()
         {
             dg_accounts.ItemsSource = cashesQuery;
-            //cashes = cashes.Where(x => x.processType != "balance");
         }
 
         private void HandleKeyPress(object sender, KeyEventArgs e)

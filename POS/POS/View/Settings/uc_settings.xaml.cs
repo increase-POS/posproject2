@@ -35,16 +35,37 @@ namespace POS.View.Settings
         }
         public uc_settings()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.lang.Equals("en"))
-            { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly()); grid_ucSettings.FlowDirection = FlowDirection.LeftToRight; }
-            else
-            { MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly()); grid_ucSettings.FlowDirection = FlowDirection.RightToLeft; }
-            translate();
-            permission();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                if (MainWindow.lang.Equals("en"))
+                { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly()); grid_ucSettings.FlowDirection = FlowDirection.LeftToRight; }
+                else
+                { MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly()); grid_ucSettings.FlowDirection = FlowDirection.RightToLeft; }
+                translate();
+                permission();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         void permission()
         {
@@ -105,46 +126,86 @@ namespace POS.View.Settings
         }
         private void btn_general_Click(object sender, RoutedEventArgs e)
         {
-            refreashBachgroundClick(btn_general);
-            grid_main.Children.Clear();
-            grid_main.Children.Add(uc_general.Instance);
-            Button button = sender as Button;
-            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
+            try
+            {
+
+                refreashBachgroundClick(btn_general);
+                grid_main.Children.Clear();
+                grid_main.Children.Add(uc_general.Instance);
+                Button button = sender as Button;
+                MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void btn_reports_Click(object sender, RoutedEventArgs e)
         {
-            refreashBachgroundClick(btn_reportsSettings);
-            grid_main.Children.Clear();
-            Button button = sender as Button;
-            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
+            try
+            {
+
+                refreashBachgroundClick(btn_reportsSettings);
+                grid_main.Children.Clear();
+                Button button = sender as Button;
+                MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void btn_permission_Click(object sender, RoutedEventArgs e)
         {
-            refreashBachgroundClick(btn_permissions);
-            grid_main.Children.Clear();
-            grid_main.Children.Add(uc_permissions.Instance);
-            Button button = sender as Button;
-            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
+            try
+            {
+
+                refreashBachgroundClick(btn_permissions);
+                grid_main.Children.Clear();
+                grid_main.Children.Add(uc_permissions.Instance);
+                Button button = sender as Button;
+                MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Btn_emails_Click(object sender, RoutedEventArgs e)
         {
-            refreashBachgroundClick(btn_emails);
-            grid_main.Children.Clear();
-            grid_main.Children.Add(uc_emailsSetting.Instance);
-            Button button = sender as Button;
-            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
+            try
+            {
+
+                refreashBachgroundClick(btn_emails);
+                grid_main.Children.Clear();
+                grid_main.Children.Add(uc_emailsSetting.Instance);
+                Button button = sender as Button;
+                MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Btn_emailTemplates_Click(object sender, RoutedEventArgs e)
         {
-            refreashBachgroundClick(btn_emailTemplates);
-            grid_main.Children.Clear();
-            grid_main.Children.Add(uc_emailTemplates.Instance);
-            Button button = sender as Button;
-            MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
+            try
+            {
+
+                refreashBachgroundClick(btn_emailTemplates);
+                grid_main.Children.Clear();
+                grid_main.Children.Add(uc_emailTemplates.Instance);
+                Button button = sender as Button;
+                MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
     }
 }

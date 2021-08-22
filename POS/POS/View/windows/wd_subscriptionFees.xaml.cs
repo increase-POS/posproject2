@@ -1,6 +1,9 @@
-﻿using System;
+﻿using POS.Classes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -21,47 +24,133 @@ namespace POS.View.windows
     {
         public wd_subscriptionFees()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
         private void Btn_colse_Click(object sender, RoutedEventArgs e)
         {
 
-            this.Close();
-        }
+                try
+                {
+                    this.Close();
+                }
+                catch (Exception ex)
+                {
+                    SectionData.ExceptionMessage(ex, this, sender);
+                }
+            }
         private void HandleKeyPress(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Return)
+                    try
+                    {
+                        if (e.Key == Key.Return)
             {
                 //Btn_confirmation_Click(null, null);
             }
-        }
+                    }
+                    catch (Exception ex)
+                    {
+                        SectionData.ExceptionMessage(ex, this, sender);
+                    }
+                }
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            this.Close();
-        }
+                        try
+                        {
+                            this.Close();
+                        }
+                        catch (Exception ex)
+                        {
+                            SectionData.ExceptionMessage(ex, this, sender);
+                        }
+                    }
 
         private void Btn_add_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
 
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Btn_update_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
 
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Btn_delete_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
 
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Dg_subscriptionFees_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            try
+            {
 
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                #region translate
+                if (MainWindow.lang.Equals("en"))
+                { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly()); grid_subscriptionFees.FlowDirection = FlowDirection.LeftToRight; }
+                else
+                { MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly()); grid_subscriptionFees.FlowDirection = FlowDirection.RightToLeft; }
+
+                translat();
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
+
+        private void translat()
+        {
+            txt_Title.Text = MainWindow.resourcemanager.GetString("trSubscriptionFees");
+
+            dg_subscriptionFees.Columns[0].Header = MainWindow.resourcemanager.GetString("trMonthCount");
+            dg_subscriptionFees.Columns[1].Header = MainWindow.resourcemanager.GetString("trAmount");
+
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_monthsCount, MainWindow.resourcemanager.GetString("trMonthCountHint"));//
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_amount, MainWindow.resourcemanager.GetString("trAmountHint"));//
+
+            tt_add_Button.Content = MainWindow.resourcemanager.GetString("trAdd");
+            tt_update_Button.Content = MainWindow.resourcemanager.GetString("trUpdate");
+            tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
 
         }
     }

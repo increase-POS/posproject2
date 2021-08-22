@@ -11,6 +11,57 @@ using System.Web;
 
 namespace POS.Classes
 {
+    public class Notification
+    {
+        public int notId { get; set; }
+        public string title { get; set; }
+        public string ncontent { get; set; }
+        public string side { get; set; }
+        public string msgType { get; set; }
+        public string path { get; set; }
+        public Nullable<System.DateTime> createDate { get; set; }
+        public Nullable<System.DateTime> updateDate { get; set; }
+        public Nullable<int> createUserId { get; set; }
+        public Nullable<int> updateUserId { get; set; }
+        public Nullable<byte> isActive { get; set; }
+
+        //***********************************************
+        public async Task<string> Save(Notification obj , int branchId, string objectName, string prefix, int userId = 0)
+        {
+            // ... Use HttpClient.
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            // 
+            var myContent = JsonConvert.SerializeObject(obj);
+
+            using (var client = new HttpClient())
+            {
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                client.BaseAddress = new Uri(Global.APIUri);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+                HttpRequestMessage request = new HttpRequestMessage();
+                // encoding parameter to get special characters
+                myContent = HttpUtility.UrlEncode(myContent);
+                request.RequestUri = new Uri(Global.APIUri + "notification/Save?obj=" + myContent + "&branchId="+branchId + "&objectName="+ objectName
+                                                    +"&prefix="+ prefix + "&userId=" + userId);
+                request.Headers.Add("APIKey", Global.APIKey);
+                request.Method = HttpMethod.Post;
+                //set content type
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var message = await response.Content.ReadAsStringAsync();
+                    message = JsonConvert.DeserializeObject<string>(message);
+                    return message;
+                }
+                return "";
+            }
+        }
+
+    }
     public  class NotificationUser
     {
         public int notUserId { get; set; }

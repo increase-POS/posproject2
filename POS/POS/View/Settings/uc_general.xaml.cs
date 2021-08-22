@@ -33,7 +33,7 @@ namespace POS.View.Settings
         static CountryCode countryModel = new CountryCode();
 
         static SettingCls set = new SettingCls();
-        static SetValues language= new SetValues();
+        static SetValues language = new SetValues();
         static SetValues tax = new SetValues();
         static SetValues dateForm = new SetValues();
         static SetValues cost = new SetValues();
@@ -42,7 +42,7 @@ namespace POS.View.Settings
         static CountryCode region = new CountryCode();
         static List<SetValues> languages = new List<SetValues>();
 
-        static int taxId = 0 , costId = 0 , dateFormId;
+        static int taxId = 0, costId = 0, dateFormId;
         string usersSettingsPermission = "general_usersSettings";
         string companySettingsPermission = "general_companySettings";
         private static uc_general _instance;
@@ -57,119 +57,155 @@ namespace POS.View.Settings
         }
         public uc_general()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         private void Btn_companyInfo_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+            try
             {
-                Window.GetWindow(this).Opacity = 0.2;
-                wd_companyInfo w = new wd_companyInfo();
-                w.isFirstTime = false;
-                w.ShowDialog();
-                Window.GetWindow(this).Opacity = 1;
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+
+                if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+                {
+                    Window.GetWindow(this).Opacity = 0.2;
+                    wd_companyInfo w = new wd_companyInfo();
+                    w.isFirstTime = false;
+                    w.ShowDialog();
+                    Window.GetWindow(this).Opacity = 1;
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {//load
-
-            #region translate
-            if (MainWindow.lang.Equals("en"))
+            try
             {
-                MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
-                grid_general.FlowDirection = FlowDirection.LeftToRight;
-            }
-            else
-            {
-                MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
-                grid_general.FlowDirection = FlowDirection.RightToLeft;
-            }
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
-            translate();
-            #endregion
 
-            fillRegions();
+                #region translate
+                if (MainWindow.lang.Equals("en"))
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                    grid_main.FlowDirection = FlowDirection.LeftToRight;
+                }
+                else
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                    grid_main.FlowDirection = FlowDirection.RightToLeft;
+                }
 
-            #region get default region
-            await getDefaultRegion();
-            if (region != null)
-            {
-                //int index = cb_region.Items.IndexOf(region);
-                //test.Text = index.ToString();
-                cb_region.SelectedValue = region.countryId;
-                cb_region.Text = region.name;
-            }
-            #endregion
+                translate();
+                #endregion
 
-            fillLanguages();
+                fillRegions();
 
-            #region get default language
-            await getDefaultLanguage();
-            if(usLanguage != null)
-                cb_language.SelectedValue = usLanguage.valId;
-            #endregion
+                #region get default region
+                await getDefaultRegion();
+                if (region != null)
+                {
+                    //int index = cb_region.Items.IndexOf(region);
+                    //test.Text = index.ToString();
+                    cb_region.SelectedValue = region.countryId;
+                    cb_region.Text = region.name;
+                }
+                #endregion
 
-            fillCurrencies();
+                fillLanguages();
 
-            #region get default currency
-            if (region != null)
-            {
-                //cb_currency.SelectedValue = region.name;
-                //int index = cb_currency.Items.IndexOf(region.currency.Trim());
-                //cb_currency.SelectedIndex = 0;
-                //MessageBox.Show(region.currency);
-                //cb_currency.Text = region.currency;
-                tb_currency.Text = region.currency;
-            }
-            #endregion
+                #region get default language
+                await getDefaultLanguage();
+                if (usLanguage != null)
+                    cb_language.SelectedValue = usLanguage.valId;
+                #endregion
 
-            #region get default tax
-            await getDefaultTax();
-            if(tax != null)
-            tb_tax.Text = tax.value;
-            #endregion
+                fillCurrencies();
 
-            #region get default cost
-            //await getDefaultCost();
-            //if (cost != null)
-            //    tb_storageCost.Text = cost.value;
-            #endregion
+                #region get default currency
+                if (region != null)
+                {
+                    //cb_currency.SelectedValue = region.name;
+                    //int index = cb_currency.Items.IndexOf(region.currency.Trim());
+                    //cb_currency.SelectedIndex = 0;
+                    //MessageBox.Show(region.currency);
+                    //cb_currency.Text = region.currency;
+                    tb_currency.Text = region.currency;
+                }
+                #endregion
 
-            #region fill process type
-            DateTimeFormatInfo dtfi = DateTimeFormatInfo.CurrentInfo;
-            //var typelist = new[] {
-            //new { Text =  dtfi.ShortDatePattern.ToString(), Value = "ShortDatePattern" },
-            //new { Text = dtfi.LongDatePattern.ToString() , Value = "LongDatePattern" },
-            //new { Text =  dtfi.MonthDayPattern.ToString(), Value = "MonthDayPattern" },
-            //new { Text =  dtfi.YearMonthPattern.ToString(), Value = "YearMonthPattern" },
-            // };
-            var date = DateTime.Now;
-            var typelist = new[] {
+                #region get default tax
+                await getDefaultTax();
+                if (tax != null)
+                    tb_tax.Text = tax.value;
+                #endregion
+
+                #region get default cost
+                //await getDefaultCost();
+                //if (cost != null)
+                //    tb_storageCost.Text = cost.value;
+                #endregion
+
+                #region fill process type
+                DateTimeFormatInfo dtfi = DateTimeFormatInfo.CurrentInfo;
+                //var typelist = new[] {
+                //new { Text =  dtfi.ShortDatePattern.ToString(), Value = "ShortDatePattern" },
+                //new { Text = dtfi.LongDatePattern.ToString() , Value = "LongDatePattern" },
+                //new { Text =  dtfi.MonthDayPattern.ToString(), Value = "MonthDayPattern" },
+                //new { Text =  dtfi.YearMonthPattern.ToString(), Value = "YearMonthPattern" },
+                // };
+                var date = DateTime.Now;
+                var typelist = new[] {
             new { Text = date.ToString(dtfi.ShortDatePattern), Value = "ShortDatePattern" },
             new { Text = date.ToString(dtfi.LongDatePattern) , Value = "LongDatePattern" },
             new { Text =  date.ToString(dtfi.MonthDayPattern), Value = "MonthDayPattern" },
             new { Text =  date.ToString(dtfi.YearMonthPattern), Value = "YearMonthPattern" },
              };
 
-            cb_dateForm.DisplayMemberPath = "Text";
-            cb_dateForm.SelectedValuePath = "Value";
-            cb_dateForm.ItemsSource = typelist;
-            cb_dateForm.SelectedIndex = 0;
+                cb_dateForm.DisplayMemberPath = "Text";
+                cb_dateForm.SelectedValuePath = "Value";
+                cb_dateForm.ItemsSource = typelist;
+                //cb_dateForm.SelectedIndex = 0;
 
-            #endregion
+                #endregion
 
-            #region get default date form
-            await getDefaultDateForm();
-            if (dateForm != null)
-                cb_dateForm.Text = dateForm.value;
-            else
-                cb_dateForm.SelectedIndex = -1;
-            #endregion
+                #region get default date form
+                await getDefaultDateForm();
+                if (dateForm != null)
+                    cb_dateForm.SelectedValue = dateForm.value;
+                else
+                    cb_dateForm.SelectedIndex = -1;
+                #endregion
 
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         public static async Task<SetValues> getDefaultCost()
@@ -241,10 +277,10 @@ namespace POS.View.Settings
             languages = lanValues.Where(vl => vl.settingId == set.settingId).ToList<SetValues>();
             foreach (var v in languages)
             {
-                if (v.value.ToString().Equals("en"))      v.value = MainWindow.resourcemanager.GetString("trEnglish"); 
+                if (v.value.ToString().Equals("en")) v.value = MainWindow.resourcemanager.GetString("trEnglish");
                 else if (v.value.ToString().Equals("ar")) v.value = MainWindow.resourcemanager.GetString("trArabic");
             }
-           
+
             cb_language.ItemsSource = languages;
             cb_language.DisplayMemberPath = "value";
             cb_language.SelectedValuePath = "valId";
@@ -295,186 +331,284 @@ namespace POS.View.Settings
 
         private async void Btn_saveRegion_Click(object sender, RoutedEventArgs e)
         {//save region
-            if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+            try
             {
-                string s = "";
-            SectionData.validateEmptyComboBox(cb_region , p_errorRegion , tt_errorRegion , "trEmptyRegion");
-            if (!cb_region.Text.Equals(""))
-            {
-                int regionId = Convert.ToInt32(cb_region.SelectedValue);
-                if (regionId != 0)
-                {
-                    s = await countryModel.UpdateIsdefault(regionId);
-                    if (!s.Equals("0"))
-                    {
-                        //update region and currency in main window
-                        List<CountryCode> c = await countryModel.GetAllRegion();
-                        MainWindow.Region = c.Where(r => r.countryId == int.Parse(s)).FirstOrDefault<CountryCode>();
-                        MainWindow.Currency = MainWindow.Region.currency;
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
-                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
+                if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+                {
+                    string s = "";
+                    SectionData.validateEmptyComboBox(cb_region, p_errorRegion, tt_errorRegion, "trEmptyRegion");
+                    if (!cb_region.Text.Equals(""))
+                    {
+                        int regionId = Convert.ToInt32(cb_region.SelectedValue);
+                        if (regionId != 0)
+                        {
+                            s = await countryModel.UpdateIsdefault(regionId);
+                            if (!s.Equals("0"))
+                            {
+                                //update region and currency in main window
+                                List<CountryCode> c = await countryModel.GetAllRegion();
+                                MainWindow.Region = c.Where(r => r.countryId == int.Parse(s)).FirstOrDefault<CountryCode>();
+                                MainWindow.Currency = MainWindow.Region.currency;
+
+                                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
+                            }
+                            else
+                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                        }
                     }
-                    else
-                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                 }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
 
         private async void Btn_saveLanguage_Click(object sender, RoutedEventArgs e)
         {//save language
-            if (MainWindow.groupObject.HasPermissionAction(usersSettingsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+            try
             {
-                SectionData.validateEmptyComboBox(cb_language , p_errorLanguage , tt_errorLanguage , "trEmptyLanguage");
-            if (!cb_language.Text.Equals(""))
-            {
-                if (usLanguage == null)
-                    usLanguage = new UserSetValues();
-                if (Convert.ToInt32(cb_language.SelectedValue) != 0)
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                if (MainWindow.groupObject.HasPermissionAction(usersSettingsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
-                    usLanguage.userId = MainWindow.userID;
-                    usLanguage.valId = Convert.ToInt32(cb_language.SelectedValue);
-                    usLanguage.createUserId = MainWindow.userID;
-                    string s = await usValueModel.Save(usLanguage);
-                    if (!s.Equals("0"))
+                    SectionData.validateEmptyComboBox(cb_language, p_errorLanguage, tt_errorLanguage, "trEmptyLanguage");
+                    if (!cb_language.Text.Equals(""))
                     {
-                        //update language in main window
-                        SetValues v = await valueModel.GetByID(Convert.ToInt32(cb_language.SelectedValue));
-                        MainWindow.lang = v.value;
-                        //save to user settings
-                        Properties.Settings.Default.Lang = v.value;
-                        Properties.Settings.Default.Save();
-
-                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
-                    }
-                    else
-                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-
-                    //update languge in main window
-                    MainWindow parentWindow = Window.GetWindow(this) as MainWindow;
-                    if (parentWindow != null)
-                    {
-                        //access property of the MainWindow class that exposes the access rights...
-                        if (MainWindow.lang.Equals("en"))
+                        if (usLanguage == null)
+                            usLanguage = new UserSetValues();
+                        if (Convert.ToInt32(cb_language.SelectedValue) != 0)
                         {
-                            MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
-                            parentWindow.grid_mainWindow.FlowDirection = FlowDirection.LeftToRight;
+                            usLanguage.userId = MainWindow.userID;
+                            usLanguage.valId = Convert.ToInt32(cb_language.SelectedValue);
+                            usLanguage.createUserId = MainWindow.userID;
+                            string s = await usValueModel.Save(usLanguage);
+                            if (!s.Equals("0"))
+                            {
+                                //update language in main window
+                                SetValues v = await valueModel.GetByID(Convert.ToInt32(cb_language.SelectedValue));
+                                MainWindow.lang = v.value;
+                                //save to user settings
+                                Properties.Settings.Default.Lang = v.value;
+                                Properties.Settings.Default.Save();
+
+                                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
+                            }
+                            else
+                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+                            //update languge in main window
+                            MainWindow parentWindow = Window.GetWindow(this) as MainWindow;
+                            if (parentWindow != null)
+                            {
+                                //access property of the MainWindow class that exposes the access rights...
+                                if (MainWindow.lang.Equals("en"))
+                                {
+                                    MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                                    parentWindow.grid_mainWindow.FlowDirection = FlowDirection.LeftToRight;
+                                }
+                                else
+                                {
+                                    MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                                    parentWindow.grid_mainWindow.FlowDirection = FlowDirection.RightToLeft;
+                                }
+
+                                parentWindow.translate();
+
+                                UserControl_Loaded(null, null);
+                                //translate();
+                                //cb_language.ItemsSource = null;
+                                //fillLanguages();
+                                //await getDefaultLanguage();
+
+                            }
+
                         }
-                        else
-                        {
-                            MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
-                            parentWindow.grid_mainWindow.FlowDirection = FlowDirection.RightToLeft;
-                        }
-
-                        parentWindow.translate();
-
-                        UserControl_Loaded(null, null);
-                        //translate();
-                        //cb_language.ItemsSource = null;
-                        //fillLanguages();
-                        //await getDefaultLanguage();
-
                     }
-
                 }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
         private async void Btn_saveTax_Click(object sender, RoutedEventArgs e)
         {//save Tax
-            if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+            try
             {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
-
-
-           SectionData.validateEmptyTextBox(tb_tax, p_errorTax, tt_errorTax, "trEmptyTax");
-            if (!tb_tax.Text.Equals(""))
-            {
-                if (tax == null)
-                    tax = new SetValues();
-                tax.value = tb_tax.Text;
-                tax.isSystem = 1;
-                tax.settingId = taxId;
-                string s = await valueModel.Save(tax);
-                if (!s.Equals("0"))
+                if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
-                    //update tax in main window
-                    MainWindow.tax = decimal.Parse(tax.value);
 
-                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
+
+
+                    SectionData.validateEmptyTextBox(tb_tax, p_errorTax, tt_errorTax, "trEmptyTax");
+                    if (!tb_tax.Text.Equals(""))
+                    {
+                        if (tax == null)
+                            tax = new SetValues();
+                        tax.value = tb_tax.Text;
+                        tax.isSystem = 1;
+                        tax.settingId = taxId;
+                        string s = await valueModel.Save(tax);
+                        if (!s.Equals("0"))
+                        {
+                            //update tax in main window
+                            MainWindow.tax = decimal.Parse(tax.value);
+
+                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
+                        }
+                        else
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    }
                 }
                 else
-                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-            }
-            }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
 
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private async void Btn_saveCurrency_Click(object sender, RoutedEventArgs e)
         {//save currency
-            if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+            try
             {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+                {
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Cb_region_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            region = cb_region.SelectedItem as CountryCode;
-            if(region != null)
-                tb_currency.Text = region.currency;
+            try
+            {
+                region = cb_region.SelectedItem as CountryCode;
+                if (region != null)
+                    tb_currency.Text = region.currency;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Tb_PreventSpaces(object sender, KeyEventArgs e)
         {
-            e.Handled = e.Key == Key.Space;
+            try
+            {
+                e.Handled = e.Key == Key.Space;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Tb_decimal_PreviewTextInput(object sender, TextCompositionEventArgs e)
         { //decimal
-            var regex = new Regex(@"^[0-9]*(?:\.[0-9]*)?$");
-            if (regex.IsMatch(e.Text) && !(e.Text == "." && ((TextBox)sender).Text.Contains(e.Text)))
-                e.Handled = false;
-            else
-                e.Handled = true;
+            try
+            {
+                var regex = new Regex(@"^[0-9]*(?:\.[0-9]*)?$");
+                if (regex.IsMatch(e.Text) && !(e.Text == "." && ((TextBox)sender).Text.Contains(e.Text)))
+                    e.Handled = false;
+                else
+                    e.Handled = true;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Tb_validateEmptyTextChange(object sender, TextChangedEventArgs e)
         {
-            string name = sender.GetType().Name;
-            validateEmpty(name, sender);
+            try
+            {
+                string name = sender.GetType().Name;
+                validateEmpty(name, sender);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Tb_validateEmptyLostFocus(object sender, RoutedEventArgs e)
         {
-            //string name = sender.GetType().Name;
-            //validateEmpty(name, sender);
+            try
+            {
+                //string name = sender.GetType().Name;
+                //validateEmpty(name, sender);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
 
         private void validateEmpty(string name, object sender)
         {
-            if (name == "TextBox")
+            try
             {
-                if ((sender as TextBox).Name == "tb_tax")
-                    SectionData.validateEmptyTextBox((TextBox)sender, p_errorTax, tt_errorTax, "trEmptyTax");
-                //else if ((sender as TextBox).Name == "tb_storageCost")
-                //    SectionData.validateEmptyTextBox((TextBox)sender, p_errorStorageCost, tt_errorStorageCost, "trEmptyStoreCost");
-               
+                if (name == "TextBox")
+                {
+                    if ((sender as TextBox).Name == "tb_tax")
+                        SectionData.validateEmptyTextBox((TextBox)sender, p_errorTax, tt_errorTax, "trEmptyTax");
+                    //else if ((sender as TextBox).Name == "tb_storageCost")
+                    //    SectionData.validateEmptyTextBox((TextBox)sender, p_errorStorageCost, tt_errorStorageCost, "trEmptyStoreCost");
+
+                }
+                else if (name == "ComboBox")
+                {
+                    if ((sender as ComboBox).Name == "cb_region")
+                        SectionData.validateEmptyComboBox((ComboBox)sender, p_errorRegion, tt_errorRegion, "trEmptyRegion");
+                    if ((sender as ComboBox).Name == "cb_language")
+                        SectionData.validateEmptyComboBox((ComboBox)sender, p_errorLanguage, tt_errorLanguage, "trEmptyLanguage");
+                }
             }
-            else if (name == "ComboBox")
+            catch (Exception ex)
             {
-                if ((sender as ComboBox).Name == "cb_region")
-                    SectionData.validateEmptyComboBox((ComboBox)sender, p_errorRegion, tt_errorRegion, "trEmptyRegion");
-                if ((sender as ComboBox).Name == "cb_language")
-                    SectionData.validateEmptyComboBox((ComboBox)sender, p_errorLanguage, tt_errorLanguage, "trEmptyLanguage");
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
         User userModel = new User();
@@ -482,97 +616,99 @@ namespace POS.View.Settings
 
         private async void Btn_savedDateForm_Click(object sender, RoutedEventArgs e)
         {//save date form
-            if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+            try
             {
-                SectionData.validateEmptyComboBox(cb_dateForm, p_errorDateForm, tt_errorDateForm, "trEmptyDateFormat");
-                if (!cb_dateForm.Text.Equals(""))
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
-                    if (dateForm == null)
-                        dateForm = new SetValues();
-                    dateForm.value = cb_dateForm.SelectedValue.ToString();
-                    dateForm.isSystem = 1;
-                    dateForm.settingId = dateFormId;
-                    string s = await valueModel.Save(dateForm);
-                    if (!s.Equals("0"))
+                    SectionData.validateEmptyComboBox(cb_dateForm, p_errorDateForm, tt_errorDateForm, "trEmptyDateFormat");
+                    if (!cb_dateForm.Text.Equals(""))
                     {
-                        //update dateForm in main window
-                        MainWindow.dateFormat = dateForm.value;
+                        if (dateForm == null)
+                            dateForm = new SetValues();
+                        dateForm.value = cb_dateForm.SelectedValue.ToString();
+                        dateForm.isSystem = 1;
+                        dateForm.settingId = dateFormId;
+                        string s = await valueModel.Save(dateForm);
+                        if (!s.Equals("0"))
+                        {
+                            //update dateForm in main window
+                            MainWindow.dateFormat = dateForm.value;
 
-                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
+                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
+                        }
+                        else
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                     }
-                    else
-                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                 }
-            }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
 
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            wd_setupServer w = new wd_setupServer();
-            w.ShowDialog();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                wd_setupServer w = new wd_setupServer();
+                w.ShowDialog();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
-        private void Cb_dateForm_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
 
-        }
 
         private async void Btn_changePassword_Click(object sender, RoutedEventArgs e)
         {//change password
-            if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+            try
             {
-                Window.GetWindow(this).Opacity = 0.2;
-                wd_adminChangePassword w = new wd_adminChangePassword();
-                w.ShowDialog();
-                Window.GetWindow(this).Opacity = 1;
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
-                //update user in main window
-                user = await userModel.getUserById(w.userID);
-                MainWindow.userLogin = user;
+                if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+                {
+                    Window.GetWindow(this).Opacity = 0.2;
+                    wd_adminChangePassword w = new wd_adminChangePassword();
+                    w.ShowDialog();
+                    Window.GetWindow(this).Opacity = 1;
 
+                    //update user in main window
+                    user = await userModel.getUserById(w.userID);
+                    MainWindow.userLogin = user;
+
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
-
-
-
-
-
-        //private async void Btn_saveStorageCost_Click(object sender, RoutedEventArgs e)
-        //{//save storage cost
-        //    if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one")|| SectionData.isAdminPermision())
-        //    {
-        //        SectionData.validateEmptyTextBox(tb_storageCost , p_errorStorageCost , tt_errorStorageCost , "trEmptyStoreCost");
-        //    if (!tb_storageCost.Text.Equals(""))
-        //    {
-        //        if (cost == null)
-        //            cost = new SetValues();
-        //        cost.value = tb_storageCost.Text;
-        //        cost.isSystem = 1;
-        //        cost.settingId = costId;
-        //        string s = await valueModel.Save(cost);
-
-        //        if (!s.Equals("0"))
-        //        {
-        //            //update tax in main window
-        //            MainWindow.StorageCost = decimal.Parse(cost.value);
-
-        //            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
-        //        }
-        //        else
-        //            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-        //    }
-        //    }
-        //    else
-        //        Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-        //}
-
-
-
     }
 }

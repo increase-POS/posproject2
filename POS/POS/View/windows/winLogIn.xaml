@@ -32,7 +32,7 @@
     </Window.Triggers>
 
     <Border x:Name="bdrLogIn" CornerRadius="10"  Background="White" >
-        <Grid x:Name="grid_logs">
+        <Grid x:Name="grid_main">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"></ColumnDefinition>
                 <ColumnDefinition Width="1.5*"></ColumnDefinition>
@@ -98,7 +98,7 @@
                     </Path>
                 </DockPanel>
                 <CheckBox Grid.Row="3" Margin="5,20,0,0" x:Name="cbxRemmemberMe" Content="Remmember Me" 
-                        VerticalAlignment="Center" Checked="CbxRemmemberMe_Checked" Unchecked="CbxRemmemberMe_Unchecked"></CheckBox>
+                        VerticalAlignment="Center"  ></CheckBox>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="4" >
                     <Grid>
                         <Button x:Name="btnLogIn" Background="#FF2196F3" Foreground="White" Margin="0,0,10,0" Click="btnLogIn_Click" IsDefault="True">
@@ -138,8 +138,8 @@
                     </Border.Background>
                 </Border>
             </Grid>
-            <mah:ProgressRing x:Name="prg_awaitRing" Foreground="White" 
-                              IsActive="False" Grid.RowSpan="2" Grid.ColumnSpan="2"  />
+            <!--<mah:ProgressRing x:Name="prg_awaitRing" Foreground="White" 
+                              IsActive="False" Grid.RowSpan="2" Grid.ColumnSpan="2"  />-->
         </Grid>
     </Border>
 </Window>

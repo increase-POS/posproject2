@@ -32,7 +32,6 @@ namespace POS.View.windows
 
         List<Branch> allStoresSource = new List<Branch>();
         List<BranchesUsers> selectedStoresByUserSource = new List<BranchesUsers>();
-        //List<BranchesUserstable> selectedStoresByUserSource = new List<BranchesUserstable>();
         List<BranchStore> selectedStoresByBranchSource = new List<BranchStore>();
 
         List<Branch> allStores = new List<Branch>();

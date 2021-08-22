@@ -53,6 +53,9 @@ namespace POS.View.windows
         {//load
             try
             {
+                if (sender != null)
+                    SectionData.StartAwait(grid_changePassword);
+
                 #region translate
 
                 //if (winLogIn.lang.Equals("en"))
@@ -70,9 +73,16 @@ namespace POS.View.windows
                 #endregion
 
                 fillBranch();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_changePassword);
             }
-            catch(Exception ex)
-            { SectionData.ExceptionMessage(ex,this,sender); }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_changePassword);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private async void fillBranch()
@@ -111,48 +121,76 @@ namespace POS.View.windows
         List<SettingCls> set = new List<SettingCls>();
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {//save
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_changePassword);
 
-            #region validate
-            validateEmptyComboBox(cb_branch, p_errorBranch, tt_errorBranch, "trEmptyBranchToolTip");
+                #region validate
+                validateEmptyComboBox(cb_branch, p_errorBranch, tt_errorBranch, "trEmptyBranchToolTip");
             validateEmptyComboBox(cb_pos , p_errorPos , tt_errorPos , "trErrorEmptyPosToolTip");
             #endregion
 
-            if (!cb_pos.Text.Equals(""))
-            {
-                //update pos and branch in main window
-                MainWindow.branchID = Convert.ToInt32(cb_branch.SelectedValue);
-                MainWindow.posID = Convert.ToInt32(cb_pos.SelectedValue);
+                if (!cb_pos.Text.Equals(""))
+                {
+                    //update pos and branch in main window
+                    MainWindow.branchID = Convert.ToInt32(cb_branch.SelectedValue);
+                    MainWindow.posID = Convert.ToInt32(cb_pos.SelectedValue);
                 
-                //save pos and branch to settings file
-                Properties.Settings.Default.pos = cb_pos.SelectedValue.ToString();
-                Properties.Settings.Default.Save();
+                    //save pos and branch to settings file
+                    Properties.Settings.Default.pos = cb_pos.SelectedValue.ToString();
+                    Properties.Settings.Default.Save();
 
-                Window.GetWindow(this).Opacity = 0.2;
-                wd_setupGeneralSetting w = new wd_setupGeneralSetting();
-                w.ShowDialog();
-                Window.GetWindow(this).Opacity = 1;
+                    Window.GetWindow(this).Opacity = 0.2;
+                    wd_setupGeneralSetting w = new wd_setupGeneralSetting();
+                    w.ShowDialog();
+                    Window.GetWindow(this).Opacity = 1;
 
-                this.Close();
+                    this.Close();
+                }
+                else
+                {
+                }
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_changePassword);
             }
-            else
+            catch (Exception ex)
             {
+                if (sender != null)
+                    SectionData.EndAwait(grid_changePassword);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-           
+
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            cb_branch.SelectedIndex = -1;
-            e.Cancel = true;
-            this.Visibility = Visibility.Hidden;
+            try
+            {
+                cb_branch.SelectedIndex = -1;
+                e.Cancel = true;
+                this.Visibility = Visibility.Hidden;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
 
 
         private void Tb_validateEmptyLostFocus(object sender, RoutedEventArgs e)
         {
-            string name = sender.GetType().Name;
-            validateEmpty(name, sender);
+            try
+            {
+                string name = sender.GetType().Name;
+                validateEmpty(name, sender);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void validateEmpty(string name, object sender)
@@ -168,13 +206,28 @@ namespace POS.View.windows
 
         private async void Cb_branch_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//select branch
-            int bId = Convert.ToInt32(cb_branch.SelectedValue);
-            poss = await posModel.GetPosAsync();
-            var pos = poss.Where(p => p.branchId == bId);
-            cb_pos.ItemsSource = pos;
-            cb_pos.DisplayMemberPath = "name";
-            cb_pos.SelectedValuePath = "posId";
-            cb_pos.SelectedIndex = -1;
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_changePassword);
+
+                int bId = Convert.ToInt32(cb_branch.SelectedValue);
+                poss = await posModel.GetPosAsync();
+                var pos = poss.Where(p => p.branchId == bId);
+                cb_pos.ItemsSource = pos;
+                cb_pos.DisplayMemberPath = "name";
+                cb_pos.SelectedValuePath = "posId";
+                cb_pos.SelectedIndex = -1;
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_changePassword);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_changePassword);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void validateEmptyComboBox(ComboBox cb, Path p_error, ToolTip tt_error, string tr)

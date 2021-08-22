@@ -31,28 +31,62 @@ namespace POS.View.windows
         List<User> users;
         public wd_deliveryReceiptInvoice()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         private void Btn_colse_Click(object sender, RoutedEventArgs e)
         {
-
+            try
+            {
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Btn_save_Click(object sender, RoutedEventArgs e)
         {
-            deliveryCost = (decimal) companyModel.deliveryCost;
-            shippingCompanyId = (int)cb_company.SelectedValue;
-            if (cb_user.SelectedIndex != -1)
-                shipUserId = (int)cb_user.SelectedValue;
-            DialogResult = true;
-            this.Close();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_delivery);
+
+                deliveryCost = (decimal) companyModel.deliveryCost;
+                shippingCompanyId = (int)cb_company.SelectedValue;
+                if (cb_user.SelectedIndex != -1)
+                    shipUserId = (int)cb_user.SelectedValue;
+                DialogResult = true;
+                this.Close();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_delivery);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_delivery);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            SectionData.StartAwait(grid_mainGrid);
-            if (MainWindow.lang.Equals("en"))
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_delivery);
+
+                #region translate
+                if (MainWindow.lang.Equals("en"))
             {
                 MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
             }
@@ -62,12 +96,26 @@ namespace POS.View.windows
             }
 
             translate();
-            await fillShippingCompanies();
-            await fillUsers();
-            SectionData.EndAwait(grid_mainGrid,this);
+            #endregion
+
+                await fillShippingCompanies();
+                await fillUsers();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_delivery);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_delivery);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         private void translate()
         {
+            txt_title.Text = MainWindow.resourcemanager.GetString("trDelivery");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_company, MainWindow.resourcemanager.GetString("trCompanyHint"));
+            btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
         }
         private async Task fillShippingCompanies()
         {
@@ -114,7 +162,11 @@ namespace POS.View.windows
 
         private void Cb_company_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (cb_company.SelectedIndex != -1)
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_delivery);
+                if (cb_company.SelectedIndex != -1)
             {
                 companyModel = companies.Find(c => c.shippingCompanyId == (int)cb_company.SelectedValue);
                
@@ -127,6 +179,15 @@ namespace POS.View.windows
                     cb_user.SelectedIndex = -1;
                     cb_user.Visibility = Visibility.Collapsed;
                 }
+            }
+                if (sender != null)
+                    SectionData.EndAwait(grid_delivery);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_delivery);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 

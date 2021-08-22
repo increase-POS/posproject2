@@ -10,7 +10,7 @@
         ResizeMode="NoResize" Margin="0"
         Title="wd_itemsList" Height="400" Width="550" Background="Transparent" AllowsTransparency="True"
         Loaded="Window_Loaded" MouseDown="Window_MouseDown">
-    <Grid Grid.Column="1" Grid.Row="1"  >
+    <Grid Grid.Column="1" Grid.Row="1" x:Name="grid_ucItemsList" >
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
             <RowDefinition Height="*"/>
@@ -113,7 +113,7 @@
                 <Line Grid.Row="1" Grid.Column="0"  Grid.ColumnSpan="3" Stretch="Fill" Stroke="#DFDFDF"  X2="1"  Margin="1,1,1,1"
                           VerticalAlignment="Bottom"/>
                 <TextBlock Text="Items" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center"
-                           Foreground="#999999" FontWeight="SemiBold"  FontSize="16"/>
+                           Foreground="#999999" FontWeight="SemiBold"  FontSize="16" x:Name="txt_Items"/>
                 <Border Grid.Row="3"  Margin="10"   BorderBrush="#999999" BorderThickness="1">
                     <ListView x:Name="lst_allItems" 
                     MouseDoubleClick="Lst_allItems_MouseDoubleClick" />
@@ -138,6 +138,13 @@
                          VerticalAlignment="Center" Width="12" Height="12"
                               Data="M7.6,2.8v8.4c0,0.3-0.2,0.5-0.5,0.5c-0.3,0-0.5-0.2-0.5-0.5V2.8c0-0.3,0.2-0.5,0.5-0.5C7.4,2.3,7.6,2.5,7.6,2.8
 	z M6.4,6.4l-3-3.9c-0.2-0.3-0.6,0-0.6,0.6v7.9c0,0.6,0.3,1,0.6,0.6l3-3.9C6.6,7.3,6.6,6.7,6.4,6.4z"/>
+                        <Button.ToolTip>
+                            <ToolTip x:Name="tt_selectAllItem" 
+                                    Placement="left" 
+                                    HorizontalOffset="15"
+                                    PlacementRectangle="50,0,0,0"
+                                    VerticalOffset="30"/>
+                        </Button.ToolTip>
                     </Button>
                     <Button  Margin="2.5,7.5" Grid.Column="4" Grid.Row="2" HorizontalAlignment="Center"
                                     Height="25" Width="25"  Padding="0" x:Name="btn_selectedItem" Click="Btn_selectedItem_Click"
@@ -146,6 +153,13 @@
                               HorizontalAlignment="Center" Grid.Column="0"  
                          VerticalAlignment="Center" Width="12" Height="12"
                               Data="M3.7,2.5c-0.2-0.3-0.6,0-0.6,0.6V11c0,0.6,0.3,1,0.6,0.6l3-3.9c0.2-0.4,0.2-1,0-1.3L3.7,2.5z"/>
+                        <Button.ToolTip>
+                            <ToolTip x:Name="tt_selectItem" 
+                                    Placement="left" 
+                                    HorizontalOffset="15"
+                                    PlacementRectangle="50,0,0,0"
+                                    VerticalOffset="30"/>
+                        </Button.ToolTip>
                     </Button>
                   
                     <Button Margin="2.5,7.5" Grid.Column="4" Grid.Row="3" HorizontalAlignment="Center"
@@ -155,6 +169,13 @@
                               HorizontalAlignment="Center" Grid.Column="0"  
                          VerticalAlignment="Center" Width="12" Height="12"
                               Data="M6.3,11.6c0.2,0.3,0.6,0,0.6-0.6L6.8,3.1c0-0.6-0.3-1-0.6-0.6l-3,3.9c-0.2,0.4-0.2,1,0,1.3L6.3,11.6z"/>
+                        <Button.ToolTip>
+                            <ToolTip x:Name="tt_unselectItem" 
+                                    Placement="left" 
+                                    HorizontalOffset="15"
+                                    PlacementRectangle="50,0,0,0"
+                                    VerticalOffset="30"/>
+                        </Button.ToolTip>
                     </Button>
                     <Button Margin="2.5,7.5" Grid.Column="4" Grid.Row="4" HorizontalAlignment="Center"
                                     Height="25" Width="25"  Padding="0" x:Name="btn_unSelectedAll" Click="Btn_unSelectedAll_Click"
@@ -164,10 +185,17 @@
                          VerticalAlignment="Center" Width="12" Height="12"
                               Data="M2.9,11.3l0-8.5c0-0.3,0.2-0.5,0.4-0.5c0.3,0,0.5,0.2,0.5,0.5l0,8.5c0,0.3-0.2,0.5-0.5,0.5
 	C3.1,11.7,2.9,11.5,2.9,11.3z M4,7.7l3,3.9c0.2,0.3,0.6,0,0.6-0.6l0-7.9c0-0.6-0.3-1-0.6-0.6l-3,4C3.8,6.7,3.8,7.4,4,7.7z"/>
+                          <Button.ToolTip>
+                            <ToolTip x:Name="tt_unselectAllItem" 
+                                    Placement="left" 
+                                    HorizontalOffset="15"
+                                    PlacementRectangle="50,0,0,0"
+                                    VerticalOffset="30"/>
+                        </Button.ToolTip>
                     </Button>
                 </Grid>
                 <TextBlock Text="Selcted items" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"
-                           Foreground="#999999" FontWeight="SemiBold"  FontSize="16"/>
+                           Foreground="#999999" FontWeight="SemiBold"  FontSize="16" x:Name="txt_selectedItems"/>
                 <Border  Margin="10" Grid.Row="3"  Grid.Column="4"  BorderBrush="#999999" BorderThickness="1"  >
                     <ListView  x:Name="lst_selectedItems"
                      MouseDoubleClick="Lst_selectedItems_MouseDoubleClick"/>

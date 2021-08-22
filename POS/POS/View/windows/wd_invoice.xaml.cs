@@ -24,7 +24,14 @@ namespace POS.View.windows
     {
         public wd_invoice()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
         /// <summary>
         /// for filtering store
@@ -45,42 +52,92 @@ namespace POS.View.windows
         public int duration { get; set; }
         private void Btn_select_Click(object sender, RoutedEventArgs e)
         {
-            invoice = dg_Invoice.SelectedItem as Invoice;
-            DialogResult = true;
-            this.Close();
+            try
+            {
+                invoice = dg_Invoice.SelectedItem as Invoice;
+                DialogResult = true;
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
 
         }
         private void HandleKeyPress(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Return)
+            try
             {
-                Btn_select_Click(null, null);
+                if (e.Key == Key.Return)
+                {
+                    Btn_select_Click(null, null);
+                }
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
+
         private void Txb_search_TextChanged(object sender, TextChangedEventArgs e)
         {
-            dg_Invoice.ItemsSource = invoices.Where(x => x.invNumber.ToLower().Contains(txb_search.Text)).ToList();
-
+            try
+            { 
+                dg_Invoice.ItemsSource = invoices.Where(x => x.invNumber.ToLower().Contains(txb_search.Text)).ToList();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            SectionData.StartAwait(grid_mainGrid);
-            if (MainWindow.lang.Equals("en"))
+            try
             {
-                MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
-                grid_ucInvoice.FlowDirection = FlowDirection.LeftToRight;
-            }
-            else
-            {
-                MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
-                grid_ucInvoice.FlowDirection = FlowDirection.RightToLeft;
-            }
-            txt_Invoices.Text = title;
+                if (sender != null)
+                    SectionData.StartAwait(grid_ucInvoice);
 
-            await refreshInvoices();
-            Txb_search_TextChanged(null, null);
-            SectionData.EndAwait(grid_mainGrid,this);
+                #region translate
+                if (MainWindow.lang.Equals("en"))
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                    grid_ucInvoice.FlowDirection = FlowDirection.LeftToRight;
+                }
+                else
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                    grid_ucInvoice.FlowDirection = FlowDirection.RightToLeft;
+                }
+                txt_Invoices.Text = title;
+                translat();
+                #endregion
+
+                await refreshInvoices();
+                Txb_search_TextChanged(null, null);
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucInvoice);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucInvoice);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
+
+        private void translat()
+        {
+            txt_Invoices.Text = MainWindow.resourcemanager.GetString("trInvoices");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(txb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
+
+            dg_Invoice.Columns[0].Header = MainWindow.resourcemanager.GetString("trInvoiceNumber");
+            dg_Invoice.Columns[1].Header = MainWindow.resourcemanager.GetString("trItemsCount");
+            dg_Invoice.Columns[2].Header = MainWindow.resourcemanager.GetString("trTotal");
+
+            btn_select.Content = MainWindow.resourcemanager.GetString("trSelect");
+        }
+
         private async Task refreshInvoices()
         {
             if (userId != 0 && (invoiceStatus == "" || invoiceStatus == null))/// to display draft invoices
@@ -102,17 +159,28 @@ namespace POS.View.windows
         }
         private void Dg_Invoice_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
-            invoice = dg_Invoice.SelectedItem as Invoice;
+            try
+            {
+                invoice = dg_Invoice.SelectedItem as Invoice;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         private void Dg_Invoice_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            Btn_select_Click(null,null);
+            try
+            { 
+                Btn_select_Click(null,null);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         private void Btn_colse_Click(object sender, RoutedEventArgs e)
         {
-           
-           // DialogResult = true;
             this.Close();
         }
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
@@ -121,9 +189,9 @@ namespace POS.View.windows
             {
                 DragMove();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 

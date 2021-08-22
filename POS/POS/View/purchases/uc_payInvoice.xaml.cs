@@ -801,7 +801,20 @@ namespace POS.View
                                 await addInvoice("pw", "pi");
                             else//pw  waiting purchase invoice
                             {
+                                #region notification Object
+                                Notification not = new Notification()
+                                {
+                                    title = "trPurchaseInvoiceAlertTilte",
+                                    ncontent = "trPurchaseInvoiceAlertContent",
+                                    msgType = "alert",
+                                    createUserId = MainWindow.userID.Value,
+                                    updateUserId = MainWindow.userID.Value,
+                                };
+                                await not.Save(not, (int)cb_branch.SelectedValue, "reciptInvoice_invoice", cb_branch.Text);
+                                #endregion
+
                                 await addInvoice("pw", "pi");
+
                                 refreshDraftNotification();
                             }
 

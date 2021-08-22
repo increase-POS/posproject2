@@ -80,7 +80,6 @@ namespace POS.View
         IEnumerable<Coupon> coupons;
         List<CouponInvoice> selectedCoupons = new List<CouponInvoice>();
         Branch branchModel = new Branch();
-        IEnumerable<Branch> branches;
         Pos posModel = new Pos();
         Pos pos;
         List<ItemTransfer> invoiceItems;
@@ -152,7 +151,7 @@ namespace POS.View
             txt_tax.Text = MainWindow.resourcemanager.GetString("trTax");
             txt_sum.Text = MainWindow.resourcemanager.GetString("trSum");
             txt_total.Text = MainWindow.resourcemanager.GetString("trTotal");
-            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSaleOrder");
+            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesInvoice");
             txt_barcode.Text = MainWindow.resourcemanager.GetString("trBarcode");
             txt_coupon.Text = MainWindow.resourcemanager.GetString("trCoupon");
             txt_customer.Text = MainWindow.resourcemanager.GetString("trCustomer");
@@ -184,7 +183,7 @@ namespace POS.View
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_processNum, MainWindow.resourcemanager.GetString("trProcessNumHint"));
 
             btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
-
+            
 
 
         }
@@ -776,7 +775,22 @@ namespace POS.View
         {
             await addInvoice(invType);
             if (invoice.invoiceId != 0)
+            {
+                #region notification Object
+                Notification not = new Notification()
+                {
+                    title = "trDeliverOrderAlertTilte",
+                    ncontent = "trDeliverOrderAlertContent",
+                    msgType = "alert",
+                    createUserId = MainWindow.userID.Value,
+                    updateUserId = MainWindow.userID.Value,
+                };
+                Branch branch = new Branch();
+                branch = await branch.getBranchById(MainWindow.branchID.Value);
+                await not.Save(not, MainWindow.branchID.Value, "reciptInvoice_invoice", branch.name, (int)invoice.shipUserId);
+                #endregion
                 await saveOrderStatus(invoice.invoiceId, "ex");
+            }
         }
         private async Task saveOrderStatus(int invoiceId, string status)
         {
@@ -877,7 +891,19 @@ namespace POS.View
                     // edit vendor balance , add cach transfer
                     if (invType == "s")
                     {
-                        await itemLocationModel.decreaseAmounts(invoiceItems, MainWindow.branchID.Value, MainWindow.userID.Value); // update item quantity in DB
+                        #region notification Object
+                        Notification not = new Notification()
+                        {
+                            title = "trExceedMinLimitAlertTilte",
+                            ncontent = "trExceedMinLimitAlertContent",
+                            msgType = "alert",
+                            createDate = DateTime.Now,
+                            updateDate = DateTime.Now,
+                            createUserId = MainWindow.userID.Value,
+                            updateUserId = MainWindow.userID.Value,
+                        };
+                        #endregion
+                        await itemLocationModel.decreaseAmounts(invoiceItems, MainWindow.branchID.Value, MainWindow.userID.Value, "reciptInvoice_invoice", not); // update item quantity in DB
                         await invoice.recordPosCashTransfer(invoice,"si");                                                                                                         //if (paid > 0)
                                                                                                                                    //{
                         switch (cb_paymentProcessType.SelectedIndex)
@@ -913,7 +939,19 @@ namespace POS.View
                     }
                     else if (invType == "sb")
                     {
-                        await itemLocationModel.recieptInvoice(invoiceItems, MainWindow.branchID.Value, MainWindow.userID.Value); // update item quantity in DB
+                        #region notification Object
+                        Notification not = new Notification()
+                        {
+                            title = "trExceedMaxLimitAlertTilte",
+                            ncontent = "trExceedMaxLimitAlertContent",
+                            msgType = "alert",
+                            createDate = DateTime.Now,
+                            updateDate = DateTime.Now,
+                            createUserId = MainWindow.userID.Value,
+                            updateUserId = MainWindow.userID.Value,
+                        };
+                        #endregion
+                        await itemLocationModel.recieptInvoice(invoiceItems, MainWindow.branchID.Value, MainWindow.userID.Value, "reciptInvoice_invoice", not); // update item quantity in DB
                         await invoice.recordPosCashTransfer(invoice, "sb");
                         switch (cb_paymentProcessType.SelectedIndex)
                         {

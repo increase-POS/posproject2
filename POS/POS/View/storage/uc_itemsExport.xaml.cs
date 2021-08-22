@@ -759,9 +759,15 @@ namespace POS.View.storage
                     // create new row in bill details data grid
                     addRowToBill(item.name, itemId, defaultPurUnit.mainUnit, defaultPurUnit.itemUnitId, 1);
 
-                    _Count++;
-                    refrishBillDetails();
+                    //_Count++;
+                    //refrishBillDetails();
                 }
+                else
+                {
+                    addRowToBill(item.name, itemId, null, 0, 1);
+                }
+                _Count++;
+                refrishBillDetails();
             }
         }
 
@@ -1160,6 +1166,17 @@ namespace POS.View.storage
                     invoiceId = int.Parse(await invoice.saveInvoice(invoice));
                     if (invoiceId != 0)
                     {
+                        #region notification Object
+                        Notification not = new Notification()
+                        {
+                            title = "trExportAlertTilte",
+                            ncontent = "trExportAlertContent",
+                            msgType = "alert",
+                            createUserId = MainWindow.userID.Value,
+                            updateUserId = MainWindow.userID.Value,
+                        };
+                       await not.Save(not, (int) cb_branch.SelectedValue, "reciptInvoice_invoice", cb_branch.Text);
+                        #endregion
                         // expot order
                         if (invoice.invoiceId == 0) // create new export order
                         {

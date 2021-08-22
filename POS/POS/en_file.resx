@@ -2164,4 +2164,94 @@ Please add Email in setting</value>
   <data name="trOK" xml:space="preserve">
     <value>Ok</value>
   </data>
+  <data name="trConvert" xml:space="preserve">
+    <value>Convert</value>
+  </data>
+  <data name="trCreateDate" xml:space="preserve">
+    <value>Create date</value>
+  </data>
+  <data name="trDeliverOrderAlertContent" xml:space="preserve">
+    <value>trDeliverOrderAlertContent</value>
+  </data>
+  <data name="trDeliverOrderAlertTilte" xml:space="preserve">
+    <value>Deliver Order</value>
+  </data>
+  <data name="trDraftExist" xml:space="preserve">
+    <value>There is an inventory draft</value>
+  </data>
+  <data name="trExceedMaxLimitAlertContent" xml:space="preserve">
+    <value>The element  exceeded the upper limit of storage</value>
+  </data>
+  <data name="trExceedMaxLimitAlertTilte" xml:space="preserve">
+    <value>Quantity overflow</value>
+  </data>
+  <data name="trExceedMinLimitAlertContent" xml:space="preserve">
+    <value>The element  exceeded the minimum limit of storage</value>
+  </data>
+  <data name="trExceedMinLimitAlertTilte" xml:space="preserve">
+    <value>lack of quantity</value>
+  </data>
+  <data name="trExportAlertContent" xml:space="preserve">
+    <value>trExportAlertContent</value>
+  </data>
+  <data name="trExportAlertTilte" xml:space="preserve">
+    <value>Export Order</value>
+  </data>
+  <data name="trFromLocationHint" xml:space="preserve">
+    <value>From location ...</value>
+  </data>
+  <data name="trFromUnitHint" xml:space="preserve">
+    <value>From unit ...</value>
+  </data>
+  <data name="trItemsCount" xml:space="preserve">
+    <value>Items count</value>
+  </data>
+  <data name="trMonthCount" xml:space="preserve">
+    <value>month count</value>
+  </data>
+  <data name="trMonthCountHint" xml:space="preserve">
+    <value>Month count ...</value>
+  </data>
+  <data name="trSalesOrderAlertContent" xml:space="preserve">
+    <value>trSalesOrderAlertContent</value>
+  </data>
+  <data name="trSalesOrderAlertTilte" xml:space="preserve">
+    <value>Sales Order</value>
+  </data>
+  <data name="trSelectedCustomers" xml:space="preserve">
+    <value>Selected customers</value>
+  </data>
+  <data name="trSelectLocations" xml:space="preserve">
+    <value>Select Locations</value>
+  </data>
+  <data name="trSerialNum" xml:space="preserve">
+    <value>Serial number</value>
+  </data>
+  <data name="trSerialNumHint" xml:space="preserve">
+    <value>Serial number...</value>
+  </data>
+  <data name="trSkip" xml:space="preserve">
+    <value>Skip</value>
+  </data>
+  <data name="trSubscriptionFees" xml:space="preserve">
+    <value>Subscription fees</value>
+  </data>
+  <data name="trToUnitHint" xml:space="preserve">
+    <value>To unit ...</value>
+  </data>
+  <data name="trUnitConversion" xml:space="preserve">
+    <value>Unit conversion</value>
+  </data>
+  <data name="trRequiredAmount" xml:space="preserve">
+    <value>Required Amount</value>
+  </data>
+  <data name="trTheCustomerHasNoEmail" xml:space="preserve">
+    <value>The customer does not have email</value>
+  </data>
+  <data name="trTheShippingCompaniesHasNoEmail" xml:space="preserve">
+    <value>The Shipping Company does not have email</value>
+  </data>
+  <data name="trTheUserHasNoEmail" xml:space="preserve">
+    <value>The user does not have email</value>
+  </data>
 </root>

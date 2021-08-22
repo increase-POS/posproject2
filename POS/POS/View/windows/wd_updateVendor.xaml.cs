@@ -38,7 +38,14 @@ namespace POS.View.windows
     {
         public wd_updateVendor()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
         Agent agentModel = new Agent();
         public Agent agent = new Agent();
@@ -90,56 +97,76 @@ namespace POS.View.windows
 
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
         {//clear
-            tb_address.Clear();
-            tb_fax.Clear();
-            tb_company.Clear();
-            tb_email.Clear();
-            tb_name.Clear();
-            tb_notes.Clear();
-            tb_mobile.Clear();
-            tb_phone.Clear();
-            cb_areaMobile.SelectedIndex = 0;
-            cb_areaPhone.SelectedIndex = 0;
-            cb_areaPhoneLocal.SelectedIndex = 0;
+            try
+            {
+                tb_address.Clear();
+                tb_fax.Clear();
+                tb_company.Clear();
+                tb_email.Clear();
+                tb_name.Clear();
+                tb_notes.Clear();
+                tb_mobile.Clear();
+                tb_phone.Clear();
+                cb_areaMobile.SelectedIndex = 0;
+                cb_areaPhone.SelectedIndex = 0;
+                cb_areaPhoneLocal.SelectedIndex = 0;
 
-            SectionData.clearImg(img_vendor);
+                SectionData.clearImg(img_vendor);
 
-            SectionData.clearValidate(tb_name , p_errorName);
-            SectionData.clearValidate(tb_email , p_errorEmail);
-            SectionData.clearValidate(tb_mobile , p_errorMobile);
+                SectionData.clearValidate(tb_name, p_errorName);
+                SectionData.clearValidate(tb_email, p_errorEmail);
+                SectionData.clearValidate(tb_mobile, p_errorMobile);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
-            SectionData.StartAwait(grid_mainGrid);
-
-            #region translate
-            if (MainWindow.lang.Equals("en"))
-            { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly()); grid_wdVendor.FlowDirection = FlowDirection.LeftToRight; }
-            else
-            { MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly()); grid_wdVendor.FlowDirection = FlowDirection.RightToLeft; }
-
-            translate();
-            #endregion
-
-            agent = await agentModel.getAgentById(agent.agentId);
-            if (agent != null)
+            try
             {
-                this.DataContext = agent;
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
-                tb_code.Text = agent.code;
+                #region translate
+                if (MainWindow.lang.Equals("en"))
+                { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                    grid_main.FlowDirection = FlowDirection.LeftToRight; }
+                else
+                { MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                    grid_main.FlowDirection = FlowDirection.RightToLeft; }
 
-                SectionData.getMobile(agent.mobile, cb_areaMobile, tb_mobile);
+                translate();
+                #endregion
 
-                SectionData.getPhone(agent.phone, cb_areaPhone, cb_areaPhoneLocal, tb_phone);
+                agent = await agentModel.getAgentById(agent.agentId);
+                if (agent != null)
+                {
+                    this.DataContext = agent;
 
-                SectionData.getPhone(agent.fax, cb_areaFax, cb_areaFaxLocal, tb_fax);
+                    tb_code.Text = agent.code;
 
-                await getImg();
-            }
+                    SectionData.getMobile(agent.mobile, cb_areaMobile, tb_mobile);
+
+                    SectionData.getPhone(agent.phone, cb_areaPhone, cb_areaPhoneLocal, tb_phone);
+
+                    SectionData.getPhone(agent.fax, cb_areaFax, cb_areaFaxLocal, tb_fax);
+
+                    await getImg();
+                }
 
                 Keyboard.Focus(tb_name);
-            SectionData.EndAwait(grid_mainGrid,this);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private async Task getImg()
@@ -183,111 +210,181 @@ namespace POS.View.windows
         #region Validate
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
-            Regex regex = new Regex("[^0-9]+");
-            e.Handled = regex.IsMatch(e.Text);
+            try
+            {
+                Regex regex = new Regex("[^0-9]+");
+                e.Handled = regex.IsMatch(e.Text);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void tb_name_TextChanged(object sender, TextChangedEventArgs e)
         {
-            tb_name_LostFocus(sender, e);
+            try
+            {
+                tb_name_LostFocus(sender, e);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         private void Tb_email_LostFocus(object sender, RoutedEventArgs e)
         {
-            var bc = new BrushConverter();
-
-            if (!tb_email.Text.Equals(""))
+            try
             {
-                if (!ValidatorExtensions.IsValid(tb_email.Text))
+                var bc = new BrushConverter();
+
+                if (!tb_email.Text.Equals(""))
                 {
-                    p_errorEmail.Visibility = Visibility.Visible;
-                    tt_errorEmail.Content = MainWindow.resourcemanager.GetString("trErrorEmailToolTip");
-                    tb_email.Background = (Brush)bc.ConvertFrom("#15FF0000");
+                    if (!ValidatorExtensions.IsValid(tb_email.Text))
+                    {
+                        p_errorEmail.Visibility = Visibility.Visible;
+                        tt_errorEmail.Content = MainWindow.resourcemanager.GetString("trErrorEmailToolTip");
+                        tb_email.Background = (Brush)bc.ConvertFrom("#15FF0000");
+                    }
+                    else
+                    {
+                        p_errorEmail.Visibility = Visibility.Collapsed;
+                        tb_email.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                    }
                 }
-                else
-                {
-                    p_errorEmail.Visibility = Visibility.Collapsed;
-                    tb_email.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-                }
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
-     
+
 
         private void tb_mobile_LostFocus(object sender, RoutedEventArgs e)
         {
-            var bc = new BrushConverter();
-
-            if (tb_mobile.Text.Equals(""))
+            try
             {
-                p_errorMobile.Visibility = Visibility.Visible;
-                tt_errorMobile.Content = MainWindow.resourcemanager.GetString("trEmptyMobileToolTip");
-                tb_mobile.Background = (Brush)bc.ConvertFrom("#15FF0000");
+                var bc = new BrushConverter();
 
+                if (tb_mobile.Text.Equals(""))
+                {
+                    p_errorMobile.Visibility = Visibility.Visible;
+                    tt_errorMobile.Content = MainWindow.resourcemanager.GetString("trEmptyMobileToolTip");
+                    tb_mobile.Background = (Brush)bc.ConvertFrom("#15FF0000");
+
+                }
+                else
+                {
+                    tb_mobile.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                    p_errorMobile.Visibility = Visibility.Collapsed;
+
+                }
             }
-            else
+            catch (Exception ex)
             {
-                tb_mobile.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-                p_errorMobile.Visibility = Visibility.Collapsed;
-
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
         private void tb_mobile_TextChanged(object sender, TextChangedEventArgs e)
         {
-            var bc = new BrushConverter();
-
-            if (tb_mobile.Text.Equals(""))
+            try
             {
-                p_errorMobile.Visibility = Visibility.Visible;
-                tt_errorMobile.Content = MainWindow.resourcemanager.GetString("trEmptyMobileToolTip");
-                tb_mobile.Background = (Brush)bc.ConvertFrom("#15FF0000");
+                var bc = new BrushConverter();
 
+                if (tb_mobile.Text.Equals(""))
+                {
+                    p_errorMobile.Visibility = Visibility.Visible;
+                    tt_errorMobile.Content = MainWindow.resourcemanager.GetString("trEmptyMobileToolTip");
+                    tb_mobile.Background = (Brush)bc.ConvertFrom("#15FF0000");
+
+                }
+                else
+                {
+                    tb_mobile.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                    p_errorMobile.Visibility = Visibility.Collapsed;
+
+                }
             }
-            else
+            catch (Exception ex)
             {
-                tb_mobile.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-                p_errorMobile.Visibility = Visibility.Collapsed;
-
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
         private void tb_name_LostFocus(object sender, RoutedEventArgs e)
         {
-            var bc = new BrushConverter();
+            try
+            {
+                var bc = new BrushConverter();
 
-            if (tb_name.Text.Equals(""))
-            {
-                p_errorName.Visibility = Visibility.Visible;
-                tt_errorName.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-                tb_name.Background = (Brush)bc.ConvertFrom("#15FF0000");
+                if (tb_name.Text.Equals(""))
+                {
+                    p_errorName.Visibility = Visibility.Visible;
+                    tt_errorName.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
+                    tb_name.Background = (Brush)bc.ConvertFrom("#15FF0000");
+                }
+                else
+                {
+                    p_errorName.Visibility = Visibility.Collapsed;
+                    tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                p_errorName.Visibility = Visibility.Collapsed;
-                tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
-       
+
 
         private void tb_mobile_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            e.Handled = e.Key == Key.Space;
+            try
+            {
+                e.Handled = e.Key == Key.Space;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void tb_phone_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            e.Handled = e.Key == Key.Space;
+            try
+            {
+                e.Handled = e.Key == Key.Space;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void tb_fax_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            e.Handled = e.Key == Key.Space;
+            try
+            {
+                e.Handled = e.Key == Key.Space;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void tb_email_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            e.Handled = e.Key == Key.Space;
+            try
+            {
+                e.Handled = e.Key == Key.Space;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
 
@@ -298,89 +395,124 @@ namespace POS.View.windows
         {
             agents = await agentModel.GetAgentsAsync("v");
             return agents;
+
         }
         private void HandleKeyPress(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Return)
+            try
             {
-                Btn_save_Click(null, null);
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                if (e.Key == Key.Return)
+                {
+                    Btn_save_Click(null, null);
+                }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {//save
-         //chk empty name
-            SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
-            //chk empty mobile
-            SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
-            //validate email
-            SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
-
-            string phoneStr = "";
-            if (!tb_phone.Text.Equals("")) 
-                phoneStr = cb_areaPhone.Text + "-" + cb_areaPhoneLocal.Text + "-" + tb_phone.Text;
-            string faxStr = "";
-            if (!tb_fax.Text.Equals("")) 
-                faxStr = cb_areaFax.Text + "-" + cb_areaFaxLocal.Text + "-" + tb_fax.Text;
-            bool emailError = false;
-            if (!tb_email.Text.Equals(""))
-                if (!ValidatorExtensions.IsValid(tb_email.Text))
-                    emailError = true;
-
-            //decimal maxDeserveValue = 0;
-
-            if ((!tb_name.Text.Equals("")) && (!tb_mobile.Text.Equals("")))
+            try
             {
-                if (emailError)
-                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorEmailToolTip"), animation: ToasterAnimation.FadeIn);
-                else
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                //chk empty name
+                SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
+                //chk empty mobile
+                SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
+                //validate email
+                SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
+
+                string phoneStr = "";
+                if (!tb_phone.Text.Equals(""))
+                    phoneStr = cb_areaPhone.Text + "-" + cb_areaPhoneLocal.Text + "-" + tb_phone.Text;
+                string faxStr = "";
+                if (!tb_fax.Text.Equals(""))
+                    faxStr = cb_areaFax.Text + "-" + cb_areaFaxLocal.Text + "-" + tb_fax.Text;
+                bool emailError = false;
+                if (!tb_email.Text.Equals(""))
+                    if (!ValidatorExtensions.IsValid(tb_email.Text))
+                        emailError = true;
+
+                //decimal maxDeserveValue = 0;
+
+                if ((!tb_name.Text.Equals("")) && (!tb_mobile.Text.Equals("")))
                 {
-                    SectionData.genRandomCode("v");
-                    //tb_code.Text = SectionData.code;
-                    agent.name = tb_name.Text;
-                    agent.code = tb_code.Text;
-                    agent.company = tb_company.Text;
-                    agent.address = tb_address.Text;
-                    agent.email = tb_email.Text;
-                    agent.phone = phoneStr;
-                    agent.mobile = cb_areaMobile.Text + "-" + tb_mobile.Text;
-                    agent.image = "";
-                    //agent.type = "v";
-                    //agent.accType = "";
-                    //agent.balance = 0;
-                    agent.createUserId = MainWindow.userID;
-                    agent.updateUserId = MainWindow.userID;
-                    agent.notes = tb_notes.Text;
-                    //agent.isActive = 1;
-                    agent.fax = faxStr;
-                    //agent.maxDeserve = maxDeserveValue;
-
-                    string s = await agentModel.saveAgent(agent);
-
-                    if (!s.Equals("0"))
-                    {
-                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
-                        this.Close();
-                    }
+                    if (emailError)
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorEmailToolTip"), animation: ToasterAnimation.FadeIn);
                     else
-                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-
-                    if (isImgPressed)
                     {
-                        int agentId = int.Parse(s);
-                        string b = await agentModel.uploadImage(imgFileName, Md5Encription.MD5Hash("Inc-m" + agentId.ToString()), agentId);
-                        agent.image = b;
-                        isImgPressed = false;
-                        if (b.Equals(""))
-                            MessageBox.Show("حدث خطأ في تحميل الصورة");
-                    }
+                        SectionData.genRandomCode("v");
+                        //tb_code.Text = SectionData.code;
+                        agent.name = tb_name.Text;
+                        agent.code = tb_code.Text;
+                        agent.company = tb_company.Text;
+                        agent.address = tb_address.Text;
+                        agent.email = tb_email.Text;
+                        agent.phone = phoneStr;
+                        agent.mobile = cb_areaMobile.Text + "-" + tb_mobile.Text;
+                        agent.image = "";
+                        //agent.type = "v";
+                        //agent.accType = "";
+                        //agent.balance = 0;
+                        agent.createUserId = MainWindow.userID;
+                        agent.updateUserId = MainWindow.userID;
+                        agent.notes = tb_notes.Text;
+                        //agent.isActive = 1;
+                        agent.fax = faxStr;
+                        //agent.maxDeserve = maxDeserveValue;
 
+                        string s = await agentModel.saveAgent(agent);
+
+                        if (!s.Equals("0"))
+                        {
+                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
+                            this.Close();
+                        }
+                        else
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+                        if (isImgPressed)
+                        {
+                            int agentId = int.Parse(s);
+                            string b = await agentModel.uploadImage(imgFileName, Md5Encription.MD5Hash("Inc-m" + agentId.ToString()), agentId);
+                            agent.image = b;
+                            isImgPressed = false;
+                            if (b.Equals(""))
+                                MessageBox.Show("حدث خطأ في تحميل الصورة");
+                        }
+
+                    }
                 }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
         private void Btn_colse_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            try
+            {
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
@@ -397,15 +529,29 @@ namespace POS.View.windows
 
         private void Img_vendor_Click(object sender, RoutedEventArgs e)
         {//select image
-            isImgPressed = true;
-            openFileDialog.Filter = "Images|*.png;*.jpg;*.bmp;*.jpeg;*.jfif";
-            if (openFileDialog.ShowDialog() == true)
+            try
             {
-                brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
-                img_vendor.Background = brush;
-                imgFileName = openFileDialog.FileName;
-            }
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
+                isImgPressed = true;
+                openFileDialog.Filter = "Images|*.png;*.jpg;*.bmp;*.jpeg;*.jfif";
+                if (openFileDialog.ShowDialog() == true)
+                {
+                    brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
+                    img_vendor.Background = brush;
+                    imgFileName = openFileDialog.FileName;
+                }
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
     }
 }

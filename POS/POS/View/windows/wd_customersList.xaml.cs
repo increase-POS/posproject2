@@ -46,144 +46,254 @@ namespace POS.View.windows
         /// <param name="e"></param>
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
-            SectionData.StartAwait(grid_mainGrid);
-            allAgents = (await agentModel.GetAgentsAsync("c")).Where(x => x.isActive == 1).ToList();
-            allAgentsSource = allAgents;
-            selectedAgents = (await medalAgentModel.GetAll()).Where(x => x.medalId == medalId).ToList();
-            MessageBox.Show(selectedAgents.Count.ToString());
-            for(int i  = 0; i < selectedAgents.Count; i++)
+            try
             {
-                if (allAgents.Any(s => s.agentId == selectedAgents[i].agentId))
-                    agent = await agentModel.getAgentById(selectedAgents[0].agentId.Value);
-                    allAgents.Remove(agent);
+                if (sender != null)
+                    SectionData.StartAwait(grid_customerList);
+
+                allAgents = (await agentModel.GetAgentsAsync("c")).Where(x => x.isActive == 1).ToList();
+                allAgentsSource = allAgents;
+                selectedAgents = (await medalAgentModel.GetAll()).Where(x => x.medalId == medalId).ToList();
+
+                for (int i  = 0; i < selectedAgents.Count; i++)
+                {
+                    if (allAgents.Any(s => s.agentId == selectedAgents[i].agentId))
+                        agent = await agentModel.getAgentById(selectedAgents[0].agentId.Value);
+                        allAgents.Remove(agent);
+                }
+
+                dg_allAgents.ItemsSource = allAgents;
+                dg_allAgents.SelectedValuePath = "agentId";
+                dg_allAgents.DisplayMemberPath = "name";
+
+                dg_selectedAgents.ItemsSource = selectedAgents;
+                dg_selectedAgents.SelectedValuePath = "agentId";
+                dg_selectedAgents.DisplayMemberPath = "agentName";
+
+                #region translate
+                if (MainWindow.lang.Equals("en"))
+                { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly()); grid_customerList.FlowDirection = FlowDirection.LeftToRight; }
+                else
+                { MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly()); grid_customerList.FlowDirection = FlowDirection.RightToLeft; }
+
+                translat();
+                #endregion
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_customerList);
             }
-
-            dg_allAgents.ItemsSource = allAgents;
-            dg_allAgents.SelectedValuePath = "agentId";
-            dg_allAgents.DisplayMemberPath = "name";
-
-            dg_selectedAgents.ItemsSource = selectedAgents;
-            dg_selectedAgents.SelectedValuePath = "agentId";
-            dg_selectedAgents.DisplayMemberPath = "agentName";
-
-            //////////////////////////////
-            if (MainWindow.lang.Equals("en"))
-            { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly()); grid_customerList.FlowDirection = FlowDirection.LeftToRight; }
-            else
-            { MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly()); grid_customerList.FlowDirection = FlowDirection.RightToLeft; }
-
-            translat();
-
-            SectionData.EndAwait(grid_mainGrid,this);
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_customerList);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void translat()
         {
+            txt_title.Text = MainWindow.resourcemanager.GetString("trCustomers");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(txb_search, MainWindow.resourcemanager.GetString("trSearchHint"));//
+            txt_customer.Text = MainWindow.resourcemanager.GetString("trCustomers");
+            txt_selectedCustomers.Text = MainWindow.resourcemanager.GetString("trSelectedCustomers");
+
+            tt_selectAllItem.Content = MainWindow.resourcemanager.GetString("trSelectAllItems");
+            tt_unselectAllItem.Content = MainWindow.resourcemanager.GetString("trUnSelectAllItems");
+            tt_selectItem.Content = MainWindow.resourcemanager.GetString("trSelectOneItem");
+            tt_unselectItem.Content = MainWindow.resourcemanager.GetString("trUnSelectOneItem");
+
+            dg_allAgents.Columns[0].Header = MainWindow.resourcemanager.GetString("trCustomer");
+            dg_selectedAgents.Columns[0].Header = MainWindow.resourcemanager.GetString("trCustomer");
+
+            btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
+
         }
 
         private void HandleKeyPress(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Return)
+            try
             {
-                Btn_save_Click(null, null);
+                if (e.Key == Key.Return)
+                {
+                    Btn_save_Click(null, null);
+                }
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {//save
-            //MessageBox.Show(medalId.ToString() +"-"+selectedAgents.Count.ToString()+"-"+MainWindow.userID.Value.ToString());
-            string s = await medalAgentModel.UpdateAgentsByMedalId(medalId, selectedAgents, MainWindow.userID.Value);
-            //MessageBox.Show(s);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_customerList);
 
-            isActive = true;
-            this.Close();
+                string s = await medalAgentModel.UpdateAgentsByMedalId(medalId, selectedAgents, MainWindow.userID.Value);
+
+                isActive = true;
+                this.Close();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_customerList);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_customerList);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         private void Btn_colse_Click(object sender, RoutedEventArgs e)
         {
-            isActive = false;
-            this.Close();
+            try
+            {
+                isActive = false;
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         
         private async void Btn_selectedAll_Click(object sender, RoutedEventArgs e)
         {//select all
-            int x = allAgents.Count;
-            for (int i = 0; i < x; i++)
+            try
             {
-                //MessageBox.Show(i.ToString());
-                dg_allAgents.SelectedIndex = 0;
-                Btn_selectedAgent_Click(null, null);
+                int x = allAgents.Count;
+                for (int i = 0; i < x; i++)
+                {
+                    dg_allAgents.SelectedIndex = 0;
+                    Btn_selectedAgent_Click(null, null);
+                }
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
         private void Btn_selectedAgent_Click(object sender, RoutedEventArgs e)
         {//select one
-            agent = dg_allAgents.SelectedItem as Agent;
-            if (agent != null)
+            try
             {
-                MedalAgent mA = new MedalAgent();
-                mA.id = 0;
-                mA.agentName = agent.name;
-                mA.agentId = agent.agentId;
-                mA.medalId = medalId;
+                agent = dg_allAgents.SelectedItem as Agent;
+                if (agent != null)
+                {
+                    MedalAgent mA = new MedalAgent();
+                    mA.id = 0;
+                    mA.agentName = agent.name;
+                    mA.agentId = agent.agentId;
+                    mA.medalId = medalId;
 
-                allAgents.Remove(agent);
+                    allAgents.Remove(agent);
 
-                selectedAgents.Add(mA);
+                    selectedAgents.Add(mA);
 
-                dg_allAgents.ItemsSource = allAgents;
-                dg_selectedAgents.ItemsSource = selectedAgents;
+                    dg_allAgents.ItemsSource = allAgents;
+                    dg_selectedAgents.ItemsSource = selectedAgents;
 
-                dg_allAgents.Items.Refresh();
-                dg_selectedAgents.Items.Refresh();
+                    dg_allAgents.Items.Refresh();
+                    dg_selectedAgents.Items.Refresh();
+                }
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
             }
 
         }
         private async void Btn_unSelectedAgent_Click(object sender, RoutedEventArgs e)
         {//unselect one
-            medalAgent = dg_selectedAgents.SelectedItem as MedalAgent;
-            Agent i = new Agent();
-            if (medalAgent != null)
+            try
             {
-                int id = medalAgent.agentId.Value;
+                medalAgent = dg_selectedAgents.SelectedItem as MedalAgent;
+                Agent i = new Agent();
+                if (medalAgent != null)
+                {
+                    int id = medalAgent.agentId.Value;
 
-                i = await agentModel.getAgentById(id);
+                    i = await agentModel.getAgentById(id);
 
-                allAgents.Add(i);
+                    allAgents.Add(i);
 
-                selectedAgents.Remove(medalAgent);
-                MessageBox.Show(selectedAgents.Count.ToString());
-                dg_allAgents.ItemsSource = allAgents;
-                dg_selectedAgents.ItemsSource = selectedAgents;
+                    selectedAgents.Remove(medalAgent);
+                    dg_allAgents.ItemsSource = allAgents;
+                    dg_selectedAgents.ItemsSource = selectedAgents;
 
-                dg_allAgents.Items.Refresh();
-                dg_selectedAgents.Items.Refresh();
+                    dg_allAgents.Items.Refresh();
+                    dg_selectedAgents.Items.Refresh();
+                }
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
         private async void Btn_unSelectedAll_Click(object sender, RoutedEventArgs e)
         {//unselect all
-            int x = selectedAgents.Count;
-            for (int i = 0; i < x; i++)
-            {
-                dg_selectedAgents.SelectedIndex = 0;
+            try
+            { 
+                int x = selectedAgents.Count;
+                for (int i = 0; i < x; i++)
+                {
+                    dg_selectedAgents.SelectedIndex = 0;
 
-                Btn_unSelectedAgent_Click(null, null);
+                    Btn_unSelectedAgent_Click(null, null);
+                }
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
             }
 
         }
         private void Txb_search_TextChanged(object sender, TextChangedEventArgs e)
         {
-            //txtAgentSearch = txb_search.Text.ToLower();
-            //lst_allAgents.ItemsSource = allAgents.Where(x => (x.code.ToLower().Contains(txtAgentSearch) ||
-            //x.name.ToLower().Contains(txtAgentSearch)
-            //) && x.isActive == 1);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_customerList);
+
+                txtAgentSearch = txb_search.Text.ToLower();
+                dg_allAgents.ItemsSource = allAgents.Where(x => (x.code.ToLower().Contains(txtAgentSearch) ||
+                x.name.ToLower().Contains(txtAgentSearch)
+                ) && x.isActive == 1);
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_customerList);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_customerList);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Dg_selectedAgents_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            Btn_unSelectedAgent_Click(null, null);
+            try
+            { 
+                Btn_unSelectedAgent_Click(null, null);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Dg_allAgents_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            Btn_selectedAgent_Click(null, null);
+            try
+            {
+                Btn_selectedAgent_Click(null, null);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
     }
 }

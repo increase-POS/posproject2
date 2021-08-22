@@ -29,9 +29,16 @@ namespace POS.View.windows
 
         public winControlPanel(List<string> _headers)
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
             headers = _headers;
             TheList = new ObservableCollection<BoolStringClass>();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         public class BoolStringClass
@@ -42,8 +49,12 @@ namespace POS.View.windows
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
-            for (int i = 0; i < headers.Count; i++)
+                for (int i = 0; i < headers.Count; i++)
             {
                 if (uc.dgInvoice.Columns[i].Visibility == Visibility.Visible)
                 {
@@ -57,6 +68,15 @@ namespace POS.View.windows
 
             }
             this.DataContext = this;
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
@@ -76,7 +96,9 @@ namespace POS.View.windows
         }
         private void btn_ok_Click(object sender, RoutedEventArgs e)
         {
-            for (int i = 0; i < headers.Count; i++)
+            try
+            {
+                for (int i = 0; i < headers.Count; i++)
             {
                 if (TheList[i].IsSelected == true)
                 {
@@ -90,12 +112,24 @@ namespace POS.View.windows
             
 
             this.Close();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void btn_cancel_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
-        }
+                try
+                {
+                    this.Close();
+                }
+                catch (Exception ex)
+                {
+                    SectionData.ExceptionMessage(ex, this, sender);
+                }
+            }
 
 
     }

@@ -345,9 +345,20 @@ namespace POS.View.storage
                             invoiceModel.userId = (int)cb_user.SelectedValue;
                         #endregion
                         List<ItemTransfer> orderList = new List<ItemTransfer>();
-
-                        if (invItemLoc.id != 0)
+                        #region notification Object
+                        Notification not = new Notification()
                         {
+                            title = "trExceedMinLimitAlertTilte",
+                            ncontent = "trExceedMinLimitAlertContent",
+                            msgType = "alert",
+                            createDate = DateTime.Now,
+                            updateDate = DateTime.Now,
+                            createUserId = MainWindow.userID.Value,
+                            updateUserId = MainWindow.userID.Value,
+                        };
+                        #endregion
+                        if (invItemLoc.id != 0)
+                        {  
                             int amount = await itemLocationModel.getAmountByItemLocId((int)invItemLoc.itemLocationId);
                             if (amount >= invItemLoc.amountDestroyed)
                             {
@@ -371,7 +382,8 @@ namespace POS.View.storage
                                     await invItemLoc.distroyItem(invItemLoc);
                                     if (cb_user.SelectedIndex != -1)
                                         await recordCash(invoiceModel);
-                                    await itemLocationModel.decreaseItemLocationQuantity((int)invItemLoc.itemLocationId, (int)invItemLoc.amountDestroyed, MainWindow.userID.Value);
+                                   
+                                    await itemLocationModel.decreaseItemLocationQuantity((int)invItemLoc.itemLocationId, (int)invItemLoc.amountDestroyed, MainWindow.userID.Value, "reciptInvoice_invoice", not);
                                     await refreshDestroyDetails();
                                     Btn_clear_Click(null, null);
                                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
@@ -426,7 +438,7 @@ namespace POS.View.storage
                                         {
                                             int itemLocId = readyItemsLoc[i].itemsLocId;
                                             int quantity = (int)readyItemsLoc[i].quantity;
-                                            await itemLocationModel.decreaseItemLocationQuantity(itemLocId, quantity, MainWindow.userID.Value);
+                                            await itemLocationModel.decreaseItemLocationQuantity(itemLocId, quantity, MainWindow.userID.Value, "reciptInvoice_invoice", not);
                                         }
                                         Btn_clear_Click(null, null);
                                         Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);

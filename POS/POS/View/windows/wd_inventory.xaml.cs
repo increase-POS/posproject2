@@ -24,7 +24,14 @@ namespace POS.View.windows
     {
         public wd_inventory()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
         public Inventory inventory = new Inventory();
         IEnumerable<Inventory> inventories;
@@ -37,17 +44,30 @@ namespace POS.View.windows
         public string title { get; set; }
         private void Btn_select_Click(object sender, RoutedEventArgs e)
         {
-
-            inventory = dg_Inventory.SelectedItem as Inventory;
-            DialogResult = true;
-            this.Close();
+            try
+            {
+                inventory = dg_Inventory.SelectedItem as Inventory;
+                DialogResult = true;
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
 
         }
         private void HandleKeyPress(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Return)
+            try
+            { 
+                if (e.Key == Key.Return)
+                {
+                    Btn_select_Click(null, null);
+                }
+            }
+            catch (Exception ex)
             {
-                Btn_select_Click(null, null);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
         private void Txb_search_TextChanged(object sender, TextChangedEventArgs e)
@@ -56,50 +76,80 @@ namespace POS.View.windows
         }
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            SectionData.StartAwait(grid_mainGrid);
-            if (MainWindow.lang.Equals("en"))
+            try
             {
-                MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
-                grid_ucInventory.FlowDirection = FlowDirection.LeftToRight;
-            }
-            else
-            {
-                MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
-                grid_ucInventory.FlowDirection = FlowDirection.RightToLeft;
-            }
-            txt_title.Text = title;
-            await refreshInventories();
-            SectionData.EndAwait(grid_mainGrid,this);
+                if (sender != null)
+                    SectionData.StartAwait(grid_ucInventory);
 
+                #region translate
+                if (MainWindow.lang.Equals("en"))
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                    grid_ucInventory.FlowDirection = FlowDirection.LeftToRight;
+                }
+                else
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                    grid_ucInventory.FlowDirection = FlowDirection.RightToLeft;
+                }
+
+                txt_title.Text = title;
+
+                translat();
+                #endregion
+                await refreshInventories();
+           
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucInventory);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucInventory);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
+
+        private void translat()
+        {
+            txt_title.Text = MainWindow.resourcemanager.GetString("trInventory");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(txb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
+
+            dg_Inventory.Columns[0].Header = MainWindow.resourcemanager.GetString("trInventoryNum");
+            dg_Inventory.Columns[1].Header = MainWindow.resourcemanager.GetString("trCreateDate");
+
+            btn_select.Content = MainWindow.resourcemanager.GetString("trSelect");
+        }
+
         private async Task refreshInventories()
         {
-            //if (userId != 0)/// to display draft invoices
-            //    inventories = await inventory.GetByCreator(inventoryType, userId);
-            //else if (branchId != 0)
-            //    inventories = await inventory.getByBranch(inventoryType, branchId);
-            ////else if (condition == "" || condition == null)
-            ////    invoices = await invoice.GetInvoicesByType(invoiceType, branchId);
-            ////else // get export/ import orders
-            ////    invoices = await invoice.GetOrderByType(invoiceType, branchId);
-
-
             dg_Inventory.ItemsSource = inventories.ToList();
         }
 
         private void Dg_Inventory_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
-            inventory = dg_Inventory.SelectedItem as Inventory;
+            try
+            {
+                inventory = dg_Inventory.SelectedItem as Inventory;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         private void Dg_Inventory_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            Btn_select_Click(null, null);
+            try
+            { 
+                Btn_select_Click(null, null);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         private void Btn_colse_Click(object sender, RoutedEventArgs e)
         {
-
-            // DialogResult = true;
             this.Close();
         }
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
@@ -108,9 +158,9 @@ namespace POS.View.windows
             {
                 DragMove();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
     }

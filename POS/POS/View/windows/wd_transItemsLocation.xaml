@@ -10,7 +10,7 @@
         ResizeMode="NoResize" Margin="0"
         Title="wd_itemsList" Height="400" Width="550" Background="Transparent" AllowsTransparency="True"
         Loaded="Window_Loaded" MouseDown="Window_MouseDown">
-    <Grid Grid.Column="1" Grid.Row="1"  >
+    <Grid Grid.Column="1" Grid.Row="1" x:Name="grid_main"  >
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
             <RowDefinition Height="*"/>
@@ -63,7 +63,7 @@
                 </Grid.RowDefinitions>
                 <DataGrid  Margin="5,5,5,5"   IsReadOnly="False"  Background="White"
                       materialDesign:DataGridAssist.CornerRadius="5" 
-                       x:Name="dg_itemsStorage" SelectionChanged="Dg_itemsStorage_SelectionChanged"
+                       x:Name="dg_itemsStorage" 
                         AutoGenerateColumns="False" CellEditEnding="Dg_itemsStorage_CellEditEnding"
                         ColumnWidth="SizeToHeader"    AlternatingRowBackground="#f3f3f3" AlternationCount="2">
                     <DataGrid.Resources>

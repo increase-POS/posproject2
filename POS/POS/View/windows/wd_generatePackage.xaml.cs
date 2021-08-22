@@ -26,7 +26,14 @@ namespace POS.View.windows
     {
         public wd_generatePackage()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
         IEnumerable<Item> items;
         Item item = new Item();
@@ -38,7 +45,15 @@ namespace POS.View.windows
         private static int _PackageParentId;
         private void Cb_item_KeyUp(object sender, KeyEventArgs e)
         {
-            cb_item.ItemsSource = items.Where(x => x.name.Contains(cb_item.Text));
+            try
+            { 
+                cb_item.ItemsSource = items.Where(x => x.name.Contains(cb_item.Text));
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+
         }
         private async void fillItemCombo()
         {
@@ -56,7 +71,14 @@ namespace POS.View.windows
         }
         private void Tb_validateEmptyLostFocus(object sender, RoutedEventArgs e)
         {
-            SectionData.validateEmptyTextBox(tb_quantity, p_errorQuantity, tt_errorQuantity, "trEmptyQuantityToolTip");
+            try
+            { 
+                SectionData.validateEmptyTextBox(tb_quantity, p_errorQuantity, tt_errorQuantity, "trEmptyQuantityToolTip");
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
 
         }
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
@@ -66,11 +88,26 @@ namespace POS.View.windows
         }
         private async void tb_quantity_TextChanged(object sender, TextChangedEventArgs e)
         {
-            SectionData.validateEmptyTextBox(tb_quantity, p_errorQuantity, tt_errorQuantity, "trEmptyQuantityToolTip");
-            bool validQan = await checkAmount();
-            var txb = sender as TextBox;
-            if ((sender as TextBox).Name == "tb_quantity")
-                SectionData.InputJustNumber(ref txb);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_generatePackage);
+
+                SectionData.validateEmptyTextBox(tb_quantity, p_errorQuantity, tt_errorQuantity, "trEmptyQuantityToolTip");
+                bool validQan = await checkAmount();
+                var txb = sender as TextBox;
+                if ((sender as TextBox).Name == "tb_quantity")
+                    SectionData.InputJustNumber(ref txb);
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_generatePackage);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_generatePackage);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
 
         }
         private async Task<bool> checkAmount()
@@ -94,10 +131,7 @@ namespace POS.View.windows
                     itemUnitId = (int)p.childIUId;
                     int requireQuan = itemQuanP * quantity;
 
-                   // if (cb_location.SelectedIndex == -1)
-                        branchQuantity = await itemLocation.getUnitAmount(itemUnitId, MainWindow.branchID.Value);
-                    //else
-                     //  branchQuantity = await itemLocation.getAmountInLocation(itemUnitId,MainWindow.branchID.Value,(int) cb_location.SelectedValue);
+                    branchQuantity = await itemLocation.getUnitAmount(itemUnitId, MainWindow.branchID.Value);
 
                     if (requireQuan > branchQuantity)
                     {
@@ -113,9 +147,16 @@ namespace POS.View.windows
         }
         private void HandleKeyPress(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Return)
+            try
             {
-                Btn_save_Click(null, null);
+                if (e.Key == Key.Return)
+                {
+                    Btn_save_Click(null, null);
+                }
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
         private bool validateInputs()
@@ -139,8 +180,12 @@ namespace POS.View.windows
         }
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {
-            // bool valid =  await checkAmount();
-            bool valid = validateInputs();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_generatePackage);
+
+                bool valid = validateInputs();
             if(valid)
             {
                 int quantity = int.Parse(tb_quantity.Text);
@@ -152,6 +197,15 @@ namespace POS.View.windows
                 }
                 else
                     Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+            }
+                if (sender != null)
+                    SectionData.EndAwait(grid_generatePackage);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_generatePackage);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
         private void clearGenerateInputs()
@@ -169,13 +223,17 @@ namespace POS.View.windows
         }
         private void Btn_colse_Click(object sender, RoutedEventArgs e)
         {
-
             this.Close();
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            SectionData.StartAwait(grid_mainGrid);
-            if (MainWindow.lang.Equals("en"))
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_generatePackage);
+
+                #region translate
+                if (MainWindow.lang.Equals("en"))
             {
                 MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
             }
@@ -185,38 +243,81 @@ namespace POS.View.windows
             }
 
             translate();
-            fillItemCombo();
-            fillLocationCombo();
-            SectionData.EndAwait(grid_mainGrid,this);
+            #endregion
+
+                fillItemCombo();
+                fillLocationCombo();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_generatePackage);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_generatePackage);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         private void translate()
         {
-
-
+            txt_title.Text = MainWindow.resourcemanager.GetString("trPackage");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_item, MainWindow.resourcemanager.GetString("trItemHint")); 
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_location, MainWindow.resourcemanager.GetString("trLocationHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_quantity, MainWindow.resourcemanager.GetString("trQuantityHint"));
+            btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
         }
+
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
             try
             {
                 DragMove();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
         private async void Cb_location_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(cb_location.SelectedIndex != -1)
+            try
             {
-               await checkAmount();
+                if (sender != null)
+                    SectionData.StartAwait(grid_generatePackage);
+                if (cb_location.SelectedIndex != -1)
+                {
+                   await checkAmount();
+                }
+                if (sender != null)
+                    SectionData.EndAwait(grid_generatePackage);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_generatePackage);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
         private async void Cb_item_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-           await checkAmount();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_generatePackage);
+
+                await checkAmount();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_generatePackage);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_generatePackage);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
     }
 }

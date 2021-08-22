@@ -39,7 +39,14 @@ namespace POS.View.Settings
         }
         public uc_emailsSetting()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         Branch branchModel = new Branch();
@@ -51,46 +58,38 @@ namespace POS.View.Settings
         string searchText = "";
         string basicsPermission = "emailsSetting_basics";
 
-        private void Tgl_isSSL_Checked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void Tgl_isSSL_Unchecked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void Tgl_isMajor_Checked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void Tgl_isMajor_Unchecked(object sender, RoutedEventArgs e)
-        {
-
-        }
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
         {//search
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
+            try
             {
-                if (sysEmails is null)
-                    await RefreshSysEmailList();
-                searchText = tb_search.Text.ToLower();
-                sysEmailQuery = sysEmails.Where(s => (s.name.ToLower().Contains(searchText) ||
-                s.email.ToString().ToLower().Contains(searchText) 
-                ) && s.isActive == tgl_sysEmailState);
-                RefreshSysEmailView();
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
+                {
+                    if (sysEmails is null)
+                        await RefreshSysEmailList();
+                    searchText = tb_search.Text.ToLower();
+                    sysEmailQuery = sysEmails.Where(s => (s.name.ToLower().Contains(searchText) ||
+                    s.email.ToString().ToLower().Contains(searchText)
+                    ) && s.isActive == tgl_sysEmailState);
+                    RefreshSysEmailView();
+                }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
         async Task<IEnumerable<SysEmails>> RefreshSysEmailList()
         {
-            MainWindow.mainWindow.StartAwait();
-
-            sysEmails = await sysEmail.Get();
-            MainWindow.mainWindow.EndAwait();
-            return sysEmails;
+             sysEmails = await sysEmail.Get();
+             return sysEmails;
         }
         void RefreshSysEmailView()
         {
@@ -99,45 +98,100 @@ namespace POS.View.Settings
         }
         private async void Tgl_isActive_Checked(object sender, RoutedEventArgs e)
         {//active
-            if (sysEmails is null)
-                await RefreshSysEmailList();
-            tgl_sysEmailState = 1;
-            Tb_search_TextChanged(null, null);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                if (sysEmails is null)
+                    await RefreshSysEmailList();
+                tgl_sysEmailState = 1;
+                Tb_search_TextChanged(null, null);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private async void Tgl_isActive_Unchecked(object sender, RoutedEventArgs e)
         {//inactive
-            if (sysEmails is null)
-                await RefreshSysEmailList();
-            tgl_sysEmailState = 0;
-            Tb_search_TextChanged(null, null);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                if (sysEmails is null)
+                    await RefreshSysEmailList();
+                tgl_sysEmailState = 0;
+                Tb_search_TextChanged(null, null);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private async void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {//refresh
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
+            try
             {
-                await RefreshSysEmailList();
-                Tb_search_TextChanged(null, null);
-            }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
+                {
+                    await RefreshSysEmailList();
+                    Tb_search_TextChanged(null, null);
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {//export
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
+            try
             {
-                this.Dispatcher.Invoke(() =>
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
                 {
-                    Thread t1 = new Thread(FN_ExportToExcel);
-                    t1.SetApartmentState(ApartmentState.STA);
-                    t1.Start();
-                });
+                    this.Dispatcher.Invoke(() =>
+                    {
+                        Thread t1 = new Thread(FN_ExportToExcel);
+                        t1.SetApartmentState(ApartmentState.STA);
+                        t1.Start();
+                    });
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         void FN_ExportToExcel()
@@ -170,74 +224,109 @@ namespace POS.View.Settings
 
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
         {//clear
-            sysEmail = new  SysEmails();
-            this.DataContext = sysEmail;
+            try
+            {
+                sysEmail = new SysEmails();
+                this.DataContext = sysEmail;
 
-            //tb_name.Clear();
-            //tb_email.Clear();
-            //tb_password.Clear();
-            pb_password.Clear();
-            //tb_smtpClient.Clear();
-            //tb_port.Clear();
-            //pb_password.Clear();
-            //tgl_isSSL.IsChecked =
-            // tgl_isMajor.IsChecked = false;
-            cb_branchId.SelectedIndex = -1;
-            cb_side.SelectedIndex = -1;
-            //tb_notes.Clear();
-            SectionData.clearValidate(tb_name, p_errorName);
-            SectionData.clearValidate(tb_email, p_errorEmail);
-            SectionData.clearValidate(tb_port, p_errorPort);
-            SectionData.clearValidate(tb_smtpClient, p_errorSmtpClient);
-            SectionData.clearComboBoxValidate(cb_side, p_errorSide);
-            SectionData.clearComboBoxValidate(cb_branchId, p_errorBranchId);
-            SectionData.clearPasswordValidate(pb_password, p_errorPassword);
+                //tb_name.Clear();
+                //tb_email.Clear();
+                //tb_password.Clear();
+                pb_password.Clear();
+                //tb_smtpClient.Clear();
+                //tb_port.Clear();
+                //pb_password.Clear();
+                //tgl_isSSL.IsChecked =
+                // tgl_isMajor.IsChecked = false;
+                cb_branchId.SelectedIndex = -1;
+                cb_side.SelectedIndex = -1;
+                //tb_notes.Clear();
+                SectionData.clearValidate(tb_name, p_errorName);
+                SectionData.clearValidate(tb_email, p_errorEmail);
+                SectionData.clearValidate(tb_port, p_errorPort);
+                SectionData.clearValidate(tb_smtpClient, p_errorSmtpClient);
+                SectionData.clearComboBoxValidate(cb_side, p_errorSide);
+                SectionData.clearComboBoxValidate(cb_branchId, p_errorBranchId);
+                SectionData.clearPasswordValidate(pb_password, p_errorPassword);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void validationControl_LostFocus(object sender, RoutedEventArgs e)
         {
-            string name = sender.GetType().Name;
-            validateEmpty(name, sender);
+            try
+            {
+                string name = sender.GetType().Name;
+                validateEmpty(name, sender);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void validationTextbox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            string name = sender.GetType().Name;
-            validateEmpty(name, sender);
+            try
+            {
+                string name = sender.GetType().Name;
+                validateEmpty(name, sender);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Tb_validateEmptyLostFocus(object sender, RoutedEventArgs e)
         {
-            string name = sender.GetType().Name;
-            validateEmpty(name, sender);
+            try
+            {
+                string name = sender.GetType().Name;
+                validateEmpty(name, sender);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         private void validateEmpty(string name, object sender)
         {
-            if (name == "TextBox")
+            try
             {
-                if ((sender as TextBox).Name == "tb_name")
-                    SectionData.validateEmptyTextBox((TextBox)sender, p_errorName, tt_errorName, "trEmptyNameToolTip");
-                else if ((sender as TextBox).Name == "tb_email")
-                    SectionData.validateEmptyTextBox((TextBox)sender, p_errorEmail, tt_errorEmail, "ssssssssssssssssssssss");
-                else if ((sender as TextBox).Name == "tb_port")
-                    SectionData.validateEmptyTextBox((TextBox)sender, p_errorPort, tt_errorPort, "sssssssssssssssssssssssssssss");
-                else if ((sender as TextBox).Name == "tb_smtpClient")
-                    SectionData.validateEmptyTextBox((TextBox)sender, p_errorSmtpClient, tt_errorSmtpClient, "sssssssssssssssssssssssssssss");
+                if (name == "TextBox")
+                {
+                    if ((sender as TextBox).Name == "tb_name")
+                        SectionData.validateEmptyTextBox((TextBox)sender, p_errorName, tt_errorName, "trEmptyNameToolTip");
+                    else if ((sender as TextBox).Name == "tb_email")
+                        SectionData.validateEmptyTextBox((TextBox)sender, p_errorEmail, tt_errorEmail, "ssssssssssssssssssssss");
+                    else if ((sender as TextBox).Name == "tb_port")
+                        SectionData.validateEmptyTextBox((TextBox)sender, p_errorPort, tt_errorPort, "sssssssssssssssssssssssssssss");
+                    else if ((sender as TextBox).Name == "tb_smtpClient")
+                        SectionData.validateEmptyTextBox((TextBox)sender, p_errorSmtpClient, tt_errorSmtpClient, "sssssssssssssssssssssssssssss");
+
+                }
+                else if (name == "ComboBox")
+                {
+                    if ((sender as ComboBox).Name == "cb_side")
+                        SectionData.validateEmptyComboBox((ComboBox)sender, p_errorSide, tt_errorSide, "sssssssssssssss");
+                    else if ((sender as ComboBox).Name == "cb_branchId")
+                        SectionData.validateEmptyComboBox((ComboBox)sender, p_errorBranchId, tt_errorBranchId, "sssssssssssssss");
+                }
+                else if (name == "PasswordBox")
+                {
+                    if ((sender as PasswordBox).Name == "pb_password")
+                        SectionData.showPasswordValidate((PasswordBox)sender, p_errorPassword, tt_errorPassword, "ssssssssssssssssssssssss");
+                }
 
             }
-            else if (name == "ComboBox")
+            catch (Exception ex)
             {
-                if ((sender as ComboBox).Name == "cb_side")
-                    SectionData.validateEmptyComboBox((ComboBox)sender, p_errorSide, tt_errorSide, "sssssssssssssss");
-                else if ((sender as ComboBox).Name == "cb_branchId")
-                    SectionData.validateEmptyComboBox((ComboBox)sender, p_errorBranchId, tt_errorBranchId, "sssssssssssssss");
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-            else if (name == "PasswordBox")
-            {
-                if ((sender as PasswordBox).Name == "pb_password")
-                    SectionData.showPasswordValidate((PasswordBox)sender, p_errorPassword, tt_errorPassword, "ssssssssssssssssssssssss");
-            }
-
         }
         bool isValid()
         {
@@ -253,7 +342,7 @@ namespace POS.View.Settings
                 return false;
             if (SectionData.validateEmptyComboBox(cb_side, p_errorSide, tt_errorSide, "trEmptyError") == false)
                 return false;
-            if (SectionData.validateEmptyComboBox(cb_branchId, p_errorBranchId, tt_errorBranchId, "trEmptyError") == false||
+            if (SectionData.validateEmptyComboBox(cb_branchId, p_errorBranchId, tt_errorBranchId, "trEmptyError") == false ||
                 cb_branchId.SelectedValue == null)
                 return false;
             if (SectionData.validateEmptyPassword(pb_password, p_errorPassword, tt_errorPassword, "trEmptyError") == false)
@@ -262,139 +351,180 @@ namespace POS.View.Settings
         }
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//add
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add") || SectionData.isAdminPermision())
+            try
             {
-                if (isValid())
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add") || SectionData.isAdminPermision())
                 {
-                    sysEmail.emailId = 0;
-                    sysEmail.name = tb_name.Text;
-                    sysEmail.email = tb_email.Text;
-                   // sysEmail.password = pb_password.Password;
-                   sysEmail.password = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(pb_password.Password));
-
-                    sysEmail.port = int.Parse(tb_port.Text);
-                    sysEmail.isSSL = tgl_isSSL.IsChecked;
-                    sysEmail.isMajor = tgl_isMajor.IsChecked;
-                    sysEmail.smtpClient = tb_smtpClient.Text;
-                    sysEmail.side = cb_side.SelectedValue.ToString();
-                    sysEmail.branchId =(int) cb_branchId.SelectedValue;
-                    sysEmail.notes = tb_notes.Text;
-                    sysEmail.createUserId = MainWindow.userID;
-                    sysEmail.updateUserId = MainWindow.userID;
-                    sysEmail.isActive = 1;
-
-                    string s = await sysEmail.Save(sysEmail);
-                    if (s.Equals("-4"))
-                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trMajorEmaillAlreadyExists"), animation: ToasterAnimation.FadeIn);
-                    else  if (!s.Equals("-1"))
+                    if (isValid())
                     {
-                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
-                        Btn_clear_Click(null, null);
-                    }
-                    else
-                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                        sysEmail.emailId = 0;
+                        sysEmail.name = tb_name.Text;
+                        sysEmail.email = tb_email.Text;
+                        // sysEmail.password = pb_password.Password;
+                        sysEmail.password = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(pb_password.Password));
 
-                    await RefreshSysEmailList();
-                    Tb_search_TextChanged(null, null);
-                }
-            }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                        sysEmail.port = int.Parse(tb_port.Text);
+                        sysEmail.isSSL = tgl_isSSL.IsChecked;
+                        sysEmail.isMajor = tgl_isMajor.IsChecked;
+                        sysEmail.smtpClient = tb_smtpClient.Text;
+                        sysEmail.side = cb_side.SelectedValue.ToString();
+                        sysEmail.branchId = (int)cb_branchId.SelectedValue;
+                        sysEmail.notes = tb_notes.Text;
+                        sysEmail.createUserId = MainWindow.userID;
+                        sysEmail.updateUserId = MainWindow.userID;
+                        sysEmail.isActive = 1;
 
-        }
-        private async void Btn_update_Click(object sender, RoutedEventArgs e)
-        {//update
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update") || SectionData.isAdminPermision())
-            {
-                if (isValid())
-                {
-                    sysEmail.email = tb_email.Text;
-                 //   sysEmail.password = pb_password.Password;
-                    sysEmail.password = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(pb_password.Password));
-                    sysEmail.name = tb_name.Text;
-                    sysEmail.port = int.Parse(tb_port.Text);
-                    sysEmail.isSSL = tgl_isSSL.IsChecked;
-                    sysEmail.isMajor = tgl_isMajor.IsChecked;
-                    sysEmail.smtpClient = tb_smtpClient.Text;
-                    sysEmail.side = cb_side.SelectedValue.ToString();
-                    sysEmail.branchId = (int)cb_branchId.SelectedValue;
-                    sysEmail.notes = tb_notes.Text;
-                    sysEmail.createUserId = MainWindow.userID;
-                    sysEmail.updateUserId = MainWindow.userID;
-                    //sysEmail.isActive = 1;
-                    string s = await sysEmail.Save(sysEmail);
-                      if (s.Equals("-4"))
-                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trMajorEmaillAlreadyExists"), animation: ToasterAnimation.FadeIn);
-                    else if (!s.Equals("-1"))
-                    {
-                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
+                        string s = await sysEmail.Save(sysEmail);
+                        if (s.Equals("-4"))
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trMajorEmaillAlreadyExists"), animation: ToasterAnimation.FadeIn);
+                        else if (!s.Equals("-1"))
+                        {
+                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                            Btn_clear_Click(null, null);
+                        }
+                        else
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
                         await RefreshSysEmailList();
                         Tb_search_TextChanged(null, null);
                     }
-                    else
-                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                 }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
+        private async void Btn_update_Click(object sender, RoutedEventArgs e)
+        {//update
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update") || SectionData.isAdminPermision())
+                {
+                    if (isValid())
+                    {
+                        sysEmail.email = tb_email.Text;
+                        //   sysEmail.password = pb_password.Password;
+                        sysEmail.password = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(pb_password.Password));
+                        sysEmail.name = tb_name.Text;
+                        sysEmail.port = int.Parse(tb_port.Text);
+                        sysEmail.isSSL = tgl_isSSL.IsChecked;
+                        sysEmail.isMajor = tgl_isMajor.IsChecked;
+                        sysEmail.smtpClient = tb_smtpClient.Text;
+                        sysEmail.side = cb_side.SelectedValue.ToString();
+                        sysEmail.branchId = (int)cb_branchId.SelectedValue;
+                        sysEmail.notes = tb_notes.Text;
+                        sysEmail.createUserId = MainWindow.userID;
+                        sysEmail.updateUserId = MainWindow.userID;
+                        //sysEmail.isActive = 1;
+                        string s = await sysEmail.Save(sysEmail);
+                        if (s.Equals("-4"))
+                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trMajorEmaillAlreadyExists"), animation: ToasterAnimation.FadeIn);
+                        else if (!s.Equals("-1"))
+                        {
+                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
+                            await RefreshSysEmailList();
+                            Tb_search_TextChanged(null, null);
+                        }
+                        else
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    }
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {//delete
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete") || SectionData.isAdminPermision())
+            try
             {
-                if (sysEmail.emailId != 0)
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete") || SectionData.isAdminPermision())
                 {
-                    if ((!sysEmail.canDelete) && (sysEmail.isActive == 0))
+                    if (sysEmail.emailId != 0)
                     {
-                        #region
-                        Window.GetWindow(this).Opacity = 0.2;
-                        wd_acceptCancelPopup w = new wd_acceptCancelPopup();
-                        w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
-                        w.ShowDialog();
-                        Window.GetWindow(this).Opacity = 1;
-                        #endregion
-
-                        if (w.isOk)
-                            activate();
-                    }
-                    else
-                    {
-                        #region
-                        Window.GetWindow(this).Opacity = 0.2;
-                        wd_acceptCancelPopup w = new wd_acceptCancelPopup();
-                        if (sysEmail.canDelete)
-                            w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDelete");
-                        if (!sysEmail.canDelete)
-                            w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDeactivate");
-                        w.ShowDialog();
-                        Window.GetWindow(this).Opacity = 1;
-                        #endregion
-
-                        if (w.isOk)
+                        if ((!sysEmail.canDelete) && (sysEmail.isActive == 0))
                         {
-                            string popupContent = "";
-                            if (sysEmail.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
-                            if ((!sysEmail.canDelete) && (sysEmail.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
+                            #region
+                            Window.GetWindow(this).Opacity = 0.2;
+                            wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                            w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
+                            w.ShowDialog();
+                            Window.GetWindow(this).Opacity = 1;
+                            #endregion
 
-                            string b = await sysEmail.Delete(sysEmail.emailId, MainWindow.userID.Value, sysEmail.canDelete);
-
-                            if (!b.Equals("0"))
-                                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
-
-                            else
-                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                            if (w.isOk)
+                                activate();
                         }
+                        else
+                        {
+                            #region
+                            Window.GetWindow(this).Opacity = 0.2;
+                            wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                            if (sysEmail.canDelete)
+                                w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDelete");
+                            if (!sysEmail.canDelete)
+                                w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDeactivate");
+                            w.ShowDialog();
+                            Window.GetWindow(this).Opacity = 1;
+                            #endregion
+
+                            if (w.isOk)
+                            {
+                                string popupContent = "";
+                                if (sysEmail.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
+                                if ((!sysEmail.canDelete) && (sysEmail.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
+
+                                string b = await sysEmail.Delete(sysEmail.emailId, MainWindow.userID.Value, sysEmail.canDelete);
+
+                                if (!b.Equals("0"))
+                                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
+
+                                else
+                                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                            }
+                        }
+
+                        await RefreshSysEmailList();
+                        Tb_search_TextChanged(null, null);
+
+                        //clear textBoxs
+                        Btn_clear_Click(null, null);
                     }
-
-                    await RefreshSysEmailList();
-                    Tb_search_TextChanged(null, null);
-
-                    //clear textBoxs
-                    Btn_clear_Click(null, null);
                 }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         private async void activate()
         {//activate
@@ -414,72 +544,92 @@ namespace POS.View.Settings
 
         private void Dg_sysEmail_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//selection
-            //SectionData.clearValidate(tb_name, p_errorName);
-            //SectionData.clearValidate(tb_email, p_errorEmail);
-            //SectionData.clearValidate(tb_port, p_errorPort);
-            //SectionData.clearValidate(tb_smtpClient, p_errorSmtpClient);
-            //SectionData.clearComboBoxValidate(cb_side, p_errorSide);
-            //SectionData.clearComboBoxValidate(cb_branchId, p_errorBranchId);
-            //SectionData.clearPasswordValidate(pb_password, p_errorPassword);
-
-            //Btn_clear_Click(null, null);
-            if (dg_sysEmail.SelectedIndex != -1)
+            try
             {
-                sysEmail = dg_sysEmail.SelectedItem as SysEmails;
-                this.DataContext = sysEmail;
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
-                cb_branchId.SelectedValue = sysEmail.branchId;
-                cb_side.SelectedValue = sysEmail.side;
-           //   pb_password.Password = sysEmail.password;
-             pb_password.Password = Encoding.UTF8.GetString(Convert.FromBase64String(sysEmail.password));
-
-                if (sysEmail != null)
+                if (dg_sysEmail.SelectedIndex != -1)
                 {
-                   
-                    #region delete
-                    if (sysEmail.canDelete)
-                    {
-                        txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trDelete");
-                        txt_delete_Icon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Delete;
-                        tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
-                    }
+                    sysEmail = dg_sysEmail.SelectedItem as SysEmails;
+                    this.DataContext = sysEmail;
 
-                    else
+                    cb_branchId.SelectedValue = sysEmail.branchId;
+                    cb_side.SelectedValue = sysEmail.side;
+                    //   pb_password.Password = sysEmail.password;
+                    pb_password.Password = Encoding.UTF8.GetString(Convert.FromBase64String(sysEmail.password));
+
+                    if (sysEmail != null)
                     {
-                        if (sysEmail.isActive == 0)
+
+                        #region delete
+                        if (sysEmail.canDelete)
                         {
-                            txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trActive");
-                            txt_delete_Icon.Kind =
-                            MaterialDesignThemes.Wpf.PackIconKind.Check;
-                            tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trActive");
+                            txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trDelete");
+                            txt_delete_Icon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Delete;
+                            tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
                         }
+
                         else
                         {
-                            txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trInActive");
-                            txt_delete_Icon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Cancel;
-                            tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trInActive");
+                            if (sysEmail.isActive == 0)
+                            {
+                                txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trActive");
+                                txt_delete_Icon.Kind =
+                                MaterialDesignThemes.Wpf.PackIconKind.Check;
+                                tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trActive");
+                            }
+                            else
+                            {
+                                txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trInActive");
+                                txt_delete_Icon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Cancel;
+                                tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trInActive");
+                            }
                         }
-                    }
-                    #endregion
+                        #endregion
 
+                    }
                 }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {//load
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
-            if (MainWindow.lang.Equals("en"))
-            { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly()); grid_shipping.FlowDirection = FlowDirection.LeftToRight; }
-            else
-            { MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly()); grid_shipping.FlowDirection = FlowDirection.RightToLeft; }
+                if (MainWindow.lang.Equals("en"))
+                { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                    grid_main.FlowDirection = FlowDirection.LeftToRight; }
+                else
+                { MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                    grid_main.FlowDirection = FlowDirection.RightToLeft; }
 
-            translat();
+                translat();
 
-            fillBranches();
-            FillSideCombo();
-            await RefreshSysEmailList();
-            Tb_search_TextChanged(null, null);
+                fillBranches();
+                FillSideCombo();
+                await RefreshSysEmailList();
+                Tb_search_TextChanged(null, null);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         private async void fillBranches()
         {
@@ -545,67 +695,116 @@ namespace POS.View.Settings
 
         private void Tb_PreventSpaces(object sender, KeyEventArgs e)
         {
-            e.Handled = e.Key == Key.Space;
+            try
+            {
+                e.Handled = e.Key == Key.Space;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Tb_Numbers_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            var regex = new Regex(@"^[0-9]*(?:\.[0-9]*)?$");
-            if (regex.IsMatch(e.Text) && !(e.Text == "." && ((TextBox)sender).Text.Contains(e.Text)))
-                e.Handled = false;
-            else
-                e.Handled = true;
+            try
+            {
+                var regex = new Regex(@"^[0-9]*(?:\.[0-9]*)?$");
+                if (regex.IsMatch(e.Text) && !(e.Text == "." && ((TextBox)sender).Text.Contains(e.Text)))
+                    e.Handled = false;
+                else
+                    e.Handled = true;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void P_showPassword_MouseEnter(object sender, MouseEventArgs e)
         {
-            tb_password.Text = pb_password.Password;
-            tb_password.Visibility = Visibility.Visible;
-            pb_password.Visibility = Visibility.Collapsed;
+            try
+            {
+                tb_password.Text = pb_password.Password;
+                tb_password.Visibility = Visibility.Visible;
+                pb_password.Visibility = Visibility.Collapsed;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void P_showPassword_MouseLeave(object sender, MouseEventArgs e)
         {
-            tb_password.Visibility = Visibility.Collapsed;
-            pb_password.Visibility = Visibility.Visible;
+            try
+            {
+                tb_password.Visibility = Visibility.Collapsed;
+                pb_password.Visibility = Visibility.Visible;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Pb_password_PasswordChanged(object sender, RoutedEventArgs e)
         {
 
-            if (pb_password.Password.Equals(""))
+            try
             {
-                SectionData.showPasswordValidate(pb_password, p_errorPassword, tt_errorPassword, "trEmptyPasswordToolTip");
-                p_showPassword.Visibility = Visibility.Collapsed;
+                if (pb_password.Password.Equals(""))
+                {
+                    SectionData.showPasswordValidate(pb_password, p_errorPassword, tt_errorPassword, "trEmptyPasswordToolTip");
+                    p_showPassword.Visibility = Visibility.Collapsed;
+                }
+                else
+                {
+                    SectionData.clearPasswordValidate(pb_password, p_errorPassword);
+                    p_showPassword.Visibility = Visibility.Visible;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                SectionData.clearPasswordValidate(pb_password, p_errorPassword);
-                p_showPassword.Visibility = Visibility.Visible;
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
         private void Tb_password_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (pb_password.Password.Equals(""))
+            try
             {
-                p_errorPassword.Visibility = Visibility.Visible;
-                tt_errorPassword.Content = MainWindow.resourcemanager.GetString("trEmptyPasswordToolTip");
-                pb_password.Background = (Brush)bc.ConvertFrom("#15FF0000");
-                p_showPassword.Visibility = Visibility.Collapsed;
+                if (pb_password.Password.Equals(""))
+                {
+                    p_errorPassword.Visibility = Visibility.Visible;
+                    tt_errorPassword.Content = MainWindow.resourcemanager.GetString("trEmptyPasswordToolTip");
+                    pb_password.Background = (Brush)bc.ConvertFrom("#15FF0000");
+                    p_showPassword.Visibility = Visibility.Collapsed;
+                }
+                else
+                {
+                    pb_password.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                    p_errorPassword.Visibility = Visibility.Collapsed;
+                    p_showPassword.Visibility = Visibility.Visible;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                pb_password.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-                p_errorPassword.Visibility = Visibility.Collapsed;
-                p_showPassword.Visibility = Visibility.Visible;
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
         private void Tb_email_LostFocus(object sender, RoutedEventArgs e)
         {
-            SectionData.validateEmptyTextBox(tb_email, p_errorEmail, tt_errorEmail, "trEmptyEmailToolTip");
-            SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
+            try
+            {
+                SectionData.validateEmptyTextBox(tb_email, p_errorEmail, tt_errorEmail, "trEmptyEmailToolTip");
+                SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
     }
 }

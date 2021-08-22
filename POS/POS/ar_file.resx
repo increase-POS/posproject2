@@ -2143,4 +2143,94 @@
   <data name="trOK" xml:space="preserve">
     <value>موافق</value>
   </data>
+  <data name="trConvert" xml:space="preserve">
+    <value>تحويل</value>
+  </data>
+  <data name="trCreateDate" xml:space="preserve">
+    <value>تاريخ الإنشاء</value>
+  </data>
+  <data name="trDeliverOrderAlertContent" xml:space="preserve">
+    <value>trDeliverOrderAlertContent</value>
+  </data>
+  <data name="trDeliverOrderAlertTilte" xml:space="preserve">
+    <value>طلب توصيل</value>
+  </data>
+  <data name="trDraftExist" xml:space="preserve">
+    <value>يوجد مسودة جرد</value>
+  </data>
+  <data name="trExceedMaxLimitAlertContent" xml:space="preserve">
+    <value>العنصر تجاوز الحد الأعلى للتخزين</value>
+  </data>
+  <data name="trExceedMaxLimitAlertTilte" xml:space="preserve">
+    <value>تجاوز الكمية</value>
+  </data>
+  <data name="trExceedMinLimitAlertContent" xml:space="preserve">
+    <value>العنصر تجاوز الحد الأدنى للتخزين</value>
+  </data>
+  <data name="trExceedMinLimitAlertTilte" xml:space="preserve">
+    <value>نقص الكمية</value>
+  </data>
+  <data name="trExportAlertContent" xml:space="preserve">
+    <value>trExportAlertContent</value>
+  </data>
+  <data name="trExportAlertTilte" xml:space="preserve">
+    <value>طلب تصدير</value>
+  </data>
+  <data name="trFromLocationHint" xml:space="preserve">
+    <value>من الموقع ...</value>
+  </data>
+  <data name="trFromUnitHint" xml:space="preserve">
+    <value>من الوحدة ...</value>
+  </data>
+  <data name="trItemsCount" xml:space="preserve">
+    <value>عدد العناصر</value>
+  </data>
+  <data name="trMonthCount" xml:space="preserve">
+    <value>عدد الأشهر</value>
+  </data>
+  <data name="trMonthCountHint" xml:space="preserve">
+    <value>عدد الأشهر ...</value>
+  </data>
+  <data name="trSalesOrderAlertContent" xml:space="preserve">
+    <value>trSalesOrderAlertContent</value>
+  </data>
+  <data name="trSalesOrderAlertTilte" xml:space="preserve">
+    <value>طلبية مبيعات</value>
+  </data>
+  <data name="trSelectedCustomers" xml:space="preserve">
+    <value>الزبائن المختارين</value>
+  </data>
+  <data name="trSelectLocations" xml:space="preserve">
+    <value>اختيار المواقع</value>
+  </data>
+  <data name="trSerialNum" xml:space="preserve">
+    <value>الرقم التسلسلي</value>
+  </data>
+  <data name="trSerialNumHint" xml:space="preserve">
+    <value>الرقم التسلسلي...</value>
+  </data>
+  <data name="trSkip" xml:space="preserve">
+    <value>تخطي</value>
+  </data>
+  <data name="trSubscriptionFees" xml:space="preserve">
+    <value>رسوم الاشتراك</value>
+  </data>
+  <data name="trToUnitHint" xml:space="preserve">
+    <value>إلى الوحدة ...</value>
+  </data>
+  <data name="trUnitConversion" xml:space="preserve">
+    <value>تحويل الوحدات</value>
+  </data>
+  <data name="trRequiredAmount" xml:space="preserve">
+    <value>المبلغ المطلوب</value>
+  </data>
+  <data name="trTheCustomerHasNoEmail" xml:space="preserve">
+    <value>لايوجد بريد الكتروني للعميل</value>
+  </data>
+  <data name="trTheShippingCompaniesHasNoEmail" xml:space="preserve">
+    <value>لايوجد بريد الكتروني لشركة الشحن</value>
+  </data>
+  <data name="trTheUserHasNoEmail" xml:space="preserve">
+    <value>لايوجد بريد الكتروني للمستخدم</value>
+  </data>
 </root>

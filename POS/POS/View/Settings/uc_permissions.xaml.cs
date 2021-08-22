@@ -1,6 +1,7 @@
 ﻿using netoaster;
 using POS.Classes;
 using POS.View.windows;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -47,138 +48,141 @@ namespace POS.View.Settings
         IEnumerable<Group> groups;
         byte tgl_groupState;
         string searchGroupText = "";
-        //int firstLevelId;
-        //int secondLevelId;
         string _parentObjectName = "categories";
-        //string _objectName
-        //{
-        //    get { return _objectName; }   // get method
-        //    set {
-        //        _objectName = value;
-
-        //    }  // set method
-        //}
         GroupObject groupObject = new GroupObject();
-        //ObservableCollection<GroupObject> groupObjectsQuery = new ObservableCollection<GroupObject>();
-        //ObservableCollection<GroupObject> groupObjects = new ObservableCollection<GroupObject>();
         IEnumerable<GroupObject> groupObjectsQuery;
         IEnumerable<GroupObject> groupObjects;
         List<GroupObject> groupObjectsList;
         string searchText = "";
-
         Object objectModel = new Object();
         IEnumerable<Object> objects;
-
         BrushConverter bc = new BrushConverter();
-
-
         public uc_permissions()
         {
-            InitializeComponent();
-            index = isCHecked;
-            if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1440)
+            try
             {
-                txt_deleteGroupButton.Visibility = Visibility.Visible;
-                txt_addGroupButton.Visibility = Visibility.Visible;
-                txt_updateGroupButton.Visibility = Visibility.Visible;
-                txt_addGroup_Icon.Visibility = Visibility.Visible;
-                txt_updateGroup_Icon.Visibility = Visibility.Visible;
-                txt_deleteGroup_Icon.Visibility = Visibility.Visible;
+                InitializeComponent();
+                index = isCHecked;
+                if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1440)
+                {
+                    txt_deleteGroupButton.Visibility = Visibility.Visible;
+                    txt_addGroupButton.Visibility = Visibility.Visible;
+                    txt_updateGroupButton.Visibility = Visibility.Visible;
+                    txt_addGroup_Icon.Visibility = Visibility.Visible;
+                    txt_updateGroup_Icon.Visibility = Visibility.Visible;
+                    txt_deleteGroup_Icon.Visibility = Visibility.Visible;
+                }
+                else if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1360)
+                {
+                    txt_addGroup_Icon.Visibility = Visibility.Collapsed;
+                    txt_updateGroup_Icon.Visibility = Visibility.Collapsed;
+                    txt_deleteGroup_Icon.Visibility = Visibility.Collapsed;
+                    txt_deleteGroupButton.Visibility = Visibility.Visible;
+                    txt_addGroupButton.Visibility = Visibility.Visible;
+                    txt_updateGroupButton.Visibility = Visibility.Visible;
+
+                }
+                else
+                {
+                    txt_deleteGroupButton.Visibility = Visibility.Collapsed;
+                    txt_addGroupButton.Visibility = Visibility.Collapsed;
+                    txt_updateGroupButton.Visibility = Visibility.Collapsed;
+                    txt_addGroup_Icon.Visibility = Visibility.Visible;
+                    txt_updateGroup_Icon.Visibility = Visibility.Visible;
+                    txt_deleteGroup_Icon.Visibility = Visibility.Visible;
+
+                }
+
             }
-            else if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1360)
+            catch (Exception ex)
             {
-                txt_addGroup_Icon.Visibility = Visibility.Collapsed;
-                txt_updateGroup_Icon.Visibility = Visibility.Collapsed;
-                txt_deleteGroup_Icon.Visibility = Visibility.Collapsed;
-                txt_deleteGroupButton.Visibility = Visibility.Visible;
-                txt_addGroupButton.Visibility = Visibility.Visible;
-                txt_updateGroupButton.Visibility = Visibility.Visible;
-
+                SectionData.ExceptionMessage(ex, this);
             }
-            else
-            {
-                txt_deleteGroupButton.Visibility = Visibility.Collapsed;
-                txt_addGroupButton.Visibility = Visibility.Collapsed;
-                txt_updateGroupButton.Visibility = Visibility.Collapsed;
-                txt_addGroup_Icon.Visibility = Visibility.Visible;
-                txt_updateGroup_Icon.Visibility = Visibility.Visible;
-                txt_deleteGroup_Icon.Visibility = Visibility.Visible;
-
-            }
-
-
 
         }
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-
-            if (MainWindow.lang.Equals("en"))
+            try
             {
-                MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
-                grid_ucPermissions.FlowDirection = FlowDirection.LeftToRight;
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                if (MainWindow.lang.Equals("en"))
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                    grid_main.FlowDirection = FlowDirection.LeftToRight;
+                }
+                else
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                    grid_main.FlowDirection = FlowDirection.RightToLeft;
+                }
+                #region
+                //new { Text = MainWindow.resourcemanager.GetString("trPercentageDiscount"), Value = "2" },
+
+                //var levelsList = new[] {
+                //new { Text = "المستوى الاول", Value = "1" },
+                //new { Text = "المستوى الثاني", Value = "2" },
+                //new { Text = "المستوى الثالث", Value = "3" },
+                // };
+                //cb_level.DisplayMemberPath = "Text";
+                //cb_level.SelectedValuePath = "Value";
+                //cb_level.ItemsSource = levelsList;
+                #endregion
+                translate();
+
+                Keyboard.Focus(tb_name);
+
+                this.Dispatcher.Invoke(() =>
+                {
+                    Tb_searchGroup_TextChanged(null, null);
+                });
+
+                #region datagridChange
+                //CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(dg_permissions.Items);
+                //((INotifyCollectionChanged)myCollectionView).CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
+                #endregion
+                await RefreshGroupObjectList();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
-            else
+            catch (Exception ex)
             {
-                MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
-                grid_ucPermissions.FlowDirection = FlowDirection.RightToLeft;
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-            #region
-            //new { Text = MainWindow.resourcemanager.GetString("trPercentageDiscount"), Value = "2" },
-
-            //var levelsList = new[] {
-            //new { Text = "المستوى الاول", Value = "1" },
-            //new { Text = "المستوى الثاني", Value = "2" },
-            //new { Text = "المستوى الثالث", Value = "3" },
-            // };
-            //cb_level.DisplayMemberPath = "Text";
-            //cb_level.SelectedValuePath = "Value";
-            //cb_level.ItemsSource = levelsList;
-            #endregion
-            translate();
-
-            Keyboard.Focus(tb_name);
-
-            this.Dispatcher.Invoke(() =>
-            {
-                Tb_searchGroup_TextChanged(null, null);
-            });
-
-            #region datagridChange
-            //CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(dg_permissions.Items);
-            //((INotifyCollectionChanged)myCollectionView).CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
-            #endregion
-            await RefreshGroupObjectList();
-            //dg_permissions.ItemsSource = groupObjectsQuery;
-            //dg_permissions.ItemsSource = null;
-
-
-            //var levelsList = new[] {
-            //new { Text = "المستوى الاول", Value = "1" },
-            //new { Text = "المستوى الثاني", Value = "2" },
-            //new { Text = "المستوى الثالث", Value = "3" },
-            // };
-
-            //DataContext = levelsList;
-            //_objectName = "categories";
         }
 
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
-            Regex regex = new Regex("[^0-9]+");
-            e.Handled = regex.IsMatch(e.Text);
+            try
+            {
+                Regex regex = new Regex("[^0-9]+");
+                e.Handled = regex.IsMatch(e.Text);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
         {//clear
-            tb_name.Clear();
-            tb_notes.Clear();
+            try
+            {
+                tb_name.Clear();
+                tb_notes.Clear();
 
-            p_errorName.Visibility = Visibility.Collapsed;
+                p_errorName.Visibility = Visibility.Collapsed;
 
-            tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         bool validate(Group group = null)
         {
-
             //chk empty name
             SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "");
 
@@ -188,35 +192,48 @@ namespace POS.View.Settings
         }
         private async void Btn_addGroup_Click(object sender, RoutedEventArgs e)
         {//add
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add") || SectionData.isAdminPermision())
-                {
-                group.groupId = 0;
-            if (validate(group))
+            try
             {
-                group.name = tb_name.Text;
-                group.notes = tb_notes.Text;
-                group.createUserId = MainWindow.userID;
-                group.updateUserId = MainWindow.userID;
-                group.isActive = 1;
-                string s = await groupModel.Save(group);
-                if (!s.Equals("-1"))
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add") || SectionData.isAdminPermision())
                 {
-                    addObjects(int.Parse(s));
-                    //Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
-                    //Btn_clear_Click(null, null);
-                    group.groupId = int.Parse(s);
+                    group.groupId = 0;
+                    if (validate(group))
+                    {
+                        group.name = tb_name.Text;
+                        group.notes = tb_notes.Text;
+                        group.createUserId = MainWindow.userID;
+                        group.updateUserId = MainWindow.userID;
+                        group.isActive = 1;
+                        string s = await groupModel.Save(group);
+                        if (!s.Equals("-1"))
+                        {
+                            addObjects(int.Parse(s));
+                            group.groupId = int.Parse(s);
+                        }
+                        else
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+                        await RefreshGroupList();
+                        Tb_searchGroup_TextChanged(null, null);
+                        await RefreshGroupObjectList();
+                        Tb_search_TextChanged(null, null);
+                        Btn_refreshGroup_Click(null, null);
+
+                    }
                 }
                 else
-                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-
-                await RefreshGroupList();
-                Tb_searchGroup_TextChanged(null, null);
-                await RefreshGroupObjectList();
-                Tb_search_TextChanged(null, null);
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
 
 
@@ -227,15 +244,13 @@ namespace POS.View.Settings
         {
             if (objects is null)
                 await RefreshObjectList();
-            //groupObjectsList = new GroupObject[] { }; 
-            groupObjectsList = new List<GroupObject>() ;
+            groupObjectsList = new List<GroupObject>();
             foreach (var item in objects)
             {
                 groupObject = new GroupObject();
-                //groupObject.id = 0;
                 groupObject.groupId = groupId;
                 groupObject.objectId = item.objectId;
-                if (item.objectType == "one")
+                if (item.objectType == "one" || item.objectType == "alert")
                 {
                     groupObject.showOb = 0;
                     groupObject.addOb = 2;
@@ -251,21 +266,16 @@ namespace POS.View.Settings
                     groupObject.deleteOb = 0;
                     groupObject.reportOb = 0;
                 }
-
-
                 groupObject.levelOb = 0;
                 groupObject.notes = "";
                 groupObject.createUserId = MainWindow.userID;
                 groupObject.updateUserId = MainWindow.userID;
                 groupObject.isActive = 1;
                 groupObjectsList.Add(groupObject);
-                //string s = await groupObject.AddGroupObjectList(groupObjectsList);
-
             }
-            string s="";
+            string s = "";
             for (int i = 0; i <= (groupObjectsList.Count / 15); i++)
             {
-                //GetRange (int index, int count);
                 if (i < (groupObjectsList.Count / 15))
                 {
                     List<GroupObject> list = groupObjectsList.GetRange(i * 15, 15).ToList();
@@ -276,7 +286,6 @@ namespace POS.View.Settings
                     List<GroupObject> list = groupObjectsList.Skip(i * 15).ToList();
                     s = await groupObject.AddGroupObjectList(list);
                 }
-                
             }
 
             if (s.Equals("true"))
@@ -293,771 +302,1031 @@ namespace POS.View.Settings
         void RefreshGroupObjectsView()
         {
             dg_permissions.ItemsSource = groupObjectsQuery;
-            //txt_count.Text = groupObjectsQuery.Count().ToString();
         }
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
         {//search
-            if (groupObjects is null)
-                await RefreshGroupObjectList();
-            searchText = tb_searchGroup.Text;
-            //groupObjectsQuery = groupObjects.Where(s => (s.name.Contains(searchText)));
-            groupObjectsQuery = groupObjects.Where(s => s.groupId == group.groupId 
-            && s.objectType != "basic" && s.parentObjectName == _parentObjectName);
-            //groupObjectsQuery = groupObjects.Where(s => s.groupId == group.groupId && s.parentObjectId == _parentObjectId);
-
-            //if (objects!= null)
-            //if(groupObjectsQuery.Where(s =>  s.objectType != "basic").Count() != objects.Count())
-            //{
-            //    await RefreshGroupObjectList();
-            //    Tb_search_TextChanged(null, null);
-            //    return;
-            //}
-            RefreshGroupObjectsView();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                if (groupObjects is null)
+                    await RefreshGroupObjectList();
+                searchText = tb_searchGroup.Text;
+                groupObjectsQuery = groupObjects.Where(s => s.groupId == group.groupId
+                && s.objectType != "basic" && s.parentObjectName == _parentObjectName);
+                RefreshGroupObjectsView();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
-            RefreshGroupObjectList();
-            Tb_search_TextChanged(null, null);
-
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                RefreshGroupObjectList();
+                Tb_search_TextChanged(null, null);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         async Task<IEnumerable<GroupObject>> RefreshGroupObjectList()
-        {
-            MainWindow.mainWindow.StartAwait();
-            groupObjects = await groupObject.GetAll();
-            MainWindow.mainWindow.EndAwait();
-            return groupObjects;
-        }
-
-
-        #endregion
-
-        #region object
-        async Task<IEnumerable<Object>> RefreshObjectList()
-        {
-            objects = await objectModel.GetAll();
-            return objects;
-        }
-        #endregion
-
-        private async void Btn_updateGroup_Click(object sender, RoutedEventArgs e)
-        {//update
-            
-                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update") || SectionData.isAdminPermision())
-                {
-                    if (validate(group))
             {
-                group.name = tb_name.Text;
-                group.notes = tb_notes.Text;
-                group.updateUserId = MainWindow.userID;
+                 groupObjects = await groupObject.GetAll();
+                 return groupObjects;
+            }
 
-                string s = await groupModel.Save(group);
 
-                if (!s.Equals("-1"))
-                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
+            #endregion
+
+            #region object
+            async Task<IEnumerable<Object>> RefreshObjectList()
+            {
+                objects = await objectModel.GetAll();
+                return objects;
+            }
+            #endregion
+
+            private async void Btn_updateGroup_Click(object sender, RoutedEventArgs e)
+            {//update
+
+                try
+                {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update") || SectionData.isAdminPermision())
+                    {
+                        if (validate(group))
+                        {
+                            group.name = tb_name.Text;
+                            group.notes = tb_notes.Text;
+                            group.updateUserId = MainWindow.userID;
+
+                            string s = await groupModel.Save(group);
+
+                            if (!s.Equals("-1"))
+                                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
+                            else
+                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+                            await RefreshGroupList();
+                            Tb_searchGroup_TextChanged(null, null);
+
+
+                        }
+                    }
                 else
+                        Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
+
+
+            private async void Btn_deleteGroup_Click(object sender, RoutedEventArgs e)
+            {//delete
+                try
+                {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete") || SectionData.isAdminPermision())
+                    {
+                        if (group.groupId > 4)
+                        {
+                            if (group.groupId != 0)
+                            {
+                                if ((!group.canDelete) && (group.isActive == 0))
+                                {
+                                    #region
+                                    Window.GetWindow(this).Opacity = 0.2;
+                                    wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                                    w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
+                                    w.ShowDialog();
+                                    Window.GetWindow(this).Opacity = 1;
+                                    #endregion
+                                    if (w.isOk)
+                                        activate();
+                                }
+                                else
+                                {
+
+                                    #region
+                                    Window.GetWindow(this).Opacity = 0.2;
+                                    wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                                    if (group.canDelete)
+                                        w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDelete");
+                                    if (!group.canDelete)
+                                        w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDeactivate");
+                                    w.ShowDialog();
+                                    Window.GetWindow(this).Opacity = 1;
+                                    #endregion
+                                    if (w.isOk)
+                                    {
+                                        string popupContent = "";
+                                        if (group.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
+                                        if ((!group.canDelete) && (group.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
+
+                                        bool b = await groupModel.Delete(group.groupId, MainWindow.userID.Value, group.canDelete);
+
+                                        if (b) //SectionData.popUpResponse("", popupContent);
+                                            Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
+                                        else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                                    }
+                                }
+                                await RefreshGroupList();
+                                Tb_searchGroup_TextChanged(null, null);
+                            }
+                        }
+                        else
+                            Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trCannotDeleteTheMainGroup"), animation: ToasterAnimation.FadeIn);
+
+                        //clear textBoxs
+                        Btn_clear_Click(null, null);
+                    }
+                    else
+                        Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
+
+
+            private async void activate()
+            {//activate
+                group.isActive = 1;
+
+                string s = await group.Save(group);
+
+                if (!s.Equals("-1")) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopActive"));
+                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
+                else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
                 await RefreshGroupList();
                 Tb_searchGroup_TextChanged(null, null);
-
-
             }
+            private void Dg_group_SelectionChanged(object sender, SelectionChangedEventArgs e)
+            {
+                try
+                {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                p_errorName.Visibility = Visibility.Collapsed;
+                    tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+
+                    if (dg_group.SelectedIndex != -1)
+                    {
+                        group = dg_group.SelectedItem as Group;
+                        this.DataContext = group;
+                    }
+
+                    if (group != null)
+                    {
+
+                        #region delete
+                        if (group.canDelete)
+                        {
+                            txt_deleteGroupButton.Text = MainWindow.resourcemanager.GetString("trDelete");
+                            txt_deleteGroup_Icon.Kind =
+                                     MaterialDesignThemes.Wpf.PackIconKind.Delete;
+                            tt_deleteGroup_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
+                        }
+                        else
+                        {
+                            if (group.isActive == 0)
+                            {
+                                txt_deleteGroupButton.Text = MainWindow.resourcemanager.GetString("trActive");
+                                txt_deleteGroup_Icon.Kind =
+                                 MaterialDesignThemes.Wpf.PackIconKind.Check;
+                                tt_deleteGroup_Button.Content = MainWindow.resourcemanager.GetString("trActive");
+
+                            }
+                            else
+                            {
+                                txt_deleteGroupButton.Text = MainWindow.resourcemanager.GetString("trInActive");
+                                txt_deleteGroup_Icon.Kind =
+                                     MaterialDesignThemes.Wpf.PackIconKind.Cancel;
+                                tt_deleteGroup_Button.Content = MainWindow.resourcemanager.GetString("trInActive");
+
+                            }
+                        }
+                        #endregion
+                    }
+                    Tb_search_TextChanged(null, null);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
+            private void validationControl_LostFocus(object sender, RoutedEventArgs e)
+            {
+                try
+                {
+                    if ((sender as Control).Name == "tb_x")
+                        //chk empty name
+                        SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
+
+                }
+                catch (Exception ex)
+                {
+                    SectionData.ExceptionMessage(ex, this, sender);
+                }
+            }
+            private void validationTextbox_TextChanged(object sender, TextChangedEventArgs e)
+            {
+                try
+                {
+                    if ((sender as TextBox).Name == "tb_x")
+                        //chk empty x
+                        SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
+
+                }
+                catch (Exception ex)
+                {
+                    SectionData.ExceptionMessage(ex, this, sender);
+                }
+            }
+            void handleSpace_PreviewKeyDown(object sender, KeyEventArgs e)
+            {
+                try
+                {
+                    e.Handled = e.Key == Key.Space;
+                }
+                catch (Exception ex)
+                {
+                    SectionData.ExceptionMessage(ex, this, sender);
+                }
+            }
+            private async void Tgl_isActive_Checked(object sender, RoutedEventArgs e)
+            {
+                try
+                {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                if (groups is null)
+                        await RefreshGroupList();
+                    tgl_groupState = 1;
+                    Tb_searchGroup_TextChanged(null, null);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
+            private async void Tgl_isActive_Unchecked(object sender, RoutedEventArgs e)
+            {
+                try
+                {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                if (groups is null)
+                        await RefreshGroupList();
+                    tgl_groupState = 0;
+                    Tb_searchGroup_TextChanged(null, null);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
+            async Task<IEnumerable<Group>> RefreshGroupList()
+            {
+                 groups = await groupModel.GetAll();
+                 return groups;
+            }
+            void RefreshGroupView()
+            {
+                dg_group.ItemsSource = groupsQuery;
+
+                //txt_count.Text = groupsQuery.Count().ToString();
+            }
+            private async void Tb_searchGroup_TextChanged(object sender, TextChangedEventArgs e)
+            {
+                try
+                {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
+                    {
+                        if (groups is null)
+                            await RefreshGroupList();
+                        searchGroupText = tb_searchGroup.Text;
+                        groupsQuery = groups.Where(s => (s.name.Contains(searchGroupText)) && s.isActive == tgl_groupState);
+                        RefreshGroupView();
+                    }
+                    else
+                        Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
+
+            private async void Btn_refreshGroup_Click(object sender, RoutedEventArgs e)
+            {
+                try
+                {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
+                    {
+                        await RefreshGroupList();
+                        Tb_searchGroup_TextChanged(null, null);
+
+                        await RefreshGroupObjectList();
+                        Tb_search_TextChanged(null, null);
+                    }
+                    else
+                        Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
+            private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
+            {
+                try
+                {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                this.Dispatcher.Invoke(() =>
+{
+Thread t1 = new Thread(FN_ExportToExcel);
+t1.SetApartmentState(ApartmentState.STA);
+t1.Start();
+});
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
+            void FN_ExportToExcel()
+            {
+
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
+                {
+                    var QueryExcel = groupsQuery.AsEnumerable().Select(x => new
+                    {
+                        Name = x.name,
+                        Notes = x.notes
+                    });
+                    var DTForExcel = QueryExcel.ToDataTable();
+                    DTForExcel.Columns[0].Caption = MainWindow.resourcemanager.GetString("trName");
+                    DTForExcel.Columns[1].Caption = MainWindow.resourcemanager.GetString("trNote");
+
+                    ExportToExcel.Export(DTForExcel);
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
             }
-
-
-            private async void Btn_deleteGroup_Click(object sender, RoutedEventArgs e)
-        {//delete
-            
-                    if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete") || SectionData.isAdminPermision())
-                {
-                if (group.groupId > 4)
-                {
-                    if (group.groupId != 0)
+            private void input_LostFocus(object sender, RoutedEventArgs e)
             {
-                if ((!group.canDelete) && (group.isActive == 0))
+                try
                 {
-                    #region
-                    Window.GetWindow(this).Opacity = 0.2;
-                    wd_acceptCancelPopup w = new wd_acceptCancelPopup();
-                    w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
-                    w.ShowDialog();
-                    Window.GetWindow(this).Opacity = 1;
-                    #endregion
-                    if (w.isOk)
-                        activate();
-                }
-                else
-                {
-
-                    #region
-                    Window.GetWindow(this).Opacity = 0.2;
-                    wd_acceptCancelPopup w = new wd_acceptCancelPopup();
-                    if (group.canDelete)
-                        w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDelete");
-                    if (!group.canDelete)
-                        w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDeactivate");
-                    w.ShowDialog();
-                    Window.GetWindow(this).Opacity = 1;
-                    #endregion
-                    if (w.isOk)
+                    string name = sender.GetType().Name;
+                    if (name == "TextBox")
                     {
-                        string popupContent = "";
-                        if (group.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
-                        if ((!group.canDelete) && (group.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
 
-                        bool b = await groupModel.Delete(group.groupId, MainWindow.userID.Value, group.canDelete);
+                    }
+                    else if (name == "ComboBox")
+                    {
 
-                        if (b) //SectionData.popUpResponse("", popupContent);
-                            Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
-                        else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
                     }
                 }
-                await RefreshGroupList();
-                Tb_searchGroup_TextChanged(null, null);
-            }
+                catch (Exception ex)
+                {
+                    SectionData.ExceptionMessage(ex, this, sender);
                 }
-                else
-                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trCannotDeleteTheMainGroup"), animation: ToasterAnimation.FadeIn);
+            }
+            private void Tb_textBox_TextChanged(object sender, TextChangedEventArgs e)
+            {
+                try
+                {
+                    _Sender = sender;
+                }
+                catch (Exception ex)
+                {
+                    SectionData.ExceptionMessage(ex, this, sender);
+                }
+            }
 
-                //clear textBoxs
-                Btn_clear_Click(null, null);
+            private async void Btn_usersList_Click(object sender, RoutedEventArgs e)
+            {
+
+                try
+                {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                if (MainWindow.groupObject.HasPermissionAction(usersPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+                    {
+                        if (group.groupId > 0)
+                        {
+                            Window.GetWindow(this).Opacity = 0.2;
+                            wd_usersList w = new wd_usersList();
+                            w.groupId = group.groupId;
+
+                            w.ShowDialog();
+
+                            Window.GetWindow(this).Opacity = 1;
+                        }
                     }
                     else
                         Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-                }
-
-
-                private async void activate()
-        {//activate
-            group.isActive = 1;
-
-            string s = await group.Save(group);
-
-            if (!s.Equals("-1")) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopActive"));
-                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
-            else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-
-            await RefreshGroupList();
-            Tb_searchGroup_TextChanged(null, null);
-        }
-        private void Dg_group_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            p_errorName.Visibility = Visibility.Collapsed;
-            tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-
-            if (dg_group.SelectedIndex != -1)
-            {
-                group = dg_group.SelectedItem as Group;
-                this.DataContext = group;
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
-
-            if (group != null)
+            catch (Exception ex)
             {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
 
-                #region delete
-                if (group.canDelete)
+            private async void Btn_save_Click(object sender, RoutedEventArgs e)
+            {
+                try
                 {
-                    txt_deleteGroupButton.Text = MainWindow.resourcemanager.GetString("trDelete");
-                    txt_deleteGroup_Icon.Kind =
-                             MaterialDesignThemes.Wpf.PackIconKind.Delete;
-                    tt_deleteGroup_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
-                }
-                else
-                {
-                    if (group.isActive == 0)
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update") || SectionData.isAdminPermision())
                     {
-                        txt_deleteGroupButton.Text = MainWindow.resourcemanager.GetString("trActive");
-                        txt_deleteGroup_Icon.Kind =
-                         MaterialDesignThemes.Wpf.PackIconKind.Check;
-                        tt_deleteGroup_Button.Content = MainWindow.resourcemanager.GetString("trActive");
+                        string s = "";
+                        foreach (var item in groupObjectsQuery)
+                        {
+                            s = await groupObject.Save(item);
+                        }
+                        if (!s.Equals("-1"))
+                        {
+                            //addObjects(int.Parse(s));
+                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
+                            Btn_clear_Click(null, null);
+                        }
+                        else
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
                     }
                     else
+                        Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
+
+            private void btn_secondLevelClick(object sender, RoutedEventArgs e)
+            {
+                try
+                {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                Button button = sender as Button;
+                    paintSecondLevel();
+                    foreach (Path path in FindControls.FindVisualChildren<Path>(this))
                     {
-                        txt_deleteGroupButton.Text = MainWindow.resourcemanager.GetString("trInActive");
-                        txt_deleteGroup_Icon.Kind =
-                             MaterialDesignThemes.Wpf.PackIconKind.Cancel;
-                        tt_deleteGroup_Button.Content = MainWindow.resourcemanager.GetString("trInActive");
-
+                        // do something with tb here
+                        if (path.Name == "path_" + button.Tag)
+                        {
+                            path.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+                            break;
+                        }
                     }
-                }
-                #endregion 
+                    foreach (TextBlock textBlock in FindControls.FindVisualChildren<TextBlock>(this))
+                    {
+                        if (textBlock.Name == "txt_" + button.Tag)
+                        {
+                            textBlock.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+                            break;
+                        }
+                    }
+
+                    _parentObjectName = button.Tag.ToString();
+                    Tb_search_TextChanged(null, null);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
-            Tb_search_TextChanged(null, null);
-        }
-        private void validationControl_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if ((sender as Control).Name == "tb_x")
-                //chk empty name
-                SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
-
-        }
-        private void validationTextbox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if ((sender as TextBox).Name == "tb_x")
-                //chk empty x
-                SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
-
-        }
-        void handleSpace_PreviewKeyDown(object sender, KeyEventArgs e)
-        {
-            e.Handled = e.Key == Key.Space;
-        }
-        private async void Tgl_isActive_Checked(object sender, RoutedEventArgs e)
-        {
-            if (groups is null)
-                await RefreshGroupList();
-            tgl_groupState = 1;
-            Tb_searchGroup_TextChanged(null, null);
-        }
-        private async void Tgl_isActive_Unchecked(object sender, RoutedEventArgs e)
-        {
-            if (groups is null)
-                await RefreshGroupList();
-            tgl_groupState = 0;
-            Tb_searchGroup_TextChanged(null, null);
-        }
-        async Task<IEnumerable<Group>> RefreshGroupList()
-        {
-            MainWindow.mainWindow.StartAwait();
-            groups = await groupModel.GetAll();
-            MainWindow.mainWindow.EndAwait();
-            return groups;
-        }
-        void RefreshGroupView()
-        {
-            dg_group.ItemsSource = groupsQuery;
-
-            //txt_count.Text = groupsQuery.Count().ToString();
-        }
-        private async void Tb_searchGroup_TextChanged(object sender, TextChangedEventArgs e)
-        {
-             
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
-                {
-                if (groups is null)
-                await RefreshGroupList();
-            searchGroupText = tb_searchGroup.Text;
-            groupsQuery = groups.Where(s => (s.name.Contains(searchGroupText)) && s.isActive == tgl_groupState);
-            RefreshGroupView();
-            }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-        }
-
-        private async void Btn_refreshGroup_Click(object sender, RoutedEventArgs e)
-        {
-            
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
-                {
-                await RefreshGroupList();
-                Tb_searchGroup_TextChanged(null, null);
-
-                await RefreshGroupObjectList();
-                Tb_search_TextChanged(null, null);
-            }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-           
-        }
-        private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
-        {
-            this.Dispatcher.Invoke(() =>
+            catch (Exception ex)
             {
-                Thread t1 = new Thread(FN_ExportToExcel);
-                t1.SetApartmentState(ApartmentState.STA);
-                t1.Start();
-            });
-        }
-        void FN_ExportToExcel()
-        {
-             
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
-                {
-                var QueryExcel = groupsQuery.AsEnumerable().Select(x => new
-            {
-                Name = x.name,
-                Notes = x.notes
-            });
-            var DTForExcel = QueryExcel.ToDataTable();
-            DTForExcel.Columns[0].Caption = MainWindow.resourcemanager.GetString("trName");
-            DTForExcel.Columns[1].Caption = MainWindow.resourcemanager.GetString("trNote");
-
-            ExportToExcel.Export(DTForExcel);
-            }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-        }
-        private void Btn_addRange_Click(object sender, RoutedEventArgs e)
-        {
-            //Window.GetWindow(this).Opacity = 0.2;
-            //wd_groupAddRange w = new wd_groupAddRange();
-            //w.ShowDialog();
-            //Window.GetWindow(this).Opacity = 1;
-            //Btn_refresh_Click(null, null);
-        }
-        private void input_LostFocus(object sender, RoutedEventArgs e)
-        {
-            string name = sender.GetType().Name;
-            if (name == "TextBox")
-            {
-
-            }
-            else if (name == "ComboBox")
-            {
-
-
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
-        private void Tb_textBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            _Sender = sender;
-        }
 
-
-
-
-
-
-        private async void Btn_usersList_Click(object sender, RoutedEventArgs e)
-        {
-             
-            if (MainWindow.groupObject.HasPermissionAction(usersPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
-                {
-            if (group.groupId > 0)
+            public void paintSecondLevel()
             {
-                Window.GetWindow(this).Opacity = 0.2;
-                wd_usersList w = new wd_usersList();
-                w.groupId = group.groupId;
-
-                w.ShowDialog();
-
-                Window.GetWindow(this).Opacity = 1;
-            }
-            }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-        }
-
-        private async void Btn_save_Click(object sender, RoutedEventArgs e)
-        {
-            
-            if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update") || SectionData.isAdminPermision())
-                {
-                string s = "";
-            foreach (var item in groupObjectsQuery)
-            {
-                s = await groupObject.Save(item);
-            }
-            if (!s.Equals("-1"))
-            {
-                //addObjects(int.Parse(s));
-                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
-                Btn_clear_Click(null, null);
-            }
-            else
-                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-
-            }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-        }
-
-        private void btn_secondLevelClick(object sender, RoutedEventArgs e)
-        {
-            Button button = sender as Button;
-            paintSecondLevel();
-            //path_suppliers.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
-            foreach (Path path in FindControls.FindVisualChildren<Path>(this))
-            {
-                // do something with tb here
-                if (path.Name == "path_" + button.Tag)
-                {
-                    //MessageBox.Show("Hey i'm in " + "path_" + button.Tag);
-                    path.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
-                    break;
-                }
-            }
-            //txt_suppliers.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
-            foreach (TextBlock textBlock in FindControls.FindVisualChildren<TextBlock>(this))
-            {
-                if (textBlock.Name == "txt_" + button.Tag)
-                {
-                    textBlock.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
-                    break;
-                }
-            }
-
-            //_objectName = button.Tag.ToString();
-            _parentObjectName = button.Tag.ToString();
-            Tb_search_TextChanged(null, null);
-        }
-
-       
-
-        public void paintSecondLevel()
-        {
-            paintCatalog();
-            paintStore();
-            paintPurchase();
-            paintSale();
-            paintAccounts();
-            paintSectionData();
-            paintSettings();
+                paintCatalog();
+                paintStore();
+                paintPurchase();
+                paintSale();
+                paintAccounts();
+                paintSectionData();
+                paintSettings();
+                paintAlerts();
             paintReports();
-        }
-        public void paintCatalog()
+            }
+            public void paintCatalog()
+            {
+                path_categories.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                path_item.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                path_properties.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                path_units.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                path_storageCost.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+
+                txt_categories.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                txt_item.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                txt_properties.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                txt_units.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                txt_storageCost.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+            }
+            public void paintStore()
+            {
+                path_locations.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                path_section.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                path_recipthOfInvoice.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                path_itemsStorage.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                path_importExport.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                path_itemsDestroy.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                path_shortage.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                path_inventory.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                path_storageStatistic.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+
+                txt_locations.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                txt_section.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                txt_reciptOfInvoice.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                txt_itemsStorage.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                txt_importExport.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                txt_itemsDestroy.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                txt_shortage.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                txt_inventory.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                txt_storageStatistic.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+            }
+            public void paintPurchase()
+            {
+                path_payInvoice.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                path_purchaseOrder.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                path_purchaseStatistic.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+
+                txt_payInvoice.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                txt_purchaseOrder.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                txt_purchaseStatistic.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+            }
+            public void paintSale()
+            {
+                path_reciptInvoice.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                path_coupon.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                path_offer.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                path_package.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                path_quotation.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                path_medals.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                path_salesStatistic.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                path_membership.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                path_salesOrders.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+
+                txt_reciptInvoice.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                txt_coupon.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                txt_offer.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                txt_package.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                txt_quotation.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                txt_medals.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                txt_salesStatistic.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                txt_membership.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                txt_salesOrders.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+            }
+            public void paintAccounts()
+            {
+                path_posAccounting.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                path_payments.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                path_received.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                path_bonds.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                path_banksAccounting.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                path_accountsStatistic.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                path_ordersAccounting.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                path_subscriptions.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+
+                txt_posAccounting.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                txt_payments.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                txt_received.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                txt_bonds.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                txt_banksAccounting.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                txt_accountsStatistic.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                txt_ordersAccounting.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                txt_subscriptions.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+            }
+            public void paintReports()
+            {
+                path_storageReports.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                path_purchaseReports.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                path_salesReports.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                path_accountsReports.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                path_usersReports.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+
+                txt_storageReports.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                txt_purchaseReports.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                txt_salesReports.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                txt_accountsReports.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                txt_usersReports.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+            }
+            public void paintSectionData()
+            {
+                path_suppliers.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                path_customers.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                path_users.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                path_branches.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                path_stores.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                path_pos.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                path_banks.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                path_cards.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                path_shippingCompany.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+
+
+                txt_suppliers.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                txt_customers.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                txt_users.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                txt_branches.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                txt_stores.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                txt_pos.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                txt_banks.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                txt_cards.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                txt_shippingCompany.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+            }
+            public void paintSettings()
+            {
+                path_permissions.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                path_reportsSettings.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                path_general.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                path_emailsSetting.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                path_emailTemplates.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+
+                txt_permissions.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                txt_reportsSettings.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                txt_general.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                txt_emailsSetting.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                txt_emailTemplates.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+            }
+
+        public void paintAlerts()
         {
-            path_categories.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            path_item.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            path_properties.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            path_units.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            path_storageCost.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+            path_storageAlerts.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+            path_saleAlerts.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+            path_accountsAlerts.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
 
-            txt_categories.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            txt_item.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            txt_properties.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            txt_units.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            txt_storageCost.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+            txt_storageAlerts.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+            txt_saleAlerts.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+            txt_accountsAlerts.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
         }
-        public void paintStore()
-        {
-            path_locations.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            path_section.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            path_recipthOfInvoice.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            path_itemsStorage.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            path_importExport.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            path_itemsDestroy.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            path_shortage.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            path_inventory.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            path_storageStatistic.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-
-            txt_locations.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            txt_section.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            txt_reciptOfInvoice.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            txt_itemsStorage.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            txt_importExport.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            txt_itemsDestroy.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            txt_shortage.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            txt_inventory.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            txt_storageStatistic.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-        }
-        public void paintPurchase()
-        {
-            path_payInvoice.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            path_purchaseOrder.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            path_purchaseStatistic.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-
-            txt_payInvoice.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            txt_purchaseOrder.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            txt_purchaseStatistic.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-        }
-        public void paintSale()
-        {
-            path_reciptInvoice.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            path_coupon.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            path_offer.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            path_package.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            path_quotation.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            path_medals.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            path_salesStatistic.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            path_membership.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            path_salesOrders.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-
-            txt_reciptInvoice.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            txt_coupon.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            txt_offer.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            txt_package.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            txt_quotation.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            txt_medals.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            txt_salesStatistic.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            txt_membership.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            txt_salesOrders.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-        }
-        public void paintAccounts()
-        {
-            path_posAccounting.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            path_payments.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            path_received.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            path_bonds.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            path_banksAccounting.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            path_accountsStatistic.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            path_ordersAccounting.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            path_subscriptions.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-
-            txt_posAccounting.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            txt_payments.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            txt_received.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            txt_bonds.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            txt_banksAccounting.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            txt_accountsStatistic.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            txt_ordersAccounting.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            txt_subscriptions.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-        }
-        public void paintReports()
-        {
-            path_storageReports.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            path_purchaseReports.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            path_salesReports.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            path_accountsReports.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            path_usersReports.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-
-            txt_storageReports.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            txt_purchaseReports.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            txt_salesReports.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            txt_accountsReports.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            txt_usersReports.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-        }
-        public void paintSectionData()
-        {
-            path_suppliers.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            path_customers.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            path_users.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            path_branches.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            path_stores.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            path_pos.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            path_banks.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            path_cards.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            path_shippingCompany.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-         
-
-            txt_suppliers.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            txt_customers.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            txt_users.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            txt_branches.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            txt_stores.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            txt_pos.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            txt_banks.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            txt_cards.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            txt_shippingCompany.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-        }
-        public void paintSettings()
-        {
-            path_permissions.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            path_reportsSettings.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            path_general.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            path_emailsSetting.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            path_emailTemplates.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-
-            txt_permissions.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            txt_reportsSettings.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            txt_general.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            txt_emailsSetting.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-            txt_emailTemplates.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-        }
-
-
         private void translate()
-        {
+            {
 
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_searchGroup, MainWindow.resourcemanager.GetString("trSearchHint"));
-            //MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
-            btn_refreshGroup.ToolTip = MainWindow.resourcemanager.GetString("trRefresh");
-            //btn_refresh.ToolTip = MainWindow.resourcemanager.GetString("trRefresh");
-            btn_clear.ToolTip = MainWindow.resourcemanager.GetString("trClear");
+                MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_searchGroup, MainWindow.resourcemanager.GetString("trSearchHint"));
+                btn_refreshGroup.ToolTip = MainWindow.resourcemanager.GetString("trRefresh");
+                btn_clear.ToolTip = MainWindow.resourcemanager.GetString("trClear");
 
-            txt_addGroupButton.Text = MainWindow.resourcemanager.GetString("trAdd");
-            txt_updateGroupButton.Text = MainWindow.resourcemanager.GetString("trUpdate");
-            txt_deleteGroupButton.Text = MainWindow.resourcemanager.GetString("trDelete");
-            tt_addGroup_Button.Content = MainWindow.resourcemanager.GetString("trAdd");
-            tt_updateGroup_Button.Content = MainWindow.resourcemanager.GetString("trUpdate");
-            tt_deleteGroup_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
+                txt_addGroupButton.Text = MainWindow.resourcemanager.GetString("trAdd");
+                txt_updateGroupButton.Text = MainWindow.resourcemanager.GetString("trUpdate");
+                txt_deleteGroupButton.Text = MainWindow.resourcemanager.GetString("trDelete");
+                tt_addGroup_Button.Content = MainWindow.resourcemanager.GetString("trAdd");
+                tt_updateGroup_Button.Content = MainWindow.resourcemanager.GetString("trUpdate");
+                tt_deleteGroup_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
 
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_notes, MainWindow.resourcemanager.GetString("trNoteHint"));
-            tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
-            tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
-            //tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
+                MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_notes, MainWindow.resourcemanager.GetString("trNoteHint"));
+                tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
+                tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
+                //tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
 
-            dg_group.Columns[0].Header = MainWindow.resourcemanager.GetString("trName");
-            dg_group.Columns[1].Header = MainWindow.resourcemanager.GetString("trNote");
+                dg_group.Columns[0].Header = MainWindow.resourcemanager.GetString("trName");
+                dg_group.Columns[1].Header = MainWindow.resourcemanager.GetString("trNote");
 
 
-            txt_categories.Text = MainWindow.resourcemanager.GetString("trCategories");
-            txt_properties.Text = MainWindow.resourcemanager.GetString("trProperties");
-            txt_item.Text = MainWindow.resourcemanager.GetString("trItems");
-            txt_units.Text = MainWindow.resourcemanager.GetString("trUnits");
+                txt_categories.Text = MainWindow.resourcemanager.GetString("trCategories");
+                txt_properties.Text = MainWindow.resourcemanager.GetString("trProperties");
+                txt_item.Text = MainWindow.resourcemanager.GetString("trItems");
+                txt_units.Text = MainWindow.resourcemanager.GetString("trUnits");
 
-            txt_posAccounting.Text = MainWindow.resourcemanager.GetString("trPOS");
-            txt_banksAccounting.Text = MainWindow.resourcemanager.GetString("trBanks");
-            txt_payments.Text = MainWindow.resourcemanager.GetString("trPayments");
-            txt_received.Text = MainWindow.resourcemanager.GetString("trReceived");
-            txt_bonds.Text = MainWindow.resourcemanager.GetString("trBonds");
+                txt_posAccounting.Text = MainWindow.resourcemanager.GetString("trPOS");
+                txt_banksAccounting.Text = MainWindow.resourcemanager.GetString("trBanks");
+                txt_payments.Text = MainWindow.resourcemanager.GetString("trPayments");
+                txt_received.Text = MainWindow.resourcemanager.GetString("trReceived");
+                txt_bonds.Text = MainWindow.resourcemanager.GetString("trBonds");
 
-            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trInvoice");
-            txt_storageStatistic.Text = MainWindow.resourcemanager.GetString("trStatistic");
-            txt_purchaseStatistic.Text = MainWindow.resourcemanager.GetString("trStatistic");
-            txt_salesStatistic.Text = MainWindow.resourcemanager.GetString("trStatistic");
-            txt_accountsStatistic.Text = MainWindow.resourcemanager.GetString("trStatistic");
+                txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trInvoice");
+                txt_storageStatistic.Text = MainWindow.resourcemanager.GetString("trStatistic");
+                txt_purchaseStatistic.Text = MainWindow.resourcemanager.GetString("trStatistic");
+                txt_salesStatistic.Text = MainWindow.resourcemanager.GetString("trStatistic");
+                txt_accountsStatistic.Text = MainWindow.resourcemanager.GetString("trStatistic");
 
-            txt_reciptInvoice.Text = MainWindow.resourcemanager.GetString("trInvoice");
-            txt_coupon.Text = MainWindow.resourcemanager.GetString("trCoupon");
-            txt_offer.Text = MainWindow.resourcemanager.GetString("trOffer");
+                txt_reciptInvoice.Text = MainWindow.resourcemanager.GetString("trInvoice");
+                txt_coupon.Text = MainWindow.resourcemanager.GetString("trCoupon");
+                txt_offer.Text = MainWindow.resourcemanager.GetString("trOffer");
 
-            txt_customers.Text = MainWindow.resourcemanager.GetString("trCustomers");
-            txt_suppliers.Text = MainWindow.resourcemanager.GetString("trSuppliers");
-            txt_users.Text = MainWindow.resourcemanager.GetString("trUsers");
-            txt_branches.Text = MainWindow.resourcemanager.GetString("trBranches");
-            txt_stores.Text = MainWindow.resourcemanager.GetString("trStores");
-            txt_pos.Text = MainWindow.resourcemanager.GetString("trPOS");
-            txt_banks.Text = MainWindow.resourcemanager.GetString("trBanks");
+                txt_customers.Text = MainWindow.resourcemanager.GetString("trCustomers");
+                txt_suppliers.Text = MainWindow.resourcemanager.GetString("trSuppliers");
+                txt_users.Text = MainWindow.resourcemanager.GetString("trUsers");
+                txt_branches.Text = MainWindow.resourcemanager.GetString("trBranches");
+                txt_stores.Text = MainWindow.resourcemanager.GetString("trStores");
+                txt_pos.Text = MainWindow.resourcemanager.GetString("trPOS");
+                txt_banks.Text = MainWindow.resourcemanager.GetString("trBanks");
 
-        }
-        private void isEnabledButtons()
-        {
-            btn_home.IsEnabled = true;
-            btn_catalog.IsEnabled = true;
-            btn_store.IsEnabled = true;
-            btn_sale.IsEnabled = true;
-            btn_purchase.IsEnabled = true;
-            btn_data.IsEnabled = true;
-            btn_charts.IsEnabled = true;
-            btn_settings.IsEnabled = true;
+            }
+            private void isEnabledButtons()
+            {
+                btn_home.IsEnabled = true;
+                btn_catalog.IsEnabled = true;
+                btn_store.IsEnabled = true;
+                btn_sale.IsEnabled = true;
+                btn_purchase.IsEnabled = true;
+                btn_data.IsEnabled = true;
+                btn_charts.IsEnabled = true;
+                btn_settings.IsEnabled = true;
+                btn_alerts.IsEnabled = true;
             btn_account.IsEnabled = true;
-        }
-        #region Tab
-        private void btn_home_Click(object sender, RoutedEventArgs e)
-        {
-            paint();
-            bdr_home.Background = Brushes.White;
-            path_home.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-            grid_bank.Visibility = Visibility.Visible;
-            isEnabledButtons();
-            btn_home.IsEnabled = false;
-            btn_home.Opacity = 1;
-        }
-        private void btn_catalog_Click(object sender, RoutedEventArgs e)
-        {
+            }
+            #region Tab
+            private void btn_home_Click(object sender, RoutedEventArgs e)
+            {
+                try
+                {
+                
+                paint();
+                    bdr_home.Background = Brushes.White;
+                    path_home.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+                    grid_bank.Visibility = Visibility.Visible;
+                    isEnabledButtons();
+                    btn_home.IsEnabled = false;
+                    btn_home.Opacity = 1;
+                }
+                catch (Exception ex)
+                {
+                    SectionData.ExceptionMessage(ex, this, sender);
+                }
+            }
+            private void btn_catalog_Click(object sender, RoutedEventArgs e)
+            {
 
-            paint();
-            bdr_catalog.Background = Brushes.White;
-            path_catalog.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-            grid_catalog.Visibility = Visibility.Visible;
-            isEnabledButtons();
-            btn_catalog.IsEnabled = false;
-            btn_catalog.Opacity = 1;
-    
-        }
-        private void btn_store_Click(object sender, RoutedEventArgs e)
-        {
-       
-            paint();
-            bdr_store.Background = Brushes.White;
-            path_storage.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-            grid_store.Visibility = Visibility.Visible;
-            isEnabledButtons();
-            btn_store.IsEnabled = false;
-            btn_store.Opacity = 1;
-        }
-        private void btn_sale_Click(object sender, RoutedEventArgs e)
-        {
+                try
+                {
+                    paint();
+                    bdr_catalog.Background = Brushes.White;
+                    path_catalog.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+                    grid_catalog.Visibility = Visibility.Visible;
+                    isEnabledButtons();
+                    btn_catalog.IsEnabled = false;
+                    btn_catalog.Opacity = 1;
 
-            paint();
-            bdr_sale.Background = Brushes.White;
-            path_sales.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-            grid_sales.Visibility = Visibility.Visible;
-            isEnabledButtons();
-            btn_sale.IsEnabled = false;
-            btn_sale.Opacity = 1;
-        }
-        private void btn_purchase_Click(object sender, RoutedEventArgs e)
+                }
+                catch (Exception ex)
+                {
+                    SectionData.ExceptionMessage(ex, this, sender);
+                }
+            }
+            private void btn_store_Click(object sender, RoutedEventArgs e)
+            {
+                try
+                {
+                    paint();
+                    bdr_store.Background = Brushes.White;
+                    path_storage.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+                    grid_store.Visibility = Visibility.Visible;
+                    isEnabledButtons();
+                    btn_store.IsEnabled = false;
+                    btn_store.Opacity = 1;
+                }
+                catch (Exception ex)
+                {
+                    SectionData.ExceptionMessage(ex, this, sender);
+                }
+            }
+            private void btn_sale_Click(object sender, RoutedEventArgs e)
+            {
+                try
+                {
+                    paint();
+                    bdr_sale.Background = Brushes.White;
+                    path_sales.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+                    grid_sales.Visibility = Visibility.Visible;
+                    isEnabledButtons();
+                    btn_sale.IsEnabled = false;
+                    btn_sale.Opacity = 1;
+                }
+                catch (Exception ex)
+                {
+                    SectionData.ExceptionMessage(ex, this, sender);
+                }
+            }
+            private void btn_purchase_Click(object sender, RoutedEventArgs e)
+            {
+                try
+                {
+                    paint();
+                    bdr_purchase.Background = Brushes.White;
+                    path_purchases.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+                    grid_purchase.Visibility = Visibility.Visible;
+                    isEnabledButtons();
+                    btn_purchase.IsEnabled = false;
+                    btn_purchase.Opacity = 1;
+                }
+                catch (Exception ex)
+                {
+                    SectionData.ExceptionMessage(ex, this, sender);
+                }
+            }
+            private void btn_account_Click(object sender, RoutedEventArgs e)
+            {
+                try
+                {
+                    paint();
+                    bdr_accounts.Background = Brushes.White;
+                    path_accounting.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+                    grid_account.Visibility = Visibility.Visible;
+                    isEnabledButtons();
+                    btn_account.IsEnabled = false;
+                    btn_account.Opacity = 1;
+                }
+                catch (Exception ex)
+                {
+                    SectionData.ExceptionMessage(ex, this, sender);
+                }
+            }
+            private void btn_charts_Click(object sender, RoutedEventArgs e)
+            {
+                try
+                {
+                    paint();
+                    bdr_charts.Background = Brushes.White;
+                    path_reports.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+                    grid_charts.Visibility = Visibility.Visible;
+                    isEnabledButtons();
+                    btn_charts.IsEnabled = false;
+                    btn_charts.Opacity = 1;
+                }
+                catch (Exception ex)
+                {
+                    SectionData.ExceptionMessage(ex, this, sender);
+                }
+            }
+            private void btn_data_Click(object sender, RoutedEventArgs e)
+            {
+                try
+                {
+                    paint();
+                    bdr_data.Background = Brushes.White;
+                    path_sectionData.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+                    grid_data.Visibility = Visibility.Visible;
+                    isEnabledButtons();
+                    btn_data.IsEnabled = false;
+                    btn_data.Opacity = 1;
+                }
+                catch (Exception ex)
+                {
+                    SectionData.ExceptionMessage(ex, this, sender);
+                }
+            }
+            private void btn_settings_Click(object sender, RoutedEventArgs e)
+            {
+                try
+                {
+                    paint();
+                    bdr_settings.Background = Brushes.White;
+                    path_settings.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+                    grid_settings.Visibility = Visibility.Visible;
+                    isEnabledButtons();
+                    btn_settings.IsEnabled = false;
+                    btn_settings.Opacity = 1;
+                }
+                catch (Exception ex)
+                {
+                    SectionData.ExceptionMessage(ex, this, sender);
+                }
+            }
+        private void Btn_alerts_Click(object sender, RoutedEventArgs e)
         {
-            paint();
-            bdr_purchase.Background = Brushes.White;
-            path_purchases.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-            grid_purchase.Visibility = Visibility.Visible;
-            isEnabledButtons();
-            btn_purchase.IsEnabled = false;
-            btn_purchase.Opacity = 1;
-        }
-        private void btn_account_Click(object sender, RoutedEventArgs e)
-        {
-            paint();
-            bdr_accounts.Background = Brushes.White;
-            path_accounting.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-            grid_account.Visibility = Visibility.Visible;
-            isEnabledButtons();
-            btn_account.IsEnabled = false;
-            btn_account.Opacity = 1;
-        }
-        private void btn_charts_Click(object sender, RoutedEventArgs e)
-        {
-            paint();
-            bdr_charts.Background = Brushes.White;
-            path_reports.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-            grid_charts.Visibility = Visibility.Visible;
-            isEnabledButtons();
-            btn_charts.IsEnabled = false;
-            btn_charts.Opacity = 1;
-        }
-        private void btn_data_Click(object sender, RoutedEventArgs e)
-        {
-            paint();
-            bdr_data.Background = Brushes.White;
-            path_sectionData.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-            grid_data.Visibility = Visibility.Visible;
-            isEnabledButtons();
-            btn_data.IsEnabled = false;
-            btn_data.Opacity = 1;
-        }
-        private void btn_settings_Click(object sender, RoutedEventArgs e)
-        {
-            paint();
-            bdr_settings.Background = Brushes.White;
-            path_settings.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-            grid_settings.Visibility = Visibility.Visible;
-            isEnabledButtons();
-            btn_settings.IsEnabled = false;
-            btn_settings.Opacity = 1;
+            try
+            {
+                paint();
+                bdr_alerts.Background = Brushes.White;
+                path_alerts.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+                grid_alerts.Visibility = Visibility.Visible;
+                isEnabledButtons();
+                btn_alerts.IsEnabled = false;
+                btn_alerts.Opacity = 1;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         public void paint()
-        {
-            bdrMain.RenderTransform = Animations.borderAnimation(50, bdrMain, true);
+            {
+                bdrMain.RenderTransform = Animations.borderAnimation(50, bdrMain, true);
 
-            bdr_accounts.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-            bdr_catalog.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-            bdr_charts.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-            bdr_data.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-            bdr_home.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-            bdr_purchase.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-            bdr_sale.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-            bdr_settings.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-            bdr_store.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+                bdr_accounts.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+                bdr_catalog.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+                bdr_charts.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+                bdr_data.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+                bdr_home.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+                bdr_purchase.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+                bdr_sale.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+                bdr_settings.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+                bdr_alerts.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+                bdr_store.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
 
-            path_home.Fill = Brushes.White;
-            path_catalog.Fill = Brushes.White;
-            path_storage.Fill = Brushes.White;
-            path_purchases.Fill = Brushes.White;
-            path_sales.Fill = Brushes.White;
-            path_accounting.Fill = Brushes.White;
-            path_reports.Fill = Brushes.White;
-            path_sectionData.Fill = Brushes.White;
+                path_home.Fill = Brushes.White;
+                path_catalog.Fill = Brushes.White;
+                path_storage.Fill = Brushes.White;
+                path_purchases.Fill = Brushes.White;
+                path_sales.Fill = Brushes.White;
+                path_accounting.Fill = Brushes.White;
+                path_reports.Fill = Brushes.White;
+                path_sectionData.Fill = Brushes.White;
             path_settings.Fill = Brushes.White;
+            path_alerts.Fill = Brushes.White;
 
             grid_bank.Visibility = Visibility.Hidden;
-            grid_catalog.Visibility = Visibility.Hidden;
-            grid_store.Visibility = Visibility.Hidden;
-            grid_purchase.Visibility = Visibility.Hidden;
-            grid_sales.Visibility = Visibility.Hidden;
-            grid_charts.Visibility = Visibility.Hidden;
-            grid_data.Visibility = Visibility.Hidden;
-            grid_settings.Visibility = Visibility.Hidden;
-            grid_account.Visibility = Visibility.Hidden;
-        }
-        #endregion
-        private void Grid_BeginningEdit(object sender, DataGridBeginningEditEventArgs e)
-        {
-            //// Have to do this in the unusual case where the border of the cell gets selected.
-            //// and causes a crash 'EditItem is not allowed'
-            e.Cancel = true;
-        }
+                grid_catalog.Visibility = Visibility.Hidden;
+                grid_store.Visibility = Visibility.Hidden;
+                grid_purchase.Visibility = Visibility.Hidden;
+                grid_sales.Visibility = Visibility.Hidden;
+                grid_charts.Visibility = Visibility.Hidden;
+                grid_data.Visibility = Visibility.Hidden;
+                grid_settings.Visibility = Visibility.Hidden;
+            grid_alerts.Visibility = Visibility.Hidden;
+                grid_account.Visibility = Visibility.Hidden;
+            }
+            #endregion
+            private void Grid_BeginningEdit(object sender, DataGridBeginningEditEventArgs e)
+            {
+                //// Have to do this in the unusual case where the border of the cell gets selected.
+                //// and causes a crash 'EditItem is not allowed'
+                try
+                {
+                    e.Cancel = true;
+                }
+                catch (Exception ex)
+                {
+                    SectionData.ExceptionMessage(ex, this, sender);
+                }
+            }
 
-    
- 
-
+       
     }
-}
+    }

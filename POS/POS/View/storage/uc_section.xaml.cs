@@ -110,7 +110,7 @@ namespace POS.View
 
             dg_section.Columns[0].Header = MainWindow.resourcemanager.GetString("trName");
             dg_section.Columns[1].Header = MainWindow.resourcemanager.GetString("trBranch/Store");
-            dg_section.Columns[2].Header = MainWindow.resourcemanager.GetString("trRecipientTooltip");
+            dg_section.Columns[2].Header = MainWindow.resourcemanager.GetString("trNote");
 
             txt_title.Text = MainWindow.resourcemanager.GetString("trSection");
             txt_active.Text = MainWindow.resourcemanager.GetString("trActive");

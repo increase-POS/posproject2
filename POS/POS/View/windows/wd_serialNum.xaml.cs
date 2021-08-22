@@ -25,7 +25,15 @@ namespace POS.View.windows
     {
         public wd_serialNum()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
+            }
+            
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex,this);
+            }
         }
         BrushConverter bc = new BrushConverter();
         public List<string> serialList { get; set; }
@@ -41,35 +49,51 @@ namespace POS.View.windows
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            SectionData.StartAwait(grid_mainGrid);
-
-            #region translate
-
-            if (MainWindow.lang.Equals("en"))
+            try
             {
-                MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
-                grid_serialNum.FlowDirection = FlowDirection.LeftToRight;
+                if (sender != null)
+                    SectionData.StartAwait(grid_serialNum);
 
+                #region translate
+
+                if (MainWindow.lang.Equals("en"))
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                    grid_serialNum.FlowDirection = FlowDirection.LeftToRight;
+
+                }
+                else
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                    grid_serialNum.FlowDirection = FlowDirection.RightToLeft;
+
+                }
+                translate();
+                #endregion
+
+                fillSerialList();
+
+                if (serialList == null)
+                    serialList = new List<string>();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_serialNum);
             }
-            else
+            catch (Exception ex)
             {
-                MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
-                grid_serialNum.FlowDirection = FlowDirection.RightToLeft;
-
+                if (sender != null)
+                    SectionData.EndAwait(grid_serialNum);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-            fillSerialList();
-            translate();
-            #endregion
-            if(serialList == null)
-            serialList = new List<string>();
-            SectionData.EndAwait(grid_mainGrid,this);
         }
 
         private void translate()
         {
-
-
-
+            txt_title.Text = MainWindow.resourcemanager.GetString("trSerialNum");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_serialNum, MainWindow.resourcemanager.GetString("trSerialNumHint"));
+            tt_clear.Content = MainWindow.resourcemanager.GetString("trClear");
+            btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
+            btn_skip.Content = MainWindow.resourcemanager.GetString("trSkip");
 
         }
         private void fillSerialList()
@@ -86,34 +110,52 @@ namespace POS.View.windows
         }
         private void HandleKeyPress(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Return)
+            try
             {
-               //Btn_save_Click(null, null);
+                if (e.Key == Key.Return)
+                {
+                    //Btn_save_Click(null, null);
+                }
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
         private void Btn_save_Click(object sender, RoutedEventArgs e)
         {
-            if (_serialCount <= itemCount)
+            try
             {
-                if (lst_serials.Items.Count > 0)
+                if (sender != null)
+                    SectionData.StartAwait(grid_serialNum);
+                if (_serialCount <= itemCount)
                 {
-                    serialList = new List<string>();
-                    for (int i = 0; i < lst_serials.Items.Count; i++)
-                        serialList.Add(lst_serials.Items[i].ToString());
+                    if (lst_serials.Items.Count > 0)
+                    {
+                        serialList = new List<string>();
+                        for (int i = 0; i < lst_serials.Items.Count; i++)
+                            serialList.Add(lst_serials.Items[i].ToString());
 
-                    _serialCount = 0;
-                    valid = true;
-                    DialogResult = true;
-                    this.Close();
+                        _serialCount = 0;
+                        valid = true;
+                        DialogResult = true;
+                        this.Close();
+                    }
+                    else
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trShouldInputOneSerialNumberAtLeast"), animation: ToasterAnimation.FadeIn);
                 }
                 else
-                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trShouldInputOneSerialNumberAtLeast"), animation: ToasterAnimation.FadeIn);
-
-
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorSerialMoreItemCountToolTip"), animation: ToasterAnimation.FadeIn);
+                if (sender != null)
+                    SectionData.EndAwait(grid_serialNum);
             }
-            else
-                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorSerialMoreItemCountToolTip"), animation: ToasterAnimation.FadeIn);
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_serialNum);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -126,15 +168,14 @@ namespace POS.View.windows
 
         }
 
-     
-     
-       
-    
-
         private void Btn_skip_Click(object sender, RoutedEventArgs e)
         {
-            valid = true;
-            //serialList.Clear();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_serialNum);
+
+                valid = true;
             if (lst_serials.Items.Count > 0)
             {
                 serialList = new List<string>();
@@ -145,6 +186,16 @@ namespace POS.View.windows
             }
             DialogResult = true;
             this.Close();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_serialNum);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_serialNum);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void space_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -154,33 +205,54 @@ namespace POS.View.windows
 
         private void Tb_serialNum_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Return)
+            try
             {
-                string s = tb_serialNum.Text;
-                if (!s.Equals(""))
-                {
-                    int found = lst_serials.Items.IndexOf(s);
-                    if (_serialCount == itemCount)
-                    {
-                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trWarningItemCountIs:") + " " + itemCount, animation: ToasterAnimation.FadeIn);
-                    }
-                    else if (found == -1)
-                    {
-                        lst_serials.Items.Add(tb_serialNum.Text);
-                        _serialCount++;
-                    }
-                    else
-                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trWarningSerialExists") , animation: ToasterAnimation.FadeIn);
+                if (sender != null)
+                    SectionData.StartAwait(grid_serialNum);
 
+                if (e.Key == Key.Return)
+                {
+                    string s = tb_serialNum.Text;
+                    if (!s.Equals(""))
+                    {
+                        int found = lst_serials.Items.IndexOf(s);
+                        if (_serialCount == itemCount)
+                        {
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trWarningItemCountIs:") + " " + itemCount, animation: ToasterAnimation.FadeIn);
+                        }
+                        else if (found == -1)
+                        {
+                            lst_serials.Items.Add(tb_serialNum.Text);
+                            _serialCount++;
+                        }
+                        else
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trWarningSerialExists") , animation: ToasterAnimation.FadeIn);
+
+                    }
+                    tb_serialNum.Clear();
                 }
-                tb_serialNum.Clear();
+                if (sender != null)
+                    SectionData.EndAwait(grid_serialNum);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_serialNum);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
         private void Btn_clearSerial_Click(object sender, RoutedEventArgs e)
         {
-            _serialCount = 0;
-            lst_serials.Items.Clear();
+            try
+            {
+                _serialCount = 0;
+                lst_serials.Items.Clear();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
     }
 }

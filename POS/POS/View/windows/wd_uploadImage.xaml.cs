@@ -44,30 +44,49 @@ namespace POS.View.windows
         Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
         public wd_uploadImage()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
-            SectionData.StartAwait(grid_mainGrid);
+                try
+                {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
-            #region translate
-            if (MainWindow.lang.Equals("en"))
+
+                #region translate
+                if (MainWindow.lang.Equals("en"))
             {
                 MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
-                grid_imageUpload.FlowDirection = System.Windows.FlowDirection.LeftToRight;
+                    grid_main.FlowDirection = System.Windows.FlowDirection.LeftToRight;
             }
             else
             {
                 MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
-                grid_imageUpload.FlowDirection = System.Windows.FlowDirection.RightToLeft;
+                    grid_main.FlowDirection = System.Windows.FlowDirection.RightToLeft;
             }
             translate();
             #endregion
 
             await refreshImageList();
 
-            SectionData.EndAwait(grid_mainGrid,this);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void translate()
@@ -90,23 +109,50 @@ namespace POS.View.windows
 
         private void Tb_name_TextChanged(object sender, TextChangedEventArgs e)
         {
-            SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
-        }
+                    try
+                    {
+                        SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
+                }
+                catch (Exception ex)
+                {
+                    SectionData.ExceptionMessage(ex, this, sender);
+                }
+            }
 
         private void Tb_name_LostFocus(object sender, RoutedEventArgs e)
         {
-            SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
-        }
+                        try
+                        {
+                            SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
+                }
+                catch (Exception ex)
+                {
+                    SectionData.ExceptionMessage(ex, this, sender);
+                }
+            }
         private void Img_upload_Click(object sender, RoutedEventArgs e)
         {
+                            try
+                            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
-            //select image
-            openFileDialog.Filter = "Images|*.png;*.jpg;*.bmp;*.jpeg;*.jfif";
+                //select image
+                openFileDialog.Filter = "Images|*.png;*.jpg;*.bmp;*.jpeg;*.jfif";
 
             if (openFileDialog.ShowDialog() == true)
             {
                 brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
                 img_upload.Background = brush;
+            }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
         private void validateDocValues()
@@ -115,7 +161,12 @@ namespace POS.View.windows
         }
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {//add
-            validateDocValues();
+                                try
+                                {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                validateDocValues();
             if (!tb_name.Text.Equals(""))
             {
                 docId = 0;
@@ -141,11 +192,25 @@ namespace POS.View.windows
                 await refreshImageList();
                 clear();
             }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {//delete
-            if (docImgModel.id != 0)
+                                    try
+                                    {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                if (docImgModel.id != 0)
             {
                 Boolean res = await docImgModel.delete(docId);
 
@@ -166,6 +231,15 @@ namespace POS.View.windows
                 await refreshImageList();
                 clear();
             }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         private void clear()
         {
@@ -179,8 +253,15 @@ namespace POS.View.windows
         }
         private void Btn_colse_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
-        }
+                                        try
+                                        {
+                                            this.Close();
+                }
+                catch (Exception ex)
+                {
+                    SectionData.ExceptionMessage(ex, this, sender);
+                }
+            }
 
         private async Task refreshImageList()
         {
@@ -192,22 +273,7 @@ namespace POS.View.windows
         }
         private async void getImg(string imageName)
         {
-            //byte[] imageBuffer = await docImgModel.downloadImage(imageName); // read this as BLOB from your DB
-
-            //var bitmapImage = new BitmapImage();
-            //if (imageBuffer != null)
-            //{
-            //    using (var memoryStream = new MemoryStream(imageBuffer))
-            //    {
-            //        bitmapImage.BeginInit();
-            //        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-            //        bitmapImage.StreamSource = memoryStream;
-            //        bitmapImage.EndInit();
-            //    }
-
-            //    img_upload.Background = new ImageBrush(bitmapImage);
-            //}
-
+            
             try
             {
                 if (docImgModel.image.Equals(""))
@@ -246,7 +312,12 @@ namespace POS.View.windows
         // display image in IMG_customer 
         private void Lst_images_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (lst_images.SelectedIndex != -1)
+                                            try
+                                            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                if (lst_images.SelectedIndex != -1)
             {
                 docId = (int)lst_images.SelectedValue;
                 docImgModel = imageList.ToList().Find(c => c.id == docId);
@@ -255,11 +326,23 @@ namespace POS.View.windows
                 string imageName = docImgModel.image;
                 getImg(imageName);
             }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         private void Btn_scan_Click(object sender, RoutedEventArgs e)
         {
             try
             {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
                 CommonDialogClass commonDialogClass = new CommonDialogClass();
                 Device scannerDevice = commonDialogClass.ShowSelectDevice(WiaDeviceType.ScannerDeviceType, false, false);
                 if (scannerDevice != null)
@@ -296,9 +379,15 @@ namespace POS.View.windows
                         openFileDialog.FileName = tmpPath;
                     }
                 }
-            }
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            
+        }
             catch (System.Runtime.InteropServices.COMException)
             {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
                 System.Windows.MessageBox.Show("Problem with scanning device. Please ensure that the scanner is properly connected and switched on", "Inweon Grain Management System");
             }
 
@@ -341,12 +430,24 @@ namespace POS.View.windows
 
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {
+                                                try
+                                                {
 
-        }
+                }
+                catch (Exception ex)
+                {
+                    SectionData.ExceptionMessage(ex, this, sender);
+                }
+            }
 
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
         {//update
-            validateDocValues();
+                                                    try
+                                                    {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                validateDocValues();
             if (!tb_name.Text.Equals(""))
             {
                 docImgModel.tableName = tableName;
@@ -370,6 +471,15 @@ namespace POS.View.windows
                 //refresh image list
                 await refreshImageList();
             }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
@@ -385,8 +495,12 @@ namespace POS.View.windows
         }
         private  void HandleKeyPress(object sender, System.Windows.Input.KeyEventArgs e)
         {
+                                                        try
+                                                        {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
-            if (e.KeyboardDevice.IsKeyDown(Key.LeftCtrl) || e.KeyboardDevice.IsKeyDown(Key.RightCtrl))
+                if (e.KeyboardDevice.IsKeyDown(Key.LeftCtrl) || e.KeyboardDevice.IsKeyDown(Key.RightCtrl))
             {
                 switch (e.Key)
                 {
@@ -402,12 +516,28 @@ namespace POS.View.windows
                         break;
                 }
             }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Btn_print_Click(object sender, RoutedEventArgs e)
         {
+                                                            try
+                                                            {
 
-        }
+                }
+                catch (Exception ex)
+                {
+                    SectionData.ExceptionMessage(ex, this, sender);
+                }
+            }
 
        
     }

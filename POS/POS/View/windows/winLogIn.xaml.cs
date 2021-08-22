@@ -27,12 +27,19 @@ namespace POS.View.windows
     {
         public winLogIn()
         {
-            InitializeComponent();
-           
+            try
+            {
+                InitializeComponent();
+
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         public static ResourceManager resourcemanager;
-        public static string lang ;
+        public static string lang;
 
         User userModel = new User();
         User user = new User();
@@ -43,60 +50,89 @@ namespace POS.View.windows
         UsersLogs userLog = new UsersLogs();
 
         public BrushConverter bc = new BrushConverter();
-        private void Window_MouseDown(object sender, MouseButtonEventArgs e) { try { DragMove(); } catch (Exception) { } }
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                DragMove();
+            }
+            catch (Exception)
+            { }
+        }
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
-            Application.Current.Shutdown();
+            try
+            {
+                Application.Current.Shutdown();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         UserSetValues usLanguage = new UserSetValues();
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
-            bdrLogIn.RenderTransform = Animations.borderAnimation(-100, bdrLogIn, true);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
-            if (Properties.Settings.Default.userName != string.Empty)
-            {
-                txtUserName.Text = Properties.Settings.Default.userName;
-                txtPassword.Password = Properties.Settings.Default.password;
-                lang = Properties.Settings.Default.Lang;
-                cbxRemmemberMe.IsChecked = true;
-               
-            }
-            else
-            {
-                txtUserName.Clear();
-                txtPassword.Clear();
-                lang = "en";
-                cbxRemmemberMe.IsChecked = false;
-            }
+                bdrLogIn.RenderTransform = Animations.borderAnimation(-100, bdrLogIn, true);
 
-            if (lang.Equals("en"))
-            {
-                resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
-                grid_logs.FlowDirection = FlowDirection.LeftToRight;
-                bdr_imageAr.Visibility = Visibility.Hidden;
-                bdr_image.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
-                grid_logs.FlowDirection = FlowDirection.RightToLeft;
-                bdr_imageAr.Visibility = Visibility.Visible;
-                bdr_image.Visibility = Visibility.Hidden;
-               
-            }
-          
-            if (txtUserName.Text.Equals(""))
-                Keyboard.Focus(txtUserName);
-            else
-                Keyboard.Focus(txtPassword);
+                if (Properties.Settings.Default.userName != string.Empty)
+                {
+                    txtUserName.Text = Properties.Settings.Default.userName;
+                    txtPassword.Password = Properties.Settings.Default.password;
+                    lang = Properties.Settings.Default.Lang;
+                    cbxRemmemberMe.IsChecked = true;
 
-            translate();
-            #region Arabic Number
-            CultureInfo ci = CultureInfo.CreateSpecificCulture(Thread.CurrentThread.CurrentCulture.Name);
-            ci.NumberFormat.DigitSubstitution = DigitShapes.Context;
-            Thread.CurrentThread.CurrentCulture = ci;
-            #endregion
+                }
+                else
+                {
+                    txtUserName.Clear();
+                    txtPassword.Clear();
+                    lang = "en";
+                    cbxRemmemberMe.IsChecked = false;
+                }
+
+                if (lang.Equals("en"))
+                {
+                    resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                    grid_main.FlowDirection = FlowDirection.LeftToRight;
+                    bdr_imageAr.Visibility = Visibility.Hidden;
+                    bdr_image.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                    grid_main.FlowDirection = FlowDirection.RightToLeft;
+                    bdr_imageAr.Visibility = Visibility.Visible;
+                    bdr_image.Visibility = Visibility.Hidden;
+
+                }
+
+                if (txtUserName.Text.Equals(""))
+                    Keyboard.Focus(txtUserName);
+                else
+                    Keyboard.Focus(txtPassword);
+
+                translate();
+                #region Arabic Number
+                CultureInfo ci = CultureInfo.CreateSpecificCulture(Thread.CurrentThread.CurrentCulture.Name);
+                ci.NumberFormat.DigitSubstitution = DigitShapes.Context;
+                Thread.CurrentThread.CurrentCulture = ci;
+                #endregion
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private async Task<string> getUserLanguage(int userId)
@@ -146,142 +182,158 @@ namespace POS.View.windows
             txt_close.Text = resourcemanager.GetString("trClose");
         }
         bool logInProcessing = true;
-        void awaitSaveBtn(bool isAwait)
-        {
-            if (isAwait == true)
-            {
-                this.prg_awaitRing.IsActive = true;
-                this.grid_logs.IsEnabled = false;
-                this.grid_logs.Opacity = 0.6;
+        //void awaitSaveBtn(bool isAwait)
+        //{
+        //    if (isAwait == true)
+        //    {
+        //        this.prg_awaitRing.IsActive = true;
+        //        this.grid_logs.IsEnabled = false;
+        //        this.grid_logs.Opacity = 0.6;
 
-                //btnLogIn.IsEnabled = false;
-                //wait_saveBtn.Visibility = Visibility.Visible;
-                //wait_saveBtn.IsIndeterminate = true;
-            }
-            else
-            {
+        //        //btnLogIn.IsEnabled = false;
+        //        //wait_saveBtn.Visibility = Visibility.Visible;
+        //        //wait_saveBtn.IsIndeterminate = true;
+        //    }
+        //    else
+        //    {
 
-                this.prg_awaitRing.IsActive = false;
-                this.grid_logs.IsEnabled = true;
-                this.grid_logs.Opacity = 1;
+        //        this.prg_awaitRing.IsActive = false;
+        //        this.grid_logs.IsEnabled = true;
+        //        this.grid_logs.Opacity = 1;
 
-                //btnLogIn.IsEnabled = true;
-                //wait_saveBtn.Visibility = Visibility.Collapsed;
-                //wait_saveBtn.IsIndeterminate = false;
-            }
+        //        //btnLogIn.IsEnabled = true;
+        //        //wait_saveBtn.Visibility = Visibility.Collapsed;
+        //        //wait_saveBtn.IsIndeterminate = false;
+        //    }
 
 
-        }
+        //}
         private async void btnLogIn_Click(object sender, RoutedEventArgs e)
         {//login
-
-            if (logInProcessing)
+            try
             {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
-
-                logInProcessing = false;
-                awaitSaveBtn(true);
-                clearValidate(txtUserName, p_errorUserName);
-                clearPasswordValidate(txtPassword, p_errorPassword);
-                string password = Md5Encription.MD5Hash("Inc-m" + txtPassword.Password);
-                string userName = txtUserName.Text;
-                //check if user is exist
-                users = await userModel.GetUsersActive();
-                if (users.Any(i => i.username.Equals(userName)))
+                if (logInProcessing)
                 {
-                    //get user info
-                    user = users.Where(i => i.username == txtUserName.Text).FirstOrDefault<User>();
-                    if (user.password.Equals(password))
+
+
+                    logInProcessing = false;
+                    //awaitSaveBtn(true);
+                    clearValidate(txtUserName, p_errorUserName);
+                    clearPasswordValidate(txtPassword, p_errorPassword);
+                    string password = Md5Encription.MD5Hash("Inc-m" + txtPassword.Password);
+                    string userName = txtUserName.Text;
+                    //check if user is exist
+                    users = await userModel.GetUsersActive();
+                    if (users.Any(i => i.username.Equals(userName)))
                     {
-                        //send user info to main window
-                        MainWindow.userID = user.userId;
-                        MainWindow.userLogin = user;
-
-                        MainWindow.lang = await getUserLanguage(user.userId);
-                        lang = MainWindow.lang;
-                        //make user online
-                        user.isOnline = 1;
-                        //  user.isActive = 1;
-
-                        //checkother
-                        string str1 = await userLogsModel.checkOtherUser((int)MainWindow.userID);
-
-                        string s = await userModel.saveUser(user);
-
-                        //create lognin record
-                        UsersLogs userLog = new UsersLogs();
-                        userLog.posId = MainWindow.posID;
-                        Pos posmodel = new Pos();
-                        posmodel = await posmodel.getPosById((int)MainWindow.posID);
-                        MainWindow.branchID = posmodel.branchId;
-                        userLog.userId = user.userId;
-                        string str = await userLogsModel.Save(userLog);
-
-                        if (!str.Equals("0"))
-                            MainWindow.userLogInID = int.Parse(str);
-
-                        //remember me
-                        if (cbxRemmemberMe.IsChecked.Value)
+                        //get user info
+                        user = users.Where(i => i.username == txtUserName.Text).FirstOrDefault<User>();
+                        if (user.password.Equals(password))
                         {
-                            Properties.Settings.Default.userName = txtUserName.Text;
-                            Properties.Settings.Default.password = txtPassword.Password;
-                            Properties.Settings.Default.Lang = lang;
+                            //send user info to main window
+                            MainWindow.userID = user.userId;
+                            MainWindow.userLogin = user;
+
+                            MainWindow.lang = await getUserLanguage(user.userId);
+                            lang = MainWindow.lang;
+                            //make user online
+                            user.isOnline = 1;
+                            //  user.isActive = 1;
+
+                            //checkother
+                            string str1 = await userLogsModel.checkOtherUser((int)MainWindow.userID);
+
+                            string s = await userModel.saveUser(user);
+
+                            //create lognin record
+                            UsersLogs userLog = new UsersLogs();
+                            userLog.posId = MainWindow.posID;
+                            Pos posmodel = new Pos();
+                            posmodel = await posmodel.getPosById((int)MainWindow.posID);
+                            MainWindow.branchID = posmodel.branchId;
+                            userLog.userId = user.userId;
+                            string str = await userLogsModel.Save(userLog);
+
+                            if (!str.Equals("0"))
+                                MainWindow.userLogInID = int.Parse(str);
+
+                            //remember me
+                            if (cbxRemmemberMe.IsChecked.Value)
+                            {
+                                Properties.Settings.Default.userName = txtUserName.Text;
+                                Properties.Settings.Default.password = txtPassword.Password;
+                                Properties.Settings.Default.Lang = lang;
+                            }
+                            else
+                            {
+                                Properties.Settings.Default.userName = "";
+                                Properties.Settings.Default.password = "";
+                                Properties.Settings.Default.Lang = "";
+                            }
+                            Properties.Settings.Default.Save();
+                            //wd_selectPos sPos = new wd_selectPos();
+                            //Window.GetWindow(this).Opacity = 0.2;
+
+                            //sPos.ShowDialog();
+
+
+                            //Window.GetWindow(this).Opacity = 1;
+                            //open main window and close this window
+                            MainWindow main = new MainWindow();
+                            main.Show();
+                            this.Close();
                         }
                         else
-                        {
-                            Properties.Settings.Default.userName = "";
-                            Properties.Settings.Default.password = "";
-                            Properties.Settings.Default.Lang = "";
-                        }
-                        Properties.Settings.Default.Save();
-                        //wd_selectPos sPos = new wd_selectPos();
-                        //Window.GetWindow(this).Opacity = 0.2;
-
-                        //sPos.ShowDialog();
-
-
-                        //Window.GetWindow(this).Opacity = 1;
-                        //open main window and close this window
-                        MainWindow main = new MainWindow();
-                        main.Show();
-                        this.Close();
+                            showPasswordValidate(txtPassword, p_errorPassword, tt_errorPassword, "trWrongPassword");
                     }
                     else
-                        showPasswordValidate(txtPassword, p_errorPassword, tt_errorPassword, "trWrongPassword");
+                        showTextBoxValidate(txtUserName, p_errorUserName, tt_errorUserName, "trUserNotFound");
+                    //awaitSaveBtn(false);
+                    logInProcessing = true;
                 }
-                else
-                    showTextBoxValidate(txtUserName, p_errorUserName, tt_errorUserName, "trUserNotFound");
-                awaitSaveBtn(false);
-                logInProcessing = true;
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
-
-
-
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         static SettingCls setModel = new SettingCls();
         static SetValues valueModel = new SetValues();
         static UserSetValues uSetValueModel = new UserSetValues();
         static SettingCls set = new SettingCls();
         static List<SetValues> pos = new List<SetValues>();
-        int  settingsPosId = 0;
-      
-        private  void HandleKeyPress(object sender, KeyEventArgs e)
+        int settingsPosId = 0;
+
+        private void HandleKeyPress(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Return)
+            try
             {
-                btnLogIn_Click(null, null);
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                if (e.Key == Key.Return)
+                {
+                    btnLogIn_Click(null, null);
+                }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
-        private void CbxRemmemberMe_Checked(object sender, RoutedEventArgs e)
-        {
-           
-        }
 
-        private void CbxRemmemberMe_Unchecked(object sender, RoutedEventArgs e)
-        {
-           
-        }
 
         public void showTextBoxValidate(TextBox tb, Path p_error, ToolTip tt_error, string tr)
         {
@@ -311,35 +363,77 @@ namespace POS.View.windows
 
         private void TxtUserName_TextChanged(object sender, TextChangedEventArgs e)
         {
-            clearValidate(txtUserName , p_errorUserName);
+            try
+            {
+                clearValidate(txtUserName, p_errorUserName);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void TxtUserName_LostFocus(object sender, RoutedEventArgs e)
         {
-            clearValidate(txtUserName, p_errorUserName);
+            try
+            {
+                clearValidate(txtUserName, p_errorUserName);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void TxtPassword_LostFocus(object sender, RoutedEventArgs e)
         {
-            clearPasswordValidate(txtPassword , p_errorPassword);
+            try
+            {
+                clearPasswordValidate(txtPassword, p_errorPassword);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void TxtPassword_PasswordChanged(object sender, RoutedEventArgs e)
         {
-            clearPasswordValidate(txtPassword, p_errorPassword);
+            try
+            {
+                clearPasswordValidate(txtPassword, p_errorPassword);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void P_showPassword_MouseEnter(object sender, MouseEventArgs e)
         {
-            txtShowPassword.Text = txtPassword.Password;
-            txtShowPassword.Visibility = Visibility.Visible;
-            txtPassword.Visibility = Visibility.Collapsed;
+            try
+            {
+                txtShowPassword.Text = txtPassword.Password;
+                txtShowPassword.Visibility = Visibility.Visible;
+                txtPassword.Visibility = Visibility.Collapsed;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void P_showPassword_MouseLeave(object sender, MouseEventArgs e)
         {
-            txtShowPassword.Visibility = Visibility.Collapsed;
-            txtPassword.Visibility = Visibility.Visible;
+            try
+            {
+                txtShowPassword.Visibility = Visibility.Collapsed;
+                txtPassword.Visibility = Visibility.Visible;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
     }
 }

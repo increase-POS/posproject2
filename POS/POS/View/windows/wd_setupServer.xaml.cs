@@ -25,35 +25,54 @@ namespace POS.View.windows
     {
         public wd_setupServer()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
        
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
-            SectionData.StartAwait(grid_mainGrid);
+                try
+                {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
-            #region translate
-            if (MainWindow.lang.Equals("en"))
+                #region translate
+                if (MainWindow.lang.Equals("en"))
             {
                 MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
-                grid_ucCompanyInfo.FlowDirection = FlowDirection.LeftToRight;
+                    grid_main.FlowDirection = FlowDirection.LeftToRight;
             }
             else
             {
                 MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
-                grid_ucCompanyInfo.FlowDirection = FlowDirection.RightToLeft;
+                    grid_main.FlowDirection = FlowDirection.RightToLeft;
             }
             translate();
-            #endregion
+                #endregion
 
-           
-           
-            SectionData.EndAwait(grid_mainGrid, this);
+
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+
         }
         private void translate()
         {
-            txt_title.Text = MainWindow.resourcemanager.GetString("trInstallationSettings");
+            //txt_title.Text = MainWindow.resourcemanager.GetString("trInstallationSettings");
 
         }
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
@@ -69,54 +88,118 @@ namespace POS.View.windows
         }
         private void Tb_validateEmptyLostFocus(object sender, RoutedEventArgs e)
         {
-            string name = sender.GetType().Name;
+                    try
+                    {
+                        string name = sender.GetType().Name;
             validateEmpty(name, sender);
-        }
+                }
+                catch (Exception ex)
+                {
+                    SectionData.ExceptionMessage(ex, this, sender);
+                }
+            }
         private void Tb_validateEmptyTextChange(object sender, TextChangedEventArgs e)
         {
-            string name = sender.GetType().Name;
+                        try
+                        {
+                            string name = sender.GetType().Name;
             validateEmpty(name, sender);
-        }
+                }
+                catch (Exception ex)
+                {
+                    SectionData.ExceptionMessage(ex, this, sender);
+                }
+            }
         private void validateEmpty(string name, object sender)
         {
-            if (name == "TextBox")
+                            try
+                            {
+                                if (name == "TextBox")
             {
                 //if ((sender as TextBox).Name == "tb_name")
                 //    SectionData.validateEmptyTextBox((TextBox)sender, p_errorName, tt_errorName, "trEmptyNameToolTip");
                
             }
-        }
+                }
+                catch (Exception ex)
+                {
+                    SectionData.ExceptionMessage(ex, this, sender);
+                }
+            }
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
-            //only int
-            //Regex regex = new Regex("[^0-9]+");
-            //e.Handled = regex.IsMatch(e.Text);
+                                try
+                                {   //only int
+                                    //Regex regex = new Regex("[^0-9]+");
+                                    //e.Handled = regex.IsMatch(e.Text);
 
-            //decimal
-            var regex = new Regex(@"^[0-9]*(?:\.[0-9]*)?$");
+                                    //decimal
+                                    var regex = new Regex(@"^[0-9]*(?:\.[0-9]*)?$");
             if (regex.IsMatch(e.Text) && !(e.Text == "." && ((TextBox)sender).Text.Contains(e.Text)))
                 e.Handled = false;
 
             else
                 e.Handled = true;
-        }
+                }
+                catch (Exception ex)
+                {
+                    SectionData.ExceptionMessage(ex, this, sender);
+                }
+            }
         private void Btn_colse_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
-        }
+                                    try
+                                    {
+                                        this.Close();
+                }
+                catch (Exception ex)
+                {
+                    SectionData.ExceptionMessage(ex, this, sender);
+                }
+            }
         private void HandleKeyPress(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Return)
+                                        try
+                                        {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                if (e.Key == Key.Return)
             {
                 Btn_save_Click(null, null);
             }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+
         }
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {//save
-            Window.GetWindow(this).Opacity = 0.2;
+                                            try
+                                            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                Window.GetWindow(this).Opacity = 0.2;
             wd_selectPos w = new wd_selectPos();
             w.ShowDialog();
             Window.GetWindow(this).Opacity = 1;
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
 
         }
 

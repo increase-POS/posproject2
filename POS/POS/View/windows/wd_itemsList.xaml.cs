@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -22,7 +24,14 @@ namespace POS.View.windows
     {
         public wd_itemsList()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex,this);
+            }
         }
         public bool isActive;
         Item item = new Item();
@@ -37,33 +46,75 @@ namespace POS.View.windows
         /// <param name="e"></param>
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            SectionData.StartAwait(grid_mainGrid);
-            allItems = (await itemModel.GetAllItems()).Where(x => x.isActive == 1).ToList();
-
-            foreach (var item in selectedItems)
+            try
             {
-                allItems.Remove(item);
+                if (sender != null)
+                    SectionData.StartAwait(grid_ucItemsList);
 
+                #region translate
+                if (MainWindow.lang.Equals("en"))
+                { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly()); grid_ucItemsList.FlowDirection = FlowDirection.LeftToRight; }
+                else
+                { MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly()); grid_ucItemsList.FlowDirection = FlowDirection.RightToLeft; }
+
+                translat();
+                #endregion
+
+                allItems = (await itemModel.GetAllItems()).Where(x => x.isActive == 1).ToList();
+
+                foreach (var item in selectedItems)
+                {
+                    allItems.Remove(item);
+
+                }
+                selectedItems.AddRange(selectedItems);
+
+                lst_allItems.ItemsSource = allItems;
+                lst_selectedItems.ItemsSource = selectedItems;
+
+                lst_allItems.SelectedValuePath = "itemId";
+                lst_selectedItems.SelectedValuePath = "itemId";
+                lst_allItems.DisplayMemberPath = "name";
+                lst_selectedItems.DisplayMemberPath = "name";
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucItemsList);
             }
-            selectedItems.AddRange(selectedItems);
-
-
-            lst_allItems.ItemsSource = allItems;
-            lst_selectedItems.ItemsSource = selectedItems;
-
-
-
-            lst_allItems.SelectedValuePath = "itemId";
-            lst_selectedItems.SelectedValuePath = "itemId";
-            lst_allItems.DisplayMemberPath = "name";
-            lst_selectedItems.DisplayMemberPath = "name";
-            SectionData.EndAwait(grid_mainGrid,this);
-        }
-        private void HandleKeyPress(object sender, KeyEventArgs e)
-        { 
-            if (e.Key == Key.Return)
+            catch (Exception ex)
             {
-                Btn_save_Click(null, null);
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucItemsList);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
+
+        private void translat()
+        {
+            txt_items.Text = MainWindow.resourcemanager.GetString("trItems");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(txb_searchitems, MainWindow.resourcemanager.GetString("trSearchHint"));
+            txt_Items.Text = MainWindow.resourcemanager.GetString("trItems");
+            txt_selectedItems.Text = MainWindow.resourcemanager.GetString("trSelectedItems");
+
+            tt_selectAllItem.Content = MainWindow.resourcemanager.GetString("trSelectAllItems");
+            tt_unselectAllItem.Content = MainWindow.resourcemanager.GetString("trUnSelectAllItems");
+            tt_selectItem.Content = MainWindow.resourcemanager.GetString("trSelectOneItem");
+            tt_unselectItem.Content = MainWindow.resourcemanager.GetString("trUnSelectOneItem");
+
+            btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
+        }
+
+        private void HandleKeyPress(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.Key == Key.Return)
+                {
+                    Btn_save_Click(null, null);
+                }
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
         private void Btn_save_Click(object sender, RoutedEventArgs e)
@@ -78,75 +129,116 @@ namespace POS.View.windows
         }
         private void Lst_allItems_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-
-            Btn_selectedItem_Click(null, null);
-
+            try
+            { 
+                Btn_selectedItem_Click(null, null);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         private void Lst_selectedItems_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            Btn_unSelectedItem_Click(null, null);
-
+            try
+            {
+                Btn_unSelectedItem_Click(null, null);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         private async void Btn_selectedAll_Click(object sender, RoutedEventArgs e)
         {
-            selectedItems = (await itemModel.GetAllItems()).Where(x => x.isActive == 1).ToList() ;
-            allItems.Clear();
-            lst_allItems.ItemsSource = allItems;
-            lst_selectedItems.ItemsSource = selectedItems;
-            lst_allItems.Items.Refresh();
-            lst_selectedItems.Items.Refresh();
-        }
-        private void Btn_selectedItem_Click(object sender, RoutedEventArgs e)
-        {
-            item = lst_allItems.SelectedItem as Item;
-            if (item != null)
+            try
             {
-                allItems.Remove(item);
-                selectedItems.Add(item);
-
+                selectedItems = (await itemModel.GetAllItems()).Where(x => x.isActive == 1).ToList();
+                allItems.Clear();
                 lst_allItems.ItemsSource = allItems;
                 lst_selectedItems.ItemsSource = selectedItems;
-
                 lst_allItems.Items.Refresh();
                 lst_selectedItems.Items.Refresh();
             }
-           
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
+        private void Btn_selectedItem_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                item = lst_allItems.SelectedItem as Item;
+                if (item != null)
+                {
+                    allItems.Remove(item);
+                    selectedItems.Add(item);
+
+                    lst_allItems.ItemsSource = allItems;
+                    lst_selectedItems.ItemsSource = selectedItems;
+
+                    lst_allItems.Items.Refresh();
+                    lst_selectedItems.Items.Refresh();
+                }
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+
         }
         private void Btn_unSelectedItem_Click(object sender, RoutedEventArgs e)
         {
+            try
+            { 
+                item = lst_selectedItems.SelectedItem as Item;
+                if (item != null)
+                {
+                    selectedItems.Remove(item);
+                    allItems.Add(item);
 
-            item = lst_selectedItems.SelectedItem as Item;
-            if (item != null)
+                    lst_allItems.ItemsSource = allItems;
+                    lst_allItems.Items.Refresh();
+                    lst_selectedItems.ItemsSource = selectedItems;
+                    lst_selectedItems.Items.Refresh();
+                }
+            }
+            catch (Exception ex)
             {
-                selectedItems.Remove(item);
-                allItems.Add(item);
-
-                lst_allItems.ItemsSource = allItems;
-                lst_allItems.Items.Refresh();
-                lst_selectedItems.ItemsSource = selectedItems;
-                lst_selectedItems.Items.Refresh();
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
         private async void Btn_unSelectedAll_Click(object sender, RoutedEventArgs e)
         {
-            allItems = (await itemModel.GetAllItems()).Where(x => x.isActive == 1).ToList();
-            selectedItems.Clear();
-            lst_allItems.ItemsSource = allItems;
-            lst_allItems.Items.Refresh();
-            lst_selectedItems.ItemsSource = selectedItems;
-            lst_selectedItems.Items.Refresh();
-
+            try
+            {
+                allItems = (await itemModel.GetAllItems()).Where(x => x.isActive == 1).ToList();
+                selectedItems.Clear();
+                lst_allItems.ItemsSource = allItems;
+                lst_allItems.Items.Refresh();
+                lst_selectedItems.ItemsSource = selectedItems;
+                lst_selectedItems.Items.Refresh();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         private void Txb_searchitems_TextChanged(object sender, TextChangedEventArgs e)
         {
-
-            //if (items is null)
-            //    await RefrishItems();
-            txtItemSearch = txb_searchitems.Text.ToLower();
-            lst_allItems.ItemsSource = allItems.Where(x => (x.code.ToLower().Contains(txtItemSearch) ||
-            x.name.ToLower().Contains(txtItemSearch) ||
-            x.details.ToLower().Contains(txtItemSearch)
-            ) && x.isActive == 1);
+            try
+            { 
+                txtItemSearch = txb_searchitems.Text.ToLower();
+                lst_allItems.ItemsSource = allItems.Where(x => (x.code.ToLower().Contains(txtItemSearch) ||
+                x.name.ToLower().Contains(txtItemSearch) ||
+                x.details.ToLower().Contains(txtItemSearch)
+                ) && x.isActive == 1);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
@@ -155,9 +247,9 @@ namespace POS.View.windows
             {
                 DragMove();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
          

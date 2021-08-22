@@ -24,12 +24,18 @@ namespace POS.View.windows
     {
         public wd_invoicesList()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         public bool isActive;
         List<Invoice> allInvoicesSource = new List<Invoice>();
-        //public List<Invoice> selectedInvoicesSource = new List<Invoice>();
 
         List<Invoice> allInvoices = new List<Invoice>();
         public List<Invoice> selectedInvoices = new List<Invoice>();
@@ -42,10 +48,13 @@ namespace POS.View.windows
         public string invType ;
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
-            SectionData.StartAwait(grid_mainGrid);
-            //MessageBox.Show(agentId.ToString());
-            #region translate
-            if (MainWindow.lang.Equals("en"))
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_invoices);
+
+                #region translate
+                if (MainWindow.lang.Equals("en"))
             {
                 MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
                 grid_invoices.FlowDirection = FlowDirection.LeftToRight;
@@ -59,23 +68,32 @@ namespace POS.View.windows
             translat();
             #endregion
 
-            if (agentId != 0)
-                allInvoicesSource = await invoiceModel.getAgentInvoices(MainWindow.branchID.Value , agentId , invType);
-            else if(userId != 0)
-                allInvoicesSource = await invoiceModel.getUserInvoices(MainWindow.branchID.Value , userId , invType);
-            else if(shippingCompanyId != 0)
-                allInvoicesSource = await invoiceModel.getShipCompanyInvoices(MainWindow.branchID.Value , shippingCompanyId , invType);
+                if (agentId != 0)
+                    allInvoicesSource = await invoiceModel.getAgentInvoices(MainWindow.branchID.Value , agentId , invType);
+                else if(userId != 0)
+                    allInvoicesSource = await invoiceModel.getUserInvoices(MainWindow.branchID.Value , userId , invType);
+                else if(shippingCompanyId != 0)
+                    allInvoicesSource = await invoiceModel.getShipCompanyInvoices(MainWindow.branchID.Value , shippingCompanyId , invType);
 
-            allInvoices.AddRange(allInvoicesSource);
+                allInvoices.AddRange(allInvoicesSource);
            
-            lst_allInvoices.ItemsSource = allInvoices;
-            lst_allInvoices.SelectedValuePath = "invNumber";
-            lst_allInvoices.DisplayMemberPath = "invoiceId";
+                lst_allInvoices.ItemsSource = allInvoices;
+                lst_allInvoices.SelectedValuePath = "invNumber";
+                lst_allInvoices.DisplayMemberPath = "invoiceId";
 
-            lst_selectedInvoices.ItemsSource = selectedInvoices;
-            lst_selectedInvoices.SelectedValuePath = "invNumber";
-            lst_selectedInvoices.DisplayMemberPath = "invoiceId";
-            SectionData.EndAwait(grid_mainGrid,this);
+                lst_selectedInvoices.ItemsSource = selectedInvoices;
+                lst_selectedInvoices.SelectedValuePath = "invNumber";
+                lst_selectedInvoices.DisplayMemberPath = "invoiceId";
+                SectionData.EndAwait(grid_mainGrid,this);
+                if (sender != null)
+                    SectionData.EndAwait(grid_invoices);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_invoices);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void translat()
@@ -104,11 +122,19 @@ namespace POS.View.windows
 
         private void HandleKeyPress(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Return)
+            try
             {
-                Btn_save_Click(null, null);
+                if (e.Key == Key.Return)
+                {
+                    Btn_save_Click(null, null);
+                }
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex,this, sender);
             }
         }
+
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {//save
             isActive = true;
@@ -123,88 +149,149 @@ namespace POS.View.windows
 
         private void Lst_allInvoices_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            Btn_selectedInvoice_Click(null, null);
+            try
+            {
+                Btn_selectedInvoice_Click(null, null);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Lst_selectedInvoices_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            Btn_unSelectedInvoice_Click(null, null);
+            try
+            { 
+                Btn_unSelectedInvoice_Click(null, null);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private async void Btn_selectedAll_Click(object sender, RoutedEventArgs e)
         {//select all
-            int x = allInvoices.Count;
-            for (int i = 0; i < x; i++)
+            try
             {
-                //MessageBox.Show(i.ToString());
-                lst_allInvoices.SelectedIndex = 0;
-                Btn_selectedInvoice_Click(null, null);
+                int x = allInvoices.Count;
+                for (int i = 0; i < x; i++)
+                {
+                    lst_allInvoices.SelectedIndex = 0;
+                    Btn_selectedInvoice_Click(null, null);
+                }
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
+
         private void Btn_selectedInvoice_Click(object sender, RoutedEventArgs e)
         {//select one
-            invoice = lst_allInvoices.SelectedItem as Invoice;
-            if (invoice != null)
+            try
             {
-                allInvoices.Remove(invoice);
+                if (sender != null)
+                    SectionData.StartAwait(grid_invoices);
 
-                selectedInvoices.Add(invoice);
+                invoice = lst_allInvoices.SelectedItem as Invoice;
+                if (invoice != null)
+                {
+                    allInvoices.Remove(invoice);
 
-                lst_allInvoices.ItemsSource = allInvoices;
-                lst_selectedInvoices.ItemsSource = selectedInvoices;
+                    selectedInvoices.Add(invoice);
 
-                lst_allInvoices.Items.Refresh();
-                lst_selectedInvoices.Items.Refresh();
+                    lst_allInvoices.ItemsSource = allInvoices;
+                    lst_selectedInvoices.ItemsSource = selectedInvoices;
 
-                decimal x = invoice.deserved.Value ;
+                    lst_allInvoices.Items.Refresh();
+                    lst_selectedInvoices.Items.Refresh();
 
-                sum += x;
+                    decimal x = invoice.deserved.Value ;
 
-                tb_sum.Text = " "+sum.ToString()+" ";
+                    sum += x;
 
+                    tb_sum.Text = " "+sum.ToString()+" ";
+                }
+                if (sender != null)
+                    SectionData.EndAwait(grid_invoices);
             }
-
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_invoices);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
 
         private void Btn_unSelectedInvoice_Click(object sender, RoutedEventArgs e)
         {//unselect one
-            invoice = lst_selectedInvoices.SelectedItem as Invoice;
-            if (invoice != null)
+            try
             {
-                selectedInvoices.Remove(invoice);
+                if (sender != null)
+                    SectionData.StartAwait(grid_invoices);
+                invoice = lst_selectedInvoices.SelectedItem as Invoice;
 
-                allInvoices.Add(invoice);
+                if (invoice != null)
+                {
+                    selectedInvoices.Remove(invoice);
 
-                lst_allInvoices.ItemsSource = allInvoices;
-                lst_selectedInvoices.ItemsSource = selectedInvoices;
+                    allInvoices.Add(invoice);
 
-                lst_allInvoices.Items.Refresh();
-                lst_selectedInvoices.Items.Refresh();
+                    lst_allInvoices.ItemsSource = allInvoices;
+                    lst_selectedInvoices.ItemsSource = selectedInvoices;
 
-                decimal x = invoice.deserved.Value;
+                    lst_allInvoices.Items.Refresh();
+                    lst_selectedInvoices.Items.Refresh();
 
-                sum -= x;
+                    decimal x = invoice.deserved.Value;
 
-                tb_sum.Text = " "+sum.ToString()+" ";
+                    sum -= x;
+
+                    tb_sum.Text = " "+sum.ToString()+" ";
+                }
+                if (sender != null)
+                    SectionData.EndAwait(grid_invoices);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_invoices);
+
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
         private async void Btn_unSelectedAll_Click(object sender, RoutedEventArgs e)
         {//unselect all
-            int x = selectedInvoices.Count;
-            for (int i = 0; i < x; i++)
+            try
             {
-                lst_selectedInvoices.SelectedIndex = 0;
-                Btn_unSelectedInvoice_Click(null, null);
+                int x = selectedInvoices.Count;
+                for (int i = 0; i < x; i++)
+                {
+                    lst_selectedInvoices.SelectedIndex = 0;
+                    Btn_unSelectedInvoice_Click(null, null);
+                }
             }
-
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Txb_search_TextChanged(object sender, TextChangedEventArgs e)
         {
-            lst_allInvoices.ItemsSource = allInvoices.Where(x => (x.invNumber.ToLower().Contains(txb_search.Text.ToLower())) || 
-                                                                 (x.total.ToString().ToLower().Contains(txb_search.Text.ToLower())));
+            try
+            { 
+                lst_allInvoices.ItemsSource = allInvoices.Where(x => (x.invNumber.ToLower().Contains(txb_search.Text.ToLower())) || 
+                                                                     (x.total.ToString().ToLower().Contains(txb_search.Text.ToLower())));
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
@@ -213,9 +300,9 @@ namespace POS.View.windows
             {
                 DragMove();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
         private void Grid_BeginningEdit(object sender, DataGridBeginningEditEventArgs e)

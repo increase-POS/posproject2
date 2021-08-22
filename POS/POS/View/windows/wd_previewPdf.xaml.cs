@@ -23,16 +23,35 @@ namespace POS.View.windows
     {
         public wd_previewPdf()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
         public string pdfPath;
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            SectionData.StartAwait(grid_mainGrid);
-            translate();
-            wb_pdfWebViewer.Navigate(new Uri(pdfPath));
-            SectionData.EndAwait(grid_mainGrid, this);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_branchList);
+                translate();
+                wb_pdfWebViewer.Navigate(new Uri(pdfPath));
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_branchList);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_branchList);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
 
         }
         private void translate()
@@ -47,9 +66,9 @@ namespace POS.View.windows
             {
                 DragMove();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
         private void HandleKeyPress(object sender, KeyEventArgs e)

@@ -904,11 +904,24 @@ namespace POS.View.storage
                         await invoice.recordPosCashTransfer(invoice, "pb");
                         await invoice.recordCashTransfer(invoice, "pb");
                         await invoiceModel.saveInvoiceItems(invoiceItems, invoiceId);
+
+                        #region notification Object
+                        Notification not = new Notification()
+                        {
+                            title = "trExceedMinLimitAlertTilte",
+                            ncontent = "trExceedMinLimitAlertContent",
+                            msgType = "alert",
+                            createDate = DateTime.Now,
+                            updateDate = DateTime.Now,
+                            createUserId = MainWindow.userID.Value,
+                            updateUserId = MainWindow.userID.Value,
+                        };
+                        #endregion
                         for (int i = 0; i < readyItemsLoc.Count; i++)
                         {
                             int itemLocId = readyItemsLoc[i].itemsLocId;
                             int quantity = (int)readyItemsLoc[i].quantity;
-                            await itemLocationModel.decreaseItemLocationQuantity(itemLocId, quantity, MainWindow.userID.Value);
+                            await itemLocationModel.decreaseItemLocationQuantity(itemLocId, quantity, MainWindow.userID.Value, "reciptInvoice_invoice",not);
                         }
                         Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                     }
@@ -940,10 +953,22 @@ namespace POS.View.storage
         }
         private async Task receiptInvoice()
         {
+            #region notification Object
+            Notification not = new Notification()
+            {
+                title = "trExceedMaxLimitAlertTilte",
+                ncontent = "trExceedMaxLimitAlertContent",
+                msgType = "alert",
+                createDate = DateTime.Now,
+                updateDate = DateTime.Now,
+                createUserId = MainWindow.userID.Value,
+                updateUserId = MainWindow.userID.Value,
+            };
+            #endregion
             invoice.invType = "p";
             invoice.updateUserId = MainWindow.userID.Value;
             await invoiceModel.saveInvoice(invoice);
-            await itemLocationModel.recieptInvoice(invoiceItems, MainWindow.branchID.Value, MainWindow.userID.Value); // increase item quantity in DB
+            await itemLocationModel.recieptInvoice(invoiceItems, MainWindow.branchID.Value, MainWindow.userID.Value, "reciptInvoice_invoice", not); // increase item quantity in DB
         }
 
 

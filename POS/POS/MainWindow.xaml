@@ -154,17 +154,27 @@
             </Button>
             </materialDesign:Badged>
 
-            <materialDesign:Badged VerticalAlignment="Center" Margin="7.5,10,7.5,10" Grid.Column="5"  
-                      BadgeBackground="{StaticResource MainColorRed}"  BadgeForeground="White" Name="md_notificationCount">
-            <Button Grid.Column="5" x:Name="BTN_notifications"
-                    Background="{x:Null}" BorderBrush="{x:Null}" Width="25" Height="25" 
-                    Padding="0" >
-                <materialDesign:PackIcon Foreground="White" Kind="Bell" 
+                <Menu Background="Black" Height="auto" Grid.Column="5" Padding="0" VerticalAlignment="Center">
+                    <MenuItem Padding="0,0,0,0" >
+                        <MenuItem.Header>
+                            <materialDesign:Badged Name="md_notificationCount" VerticalAlignment="Center" Margin="7.5,10,7.5,10" Grid.Column="5"  
+                      BadgeBackground="{StaticResource MainColorRed}"  BadgeForeground="White"  Badge="+9">
+                           
+                                    <materialDesign:PackIcon Margin="0,0,0,0" Foreground="White" Kind="Bell" 
                                          Width="25" Height="25"/>
-            </Button>
-                </materialDesign:Badged>
+                            </materialDesign:Badged>
+                        </MenuItem.Header>
+                    <Separator />
+                 
+                    <Separator />
+                        <MenuItem Header="View All" Name="viewAll" Foreground="White"   
+                          />
+                    </MenuItem>
+                </Menu>
+         
 
-                <!--<Button Grid.Column="6" x:Name="BTN_dropDownProfile"
+
+            <!--<Button Grid.Column="6" x:Name="BTN_dropDownProfile"
                 Margin="5,10,5,10" ToolTip="" 
                     Background="{x:Null}" BorderBrush="{x:Null}" Width="25" Height="25" 
                     Padding="0" >

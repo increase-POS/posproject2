@@ -40,8 +40,15 @@ namespace POS.View.Settings
 
         public uc_emailTemplates()
         {
-            InitializeComponent();
-            
+            try
+            {
+                InitializeComponent();
+
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         SetValues setValuesModel = new SetValues();
@@ -79,209 +86,275 @@ namespace POS.View.Settings
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {//load
-            if (MainWindow.lang.Equals("en"))
+            try
             {
-                MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
-                grid_ucSetValues.FlowDirection = FlowDirection.LeftToRight;
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                if (MainWindow.lang.Equals("en"))
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                    grid_main.FlowDirection = FlowDirection.LeftToRight;
+                }
+                else
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                    grid_main.FlowDirection = FlowDirection.RightToLeft;
+                }
+
+                translate();
+
+                //btn_addRange.IsEnabled = false;
+
+                Keyboard.Focus(tb_title);
+
+                SectionData.clearValidate(tb_title, p_errorTitle);
+
+                setQuery = await setModel.GetByNotes("emailtemp");
+
+                dg_setValues.ItemsSource = setQuery;
+
+                this.Dispatcher.Invoke(() =>
+                {
+                    Tb_search_TextChanged(null, null);
+                });
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
-            else
+            catch (Exception ex)
             {
-                MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
-                grid_ucSetValues.FlowDirection = FlowDirection.RightToLeft;
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-
-            translate();
-
-            //btn_addRange.IsEnabled = false;
-
-            Keyboard.Focus(tb_title);
-
-            SectionData.clearValidate(tb_title, p_errorTitle);
-
-            setQuery = await setModel.GetByNotes("emailtemp");
-
-            dg_setValues.ItemsSource = setQuery;
-
-            this.Dispatcher.Invoke(() =>
-            {
-                Tb_search_TextChanged(null, null);
-            });
 
         }
 
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
-            Regex regex = new Regex("[^0-9]+");
-            e.Handled = regex.IsMatch(e.Text);
+            try
+            {
+                Regex regex = new Regex("[^0-9]+");
+                e.Handled = regex.IsMatch(e.Text);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
-        private void Btn_clear_Click(object sender, RoutedEventArgs e)
-        {//clear
-            //tb_x.Clear();
-            //tb_y.Clear();
-            //tb_z.Clear();
-            //tb_notes.Clear();
 
-            //p_errorX.Visibility = Visibility.Collapsed;
-            //p_errorY.Visibility = Visibility.Collapsed;
-            //p_errorZ.Visibility = Visibility.Collapsed;
 
-            ////btn_addRange.IsEnabled = false;
-
-            //tb_x.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            //tb_y.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            //tb_z.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-        }
-        //bool validate(SetValues setValues = null)
-        //{
-
-            ////chk empty z
-            //SectionData.validateEmptyTextBox(tb_z, p_errorZ, tt_errorZ, "trEmptyError");
-
-            //if ((!tb_z.Text.Equals("")) && (!tb_z.Text.Equals("")) && (!tb_z.Text.Equals("")))
-            //    return true;
-            //else return false;
-        //}
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {//update
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
-            //if (MainWindow.groupObject.HasPermissionAction(savePermission, MainWindow.groupObjects, "one"))
-            //{
+                if (MainWindow.groupObject.HasPermissionAction(savePermission, MainWindow.groupObjects, "one"))
+                {
 
-            //write here Mr.Naji
+                    //write here Mr.Naji
 
-            /////
-            string msg = "";
-            setValues = setValuessQuery.Where(x => x.notes == "title").FirstOrDefault();
-            setValues.value = tb_title.Text;
-            msg += await setValuesModel.SaveValueByNotes(setValues);
-            //
+                    /////
+                    string msg = "";
+                    setValues = setValuessQuery.Where(x => x.notes == "title").FirstOrDefault();
+                    setValues.value = tb_title.Text;
+                    msg += await setValuesModel.SaveValueByNotes(setValues);
+                    //
 
-            setValues = setValuessQuery.Where(x => x.notes == "text1").FirstOrDefault();
-            setValues.value = tb_text1.Text;
+                    setValues = setValuessQuery.Where(x => x.notes == "text1").FirstOrDefault();
+                    setValues.value = tb_text1.Text;
 
-            msg += await setValuesModel.SaveValueByNotes(setValues);
-            setValues = setValuessQuery.Where(x => x.notes == "text2").FirstOrDefault();
-            setValues.value = tb_text2.Text;
-            msg += await setValuesModel.SaveValueByNotes(setValues);
-            setValues = setValuessQuery.Where(x => x.notes == "link1text").FirstOrDefault();
-            setValues.value = tb_link1text.Text;
-            msg += await setValuesModel.SaveValueByNotes(setValues);
-            setValues = setValuessQuery.Where(x => x.notes == "link2text").FirstOrDefault();
-            setValues.value = tb_link2text.Text;
-            msg += await setValuesModel.SaveValueByNotes(setValues);
-            setValues = setValuessQuery.Where(x => x.notes == "link3text").FirstOrDefault();
-            setValues.value = tb_link3text.Text;
-            msg += await setValuesModel.SaveValueByNotes(setValues);
-            setValues = setValuessQuery.Where(x => x.notes == "link1url").FirstOrDefault();
-            setValues.value = tb_link1url.Text;
-            msg += await setValuesModel.SaveValueByNotes(setValues);
-            setValues = setValuessQuery.Where(x => x.notes == "link2url").FirstOrDefault();
-            setValues.value = tb_link2url.Text;
-            msg += await setValuesModel.SaveValueByNotes(setValues);
-            setValues = setValuessQuery.Where(x => x.notes == "link3url").FirstOrDefault();
-            setValues.value = tb_link3url.Text;
-            msg += await setValuesModel.SaveValueByNotes(setValues);
+                    msg += await setValuesModel.SaveValueByNotes(setValues);
+                    setValues = setValuessQuery.Where(x => x.notes == "text2").FirstOrDefault();
+                    setValues.value = tb_text2.Text;
+                    msg += await setValuesModel.SaveValueByNotes(setValues);
+                    setValues = setValuessQuery.Where(x => x.notes == "link1text").FirstOrDefault();
+                    setValues.value = tb_link1text.Text;
+                    msg += await setValuesModel.SaveValueByNotes(setValues);
+                    setValues = setValuessQuery.Where(x => x.notes == "link2text").FirstOrDefault();
+                    setValues.value = tb_link2text.Text;
+                    msg += await setValuesModel.SaveValueByNotes(setValues);
+                    setValues = setValuessQuery.Where(x => x.notes == "link3text").FirstOrDefault();
+                    setValues.value = tb_link3text.Text;
+                    msg += await setValuesModel.SaveValueByNotes(setValues);
+                    setValues = setValuessQuery.Where(x => x.notes == "link1url").FirstOrDefault();
+                    setValues.value = tb_link1url.Text;
+                    msg += await setValuesModel.SaveValueByNotes(setValues);
+                    setValues = setValuessQuery.Where(x => x.notes == "link2url").FirstOrDefault();
+                    setValues.value = tb_link2url.Text;
+                    msg += await setValuesModel.SaveValueByNotes(setValues);
+                    setValues = setValuessQuery.Where(x => x.notes == "link3url").FirstOrDefault();
+                    setValues.value = tb_link3url.Text;
+                    msg += await setValuesModel.SaveValueByNotes(setValues);
 
-            //}
-            //else
-            //    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
 
         }
         private async void Dg_setValues_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//selection
-            //p_errorZ.Visibility = Visibility.Collapsed;
-            //p_errorZ.Visibility = Visibility.Collapsed;
-            //p_errorZ.Visibility = Visibility.Collapsed;
-
-            //tb_z.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            //tb_z.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            //tb_z.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-
-            if (dg_setValues.SelectedIndex != -1)
+            try
             {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+
                 if (dg_setValues.SelectedIndex != -1)
                 {
-                    sett = dg_setValues.SelectedItem as SettingCls;
-                    setValuessQuery = await setValuesModel.GetBySetName(sett.name);
-                    tb_title.Text = setValuessQuery.Where(x => x.notes == "title").FirstOrDefault() is null ? ""
-                    : setValuessQuery.Where(x => x.notes == "title").FirstOrDefault().value.ToString();
-                    tb_text1.Text = setValuessQuery.Where(x => x.notes == "text1").FirstOrDefault() is null ? ""
-                       : setValuessQuery.Where(x => x.notes == "text1").FirstOrDefault().value.ToString();
-                    tb_text2.Text = setValuessQuery.Where(x => x.notes == "text2").FirstOrDefault() is null ? ""
-                    : setValuessQuery.Where(x => x.notes == "text2").FirstOrDefault().value.ToString();
-                    tb_link1text.Text = setValuessQuery.Where(x => x.notes == "link1text").FirstOrDefault() is null ? ""
-                    : setValuessQuery.Where(x => x.notes == "link1text").FirstOrDefault().value.ToString();
+                    if (dg_setValues.SelectedIndex != -1)
+                    {
+                        sett = dg_setValues.SelectedItem as SettingCls;
+                        setValuessQuery = await setValuesModel.GetBySetName(sett.name);
+                        tb_title.Text = setValuessQuery.Where(x => x.notes == "title").FirstOrDefault() is null ? ""
+                        : setValuessQuery.Where(x => x.notes == "title").FirstOrDefault().value.ToString();
+                        tb_text1.Text = setValuessQuery.Where(x => x.notes == "text1").FirstOrDefault() is null ? ""
+                           : setValuessQuery.Where(x => x.notes == "text1").FirstOrDefault().value.ToString();
+                        tb_text2.Text = setValuessQuery.Where(x => x.notes == "text2").FirstOrDefault() is null ? ""
+                        : setValuessQuery.Where(x => x.notes == "text2").FirstOrDefault().value.ToString();
+                        tb_link1text.Text = setValuessQuery.Where(x => x.notes == "link1text").FirstOrDefault() is null ? ""
+                        : setValuessQuery.Where(x => x.notes == "link1text").FirstOrDefault().value.ToString();
 
-                    tb_link2text.Text = setValuessQuery.Where(x => x.notes == "link2text").FirstOrDefault() is null ? ""
-                     : setValuessQuery.Where(x => x.notes == "link2text").FirstOrDefault().value.ToString();
-                    tb_link3text.Text = setValuessQuery.Where(x => x.notes == "link3text").FirstOrDefault() is null ? ""
-                    : setValuessQuery.Where(x => x.notes == "link3text").FirstOrDefault().value.ToString();
-
-
-                    tb_link1url.Text = setValuessQuery.Where(x => x.notes == "link1url").FirstOrDefault() is null ? ""
-                         : setValuessQuery.Where(x => x.notes == "link1url").FirstOrDefault().value.ToString();
-                    tb_link2url.Text = setValuessQuery.Where(x => x.notes == "link2url").FirstOrDefault() is null ? ""
-                           : setValuessQuery.Where(x => x.notes == "link2url").FirstOrDefault().value.ToString();
-
-                    tb_link3url.Text = setValuessQuery.Where(x => x.notes == "link3url").FirstOrDefault() is null ? ""
-                           : setValuessQuery.Where(x => x.notes == "link3url").FirstOrDefault().value.ToString();
+                        tb_link2text.Text = setValuessQuery.Where(x => x.notes == "link2text").FirstOrDefault() is null ? ""
+                         : setValuessQuery.Where(x => x.notes == "link2text").FirstOrDefault().value.ToString();
+                        tb_link3text.Text = setValuessQuery.Where(x => x.notes == "link3text").FirstOrDefault() is null ? ""
+                        : setValuessQuery.Where(x => x.notes == "link3text").FirstOrDefault().value.ToString();
 
 
-                    this.DataContext = setValues;
+                        tb_link1url.Text = setValuessQuery.Where(x => x.notes == "link1url").FirstOrDefault() is null ? ""
+                             : setValuessQuery.Where(x => x.notes == "link1url").FirstOrDefault().value.ToString();
+                        tb_link2url.Text = setValuessQuery.Where(x => x.notes == "link2url").FirstOrDefault() is null ? ""
+                               : setValuessQuery.Where(x => x.notes == "link2url").FirstOrDefault().value.ToString();
+
+                        tb_link3url.Text = setValuessQuery.Where(x => x.notes == "link3url").FirstOrDefault() is null ? ""
+                               : setValuessQuery.Where(x => x.notes == "link3url").FirstOrDefault().value.ToString();
+
+
+                        this.DataContext = setValues;
+                    }
+
                 }
 
+                if (setValues != null)
+                {
+                    //btn_addRange.IsEnabled = true;
+
+
+                }
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
-
-            if (setValues != null)
+            catch (Exception ex)
             {
-                //btn_addRange.IsEnabled = true;
-
-
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
 
         }
         private void validationControl_LostFocus(object sender, RoutedEventArgs e)
         {
-            //if ((sender as Control).Name == "tb_x")
-            //    //chk empty name
-            //    SectionData.validateEmptyTextBox(tb_x, p_errorX, tt_errorX, "trEmptyNameToolTip");
-            //else if ((sender as Control).Name == "tb_y")
-            //    //chk empty mobile
-            //    SectionData.validateEmptyTextBox(tb_y, p_errorY, tt_errorY, "trEmptyMobileToolTip");
-            //else if ((sender as Control).Name == "tb_z")
-            //    //chk empty phone
-            //    SectionData.validateEmptyTextBox(tb_z, p_errorZ, tt_errorZ, "trEmptyPhoneToolTip");
+            try
+            {    //if ((sender as Control).Name == "tb_x")
+                 //    //chk empty name
+                 //    SectionData.validateEmptyTextBox(tb_x, p_errorX, tt_errorX, "trEmptyNameToolTip");
+                 //else if ((sender as Control).Name == "tb_y")
+                 //    //chk empty mobile
+                 //    SectionData.validateEmptyTextBox(tb_y, p_errorY, tt_errorY, "trEmptyMobileToolTip");
+                 //else if ((sender as Control).Name == "tb_z")
+                 //    //chk empty phone
+                 //    SectionData.validateEmptyTextBox(tb_z, p_errorZ, tt_errorZ, "trEmptyPhoneToolTip");
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         private void validationTextbox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            //if ((sender as TextBox).Name == "tb_x")
-            //    //chk empty x
-            //    SectionData.validateEmptyTextBox(tb_x, p_errorX, tt_errorX, "trEmptyNameToolTip");
-            //else if ((sender as TextBox).Name == "tb_y")
-            //    //chk empty y
-            //    SectionData.validateEmptyTextBox(tb_y, p_errorY, tt_errorY, "trEmptyMobileToolTip");
-            //else if ((sender as TextBox).Name == "tb_z")
-            //    //chk empty z
-            //    SectionData.validateEmptyTextBox(tb_z, p_errorZ, tt_errorZ, "trEmptyPhoneToolTip");
+            try
+            {   //if ((sender as TextBox).Name == "tb_x")
+                //    //chk empty x
+                //    SectionData.validateEmptyTextBox(tb_x, p_errorX, tt_errorX, "trEmptyNameToolTip");
+                //else if ((sender as TextBox).Name == "tb_y")
+                //    //chk empty y
+                //    SectionData.validateEmptyTextBox(tb_y, p_errorY, tt_errorY, "trEmptyMobileToolTip");
+                //else if ((sender as TextBox).Name == "tb_z")
+                //    //chk empty z
+                //    SectionData.validateEmptyTextBox(tb_z, p_errorZ, tt_errorZ, "trEmptyPhoneToolTip");
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         void handleSpace_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            e.Handled = e.Key == Key.Space;
+            try
+            {
+                e.Handled = e.Key == Key.Space;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         private async void Tgl_isActive_Checked(object sender, RoutedEventArgs e)
         {
-            if (setValuess is null)
-                await RefreshSetValuessList();
-            tgl_setValuesState = 1;
-            Tb_search_TextChanged(null, null);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                if (setValuess is null)
+                    await RefreshSetValuessList();
+                tgl_setValuesState = 1;
+                Tb_search_TextChanged(null, null);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+
         }
         private async void Tgl_isActive_Unchecked(object sender, RoutedEventArgs e)
         {
-            if (setValuess is null)
-                await RefreshSetValuessList();
-            tgl_setValuesState = 0;
-            Tb_search_TextChanged(null, null);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                if (setValuess is null)
+                    await RefreshSetValuessList();
+                tgl_setValuesState = 0;
+                Tb_search_TextChanged(null, null);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+
         }
         async Task<IEnumerable<SetValues>> RefreshSetValuessList()
         {
@@ -298,25 +371,52 @@ namespace POS.View.Settings
 
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
         {//search
-            //if (setValuess is null)
-            //    await RefreshSetValuessList();
-            //searchText = tb_search.Text.ToLower();
-            //setValuessQuery = setValuess.Where(s =>
-            //s.z.ToLower().Contains(searchText)
-            //);
-            //RefreshSetValuesView();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                //if (setValuess is null)
+                //    await RefreshSetValuessList();
+                //searchText = tb_search.Text.ToLower();
+                //setValuessQuery = setValuess.Where(s =>
+                //s.z.ToLower().Contains(searchText)
+                //);
+                //RefreshSetValuesView();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
 
         }
 
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
-            RefreshSetValuessList();
-            Tb_search_TextChanged(null, null);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                RefreshSetValuessList();
+                Tb_search_TextChanged(null, null);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
 
         }
 
 
-     
+
 
     }
 }

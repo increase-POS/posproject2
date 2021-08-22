@@ -31,8 +31,8 @@ namespace POS.View.windows
             {
                 InitializeComponent();
             }
-            catch(Exception ex)
-            { SectionData.ExceptionMessage(ex,this); }
+            catch (Exception ex)
+            { SectionData.ExceptionMessage(ex, this); }
         }
 
         List<SetValues> languages = new List<SetValues>();
@@ -45,7 +45,8 @@ namespace POS.View.windows
         {//load
             try
             {
-                SectionData.StartAwait(grid_mainGrid);
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
                 set = await setModel.GetAll();
 
@@ -59,12 +60,14 @@ namespace POS.View.windows
 
                 fillDateFormats();
 
-                SectionData.EndAwait(grid_mainGrid, this);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                SectionData.EndAwait(grid_mainGrid, this);
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
@@ -98,13 +101,13 @@ namespace POS.View.windows
             cb_region.SelectedValuePath = "countryId";
         }
 
-       
+
         private async void fillLanguages()
         {
             languages = await valueModel.GetBySetName("language");
-           foreach(var v in languages)
+            foreach (var v in languages)
             {
-                if (v.value == "en")      v.value = "English";
+                if (v.value == "en") v.value = "English";
                 else if (v.value == "ar") v.value = "Arabic";
 
             }
@@ -135,60 +138,108 @@ namespace POS.View.windows
         }
         private void Tb_validateEmptyLostFocus(object sender, RoutedEventArgs e)
         {
-            //string name = sender.GetType().Name;
-            //validateEmpty(name, sender);
+            try
+            { //string name = sender.GetType().Name;
+              //validateEmpty(name, sender);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         private void Tb_validateEmptyTextChange(object sender, TextChangedEventArgs e)
         {
-            //string name = sender.GetType().Name;
-            //validateEmpty(name, sender);
+            try
+            {  //string name = sender.GetType().Name;
+               //validateEmpty(name, sender);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         private void validateEmpty(string name, object sender)
         {
-            if (name == "TextBox")
+            try
             {
-                if ((sender as TextBox).Name == "tb_tax")
-                    SectionData.validateEmptyTextBox((TextBox)sender, p_errorTax, tt_errorTax, "trEmptyTax");
-            }
-            else if (name == "ComboBox")
-            {
-                if ((sender as ComboBox).Name == "cb_language")
-                    SectionData.validateEmptyComboBox((ComboBox)sender, p_errorLanguage, tt_errorLanguage, "trEmptyLanguage");
-                else if ((sender as ComboBox).Name == "cb_region")
-                    SectionData.validateEmptyComboBox((ComboBox)sender, p_errorRegion, tt_errorRegion, "trEmptyRegion");
-                else if ((sender as ComboBox).Name == "cb_currency")
-                    SectionData.validateEmptyComboBox((ComboBox)sender, p_errorCurrency, tt_errorCurrency, "trEmptyCurrency");
-                else if ((sender as ComboBox).Name == "cb_dateForm")
-                    SectionData.validateEmptyComboBox((ComboBox)sender, p_errorDateForm, tt_errorDateForm, "trEmptyDateFormat");
+                if (name == "TextBox")
+                {
+                    if ((sender as TextBox).Name == "tb_tax")
+                        SectionData.validateEmptyTextBox((TextBox)sender, p_errorTax, tt_errorTax, "trEmptyTax");
+                }
+                else if (name == "ComboBox")
+                {
+                    if ((sender as ComboBox).Name == "cb_language")
+                        SectionData.validateEmptyComboBox((ComboBox)sender, p_errorLanguage, tt_errorLanguage, "trEmptyLanguage");
+                    else if ((sender as ComboBox).Name == "cb_region")
+                        SectionData.validateEmptyComboBox((ComboBox)sender, p_errorRegion, tt_errorRegion, "trEmptyRegion");
+                    else if ((sender as ComboBox).Name == "cb_currency")
+                        SectionData.validateEmptyComboBox((ComboBox)sender, p_errorCurrency, tt_errorCurrency, "trEmptyCurrency");
+                    else if ((sender as ComboBox).Name == "cb_dateForm")
+                        SectionData.validateEmptyComboBox((ComboBox)sender, p_errorDateForm, tt_errorDateForm, "trEmptyDateFormat");
+
+                }
 
             }
-
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {//decimal
-            var regex = new Regex(@"^[0-9]*(?:\.[0-9]*)?$");
-            if (regex.IsMatch(e.Text) && !(e.Text == "." && ((TextBox)sender).Text.Contains(e.Text)))
-                e.Handled = false;
+            try
+            {
+                var regex = new Regex(@"^[0-9]*(?:\.[0-9]*)?$");
+                if (regex.IsMatch(e.Text) && !(e.Text == "." && ((TextBox)sender).Text.Contains(e.Text)))
+                    e.Handled = false;
 
-            else
-                e.Handled = true;
+                else
+                    e.Handled = true;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         private void Btn_colse_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            try
+            {
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         private void HandleKeyPress(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Return)
+            try
             {
-                Btn_save_Click(null, null);
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                if (e.Key == Key.Return)
+                {
+                    Btn_save_Click(null, null);
+                }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {//save
             try
             {
-                SectionData.StartAwait(grid_mainGrid);
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
                 saveLanguage();
                 saveRegion();
                 //saveCurrency();
@@ -200,12 +251,14 @@ namespace POS.View.windows
                 comInfo.isFirstTime = true;
                 this.Close();
                 comInfo.ShowDialog();
-                SectionData.EndAwait(grid_mainGrid, this);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                SectionData.EndAwait(grid_mainGrid, this);
-                SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
@@ -235,7 +288,7 @@ namespace POS.View.windows
         {
             if (!tb_tax.Text.Equals(""))
             {
-                var setTax = set.Where(t => t.name=="tax").FirstOrDefault();
+                var setTax = set.Where(t => t.name == "tax").FirstOrDefault();
                 SetValues tax = new SetValues();
                 tax.value = tb_tax.Text;
                 tax.isSystem = 1;
@@ -320,16 +373,30 @@ namespace POS.View.windows
 
         private void Tb_PreventSpaces(object sender, KeyEventArgs e)
         {
-            e.Handled = e.Key == Key.Space;
+            try
+            {
+                e.Handled = e.Key == Key.Space;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Tb_decimal_PreviewTextInput(object sender, TextCompositionEventArgs e)
         { //decimal
-            var regex = new Regex(@"^[0-9]*(?:\.[0-9]*)?$");
-            if (regex.IsMatch(e.Text) && !(e.Text == "." && ((TextBox)sender).Text.Contains(e.Text)))
-                e.Handled = false;
-            else
-                e.Handled = true;
+            try
+            {
+                var regex = new Regex(@"^[0-9]*(?:\.[0-9]*)?$");
+                if (regex.IsMatch(e.Text) && !(e.Text == "." && ((TextBox)sender).Text.Contains(e.Text)))
+                    e.Handled = false;
+                else
+                    e.Handled = true;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Cb_region_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -338,8 +405,8 @@ namespace POS.View.windows
             {
                 cb_currency.SelectedValue = cb_region.SelectedValue;
             }
-            catch(Exception ex)
-            { SectionData.ExceptionMessage(ex,this,sender); }
+            catch (Exception ex)
+            { SectionData.ExceptionMessage(ex, this, sender); }
         }
     }
 }

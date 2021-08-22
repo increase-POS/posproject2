@@ -26,9 +26,17 @@ namespace POS.View.windows
     {
         public wd_locationAddRange()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
+            }
+
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
-       public bool isOpend = false;
+        public bool isOpend = false;
         List<Location> locations = new List<Location>();
         List<Location> AllLocations = new List<Location>();
         Location location = new Location();
@@ -242,69 +250,96 @@ namespace POS.View.windows
         }
         private void HandleKeyPress(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Return)
+            try
             {
-                Btn_save_Click(null, null);
+                if (e.Key == Key.Return)
+                {
+                    Btn_save_Click(null, null);
+                }
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
-        {
-            //save
-            if (validate(location))
+        {//save
+            try
             {
-                string s = "";
-                generateLocationListX(location);
-                foreach (var item in locations)
+                if (sender != null)
+                    SectionData.StartAwait(grid_locationRange);
+                
+                if (validate(location))
                 {
-                    if (AllLocations.Where(x => x.name == item.name && x.branchId == MainWindow.branchID).Count() == 0)
+                    string s = "";
+                    generateLocationListX(location);
+                    foreach (var item in locations)
                     {
-                        item.createUserId = MainWindow.userID;
-                        item.updateUserId = MainWindow.userID;
-                        item.note = "";
-                        item.isActive = 1;
-                        item.sectionId = null;
-                        item.branchId = MainWindow.branchID;
+                        if (AllLocations.Where(x => x.name == item.name && x.branchId == MainWindow.branchID).Count() == 0)
+                        {
+                            item.createUserId = MainWindow.userID;
+                            item.updateUserId = MainWindow.userID;
+                            item.note = "";
+                            item.isActive = 1;
+                            item.sectionId = null;
+                            item.branchId = MainWindow.branchID;
 
-                        s = await location.saveLocation(item);
+                            s = await location.saveLocation(item);
+                        }
                     }
+
+                    if (!s.Equals("-1"))
+                    {
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                        Btn_clear_Click(null, null);
+                    }
+                    else
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
                 }
 
-                if (!s.Equals("-1"))
-                {
-                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
-                    Btn_clear_Click(null, null);
-                }
-                else
-                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-
+                if (sender != null)
+                    SectionData.EndAwait(grid_locationRange);
             }
-          
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_locationRange);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
         {//clear
-            tb_fromX.Clear();
-            tb_fromY.Clear();
-            tb_fromZ.Clear();
+            try
+            {
+                tb_fromX.Clear();
+                tb_fromY.Clear();
+                tb_fromZ.Clear();
 
-            p_errorFromX.Visibility = Visibility.Collapsed;
-            p_errorFromY.Visibility = Visibility.Collapsed;
-            p_errorFromZ.Visibility = Visibility.Collapsed;
+                p_errorFromX.Visibility = Visibility.Collapsed;
+                p_errorFromY.Visibility = Visibility.Collapsed;
+                p_errorFromZ.Visibility = Visibility.Collapsed;
 
-            tb_fromX.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            tb_fromY.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            tb_fromZ.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            /////////////////////////////////////////////
-            tb_toX.Clear();
-            tb_toY.Clear();
-            tb_toZ.Clear();
+                tb_fromX.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                tb_fromY.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                tb_fromZ.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                /////////////////////////////////////////////
+                tb_toX.Clear();
+                tb_toY.Clear();
+                tb_toZ.Clear();
 
-            p_errorToX.Visibility = Visibility.Collapsed;
-            p_errorToY.Visibility = Visibility.Collapsed;
-            p_errorToZ.Visibility = Visibility.Collapsed;
+                p_errorToX.Visibility = Visibility.Collapsed;
+                p_errorToY.Visibility = Visibility.Collapsed;
+                p_errorToZ.Visibility = Visibility.Collapsed;
 
-            tb_toX.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            tb_toY.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-            tb_toZ.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                tb_toX.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                tb_toY.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                tb_toZ.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex,this, sender);
+            }
         }
         private void validationControl_PreviewKeyDown(object sender, KeyEventArgs e)
         {
@@ -313,74 +348,110 @@ namespace POS.View.windows
         
         private void validationControl_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            bool isValid = false;
-           
-            if (regex.IsMatch(e.Text))
+            try
             {
-                if (regexNumber.IsMatch(e.Text) && !(regexAlpha.IsMatch((sender as TextBox).Text) ))
+                bool isValid = false;
+
+                if (regex.IsMatch(e.Text))
                 {
-                    e.Handled = false;
-                    isValid = true;
+                    if (regexNumber.IsMatch(e.Text) && !(regexAlpha.IsMatch((sender as TextBox).Text)))
+                    {
+                        e.Handled = false;
+                        isValid = true;
+                    }
+                    else if (regexAlpha.IsMatch(e.Text) && (sender as TextBox).Text.Count() == 0 && !regexNumber.IsMatch((sender as TextBox).Text))
+                    {
+                        e.Handled = false;
+                        isValid = true;
+                    }
+                    else if (regexAlpha.IsMatch(e.Text) && (sender as TextBox).Text.Count() == 1 && !regexNumber.IsMatch((sender as TextBox).Text))
+                    {
+                        (sender as TextBox).Text = "";
+                        e.Handled = false;
+                        isValid = true;
+                    }
                 }
-               else if (regexAlpha.IsMatch(e.Text) && (sender as TextBox).Text.Count()== 0 && !regexNumber.IsMatch((sender as TextBox).Text))
-                {
-                    e.Handled = false;
-                    isValid = true;
-                }
-                else if (regexAlpha.IsMatch(e.Text) && (sender as TextBox).Text.Count() == 1 && !regexNumber.IsMatch((sender as TextBox).Text))
-                {
-                    (sender as TextBox).Text = "";
-                    e.Handled = false;
-                    isValid = true;
-                }
+                if (!isValid)
+                    e.Handled = true;
             }
-            if (!isValid)
-                e.Handled = true;
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         private void validationControl_LostFocus(object sender, RoutedEventArgs e)
         {
-            if ((sender as Control).Name == "tb_fromX")
-                SectionData.validateEmptyTextBox(tb_fromX, p_errorFromX, tt_errorFromX, "");
-            else if ((sender as Control).Name == "tb_fromY")
-                SectionData.validateEmptyTextBox(tb_fromY, p_errorFromY, tt_errorFromY, "");
-            else if ((sender as Control).Name == "tb_fromZ")
-            SectionData.validateEmptyTextBox(tb_fromZ, p_errorFromZ, tt_errorFromZ, "");
-            
-            else if ((sender as Control).Name == "tb_toX")
-                SectionData.validateEmptyTextBox(tb_toX, p_errorToX, tt_errorToX, "");
-            else if ((sender as Control).Name == "tb_toY")
-                SectionData.validateEmptyTextBox(tb_toY, p_errorToY, tt_errorToY, "");
-            else if ((sender as Control).Name == "tb_toZ")
-                SectionData.validateEmptyTextBox(tb_toZ, p_errorToZ, tt_errorToZ, "");
+            try
+            {
+                if ((sender as Control).Name == "tb_fromX")
+                    SectionData.validateEmptyTextBox(tb_fromX, p_errorFromX, tt_errorFromX, "");
+                else if ((sender as Control).Name == "tb_fromY")
+                    SectionData.validateEmptyTextBox(tb_fromY, p_errorFromY, tt_errorFromY, "");
+                else if ((sender as Control).Name == "tb_fromZ")
+                    SectionData.validateEmptyTextBox(tb_fromZ, p_errorFromZ, tt_errorFromZ, "");
+
+                else if ((sender as Control).Name == "tb_toX")
+                    SectionData.validateEmptyTextBox(tb_toX, p_errorToX, tt_errorToX, "");
+                else if ((sender as Control).Name == "tb_toY")
+                    SectionData.validateEmptyTextBox(tb_toY, p_errorToY, tt_errorToY, "");
+                else if ((sender as Control).Name == "tb_toZ")
+                    SectionData.validateEmptyTextBox(tb_toZ, p_errorToZ, tt_errorToZ, "");
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         private void validationTextbox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if ((sender as Control).Name == "tb_fromX")
-                SectionData.validateEmptyTextBox(tb_fromX, p_errorFromX, tt_errorFromX, "");
-            else if ((sender as Control).Name == "tb_fromY")
-                SectionData.validateEmptyTextBox(tb_fromY, p_errorFromY, tt_errorFromY, "");
-            else if ((sender as Control).Name == "tb_fromZ")
-                SectionData.validateEmptyTextBox(tb_fromZ, p_errorFromZ, tt_errorFromZ, "");
-            ////////////////////////////////////
-            else if ((sender as Control).Name == "tb_toX")
-                SectionData.validateEmptyTextBox(tb_toX, p_errorToX, tt_errorToX, "");
-            else if ((sender as Control).Name == "tb_toY")
-                SectionData.validateEmptyTextBox(tb_toY, p_errorToY, tt_errorToY, "");
-            else if ((sender as Control).Name == "tb_toZ")
-                SectionData.validateEmptyTextBox(tb_toZ, p_errorToZ, tt_errorToZ, "");
+            try
+            {
+                if ((sender as Control).Name == "tb_fromX")
+                    SectionData.validateEmptyTextBox(tb_fromX, p_errorFromX, tt_errorFromX, "");
+                else if ((sender as Control).Name == "tb_fromY")
+                    SectionData.validateEmptyTextBox(tb_fromY, p_errorFromY, tt_errorFromY, "");
+                else if ((sender as Control).Name == "tb_fromZ")
+                    SectionData.validateEmptyTextBox(tb_fromZ, p_errorFromZ, tt_errorFromZ, "");
+                ////////////////////////////////////
+                else if ((sender as Control).Name == "tb_toX")
+                    SectionData.validateEmptyTextBox(tb_toX, p_errorToX, tt_errorToX, "");
+                else if ((sender as Control).Name == "tb_toY")
+                    SectionData.validateEmptyTextBox(tb_toY, p_errorToY, tt_errorToY, "");
+                else if ((sender as Control).Name == "tb_toZ")
+                    SectionData.validateEmptyTextBox(tb_toZ, p_errorToZ, tt_errorToZ, "");
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
-            MainWindow.mainWindow.StartAwait();
-            if (MainWindow.lang.Equals("en"))
-            { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly()); grid_locationRange.FlowDirection = FlowDirection.LeftToRight; }
-            else
-            { MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly()); grid_locationRange.FlowDirection = FlowDirection.RightToLeft; }
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_locationRange);
 
-            AllLocations = await location.Get();
+                #region translate
+                if (MainWindow.lang.Equals("en"))
+                { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly()); grid_locationRange.FlowDirection = FlowDirection.LeftToRight; }
+                else
+                { MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly()); grid_locationRange.FlowDirection = FlowDirection.RightToLeft; }
 
-            translate();
-            MainWindow.mainWindow.EndAwait();
+                translate();
+                #endregion
+
+                AllLocations = await location.Get();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_locationRange);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_locationRange);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void translate()
@@ -409,9 +480,9 @@ namespace POS.View.windows
             {
                 DragMove();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 

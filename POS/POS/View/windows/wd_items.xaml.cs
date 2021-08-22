@@ -26,8 +26,14 @@ namespace POS.View.windows
     {
         public wd_items()
         {
-            InitializeComponent();
-            
+            try
+            {
+                InitializeComponent();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
         /// <summary>
         /// item is select
@@ -52,7 +58,6 @@ namespace POS.View.windows
         // item object
         Item item = new Item();
 
-
         List<int> categoryIds = new List<int>();
         List<string> categoryNames = new List<string>();
         List<Category> categories;
@@ -62,8 +67,6 @@ namespace POS.View.windows
         public string txtItemSearch;
         CatigoriesAndItemsView catigoriesAndItemsView = new CatigoriesAndItemsView();
 
-
-
         public bool isActive;
         /// <summary>
         /// Selcted Items if selectedItems Have Items At the beginning
@@ -72,34 +75,51 @@ namespace POS.View.windows
         /// <param name="e"></param>
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            SectionData.StartAwait(grid_ucItems);
-            // for pagination onTop Always
-            btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
-            //CreateGridCardContainer();
-            catigoriesAndItemsView.wdItems = this;
-
-
-            if (MainWindow.lang.Equals("en"))
+            try
             {
-                MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
-                grid_ucItems.FlowDirection = FlowDirection.LeftToRight;
+                if (sender != null)
+                    SectionData.StartAwait(grid_ucItems);
+
+                // for pagination onTop Always
+                btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
+                catigoriesAndItemsView.wdItems = this;
+
+                #region translate
+                if (MainWindow.lang.Equals("en"))
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                    grid_ucItems.FlowDirection = FlowDirection.LeftToRight;
+                }
+                else
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                    grid_ucItems.FlowDirection = FlowDirection.RightToLeft;
+                }
+                translate();
+                #endregion
+
+                await RefrishItems();
+                await RefrishCategories();
+                RefrishCategoriesCard();
+                Txb_searchitems_TextChanged(null, null);
+               
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucItems);
             }
-            else
+            catch (Exception ex)
             {
-                MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
-                grid_ucItems.FlowDirection = FlowDirection.RightToLeft;
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucItems);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-            await RefrishItems();
-            await RefrishCategories();
-            RefrishCategoriesCard();
-            Txb_searchitems_TextChanged(null, null);
-            SectionData.EndAwait(grid_ucItems,this);
         }
         private void translate()
         {
-
-            
-
+            txt_items.Text = MainWindow.resourcemanager.GetString("trItems");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(txb_searchitems, MainWindow.resourcemanager.GetString("trSearchHint"));
+            btn_add.Content = MainWindow.resourcemanager.GetString("trAdd");
+            tt_grid.Content = MainWindow.resourcemanager.GetString("trViewGrid");
+            tt_items.Content = MainWindow.resourcemanager.GetString("trViewItems");
 
         }
         
@@ -108,6 +128,7 @@ namespace POS.View.windows
             isActive = false;
             this.Close();
         }
+
         #region Categor and Item
         #region Refrish Y
         /// <summary>
@@ -182,15 +203,13 @@ namespace POS.View.windows
         #region Get Id By Click  Y
         private void dg_items_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
-           
-
-            if (dg_items.SelectedIndex != -1)
+            try
             {
-                //item = dg_items.SelectedItem as Item;
-                //selectedItem = item.itemId;
-                //isActive = true;
-                //this.Close();
+                if (sender != null)
+                    SectionData.StartAwait(grid_ucItems);
+
+                if (dg_items.SelectedIndex != -1)
+            {
                 item = dg_items.SelectedItem as Item;
                 int isExist = selectedItems.IndexOf(item.itemId);
                 if (isExist == -1)
@@ -206,11 +225,17 @@ namespace POS.View.windows
                     lst_items.Children.Add(b);
                     selectedItems.Add(item.itemId);
                 }
-               // isActive = true;
-               // this.Close();
 
             }
-           
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucItems);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucItems);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
 
         }
         public async void ChangeCategoryIdEvent(int categoryId)
@@ -236,9 +261,6 @@ namespace POS.View.windows
         }
         public void ChangeItemIdEvent(int itemId)
         {
-            //selectedItem = itemId;
-            //isActive = true;
-            //this.Close();
             int isExist = -1;
             if (selectedItems != null)
                 isExist = selectedItems.IndexOf(itemId);
@@ -298,22 +320,36 @@ namespace POS.View.windows
 
         private void Btn_itemsInCards_Click(object sender, RoutedEventArgs e)
         {
-            grid_itemsDatagrid.Visibility = Visibility.Collapsed;
-            grid_itemCards.Visibility = Visibility.Visible;
-            path_itemsInCards.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
-            path_itemsInGrid.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
+            try
+            {
+                grid_itemsDatagrid.Visibility = Visibility.Collapsed;
+                grid_itemCards.Visibility = Visibility.Visible;
+                path_itemsInCards.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+                path_itemsInGrid.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
 
-            Txb_searchitems_TextChanged(null, null);
+                Txb_searchitems_TextChanged(null, null);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Btn_itemsInGrid_Click(object sender, RoutedEventArgs e)
         {
-            grid_itemCards.Visibility = Visibility.Collapsed;
-            grid_itemsDatagrid.Visibility = Visibility.Visible;
-            path_itemsInGrid.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
-            path_itemsInCards.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
+            try
+            {
+                grid_itemCards.Visibility = Visibility.Collapsed;
+                grid_itemsDatagrid.Visibility = Visibility.Visible;
+                path_itemsInGrid.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+                path_itemsInCards.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
 
-            Txb_searchitems_TextChanged(null, null);
+                Txb_searchitems_TextChanged(null, null);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         #endregion
         #region Search Y
@@ -326,22 +362,37 @@ namespace POS.View.windows
         /// <param name="e"></param>
         private async void Txb_searchitems_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (items is null)
-                await RefrishItems();
-            txtItemSearch = txb_searchitems.Text.ToLower();
-            pageIndex = 1;
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_ucItems);
 
-            #region
-            itemsQuery = items.Where(x => (x.code.ToLower().Contains(txtItemSearch) ||
-            x.name.ToLower().Contains(txtItemSearch) ||
-            x.details.ToLower().Contains(txtItemSearch)
-            )  && x.isActive == tglItemState);
-            //txt_count.Text = itemsQuery.Count().ToString();
-            if (btns is null)
-                btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
-            RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
-            #endregion
-            RefrishItemsDatagrid(itemsQuery);
+                if (items is null)
+                await RefrishItems();
+                txtItemSearch = txb_searchitems.Text.ToLower();
+                pageIndex = 1;
+
+                #region
+                itemsQuery = items.Where(x => (x.code.ToLower().Contains(txtItemSearch) ||
+                x.name.ToLower().Contains(txtItemSearch) ||
+                x.details.ToLower().Contains(txtItemSearch)
+                )  && x.isActive == tglItemState);
+
+                if (btns is null)
+                    btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
+                RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
+                #endregion
+                RefrishItemsDatagrid(itemsQuery);
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucItems);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucItems);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         #endregion
@@ -352,93 +403,176 @@ namespace POS.View.windows
 
         private void Tb_pageNumberSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
-
-            itemsQuery = items.Where(x => x.isActive == tglItemState);
-
-            if (tb_pageNumberSearch.Text.Equals(""))
+            try
             {
-                pageIndex = 1;
-            }
-            else if (((itemsQuery.Count() - 1) / 9) + 1 < int.Parse(tb_pageNumberSearch.Text))
-            {
-                pageIndex = ((itemsQuery.Count() - 1) / 9) + 1;
-            }
-            else
-            {
-                pageIndex = int.Parse(tb_pageNumberSearch.Text);
-            }
+                if (sender != null)
+                    SectionData.StartAwait(grid_ucItems);
 
-            #region
-            itemsQuery = items.Where(x => (x.code.ToLower().Contains(txtItemSearch) ||
-            x.name.ToLower().Contains(txtItemSearch) ||
-            x.details.ToLower().Contains(txtItemSearch)
-            ) && x.isActive == tglItemState);
-            //txt_count.Text = itemsQuery.Count().ToString();
-            RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
-            #endregion
+                itemsQuery = items.Where(x => x.isActive == tglItemState);
+
+                if (tb_pageNumberSearch.Text.Equals(""))
+                {
+                    pageIndex = 1;
+                }
+                else if (((itemsQuery.Count() - 1) / 9) + 1 < int.Parse(tb_pageNumberSearch.Text))
+                {
+                    pageIndex = ((itemsQuery.Count() - 1) / 9) + 1;
+                }
+                else
+                {
+                    pageIndex = int.Parse(tb_pageNumberSearch.Text);
+                }
+
+                #region
+                itemsQuery = items.Where(x => (x.code.ToLower().Contains(txtItemSearch) ||
+                x.name.ToLower().Contains(txtItemSearch) ||
+                x.details.ToLower().Contains(txtItemSearch)
+                ) && x.isActive == tglItemState);
+                RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
+                #endregion
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucItems);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucItems);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
 
         private void Btn_firstPage_Click(object sender, RoutedEventArgs e)
         {
-            pageIndex = 1;
-            #region
-            itemsQuery = items.Where(x => (x.code.ToLower().Contains(txtItemSearch) ||
-            x.name.ToLower().Contains(txtItemSearch) ||
-            x.details.ToLower().Contains(txtItemSearch)
-            ) && x.isActive == tglItemState);
-            //txt_count.Text = itemsQuery.Count().ToString();
-            RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
-            #endregion
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_ucItems);
+
+                pageIndex = 1;
+                #region
+                itemsQuery = items.Where(x => (x.code.ToLower().Contains(txtItemSearch) ||
+                x.name.ToLower().Contains(txtItemSearch) ||
+                x.details.ToLower().Contains(txtItemSearch)
+                ) && x.isActive == tglItemState);
+                RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
+                #endregion
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucItems);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucItems);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         private void Btn_prevPage_Click(object sender, RoutedEventArgs e)
         {
-            pageIndex = int.Parse(btn_prevPage.Content.ToString());
-            #region
-            itemsQuery = items.Where(x => (x.code.ToLower().Contains(txtItemSearch) ||
-            x.name.ToLower().Contains(txtItemSearch) ||
-            x.details.ToLower().Contains(txtItemSearch)
-            ) && x.isActive == tglItemState);
-            //txt_count.Text = itemsQuery.Count().ToString();
-            RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
-            #endregion
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_ucItems);
+
+                pageIndex = int.Parse(btn_prevPage.Content.ToString());
+                #region
+                itemsQuery = items.Where(x => (x.code.ToLower().Contains(txtItemSearch) ||
+                x.name.ToLower().Contains(txtItemSearch) ||
+                x.details.ToLower().Contains(txtItemSearch)
+                ) && x.isActive == tglItemState);
+                RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
+                #endregion
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucItems);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucItems);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         private void Btn_activePage_Click(object sender, RoutedEventArgs e)
         {
-            pageIndex = int.Parse(btn_activePage.Content.ToString());
-            #region
-            itemsQuery = items.Where(x => (x.code.ToLower().Contains(txtItemSearch) ||
-            x.name.ToLower().Contains(txtItemSearch) ||
-            x.details.ToLower().Contains(txtItemSearch)
-            ) && x.isActive == tglItemState);
-            //txt_count.Text = itemsQuery.Count().ToString();
-            RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
-            #endregion
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_ucItems);
+
+                pageIndex = int.Parse(btn_activePage.Content.ToString());
+                #region
+                itemsQuery = items.Where(x => (x.code.ToLower().Contains(txtItemSearch) ||
+                x.name.ToLower().Contains(txtItemSearch) ||
+                x.details.ToLower().Contains(txtItemSearch)
+                ) && x.isActive == tglItemState);
+                RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
+                #endregion
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucItems);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucItems);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         private void Btn_nextPage_Click(object sender, RoutedEventArgs e)
         {
-            pageIndex = int.Parse(btn_nextPage.Content.ToString());
-            #region
-            itemsQuery = items.Where(x => (x.code.ToLower().Contains(txtItemSearch) ||
-            x.name.ToLower().Contains(txtItemSearch) ||
-            x.details.ToLower().Contains(txtItemSearch)
-            ) && x.isActive == tglItemState);
-            //txt_count.Text = itemsQuery.Count().ToString();
-            RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
-            #endregion
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_ucItems);
+
+                pageIndex = int.Parse(btn_nextPage.Content.ToString());
+                #region
+                itemsQuery = items.Where(x => (x.code.ToLower().Contains(txtItemSearch) ||
+                x.name.ToLower().Contains(txtItemSearch) ||
+                x.details.ToLower().Contains(txtItemSearch)
+                ) && x.isActive == tglItemState);
+                RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
+                #endregion
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucItems);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucItems);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         private void Btn_lastPage_Click(object sender, RoutedEventArgs e)
         {
-            itemsQuery = items.Where(x => x.isActive == tglCategoryState);
-            pageIndex = ((itemsQuery.Count() - 1) / 9) + 1;
-            #region
-            itemsQuery = items.Where(x => (x.code.ToLower().Contains(txtItemSearch) ||
-            x.name.ToLower().Contains(txtItemSearch) ||
-            x.details.ToLower().Contains(txtItemSearch)
-            ) && x.isActive == tglItemState);
-            //txt_count.Text = itemsQuery.Count().ToString();
-            RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
-            #endregion
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_ucItems);
+
+                itemsQuery = items.Where(x => x.isActive == tglCategoryState);
+                pageIndex = ((itemsQuery.Count() - 1) / 9) + 1;
+                #region
+                itemsQuery = items.Where(x => (x.code.ToLower().Contains(txtItemSearch) ||
+                x.name.ToLower().Contains(txtItemSearch) ||
+                x.details.ToLower().Contains(txtItemSearch)
+                ) && x.isActive == tglItemState);
+                RefrishItemsCard(pagination.refrishPagination(itemsQuery, pageIndex, btns));
+                #endregion
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucItems);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucItems);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         #endregion
         #region categoryPathControl Y
@@ -477,33 +611,58 @@ namespace POS.View.windows
         }
         private async void getCategoryIdFromPath(object sender, RoutedEventArgs e)
         {
-            Button b = (Button)sender;
-
-            if (!string.IsNullOrEmpty(b.Tag.ToString()))
+            try
             {
-                generateTrack(int.Parse(b.Tag.ToString()));
-                categoryParentId = int.Parse(b.Tag.ToString());
-                RefrishCategoriesCard();
+                if (sender != null)
+                    SectionData.StartAwait(grid_ucItems);
+                Button b = (Button)sender;
+
+                if (!string.IsNullOrEmpty(b.Tag.ToString()))
+                {
+                    generateTrack(int.Parse(b.Tag.ToString()));
+                    categoryParentId = int.Parse(b.Tag.ToString());
+                    RefrishCategoriesCard();
 
 
-                category.categoryId = int.Parse(b.Tag.ToString());
+                    category.categoryId = int.Parse(b.Tag.ToString());
 
-            }
+                }
             
-            await RefrishItems();
-            Txb_searchitems_TextChanged(null, null);
+                await RefrishItems();
+                Txb_searchitems_TextChanged(null, null);
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucItems);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucItems);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
 
         }
         private async void Btn_getAllCategory_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_ucItems);
+                categoryParentId = 0;
+                RefrishCategoriesCard();
+                grid_categoryControlPath.Children.Clear();
+                category.categoryId = 0;
+                await RefrishItems();
+                Txb_searchitems_TextChanged(null, null);
 
-            categoryParentId = 0;
-            RefrishCategoriesCard();
-            grid_categoryControlPath.Children.Clear();
-            category.categoryId = 0;
-            await RefrishItems();
-            Txb_searchitems_TextChanged(null, null);
-            
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucItems);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucItems);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
 
         }
 
@@ -513,7 +672,22 @@ namespace POS.View.windows
 
         private async void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
-            await RefrishItems();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_ucItems);
+
+                await RefrishItems();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucItems);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucItems);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
@@ -522,22 +696,28 @@ namespace POS.View.windows
             {
                 DragMove();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
         private void Btn_add_Click(object sender, RoutedEventArgs e)
         {
-            if (selectedItems.Count > 0)
-            {
-                isActive = true;
-                this.Close();
+            try
+            { 
+                if (selectedItems.Count > 0)
+                {
+                    isActive = true;
+                    this.Close();
+                }
+                else
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountIncreaseToolTip"), animation: ToasterAnimation.FadeIn);
             }
-            else
-                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountIncreaseToolTip"), animation: ToasterAnimation.FadeIn);
-
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
     }

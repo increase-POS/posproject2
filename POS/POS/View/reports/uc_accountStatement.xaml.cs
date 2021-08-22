@@ -1,6 +1,7 @@
 ﻿using LiveCharts;
 using LiveCharts.Helpers;
 using LiveCharts.Wpf;
+using netoaster;
 using POS.Classes;
 using System;
 using System.Collections.Generic;
@@ -81,7 +82,7 @@ namespace POS.View.reports
             tt_user.Content = MainWindow.resourcemanager.GetString("trUser");
             tt_shipping.Content = MainWindow.resourcemanager.GetString("trShippingCompany");
 
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(txt_search , MainWindow.resourcemanager.GetString("trSearchHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(txt_search, MainWindow.resourcemanager.GetString("trSearchHint"));
 
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_vendors, MainWindow.resourcemanager.GetString("trVendorHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_vendorsDate, MainWindow.resourcemanager.GetString("trDateHint"));
@@ -90,11 +91,11 @@ namespace POS.View.reports
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_customer, MainWindow.resourcemanager.GetString("trCustomerHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_customerDate, MainWindow.resourcemanager.GetString("trDateHint"));
             chk_allCustomers.Content = MainWindow.resourcemanager.GetString("trAll");
-           
+
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_users, MainWindow.resourcemanager.GetString("trUserHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_userDate, MainWindow.resourcemanager.GetString("trDateHint"));
             chk_allUsers.Content = MainWindow.resourcemanager.GetString("trAll");
-            
+
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_shipping, MainWindow.resourcemanager.GetString("trShippingCompanyHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_shippingDate, MainWindow.resourcemanager.GetString("trDateHint"));
             chk_allShippings.Content = MainWindow.resourcemanager.GetString("trAll");
@@ -433,6 +434,8 @@ namespace POS.View.reports
                 //txt_for.Text = "Worthy";
                 txt_for.Text = MainWindow.resourcemanager.GetString("trWorthy");
                 tb_moneyIcon.Text = MainWindow.Currency;
+
+                bdr_email.Visibility = Visibility.Collapsed;
             }
             else
             {
@@ -441,6 +444,14 @@ namespace POS.View.reports
                 //txt_for.Text = "Required";
                 txt_for.Text = MainWindow.resourcemanager.GetString("trRequired");
                 tb_moneyIcon.Text = MainWindow.Currency;
+                if (cb_vendors.SelectedItem != null)
+                {
+                    bdr_email.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    bdr_email.Visibility = Visibility.Collapsed;
+                }
             }
             fillRowChart();
             fillColumnChart();
@@ -457,6 +468,7 @@ namespace POS.View.reports
                 txt_total.Text = cashTotal.ToString();
                 //txt_for.Text = "Worthy";
                 txt_for.Text = MainWindow.resourcemanager.GetString("trWorthy");
+                bdr_email.Visibility = Visibility.Collapsed;
             }
             else
             {
@@ -464,6 +476,15 @@ namespace POS.View.reports
                 txt_total.Text = cashTotal.ToString();
                 //txt_for.Text = "Required";
                 txt_for.Text = MainWindow.resourcemanager.GetString("trRequired");
+                bdr_email.Visibility = Visibility.Visible;
+                if (cb_customer.SelectedItem != null)
+                {
+                    bdr_email.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    bdr_email.Visibility = Visibility.Collapsed;
+                }
             }
             fillRowChart();
             fillColumnChart();
@@ -480,6 +501,7 @@ namespace POS.View.reports
                 txt_total.Text = cashTotal.ToString();
                 //txt_for.Text = "Worthy";
                 txt_for.Text = MainWindow.resourcemanager.GetString("trWorthy");
+                bdr_email.Visibility = Visibility.Collapsed;
             }
             else
             {
@@ -487,10 +509,21 @@ namespace POS.View.reports
                 txt_total.Text = cashTotal.ToString();
                 //txt_for.Text = "Required";
                 txt_for.Text = MainWindow.resourcemanager.GetString("trRequired");
+                bdr_email.Visibility = Visibility.Visible;
+                if (cb_users.SelectedItem != null)
+                {
+                    bdr_email.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    bdr_email.Visibility = Visibility.Collapsed;
+                }
             }
             fillRowChart();
             fillColumnChart();
             fillPieChart();
+
+
         }
 
         private void fillShippingEvents()
@@ -503,6 +536,7 @@ namespace POS.View.reports
                 txt_total.Text = cashTotal.ToString();
                 //txt_for.Text = "Worthy";
                 txt_for.Text = MainWindow.resourcemanager.GetString("trWorthy");
+                bdr_email.Visibility = Visibility.Collapsed;
             }
             else
             {
@@ -510,6 +544,15 @@ namespace POS.View.reports
                 txt_total.Text = cashTotal.ToString();
                 //txt_for.Text = "Required";
                 txt_for.Text = MainWindow.resourcemanager.GetString("trRequired");
+                bdr_email.Visibility = Visibility.Visible;
+                if (cb_shipping.SelectedItem != null)
+                {
+                    bdr_email.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    bdr_email.Visibility = Visibility.Collapsed;
+                }
             }
             fillRowChart();
             fillColumnChart();
@@ -561,11 +604,13 @@ namespace POS.View.reports
                 {
                     //names.Add("Worthy");
                     names.Add(MainWindow.resourcemanager.GetString("trWorthy"));
+                    btn_emailMessage.Visibility = Visibility.Collapsed;
                 }
                 else
                 {
                     //names.Add("Required");
                     names.Add(MainWindow.resourcemanager.GetString("trRequired"));
+                    btn_emailMessage.Visibility = Visibility.Visible;
                 }
                 cash.Add(drawCash);
 
@@ -625,7 +670,7 @@ namespace POS.View.reports
                 DataLabels = true,
                 //Title = "Cash"
                 Title = MainWindow.resourcemanager.GetString("trCash")
-        });
+            });
             columnChartData.Add(
            new ColumnSeries
            {
@@ -649,7 +694,7 @@ namespace POS.View.reports
                Values = cheque.AsChartValues(),
                DataLabels = true,
                //Title = "Cheque"
-                Title = MainWindow.resourcemanager.GetString("trCheque")
+               Title = MainWindow.resourcemanager.GetString("trCheque")
            });
             columnChartData.Add(
            new ColumnSeries
@@ -776,6 +821,156 @@ namespace POS.View.reports
                 dgPayments.ItemsSource = temp.Where(obj => obj.transNum.Contains(txt_search.Text) ||
                 obj.Description.Contains(txt_search.Text) ||
                 obj.Description1.Contains(txt_search.Text));
+            }
+        }
+
+        private async void Btn_emailMessage_Click(object sender, RoutedEventArgs e)
+        {
+            if (txt_for.Text == "Required")
+            {
+                // btn_emailMessage.Visibility = Visibility.Visible;
+
+                string total = txt_total.Text;
+                SysEmails email = new SysEmails();
+                EmailClass mailtosend = new EmailClass();
+                // email = await email.GetByBranchIdandSide((int)MainWindow.branchID, "mg");
+                Agent toAgent = new Agent();
+                User toUser = new User();
+                ShippingCompanies toShipCompanies = new ShippingCompanies();
+                string emailto = "";
+                bool toemailexist = false;
+                email = await email.GetByBranchIdandSide((int)MainWindow.branchID, "mg");
+                switch (selectedTab)
+                {
+                    case 0:
+                        //vendor
+                        var objct0 = cb_vendors.SelectedItem as VendorCombo;
+
+                        int agentId = (int)objct0.VendorId;
+                        toAgent = await toAgent.getAgentById(agentId);
+                        emailto = toAgent.email;
+
+                        if (emailto is null || emailto == "")
+                        {
+                            toemailexist = false;
+
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trTheVendorHasNoEmail"), animation: ToasterAnimation.FadeIn);
+                        }
+                        else
+                        {
+                            toemailexist = true;
+                        }
+
+
+                        break;
+
+                    case 1:
+                        var objct1 = cb_customer.SelectedItem as VendorCombo;
+                        agentId = (int)objct1.VendorId;
+                        toAgent = await toAgent.getAgentById(agentId);
+                        emailto = toAgent.email;
+
+                        if (emailto is null || emailto == "")
+                        {
+                            toemailexist = false;
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trTheCustomerHasNoEmail"), animation: ToasterAnimation.FadeIn);
+                        }
+                        else
+                        {
+                            toemailexist = true;
+                        }
+                        break;
+                    case 2:
+                        var objct2 = cb_users.SelectedItem as VendorCombo;
+                        int userId = (int)objct2.UserId;
+                        toUser = await toUser.getUserById(userId);
+                        emailto = toUser.email;
+
+                        if (emailto is null || emailto == "")
+                        {
+                            toemailexist = false;
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trTheUserHasNoEmail"), animation: ToasterAnimation.FadeIn);
+                        }
+                        else
+                        {
+                            toemailexist = true;
+                        }
+                        break;
+                    case 6:
+                        var objct3 = cb_shipping.SelectedItem as ShippingCombo;
+                        int shipId = (int)objct3.ShippingId;
+
+                        toShipCompanies = await toShipCompanies.GetByID(shipId);
+                        emailto = toShipCompanies.email;
+
+                        if (emailto is null || emailto == "")
+                        {
+                            toemailexist = false;
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trTheShippingCompaniesHasNoEmail"), animation: ToasterAnimation.FadeIn);
+                        }
+                        else
+                        {
+                            toemailexist = true;
+                        }
+
+                        break;
+
+                }
+
+
+
+                if (email != null)
+                {
+
+
+                    //  int? itemcount = invoiceItems.Count();
+                    if (email.emailId == 0)
+                    {
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoEmailForThisDept"), animation: ToasterAnimation.FadeIn);
+
+                    }
+                    else
+                    {
+
+                        if (toemailexist)
+                        {
+
+                            SetValues setvmodel = new SetValues();
+
+
+                            List<SetValues> setvlist = new List<SetValues>();
+
+                            setvlist = await setvmodel.GetBySetName("required_email_temp");
+
+                            mailtosend = mailtosend.fillRequirdTempData(total, emailto, email, setvlist);
+                            //   string pdfpath = await SaveSalepdf();
+                            //  mailtosend.AddAttachTolist(pdfpath);
+                            string msg = "";
+                            msg = mailtosend.Sendmail();// temp comment
+                            if (msg == "Failure sending mail.")
+                            {
+
+                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoInternetConnection"), animation: ToasterAnimation.FadeIn);
+                            }
+                            else if (msg == "mailsent")
+                            {
+                                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trMailSent"), animation: ToasterAnimation.FadeIn);
+
+                            }
+                            else
+                            {
+                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trMailNotSent"), animation: ToasterAnimation.FadeIn);
+
+                            }
+
+
+                        }
+                    }
+                }
+            }
+            else
+            {
+                // btn_emailMessage.Visibility = Visibility.Hidden;
             }
         }
     }

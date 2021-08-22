@@ -199,12 +199,13 @@ namespace POS.Classes
                 return items;
             }
         }
-        public async Task<Boolean> decreaseAmounts(List<ItemTransfer> invoiceItems, int branchId, int userId)
+        public async Task<Boolean> decreaseAmounts(List<ItemTransfer> invoiceItems, int branchId, int userId, string objectName, Notification not)
         {
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
             // 
             var myContent = JsonConvert.SerializeObject(invoiceItems);
+            var myContent1 = JsonConvert.SerializeObject(not);
 
             using (var client = new HttpClient())
             {
@@ -216,7 +217,9 @@ namespace POS.Classes
                 HttpRequestMessage request = new HttpRequestMessage();
                 // encoding parameter to get special characters
                 myContent = HttpUtility.UrlEncode(myContent);
-                request.RequestUri = new Uri(Global.APIUri + "ItemsLocations/decraseAmounts?itemLocationObject=" + myContent + "&branchId=" + branchId+ "&userId="+userId);
+                myContent1 = HttpUtility.UrlEncode(myContent1);
+                request.RequestUri = new Uri(Global.APIUri + "ItemsLocations/decraseAmounts?itemLocationObject=" + myContent + "&branchId=" + branchId+ 
+                                        "&userId="+userId + "&objectName=" + objectName + "&notificationObj="+myContent1);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Post;
                 //set content type
@@ -260,11 +263,11 @@ namespace POS.Classes
                 return false;
             }
         }
-        public async Task<Boolean> decreaseItemLocationQuantity(int itemLocId ,int quantity, int userId)
+        public async Task<Boolean> decreaseItemLocationQuantity(int itemLocId ,int quantity, int userId, string objectName, Notification notification)
         {
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-         
+            var myContent = JsonConvert.SerializeObject(notification);
             using (var client = new HttpClient())
             {
                 ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
@@ -273,7 +276,10 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "ItemsLocations/decreaseItemLocationQuantity?itemLocId=" + itemLocId+ "&quantity="+ quantity + "&userId=" + userId);
+                // encoding parameter to get special characters
+                myContent = HttpUtility.UrlEncode(myContent);
+                request.RequestUri = new Uri(Global.APIUri + "ItemsLocations/decreaseItemLocationQuantity?itemLocId=" + itemLocId+ "&quantity="+ quantity +
+                                                    "&userId=" + userId +"&objectName=" + objectName +"&notificationObj=" + myContent);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Post;
                 //set content type
@@ -429,12 +435,13 @@ namespace POS.Classes
                 return 0;
             }
         }
-        public async Task<Boolean> recieptInvoice(List<ItemTransfer> invoiceItems, int branchId,int userId)
+        public async Task<Boolean> recieptInvoice(List<ItemTransfer> invoiceItems, int branchId,int userId, string objectName, Notification notificationObj)
         {
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
             // 
             var myContent = JsonConvert.SerializeObject(invoiceItems);
+            var myContent1 = JsonConvert.SerializeObject(notificationObj);
 
             using (var client = new HttpClient())
             {
@@ -446,7 +453,10 @@ namespace POS.Classes
                 HttpRequestMessage request = new HttpRequestMessage();
                 // encoding parameter to get special characters
                 myContent = HttpUtility.UrlEncode(myContent);
-                request.RequestUri = new Uri(Global.APIUri + "ItemsLocations/receiptInvoice?itemLocationObject=" + myContent + "&branchId=" + branchId + "&userId=" + userId);
+                myContent1 = HttpUtility.UrlEncode(myContent1);
+                request.RequestUri = new Uri(Global.APIUri + "ItemsLocations/receiptInvoice?itemLocationObject=" + myContent + "&branchId=" + branchId 
+                                                        + "&userId=" + userId
+                                                        +"&objectName=" + objectName + "&notificationObj="+myContent1);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Post;
                 //set content type

@@ -25,7 +25,14 @@ namespace POS.View.windows
     {
         public wd_transItemsLocation()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
         public List<ItemTransfer> orderList { get; set; }
         public List<ItemLocation> selectedItemsLocations { get; set; }
@@ -36,26 +43,46 @@ namespace POS.View.windows
 
         private void translate()
         {
+            txt_title.Text = MainWindow.resourcemanager.GetString("trSelectLocations");
             ////////////////////////////////----Order----/////////////////////////////////
             dg_itemsStorage.Columns[1].Header = MainWindow.resourcemanager.GetString("trItem");
-            dg_itemsStorage.Columns[2].Header = MainWindow.resourcemanager.GetString("trAmount");
+            dg_itemsStorage.Columns[2].Header = MainWindow.resourcemanager.GetString("trQuantity");
             dg_itemsStorage.Columns[3].Header = MainWindow.resourcemanager.GetString("trLocation");
             dg_itemsStorage.Columns[4].Header = MainWindow.resourcemanager.GetString("trStartDate");
             dg_itemsStorage.Columns[5].Header = MainWindow.resourcemanager.GetString("trEndDate");
 
-
+            btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
 
         }
         private void HandleKeyPress(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Return)
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                if (e.Key == Key.Return)
             {
                 Btn_save_Click(null, null);
+            }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
         private void Btn_save_Click(object sender, RoutedEventArgs e)
         {
-            bool valid = true;
+                try
+                {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                bool valid = true;
             //return;
             for(int i=0; i<orderList.Count; i++)
             {
@@ -71,10 +98,26 @@ namespace POS.View.windows
                 DialogResult = true;
                 this.Close();
             }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         private void Btn_colse_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+                    try
+                    {
+                        this.Close();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -90,21 +133,32 @@ namespace POS.View.windows
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            SectionData.StartAwait(grid_mainGrid);
+                        try
+                        {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
-            if (MainWindow.lang.Equals("en"))
+                if (MainWindow.lang.Equals("en"))
             {
                 MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
-                dg_itemsStorage.FlowDirection = FlowDirection.LeftToRight;
+                    grid_main.FlowDirection = FlowDirection.LeftToRight;
             }
             else
             {
                 MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
-                dg_itemsStorage.FlowDirection = FlowDirection.RightToLeft;
+                    grid_main.FlowDirection = FlowDirection.RightToLeft;
             }
 
             await refreshItemsLocations();
-            SectionData.EndAwait(grid_mainGrid,this);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         private async Task refreshItemsLocations()
         {
@@ -121,43 +175,43 @@ namespace POS.View.windows
                
             dg_itemsStorage.ItemsSource = selectedItemsLocations.ToList();
         }
-        private void Dg_itemsStorage_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
+       
 
         private void FieldDataGridChecked(object sender, RoutedEventArgs e)
         {
-            CheckBox cb = sender as CheckBox;
-            //long oldQuantity = _Quantity;
-            //var index = dg_itemsStorage.SelectedIndex;
-            //ItemLocation row = dg_itemsStorage.Items[index] as ItemLocation;
-            //TextBlock tb = dg_itemsStorage.Columns[2].GetCellContent(dg_itemsStorage.Items[index]) as TextBlock;
+                            try
+                            {
+                                CheckBox cb = sender as CheckBox;
 
-            //selectedItemsLocations[index].isSelected = true;
-
-            //_Quantity += (long) selectedItemsLocations[index].quantity;
-            //ItemTransfer Item = orderList.ToList().Find(i => i.itemUnitId == row.itemUnitId);
-            //if(_Quantity > Item.quantity)
-            //{
-            //    _Quantity -= (long)selectedItemsLocations[index].quantity;
-            //    selectedItemsLocations[index].quantity = Item.quantity - oldQuantity;          
-            //    _Quantity += (long) selectedItemsLocations[index].quantity;
-            //    tb.Text = (Item.quantity - oldQuantity).ToString();
-            //}
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void FieldDataGridUnchecked(object sender, RoutedEventArgs e)
         {
-            CheckBox cb = sender as CheckBox;
+                                try
+                                {
+                                    CheckBox cb = sender as CheckBox;
             var index = dg_itemsStorage.SelectedIndex;
-            //selectedItemsLocations[index].isSelected = false;
-            //_Quantity -= (long) selectedItemsLocations[index].quantity;
+
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Dg_itemsStorage_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
-            TextBox t = new TextBox();
+                                    try
+                                    {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                TextBox t = new TextBox();
             CheckBox cb = new CheckBox();
             ItemLocation row = e.Row.Item as ItemLocation;
             var index = e.Row.GetIndex();
@@ -240,7 +294,15 @@ namespace POS.View.windows
                     }
                 }
             }
-
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
     }
 }

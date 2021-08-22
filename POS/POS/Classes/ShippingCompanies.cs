@@ -28,7 +28,11 @@ namespace POS.Classes
         public bool canDelete { get; set; }
         public decimal balance { get; set; }
         public Nullable<byte> balanceType { get; set; }
-
+        public string email { get; set; }
+        public string phone { get; set; }
+        public string mobile { get; set; }
+        public string fax { get; set; }
+        public string address { get; set; }
         /// <summary>
         /// ///////////////////////////////////////
         /// </summary>

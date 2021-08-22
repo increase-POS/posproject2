@@ -10,7 +10,7 @@
         ResizeMode="NoResize" Margin="0"
         Height="350" Width="400" Background="Transparent" AllowsTransparency="True"
         Loaded="Window_Loaded" MouseDown="Window_MouseDown">
-    <Grid  x:Name="grid_ucCompanyInfo" >
+    <Grid  x:Name="grid_main" >
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
             <RowDefinition Height="*"/>

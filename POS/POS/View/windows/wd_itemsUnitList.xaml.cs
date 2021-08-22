@@ -44,69 +44,98 @@ namespace POS.View.windows
 
         public wd_itemsUnitList()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         private void HandleKeyPress(object sender, KeyEventArgs e)
         {
-
+            try
+            {
+                if (e.Key == Key.Return)
+                {
+                    Btn_save_Click(null, null);
+                }
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
-            SectionData.StartAwait(grid_mainGrid);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_offerList);
 
-            #region translate
-            if (MainWindow.lang.Equals("en"))
-            { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly()); grid_offerList.FlowDirection = FlowDirection.LeftToRight; }
-            else
-            { MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly()); grid_offerList.FlowDirection = FlowDirection.RightToLeft; }
+                #region translate
+                    if (MainWindow.lang.Equals("en"))
+                { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly()); grid_offerList.FlowDirection = FlowDirection.LeftToRight; }
+                else
+                { MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly()); grid_offerList.FlowDirection = FlowDirection.RightToLeft; }
 
-            translat();
-            #endregion
-            //MessageBox.Show(itemUnitId.ToString());
-            allItemUnitsSource = await itemUnitModel.Getall();
-            allIPackagesSource = await packageModel.GetChildsByParentId(itemUnitId);
-            allItemUnits.AddRange(allItemUnitsSource);
-            for(int i = 0; i < allItemUnits.Count; i++)
-            {
-                //remove parent package itemunit
-                if (allItemUnits[i].itemUnitId == itemUnitId)
-                { allItemUnits.Remove(allItemUnits[i]);  break; }
-                
-            }
-            foreach (var iu in allItemUnits)
-            {
-                iu.itemName = iu.itemName + "-" + iu.unitName;
-            }
-            //remove selected itemunits from source itemunits
-            foreach (var p in allIPackagesSource)
-            {
-                for (int i = 0; i < allItemUnits.Count; i++)
+                translat();
+                #endregion
+           
+                allItemUnitsSource = await itemUnitModel.Getall();
+                allIPackagesSource = await packageModel.GetChildsByParentId(itemUnitId);
+                allItemUnits.AddRange(allItemUnitsSource);
+                for(int i = 0; i < allItemUnits.Count; i++)
                 {
-                    //remove saved itemunits
-                    if (p.childIUId == allItemUnits[i].itemUnitId)
+                    //remove parent package itemunit
+                    if (allItemUnits[i].itemUnitId == itemUnitId)
+                    { allItemUnits.Remove(allItemUnits[i]);  break; }
+                
+                }
+                foreach (var iu in allItemUnits)
+                {
+                    iu.itemName = iu.itemName + "-" + iu.unitName;
+                }
+                //remove selected itemunits from source itemunits
+                foreach (var p in allIPackagesSource)
+                {
+                    for (int i = 0; i < allItemUnits.Count; i++)
                     {
-                        allItemUnits.Remove(allItemUnits[i]);
+                        //remove saved itemunits
+                        if (p.childIUId == allItemUnits[i].itemUnitId)
+                        {
+                            allItemUnits.Remove(allItemUnits[i]);
+                        }
                     }
                 }
+                allPackages.AddRange(allIPackagesSource);
+                foreach(var p in allPackages)
+                {
+                    foreach (var iu in allItemUnits)
+                        if (p.parentIUId == iu.itemUnitId)
+                            p.notes = iu.itemName + "-" + iu.unitName;
+                }
+
+                dg_allItems.ItemsSource = allItemUnits;
+                dg_allItems.SelectedValuePath = "itemUnitId";
+                dg_allItems.DisplayMemberPath = "itemName";
+
+                dg_selectedItems.ItemsSource = allPackages;
+                dg_allItems.SelectedValuePath = "packageId";
+                dg_allItems.DisplayMemberPath = "notes";
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_offerList);
             }
-            allPackages.AddRange(allIPackagesSource);
-            foreach(var p in allPackages)
+            catch (Exception ex)
             {
-                foreach (var iu in allItemUnits)
-                    if (p.parentIUId == iu.itemUnitId)
-                        p.notes = iu.itemName + "-" + iu.unitName;
+                if (sender != null)
+                    SectionData.EndAwait(grid_offerList);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-
-            dg_allItems.ItemsSource = allItemUnits;
-            dg_allItems.SelectedValuePath = "itemUnitId";
-            dg_allItems.DisplayMemberPath = "itemName";
-
-            dg_selectedItems.ItemsSource = allPackages;
-            dg_allItems.SelectedValuePath = "packageId";
-            dg_allItems.DisplayMemberPath = "notes";
-            SectionData.EndAwait(grid_mainGrid,this);
         }
 
         private void translat()
@@ -139,97 +168,151 @@ namespace POS.View.windows
 
         private void Txb_searchitems_TextChanged(object sender, TextChangedEventArgs e)
         {//search
-            txtItemSearch = txb_searchitems.Text.ToLower();
+            try
+            {
+                txtItemSearch = txb_searchitems.Text.ToLower();
 
-            //if (allItems is null)
-            //    allItems = allItemsSource;
-            searchText = txb_searchitems.Text;
-            itemUnitQuery = allItemUnits.Where(s => s.itemName.Contains(searchText) || s.unitName.Contains(searchText));
-            dg_allItems.ItemsSource = itemUnitQuery;
+                searchText = txb_searchitems.Text;
+                itemUnitQuery = allItemUnits.Where(s => s.itemName.Contains(searchText) || s.unitName.Contains(searchText));
+                dg_allItems.ItemsSource = itemUnitQuery;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Dg_allItems_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            Btn_selectedItem_Click(null, null);
+            try
+            {
+                Btn_selectedItem_Click(null, null);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Btn_selectedAll_Click(object sender, RoutedEventArgs e)
         {//select all
-            int x = allItemUnits.Count;
-            for (int i = 0; i < x; i++)
+            try
             {
-                dg_allItems.SelectedIndex = 0;
-                Btn_selectedItem_Click(null, null);
+                int x = allItemUnits.Count;
+                for (int i = 0; i < x; i++)
+                {
+                    dg_allItems.SelectedIndex = 0;
+                    Btn_selectedItem_Click(null, null);
+                }
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
         private void Btn_selectedItem_Click(object sender, RoutedEventArgs e)
         {//select one
-            itemUnit = dg_allItems.SelectedItem as ItemUnit;
-            if (itemUnit != null)
+            try
             {
-                Package p = new Package();
+                itemUnit = dg_allItems.SelectedItem as ItemUnit;
+                if (itemUnit != null)
+                {
+                    Package p = new Package();
 
-                p.parentIUId = itemUnitId;
-                p.childIUId = itemUnit.itemUnitId;
-                p.quantity = 0;
-                p.isActive = 1;
-                p.notes = itemUnit.itemName;
-                p.createUserId = MainWindow.userID;
-             
-                allItemUnits.Remove(itemUnit);
-                allPackages.Add(p);
+                    p.parentIUId = itemUnitId;
+                    p.childIUId = itemUnit.itemUnitId;
+                    p.quantity = 0;
+                    p.isActive = 1;
+                    p.notes = itemUnit.itemName;
+                    p.createUserId = MainWindow.userID;
 
-                dg_allItems.ItemsSource = allItemUnits;
-                dg_selectedItems.ItemsSource = allPackages;
+                    allItemUnits.Remove(itemUnit);
+                    allPackages.Add(p);
 
-                dg_allItems.Items.Refresh();
-                dg_selectedItems.Items.Refresh();
+                    dg_allItems.ItemsSource = allItemUnits;
+                    dg_selectedItems.ItemsSource = allPackages;
+
+                    dg_allItems.Items.Refresh();
+                    dg_selectedItems.Items.Refresh();
+                }
             }
-
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Btn_unSelectedItem_Click(object sender, RoutedEventArgs e)
         {//unselect one
-            package = dg_selectedItems.SelectedItem as Package;
-            ItemUnit i = new ItemUnit();
-            if (package != null)
+            try
             {
-                i = allItemUnitsSource.Where(s => s.itemUnitId == package.childIUId.Value).FirstOrDefault();
+                package = dg_selectedItems.SelectedItem as Package;
+                ItemUnit i = new ItemUnit();
+                if (package != null)
+                {
+                    i = allItemUnitsSource.Where(s => s.itemUnitId == package.childIUId.Value).FirstOrDefault();
 
-                allItemUnits.Add(i);
+                    allItemUnits.Add(i);
 
-                allPackages.Remove(package);
+                    allPackages.Remove(package);
 
-                dg_allItems.ItemsSource = allItemUnits;
-                dg_selectedItems.ItemsSource = allPackages;
+                    dg_allItems.ItemsSource = allItemUnits;
+                    dg_selectedItems.ItemsSource = allPackages;
 
-                
-                dg_allItems.Items.Refresh();
-                // for solve problem
-                this.dg_selectedItems.CancelEdit();
-                this.dg_selectedItems.CancelEdit();
-                ////////////
-                dg_selectedItems.Items.Refresh();
+
+                    dg_allItems.Items.Refresh();
+                    // for solve problem
+                    this.dg_selectedItems.CancelEdit();
+                    this.dg_selectedItems.CancelEdit();
+                    ////////////
+                    dg_selectedItems.Items.Refresh();
+                }
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
         private void Btn_unSelectedAll_Click(object sender, RoutedEventArgs e)
         {//unselect all
-            int x = allPackages.Count;
-            for (int i = 0; i < x; i++)
+            try
             {
-                dg_selectedItems.SelectedIndex = 0;
-                Btn_unSelectedItem_Click(null, null);
+                int x = allPackages.Count;
+                for (int i = 0; i < x; i++)
+                {
+                    dg_selectedItems.SelectedIndex = 0;
+                    Btn_unSelectedItem_Click(null, null);
+                }
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {//save
-            await package.UpdatePackByParentId(itemUnitId , allPackages , MainWindow.userID.Value);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_offerList);
 
-            isActive = false;
-            this.Close();
+                await package.UpdatePackByParentId(itemUnitId , allPackages , MainWindow.userID.Value);
+
+                isActive = false;
+                this.Close();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_offerList);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_offerList);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
@@ -238,20 +321,18 @@ namespace POS.View.windows
             {
                 DragMove();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
         private void Dg_allItems_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
         }
 
         private void Dg_selectedItems_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            //Btn_unSelectedItem_Click(null, null);
         }
 
         
