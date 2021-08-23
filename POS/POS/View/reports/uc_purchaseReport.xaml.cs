@@ -285,7 +285,6 @@ fillColumnChart(cb_Items, selectedItemId);
             }
             else if (selectedTab == 1)
             {
-                fillPdfList(cb_pos, selectedPosId);
                 //cb_pos, selectedPosId
                // var temp1 = fillList(Invoices, chk_posInvoice, chk_posReturn, chk_posDraft, dp_posStartDate, dp_posEndDate, dt_posStartTime, dt_posEndTime);
               //  temp1 = temp1.Where(j => (selectedPosId.Count != 0 ? stackedButton.Contains((int)j.posId) : true));
@@ -551,31 +550,31 @@ fillColumnChart(cb_Items, selectedItemId);
 
             if (selectedTab == 0)
             {
-                var temp = fillList(Invoices, chk_invoice, chk_return, chk_drafs, dp_startDate, dp_endDate, dt_startTime, dt_endTime);
+                var temp = fillRowChartList(Invoices, chk_invoice, chk_return, chk_drafs, dp_startDate, dp_endDate, dt_startTime, dt_endTime);
                 temp = temp.Where(j => (selectedBranchId.Count != 0 ? stackedButton.Contains((int)j.branchCreatorId) : true));
                 list = temp.ToList();
             }
             else if (selectedTab == 1)
             {
-                var temp = fillList(Invoices, chk_posInvoice, chk_posReturn, chk_posDraft, dp_posStartDate, dp_posEndDate, dt_posStartTime, dt_posEndTime);
+                var temp = fillRowChartList(Invoices, chk_posInvoice, chk_posReturn, chk_posDraft, dp_posStartDate, dp_posEndDate, dt_posStartTime, dt_posEndTime);
                 temp = temp.Where(j => (selectedPosId.Count != 0 ? stackedButton.Contains((int)j.posId) : true));
                 list = temp.ToList();
             }
             else if (selectedTab == 2)
             {
-                var temp = fillList(Invoices, chk_vendorsInvoice, chk_vendorsReturn, chk_vendorsDraft, dp_vendorsStartDate, dp_vendorsEndDate, dt_vendorsStartTime, dt_vendorsEndTime);
+                var temp = fillRowChartList(Invoices, chk_vendorsInvoice, chk_vendorsReturn, chk_vendorsDraft, dp_vendorsStartDate, dp_vendorsEndDate, dt_vendorsStartTime, dt_vendorsEndTime);
                 temp = temp.Where(j => (selectedVendorsId.Count != 0 ? stackedButton.Contains((int)j.agentId) : true));
                 list = temp.ToList();
             }
             else if (selectedTab == 3)
             {
-                var temp = fillList(Invoices, chk_usersInvoice, chk_usersReturn, chk_usersDraft, dp_usersStartDate, dp_usersEndDate, dt_usersStartTime, dt_usersEndTime);
+                var temp = fillRowChartList(Invoices, chk_usersInvoice, chk_usersReturn, chk_usersDraft, dp_usersStartDate, dp_usersEndDate, dt_usersStartTime, dt_usersEndTime);
                 temp = temp.Where(j => (selectedUserId.Count != 0 ? stackedButton.Contains((int)j.updateUserId) : true));
                 list = temp.ToList();
             }
             else //if (selectedTab == 4)
             {
-                var temp = fillList(Items, chk_itemInvoice, chk_itemReturn, chk_itemDrafs, dp_ItemStartDate, dp_ItemEndDate, dt_itemStartTime, dt_ItemEndTime);
+                var temp = fillRowChartList(Items, chk_itemInvoice, chk_itemReturn, chk_itemDrafs, dp_ItemStartDate, dp_ItemEndDate, dt_itemStartTime, dt_ItemEndTime);
                 temp = temp.Where(j => (selectedItemId.Count != 0 ? stackedButton.Contains((int)j.ITitemUnitId) : true));
                 list = temp.ToList();
             }
@@ -751,8 +750,8 @@ fillColumnChart(cb_Items, selectedItemId);
 
         public void fillPosEvent()
         {
-            var temp = fillList(Invoices, chk_posInvoice, chk_posReturn, chk_posDraft, dp_posStartDate, dp_posEndDate, dt_posStartTime, dt_posEndTime);
-            dgInvoice.ItemsSource = temp.Where(j => (selectedPosId.Count != 0 ? selectedPosId.Contains((int)j.posId) : true));
+            itemTransfers = fillList(Invoices, chk_posInvoice, chk_posReturn, chk_posDraft, dp_posStartDate, dp_posEndDate, dt_posStartTime, dt_posEndTime);
+            dgInvoice.ItemsSource = itemTransfers;
             fillRowChart(cb_pos, selectedPosId);
             fillPieChart(cb_pos, selectedPosId);
             fillColumnChart(cb_pos, selectedPosId);
@@ -760,8 +759,8 @@ fillColumnChart(cb_Items, selectedItemId);
 
         public void fillVendorsEvent()
         {
-            var temp = fillList(Invoices, chk_vendorsInvoice, chk_vendorsReturn, chk_vendorsDraft, dp_vendorsStartDate, dp_vendorsEndDate, dt_vendorsStartTime, dt_vendorsEndTime);
-            dgInvoice.ItemsSource = temp.Where(j => (selectedVendorsId.Count != 0 ? selectedVendorsId.Contains((int)j.agentId) : true));
+            itemTransfers = fillList(Invoices, chk_vendorsInvoice, chk_vendorsReturn, chk_vendorsDraft, dp_vendorsStartDate, dp_vendorsEndDate, dt_vendorsStartTime, dt_vendorsEndTime);
+            dgInvoice.ItemsSource = itemTransfers;
             fillPieChart(cb_vendors, selectedVendorsId);
             fillColumnChart(cb_vendors, selectedVendorsId);
             fillRowChart(cb_vendors, selectedVendorsId);
@@ -769,8 +768,8 @@ fillColumnChart(cb_Items, selectedItemId);
 
         public void fillUsersEvent()
         {
-            var temp = fillList(Invoices, chk_usersInvoice, chk_usersReturn, chk_usersDraft, dp_usersStartDate, dp_usersEndDate, dt_usersStartTime, dt_usersEndTime);
-            dgInvoice.ItemsSource = temp.Where(j => (selectedUserId.Count != 0 ? selectedUserId.Contains((int)j.updateUserId) : true));
+            itemTransfers = fillList(Invoices, chk_usersInvoice, chk_usersReturn, chk_usersDraft, dp_usersStartDate, dp_usersEndDate, dt_usersStartTime, dt_usersEndTime);
+            dgInvoice.ItemsSource = itemTransfers;
             fillPieChart(cb_users, selectedUserId);
             fillColumnChart(cb_users, selectedUserId);
             fillRowChart(cb_users, selectedUserId);
@@ -778,8 +777,8 @@ fillColumnChart(cb_Items, selectedItemId);
 
         public void fillItemsEvent()
         {
-            var temp = fillList(Items, chk_itemInvoice, chk_itemReturn, chk_itemDrafs, dp_ItemStartDate, dp_ItemEndDate, dt_itemStartTime, dt_ItemEndTime);
-            dgInvoice.ItemsSource = temp.Where(j => (selectedItemId.Count != 0 ? selectedItemId.Contains((int)j.ITitemUnitId) : true));
+            itemTransfers = fillList(Items, chk_itemInvoice, chk_itemReturn, chk_itemDrafs, dp_ItemStartDate, dp_ItemEndDate, dt_itemStartTime, dt_ItemEndTime);
+            dgInvoice.ItemsSource = itemTransfers;
             fillPieChart(cb_Items, selectedItemId);
             fillColumnChart(cb_Items, selectedItemId);
             fillRowChart(cb_Items, selectedItemId);

@@ -1,10 +1,13 @@
 ﻿using LiveCharts;
 using LiveCharts.Helpers;
 using LiveCharts.Wpf;
+using Microsoft.Reporting.WinForms;
+using Microsoft.Win32;
 using POS.Classes;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -67,7 +70,7 @@ namespace POS.View.reports
             fillEvents();
         }
         private List<CashTransferSts> fillList(List<CashTransferSts> payments, ComboBox fromBranch, ComboBox toBranch, ComboBox fromPos, ComboBox toPos, ComboBox Acc
-       , DatePicker startDate, DatePicker endDate,CheckBox towWays)
+       , DatePicker startDate, DatePicker endDate, CheckBox towWays)
         {
             var selectedItem1 = fromBranch.SelectedItem as branchFromCombo;
             var selectedItem2 = toBranch.SelectedItem as branchToCombo;
@@ -128,10 +131,11 @@ namespace POS.View.reports
             cb_Accountant.DisplayMemberPath = "Accountant";
             cb_Accountant.ItemsSource = accCombo;
         }
-
+        IEnumerable<CashTransferSts> temp = null;
         private void fillEvents()
         {
-            dgPayments.ItemsSource = fillList(list, cb_formBranch, cb_toBranch, cb_formPos, cb_toPos, cb_Accountant, dp_StartDate, dp_EndDate,chk_twoWay);
+            temp = fillList(list, cb_formBranch, cb_toBranch, cb_formPos, cb_toPos, cb_Accountant, dp_StartDate, dp_EndDate, chk_twoWay);
+            dgPayments.ItemsSource = temp;
             fillColumnChart();
             fillPieChart();
             fillRowChart();
@@ -231,7 +235,7 @@ namespace POS.View.reports
 
         private void Chk_twoWay_Checked(object sender, RoutedEventArgs e)
         {
-            fillEvents(); 
+            fillEvents();
         }
 
         private void Chk_twoWay_Unchecked(object sender, RoutedEventArgs e)
@@ -243,7 +247,7 @@ namespace POS.View.reports
             List<string> titles = new List<string>();
             List<int> resultList = new List<int>();
             titles.Clear();
-            var temp= fillList(list, cb_formBranch, cb_toBranch, cb_formPos, cb_toPos, cb_Accountant, dp_StartDate, dp_EndDate, chk_twoWay);
+            var temp = fillList(list, cb_formBranch, cb_toBranch, cb_formPos, cb_toPos, cb_Accountant, dp_StartDate, dp_EndDate, chk_twoWay);
 
             var result = temp
                 .GroupBy(s => new { s.transType })
@@ -280,8 +284,8 @@ namespace POS.View.reports
             axcolumn.Labels = new List<string>();
             List<string> names = new List<string>();
 
-           var temp = fillList(list, cb_formBranch, cb_toBranch, cb_formPos, cb_toPos, cb_Accountant, dp_StartDate, dp_EndDate, chk_twoWay);
-            
+            var temp = fillList(list, cb_formBranch, cb_toBranch, cb_formPos, cb_toPos, cb_Accountant, dp_StartDate, dp_EndDate, chk_twoWay);
+
 
             var res = temp.GroupBy(x => new { x.posId, x.transType }).Select(x => new CashTransferSts
             {
@@ -293,7 +297,7 @@ namespace POS.View.reports
                 depositCount = x.Where(g => g.transType == "d").Count(),
                 pullCount = x.Where(g => g.transType == "p").Count()
             });
-           
+
 
             var tempName = temp.Select(s => new
             {
@@ -352,7 +356,7 @@ namespace POS.View.reports
             List<CashTransferSts> resultList = new List<CashTransferSts>();
 
             var temp = fillList(list, cb_formBranch, cb_toBranch, cb_formPos, cb_toPos, cb_Accountant, dp_StartDate, dp_EndDate, chk_twoWay);
-           
+
 
             SeriesCollection rowChartData = new SeriesCollection();
             var tempName = temp.GroupBy(s => new { s.agentId }).Select(s => new
@@ -446,14 +450,97 @@ namespace POS.View.reports
         private void Txt_search_TextChanged(object sender, TextChangedEventArgs e)
         {
             dgPayments.ItemsSource = fillList(list, cb_formBranch, cb_toBranch, cb_formPos, cb_toPos, cb_Accountant, dp_StartDate, dp_EndDate, chk_twoWay)
-                .Where(obj=>(
-                obj.transNum.Contains(txt_search.Text)||
-                obj.frombranchName.Contains(txt_search.Text)||
-                obj.tobranchName.Contains(txt_search.Text)||
-                obj.fromposName.Contains(txt_search.Text)||
-                obj.toposName.Contains(txt_search.Text)||
+                .Where(obj => (
+                obj.transNum.Contains(txt_search.Text) ||
+                obj.frombranchName.Contains(txt_search.Text) ||
+                obj.tobranchName.Contains(txt_search.Text) ||
+                obj.fromposName.Contains(txt_search.Text) ||
+                obj.toposName.Contains(txt_search.Text) ||
                 obj.updateUserAcc.Contains(txt_search.Text)
                 ));
         }
+        ReportCls reportclass = new ReportCls();
+        LocalReport rep = new LocalReport();
+        SaveFileDialog saveFileDialog = new SaveFileDialog();
+        private void Btn_pdf_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                List<ReportParameter> paramarr = new List<ReportParameter>();
+
+                string addpath = "";
+                bool isArabic = ReportCls.checkLang();
+                if (isArabic)
+                {
+                    addpath = @"\Reports\StatisticReport\Accounts\Pos\Ar\ArPos.rdlc";
+                }
+                else
+                {
+                    addpath = @"\Reports\StatisticReport\Accounts\Pos\En\Pos.rdlc";
+                }
+                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+                ReportCls.checkLang();
+
+                clsReports.cashTransferSts(temp, rep, reppath);
+                clsReports.setReportLanguage(paramarr);
+                clsReports.Header(paramarr);
+
+                rep.SetParameters(paramarr);
+
+                rep.Refresh();
+
+                saveFileDialog.Filter = "PDF|*.pdf;";
+
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    string filepath = saveFileDialog.FileName;
+                    LocalReportExtensions.ExportToPDF(rep, filepath);
+                }
+            }
+
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
+
+        private void Btn_print_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                List<ReportParameter> paramarr = new List<ReportParameter>();
+
+                string addpath = "";
+                bool isArabic = ReportCls.checkLang();
+                if (isArabic)
+                {
+                    addpath = @"\Reports\StatisticReport\Accounts\Pos\Ar\ArPos.rdlc";
+                }
+                else
+                {
+                    addpath = @"\Reports\StatisticReport\Accounts\Pos\En\Pos.rdlc";
+                }
+                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+                ReportCls.checkLang();
+
+                clsReports.cashTransferSts(temp, rep, reppath);
+                clsReports.setReportLanguage(paramarr);
+                clsReports.Header(paramarr);
+
+                rep.SetParameters(paramarr);
+                rep.Refresh();
+                LocalReportExtensions.PrintToPrinter(rep);
+            }
+
+            catch (Exception ex)
+            {
+
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
+
+
     }
 }

@@ -1,10 +1,13 @@
 ﻿using LiveCharts;
 using LiveCharts.Helpers;
 using LiveCharts.Wpf;
+using Microsoft.Reporting.WinForms;
+using Microsoft.Win32;
 using POS.Classes;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -64,7 +67,7 @@ namespace POS.View.reports
             fillVendorsEvents();
             hideAllColumn();
         }
-
+        
         private void fillVendorCombo(IEnumerable<VendorCombo> list, ComboBox cb)
         {
             cb.SelectedValuePath = "VendorId";
@@ -566,10 +569,11 @@ namespace POS.View.reports
 
         /*Fill Events*/
         /*********************************************************************************/
-
+        IEnumerable<CashTransferSts> temp = null;
         private void fillVendorsEvents()
         {
-            dgPayments.ItemsSource = fillList(payments, cb_vendors, cb_vendorPayType, cb_vendorAccountant, dp_vendorStartDate, dp_vendorEndDate).Where(x => x.side == "v" || x.side == "b");
+            temp = fillList(payments, cb_vendors, cb_vendorPayType, cb_vendorAccountant, dp_vendorStartDate, dp_vendorEndDate).Where(x => x.side == "v" || x.side == "b");
+            dgPayments.ItemsSource = temp;
             fillPieChart();
             fillColumnChart();
             fillRowChart();
@@ -577,7 +581,8 @@ namespace POS.View.reports
 
         private void fillCustomersEvents()
         {
-            dgPayments.ItemsSource = fillList(payments, cb_customer, cb_customerPayType, cb_customerAccountant, dp_customerStartDate, dp_customerEndDate).Where(x => x.side == "c" || x.side == "b");
+            temp = fillList(payments, cb_customer, cb_customerPayType, cb_customerAccountant, dp_customerStartDate, dp_customerEndDate).Where(x => x.side == "c" || x.side == "b");
+            dgPayments.ItemsSource = temp;
             fillPieChart();
             fillColumnChart();
             fillRowChart();
@@ -585,7 +590,8 @@ namespace POS.View.reports
 
         private void fillUserEvents()
         {
-            dgPayments.ItemsSource = fillList(payments, cb_users, cb_userPayType, cb_userAccountant, dp_userStartDate, dp_userEndDate).Where(x => x.side == "u");
+            temp = fillList(payments, cb_users, cb_userPayType, cb_userAccountant, dp_userStartDate, dp_userEndDate).Where(x => x.side == "u");
+            dgPayments.ItemsSource = temp;
             fillPieChart();
             fillColumnChart();
             fillRowChart();
@@ -593,7 +599,8 @@ namespace POS.View.reports
 
         private void fillShippingEvents()
         {
-            dgPayments.ItemsSource = fillList(payments, cb_shipping, cb_shippingPayType, cb_shippingAccountant, dp_shippingStartDate, dp_shippingEndDate).Where(x => x.side == "sh");
+            temp = fillList(payments, cb_shipping, cb_shippingPayType, cb_shippingAccountant, dp_shippingStartDate, dp_shippingEndDate).Where(x => x.side == "sh");
+            dgPayments.ItemsSource = temp;
             fillPieChart();
             fillColumnChart();
             fillRowChart();
@@ -1013,6 +1020,146 @@ namespace POS.View.reports
                    obj.updateUserAcc.Contains(txt_search.Text) ||
                    obj.shippingCompanyName.Contains(txt_search.Text)
                    ));
+            }
+        }
+        ReportCls reportclass = new ReportCls();
+        LocalReport rep = new LocalReport();
+        SaveFileDialog saveFileDialog = new SaveFileDialog();
+        private void Btn_pdf_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                List<ReportParameter> paramarr = new List<ReportParameter>();
+
+                string addpath = "";
+                bool isArabic = ReportCls.checkLang();
+                if (isArabic)
+                {
+                    if (selectedTab == 0)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArVendor.rdlc";
+                    }
+                    else if (selectedTab == 1)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Recipient\Ar\ArCustomer.rdlc";
+                    }
+                    else if (selectedTab == 2)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Recipient\Ar\ArUser.rdlc";
+                    }
+                    else if (selectedTab == 6)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Recipient\Ar\ArShipping.rdlc";
+                    }
+                }
+                else
+                {
+                    if (selectedTab == 0)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Recipient\En\Vendor.rdlc";
+                    }
+                    else if (selectedTab == 1)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Recipient\En\Customer.rdlc";
+                    }
+                    else if (selectedTab == 2)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Recipient\En\User.rdlc";
+                    }
+                    else if (selectedTab == 6)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Recipient\En\Shipping.rdlc";
+                    }
+                }
+                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+                ReportCls.checkLang();
+
+                clsReports.cashTransferSts(temp, rep, reppath);
+                clsReports.setReportLanguage(paramarr);
+                clsReports.Header(paramarr);
+
+                rep.SetParameters(paramarr);
+
+                rep.Refresh();
+
+                saveFileDialog.Filter = "PDF|*.pdf;";
+
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    string filepath = saveFileDialog.FileName;
+                    LocalReportExtensions.ExportToPDF(rep, filepath);
+                }
+            }
+
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
+
+        private void Btn_print_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                List<ReportParameter> paramarr = new List<ReportParameter>();
+
+                string addpath = "";
+                bool isArabic = ReportCls.checkLang();
+                if (isArabic)
+                {
+                    if (selectedTab == 0)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArVendor.rdlc";
+                    }
+                    else if (selectedTab == 1)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Recipient\Ar\ArCustomer.rdlc";
+                    }
+                    else if (selectedTab == 2)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Recipient\Ar\ArUser.rdlc";
+                    }
+                    else if (selectedTab == 6)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Recipient\Ar\ArShipping.rdlc";
+                    }
+                }
+                else
+                {
+                    if (selectedTab == 0)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Recipient\En\Vendor.rdlc";
+                    }
+                    else if (selectedTab == 1)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Recipient\En\Customer.rdlc";
+                    }
+                    else if (selectedTab == 2)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Recipient\En\User.rdlc";
+                    }
+                    else if (selectedTab == 6)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Recipient\En\Shipping.rdlc";
+                    }
+                }
+                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+                ReportCls.checkLang();
+
+                clsReports.cashTransferSts(temp, rep, reppath);
+                clsReports.setReportLanguage(paramarr);
+                clsReports.Header(paramarr);
+
+                rep.SetParameters(paramarr);
+                rep.Refresh();
+                LocalReportExtensions.PrintToPrinter(rep);
+            }
+
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
     }

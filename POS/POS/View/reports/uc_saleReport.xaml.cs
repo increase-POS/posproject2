@@ -782,9 +782,6 @@ namespace POS.View.reports
         {
             List<ItemTransferInvoice> list = new List<ItemTransferInvoice>();
 
-
-         
-
             if (selectedTab == 0)
             {
                 var temp = fillRowChartList(Invoices, chk_invoice, chk_return, chk_drafs, dp_startDate, dp_endDate, dt_startTime, dt_endTime);

@@ -187,6 +187,27 @@ namespace POS.Classes
             rep.DataSources.Add(new ReportDataSource("DataSetItemTransfer", invoiceItems));
             rep.EnableExternalImages = true;
         }
+        public static void storage(IEnumerable<Storage> storageQuery, LocalReport rep, string reppath)
+        {
+            rep.ReportPath = reppath;
+            rep.EnableExternalImages = true;
+            rep.DataSources.Clear();
+            rep.DataSources.Add(new ReportDataSource("DataSetStorage", storageQuery));
+        }
+        public static void cashTransferSts(IEnumerable<CashTransferSts> cashTransfers, LocalReport rep, string reppath)
+        {
+            rep.ReportPath = reppath;
+            rep.EnableExternalImages = true;
+            rep.DataSources.Clear();
+            rep.DataSources.Add(new ReportDataSource("DataSetCashTransferSts", cashTransfers));
+        }
+        public static void itemTransferInvoice(IEnumerable<ItemTransferInvoice> itemTransferInvoices, LocalReport rep, string reppath)
+        {
+            rep.ReportPath = reppath;
+            rep.EnableExternalImages = true;
+            rep.DataSources.Clear();
+            rep.DataSources.Add(new ReportDataSource("DataSetItemTransferInvoice", itemTransferInvoices));
+        }
 
     }
 }

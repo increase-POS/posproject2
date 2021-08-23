@@ -1,10 +1,13 @@
 ﻿using LiveCharts;
 using LiveCharts.Helpers;
 using LiveCharts.Wpf;
+using Microsoft.Reporting.WinForms;
+using Microsoft.Win32;
 using POS.Classes;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -834,10 +837,11 @@ namespace POS.View.reports
 
         /*Fill Events*/
         /*********************************************************************************/
-
+        IEnumerable<CashTransferSts> temp = null;
         private void fillVendorsEvents()
         {
-            dgPayments.ItemsSource = fillList(payments, cb_vendors, cb_vendorPayType, cb_vendorAccountant, dp_vendorStartDate, dp_vendorEndDate).Where(x => x.side == "v" || x.side == "b");
+           temp = fillList(payments, cb_vendors, cb_vendorPayType, cb_vendorAccountant, dp_vendorStartDate, dp_vendorEndDate).Where(x => x.side == "v" || x.side == "b");
+            dgPayments.ItemsSource = temp;
             fillPieChart();
             fillColumnChart();
             fillRowChart();
@@ -845,7 +849,8 @@ namespace POS.View.reports
 
         private void fillCustomersEvents()
         {
-            dgPayments.ItemsSource = fillList(payments, cb_customer, cb_customerPayType, cb_customerAccountant, dp_customerStartDate, dp_customerEndDate).Where(x => x.side == "c" || x.side == "b");
+           temp = fillList(payments, cb_customer, cb_customerPayType, cb_customerAccountant, dp_customerStartDate, dp_customerEndDate).Where(x => x.side == "c" || x.side == "b");
+            dgPayments.ItemsSource = temp;
             fillPieChart();
             fillColumnChart();
             fillRowChart();
@@ -853,7 +858,8 @@ namespace POS.View.reports
 
         private void fillUserEvents()
         {
-            dgPayments.ItemsSource = fillList(payments, cb_users, cb_userPayType, cb_userAccountant, dp_userStartDate, dp_userEndDate).Where(x => x.side == "u");
+            temp = fillList(payments, cb_users, cb_userPayType, cb_userAccountant, dp_userStartDate, dp_userEndDate).Where(x => x.side == "u");
+            dgPayments.ItemsSource = temp;
             fillPieChart();
             fillColumnChart();
             fillRowChart();
@@ -861,7 +867,8 @@ namespace POS.View.reports
 
         private void fillSalaryEvents()
         {
-            dgPayments.ItemsSource = fillList(payments, cb_salary, cb_salaryPayType, cb_salaryAccountant, dp_salaryStartDate, dp_salaryEndDate).Where(x => x.side == "s");
+            temp = fillList(payments, cb_salary, cb_salaryPayType, cb_salaryAccountant, dp_salaryStartDate, dp_salaryEndDate).Where(x => x.side == "s");
+            dgPayments.ItemsSource = temp;
             fillPieChart();
             fillColumnChart();
             fillRowChart();
@@ -869,7 +876,8 @@ namespace POS.View.reports
 
         private void fillGeneralExpensesEvents()
         {
-            dgPayments.ItemsSource = fillList(payments, cb_generalExpenses, cb_generalExpensesPayType, cb_generalExpensesAccountant, dp_generalExpensesStartDate, dp_generalExpensesEndDate).Where(x => x.side == "e");
+            temp = fillList(payments, cb_generalExpenses, cb_generalExpensesPayType, cb_generalExpensesAccountant, dp_generalExpensesStartDate, dp_generalExpensesEndDate).Where(x => x.side == "e");
+            dgPayments.ItemsSource = temp;
             fillPieChart();
             fillColumnChart();
             fillRowChart();
@@ -877,7 +885,8 @@ namespace POS.View.reports
 
         private void fillAdministrativePullEvents()
         {
-            dgPayments.ItemsSource = fillList(payments, cb_administrativePull, cb_administrativePullPayType, cb_administrativePullAccountant, dp_administrativePullStartDate, dp_administrativePullEndDate).Where(x => x.side == "m");
+            temp = fillList(payments, cb_administrativePull, cb_administrativePullPayType, cb_administrativePullAccountant, dp_administrativePullStartDate, dp_administrativePullEndDate).Where(x => x.side == "m");
+            dgPayments.ItemsSource = temp;
             fillPieChart();
             fillColumnChart();
             fillRowChart();
@@ -885,7 +894,8 @@ namespace POS.View.reports
 
         private void fillShippingEvents()
         {
-            dgPayments.ItemsSource = fillList(payments, cb_shipping, cb_shippingPayType, cb_shippingAccountant, dp_shippingStartDate, dp_shippingEndDate).Where(x => x.side == "sh");
+            temp = fillList(payments, cb_shipping, cb_shippingPayType, cb_shippingAccountant, dp_shippingStartDate, dp_shippingEndDate).Where(x => x.side == "sh");
+            dgPayments.ItemsSource = temp;
             fillPieChart();
             fillColumnChart();
             fillRowChart();
@@ -1423,6 +1433,195 @@ namespace POS.View.reports
                    obj.updateUserAcc.Contains(txt_search.Text) ||
                    obj.shippingCompanyName.Contains(txt_search.Text)
                    ));
+            }
+        }
+        ReportCls reportclass = new ReportCls();
+        LocalReport rep = new LocalReport();
+        SaveFileDialog saveFileDialog = new SaveFileDialog();
+        private void Btn_pdf_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                List<ReportParameter> paramarr = new List<ReportParameter>();
+
+                string addpath = "";
+                bool isArabic = ReportCls.checkLang();
+                if (isArabic)
+                {
+                    if (selectedTab == 0)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArVendor.rdlc";
+                    }
+                    else if (selectedTab == 1)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArCustomer.rdlc";
+                    }
+                    else if (selectedTab == 2)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArUser.rdlc";
+                    }
+                    else if (selectedTab == 3)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArSalary.rdlc";
+                    }
+                    else if (selectedTab == 4)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArGeneralExpenses.rdlc";
+                    }
+                    else if (selectedTab == 5)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArAdministrativePull.rdlc";
+                    }
+                    else if (selectedTab == 6)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArShipping.rdlc";
+                    }
+                }
+                else
+                {
+                    if (selectedTab == 0)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\Vendor.rdlc";
+                    }
+                    else if (selectedTab == 1)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\Customer.rdlc";
+                    }
+                    else if (selectedTab == 2)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\User.rdlc";
+                    }
+                    else if (selectedTab == 3)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\Salary.rdlc";
+                    }
+                    else if (selectedTab == 4)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\GeneralExpenses.rdlc";
+                    }
+                    else if (selectedTab == 5)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\AdministrativePull.rdlc";
+                    }
+                    else if (selectedTab == 6)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\Shipping.rdlc";
+                    }
+                }
+                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+                ReportCls.checkLang();
+
+                clsReports.cashTransferSts(temp, rep, reppath);
+                clsReports.setReportLanguage(paramarr);
+                clsReports.Header(paramarr);
+
+                rep.SetParameters(paramarr);
+
+                rep.Refresh();
+
+                saveFileDialog.Filter = "PDF|*.pdf;";
+
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    string filepath = saveFileDialog.FileName;
+                    LocalReportExtensions.ExportToPDF(rep, filepath);
+                }
+            }
+
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
+
+        private void Btn_print_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                List<ReportParameter> paramarr = new List<ReportParameter>();
+
+                string addpath="";
+                bool isArabic = ReportCls.checkLang();
+                if (isArabic)
+                {
+                    if (selectedTab == 0)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArVendor.rdlc";
+                    }
+                    else if (selectedTab == 1)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArCustomer.rdlc";
+                    }
+                    else if (selectedTab == 2)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArUser.rdlc";
+                    }
+                    else if (selectedTab == 3)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArSalary.rdlc";
+                    }
+                    else if (selectedTab == 4)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArGeneralExpenses.rdlc";
+                    }
+                    else if (selectedTab == 5)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArAdministrativePull.rdlc";
+                    }
+                    else if (selectedTab == 6)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArShipping.rdlc";
+                    }
+                }
+                else
+                {
+                    if (selectedTab == 0)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\Vendor.rdlc";
+                    }
+                    else if (selectedTab == 1)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\Customer.rdlc";
+                    }
+                    else if (selectedTab == 2)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\User.rdlc";
+                    }
+                    else if (selectedTab == 3)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\Salary.rdlc";
+                    }
+                    else if (selectedTab == 4)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\GeneralExpenses.rdlc";
+                    }
+                    else if (selectedTab == 5)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\AdministrativePull.rdlc";
+                    }
+                    else if (selectedTab == 6)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\Shipping.rdlc";
+                    }
+                }
+                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+                ReportCls.checkLang();
+
+                clsReports.cashTransferSts(temp, rep, reppath);
+                clsReports.setReportLanguage(paramarr);
+                clsReports.Header(paramarr);
+
+                rep.SetParameters(paramarr);
+                rep.Refresh();
+                LocalReportExtensions.PrintToPrinter(rep);
+            }
+
+            catch (Exception ex)
+            {
+
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
     }

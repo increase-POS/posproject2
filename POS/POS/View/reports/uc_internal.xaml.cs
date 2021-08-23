@@ -23,6 +23,9 @@ using MaterialDesignThemes.Wpf;
 using System.Collections.ObjectModel;
 using static POS.Classes.Statistics;
 using System.Globalization;
+using Microsoft.Reporting.WinForms;
+using Microsoft.Win32;
+using System.IO;
 
 namespace POS.View.reports
 {
@@ -307,7 +310,7 @@ namespace POS.View.reports
         /************************************************************************************************************************************/
         private int selectedTab = 0;
 
-
+        IEnumerable<ItemTransferInvoice> temp = null;
         private void btn_internalItems_Click(object sender, RoutedEventArgs e)
         {
 
@@ -323,7 +326,9 @@ namespace POS.View.reports
             bdr_item.Background = Brushes.White;
             fillComboBranches(cb_internalItemsFromBranches);
             fillComboBranches(cb_internalItemsToBranches);
-            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+            temp = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+            dgStock.ItemsSource = temp;
+
             showSelectedTabColumn();
             fillInternalColumnChart();
         }
@@ -343,8 +348,9 @@ namespace POS.View.reports
             //showSelectedTabColumn();
             fillComboBranches(cb_internalOperaterFromBranches);
             fillComboInternalOperatorType();
+            temp = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
 
-            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
+            dgStock.ItemsSource = temp;
             showSelectedTabColumn();
             fillInternalColumnChart();
         }
@@ -956,6 +962,117 @@ namespace POS.View.reports
                 dp_InternalOperatorEndDate.SelectedDate = null;
                 chk_internalOperaterFromAllBranches.IsChecked = false;
                 chk_internalOperatorAllTypes.IsChecked = false;
+            }
+        }
+        ReportCls reportclass = new ReportCls();
+        LocalReport rep = new LocalReport();
+        SaveFileDialog saveFileDialog = new SaveFileDialog();
+        private void Btn_pdf_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                List<ReportParameter> paramarr = new List<ReportParameter>();
+
+                string addpath = "";
+                bool isArabic = ReportCls.checkLang();
+                if (isArabic)
+                {
+                    if (selectedTab == 0)
+                    {
+                        addpath = @"\Reports\StatisticReport\Storage\Internal\Ar\ArItem.rdlc";
+                    }
+                    else if (selectedTab == 1)
+                    {
+                        addpath = @"\Reports\StatisticReport\Storage\Internal\Ar\ArOperator.rdlc";
+                    }
+                
+                }
+                else
+                {
+                    if (selectedTab == 0)
+                    {
+                        addpath = @"\Reports\StatisticReport\Storage\Internal\En\Item.rdlc";
+                    }
+                    else if (selectedTab == 1)
+                    {
+                        addpath = @"\Reports\StatisticReport\Storage\Internal\En\Operator.rdlc";
+                    }
+                 
+                }
+                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+                ReportCls.checkLang();
+
+                clsReports.itemTransferInvoice(temp, rep, reppath);
+                clsReports.setReportLanguage(paramarr);
+                clsReports.Header(paramarr);
+
+                rep.SetParameters(paramarr);
+
+                rep.Refresh();
+
+                saveFileDialog.Filter = "PDF|*.pdf;";
+
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    string filepath = saveFileDialog.FileName;
+                    LocalReportExtensions.ExportToPDF(rep, filepath);
+                }
+            }
+
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
+
+        private void Btn_print_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                List<ReportParameter> paramarr = new List<ReportParameter>();
+
+                string addpath = "";
+                bool isArabic = ReportCls.checkLang();
+                if (isArabic)
+                {
+                    if (selectedTab == 0)
+                    {
+                        addpath = @"\Reports\StatisticReport\Storage\Internal\Ar\ArItem.rdlc";
+                    }
+                    else if (selectedTab == 1)
+                    {
+                        addpath = @"\Reports\StatisticReport\Storage\Internal\Ar\ArOperator.rdlc";
+                    }
+                  
+                }
+                else
+                {
+                    if (selectedTab == 0)
+                    {
+                        addpath = @"\Reports\StatisticReport\Storage\Internal\En\Item.rdlc";
+                    }
+                    else if (selectedTab == 1)
+                    {
+                        addpath = @"\Reports\StatisticReport\Storage\Internal\En\Operator.rdlc";
+                    }
+                }
+                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+                ReportCls.checkLang();
+
+                clsReports.itemTransferInvoice(temp, rep, reppath);
+                clsReports.setReportLanguage(paramarr);
+                clsReports.Header(paramarr);
+
+                rep.SetParameters(paramarr);
+                rep.Refresh();
+                LocalReportExtensions.PrintToPrinter(rep);
+            }
+
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
     }

@@ -1,10 +1,13 @@
 ﻿using LiveCharts;
 using LiveCharts.Helpers;
 using LiveCharts.Wpf;
+using Microsoft.Reporting.WinForms;
+using Microsoft.Win32;
 using POS.Classes;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -214,10 +217,11 @@ namespace POS.View.reports
 
         /*Fill Events*/
         /*********************************************************************************/
-
+        IEnumerable<CashTransferSts> temp = null;
         private void fillPyamentsEvents()
         {
-            dgPayments.ItemsSource = fillList(payments, cb_paymentsBank, cb_paymentsUser, cb_paymentsAccountant, dp_paymentsStartDate, dp_paymentsEndDate).Where(s => s.side == "bn" && s.isConfirm == 1);
+            temp = fillList(payments, cb_paymentsBank, cb_paymentsUser, cb_paymentsAccountant, dp_paymentsStartDate, dp_paymentsEndDate).Where(s => s.side == "bn" && s.isConfirm == 1);
+            dgPayments.ItemsSource = temp;
             fillPieChart();
             fillColumnChart();
             fillRowChart();
@@ -225,7 +229,8 @@ namespace POS.View.reports
 
         private void fillRecipientsEvents()
         {
-            dgPayments.ItemsSource = fillList(recipient, cb_recipientBank, cb_recipientUser, cb_recipientAccountant, dp_recipientStartDate, dp_recipientEndDate).Where(s => s.side == "bn" && s.isConfirm == 1);
+            temp = fillList(recipient, cb_recipientBank, cb_recipientUser, cb_recipientAccountant, dp_recipientStartDate, dp_recipientEndDate).Where(s => s.side == "bn" && s.isConfirm == 1);
+            dgPayments.ItemsSource = temp;
             fillPieChart();
             fillColumnChart();
             fillRowChart();
@@ -594,13 +599,13 @@ namespace POS.View.reports
 
         private void Txt_search_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (selectedTab==0)
+            if (selectedTab == 0)
             {
                 var temp = fillList(payments, cb_paymentsBank, cb_paymentsUser, cb_paymentsAccountant, dp_paymentsStartDate, dp_paymentsEndDate).Where(s => s.side == "bn" && s.isConfirm == 1);
-                dgPayments.ItemsSource = temp.Where(obj=>(
-                obj.transNum.Contains(txt_search.Text)||
-                obj.bankName.Contains(txt_search.Text)||
-                obj.updateUserAcc.Contains(txt_search.Text)||
+                dgPayments.ItemsSource = temp.Where(obj => (
+                obj.transNum.Contains(txt_search.Text) ||
+                obj.bankName.Contains(txt_search.Text) ||
+                obj.updateUserAcc.Contains(txt_search.Text) ||
                 obj.userAcc.Contains(txt_search.Text)
                 ));
             }
@@ -613,6 +618,119 @@ namespace POS.View.reports
                 obj.updateUserAcc.Contains(txt_search.Text) ||
                 obj.userAcc.Contains(txt_search.Text)
                 ));
+            }
+        }
+        ReportCls reportclass = new ReportCls();
+        LocalReport rep = new LocalReport();
+        SaveFileDialog saveFileDialog = new SaveFileDialog();
+        private void Btn_pdf_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                List<ReportParameter> paramarr = new List<ReportParameter>();
+
+                string addpath = "";
+                bool isArabic = ReportCls.checkLang();
+                if (isArabic)
+                {
+                    if (selectedTab == 0)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Bank\Ar\ArDeposite.rdlc";
+                    }
+                    else if (selectedTab == 1)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Bank\Ar\ArPull.rdlc";
+                    }
+
+                }
+                else
+                {
+                    if (selectedTab == 0)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Bank\En\Deposite.rdlc";
+                    }
+                    else if (selectedTab == 1)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Bank\En\Pull.rdlc";
+                    }
+
+                }
+                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+                ReportCls.checkLang();
+
+                clsReports.cashTransferSts(temp, rep, reppath);
+                clsReports.setReportLanguage(paramarr);
+                clsReports.Header(paramarr);
+
+                rep.SetParameters(paramarr);
+
+                rep.Refresh();
+
+                saveFileDialog.Filter = "PDF|*.pdf;";
+
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    string filepath = saveFileDialog.FileName;
+                    LocalReportExtensions.ExportToPDF(rep, filepath);
+                }
+            }
+
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
+
+        private void Btn_print_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                List<ReportParameter> paramarr = new List<ReportParameter>();
+
+                string addpath = "";
+                bool isArabic = ReportCls.checkLang();
+                if (isArabic)
+                {
+                    if (selectedTab == 0)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Bank\Ar\ArDeposite.rdlc";
+                    }
+                    else if (selectedTab == 1)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Bank\Ar\ArPull.rdlc";
+                    }
+
+                }
+                else
+                {
+                    if (selectedTab == 0)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Bank\En\Deposite.rdlc";
+                    }
+                    else if (selectedTab == 1)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Bank\En\Pull.rdlc";
+                    }
+
+                }
+                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+                ReportCls.checkLang();
+
+                clsReports.cashTransferSts(temp, rep, reppath);
+                clsReports.setReportLanguage(paramarr);
+                clsReports.Header(paramarr);
+
+                rep.SetParameters(paramarr);
+                rep.Refresh();
+                LocalReportExtensions.PrintToPrinter(rep);
+            }
+
+            catch (Exception ex)
+            {
+
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
     }
