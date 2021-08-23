@@ -1,0 +1,224 @@
+﻿<UserControl x:Class="POS.View.Settings.uc_reportSetting"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:POS.View.Settings"
+             mc:Ignorable="d" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             Loaded="UserControl_Loaded"  
+             d:DesignHeight="700" d:DesignWidth="1000">
+    <ScrollViewer>
+        <Grid x:Name="grid_main" Margin="0,15,15,15"  >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <Border BorderThickness="0"    Grid.Row="0"  Grid.Column="0"  Margin="10,10,10,10"
+                    CornerRadius="7" BorderBrush="Black" Background="White" Padding="0">
+                <StackPanel   Margin="0" >
+                    <TextBlock Grid.Row="0" Text="Report language" x:Name="txt_reportlang" Foreground="#178DD2" FontWeight="Bold" FontSize="18"  
+                                  VerticalAlignment="Center" 
+                                       HorizontalAlignment="Left" Margin="10,5,5,5"/>
+                    <Grid  Margin="5" Grid.Row="1">
+                        <ComboBox x:Name="cb_reportlang"  Grid.Row="2"
+                                  Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
+                             materialDesign:HintAssist.Hint="Report language..."  
+                           TextBlock.FontSize="12"   Background="#f8f8f8"
+                                        Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                Grid.Column="0" Height="40"   
+                           BorderBrush="#737373" BorderThickness="0"   >
+
+                        </ComboBox>
+                        <Path Fill="#E81123" x:Name="p_errorReportlang" Stretch="Fill" Margin="5,5,15,5"
+                              HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
+                         VerticalAlignment="Center" Width="15"  Height="15"
+                              Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
+                            <Path.ToolTip>
+                                <ToolTip x:Name="tt_errorReportlang" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                            </Path.ToolTip>
+                        </Path>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <Border BorderThickness="0"    Grid.Row="0"  Grid.Column="1"  Margin="10,10,10,10"
+                    CornerRadius="7" BorderBrush="Black" Background="White" Padding="0">
+                <StackPanel   Margin="0" >
+                    <TextBlock Grid.Row="0" Text="Copy Count" x:Name="txt_copyCount" Foreground="#178DD2" FontWeight="Bold" FontSize="18"  
+                                  VerticalAlignment="Center" 
+                                       HorizontalAlignment="Left" Margin="10,5,5,5"/>
+                    <Grid  Margin="5" Grid.Row="1">
+                        <ComboBox x:Name="cb_purCopyCount"  Grid.Row="2"
+                                  Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
+                             materialDesign:HintAssist.Hint="purchase Copy Count..."  
+                           TextBlock.FontSize="12"   Background="#f8f8f8"
+                                        Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                Grid.Column="0" Height="40"   
+                           BorderBrush="#737373" BorderThickness="0"   >
+
+                        </ComboBox>
+                        <Path Fill="#E81123" x:Name="p_errorPurCopyCount" Stretch="Fill" Margin="5,5,15,5"
+                              HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
+                         VerticalAlignment="Center" Width="15"  Height="15"
+                              Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
+                            <Path.ToolTip>
+                                <ToolTip x:Name="tt_errorPurCopyCount" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                            </Path.ToolTip>
+                        </Path>
+                    </Grid>
+                    <Grid  Margin="5" Grid.Row="1">
+                        <ComboBox x:Name="cb_saleCopyCount"  Grid.Row="2"
+                                  Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
+                             materialDesign:HintAssist.Hint="sale Copy Count..."  
+                           TextBlock.FontSize="12"   Background="#f8f8f8"
+                                        Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                Grid.Column="0" Height="40"   
+                           BorderBrush="#737373" BorderThickness="0"   >
+
+                        </ComboBox>
+                        <Path Fill="#E81123" x:Name="p_errorSaleCopyCount" Stretch="Fill" Margin="5,5,15,5"
+                              HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
+                         VerticalAlignment="Center" Width="15"  Height="15"
+                              Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
+                            <Path.ToolTip>
+                                <ToolTip x:Name="tt_errorSaleCopyCount" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                            </Path.ToolTip>
+                        </Path>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+
+           
+            <Border BorderThickness="0"    Grid.Row="1"  Grid.Column="0"  Margin="10,10,10,10"
+                    CornerRadius="7" BorderBrush="Black" Background="White" Padding="0">
+                <Grid>
+                <StackPanel   Margin="0" >
+                    <TextBlock Grid.Row="0" Text="systm setting" x:Name="txt_systmSetting" Foreground="#178DD2" FontWeight="Bold" FontSize="18"  
+                                  VerticalAlignment="Center" 
+                                       HorizontalAlignment="Left" Margin="10,5,5,5"/>
+                    <StackPanel Grid.Row="5" Orientation="Horizontal">
+                        <TextBlock x:Name="txt_printOnSavePur" Grid.Column="0" 
+                                Margin="10,5,5,5" Text="print On Save Purchase" Foreground="#6e6e6e"
+                            HorizontalAlignment="Left" VerticalAlignment="Center"
+                                  FontSize="12"/>
+                        <ToggleButton x:Name="tgl_printOnSavePur" Grid.Column="1"    IsChecked="True"
+                                 VerticalAlignment="Center" Padding="10,0,5,0"
+                                              Margin="0,5,0,5" Height="13" Width="28" />
+                    </StackPanel>
+                        <StackPanel Grid.Row="5" Orientation="Horizontal">
+                            <TextBlock x:Name="txt_emailOnSavePur" Grid.Column="0" 
+                                Margin="10,5,5,5" Text="email On Save Purchase" Foreground="#6e6e6e"
+                            HorizontalAlignment="Left" VerticalAlignment="Center"
+                                  FontSize="12"/>
+                            <ToggleButton x:Name="tgl_emailOnSavePur" Grid.Column="1"    IsChecked="True"
+                                 VerticalAlignment="Center" Padding="10,0,5,0"
+                                              Margin="0,5,0,5" Height="13" Width="28" />
+                        </StackPanel>
+                        <StackPanel Grid.Row="5" Orientation="Horizontal">
+                            <TextBlock x:Name="txt_printOnSaveSale" Grid.Column="0" 
+                                Margin="10,5,5,5" Text="print On Save Sale" Foreground="#6e6e6e"
+                            HorizontalAlignment="Left" VerticalAlignment="Center"
+                                  FontSize="12"/>
+                            <ToggleButton x:Name="tgl_printOnSaveSale" Grid.Column="1"    IsChecked="True"
+                                 VerticalAlignment="Center" Padding="10,0,5,0"
+                                              Margin="0,5,0,5" Height="13" Width="28" />
+                        </StackPanel>
+                    
+                        <StackPanel Grid.Row="5" Orientation="Horizontal">
+                            <TextBlock x:Name="txt_emailOnSaveSale" Grid.Column="0" 
+                                Margin="10,5,5,5" Text="email On Save Sale" Foreground="#6e6e6e"
+                            HorizontalAlignment="Left" VerticalAlignment="Center"
+                                  FontSize="12"/>
+                            <ToggleButton x:Name="tgl_emailOnSaveSale" Grid.Column="1"    IsChecked="True"
+                                 VerticalAlignment="Center" Padding="10,0,5,0"
+                                              Margin="0,5,0,5" Height="13" Width="28" />
+                        </StackPanel>
+                    </StackPanel>
+                
+                </Grid>
+            </Border>
+
+
+            <Border BorderThickness="0"    Grid.Row="1"  Grid.Column="1"  Margin="10,10,10,10"
+                    CornerRadius="7" BorderBrush="Black" Background="White" Padding="0">
+                <StackPanel   Margin="0" >
+                    <TextBlock Grid.Row="0" Text="pos setting" x:Name="txt_posSetting" Foreground="#178DD2" FontWeight="Bold" FontSize="18"  
+                                  VerticalAlignment="Center" 
+                                       HorizontalAlignment="Left" Margin="10,5,5,5"/>
+                    <Grid  Margin="5" Grid.Row="1">
+                        <ComboBox x:Name="cb_repname"  Grid.Row="2"
+                                  Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
+                             materialDesign:HintAssist.Hint="report printer name..."  
+                           TextBlock.FontSize="12"   Background="#f8f8f8"
+                                        Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                Grid.Column="0" Height="40"   
+                           BorderBrush="#737373" BorderThickness="0"   >
+
+                        </ComboBox>
+                        <Path Fill="#E81123" x:Name="p_errorRepname" Stretch="Fill" Margin="5,5,15,5"
+                              HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
+                         VerticalAlignment="Center" Width="15"  Height="15"
+                              Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
+                            <Path.ToolTip>
+                                <ToolTip x:Name="tt_errorRepname"  Style="{StaticResource ToolTipError}"/>
+                            </Path.ToolTip>
+                        </Path>
+                    </Grid>
+                    <Grid  Margin="5" Grid.Row="1">
+                        <ComboBox x:Name="cb_salname"  Grid.Row="2"
+                                  Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
+                             materialDesign:HintAssist.Hint="sales invoice printer..."  
+                           TextBlock.FontSize="12"   Background="#f8f8f8"
+                                        Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                Grid.Column="0" Height="40"   
+                           BorderBrush="#737373" BorderThickness="0"   >
+
+                        </ComboBox>
+                        <Path Fill="#E81123" x:Name="p_errorSalname" Stretch="Fill" Margin="5,5,15,5"
+                              HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
+                         VerticalAlignment="Center" Width="15"  Height="15"
+                              Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
+                            <Path.ToolTip>
+                                <ToolTip x:Name="tt_errorSalname" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                            </Path.ToolTip>
+                        </Path>
+                    </Grid>
+                    <Grid  Margin="5" Grid.Row="1">
+                        <ComboBox x:Name="cb_saleInvPaperSize"  Grid.Row="2"
+                                  Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
+                             materialDesign:HintAssist.Hint="sale Invoice Paper Size ..."  
+                           TextBlock.FontSize="12"   Background="#f8f8f8"
+                                        Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                Grid.Column="0" Height="40"   
+                           BorderBrush="#737373" BorderThickness="0"   >
+
+                        </ComboBox>
+                        <Path Fill="#E81123" x:Name="p_errorSaleInvPaperSize" Stretch="Fill" Margin="5,5,15,5"
+                              HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
+                         VerticalAlignment="Center" Width="15"  Height="15"
+                              Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
+                            <Path.ToolTip>
+                                <ToolTip x:Name="tt_errorSaleInvPaperSize" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                            </Path.ToolTip>
+                        </Path>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+
+
+            <Border BorderThickness="0" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"   Height="35"   Margin="10,10,5,10"
+                    CornerRadius="7" BorderBrush="Black" Background="#178DD2" Padding="0">
+                    <Button Content="Save" Height="auto" BorderBrush="{x:Null}"  FontSize="14" x:Name="btn_save"
+                Background="{x:Null}" Click="Btn_save_Click" IsEnabled="True" />
+            </Border>
+        </Grid>
+    </ScrollViewer>
+</UserControl>

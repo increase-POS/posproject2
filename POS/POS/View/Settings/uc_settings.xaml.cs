@@ -160,6 +160,7 @@ namespace POS.View.Settings
 
                 refreashBachgroundClick(btn_reportsSettings);
                 grid_main.Children.Clear();
+                grid_main.Children.Add(uc_reportSetting.Instance);
                 Button button = sender as Button;
                 MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
             }
