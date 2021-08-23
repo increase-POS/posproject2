@@ -16,6 +16,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using POS.Classes;
 using POS.View.sectionData;
+using POS.View.windows;
 
 namespace POS.View
 {
@@ -86,6 +87,8 @@ namespace POS.View
 
         private void BTN_Customers_Click(object sender, RoutedEventArgs e)
         {
+
+
             try
             {
                 refreashBachgroundClick(btn_customers);
@@ -120,11 +123,22 @@ namespace POS.View
         {
             try
             {
+                #region menu state
+                string menuState = MainWindow.menuIsOpen;
+                if (menuState.Equals("open"))
+                    ex.IsExpanded = true;
+                else
+                    ex.IsExpanded = false;
+                #endregion
+
+                #region translate
                 if (MainWindow.lang.Equals("en"))
                 { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly()); grid_ucSectionData.FlowDirection = FlowDirection.LeftToRight; }
                 else
                 { MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly()); grid_ucSectionData.FlowDirection = FlowDirection.RightToLeft; }
                 translate();
+                #endregion
+
                 permission();
             }
             catch (Exception ex)
@@ -280,6 +294,17 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
+        private async void Ex_Expanded(object sender, RoutedEventArgs e)
+        {
+            int oId = await SectionData.getOpenValueId();
+            SectionData.saveMenuState(oId);
+        }
 
+        private async void Ex_Collapsed(object sender, RoutedEventArgs e)
+        {
+            int cId = await SectionData.getCloseValueId();
+            SectionData.saveMenuState(cId);
+        }
+       
     }
 }

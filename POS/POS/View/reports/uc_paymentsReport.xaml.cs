@@ -10,6 +10,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -1623,6 +1624,102 @@ namespace POS.View.reports
 
                 SectionData.ExceptionMessage(ex, this, sender);
             }
+        }
+
+        private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
+        {
+            Thread t1 = new Thread(() =>
+            {
+                List<ReportParameter> paramarr = new List<ReportParameter>();
+
+                string addpath = "";
+                bool isArabic = ReportCls.checkLang();
+                if (isArabic)
+                {
+                    if (selectedTab == 0)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArVendor.rdlc";
+                    }
+                    else if (selectedTab == 1)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArCustomer.rdlc";
+                    }
+                    else if (selectedTab == 2)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArUser.rdlc";
+                    }
+                    else if (selectedTab == 3)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArSalary.rdlc";
+                    }
+                    else if (selectedTab == 4)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArGeneralExpenses.rdlc";
+                    }
+                    else if (selectedTab == 5)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArAdministrativePull.rdlc";
+                    }
+                    else if (selectedTab == 6)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArShipping.rdlc";
+                    }
+                }
+                else
+                {
+                    if (selectedTab == 0)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\Vendor.rdlc";
+                    }
+                    else if (selectedTab == 1)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\Customer.rdlc";
+                    }
+                    else if (selectedTab == 2)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\User.rdlc";
+                    }
+                    else if (selectedTab == 3)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\Salary.rdlc";
+                    }
+                    else if (selectedTab == 4)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\GeneralExpenses.rdlc";
+                    }
+                    else if (selectedTab == 5)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\AdministrativePull.rdlc";
+                    }
+                    else if (selectedTab == 6)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\Shipping.rdlc";
+                    }
+                }
+                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+                ReportCls.checkLang();
+
+                clsReports.cashTransferSts(temp, rep, reppath);
+                clsReports.setReportLanguage(paramarr);
+                clsReports.Header(paramarr);
+
+                rep.SetParameters(paramarr);
+
+                rep.Refresh();
+                this.Dispatcher.Invoke(() =>
+                {
+                    saveFileDialog.Filter = "EXCEL|*.xls;";
+                    if (saveFileDialog.ShowDialog() == true)
+                    {
+                        string filepath = saveFileDialog.FileName;
+                        LocalReportExtensions.ExportToExcel(rep, filepath);
+                    }
+                });
+
+
+            });
+            t1.Start();
         }
     }
 }

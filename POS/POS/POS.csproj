@@ -212,6 +212,9 @@
     <Compile Include="Classes\Service.cs" />
     <Compile Include="Classes\SettingCls.cs" />
     <Compile Include="Classes\setValues.cs" />
+    <Compile Include="Classes\PosSetting.cs" />
+    <Compile Include="Classes\Printers.cs" />
+    <Compile Include="Classes\PaperSize.cs" />
     <Compile Include="Classes\ShippingCompanies.cs" />
     <Compile Include="Classes\Statistics.cs" />
     <Compile Include="Classes\StorageCost.cs" />

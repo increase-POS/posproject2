@@ -11,7 +11,7 @@
      WindowStartupLocation="CenterScreen"  WindowStyle="None"
     WindowState="Maximized"  Loaded="Window_Loaded" Closing="Window_Closing">
     <Window.Resources>
-           
+
         <Storyboard x:Key="Storyboard1">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)" Storyboard.TargetName="rectangle">
                 <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
@@ -63,41 +63,42 @@
         </EventTrigger>
     </Window.Triggers>
     <!--FlowDirection="RightToLeft"-->
-    <Grid Margin="0" x:Name="grid_mainWindow">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="60"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="3"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-
-        <Grid  Grid.Row="0" Grid.ColumnSpan="2" Background="#000000"  >
+    <Grid  >
+        <Grid Margin="0" x:Name="grid_mainWindow" MouseDown="Grid_MouseDown">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="3"/>
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                
+                <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
-            <Grid >
+
+            <Grid  Grid.Row="0" Grid.ColumnSpan="2" Background="#000000"  >
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="75"/>
+
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
                     <ColumnDefinition Width="auto"/>
                     <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
+                <Grid >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="75"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
 
-                <Path   Fill="White"  Stretch="Fill"   FlowDirection="LeftToRight"
+                    <Path   Fill="White"  Stretch="Fill"   FlowDirection="LeftToRight"
                               HorizontalAlignment="Center" Grid.Column="0"  
                          VerticalAlignment="Center" Width="47.475" Height="27.694"
                       Data="M320.9,182.9c-1.7,1.3-2.9,2.3-4.1,3.2c-3.8,2.5-7.6,4.9-11.4,7.4c-1.8,1.2-2.8,0.6-3.6-1.2
@@ -119,98 +120,111 @@
 	c-10.9,7.6-23.2,10.8-36.2,10.8c-34.1,0.2-68.1,0.2-102.2,0c-10.7,0-21.1-2.3-30.1-8.3c-15.6-10.4-20.8-25.3-18.1-43.3
 	c0.8-5.4,2.8-10.5,4.9-15.6c-0.3,5-1,9.9-1,14.9c-0.1,17.6,9.9,30.5,27.1,34.9c7.9,2.1,16,2.3,24.2,1.5c0.1-1.8,0.3-3.5,0.4-5
 	c7.9-1.4,15.5-2.8,23.4-4.2c0,2.7,0,5.6,0,8.6C227.9,269.3,229.9,269.3,232.2,269.3z" />
-                <TextBlock Text="Increase POS" FontSize="16" FontWeight="Bold" 
+                    <TextBlock Text="Increase POS" FontSize="16" FontWeight="Bold" 
                            Foreground="White" Grid.Column="1"
                        VerticalAlignment="Center" Margin="5,5,5,5"/>
-                <materialDesign:PackIcon  Grid.Column="1" Foreground="Silver" Kind="InfoCircle"  FlowDirection="LeftToRight"
+                    <materialDesign:PackIcon  Grid.Column="1" Foreground="Silver" Kind="InfoCircle"  FlowDirection="LeftToRight"
                                          Width="20" Height="20"   Margin="110,22,5,5" />
-                <StackPanel Grid.Column="2" VerticalAlignment="Center" Orientation="Horizontal"
+                    <StackPanel Grid.Column="2" VerticalAlignment="Center" Orientation="Horizontal"
                                 x:Name="sp_mainTrack">
-                    <TextBlock FontSize="14" FontWeight="Regular" Foreground="White" 
+                        <TextBlock FontSize="14" FontWeight="Regular" Foreground="White" 
                                Margin="2.5,1" x:Name="txt_firstLevelTrack"/>
-                    <TextBlock FontSize="14" FontWeight="Regular" Foreground="White" 
+                        <TextBlock FontSize="14" FontWeight="Regular" Foreground="White" 
                                Margin="2.5,1" x:Name="txt_secondLevelTrack"/>
+                    </StackPanel>
+                </Grid>
+                <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="5">
+                    <TextBlock Name="txtTime" HorizontalAlignment="Center" Foreground="White"  FontSize="12" ></TextBlock>
+                    <TextBlock Name="txtDate" Foreground="White" HorizontalAlignment="Center"  FontSize="12" ></TextBlock>
                 </StackPanel>
-            </Grid>
-            <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="5">
-                <TextBlock Name="txtTime" HorizontalAlignment="Center" Foreground="White"  FontSize="12" ></TextBlock>
-                <TextBlock Name="txtDate" Foreground="White" HorizontalAlignment="Center"  FontSize="12" ></TextBlock>
-            </StackPanel>
-            <Border Grid.Column="2" Height="30" BorderBrush="White" BorderThickness="1,0,0,0" Margin="5" VerticalAlignment="Center" ></Border>
-            <Button  Grid.Column="3" Name="btn_Keyboard"  Click="btn_Keyboard_Click"
+                <Border Grid.Column="2" Height="30" BorderBrush="White" BorderThickness="1,0,0,0" Margin="5" VerticalAlignment="Center" ></Border>
+                <Button  Grid.Column="3" Name="btn_Keyboard"  Click="btn_Keyboard_Click"
                 Margin="5,10,5,10" ToolTip="" 
                     Background="{x:Null}" BorderBrush="{x:Null}" Width="auto" Height="auto" 
                     Padding="0" >
-                <materialDesign:PackIcon Foreground="White" Kind="Keyboard"  FlowDirection="LeftToRight"
+                    <materialDesign:PackIcon Foreground="White" Kind="Keyboard"  FlowDirection="LeftToRight"
                                          Width="30" Height="30"/>
-            </Button>
-            <materialDesign:Badged VerticalAlignment="Center" Margin="7.5,10,7.5,10"  Grid.Column="4" DockPanel.Dock="Right" 
+                </Button>
+                <materialDesign:Badged VerticalAlignment="Center" Margin="7.5,10,7.5,10"  Grid.Column="4" DockPanel.Dock="Right" 
                       BadgeBackground="{StaticResource MainColorRed}"  BadgeForeground="White"  Badge="+9">
-                <Button Grid.Column="4" x:Name="BTN_message"
+                    <Button Grid.Column="4" x:Name="BTN_message"
                     Background="{x:Null}" BorderBrush="{x:Null}" Width="25" Height="25" 
                     Padding="0" >
-                <materialDesign:PackIcon Foreground="White" Kind="Message"  FlowDirection="LeftToRight"
+                        <materialDesign:PackIcon Foreground="White" Kind="Message"  FlowDirection="LeftToRight"
                                          Width="25" Height="25"/>
-            </Button>
-            </materialDesign:Badged>
+                    </Button>
+                </materialDesign:Badged>
 
-                <Menu Background="Black" Height="auto" Grid.Column="5" Padding="0" VerticalAlignment="Center">
-                    <MenuItem Padding="0,0,0,0" >
-                        <MenuItem.Header>
-                            <materialDesign:Badged Name="md_notificationCount" VerticalAlignment="Center" Margin="7.5,10,7.5,10" Grid.Column="5"  
+
+
+
+                <materialDesign:Badged       Height="auto" Grid.Column="5"  Name="md_notificationCount" Margin="10,10,10,10" VerticalAlignment="Center"   
                       BadgeBackground="{StaticResource MainColorRed}"  BadgeForeground="White"  Badge="+9">
-                           
-                                    <materialDesign:PackIcon Margin="0,0,0,0" Foreground="White" Kind="Bell" 
+                    <Button Grid.Column="5" x:Name="BTN_notifications"
+                    Background="{x:Null}" BorderBrush="{x:Null}" Width="25" Height="25" Click="BTN_notifications_Click"
+                    Padding="0" >
+                        <materialDesign:PackIcon Foreground="White" Kind="Bell" 
                                          Width="25" Height="25"/>
-                            </materialDesign:Badged>
-                        </MenuItem.Header>
-                    <Separator />
-                 
-                    <Separator />
-                        <MenuItem Header="View All" Name="viewAll" Foreground="White"   
-                          />
-                    </MenuItem>
-                </Menu>
-         
+                        <Button.Triggers>
+                           
+                            <EventTrigger RoutedEvent="Button.Click">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation
+                        Storyboard.TargetName="bdrMain"
+                        Storyboard.TargetProperty="Opacity"
+                        From="0" To="1"
+                        Duration="0:0:0.5"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Button.Triggers>
+                    </Button>
+                </materialDesign:Badged>
 
 
-            <!--<Button Grid.Column="6" x:Name="BTN_dropDownProfile"
+
+
+                <!--<Button Grid.Column="6" x:Name="BTN_dropDownProfile"
                 Margin="5,10,5,10" ToolTip="" 
                     Background="{x:Null}" BorderBrush="{x:Null}" Width="25" Height="25" 
                     Padding="0" >
                 <materialDesign:PackIcon Foreground="White" Kind="MenuDown" 
                                          Width="25" Height="25"/>
             </Button>-->
-            <StackPanel  Margin="0,25,0,0"   Grid.Column="6" VerticalAlignment="Center">
-                <Menu Background="Black"  Padding="0" VerticalAlignment="Center">
-                    <MenuItem Padding="0,0,0,25" >
-                        <MenuItem.Header>
-                            <materialDesign:PackIcon Foreground="White" Kind="MenuDown" 
+                <StackPanel  Margin="0,25,0,0"   Grid.Column="6" VerticalAlignment="Center">
+                    <Menu Background="Black"  Padding="0" VerticalAlignment="Center">
+                        <MenuItem Padding="0,0,0,25" >
+                            <MenuItem.Header>
+                                <materialDesign:PackIcon Foreground="White" Kind="MenuDown" 
                                          Width="25" Height="25"/>
-                        </MenuItem.Header>
-                        <MenuItem x:Name="mi_changePassword"  Foreground="White"  BorderThickness="0,1,0,0" BorderBrush="#DEDEDE"
+                            </MenuItem.Header>
+                            <MenuItem x:Name="mi_changePassword"  Foreground="White"  BorderThickness="0,1,0,0" BorderBrush="#DEDEDE"
                               Header="Change Password" Click="Mi_changePassword_Click"
                               Icon="{materialDesign:PackIcon Kind=Password}"></MenuItem>
-                        <Separator />
-                        <MenuItem Header="Logout"  Foreground="White"  x:Name="BTN_logOut" Click="BTN_logOut_Click" 
+                            <Separator />
+                            <MenuItem Header="Logout"  Foreground="White"  x:Name="BTN_logOut" Click="BTN_logOut_Click" 
                          Icon="{materialDesign:PackIcon Kind=ExitToApp}" />
-                    </MenuItem>
-                </Menu>
-            </StackPanel>
-            <!--<Menu VerticalAlignment="Center" Background="{x:Null}"  Grid.Column="6"
+                        </MenuItem>
+                    </Menu>
+                </StackPanel>
+                <!--<Menu VerticalAlignment="Center" Background="{x:Null}"  Grid.Column="6"
                 IsMainMenu="True" Foreground="White" >
                 <MenuItem  Foreground="White" Icon="{materialDesign:PackIcon Kind=MenuDown}">
                     <MenuItem x:Name="mi_changePassword"
       Header="Change Password" Click="Mi_changePassword_Click"
       Icon="{materialDesign:PackIcon Kind=Password}"></MenuItem>
-                    --><!--<MenuItem
-      Header="Save As.." />--><!--
+                    -->
+                <!--<MenuItem
+      Header="Save As.." />-->
+                <!--
                     <Separator />
                     <MenuItem
       Header="Logout"
       Icon="{materialDesign:PackIcon Kind=ExitToApp}" />
                     
-                    --><!--<MenuItem
+                    -->
+                <!--<MenuItem
       Header="Excellent"
       IsCheckable="True"
       IsChecked="True" />
@@ -234,107 +248,108 @@
         Header="Plain" />
                         <MenuItem
         Header="Ice Cream" />
-                    </MenuItem>--><!--
+                    </MenuItem>-->
+                <!--
                 </MenuItem>
             </Menu>-->
-            <Ellipse Grid.Column="7" Margin="5,5,5,5" x:Name="img_userLogin"
+                <Ellipse Grid.Column="7" Margin="5,5,5,5" x:Name="img_userLogin"
                 HorizontalAlignment="Center" VerticalAlignment="Center"   
                      Height="40" Width="40">
-                <Ellipse.Fill >
-                    <ImageBrush Stretch="UniformToFill"  x:Name="IMG_userPic" ImageSource="pic/no-image-icon-40x40.png"   />
-                </Ellipse.Fill>
-            </Ellipse>
-            <StackPanel VerticalAlignment="Center" Orientation="Vertical" Grid.Column="8" Margin="5,5,5,5">
-                <TextBlock x:Name="txt_userName"  Text="" FontSize="12" Foreground="White" HorizontalAlignment="Center" />
-                <TextBlock x:Name="txt_userJob"  Text=""   FontSize="12" FontWeight="Light" Foreground="#E8E8E8" HorizontalAlignment="Left" />
-            </StackPanel>
-            <Button Grid.Column="10" x:Name="BTN_Minimize" Click="BTN_Minimize_Click"
+                    <Ellipse.Fill >
+                        <ImageBrush Stretch="UniformToFill"  x:Name="IMG_userPic" ImageSource="pic/no-image-icon-40x40.png"   />
+                    </Ellipse.Fill>
+                </Ellipse>
+                <StackPanel VerticalAlignment="Center" Orientation="Vertical" Grid.Column="8" Margin="5,5,5,5">
+                    <TextBlock x:Name="txt_userName"  Text="" FontSize="12" Foreground="White" HorizontalAlignment="Center" />
+                    <TextBlock x:Name="txt_userJob"  Text=""   FontSize="12" FontWeight="Light" Foreground="#E8E8E8" HorizontalAlignment="Left" />
+                </StackPanel>
+                <Button Grid.Column="10" x:Name="BTN_Minimize" Click="BTN_Minimize_Click"
                 Margin="5,10,5,10" ToolTip="Minimize" 
                     Background="{x:Null}" BorderBrush="{x:Null}" Width="25" Height="25" 
                     Padding="0" >
-                <materialDesign:PackIcon Foreground="White" Kind="Minus" 
+                    <materialDesign:PackIcon Foreground="White" Kind="Minus" 
                                          Width="25" Height="25"/>
-            </Button>
-            <Button Grid.Column="11" x:Name="BTN_Close" Click="BTN_Close_Click"  
+                </Button>
+                <Button Grid.Column="11" x:Name="BTN_Close" Click="BTN_Close_Click"  
                 Margin="5,10,5,10" ToolTip="Close" 
                     Background="{x:Null}" BorderBrush="{x:Null}" Width="25" Height="25" 
                     Padding="0" >
-                <materialDesign:PackIcon Foreground="White" Kind="Close" 
+                    <materialDesign:PackIcon Foreground="White" Kind="Close" 
                                          Width="25" Height="25"/>
-            </Button>
-            
-        </Grid>
-        <Grid  Background="#E8E8E8" x:Name="grid_main" Grid.Row="1" Grid.Column="1"/>
-
-        <Grid x:Name="grid" Width="75" HorizontalAlignment="Left" Grid.Row="1" Grid.Column="0"  
-              Background="#178DD2" RenderTransformOrigin="0.5,0.5" >
-            <Grid.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform/>
-                    <RotateTransform/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </Grid.RenderTransform>
-            <Grid Margin="0,0,0,0"  HorizontalAlignment="Left" >
-                <!--<ColorAnimation Duration="0:0:0.3" To="#35B5FF" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="rectangle"/>-->
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                </Grid.RowDefinitions>
-                <Button x:Name="BTN_menu" HorizontalAlignment="Right" VerticalAlignment="Top" Background="{x:Null}" BorderBrush="{x:Null}" Width="auto" Margin="0,0,7,0" Height="50" Click="BTN_Menu_Click" >
-                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Rectangle x:Name="rectangle" Width="30" Height="4" Margin="0 0 0 0" Fill="White" HorizontalAlignment="Center" VerticalAlignment="Top" RenderTransformOrigin="-0,0.5">
-                            <Rectangle.RenderTransform>
-                                <TransformGroup>
-                                    <ScaleTransform/>
-                                    <SkewTransform/>
-                                    <RotateTransform/>
-                                    <TranslateTransform/>
-                                </TransformGroup>
-                            </Rectangle.RenderTransform>
-                        </Rectangle>
-                        <Rectangle x:Name="rectangle1" Width="30" Height="4" Margin="0 20 0 0 " Fill="White" HorizontalAlignment="Center" VerticalAlignment="Top" RenderTransformOrigin="-0,0.5">
-                            <Rectangle.RenderTransform>
-                                <TransformGroup>
-                                    <ScaleTransform/>
-                                    <SkewTransform/>
-                                    <RotateTransform/>
-                                    <TranslateTransform/>
-                                </TransformGroup>
-                            </Rectangle.RenderTransform>
-                        </Rectangle>
-                        <Rectangle x:Name="rectangle2" Width="30" Height="4" Margin="0 10 0 0" Fill="White" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                    </Grid>
-                    <Button.ToolTip>
-                        <ToolTip Content="Menu"  Visibility="Visible" x:Name="tt_menu"/>
-                    </Button.ToolTip>
                 </Button>
-                <Button  Width="200" Height="50" Grid.Row="1" 
+
+            </Grid>
+            <Grid  Background="#E8E8E8" x:Name="grid_main" Grid.Row="1" Grid.Column="1"/>
+
+            <Grid x:Name="grid" Width="75" HorizontalAlignment="Left" Grid.Row="1" Grid.Column="0"  
+              Background="#178DD2" RenderTransformOrigin="0.5,0.5" >
+                <Grid.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Grid.RenderTransform>
+                <Grid Margin="0,0,0,0"  HorizontalAlignment="Left" >
+                    <!--<ColorAnimation Duration="0:0:0.3" To="#35B5FF" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="rectangle"/>-->
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <Button x:Name="BTN_menu" HorizontalAlignment="Right" VerticalAlignment="Top" Background="{x:Null}" BorderBrush="{x:Null}" Width="auto" Margin="0,0,7,0" Height="50" Click="BTN_Menu_Click" >
+                        <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Rectangle x:Name="rectangle" Width="30" Height="4" Margin="0 0 0 0" Fill="White" HorizontalAlignment="Center" VerticalAlignment="Top" RenderTransformOrigin="-0,0.5">
+                                <Rectangle.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform/>
+                                        <SkewTransform/>
+                                        <RotateTransform/>
+                                        <TranslateTransform/>
+                                    </TransformGroup>
+                                </Rectangle.RenderTransform>
+                            </Rectangle>
+                            <Rectangle x:Name="rectangle1" Width="30" Height="4" Margin="0 20 0 0 " Fill="White" HorizontalAlignment="Center" VerticalAlignment="Top" RenderTransformOrigin="-0,0.5">
+                                <Rectangle.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform/>
+                                        <SkewTransform/>
+                                        <RotateTransform/>
+                                        <TranslateTransform/>
+                                    </TransformGroup>
+                                </Rectangle.RenderTransform>
+                            </Rectangle>
+                            <Rectangle x:Name="rectangle2" Width="30" Height="4" Margin="0 10 0 0" Fill="White" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        </Grid>
+                        <Button.ToolTip>
+                            <ToolTip Content="Menu"  Visibility="Visible" x:Name="tt_menu"/>
+                        </Button.ToolTip>
+                    </Button>
+                    <Button  Width="200" Height="50" Grid.Row="1" 
                          HorizontalAlignment="Left" 
                  x:Name="BTN_home" Click="BTN_Home_Click"
                     Background="{x:Null}" BorderBrush="{x:Null}"   
                     Padding="0" >
-                    <Button.ToolTip>
-                        <ToolTip Content="Home"  Visibility="Visible" x:Name="tt_home"/>
-                    </Button.ToolTip>
-                    <Grid Width="200" Height="50" >
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="75"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Path Fill="#9FD7F8" x:Name="path_iconHome" Stretch="Fill"  
+                        <Button.ToolTip>
+                            <ToolTip Content="Home"  Visibility="Visible" x:Name="tt_home"/>
+                        </Button.ToolTip>
+                        <Grid Width="200" Height="50" >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="75"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Path Fill="#9FD7F8" x:Name="path_iconHome" Stretch="Fill"  
                               HorizontalAlignment="Center" Grid.Column="0"  
                          VerticalAlignment="Center" Width="20" Height="20"
                               Data="M230.1,120.9L66,256.3c0,0.2,0,0.5-0.1,0.9c-0.1,0.4-0.1,0.7-0.1,0.9v137c0,4.9,1.8,9.2,5.4,12.8
@@ -344,29 +359,29 @@
 	C1.3,227,0.2,229,0,231.6c-0.2,2.6,0.5,4.8,2,6.7l17.7,21.1c1.5,1.7,3.5,2.8,6,3.1c2.3,0.2,4.6-0.5,6.9-2L230.1,95.8l197.6,164.7
 	c1.5,1.3,3.5,2,6,2h0.9c2.5-0.4,4.5-1.4,6-3.1l17.7-21.1c1.5-1.9,2.2-4.1,2-6.7C460.1,229,459,227,457.1,225.4z"/>
 
-                        <TextBlock Text="Home" Foreground="#9FD7F8" x:Name="txt_home"
+                            <TextBlock Text="Home" Foreground="#9FD7F8" x:Name="txt_home"
                                    HorizontalAlignment="Left" VerticalAlignment="Center" 
                               Grid.Column="1"      Margin="10,0,0,0"/>
-                    </Grid>
-                </Button>
-                <Path Fill="#E8E8E8"  Grid.Row="1" Stretch="Fill"  
+                        </Grid>
+                    </Button>
+                    <Path Fill="#E8E8E8"  Grid.Row="1" Stretch="Fill"  
                                 x:Name="path_openHome" Visibility="Collapsed" HorizontalAlignment="Right"
                          VerticalAlignment="Center" Width="20"  Height="35"   Margin="0,0,-5,0"
                               Data="M2.54,6,7.55.2c.41-.49.94.06.94,1L8.42,12.88c0,.9-.54,1.44-1,.95L2.53,8A1.76,1.76,0,0,1,2.54,6Z"/>
-                <Button  Width="200" Height="50" Grid.Row="2" Tag="catalog"
+                    <Button  Width="200" Height="50" Grid.Row="2" Tag="catalog"
                          HorizontalAlignment="Left" x:Name="btn_catalog"
                          Click="BTN_catalog_Click"
                     Background="{x:Null}" BorderBrush="{x:Null}"   
                     Padding="0" >
-                    <Button.ToolTip>
-                        <ToolTip Content="Catalog"  Visibility="Visible" x:Name="tt_catalog"/>
-                    </Button.ToolTip>
-                    <Grid Width="200" Height="50" >
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="75"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Path Fill="#9FD7F8" x:Name="path_iconCatalog" Stretch="Fill"   
+                        <Button.ToolTip>
+                            <ToolTip Content="Catalog"  Visibility="Visible" x:Name="tt_catalog"/>
+                        </Button.ToolTip>
+                        <Grid Width="200" Height="50" >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="75"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Path Fill="#9FD7F8" x:Name="path_iconCatalog" Stretch="Fill"   
                               HorizontalAlignment="Center" Grid.Column="0"  
                          VerticalAlignment="Center" Width="20" Height="20"
                               Data="M788,628.9v212c-0.3,0.6-0.6,1.2-0.8,1.8c-5.6,21.4-19.7,32.5-41.9,32.5c-64.8,0-129.7,0-194.5,0
@@ -382,28 +397,28 @@
 	c-1.7,0-3.5,0.2-5.1,0.2v139.8h7.2c101.3,0,202.6,0,303.9,0c24.2,0,38.5,14.4,38.5,38.5c0,55.2,0,110.3,0,165.5v6h58.2
 	c26.5,0,38.3,8.4,46.4,33.3C787.7,628.7,787.9,628.8,788,628.9z"/>
 
-                        <TextBlock Text="Catalog"  Foreground="#9FD7F8" x:Name="txt_catalog"
+                            <TextBlock Text="Catalog"  Foreground="#9FD7F8" x:Name="txt_catalog"
                                    HorizontalAlignment="Left" VerticalAlignment="Center" 
                               Grid.Column="1"      Margin="10,0,0,0"/>
-                    </Grid>
-                </Button>
-                <Path Fill="#E8E8E8" Grid.Row="2" Stretch="Fill"  Grid.ColumnSpan="2"
+                        </Grid>
+                    </Button>
+                    <Path Fill="#E8E8E8" Grid.Row="2" Stretch="Fill"  Grid.ColumnSpan="2"
                                Grid.Column="0"  x:Name="path_openCatalog" Visibility="Collapsed"
                          VerticalAlignment="Center" Width="20" Height="35"   Margin="0,0,-5,0" HorizontalAlignment="Right"
                               Data="M2.54,6,7.55.2c.41-.49.94.06.94,1L8.42,12.88c0,.9-.54,1.44-1,.95L2.53,8A1.76,1.76,0,0,1,2.54,6Z"/>
-                <Button  Width="200" Height="50" Grid.Row="3"  Tag="storage"
+                    <Button  Width="200" Height="50" Grid.Row="3"  Tag="storage"
                          HorizontalAlignment="Left" x:Name="btn_storage"
                     Background="{x:Null}" BorderBrush="{x:Null}"   
                     Padding="0" Click="BTN_storage_Click" >
-                    <Button.ToolTip>
-                        <ToolTip Content="Storage"  Visibility="Visible" x:Name="tt_storage"/>
-                    </Button.ToolTip>
-                    <Grid Width="200" Height="50"  >
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="75"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Path Fill="#9FD7F8" x:Name="path_iconStorage" Stretch="Fill"  
+                        <Button.ToolTip>
+                            <ToolTip Content="Storage"  Visibility="Visible" x:Name="tt_storage"/>
+                        </Button.ToolTip>
+                        <Grid Width="200" Height="50"  >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="75"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Path Fill="#9FD7F8" x:Name="path_iconStorage" Stretch="Fill"  
                               HorizontalAlignment="Center" Grid.Column="0"  
                          VerticalAlignment="Center" Width="20" Height="20"
                               Data="M787.5,484.5c-0.2-86.7-0.3-173.3-0.6-260c0-3-0.8-6.3-2.1-9c-14.2-28.8-34.9-52.7-57.2-75.3C640.3,51.5,535-3.7,413.1-27.8
@@ -423,29 +438,29 @@
 	c-0.2-43.2,0.2-86.3-0.3-129.5c-0.2-14.3,14.9-31.5,28.2-32.1c11.1-0.5,22.3-0.9,33.4-1c16.1-0.2,32.3,0,49.1,0V744h17.8V639.7
 	c17.7,0,34.5-0.1,51.3,0.1c10.8,0.1,21.7,0.1,32.4,1.2c12.2,1.2,23.9,12.1,24.8,21.9C286.4,667.3,286.8,671.8,286.8,676.3z"/>
 
-                        <TextBlock Text="Storage"  Foreground="#9FD7F8" x:Name="txt_storage"
+                            <TextBlock Text="Storage"  Foreground="#9FD7F8" x:Name="txt_storage"
                                    HorizontalAlignment="Left" VerticalAlignment="Center" 
                               Grid.Column="1"      Margin="10,0,0,0"/>
-                    </Grid>
-                </Button>
-                <Path Fill="#E8E8E8"  Stretch="Fill"  Grid.ColumnSpan="2" Grid.Row="3"
+                        </Grid>
+                    </Button>
+                    <Path Fill="#E8E8E8"  Stretch="Fill"  Grid.ColumnSpan="2" Grid.Row="3"
                                Grid.Column="0"  x:Name="path_openStorage" Visibility="Collapsed"
                          VerticalAlignment="Center" Width="20" Height="35"   Margin="0,0,-5,0" HorizontalAlignment="Right"
                               Data="M2.54,6,7.55.2c.41-.49.94.06.94,1L8.42,12.88c0,.9-.54,1.44-1,.95L2.53,8A1.76,1.76,0,0,1,2.54,6Z"/>
-                <Button  Width="200" Height="50" Grid.Row="4" Click="BTN_purchases_Click"
+                    <Button  Width="200" Height="50" Grid.Row="4" Click="BTN_purchases_Click"
                         HorizontalAlignment="Left" x:Name="btn_purchase"  Tag="purchase"
                     Background="{x:Null}" BorderBrush="{x:Null}"   
                     Padding="0" >
-                    <Button.ToolTip>
-                        <ToolTip Content="Purchases"  Visibility="Visible" x:Name="tt_purchase"/>
-                    </Button.ToolTip>
-                    <Grid Width="200" Height="50" >
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="75"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
+                        <Button.ToolTip>
+                            <ToolTip Content="Purchases"  Visibility="Visible" x:Name="tt_purchase"/>
+                        </Button.ToolTip>
+                        <Grid Width="200" Height="50" >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="75"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
 
-                        <Path Fill="#9FD7F8" x:Name="path_iconPurchases" Stretch="Fill"  
+                            <Path Fill="#9FD7F8" x:Name="path_iconPurchases" Stretch="Fill"  
                               HorizontalAlignment="Center" Grid.Column="0"   FlowDirection="LeftToRight"
                          VerticalAlignment="Center" Width="20" Height="20"
                               Data="M751,767.9c0,1,0,2,0,3c-2.6,5.6-7.1,8-13.2,9.1c-57.1,10.7-114.1,21.8-171.1,32.6c-56.5,10.8-113.1,21.5-169.7,32.1
@@ -499,28 +514,28 @@
 	C268.9,599.5,271.1,612.3,273.6,625z M237.4,538.1c-3.8-18.5-7.6-36.9-11.5-55.7c-16.6,7.7-23,21.3-18.7,37.6
 	C209.7,529.3,226.1,539.4,237.4,538.1z"/>
 
-                        <TextBlock Text="Purchases"  Foreground="#9FD7F8" x:Name="txt_purchases"
+                            <TextBlock Text="Purchases"  Foreground="#9FD7F8" x:Name="txt_purchases"
                                    HorizontalAlignment="Left" VerticalAlignment="Center" 
                               Grid.Column="1"      Margin="10,0,0,0"/>
-                    </Grid>
-                </Button>
-                <Path Fill="#E8E8E8"  Stretch="Fill"  Grid.ColumnSpan="2" Grid.Row="4" HorizontalAlignment="Right"
+                        </Grid>
+                    </Button>
+                    <Path Fill="#E8E8E8"  Stretch="Fill"  Grid.ColumnSpan="2" Grid.Row="4" HorizontalAlignment="Right"
                                Grid.Column="0"  x:Name="path_openPurchases" Visibility="Collapsed"
                          VerticalAlignment="Center" Width="20" Height="35"   Margin="0,0,-5,0"
                               Data="M2.54,6,7.55.2c.41-.49.94.06.94,1L8.42,12.88c0,.9-.54,1.44-1,.95L2.53,8A1.76,1.76,0,0,1,2.54,6Z"/>
-                <Button  Width="200" Height="50" Grid.Row="5"  Tag="sales"
+                    <Button  Width="200" Height="50" Grid.Row="5"  Tag="sales"
                        HorizontalAlignment="Left" x:Name="btn_sales"
                     Background="{x:Null}" BorderBrush="{x:Null}"   
                     Padding="0" Click="BTN_sales_Click" >
-                    <Button.ToolTip>
-                        <ToolTip Content="Sales"  Visibility="Visible" x:Name="tt_sales"/>
-                    </Button.ToolTip>
-                    <Grid Width="200" Height="50" >
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="75"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Path Fill="#9FD7F8" x:Name="path_iconSales" Stretch="Fill"  
+                        <Button.ToolTip>
+                            <ToolTip Content="Sales"  Visibility="Visible" x:Name="tt_sales"/>
+                        </Button.ToolTip>
+                        <Grid Width="200" Height="50" >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="75"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Path Fill="#9FD7F8" x:Name="path_iconSales" Stretch="Fill"  
                               HorizontalAlignment="Center" Grid.Column="0"  
                          VerticalAlignment="Center" Width="20" Height="20"
                               Data="M242.5,369.4c24.5,0,44.3,19.4,44.3,43.3S267,456,242.5,456s-44.3-19.4-44.3-43.3S218,369.4,242.5,369.4z
@@ -534,52 +549,52 @@
 	l-20.3,117.9c-1.3,7.8-9.2,13.3-17.5,12.2l-1-0.1c-8.6-1.2-14.5-8.8-13.1-16.9L432,172.5c1.3-7.8,9.2-13.3,17.5-12.2l1,0.1
 	C459.2,161.6,465.1,169.2,463.7,177.3z"/>
 
-                        <TextBlock Text="Sales"  Foreground="#9FD7F8" x:Name="txt_sales"
+                            <TextBlock Text="Sales"  Foreground="#9FD7F8" x:Name="txt_sales"
                                    HorizontalAlignment="Left" VerticalAlignment="Center" 
                               Grid.Column="1"      Margin="10,0,0,0"/>
-                    </Grid>
-                </Button>
-                <Path Fill="#E8E8E8" Grid.Row="5"  Stretch="Fill"  Grid.ColumnSpan="2"
+                        </Grid>
+                    </Button>
+                    <Path Fill="#E8E8E8" Grid.Row="5"  Stretch="Fill"  Grid.ColumnSpan="2"
                                Grid.Column="0"  x:Name="path_openSales" Visibility="Collapsed" HorizontalAlignment="Right"
                          VerticalAlignment="Center" Width="20" Height="35"   Margin="0,0,-5,0"
                               Data="M2.54,6,7.55.2c.41-.49.94.06.94,1L8.42,12.88c0,.9-.54,1.44-1,.95L2.53,8A1.76,1.76,0,0,1,2.54,6Z"/>
-                <Button  Width="200" Height="50" Grid.Row="6" HorizontalAlignment="Left"
+                    <Button  Width="200" Height="50" Grid.Row="6" HorizontalAlignment="Left"
                     Background="{x:Null}" BorderBrush="{x:Null}"    Tag="accounts"
                     Padding="0"  x:Name="btn_accounts" Click="BTN_accounts_Click" >
-                    <Button.ToolTip>
-                        <ToolTip Content="Accounts"  Visibility="Visible" x:Name="tt_accounts"/>
-                    </Button.ToolTip>
-                    <Grid Width="200" Height="50" >
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="75"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Path Fill="#9FD7F8" x:Name="path_iconAccounts" Stretch="Fill"  
+                        <Button.ToolTip>
+                            <ToolTip Content="Accounts"  Visibility="Visible" x:Name="tt_accounts"/>
+                        </Button.ToolTip>
+                        <Grid Width="200" Height="50" >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="75"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Path Fill="#9FD7F8" x:Name="path_iconAccounts" Stretch="Fill"  
                               HorizontalAlignment="Center" Grid.Column="0"   FlowDirection="LeftToRight"
                          VerticalAlignment="Center" Width="20" Height="20"
                               Data="M 19 1 C 17.707983 1 16.605718 1.8442551 16.1875 3 L 5 3 C 3.346 3 2 4.346 2 6 L 2 41 C 2 42.654 3.346 44 5 44 L 21 44 L 21 21 C 21 18.243 23.243 16 26 16 L 36 16 L 36 6 C 36 4.346 34.654 3 33 3 L 21.8125 3 C 21.394282 1.8442551 20.292017 1 19 1 z M 19 3 C 19.564129 3 20 3.4358709 20 4 C 20 4.5641291 19.564129 5 19 5 C 18.435871 5 18 4.5641291 18 4 C 18 3.4358709 18.435871 3 19 3 z M 11 5 L 16.1875 5 C 16.605718 6.1557449 17.707983 7 19 7 C 20.292017 7 21.394282 6.1557449 21.8125 5 L 27 5 L 27 8 C 27 9.105 26.105 10 25 10 L 13 10 C 11.895 10 11 9.105 11 8 L 11 7 L 11 5 z M 11 15 L 13 15 L 13 21 L 15 21 L 15 17 L 17 17 L 17 21 L 19 21 L 19 23 L 5 23 L 5 21 L 7 21 L 7 18 L 9 18 L 9 21 L 11 21 L 11 15 z M 26 18 C 24.346 18 23 19.346 23 21 L 23 44 C 23 45.654 24.346 47 26 47 L 44 47 C 45.654 47 47 45.654 47 44 L 47 21 C 47 19.346 45.654 18 44 18 L 26 18 z M 28 22 L 42 22 C 42.553 22 43 22.448 43 23 L 43 27 C 43 27.553 42.553 28 42 28 L 28 28 C 27.447 28 27 27.553 27 27 L 27 23 C 27 22.448 27.447 22 28 22 z M 12 27 C 15.309 27 18 29.691 18 33 C 18 36.309 15.309 39 12 39 C 8.691 39 6 36.309 6 33 C 6 29.691 8.691 27 12 27 z M 12 29 C 9.794 29 8 30.794 8 33 C 8 35.206 9.794 37 12 37 C 14.206 37 16 35.206 16 33 L 12 33 L 12 29 z M 28 30 L 30 30 C 30.552 30 31 30.448 31 31 L 31 32 C 31 32.552 30.552 33 30 33 L 28 33 C 27.448 33 27 32.552 27 32 L 27 31 C 27 30.448 27.448 30 28 30 z M 34 30 L 36 30 C 36.552 30 37 30.448 37 31 L 37 32 C 37 32.552 36.552 33 36 33 L 34 33 C 33.448 33 33 32.552 33 32 L 33 31 C 33 30.448 33.448 30 34 30 z M 40 30 L 42 30 C 42.552 30 43 30.448 43 31 L 43 32 C 43 32.552 42.552 33 42 33 L 40 33 C 39.448 33 39 32.552 39 32 L 39 31 C 39 30.448 39.448 30 40 30 z M 28 35 L 30 35 C 30.552 35 31 35.448 31 36 L 31 37 C 31 37.552 30.552 38 30 38 L 28 38 C 27.448 38 27 37.552 27 37 L 27 36 C 27 35.448 27.448 35 28 35 z M 34 35 L 36 35 C 36.552 35 37 35.448 37 36 L 37 37 C 37 37.552 36.552 38 36 38 L 34 38 C 33.448 38 33 37.552 33 37 L 33 36 C 33 35.448 33.448 35 34 35 z M 40 35 L 42 35 C 42.552 35 43 35.448 43 36 L 43 37 C 43 37.552 42.552 38 42 38 L 40 38 C 39.448 38 39 37.552 39 37 L 39 36 C 39 35.448 39.448 35 40 35 z M 28 40 L 30 40 C 30.552 40 31 40.448 31 41 L 31 42 C 31 42.552 30.552 43 30 43 L 28 43 C 27.448 43 27 42.552 27 42 L 27 41 C 27 40.448 27.448 40 28 40 z M 34 40 L 36 40 C 36.552 40 37 40.448 37 41 L 37 42 C 37 42.552 36.552 43 36 43 L 34 43 C 33.448 43 33 42.552 33 42 L 33 41 C 33 40.448 33.448 40 34 40 z M 40 40 L 42 40 C 42.552 40 43 40.448 43 41 L 43 42 C 43 42.552 42.552 43 42 43 L 40 43 C 39.448 43 39 42.552 39 42 L 39 41 C 39 40.448 39.448 40 40 40 z"/>
 
-                        <TextBlock Text="Accounting" Foreground="#9FD7F8" x:Name="txt_accounting"
+                            <TextBlock Text="Accounting" Foreground="#9FD7F8" x:Name="txt_accounting"
                                    HorizontalAlignment="Left" VerticalAlignment="Center" 
                               Grid.Column="1"      Margin="10,0,0,0"/>
-                    </Grid>
-                </Button>
-                <Path Fill="#E8E8E8"  Stretch="Fill"  Grid.ColumnSpan="2" Grid.Row="6"
+                        </Grid>
+                    </Button>
+                    <Path Fill="#E8E8E8"  Stretch="Fill"  Grid.ColumnSpan="2" Grid.Row="6"
                                Grid.Column="0"  x:Name="path_openAccount" Visibility="Collapsed" HorizontalAlignment="Right"
                          VerticalAlignment="Center" Width="20" Height="35"   Margin="0,0,-5,0"
                               Data="M2.54,6,7.55.2c.41-.49.94.06.94,1L8.42,12.88c0,.9-.54,1.44-1,.95L2.53,8A1.76,1.76,0,0,1,2.54,6Z"/>
-                <Button  Width="200" Height="50" Grid.Row="7" HorizontalAlignment="Left"
+                    <Button  Width="200" Height="50" Grid.Row="7" HorizontalAlignment="Left"
                     Background="{x:Null}" BorderBrush="{x:Null}"     Tag="reports"
                     Padding="0"  x:Name="btn_reports" Click="BTN_reports_Click"  >
-                    <Button.ToolTip>
-                        <ToolTip Content="Reports"  Visibility="Visible" x:Name="tt_reports"/>
-                    </Button.ToolTip>
-                    <Grid Width="200" Height="50" >
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="75"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Path Fill="#9FD7F8" x:Name="path_iconReports" Stretch="Fill"  
+                        <Button.ToolTip>
+                            <ToolTip Content="Reports"  Visibility="Visible" x:Name="tt_reports"/>
+                        </Button.ToolTip>
+                        <Grid Width="200" Height="50" >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="75"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Path Fill="#9FD7F8" x:Name="path_iconReports" Stretch="Fill"  
                               HorizontalAlignment="Center" Grid.Column="0"  
                          VerticalAlignment="Center" Width="20" Height="20"
                               Data="M77.3,42.5l26,0.1c0,6.9-2.8,13.6-7.7,18.4c-1.2,1.1-2.4,2.2-3.8,3.1L77.3,42.5z M104.4,35.3
@@ -588,27 +603,27 @@
 	c-4.9-4.5-11.4-7.2-18.5-7.1h0l1.3,25.8L102.3,34.4z M67.5,13.7c-13.7,2-23.8,13.7-23.8,27.6c0,15.4,12.5,27.9,27.9,27.9
 	c4.9,0,9.7-1.3,13.9-3.7L71.5,41.3L67.5,13.7z"/>
 
-                        <TextBlock Text="Reports" Foreground="#9FD7F8" x:Name="txt_reports"
+                            <TextBlock Text="Reports" Foreground="#9FD7F8" x:Name="txt_reports"
                                    HorizontalAlignment="Left" VerticalAlignment="Center" 
                               Grid.Column="1"      Margin="10,0,0,0"/>
-                    </Grid>
-                </Button>
-                <Path Fill="#E8E8E8" Grid.Row="7" Stretch="Fill"  Grid.ColumnSpan="2" HorizontalAlignment="Right"
+                        </Grid>
+                    </Button>
+                    <Path Fill="#E8E8E8" Grid.Row="7" Stretch="Fill"  Grid.ColumnSpan="2" HorizontalAlignment="Right"
                                Grid.Column="0"  x:Name="path_openReports" Visibility="Collapsed"
                          VerticalAlignment="Center" Width="20" Height="35"   Margin="0,0,-5,0"
                               Data="M2.54,6,7.55.2c.41-.49.94.06.94,1L8.42,12.88c0,.9-.54,1.44-1,.95L2.53,8A1.76,1.76,0,0,1,2.54,6Z"/>
-                <Button  Width="200" Height="50" Grid.Row="8" HorizontalAlignment="Left"
+                    <Button  Width="200" Height="50" Grid.Row="8" HorizontalAlignment="Left"
                     Background="{x:Null}" BorderBrush="{x:Null}"   Tag="sectionData"
                     Padding="0" x:Name="btn_sectionData" Click="BTN_SectionData_Click" >
-                    <Button.ToolTip>
-                        <ToolTip Content="Section Data"  Visibility="Visible" x:Name="tt_sectionData"/>
-                    </Button.ToolTip>
-                    <Grid Width="200" Height="50" >
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="75"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Path Fill="#9FD7F8" x:Name="path_iconSectionData" Stretch="Fill"  
+                        <Button.ToolTip>
+                            <ToolTip Content="Section Data"  Visibility="Visible" x:Name="tt_sectionData"/>
+                        </Button.ToolTip>
+                        <Grid Width="200" Height="50" >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="75"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Path Fill="#9FD7F8" x:Name="path_iconSectionData" Stretch="Fill"  
                               HorizontalAlignment="Center" Grid.Column="0"  
                          VerticalAlignment="Center" Width="20" Height="20"
                               Data="M325,164.9c8.3,0.7,16.5,1.3,24.8,2c38.6,3.3,76.6,9.3,113.1,22.9c13.9,5.2,27.2,11.6,38.9,21c10.4,8.4,16.6,18.7,15.6,32.8
@@ -630,27 +645,27 @@
 	c39,2.6,77.9,1.8,116.7-2.9c30.3-3.7,60.2-9.4,88.9-20c16.5-6.1,32.3-13.4,45.2-25.8c7.4-7.1,11.4-15.6,11.1-26.3
 	c-0.4-13.2-0.1-26.3-0.1-39.5c0-1.6-0.2-3.2-0.3-5.4C515.5,446.9,514.6,447.5,513.6,448z"/>
 
-                        <TextBlock Text="Section Data" Foreground="#9FD7F8" x:Name="txt_sectiondata"
+                            <TextBlock Text="Section Data" Foreground="#9FD7F8" x:Name="txt_sectiondata"
                                    HorizontalAlignment="Left" VerticalAlignment="Center" 
                               Grid.Column="1"      Margin="10,0,0,0"/>
-                    </Grid>
-                </Button>
-                <Path Fill="#E8E8E8"  Stretch="Fill"  Grid.ColumnSpan="2" HorizontalAlignment="Right" Grid.Row="8"
+                        </Grid>
+                    </Button>
+                    <Path Fill="#E8E8E8"  Stretch="Fill"  Grid.ColumnSpan="2" HorizontalAlignment="Right" Grid.Row="8"
                                Grid.Column="0"  x:Name="path_openSectionData" Visibility="Collapsed"
                          VerticalAlignment="Center" Width="20" Height="35"   Margin="0,0,-5,0"
                               Data="M2.54,6,7.55.2c.41-.49.94.06.94,1L8.42,12.88c0,.9-.54,1.44-1,.95L2.53,8A1.76,1.76,0,0,1,2.54,6Z"/>
-                <Button  Width="200" Height="50" Grid.Row="9" HorizontalAlignment="Left"
+                    <Button  Width="200" Height="50" Grid.Row="9" HorizontalAlignment="Left"
                     Background="{x:Null}" BorderBrush="{x:Null}"    Tag="settings"
                     Padding="0" x:Name="btn_settings" Click="BTN_settings_Click"  >
-                    <Button.ToolTip>
-                        <ToolTip Content="Settings" x:Name="tt_settings" Visibility="Visible" />
-                    </Button.ToolTip>
-                    <Grid Width="200" Height="50" >
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="75"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Path Fill="#9FD7F8" x:Name="path_iconSettings" Stretch="Fill"  
+                        <Button.ToolTip>
+                            <ToolTip Content="Settings" x:Name="tt_settings" Visibility="Visible" />
+                        </Button.ToolTip>
+                        <Grid Width="200" Height="50" >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="75"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Path Fill="#9FD7F8" x:Name="path_iconSettings" Stretch="Fill"  
                               HorizontalAlignment="Center" Grid.Column="0"  
                          VerticalAlignment="Center" Width="20" Height="20"
                               Data="M55.8,35.5v-6.8L50,26.8c-0.3-1.3-0.9-2.5-1.5-3.7l2.8-5.5l-4.8-4.8L41,15.6c-1.2-0.6-2.4-1.1-3.7-1.5l-1.9-5.8h-6.8
@@ -659,23 +674,112 @@
 	l4.8-4.8l-2.8-5.5c0.6-1.2,1.1-2.4,1.5-3.7L55.8,35.5z M40.9,32c0,4.9-4,8.9-8.9,8.9s-8.9-4-8.9-8.9c0-4.9,4-8.9,8.9-8.9
 	S40.9,27.1,40.9,32z"/>
 
-                        <TextBlock Text="Settings" Foreground="#9FD7F8" x:Name="txt_settings"
+                            <TextBlock Text="Settings" Foreground="#9FD7F8" x:Name="txt_settings"
                                    HorizontalAlignment="Left" VerticalAlignment="Center" 
                               Grid.Column="1"      Margin="10,0,0,0"/>
-                    </Grid>
-                </Button>
-                <Path Fill="#E8E8E8"  Stretch="Fill" HorizontalAlignment="Right" Grid.Row="9" Grid.ColumnSpan="2"
+                        </Grid>
+                    </Button>
+                    <Path Fill="#E8E8E8"  Stretch="Fill" HorizontalAlignment="Right" Grid.Row="9" Grid.ColumnSpan="2"
                                Grid.Column="0"  x:Name="path_openSettings" Visibility="Collapsed"
                          VerticalAlignment="Center" Width="20" Height="35"   Margin="0,0,-5,0"
                               Data="M2.54,6,7.55.2c.41-.49.94.06.94,1L8.42,12.88c0,.9-.54,1.44-1,.95L2.53,8A1.76,1.76,0,0,1,2.54,6Z"/>
-              
-                   
-            
-            </Grid>
-        </Grid>
-        <Grid  Grid.Row="2" Grid.Column="0"   Grid.ColumnSpan="2"
-              Background="#178DD2"  />
-        <mah:ProgressRing x:Name="prg_awaitRing" Foreground="{StaticResource MainColorBlue}"   IsActive="False" Grid.RowSpan="2" Grid.ColumnSpan="2"  />
 
+
+
+                </Grid>
+            </Grid>
+            <Grid  Grid.Row="2" Grid.Column="0"   Grid.ColumnSpan="2"
+              Background="#178DD2"  />
+            <mah:ProgressRing x:Name="prg_awaitRing" Foreground="{StaticResource MainColorBlue}"   IsActive="False" Grid.RowSpan="2" Grid.ColumnSpan="2"  />
+
+        </Grid>
+        <Border x:Name="bdrMain" Visibility="Collapsed" VerticalAlignment="Top" Height="auto" Width="auto" Margin="0,70,150,70" HorizontalAlignment="Right" >
+            <Grid>
+        <Border x:Name="bdr_shadow" Background="White" CornerRadius="10"  Height="350" Width="250">
+
+            <Border.Effect>
+                <DropShadowEffect   ShadowDepth="0" Color="Gray" BlurRadius="20"/>
+            </Border.Effect>
+        </Border>
+        <Border  x:Name="bdr_notification"  CornerRadius="10" Background="White" Height="350" Width="250" >
+           
+            <Grid >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="60"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Border Background="{StaticResource MainColorBlue}" CornerRadius="10,10,0,0">
+                    <TextBlock  Text="Notifications" Foreground="White" FontSize="24" FontWeight="Bold" Padding="20,0,20,0" VerticalAlignment="Center"></TextBlock>
+
+                 
+                </Border>
+                
+                <Grid Grid.Row="1" x:Name="grd_notifications">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    
+                    <Border Grid.Row="0" BorderThickness="0,0,0,1" Margin="5,3,5,0" BorderBrush="{StaticResource MainColorlightGrey}">
+                        <StackPanel>
+                    <TextBlock  Margin="5,5,5,0" Foreground="{StaticResource MainColorGrey}" FontSize="14" Text="You have a new Notification"></TextBlock>
+                            <TextBlock Margin="5,2,5,5" Text="2021/08/23" FontSize="10" Foreground="#8e8e8e"></TextBlock>
+                        </StackPanel>
+                    </Border>
+                    <Border Grid.Row="1" BorderThickness="0,0,0,1" Margin="5,3,5,0" BorderBrush="{StaticResource MainColorlightGrey}">
+                        <StackPanel>
+                            <TextBlock  Margin="5,5,5,0" Foreground="{StaticResource MainColorGrey}" FontSize="14" Text="You have a new Notification"></TextBlock>
+                            <TextBlock Margin="5,2,5,5" Text="2021/08/23" FontSize="10" Foreground="#8e8e8e"></TextBlock>
+                        </StackPanel>
+                    </Border>
+                    <Border Grid.Row="2" BorderThickness="0,0,0,1" Margin="5,3,5,0" BorderBrush="{StaticResource MainColorlightGrey}">
+                        <StackPanel>
+                            <TextBlock  Margin="5,5,5,0" Foreground="{StaticResource MainColorGrey}" FontSize="14" Text="You have a new Notification"></TextBlock>
+                            <TextBlock Margin="5,2,5,5" Text="2021/08/23" FontSize="10" Foreground="#8e8e8e"></TextBlock>
+                        </StackPanel>
+                    </Border>
+
+
+
+                    <Border Grid.Row="3" BorderThickness="0,0,0,1" Margin="5,3,5,0" BorderBrush="{StaticResource MainColorlightGrey}">
+                        <StackPanel>
+                            <TextBlock  Margin="5,5,5,0" Foreground="{StaticResource MainColorGrey}" FontSize="14" Text="You have a new Notification"></TextBlock>
+                            <TextBlock Margin="5,2,5,5" Text="2021/08/23" FontSize="10" Foreground="#8e8e8e"></TextBlock>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Grid.Row="4" BorderThickness="0,0,0,0" Margin="5,3,5,0" BorderBrush="{StaticResource MainColorlightGrey}">
+                        <StackPanel>
+                            <TextBlock  Margin="5,5,5,0" Foreground="{StaticResource MainColorGrey}" FontSize="14" Text="You have a new Notification"></TextBlock>
+                            <TextBlock Margin="5,2,5,5" Text="2021/08/23" FontSize="10" Foreground="#8e8e8e"></TextBlock>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+                <Border Grid.Row="2" BorderBrush="{StaticResource MainColorlightGrey}" BorderThickness="0,1,0,0">
+                    <StackPanel>
+                        <Button Content="Show All" Background="Transparent" BorderBrush="Transparent" Foreground="{StaticResource MainColorBlue}"  HorizontalAlignment="Center"  FontSize="18" Margin="0,5,0,0" MouseEnter="TextBlock_MouseEnter" MouseLeave="TextBlock_MouseLeave" Click="Button_Click">           
+                 </Button>
+                        <Border x:Name="bdr_showAll" Visibility="Hidden" BorderThickness="0,0,0,1" BorderBrush="{StaticResource MainColorBlue}" HorizontalAlignment="Center" Width="80" Margin="0,-5,0,10">
+                        </Border>
+                    </StackPanel>
+
+                </Border>
+            </Grid>
+
+
+        </Border>
+        <Border x:Name="path_notification" >
+        <Path  Fill="{StaticResource MainColorBlue}" VerticalAlignment="Top" Margin="0,-20,70,0" Stretch="Fill"  Grid.ColumnSpan="2" HorizontalAlignment="Right"
+                               Grid.Column="0"   
+                     Width="35" Height="25"  
+                              Data="M31,12l19,38H0l19-38C21.5,7,28.5,7,31,12z"/>
+        </Border>
+            </Grid>
+        </Border>
     </Grid>
 </Window>

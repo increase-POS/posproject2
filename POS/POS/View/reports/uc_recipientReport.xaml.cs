@@ -10,6 +10,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -1161,6 +1162,78 @@ namespace POS.View.reports
             {
                 SectionData.ExceptionMessage(ex, this, sender);
             }
+        }
+
+        private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
+        {
+            Thread t1 = new Thread(() =>
+            {
+                List<ReportParameter> paramarr = new List<ReportParameter>();
+
+                string addpath = "";
+                bool isArabic = ReportCls.checkLang();
+                if (isArabic)
+                {
+                    if (selectedTab == 0)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArVendor.rdlc";
+                    }
+                    else if (selectedTab == 1)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Recipient\Ar\ArCustomer.rdlc";
+                    }
+                    else if (selectedTab == 2)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Recipient\Ar\ArUser.rdlc";
+                    }
+                    else if (selectedTab == 6)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Recipient\Ar\ArShipping.rdlc";
+                    }
+                }
+                else
+                {
+                    if (selectedTab == 0)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Recipient\En\Vendor.rdlc";
+                    }
+                    else if (selectedTab == 1)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Recipient\En\Customer.rdlc";
+                    }
+                    else if (selectedTab == 2)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Recipient\En\User.rdlc";
+                    }
+                    else if (selectedTab == 6)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Recipient\En\Shipping.rdlc";
+                    }
+                }
+                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+                ReportCls.checkLang();
+
+                clsReports.cashTransferSts(temp, rep, reppath);
+                clsReports.setReportLanguage(paramarr);
+                clsReports.Header(paramarr);
+
+                rep.SetParameters(paramarr);
+
+                rep.Refresh();
+                this.Dispatcher.Invoke(() =>
+                {
+                    saveFileDialog.Filter = "EXCEL|*.xls;";
+                    if (saveFileDialog.ShowDialog() == true)
+                    {
+                        string filepath = saveFileDialog.FileName;
+                        LocalReportExtensions.ExportToExcel(rep, filepath);
+                    }
+                });
+
+
+            });
+            t1.Start();
         }
     }
 }

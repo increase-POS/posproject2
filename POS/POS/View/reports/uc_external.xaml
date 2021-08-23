@@ -775,7 +775,7 @@ Data="M110.2,2.4H17.8c-2.4,0-4.3,1.9-4.3,4.3v114.6c0,2.4,1.9,4.3,4.3,4.3c1.1,0,2
 
                             <Button   Background="{x:Null}"    Grid.Column="3" Margin="5,0,5,0" 
                             Padding="0" Height="35"   x:Name="btn_exportToExcel" 
-                                       BorderBrush="{x:Null}">
+                                       BorderBrush="{x:Null}" Click="Btn_exportToExcel_Click">
                                 <Path Fill="#378500" Stretch="Fill"
                           Width="20" Height="20" 
                            FlowDirection="LeftToRight" Data="M25.162,3H16v2.984h3.031v2.031H16V10h3v2h-3v2h3v2h-3v2h3v2h-3v3h9.162   C25.623,23,26,22.609,26,22.13V3.87C26,3.391,25.623,3,25.162,3z M24,20h-4v-2h4V20z M24,16h-4v-2h4V16z M24,12h-4v-2h4V12z M24,8   h-4V6h4V8z 

@@ -82,5 +82,17 @@ namespace POS.Properties {
                 this["pos"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string menuIsOpen {
+            get {
+                return ((string)(this["menuIsOpen"]));
+            }
+            set {
+                this["menuIsOpen"] = value;
+            }
+        }
     }
 }

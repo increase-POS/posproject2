@@ -26,7 +26,7 @@ using System.Globalization;
 using System.IO;
 using Microsoft.Reporting.WinForms;
 using Microsoft.Win32;
-
+using System.Threading;
 
 namespace POS.View.reports
 {
@@ -2554,6 +2554,90 @@ fillColumnChart(cb_Items, selectedItemId);
       s.invNumber.Contains(txt_search.Text)
       ));
             }
+        }
+
+        private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
+        {
+            Thread t1 = new Thread(() =>
+            {
+                List<ReportParameter> paramarr = new List<ReportParameter>();
+                List<ItemTransferInvoice> query = new List<ItemTransferInvoice>();
+                query = converter(filltoprint());
+
+                string addpath = "";
+                bool isArabic = ReportCls.checkLang();
+                if (isArabic)
+                {
+                    if (selectedTab == 0)
+                    {
+                        addpath = @"\Reports\StatisticReport\Sale\Ar\ArPurSts.rdlc";
+                    }
+                    else if (selectedTab == 1)
+                    {
+                        addpath = @"\Reports\StatisticReport\Sale\Ar\ArPurPosSts.rdlc";
+                    }
+                    else if (selectedTab == 2)
+                    {
+                        addpath = @"\Reports\StatisticReport\Sale\Ar\ArPurVendorSts.rdlc";
+                    }
+                    else if (selectedTab == 3)
+                    {
+                        addpath = @"\Reports\StatisticReport\Sale\Ar\ArPurUserSts.rdlc";
+                    }
+                    else
+                    {
+                        addpath = @"\Reports\StatisticReport\Sale\Ar\ArPurItemSts.rdlc";
+                    }
+                }
+                else
+                {
+                    //english
+                    if (selectedTab == 0)
+                    { addpath = @"\Reports\StatisticReport\Sale\En\EnPurSts.rdlc"; }
+                    else if (selectedTab == 1)
+                    {
+                        addpath = @"\Reports\StatisticReport\Sale\En\EnPurPosSts.rdlc";
+                    }
+                    else if (selectedTab == 2)
+                    {
+                        addpath = @"\Reports\StatisticReport\Sale\En\EnPurVendorSts.rdlc";
+                    }
+                    else if (selectedTab == 3)
+                    {
+                        addpath = @"\Reports\StatisticReport\Sale\En\EnPurUserSts.rdlc";
+                    }
+                    else
+                    {
+                        addpath = @"\Reports\StatisticReport\Sale\En\EnPurItemSts.rdlc";
+                    }
+
+                }
+
+
+                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+                ReportCls.checkLang();
+                //  getpuritemcount
+                clsReports.PurStsReport(query, rep, reppath);
+                clsReports.setReportLanguage(paramarr);
+                clsReports.Header(paramarr);
+
+                rep.SetParameters(paramarr);
+
+                rep.Refresh();
+                this.Dispatcher.Invoke(() =>
+                {
+                    saveFileDialog.Filter = "EXCEL|*.xls;";
+                    if (saveFileDialog.ShowDialog() == true)
+                    {
+                        string filepath = saveFileDialog.FileName;
+                        LocalReportExtensions.ExportToExcel(rep, filepath);
+                    }
+                });
+
+
+            });
+            t1.Start();
         }
     }
 }

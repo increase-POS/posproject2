@@ -26,6 +26,7 @@ using System.Globalization;
 using Microsoft.Reporting.WinForms;
 using Microsoft.Win32;
 using System.IO;
+using System.Threading;
 
 namespace POS.View.reports
 {
@@ -1577,6 +1578,72 @@ namespace POS.View.reports
             {
                 SectionData.ExceptionMessage(ex, this, sender);
             }
+        }
+
+        private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
+        {
+            Thread t1 = new Thread(() =>
+            {
+                List<ReportParameter> paramarr = new List<ReportParameter>();
+
+                string addpath = "";
+                bool isArabic = ReportCls.checkLang();
+                if (isArabic)
+                {
+                    if (selectedExternalTab == 0)
+                    {
+                        addpath = @"\Reports\StatisticReport\Storage\External\Ar\ArItem.rdlc";
+                    }
+                    else if (selectedExternalTab == 1)
+                    {
+                        addpath = @"\Reports\StatisticReport\Storage\External\Ar\ArAgent.rdlc";
+                    }
+                    else if (selectedExternalTab == 2)
+                    {
+                        addpath = @"\Reports\StatisticReport\Storage\External\Ar\ArInvoice.rdlc";
+                    }
+
+                }
+                else
+                {
+                    if (selectedExternalTab == 0)
+                    {
+                        addpath = @"\Reports\StatisticReport\Storage\External\En\Item.rdlc";
+                    }
+                    else if (selectedExternalTab == 1)
+                    {
+                        addpath = @"\Reports\StatisticReport\Storage\External\En\Agent.rdlc";
+                    }
+                    else if (selectedExternalTab == 2)
+                    {
+                        addpath = @"\Reports\StatisticReport\Storage\External\En\Invoice.rdlc";
+                    }
+
+                }
+                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+                ReportCls.checkLang();
+
+                clsReports.itemTransferInvoice(temp, rep, reppath);
+                clsReports.setReportLanguage(paramarr);
+                clsReports.Header(paramarr);
+
+                rep.SetParameters(paramarr);
+
+                rep.Refresh();
+                this.Dispatcher.Invoke(() =>
+                {
+                    saveFileDialog.Filter = "EXCEL|*.xls;";
+                    if (saveFileDialog.ShowDialog() == true)
+                    {
+                        string filepath = saveFileDialog.FileName;
+                        LocalReportExtensions.ExportToExcel(rep, filepath);
+                    }
+                });
+
+
+            });
+            t1.Start();
         }
     }
 }

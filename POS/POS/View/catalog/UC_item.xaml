@@ -57,7 +57,7 @@
                     <StackPanel Margin="15,0,0,0"  Grid.Column="1" x:Name="grid_categoryControlPath" Orientation="Horizontal">
                     </StackPanel>
                     <Border Grid.Row="1"  BorderThickness="15,0,15,0" BorderBrush="White" Grid.Column="1">
-                    <ScrollViewer Grid.Row="1"  Grid.Column="1" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto" Height="auto" 
+                        <ScrollViewer Grid.Row="1"  Grid.Column="1" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto" Height="auto" 
                                           ScrollViewer.CanContentScroll="True">
                             <Grid  x:Name="grid_categoryCards" />
                         </ScrollViewer>
@@ -308,9 +308,9 @@
                     <Border BorderThickness="0,0,0,1"  BorderBrush="#178DD2" Margin="10,0,10,10" Width="auto" HorizontalAlignment="Left">
                         <StackPanel  Orientation="Horizontal" >
 
-                            <Button x:Name="btn_pdf"   Background="{x:Null}"   Margin="10,0,5,0"
-                          Padding="0" Height="35" 
-                          BorderBrush="{x:Null}" >
+                            <Button x:Name="btn_pdf"   Background="{x:Null}"   Margin="10,0,5,-1"
+                          Padding="0" Height="Auto" 
+                          BorderBrush="{x:Null}" Click="Btn_pdf_Click" >
                                 <materialDesign:PackIcon Foreground="#D20A0A" Kind="FilePdf"  
                                 
                           Width="22" Height="22">
@@ -488,7 +488,7 @@
                         <Border x:Name="brd_itemDataTab" CornerRadius="7,0,0,0" Height="52" Background="#4E4E4E"
                                 BorderThickness="0,0,0,5" BorderBrush="#178DD2" >
                             <Button  Height="auto"  Background="{x:Null}"  BorderBrush="{x:Null}"  Padding="0"  x:Name="btn_itemData" Click="Btn_itemData_Click" >
-                            
+
                                 <StackPanel Orientation="Horizontal" >
                                     <materialDesign:PackIcon Margin="0,0,3,0" Foreground="#E8E8E8" Kind="FileDocumentEdit"  
                                Grid.Column="0"  
@@ -529,7 +529,7 @@
                       BorderThickness="0"
                     ToolTip="" Height="auto"
                     x:Name="btn_barcodeTab" Click="Btn_barcode_Click" >
-                            <StackPanel Orientation="Horizontal" >
+                                <StackPanel Orientation="Horizontal" >
 
                                     <materialDesign:PackIcon Foreground="#E8E8E8" Kind="Barcode"  Margin="0,0,3,0" 
                            
@@ -763,21 +763,21 @@
                                     <RowDefinition Height="auto"></RowDefinition>
                                 </Grid.RowDefinitions>
                                 <DockPanel Grid.Row="0">
-                               
-                                <TextBlock x:Name="txt_minAndMax" Text="Maximum and Minimum of Items" Foreground="#737373"
+
+                                    <TextBlock x:Name="txt_minAndMax" Text="Maximum and Minimum of Items" Foreground="#737373"
                                  FontSize="10"     
                                         Margin="5,5,0,5"/>
-                                <Separator Background="#999999"    Margin="5,0,5,0"
+                                    <Separator Background="#999999"    Margin="5,0,5,0"
                                      />
-                            </DockPanel>
+                                </DockPanel>
 
-                            <Grid Grid.Row="1">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                </Grid.ColumnDefinitions>
+                                <Grid Grid.Row="1">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
 
-                                <TextBox x:Name="tb_min" MaxLength="20" PreviewTextInput="NumberValidationTextBox"
+                                    <TextBox x:Name="tb_min" MaxLength="20" PreviewTextInput="NumberValidationTextBox"
                                          PreviewKeyDown="space_PreviewKeyDown"
                                          Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
                                          materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}" LostFocus="input_LostFocus"
@@ -787,16 +787,16 @@
                                         Foreground="#4E4E4E"  TextBlock.FontSize="12"
                                         Background="#f8f8f8" BorderBrush="#f8f8f8"
                                         Grid.Column="0"   Height="40"  Margin="10,5,0,5"/>
-                                <Path x:Name="p_errorMin" Grid.Column="0" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                                    <Path x:Name="p_errorMin" Grid.Column="0" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
-                                    <Path.ToolTip>
-                                        <ToolTip x:Name="tt_errorMin" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
-                                    </Path.ToolTip>
-                                </Path>
+                                        <Path.ToolTip>
+                                            <ToolTip x:Name="tt_errorMin" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                        </Path.ToolTip>
+                                    </Path>
 
-                                <ComboBox x:Name="cb_minUnit"   
+                                    <ComboBox x:Name="cb_minUnit"   
                                                   Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
                                         Padding="10,0,5,0" TextBlock.Foreground="#4E4E4E"
                                         materialDesign:HintAssist.Hint="Select Unit"  
@@ -815,12 +815,12 @@
                                     </Path>
                                 </Grid>
 
-                            <Grid Grid.Row="2">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                </Grid.ColumnDefinitions>
-                                <TextBox x:Name="tb_max"  MaxLength="20" PreviewTextInput="NumberValidationTextBox"
+                                <Grid Grid.Row="2">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox x:Name="tb_max"  MaxLength="20" PreviewTextInput="NumberValidationTextBox"
                                         Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
                                         PreviewKeyDown="space_PreviewKeyDown"
                                         materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}" LostFocus="input_LostFocus"
@@ -831,16 +831,16 @@
                                         Foreground="#4E4E4E"  TextBlock.FontSize="12"
                                         Background="#f8f8f8" BorderBrush="#f8f8f8"
                                         Grid.Column="0"   Height="40"   Margin="10,5,0,5" />
-                                <Path x:Name="p_errorMax" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                                    <Path x:Name="p_errorMax" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="0"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
-                                    <Path.ToolTip>
-                                        <ToolTip x:Name="tt_errorMax" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
-                                    </Path.ToolTip>
-                                </Path>
+                                        <Path.ToolTip>
+                                            <ToolTip x:Name="tt_errorMax" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                        </Path.ToolTip>
+                                    </Path>
 
-                                <ComboBox x:Name="cb_maxUnit" 
+                                    <ComboBox x:Name="cb_maxUnit" 
                                                      Style="{StaticResource MaterialDesignFloatingHintComboBox}"  
                                             Padding="10,0,5,0" LostFocus="input_LostFocus"
                                             TextBlock.Foreground="#4E4E4E"
@@ -851,15 +851,15 @@
                                             Background="#f8f8f8" 
                                             BorderBrush="#737373"  BorderThickness="0"   />
 
-                                <Path x:Name="p_errorMaxUnit" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                                    <Path x:Name="p_errorMaxUnit" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
-                                    <Path.ToolTip>
-                                        <ToolTip x:Name="tt_errorMaxUnit" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
-                                    </Path.ToolTip>
-                                </Path>
-                            </Grid>
+                                        <Path.ToolTip>
+                                            <ToolTip x:Name="tt_errorMaxUnit" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                        </Path.ToolTip>
+                                    </Path>
+                                </Grid>
                             </Grid>
                         </Grid>
                     </ScrollViewer>
@@ -973,13 +973,13 @@
                             </Button>
 
 
-                       
+
                             <Separator Background="#999999" VerticalAlignment="Center" Width="auto" />
 
 
                         </DockPanel>
-                        
-                        
+
+
                         <DataGrid x:Name="dg_properties" Grid.Row="1" Margin="10,5,10,5" Background="White"
                       materialDesign:DataGridAssist.CornerRadius="5" 
                          IsReadOnly="True" CanUserAddRows="False" 
@@ -1024,60 +1024,60 @@
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
-                           
-                                <ComboBox  x:Name="cb_selectProperties"  Grid.Column="0"
+
+                            <ComboBox  x:Name="cb_selectProperties"  Grid.Column="0"
                                   Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
                              materialDesign:HintAssist.Hint="Select Properties "  
                            TextBlock.FontSize="12"   Background="#f8f8f8" 
                     
                           Height="40"   Margin="10,5,2.5,5"
                            BorderBrush="#737373" BorderThickness="0" SelectionChanged="Cb_selectProperties_SelectionChanged"/>
-                                <Path Fill="#E81123" Name="p_errorProperty"  Stretch="Fill" Margin="5,5,15,5"
+                            <Path Fill="#E81123" Name="p_errorProperty"  Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
-                                    <Path.ToolTip>
-                                        <ToolTip x:Name="tt_errorProperty"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
-                                    </Path.ToolTip>
-                                </Path>
+                                <Path.ToolTip>
+                                    <ToolTip x:Name="tt_errorProperty"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                </Path.ToolTip>
+                            </Path>
 
-                                <ComboBox Grid.Column="1" x:Name="cb_value"  Text="{Binding test, Mode=OneWay}"
+                            <ComboBox Grid.Column="1" x:Name="cb_value"  Text="{Binding test, Mode=OneWay}"
                                        Padding="10,0,5,0"
                             BorderThickness="1"  materialDesign:HintAssist.Hint="Value..."   
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                  BorderBrush="AliceBlue" 
              
                   Height="40"   Margin="2.5,5,10,5"  >
-                                </ComboBox>
-                                <Path Fill="#E81123" Name="p_errorValue"  Stretch="Fill" Margin="5,5,15,5"
+                            </ComboBox>
+                            <Path Fill="#E81123" Name="p_errorValue"  Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="1"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
-                                    <Path.ToolTip>
-                                        <ToolTip x:Name="tt_errorValue"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
-                                    </Path.ToolTip>
-                                </Path>
+                                <Path.ToolTip>
+                                    <ToolTip x:Name="tt_errorValue"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                </Path.ToolTip>
+                            </Path>
                         </Grid>
                         <Grid Grid.Row="3" Margin="5,5,5,10">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
-                        <Button x:Name="btn_addProperties"  Grid.Column="0" 
+                            <Button x:Name="btn_addProperties"  Grid.Column="0" 
                           Background="#4E4E4E" BorderBrush="{x:Null}"
                     Margin="1,1"  Height="32" Content="Add" FontSize="12" Click="Btn_addProperties_Click"   />
-                        <Button x:Name="btn_updateProperties"  Grid.Column="1"
+                            <Button x:Name="btn_updateProperties"  Grid.Column="1"
                         Background="#4E4E4E" BorderBrush="{x:Null}"
                     Margin="1,1" Height="32" Width="auto"  Content="Delete" FontSize="12" Click="Btn_deleteProperties_Click" />
-                            
-                            
+
+
                         </Grid>
 
 
                         <Grid Grid.Row="4" >
                             <!--////////////////////////// Sub Property >>>> Serial /////////////////////////////////-->
                             <Grid Grid.Row="2" x:Name="grid_serial" Visibility="Collapsed" >
-                               
+
                                 <Grid.RowDefinitions >
                                     <RowDefinition Height="auto"/>
                                     <RowDefinition Height="*"/>
@@ -1086,7 +1086,7 @@
                                 </Grid.RowDefinitions>
 
                                 <DockPanel LastChildFill="True">
-                                    
+
                                     <TextBlock Text="Serial" Foreground="#737373"
                                  FontSize="10"       
                                        Margin="5,5,0,5"/>
@@ -1140,10 +1140,10 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="*"/>
-                                     
-                                       
+
+
                                     </Grid.ColumnDefinitions>
-                                 
+
                                     <Button x:Name="btn_addSerial"  Grid.Column="0"  
                          BorderThickness="0" Background="#4E4E4E" Content="Add" BorderBrush="{x:Null}"
                     Padding="0" Height="32" Margin="1,1" Click="Btn_addSerial_Click"
@@ -1158,7 +1158,7 @@
                             </Grid>
                             <!--////////////////////////// Sub Property >>>> Servive /////////////////////////////////-->
                             <Grid Grid.Row="2" x:Name="grid_service" Visibility="Collapsed" >
-                                
+
                                 <Grid.RowDefinitions >
                                     <RowDefinition Height="auto"/>
                                     <RowDefinition Height="*"/>
@@ -1167,7 +1167,7 @@
                                 </Grid.RowDefinitions>
 
                                 <DockPanel>
-                                  
+
                                     <TextBlock Text="Service" Foreground="#737373"
                                  FontSize="10"     
                                       Margin="5,5,0,5"/>
@@ -1212,15 +1212,15 @@
                                         </DataGridTextColumn>
                                     </DataGrid.Columns>
                                 </DataGrid>
-                                
-                                  
 
-                                    <Grid  Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <TextBox  x:Name="tb_serviceName"
+
+
+                                <Grid  Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox  x:Name="tb_serviceName"
                                                  Text="{Binding serviceName, Mode=OneWay}" 
                                  Grid.Row="1" Padding="10,0,5,0"
                                  BorderThickness="1" 
@@ -1229,14 +1229,14 @@
                                  Background="#f8f8f8" BorderBrush="#f8f8f8"
            
                 Grid.Column="0"   Height="40"  Margin="10,5,0,5" />
-                                        <Path x:Name="p_errorServiceName" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                                    <Path x:Name="p_errorServiceName" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="0"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
-                                            <Path.ToolTip>
-                                                <ToolTip  x:Name="tt_errorServiceName" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
-                                            </Path.ToolTip>
-                                        </Path>
+                                        <Path.ToolTip>
+                                            <ToolTip  x:Name="tt_errorServiceName" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                        </Path.ToolTip>
+                                    </Path>
                                     <TextBox Grid.Column="1" x:Name="tb_costVal" PreviewTextInput="DecimalValidationTextBox"
                                                  Text="{Binding costVal, Mode=OneWay}" 
                                  Grid.Row="1" Padding="10,0,5,0"
@@ -1308,13 +1308,13 @@
                                         </StackPanel>
                                     </Button>
                                 </Grid>
-                                </Grid>
-
-
                             </Grid>
 
+
                         </Grid>
+
                     </Grid>
+                </Grid>
                 <!--////////////////////////////////////    Barcode    ////////////////////////////////////////////////////-->
                 <Grid  Grid.Row="1"
                       x:Name="dg_barcode"  Visibility="Collapsed" >
@@ -1331,11 +1331,11 @@
                                 <RowDefinition Height="auto"></RowDefinition>
                                 <RowDefinition Height="auto"></RowDefinition>
                                 <RowDefinition Height="auto"></RowDefinition>
-                          
-                            
+
+
                             </Grid.RowDefinitions>
-                            
-                            
+
+
                             <DockPanel LastChildFill="True" Grid.Row="0">
 
                                 <TextBlock x:Name="txt_unit" Text="Unit" Foreground="#737373" FontSize="10" VerticalAlignment="Center" Margin="5,5,5,5"/>
@@ -1349,7 +1349,7 @@
                                 </Button>
                                 <Separator Background="#999999"   
                                     />
-                              
+
 
                             </DockPanel>
                             <DataGrid x:Name="dg_unit" Grid.Row="1" Margin="5,0" Background="White"
@@ -1424,16 +1424,16 @@
                                     </DataGridTextColumn>
                                 </DataGrid.Columns>
                             </DataGrid>
-                         
+
                             <Grid x:Name="gd_countUnit" Grid.Row="2" Visibility="Visible" >
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="auto"/>
                                     <RowDefinition Height="auto"/>
                                     <RowDefinition Height="auto"/>
-                              
+
                                 </Grid.RowDefinitions>
-                               
-                                    <ComboBox x:Name="cb_selectUnit"
+
+                                <ComboBox x:Name="cb_selectUnit"
                                              Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
                                                  Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                              materialDesign:HintAssist.Hint="Select Unit... "  
@@ -1441,16 +1441,16 @@
                         
                           Height="40"   Margin="10,5,10,5"
                            BorderBrush="#737373" BorderThickness="0" Grid.ColumnSpan="2" SelectionChanged="Cb_selectUnit_SelectionChanged" />
-                                    <Path x:Name="p_errorSelectUnit" Fill="#E81123" Stretch="Fill" Margin="0,15,15,15"
+                                <Path x:Name="p_errorSelectUnit" Fill="#E81123" Stretch="Fill" Margin="0,15,15,15"
                               HorizontalAlignment="Right" Grid.Column="1"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
-                                        <Path.ToolTip>
-                                            <ToolTip x:Name="tt_errorSelectUnit"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
-                                        </Path.ToolTip>
-                                    </Path>
-                               
-                                
+                                    <Path.ToolTip>
+                                        <ToolTip x:Name="tt_errorSelectUnit"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                    </Path.ToolTip>
+                                </Path>
+
+
                                 <Grid  Grid.Row="1"  >
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
@@ -1458,17 +1458,17 @@
 
                                     </Grid.ColumnDefinitions>
                                     <Border Background="#FFF8F8F8"   Height="40" Margin="10,5,0,5">
-                                    <CheckBox Margin="5" x:Name="tbtn_isDefaultPurchases" >
-                                        <CheckBox.Content>
+                                        <CheckBox Margin="5" x:Name="tbtn_isDefaultPurchases" >
+                                            <CheckBox.Content>
                                                 <TextBlock  Foreground="#4E4E4E"   x:Name="txt_isDefaultPurchases" VerticalAlignment="Center" Text ="Is Default Purchases" 
                                         />
 
-                                        </CheckBox.Content>
-                                    </CheckBox>
+                                            </CheckBox.Content>
+                                        </CheckBox>
                                     </Border>
 
 
-                           
+
 
 
                                     <Border Background="#FFF8F8F8" Grid.Column="1"  Height="40" Margin="5,5,10,5">
@@ -1497,14 +1497,14 @@
                
                   Height="40"   Margin="10,5,0,5" />
 
-                                        <Path x:Name="p_errorCount" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                                    <Path x:Name="p_errorCount" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="0"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
-                                            <Path.ToolTip>
-                                                <ToolTip  x:Name="tt_errorCount" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
-                                            </Path.ToolTip>
-                                        </Path>
+                                        <Path.ToolTip>
+                                            <ToolTip  x:Name="tt_errorCount" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                        </Path.ToolTip>
+                                    </Path>
 
                                     <ComboBox x:Name="cb_unit" Grid.Column ="1"
                                              Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
@@ -1524,9 +1524,9 @@
                                         </Path.ToolTip>
                                     </Path>
                                 </Grid>
-                                  
-                                      
-                                    </Grid>
+
+
+                            </Grid>
 
 
 
@@ -1585,19 +1585,19 @@
                                         MaxLength="13" Height="40"  Margin="10,5,10,5" LostFocus="cb_barcode_LostFocus"
                                         Grid.ColumnSpan="2" PreviewTextInput="NumberValidationTextBox"
                                         KeyDown="Tb_barcode_KeyDown" />
-                                <Path x:Name="p_errorBarcode" Grid.Row="4" Fill="#E81123" Stretch="Fill" Margin="0,15,15,15"
+                            <Path x:Name="p_errorBarcode" Grid.Row="4" Fill="#E81123" Stretch="Fill" Margin="0,15,15,15"
                               HorizontalAlignment="Right" Grid.Column="1"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
-                                    <Path.ToolTip>
-                                        <ToolTip x:Name="tt_errorBarcode"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
-                                    </Path.ToolTip>
-                                </Path>
-                      
+                                <Path.ToolTip>
+                                    <ToolTip x:Name="tt_errorBarcode"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                </Path.ToolTip>
+                            </Path>
+
                             <Image x:Name="img_barcode" Margin="10,5,10,5" Height="50" MaxWidth="250" Grid.Row="5"
                                Stretch="Fill"  />
 
-                         
+
                         </Grid>
                     </ScrollViewer>
                     <Grid Grid.Row="1"  Margin="5,5,5,10">
@@ -1611,16 +1611,16 @@
                             <Button x:Name="btn_addBarcode" TabIndex="10"
                           Background="#4E4E4E" BorderBrush="{x:Null}"
                     Margin="1,1" Click="Btn_addBarcode_Click" >
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                <materialDesign:PackIcon  Kind="PlusThick" VerticalAlignment="Center" Width="15"  Height="15" Margin="0,1,2,0">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <materialDesign:PackIcon  Kind="PlusThick" VerticalAlignment="Center" Width="15"  Height="15" Margin="0,1,2,0">
 
-                                </materialDesign:PackIcon>
-                                <TextBlock Visibility="Collapsed" Text="Add" VerticalAlignment="Center">
+                                    </materialDesign:PackIcon>
+                                    <TextBlock Visibility="Collapsed" Text="Add" VerticalAlignment="Center">
 
-                                </TextBlock>
+                                    </TextBlock>
 
-                            </StackPanel>
-                        </Button>
+                                </StackPanel>
+                            </Button>
                             <Border.ToolTip>
                                 <ToolTip Content="Add"
                                     Placement="left" 

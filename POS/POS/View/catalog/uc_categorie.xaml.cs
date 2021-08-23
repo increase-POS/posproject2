@@ -1387,5 +1387,10 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
+
+        private void Btn_pdf_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

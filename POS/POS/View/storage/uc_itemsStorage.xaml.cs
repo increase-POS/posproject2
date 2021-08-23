@@ -11,6 +11,7 @@ using System.Reflection;
 using System.Resources;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -263,7 +264,41 @@ namespace POS.View.storage
 
                 if (MainWindow.groupObject.HasPermissionAction(transferPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
+                    Thread t1 = new Thread(() =>
+                    {
+                        List<ReportParameter> paramarr = new List<ReportParameter>();
 
+                        string addpath;
+                        bool isArabic = ReportCls.checkLang();
+                        if (isArabic)
+                        {
+                            addpath = @"\Reports\Store\Ar\ArStorageReport.rdlc";
+                        }
+                        else addpath = @"\Reports\Store\EN\StorageReport.rdlc";
+                        string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+                        ReportCls.checkLang();
+
+                        clsReports.itemLocation(itemLocationListQuery, rep, reppath);
+                        clsReports.setReportLanguage(paramarr);
+                        clsReports.Header(paramarr);
+
+                        rep.SetParameters(paramarr);
+
+                        rep.Refresh();
+                        this.Dispatcher.Invoke(() =>
+                        {
+                            saveFileDialog.Filter = "EXCEL|*.xls;";
+                            if (saveFileDialog.ShowDialog() == true)
+                            {
+                                string filepath = saveFileDialog.FileName;
+                                LocalReportExtensions.ExportToExcel(rep, filepath);
+                            }
+                        });
+
+
+                    });
+                    t1.Start();
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);

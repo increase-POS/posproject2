@@ -83,8 +83,8 @@ namespace POS.View.sectionData
 
                 }
             }
-            catch(Exception ex)
-            { SectionData.ExceptionMessage(ex,this); }
+            catch (Exception ex)
+            { SectionData.ExceptionMessage(ex, this); }
         }
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
         {//search
@@ -117,15 +117,15 @@ namespace POS.View.sectionData
 
         async Task<IEnumerable<ShippingCompanies>> RefreshShComList()
         {
-                shComs = await shCompaniesModel.Get();
+            shComs = await shCompaniesModel.Get();
             return shComs;
         }
         void RefreshshComView()
         {
-            
-                dg_shippingCompany.ItemsSource = shComQuery;
-                txt_count.Text = shComQuery.Count().ToString();
-            
+
+            dg_shippingCompany.ItemsSource = shComQuery;
+            txt_count.Text = shComQuery.Count().ToString();
+
         }
         private async void Tgl_isActive_Checked(object sender, RoutedEventArgs e)
         {//active
@@ -202,12 +202,41 @@ namespace POS.View.sectionData
 
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
                 {
-                    this.Dispatcher.Invoke(() =>
-                {
-                    Thread t1 = new Thread(FN_ExportToExcel);
-                    t1.SetApartmentState(ApartmentState.STA);
+                    Thread t1 = new Thread(() =>
+                    {
+                        List<ReportParameter> paramarr = new List<ReportParameter>();
+
+                        string addpath;
+                        bool isArabic = ReportCls.checkLang();
+                        if (isArabic)
+                        {
+                            addpath = @"\Reports\SectionData\Ar\ArShippingReport.rdlc";
+                        }
+                        else addpath = @"\Reports\SectionData\EN\ShippingReport.rdlc";
+                        string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+                        ReportCls.checkLang();
+
+                        clsReports.shippingReport(shComQuery, rep, reppath);
+                        clsReports.setReportLanguage(paramarr);
+                        clsReports.Header(paramarr);
+
+                        rep.SetParameters(paramarr);
+
+                        rep.Refresh();
+                        this.Dispatcher.Invoke(() =>
+                        {
+                            saveFileDialog.Filter = "EXCEL|*.xls;";
+                            if (saveFileDialog.ShowDialog() == true)
+                            {
+                                string filepath = saveFileDialog.FileName;
+                                LocalReportExtensions.ExportToExcel(rep, filepath);
+                            }
+                        });
+
+
+                    });
                     t1.Start();
-                });
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -224,24 +253,24 @@ namespace POS.View.sectionData
 
         void FN_ExportToExcel()
         {
-           
-                var QueryExcel = shComQuery.AsEnumerable().Select(x => new
-                {
-                    Name = x.name,
-                    RealDeliverCost = x.RealDeliveryCost,
-                    DeliveryCost = x.deliveryCost,
-                    DeliverType = x.deliveryType,
-                    Notes = x.notes
-                });
-                var DTForExcel = QueryExcel.ToDataTable();
-                DTForExcel.Columns[0].Caption = MainWindow.resourcemanager.GetString("trName");
-                DTForExcel.Columns[1].Caption = MainWindow.resourcemanager.GetString("trRealDeliveryCost");
-                DTForExcel.Columns[2].Caption = MainWindow.resourcemanager.GetString("trDeliveryCost");
-                DTForExcel.Columns[3].Caption = MainWindow.resourcemanager.GetString("trDeliveryType");
-                DTForExcel.Columns[4].Caption = MainWindow.resourcemanager.GetString("trNote");
 
-                ExportToExcel.Export(DTForExcel);
-           
+            var QueryExcel = shComQuery.AsEnumerable().Select(x => new
+            {
+                Name = x.name,
+                RealDeliverCost = x.RealDeliveryCost,
+                DeliveryCost = x.deliveryCost,
+                DeliverType = x.deliveryType,
+                Notes = x.notes
+            });
+            var DTForExcel = QueryExcel.ToDataTable();
+            DTForExcel.Columns[0].Caption = MainWindow.resourcemanager.GetString("trName");
+            DTForExcel.Columns[1].Caption = MainWindow.resourcemanager.GetString("trRealDeliveryCost");
+            DTForExcel.Columns[2].Caption = MainWindow.resourcemanager.GetString("trDeliveryCost");
+            DTForExcel.Columns[3].Caption = MainWindow.resourcemanager.GetString("trDeliveryType");
+            DTForExcel.Columns[4].Caption = MainWindow.resourcemanager.GetString("trNote");
+
+            ExportToExcel.Export(DTForExcel);
+
         }
 
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
@@ -279,8 +308,8 @@ namespace POS.View.sectionData
                 string name = sender.GetType().Name;
                 validateEmpty(name, sender);
             }
-            catch(Exception ex)
-            { SectionData.ExceptionMessage(ex,this,sender); }
+            catch (Exception ex)
+            { SectionData.ExceptionMessage(ex, this, sender); }
         }
 
         private void validationTextbox_TextChanged(object sender, TextChangedEventArgs e)
@@ -293,8 +322,8 @@ namespace POS.View.sectionData
                 if ((sender as TextBox).Name == "tb_realDeliveryCost" || (sender as TextBox).Name == "tb_deliveryCost")
                     SectionData.InputJustNumber(ref txb);
             }
-            catch(Exception ex)
-            { SectionData.ExceptionMessage(ex,this,sender); }
+            catch (Exception ex)
+            { SectionData.ExceptionMessage(ex, this, sender); }
         }
 
         private void Tb_validateEmptyLostFocus(object sender, RoutedEventArgs e)
@@ -304,8 +333,8 @@ namespace POS.View.sectionData
                 string name = sender.GetType().Name;
                 validateEmpty(name, sender);
             }
-            catch(Exception ex)
-            { SectionData.ExceptionMessage(ex,this,sender); }
+            catch (Exception ex)
+            { SectionData.ExceptionMessage(ex, this, sender); }
         }
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//add
@@ -493,19 +522,19 @@ namespace POS.View.sectionData
 
         private async void activate()
         {//activate
-           
-                shCompany.isActive = 1;
 
-                string s = await shCompaniesModel.Save(shCompany);
+            shCompany.isActive = 1;
 
-                if (!s.Equals("0"))
-                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
-                else
-                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+            string s = await shCompaniesModel.Save(shCompany);
 
-                await RefreshShComList();
-                Tb_search_TextChanged(null, null);
-               
+            if (!s.Equals("0"))
+                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
+            else
+                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+            await RefreshShComList();
+            Tb_search_TextChanged(null, null);
+
         }
 
         private void Dg_shippingCompany_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -576,11 +605,15 @@ namespace POS.View.sectionData
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
                 if (MainWindow.lang.Equals("en"))
-                { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
-                    grid_main.FlowDirection = FlowDirection.LeftToRight; }
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                    grid_main.FlowDirection = FlowDirection.LeftToRight;
+                }
                 else
-                { MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
-                    grid_main.FlowDirection = FlowDirection.RightToLeft; }
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                    grid_main.FlowDirection = FlowDirection.RightToLeft;
+                }
 
                 translat();
 
@@ -596,7 +629,7 @@ namespace POS.View.sectionData
 
                 await RefreshShComList();
                 Tb_search_TextChanged(null, null);
-                 if (sender != null)
+                if (sender != null)
                     SectionData.EndAwait(grid_main, this);
             }
             catch (Exception ex)
@@ -609,36 +642,36 @@ namespace POS.View.sectionData
 
         private void translat()
         {
-          
-                txt_active.Text = MainWindow.resourcemanager.GetString("trActive");
-                MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
-                txt_shippingCompany.Text = MainWindow.resourcemanager.GetString("trShippingCompanies");
-                txt_baseInformation.Text = MainWindow.resourcemanager.GetString("trBaseInformation");
-                MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_name, MainWindow.resourcemanager.GetString("trNameHint"));
-                MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_realDeliveryCost, MainWindow.resourcemanager.GetString("trRealDeliveryCostHint"));
-                MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_deliveryCost, MainWindow.resourcemanager.GetString("trDeliveryCostHint"));
-                MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_deliveryType, MainWindow.resourcemanager.GetString("trDeliveryTypeHint"));
-                MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_notes, MainWindow.resourcemanager.GetString("trNoteHint"));
 
-                dg_shippingCompany.Columns[0].Header = MainWindow.resourcemanager.GetString("trName");
-                dg_shippingCompany.Columns[1].Header = MainWindow.resourcemanager.GetString("trRealDeliveryCost");
-                dg_shippingCompany.Columns[2].Header = MainWindow.resourcemanager.GetString("trDeliveryCost");
-                dg_shippingCompany.Columns[3].Header = MainWindow.resourcemanager.GetString("trDeliveryType");
+            txt_active.Text = MainWindow.resourcemanager.GetString("trActive");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
+            txt_shippingCompany.Text = MainWindow.resourcemanager.GetString("trShippingCompanies");
+            txt_baseInformation.Text = MainWindow.resourcemanager.GetString("trBaseInformation");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_name, MainWindow.resourcemanager.GetString("trNameHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_realDeliveryCost, MainWindow.resourcemanager.GetString("trRealDeliveryCostHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_deliveryCost, MainWindow.resourcemanager.GetString("trDeliveryCostHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_deliveryType, MainWindow.resourcemanager.GetString("trDeliveryTypeHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_notes, MainWindow.resourcemanager.GetString("trNoteHint"));
 
-                tt_add_Button.Content = MainWindow.resourcemanager.GetString("trAdd");
-                tt_update_Button.Content = MainWindow.resourcemanager.GetString("trUpdate");
-                tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
+            dg_shippingCompany.Columns[0].Header = MainWindow.resourcemanager.GetString("trName");
+            dg_shippingCompany.Columns[1].Header = MainWindow.resourcemanager.GetString("trRealDeliveryCost");
+            dg_shippingCompany.Columns[2].Header = MainWindow.resourcemanager.GetString("trDeliveryCost");
+            dg_shippingCompany.Columns[3].Header = MainWindow.resourcemanager.GetString("trDeliveryType");
 
-                tt_clear.Content = MainWindow.resourcemanager.GetString("trClear");
-                tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
-                tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
-                tt_print.Content = MainWindow.resourcemanager.GetString("trPrint");
-                tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
-                tt_pieChart.Content = MainWindow.resourcemanager.GetString("trPieChart");
-                tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
-                tt_search.Content = MainWindow.resourcemanager.GetString("trSearch");
+            tt_add_Button.Content = MainWindow.resourcemanager.GetString("trAdd");
+            tt_update_Button.Content = MainWindow.resourcemanager.GetString("trUpdate");
+            tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
 
-            
+            tt_clear.Content = MainWindow.resourcemanager.GetString("trClear");
+            tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
+            tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
+            tt_print.Content = MainWindow.resourcemanager.GetString("trPrint");
+            tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
+            tt_pieChart.Content = MainWindow.resourcemanager.GetString("trPieChart");
+            tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
+            tt_search.Content = MainWindow.resourcemanager.GetString("trSearch");
+
+
         }
 
         private void Tb_PreventSpaces(object sender, KeyEventArgs e)
@@ -675,8 +708,8 @@ namespace POS.View.sectionData
                         SectionData.validateEmptyComboBox((ComboBox)sender, p_errorDeliveryType, tt_errorDeliveryType, "trErrorEmptyDeliveryTypeToolTip");
                 }
             }
-            catch(Exception ex)
-            { SectionData.ExceptionMessage(ex,this,sender); }
+            catch (Exception ex)
+            { SectionData.ExceptionMessage(ex, this, sender); }
         }
         ReportCls reportclass = new ReportCls();
         LocalReport rep = new LocalReport();

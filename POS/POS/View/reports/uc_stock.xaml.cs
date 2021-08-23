@@ -26,6 +26,7 @@ using System.Globalization;
 using Microsoft.Reporting.WinForms;
 using Microsoft.Win32;
 using System.IO;
+using System.Threading;
 
 namespace POS.View.reports
 {
@@ -1374,6 +1375,70 @@ namespace POS.View.reports
 
                 SectionData.ExceptionMessage(ex, this, sender);
             }
+        }
+
+        private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
+        {
+            Thread t1 = new Thread(() =>
+            {
+                List<ReportParameter> paramarr = new List<ReportParameter>();
+
+                string addpath = "";
+                bool isArabic = ReportCls.checkLang();
+                if (isArabic)
+                {
+                    if (selectedStockTab == 0)
+                    {
+                        addpath = @"\Reports\StatisticReport\Storage\Stock\Ar\ArItem.rdlc";
+                    }
+                    else if (selectedStockTab == 1)
+                    {
+                        addpath = @"\Reports\StatisticReport\Storage\Stock\Ar\ArLocation.rdlc";
+                    }
+                    else if (selectedStockTab == 2)
+                    {
+                        addpath = @"\Reports\StatisticReport\Storage\Stock\Ar\ArCollect.rdlc";
+                    }
+                }
+                else
+                {
+                    if (selectedStockTab == 0)
+                    {
+                        addpath = @"\Reports\StatisticReport\Storage\Stock\En\Item.rdlc";
+                    }
+                    else if (selectedStockTab == 1)
+                    {
+                        addpath = @"\Reports\StatisticReport\Storage\Stock\En\Location.rdlc";
+                    }
+                    else if (selectedStockTab == 2)
+                    {
+                        addpath = @"\Reports\StatisticReport\Storage\Stock\En\Collect.rdlc";
+                    }
+                }
+                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+                ReportCls.checkLang();
+
+                clsReports.storage(temp, rep, reppath);
+                clsReports.setReportLanguage(paramarr);
+                clsReports.Header(paramarr);
+
+                rep.SetParameters(paramarr);
+
+                rep.Refresh();
+                this.Dispatcher.Invoke(() =>
+                {
+                    saveFileDialog.Filter = "EXCEL|*.xls;";
+                    if (saveFileDialog.ShowDialog() == true)
+                    {
+                        string filepath = saveFileDialog.FileName;
+                        LocalReportExtensions.ExportToExcel(rep, filepath);
+                    }
+                });
+
+
+            });
+            t1.Start();
         }
     }
 }

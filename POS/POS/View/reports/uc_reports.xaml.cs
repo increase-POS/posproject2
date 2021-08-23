@@ -51,6 +51,15 @@ namespace POS.View.reports
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
+            #region menu state
+            string menuState = MainWindow.menuIsOpen;
+            if (menuState.Equals("open"))
+                ex.IsExpanded = true;
+            else
+                ex.IsExpanded = false;
+            #endregion
+
+            #region translate
             if (MainWindow.lang.Equals("en"))
             {
                 MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
@@ -63,6 +72,8 @@ namespace POS.View.reports
             }
 
             translate();
+            #endregion
+
             btn_salesReports_Click(null, null);
             //permission();
         }
@@ -139,6 +150,18 @@ namespace POS.View.reports
             refreashBachgroundClick(btn_usersReports);
             grid_main.Children.Clear();
             grid_main.Children.Add(uc_usersReport.Instance);
+        }
+
+        private async void Ex_Collapsed(object sender, RoutedEventArgs e)
+        {
+            int cId = await SectionData.getCloseValueId();
+            SectionData.saveMenuState(cId);
+        }
+
+        private async void Ex_Expanded(object sender, RoutedEventArgs e)
+        {
+            int oId = await SectionData.getOpenValueId();
+            SectionData.saveMenuState(oId);
         }
     }
 }

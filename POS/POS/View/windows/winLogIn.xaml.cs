@@ -40,6 +40,7 @@ namespace POS.View.windows
 
         public static ResourceManager resourcemanager;
         public static string lang;
+        public static string menuIsOpen;
 
         User userModel = new User();
         User user = new User();
@@ -60,7 +61,7 @@ namespace POS.View.windows
             { }
         }
 
-        private void btnClose_Click(object sender, RoutedEventArgs e)
+        private async void btnClose_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -72,6 +73,7 @@ namespace POS.View.windows
             }
         }
         UserSetValues usLanguage = new UserSetValues();
+        UserSetValues usMenu = new UserSetValues();
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
             try
@@ -86,6 +88,7 @@ namespace POS.View.windows
                     txtUserName.Text = Properties.Settings.Default.userName;
                     txtPassword.Password = Properties.Settings.Default.password;
                     lang = Properties.Settings.Default.Lang;
+                    menuIsOpen = Properties.Settings.Default.menuIsOpen;
                     cbxRemmemberMe.IsChecked = true;
 
                 }
@@ -94,6 +97,7 @@ namespace POS.View.windows
                     txtUserName.Clear();
                     txtPassword.Clear();
                     lang = "en";
+                    menuIsOpen = "close";
                     cbxRemmemberMe.IsChecked = false;
                 }
 
@@ -119,11 +123,13 @@ namespace POS.View.windows
                     Keyboard.Focus(txtPassword);
 
                 translate();
+
                 #region Arabic Number
                 CultureInfo ci = CultureInfo.CreateSpecificCulture(Thread.CurrentThread.CurrentCulture.Name);
                 ci.NumberFormat.DigitSubstitution = DigitShapes.Context;
                 Thread.CurrentThread.CurrentCulture = ci;
                 #endregion
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -134,12 +140,9 @@ namespace POS.View.windows
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
-
+        List<UserSetValues> usValues = new List<UserSetValues>();
         private async Task<string> getUserLanguage(int userId)
         {
-            //users = await userModel.GetUsersActive();
-            //if (users.Any(i => i.username.Equals(Properties.Settings.Default.userName)))
-            //    user = users.Where(i => i.username == Properties.Settings.Default.userName).FirstOrDefault<User>();
             SettingCls setModel = new SettingCls();
             SettingCls set = new SettingCls();
             SetValues valueModel = new SetValues();
@@ -147,11 +150,9 @@ namespace POS.View.windows
             UserSetValues usValueModel = new UserSetValues();
             var lanSettings = await setModel.GetAll();
             set = lanSettings.Where(l => l.name == "language").FirstOrDefault<SettingCls>();
-
             var lanValues = await valueModel.GetAll();
             languages = lanValues.Where(vl => vl.settingId == set.settingId).ToList<SetValues>();
-
-            List<UserSetValues> usValues = new List<UserSetValues>();
+           
             usValues = await usValueModel.GetAll();
             if (usValues.Count > 0)
             {
@@ -173,6 +174,7 @@ namespace POS.View.windows
             else return "en";
         }
 
+      
         private void translate()
         {
             cbxRemmemberMe.Content = resourcemanager.GetString("trRememberMe");
@@ -217,8 +219,6 @@ namespace POS.View.windows
 
                 if (logInProcessing)
                 {
-
-
                     logInProcessing = false;
                     //awaitSaveBtn(true);
                     clearValidate(txtUserName, p_errorUserName);
@@ -239,6 +239,12 @@ namespace POS.View.windows
 
                             MainWindow.lang = await getUserLanguage(user.userId);
                             lang = MainWindow.lang;
+                            string m = await SectionData.getUserMenuIsOpen(user.userId);
+                            if (!m.Equals("-1"))
+                                MainWindow.menuIsOpen = m;
+                            else
+                                MainWindow.menuIsOpen = "close";
+                            menuIsOpen = MainWindow.menuIsOpen;
                             //make user online
                             user.isOnline = 1;
                             //  user.isActive = 1;
@@ -266,20 +272,17 @@ namespace POS.View.windows
                                 Properties.Settings.Default.userName = txtUserName.Text;
                                 Properties.Settings.Default.password = txtPassword.Password;
                                 Properties.Settings.Default.Lang = lang;
+                                Properties.Settings.Default.menuIsOpen = menuIsOpen;
                             }
                             else
                             {
                                 Properties.Settings.Default.userName = "";
                                 Properties.Settings.Default.password = "";
                                 Properties.Settings.Default.Lang = "";
+                                Properties.Settings.Default.menuIsOpen = "";
                             }
                             Properties.Settings.Default.Save();
-                            //wd_selectPos sPos = new wd_selectPos();
-                            //Window.GetWindow(this).Opacity = 0.2;
-
-                            //sPos.ShowDialog();
-
-
+                           
                             //Window.GetWindow(this).Opacity = 1;
                             //open main window and close this window
                             MainWindow main = new MainWindow();

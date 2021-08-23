@@ -25,6 +25,49 @@ namespace Microsoft.Reporting.WinForms
             m_streams.Add(stream);
             return stream;
         }
+        public static void ExportbyPrinterName( string printerName,LocalReport report, bool print = true)
+        {
+            PaperSize paperSize = m_pageSettings.PaperSize;
+            Margins margins = m_pageSettings.Margins;
+
+            // The device info string defines the page range to print as well as the size of the page.
+            // A start and end page of 0 means generate all pages.
+            string deviceInfo = string.Format(
+                CultureInfo.InvariantCulture,
+                "<DeviceInfo>" +
+                    "<OutputFormat>EMF</OutputFormat>" +
+                /*
+                "<PageWidth>{5}</PageWidth>" +
+                "<PageHeight>{4}</PageHeight>" +
+
+                "<MarginTop>{0}</MarginTop>" +
+                "<MarginLeft>{1}</MarginLeft>" +
+                "<MarginRight>{2}</MarginRight>" +
+                "<MarginBottom>{3}</MarginBottom>" +
+*/
+                "</DeviceInfo>"
+                /*,
+                ToInches(margins.Top),
+                ToInches(margins.Left),
+                ToInches(margins.Right),
+                ToInches(margins.Bottom),
+                ToInches(paperSize.Height),
+                ToInches(paperSize.Width)
+                */);
+
+            Warning[] warnings;
+            m_streams = new List<Stream>();
+            report.Render("Image", deviceInfo, CreateStream,
+               out warnings);
+            foreach (Stream stream in m_streams)
+                stream.Position = 0;
+
+            if (print)
+            {
+                PrintbyPrinterName(printerName);
+            }
+        }
+
 
         public static void Export(LocalReport report, bool print = true)
         {
@@ -133,16 +176,40 @@ namespace Microsoft.Reporting.WinForms
 
                     "  <EmbedFonts>None</EmbedFonts>" +
                     "</DeviceInfo>";
-         
 
-         //   byte[] renderedBytes = report.Render("WORD", deviceInfo, out mimeType, out encoding, out fileNameExtension, out streams, out warnings);
 
-            byte[] Bytes = report.Render(format: "WORD", deviceInfo: deviceInfo);
+            //   byte[] renderedBytes = report.Render("WORD", deviceInfo, out mimeType, out encoding, out fileNameExtension, out streams, out warnings);
+           // byte[] Bytes = report.Render("Excel", deviceInfo);
+            byte[] Bytes = report.Render(format: "WORD", deviceInfo);
             // File.SetAttributes(savePath, FileAttributes.Normal);
 
             using (FileStream stream = new FileStream(FullPath, FileMode.Create))
             {
                 stream.Write(Bytes, 0, Bytes.Length);
+            }
+
+        }
+
+        public static void ExportToExcel(LocalReport report, String FullPath)
+        {
+
+            string deviceInfo = "<DeviceInfo>" +
+                    "  <OutputFormat>Excel</OutputFormat>" +
+
+                    "  <EmbedFonts>None</EmbedFonts>" +
+                    "</DeviceInfo>";
+
+          
+         byte[] Bytes = report.Render("Excel", deviceInfo);
+           // byte[] Bytes = report.Render("Excel", "", out contentType, out encoding, out extension, out streamIds, out warnings);
+
+            //  byte[] Bytes = report.Render(format: "EXCEL", deviceInfo: deviceInfo);
+            // File.SetAttributes(savePath, FileAttributes.Normal);
+     
+            using (FileStream stream = new FileStream(FullPath, FileMode.Create))
+            {
+                stream.Write(Bytes, 0, Bytes.Length);
+             
             }
 
         }
@@ -184,7 +251,26 @@ namespace Microsoft.Reporting.WinForms
             }
             else
             {
+               
                 printDoc.PrintPage += new PrintPageEventHandler(PrintPage);
+                m_currentPageIndex = 0;
+                printDoc.Print();
+            }
+        }
+        public static void PrintbyPrinterName(string printerName)
+        {
+            if (m_streams == null || m_streams.Count == 0)
+                throw new Exception("Error: no stream to print.");
+            PrintDocument printDoc = new PrintDocument();
+            if (!printDoc.PrinterSettings.IsValid)
+            {
+                throw new Exception("Error: cannot find the default printer.");
+            }
+            else
+            {
+                printDoc.PrinterSettings.PrinterName = printerName;
+               printDoc.PrintPage += new PrintPageEventHandler(PrintPage);
+              
                 m_currentPageIndex = 0;
                 printDoc.Print();
             }
@@ -199,6 +285,17 @@ namespace Microsoft.Reporting.WinForms
             m_pageSettings.Margins = reportPageSettings.Margins;
 
             Export(report);
+        }
+
+        public static void PrintToPrinterbyName(this LocalReport report,string printerName)
+        {
+            m_pageSettings = new PageSettings();
+            ReportPageSettings reportPageSettings = report.GetDefaultPageSettings();
+
+            m_pageSettings.PaperSize = reportPageSettings.PaperSize;
+            m_pageSettings.Margins = reportPageSettings.Margins;
+
+            ExportbyPrinterName(printerName, report);
         }
 
         public static void DisposePrint()

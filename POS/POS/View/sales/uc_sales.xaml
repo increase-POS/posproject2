@@ -13,9 +13,9 @@
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Expander Foreground="#178DD2" Background="#E8E8E8"     
+        <Expander Foreground="#178DD2" Background="#E8E8E8"   Name="ex"   
     ExpandDirection="Right" Margin="0"
-    materialDesign:ExpanderAssist.VerticalHeaderPadding="0,35,0,5">
+    materialDesign:ExpanderAssist.VerticalHeaderPadding="0,35,0,5" Collapsed="Ex_Collapsed" Expanded="Ex_Expanded">
             <ScrollViewer  VerticalScrollBarVisibility="Auto"  Margin="0,1.5,0,0"
                                           ScrollViewer.CanContentScroll="True">
                 <Grid Margin="0,7,0,0" Width="90">

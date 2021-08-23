@@ -39,7 +39,7 @@ namespace POS
     {
 
         public static ResourceManager resourcemanager;
-		public static ResourceManager resourcemanagerreport;
+        public static ResourceManager resourcemanagerreport;
         bool menuState = false;
         //ToolTip="{Binding Properties.Settings.Default.Lang}"
         public static string lang;
@@ -49,9 +49,9 @@ namespace POS
         public static string Fax;
         public static string Mobile;
         public static string Address;
-        public static CountryCode Region ;
+        public static CountryCode Region;
         public static string Currency;
-        public static string Phone ;
+        public static string Phone;
         internal static int? userID;
         internal static User userLogin;
         internal static int? userLogInID;
@@ -63,27 +63,28 @@ namespace POS
         bool isHome = false;
         internal static int? isInvTax = 1;
         internal static decimal? tax = 2;
-        internal static string dateFormat ;
+        internal static string dateFormat;
         internal static decimal? StorageCost = 100;
         public static int Idletime = 5;
         public static int threadtime = 5;
+        public static string menuIsOpen = "close";
 
         static public GroupObject groupObject = new GroupObject();
         static public List<GroupObject> groupObjects = new List<GroupObject>();
         static SettingCls setModel = new SettingCls();
         static SetValues valueModel = new SetValues();
-        static int nameId, addressId, emailId, mobileId, phoneId, faxId, logoId , taxId;
+        static int nameId, addressId, emailId, mobileId, phoneId, faxId, logoId, taxId;
         public static string logoImage;
         ImageBrush myBrush = new ImageBrush();
         NotificationUser notificationUser = new NotificationUser();
-       
+
         public static DispatcherTimer timer;
         DispatcherTimer idletimer;//  logout timer
         DispatcherTimer threadtimer;//  repeat timer for check other login
         DispatcherTimer notTimer;//  repeat timer for notifications
 
         static public MainWindow mainWindow;
-         public MainWindow()
+        public MainWindow()
         {
             InitializeComponent();
 
@@ -92,7 +93,7 @@ namespace POS
 
         }
 
-      async  void windowFlowDirection()
+        async void windowFlowDirection()
         {
             #region translate
             if (lang.Equals("en"))
@@ -158,7 +159,7 @@ namespace POS
             tax = decimal.Parse(await getDefaultTax());
 
             dateFormat = await getDefaultDateForm();
-           
+
             CountryCode c = await getDefaultRegion();
             Region = c;
             Currency = c.currency;
@@ -176,7 +177,7 @@ namespace POS
             set = settingsCls.Where(s => s.name == "com_name").FirstOrDefault<SettingCls>();
             nameId = set.settingId;
             setV = settingsValues.Where(i => i.settingId == nameId).FirstOrDefault();
-            if(setV != null)
+            if (setV != null)
                 companyName = setV.value;
             //get company address
             set = settingsCls.Where(s => s.name == "com_address").FirstOrDefault<SettingCls>();
@@ -233,7 +234,7 @@ namespace POS
             #region user personal info
             txt_userName.Text = userLogin.name;
             txt_userJob.Text = userLogin.job;
-           
+
             try
             {
                 if (!string.IsNullOrEmpty(userLogin.image))
@@ -262,7 +263,7 @@ namespace POS
                 clearImg();
             }
             #endregion
-           
+
             #region 
 
             groupObjects = await groupObject.GetUserpermission(userLogin.userId);
@@ -278,32 +279,29 @@ namespace POS
             // branch = await branch.getBranchById((int)MainWindow.branchID);
             //txt_branchLogin.Text = branch.name;
             //#endregion
-            setNotifications();
-            setTimer();
             BTN_Home_Click(null, null);
             grid_mainWindow.IsEnabled = true;
             EndAwait();
-            permission();
             btn_reports.Visibility = Visibility.Visible;
 
-           
+
         }
         void permission()
         {
             if (!SectionData.isAdminPermision())
                 foreach (Button button in FindControls.FindVisualChildren<Button>(this))
-            {
-                //if (path.Name == "path_" + button.Tag)
-                //{
-                //    //MessageBox.Show("Hey i'm in " + "path_" + button.Tag);
-                //    path.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
-                //    break;
-                //}
-                if (button.Tag != null)
-                    if (MainWindow.groupObject.HasPermission(button.Tag.ToString(), MainWindow.groupObjects))
-                        button.Visibility = Visibility.Visible;
-                    else button.Visibility = Visibility.Collapsed;
-            }
+                {
+                    //if (path.Name == "path_" + button.Tag)
+                    //{
+                    //    //MessageBox.Show("Hey i'm in " + "path_" + button.Tag);
+                    //    path.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+                    //    break;
+                    //}
+                    if (button.Tag != null)
+                        if (MainWindow.groupObject.HasPermission(button.Tag.ToString(), MainWindow.groupObjects))
+                            button.Visibility = Visibility.Visible;
+                        else button.Visibility = Visibility.Collapsed;
+                }
             //if (MainWindow.groupObject.HasPermission(btn_sectionData.Tag.ToString(), MainWindow.groupObjects))
             //    btn_sectionData.Visibility = Visibility.Visible;
             //else btn_sectionData.Visibility = Visibility.Collapsed;
@@ -349,10 +347,16 @@ namespace POS
         {
             try
             {
+                if (sendert != null)
+                    SectionData.StartAwait(grid_main);
                 setNotifications();
+                if (sendert != null)
+                    SectionData.EndAwait(grid_main, this);
             }
             catch (Exception ex)
             {
+                if (sendert != null)
+                    SectionData.EndAwait(grid_main, this);
                 SectionData.ExceptionMessage(ex, this, sendert);
             }
         }
@@ -392,20 +396,29 @@ namespace POS
         }
         async void timer_Thread(object sendert, EventArgs et)
         {
+
+            //  User thruser = new User();
+            UsersLogs thrlog = new UsersLogs();
             try
             {
-                UsersLogs thrlog = new UsersLogs();
                 thrlog = await thrlog.GetByID((int)userLogInID);
-                if (thrlog.sOutDate != null)
-                {
-                    BTN_logOut_Click(null, null);
-                    threadtimer.Stop();
-                }
+                //grid_mainWindow.IsEnabled = true;
+                //EndAwait();
             }
             catch (Exception ex)
             {
                 SectionData.ExceptionMessage(ex, this);
+                //grid_mainWindow.IsEnabled = false;
+                //StartAwait();
             }
+
+            if (thrlog.sOutDate != null)
+            {
+                BTN_logOut_Click(null, null);
+                threadtimer.Stop();
+
+            }
+
         }
         public void StartAwait()
         {
@@ -450,7 +463,7 @@ namespace POS
                 T.Visibility = Visibility.Hidden;
             else T.Visibility = Visibility.Visible;
         }
-        private  void BTN_logOut_Click(object sender, RoutedEventArgs e)
+        private void BTN_logOut_Click(object sender, RoutedEventArgs e)
         {
             close();
             Application.Current.Shutdown();
@@ -465,14 +478,10 @@ namespace POS
             idletimer.Stop();
             threadtimer.Stop();
         }
-        private  void BTN_Close_Click(object sender, RoutedEventArgs e)
+        private void BTN_Close_Click(object sender, RoutedEventArgs e)
         {
             close();
             Application.Current.Shutdown();
-        }
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            BTN_Close_Click(null, null);
         }
         //protected override void OnClosed(EventArgs e)
         //{
@@ -670,7 +679,7 @@ namespace POS
 
             return true;
         }
-       
+
         private void BTN_SectionData_Click(object sender, RoutedEventArgs e)
         {
             // BranchStore branchStore = new BranchStore();
@@ -678,13 +687,13 @@ namespace POS
             //if (MainWindow.groupObject.HasPermission(BTN_sectionData.Tag.ToString(), MainWindow.groupObjects))
             //{
             colorTextRefreash(txt_sectiondata);
-                FN_pathVisible(path_openSectionData);
-                fn_ColorIconRefreash(path_iconSectionData);
-                grid_main.Children.Clear();
-                grid_main.Children.Add(UC_SectionData.Instance);
-                //UC_SectionData uc = new UC_SectionData();
-                //grid_main.Children.Add(uc);
-                isHome = true;
+            FN_pathVisible(path_openSectionData);
+            fn_ColorIconRefreash(path_iconSectionData);
+            grid_main.Children.Clear();
+            grid_main.Children.Add(UC_SectionData.Instance);
+            //UC_SectionData uc = new UC_SectionData();
+            //grid_main.Children.Add(uc);
+            isHome = true;
             Button button = sender as Button;
             initializationMainTrack(button.Tag.ToString(), 0);
             //}
@@ -832,10 +841,10 @@ namespace POS
                 #endregion
             }
         }
-         void initializationMainTrackChildren(string text)
+        void initializationMainTrackChildren(string text)
         {
             var titleText = new TextBlock();
-            titleText.Text = "> "+text;
+            titleText.Text = "> " + text;
             titleText.FontSize = 14;
             titleText.FontWeight = FontWeights.Regular;
             titleText.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
@@ -855,7 +864,11 @@ namespace POS
             initializationMainTrack(button.Tag.ToString(), 0);
         }
 
-       
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            e.Cancel = true;
+            this.Visibility = Visibility.Hidden;
+        }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
@@ -872,7 +885,7 @@ namespace POS
             userLogin = await userModel.getUserById(w.userID);
         }
 
-      
+
         async Task<string> getDefaultStorageCost()
         {
             SetValues v = await uc_general.getDefaultCost();
@@ -921,6 +934,47 @@ namespace POS
                 return null;
         }
 
+        private void Mi_more_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void BTN_notifications_Click(object sender, RoutedEventArgs e)
+        {
+            if (bdrMain.Visibility == Visibility.Collapsed)
+            {
+                bdrMain.Visibility = Visibility.Visible;
+                bdrMain.RenderTransform = Animations.borderAnimation(-25, bdrMain, true);
+            }
+            else
+            {
+                bdrMain.Visibility = Visibility.Collapsed;
+            }
+        }
+
+
+        private void TextBlock_MouseEnter(object sender, MouseEventArgs e)
+        {
+            bdr_showAll.Visibility = Visibility.Visible;
+            
+        }
+
+        private void TextBlock_MouseLeave(object sender, MouseEventArgs e)
+        {
+            bdr_showAll.Visibility = Visibility.Hidden;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            bdrMain.Visibility = Visibility.Collapsed;
+        }
+
+        
 
         private void clearImg()
         {

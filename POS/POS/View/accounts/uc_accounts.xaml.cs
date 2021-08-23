@@ -47,6 +47,15 @@ namespace POS.View.accounts
         }
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
+            #region menu state
+            string menuState = MainWindow.menuIsOpen;
+            if (menuState.Equals("open"))
+                ex.IsExpanded = true;
+            else
+                ex.IsExpanded = false;
+            #endregion
+
+            #region translate
             try
             {
 
@@ -63,6 +72,7 @@ namespace POS.View.accounts
 
                 }
                 translate();
+                #endregion
                 permission();
             }
             catch (Exception ex)
@@ -279,6 +289,16 @@ namespace POS.View.accounts
             }
         }
 
+        private async void Ex_Collapsed(object sender, RoutedEventArgs e)
+        {
+            int cId = await SectionData.getCloseValueId();
+            SectionData.saveMenuState(cId);
+        }
 
+        private async void Ex_Expanded(object sender, RoutedEventArgs e)
+        {
+            int oId = await SectionData.getOpenValueId();
+            SectionData.saveMenuState(oId);
+        }
     }
 }

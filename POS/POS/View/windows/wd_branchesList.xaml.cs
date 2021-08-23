@@ -70,7 +70,6 @@ namespace POS.View.windows
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_branchList);
-                SectionData.StartAwait(grid_mainGrid);
 
                 #region translate
                 if (MainWindow.lang.Equals("en"))
@@ -129,7 +128,6 @@ namespace POS.View.windows
                 dg_allStores.SelectedValuePath = "branchId";
                 dg_allStores.DisplayMemberPath = "name";
           
-                SectionData.EndAwait(grid_mainGrid,this);
                 if (sender != null)
                     SectionData.EndAwait(grid_branchList);
             }

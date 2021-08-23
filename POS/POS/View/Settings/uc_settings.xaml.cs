@@ -46,6 +46,15 @@ namespace POS.View.Settings
         }
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
+            #region menu state
+            string menuState = MainWindow.menuIsOpen;
+            if (menuState.Equals("open"))
+                ex.IsExpanded = true;
+            else
+                ex.IsExpanded = false;
+            #endregion
+
+            #region translate
             try
             {
                 if (sender != null)
@@ -56,6 +65,9 @@ namespace POS.View.Settings
                 else
                 { MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly()); grid_ucSettings.FlowDirection = FlowDirection.RightToLeft; }
                 translate();
+            #endregion
+
+
                 permission();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -206,6 +218,18 @@ namespace POS.View.Settings
             {
                 SectionData.ExceptionMessage(ex, this, sender);
             }
+        }
+
+        private async void Ex_Collapsed(object sender, RoutedEventArgs e)
+        {
+            int cId = await SectionData.getCloseValueId();
+            SectionData.saveMenuState(cId);
+        }
+
+        private async void Ex_Expanded(object sender, RoutedEventArgs e)
+        {
+            int oId = await SectionData.getOpenValueId();
+            SectionData.saveMenuState(oId);
         }
     }
 }

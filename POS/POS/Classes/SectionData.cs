@@ -795,5 +795,83 @@ namespace POS.Classes
             }
         }
 
+        static SetValues valueModel = new SetValues();
+        static UserSetValues uSetValueModel = new UserSetValues();
+        static List<UserSetValues> usValues = new List<UserSetValues>();
+        static UserSetValues usMenu = new UserSetValues();
+
+        static public async Task<string> getUserMenuIsOpen(int userId)
+        {
+            List<SetValues> menuIsOpenValues = new List<SetValues>();
+            menuIsOpenValues = await valueModel.GetBySetName("menuIsOpen");
+            usValues = await uSetValueModel.GetAll();
+            if (usValues.Count > 0)
+            {
+                var curUserValues = usValues.Where(c => c.userId == userId);
+
+                if (curUserValues.Count() > 0)
+                {
+                    foreach (var l in curUserValues)
+                        if (menuIsOpenValues.Any(c => c.valId == l.valId))
+                        {
+                            usMenu = l;
+                        }
+                    if (usMenu.id != 0)
+                    {
+                        var menu = await valueModel.GetByID(usMenu.valId.Value);
+
+                        return menu.value;
+                    }
+                    else return "-1";
+                }
+                else return "-1";
+            }
+
+            else return "-1";
+        }
+
+        static UserSetValues usMenuIsOpen = new UserSetValues();
+        static UserSetValues usValueModel = new UserSetValues();
+        static SetValues valueMedel = new SetValues();
+        static List<SetValues> menuValues = new List<SetValues>();
+
+        static public async Task<int> getOpenValueId()
+        {
+            menuValues = await valueMedel.GetAll();
+            SetValues openValue = menuValues.Where(o => o.value == "open").FirstOrDefault();
+            return openValue.valId;
+        }
+        static public async Task<int> getCloseValueId()
+        {
+            menuValues = await valueMedel.GetAll();
+            SetValues closeValue = menuValues.Where(o => o.value == "close").FirstOrDefault();
+            return closeValue.valId;
+        }
+        static public async void saveMenuState(int valId)
+        {
+            int oId = await getOpenValueId();
+            int cId = await getCloseValueId();
+            string m = await SectionData.getUserMenuIsOpen(MainWindow.userID.Value);
+            var menus = await usValueModel.GetAll();
+            usMenuIsOpen = menus.Where(x => x.userId == MainWindow.userID.Value && (x.valId == oId || x.valId == cId)).FirstOrDefault();
+            if (m.Equals("-1"))
+                usMenuIsOpen = new UserSetValues();
+
+            usMenuIsOpen.userId = MainWindow.userID;
+            usMenuIsOpen.valId = valId;
+            usMenuIsOpen.createUserId = MainWindow.userID;
+            string s = await usValueModel.Save(usMenuIsOpen);
+            if (!s.Equals("0"))
+            {
+                //update menu in main window
+                SetValues v = await valueMedel.GetByID(valId);
+                MainWindow.menuIsOpen = v.value;
+                ////save to user settings
+                Properties.Settings.Default.menuIsOpen = v.value;
+                Properties.Settings.Default.Save();
+
+            }
+        }
+
     }
 }

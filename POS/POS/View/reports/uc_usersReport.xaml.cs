@@ -1242,6 +1242,16 @@ namespace POS.View.reports
 
             fillUsersEvent();
         }
+
+        private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
+        {
+      
+        }
+
+        private void Btn_pdf_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
 

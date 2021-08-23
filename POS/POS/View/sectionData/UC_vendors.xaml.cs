@@ -112,8 +112,8 @@ namespace POS.View
 
                 }
             }
-            catch(Exception ex)
-            { SectionData.ExceptionMessage(ex,this); }
+            catch (Exception ex)
+            { SectionData.ExceptionMessage(ex, this); }
         }
         //area code methods
         async Task<IEnumerable<CountryCode>> RefreshCountry()
@@ -577,9 +577,9 @@ namespace POS.View
 
             string s = await agentModel.saveAgent(agent);
 
-            if (s.Equals("true")) 
+            if (s.Equals("true"))
                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
-            else 
+            else
                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
             await RefreshVendorsList();
@@ -593,8 +593,8 @@ namespace POS.View
             {
                 SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
             }
-            catch(Exception ex)
-            { SectionData.ExceptionMessage(ex,this,sender); }
+            catch (Exception ex)
+            { SectionData.ExceptionMessage(ex, this, sender); }
         }
         private void Tb_email_LostFocus(object sender, RoutedEventArgs e)
         {
@@ -602,8 +602,8 @@ namespace POS.View
             {
                 SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
             }
-            catch(Exception ex)
-            { SectionData.ExceptionMessage(ex,this,sender); }
+            catch (Exception ex)
+            { SectionData.ExceptionMessage(ex, this, sender); }
         }
 
         private void tb_mobile_LostFocus(object sender, RoutedEventArgs e)
@@ -612,8 +612,8 @@ namespace POS.View
             {
                 SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
             }
-            catch(Exception ex)
-            { SectionData.ExceptionMessage(ex,this,sender); }
+            catch (Exception ex)
+            { SectionData.ExceptionMessage(ex, this, sender); }
         }
 
         private void tb_mobile_TextChanged(object sender, TextChangedEventArgs e)
@@ -622,8 +622,8 @@ namespace POS.View
             {
                 SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
             }
-            catch(Exception ex)
-            { SectionData.ExceptionMessage(ex,this,sender); }
+            catch (Exception ex)
+            { SectionData.ExceptionMessage(ex, this, sender); }
         }
 
         private void tb_name_LostFocus(object sender, RoutedEventArgs e)
@@ -632,8 +632,8 @@ namespace POS.View
             {
                 SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
             }
-            catch(Exception ex)
-            { SectionData.ExceptionMessage(ex,this,sender); }
+            catch (Exception ex)
+            { SectionData.ExceptionMessage(ex, this, sender); }
         }
 
         async Task<IEnumerable<Agent>> RefreshVendorsList()
@@ -663,7 +663,7 @@ namespace POS.View
             e.Handled = e.Key == Key.Space;
         }
 
-     
+
         void FN_ExportToExcel()
         {
             var QueryExcel = agentsQuery.AsEnumerable().Select(x => new
@@ -746,11 +746,11 @@ namespace POS.View
                 p_errorName.Visibility = Visibility.Collapsed;
                 tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             }
-            catch(Exception ex)
-            { SectionData.ExceptionMessage(ex,this,sender); }
+            catch (Exception ex)
+            { SectionData.ExceptionMessage(ex, this, sender); }
         }
 
-      
+
 
         private void tb_email_PreviewKeyDown(object sender, KeyEventArgs e)
         {
@@ -790,8 +790,8 @@ namespace POS.View
                     firstchange = true;
                 }
             }
-            catch(Exception ex)
-            { SectionData.ExceptionMessage(ex,this,sender); }
+            catch (Exception ex)
+            { SectionData.ExceptionMessage(ex, this, sender); }
         }
 
         private void Cb_areaFax_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -827,8 +827,8 @@ namespace POS.View
                     firstchangefax = true;
                 }
             }
-            catch(Exception ex)
-            { SectionData.ExceptionMessage(ex,this,sender); }
+            catch (Exception ex)
+            { SectionData.ExceptionMessage(ex, this, sender); }
         }
 
         private void Img_vendor_Click(object sender, RoutedEventArgs e)
@@ -882,37 +882,37 @@ namespace POS.View
 
         private async Task getImg()
         {
-          
-                if (agent.image.Equals(""))
+
+            if (agent.image.Equals(""))
+            {
+                SectionData.clearImg(img_vendor);
+            }
+            else
+            {
+                byte[] imageBuffer = await agentModel.downloadImage(agent.image); // read this as BLOB from your DB
+
+                var bitmapImage = new BitmapImage();
+                if (imageBuffer != null)
                 {
-                    SectionData.clearImg(img_vendor);
+                    using (var memoryStream = new MemoryStream(imageBuffer))
+                    {
+                        bitmapImage.BeginInit();
+                        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmapImage.StreamSource = memoryStream;
+                        bitmapImage.EndInit();
+                    }
+
+                    img_vendor.Background = new ImageBrush(bitmapImage);
+                    // configure trmporary path
+                    string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+                    string tmpPath = System.IO.Path.Combine(dir, Global.TMPAgentsFolder);
+                    tmpPath = System.IO.Path.Combine(tmpPath, agent.image);
+                    openFileDialog.FileName = tmpPath;
                 }
                 else
-                {
-                    byte[] imageBuffer = await agentModel.downloadImage(agent.image); // read this as BLOB from your DB
+                    SectionData.clearImg(img_vendor);
+            }
 
-                    var bitmapImage = new BitmapImage();
-                    if (imageBuffer != null)
-                    {
-                        using (var memoryStream = new MemoryStream(imageBuffer))
-                        {
-                            bitmapImage.BeginInit();
-                            bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                            bitmapImage.StreamSource = memoryStream;
-                            bitmapImage.EndInit();
-                        }
-
-                        img_vendor.Background = new ImageBrush(bitmapImage);
-                        // configure trmporary path
-                        string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
-                        string tmpPath = System.IO.Path.Combine(dir, Global.TMPAgentsFolder);
-                        tmpPath = System.IO.Path.Combine(tmpPath, agent.image);
-                        openFileDialog.FileName = tmpPath;
-                    }
-                    else
-                        SectionData.clearImg(img_vendor);
-                }
-          
         }
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
@@ -925,12 +925,41 @@ namespace POS.View
 
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
                 {
-                    this.Dispatcher.Invoke(() =>
-                {
-                    Thread t1 = new Thread(FN_ExportToExcel);
-                    t1.SetApartmentState(ApartmentState.STA);
+
+                    Thread t1 = new Thread(() =>
+                    {
+                        List<ReportParameter> paramarr = new List<ReportParameter>();
+
+                        string addpath;
+                        bool isArabic = ReportCls.checkLang();
+                        if (isArabic)
+                        {
+                            addpath = @"\Reports\SectionData\Ar\ArVendorReport.rdlc";
+                        }
+                        else addpath = @"\Reports\SectionData\En\VendorReport.rdlc";
+                        string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+                        ReportCls.checkLang();
+
+                        clsReports.vendorReport(agentsQuery, rep, reppath);
+                        clsReports.setReportLanguage(paramarr);
+                        clsReports.Header(paramarr);
+
+                        rep.SetParameters(paramarr);
+
+                        rep.Refresh();
+                        this.Dispatcher.Invoke(() =>
+                        {
+                            saveFileDialog.Filter = "EXCEL|*.xls;";
+                            if (saveFileDialog.ShowDialog() == true)
+                            {
+                                string filepath = saveFileDialog.FileName;
+                                LocalReportExtensions.ExportToExcel(rep, filepath);
+                            }
+                        });
+
+                       
+                    });
                     t1.Start();
-                });
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -1183,7 +1212,7 @@ namespace POS.View
                     }
                 }
                 #endregion
-               await getImg();
+                await getImg();
             }
             #endregion
         }
