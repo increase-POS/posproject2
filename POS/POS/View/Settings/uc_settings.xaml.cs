@@ -44,7 +44,7 @@ namespace POS.View.Settings
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        public void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             #region menu state
             string menuState = MainWindow.menuIsOpen;
@@ -102,7 +102,7 @@ namespace POS.View.Settings
             else
                 btn_general_Click(btn_general, null);
         }
-        private void translate()
+        public void translate()
         {
             btn_general.Content = MainWindow.resourcemanager.GetString("trGeneral");
             btn_reportsSettings.Content = MainWindow.resourcemanager.GetString("trReports");

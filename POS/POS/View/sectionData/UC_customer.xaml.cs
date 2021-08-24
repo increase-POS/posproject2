@@ -150,8 +150,8 @@ namespace POS.View
                 cb_areaFax.DisplayMemberPath = "code";
 
                 cb_areaMobile.SelectedValue = MainWindow.Region.countryId;
-                cb_areaPhone.SelectedIndex = MainWindow.Region.countryId;
-                cb_areaFax.SelectedIndex = MainWindow.Region.countryId;
+                cb_areaPhone.SelectedValue = MainWindow.Region.countryId;
+                cb_areaFax.SelectedValue = MainWindow.Region.countryId;
                
         }
 
@@ -202,7 +202,7 @@ namespace POS.View
                 tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
                 tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
                 tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
-                tt_search.Content = MainWindow.resourcemanager.GetString("trSearch");
+                //tt_search.Content = MainWindow.resourcemanager.GetString("trSearch");
            
         }
 
@@ -226,8 +226,9 @@ namespace POS.View
                 tb_upperLimit.Clear();
                 tb_phone.Clear();
 
-                cb_areaPhoneLocal.SelectedIndex = 0;
-                cb_areaFaxLocal.SelectedIndex = 0;
+                cb_areaMobile.SelectedValue = MainWindow.Region.countryId;
+                cb_areaPhone.SelectedValue = MainWindow.Region.countryId;
+                cb_areaFax.SelectedValue = MainWindow.Region.countryId;
                 //clear img
                 Uri resourceUri = new Uri("pic/no-image-icon-125x125.png", UriKind.Relative);
                 StreamResourceInfo streamInfo = Application.GetResourceStream(resourceUri);
@@ -245,12 +246,12 @@ namespace POS.View
                 tb_email.Background = (System.Windows.Media.Brush)bc.ConvertFrom("#f8f8f8");
                 tb_mobile.Background = (System.Windows.Media.Brush)bc.ConvertFrom("#f8f8f8");
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
@@ -361,12 +362,12 @@ namespace POS.View
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
@@ -409,12 +410,12 @@ namespace POS.View
 
                 Keyboard.Focus(tb_name);
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
@@ -500,12 +501,12 @@ namespace POS.View
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
@@ -601,12 +602,12 @@ namespace POS.View
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
@@ -687,12 +688,12 @@ namespace POS.View
                 tgl_customerState = 1;
                 Tb_search_TextChanged(null, null);
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
@@ -708,12 +709,12 @@ namespace POS.View
                 tgl_customerState = 0;
                 Tb_search_TextChanged(null, null);
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
@@ -813,12 +814,12 @@ namespace POS.View
                     firstchange = true;
                 }
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
@@ -859,12 +860,12 @@ namespace POS.View
                     firstchangefax = true;
                 }
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
@@ -901,12 +902,12 @@ namespace POS.View
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
@@ -1070,12 +1071,12 @@ namespace POS.View
 
                 Tb_search_TextChanged(null, null);
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
@@ -1094,12 +1095,12 @@ namespace POS.View
 
                 Tb_search_TextChanged(null, null);
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
@@ -1138,12 +1139,12 @@ namespace POS.View
                     RefreshCustomerView();
                 }
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
@@ -1189,12 +1190,12 @@ namespace POS.View
                 RefrishItemsCard(pagination.refrishPagination(agentsQuery, pageIndex, btns));
                 #endregion
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
@@ -1219,12 +1220,12 @@ namespace POS.View
                 RefrishItemsCard(pagination.refrishPagination(agentsQuery, pageIndex, btns));
                 #endregion
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
@@ -1247,12 +1248,12 @@ namespace POS.View
                 RefrishItemsCard(pagination.refrishPagination(agentsQuery, pageIndex, btns));
                 #endregion
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
@@ -1275,12 +1276,12 @@ namespace POS.View
                 RefrishItemsCard(pagination.refrishPagination(agentsQuery, pageIndex, btns));
                 #endregion
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
@@ -1303,12 +1304,12 @@ namespace POS.View
                 RefrishItemsCard(pagination.refrishPagination(agentsQuery, pageIndex, btns));
                 #endregion
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
@@ -1332,12 +1333,12 @@ namespace POS.View
                 RefrishItemsCard(pagination.refrishPagination(agentsQuery, pageIndex, btns));
                 #endregion
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
@@ -1354,12 +1355,12 @@ namespace POS.View
 
                 RefrishItemsCard(pagination.refrishPagination(agentsQuery, pageIndex, btns));
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
@@ -1411,12 +1412,12 @@ namespace POS.View
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
@@ -1495,12 +1496,12 @@ namespace POS.View
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
@@ -1538,12 +1539,12 @@ namespace POS.View
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
@@ -1565,12 +1566,12 @@ namespace POS.View
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }

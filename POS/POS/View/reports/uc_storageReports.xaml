@@ -9,7 +9,7 @@
                            xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800" Loaded="UserControl_Loaded">
-    <Grid Margin="0,15,15,15">
+    <Grid Margin="0,15,15,15" x:Name="grid_main">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*" ></ColumnDefinition>
             <ColumnDefinition Width="auto" ></ColumnDefinition>
@@ -1805,7 +1805,7 @@ Data="M93.34,7.49a3.11,3.11,0,0,1,2,.38,3.06,3.06,0,0,1,1.82,2.78l.2,28.16,0,0,0
                         <DataGridTextColumn x:Name="col_quantity" Width="*" Header="Quantity" Binding="{Binding quantity}"/>
                         <DataGridTextColumn x:Name="col_locationSection" Width="*" Header="Location - Section" Binding="{Binding SectionLoactionName}"/>
                         <DataGridTextColumn x:Name="col_startDate" Width="*" Header="Start Date" Binding="{Binding startDate,Converter={StaticResource dateFrameConverter }}"/>
-                        <DataGridTextColumn x:Name="col_endDate" Width="*" Header="End Date" Binding="{Binding endDate}"/>
+                        <DataGridTextColumn x:Name="col_endDate" Width="*" Header="End Date" Binding="{Binding endDate,Converter={StaticResource dateFrameConverter }}"/>
                         <DataGridTextColumn x:Name="col_Min" Width="*" Header="Min" Binding="{Binding MinAll}"/>
                         <DataGridTextColumn x:Name="col_Max" Width="*" Header="Max" Binding="{Binding MaxAll}"/>
                         <DataGridTextColumn x:Name="col_MinCollect" Width="*" Header="Min" Binding="{Binding minUnitName}" Visibility="Hidden"/>
@@ -1818,7 +1818,7 @@ Data="M93.34,7.49a3.11,3.11,0,0,1,2,.38,3.06,3.06,0,0,1,1.82,2.78l.2,28.16,0,0,0
 
                         <DataGridTextColumn x:Name="col_stockTakeNum" Visibility="Hidden" Width="*" Header="Number" Binding="{Binding inventoryNum}"/>
                         <DataGridTextColumn x:Name="col_stockTakingCoastType" Visibility="Hidden" Width="*" Header="Type" Binding="{Binding inventoryType}"/>
-                        <DataGridTextColumn x:Name="col_stockTakingDate" Visibility="Hidden" Width="*" Header="Date" Binding="{Binding inventoryDate}"/>
+                        <DataGridTextColumn x:Name="col_stockTakingDate" Visibility="Hidden" Width="*" Header="Date" Binding="{Binding inventoryDate,Converter={StaticResource dateFrameConverter }}"/>
                         <DataGridTextColumn x:Name="col_diffPercentage" Visibility="Hidden" Width="*" Header="diffrence Percentage" Binding="{Binding diffPercentage,StringFormat=F2}"/>
                         <DataGridTextColumn x:Name="col_itemCountAr" Visibility="Hidden" Width="*" Header="Items Count" Binding="{Binding itemCount}"/>
                         <DataGridTextColumn x:Name="col_DestroyedCount" Visibility="Hidden" Width="*" Header="Destroyed Count" Binding="{Binding DestroyedCount}"/>
@@ -1826,7 +1826,7 @@ Data="M93.34,7.49a3.11,3.11,0,0,1,2,.38,3.06,3.06,0,0,1,1.82,2.78l.2,28.16,0,0,0
 
 
                         <DataGridTextColumn x:Name="col_destroiedNumber" Visibility="Hidden" Width="*" Header="Number" Binding="{Binding invNumber}"/>
-                        <DataGridTextColumn x:Name="col_destroiedDate" Visibility="Hidden" Width="*" Header="Date" Binding="{Binding IupdateDate}"/>
+                        <DataGridTextColumn x:Name="col_destroiedDate" Visibility="Hidden" Width="*" Header="Date" Binding="{Binding IupdateDate,Converter={StaticResource dateFrameConverter }}"/>
                         <DataGridTextColumn x:Name="col_destroiedItemsUnits" Visibility="Hidden" Width="*" Header="Items/Units" Binding="{Binding ItemUnits}"/>
                         <DataGridTextColumn x:Name="col_destroiedAmount" Visibility="Hidden" Width="*" Header="Quantity" Binding="{Binding quantity}"/>
                         <DataGridTextColumn x:Name="col_destroiedReason" Visibility="Hidden" Width="*" Header="Reason" Binding="{Binding }"/>

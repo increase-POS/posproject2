@@ -50,13 +50,13 @@
                                VerticalAlignment="Center" 
                               Height="40"   Width="auto" Margin="10,5" 
                               TextChanged="Tb_search_TextChanged">
-                        <TextBox.ToolTip>
+                        <!--<TextBox.ToolTip>
                             <ToolTip x:Name="tt_search" Content="Search"
                                     Placement="left" 
                                     HorizontalOffset="15"
                                     PlacementRectangle="50,0,0,0"
                                     VerticalOffset="30"/>
-                        </TextBox.ToolTip>
+                        </TextBox.ToolTip>-->
                     </TextBox>
 
 
@@ -423,9 +423,9 @@
                          MaxLength="50" 
                          materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}" 
                          Height="40"  Margin="10,5,10,5"  >
-                            <TextBox.ToolTip>
+                            <!--<TextBox.ToolTip>
                                 <ToolTip x:Name="tt_name" Content="Name" Placement="left"   HorizontalOffset="35" PlacementRectangle="50,0,0,0" VerticalOffset="20"/>
-                            </TextBox.ToolTip>
+                            </TextBox.ToolTip>-->
                         </TextBox>
                         <Path Grid.Row="1" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5" x:Name="p_errorName"  HorizontalAlignment="Right"  Grid.Column="2" Visibility="Collapsed" VerticalAlignment="Center" Width="15"  Height="15" Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 ZM12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
                             <Path.ToolTip>
@@ -445,13 +445,13 @@
                                  HorizontalAlignment="Stretch" VerticalAlignment="Center"  
                                  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                  MinHeight="70"  Grid.ColumnSpan="2" >
-                            <TextBox.ToolTip>
+                            <!--<TextBox.ToolTip>
                                 <ToolTip x:Name="tt_notes" Content="Notes"
                                               Placement="left" 
                                               HorizontalOffset="35"
                                               PlacementRectangle="50,0,0,0"
                                               VerticalOffset="20"/>
-                            </TextBox.ToolTip>
+                            </TextBox.ToolTip>-->
                         </TextBox>
                         <Path  Grid.Row="2" Fill="#E81123" Stretch="Fill" Margin="15,12,15,5"
                               HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed"  

@@ -2833,3 +2833,5 @@ C:\Users\HP\Documents\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_setup
 C:\Users\HP\Documents\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_setupServer.baml
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\Settings\uc_reportSetting.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\Settings\uc_reportSetting.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_info.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_info.baml

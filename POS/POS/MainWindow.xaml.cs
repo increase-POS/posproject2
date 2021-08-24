@@ -354,12 +354,12 @@ namespace POS
                     SectionData.StartAwait(grid_main);
                 setNotifications();
                 if (sendert != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
                 if (sendert != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sendert);
             }
         }
@@ -369,7 +369,7 @@ namespace POS
         }
         private async void refreshNotificationCount()
         {
-            int notCount = await notificationUser.GetCountByUserId(userID.Value);
+            int notCount = await notificationUser.GetCountByUserId(userID.Value,"alert",posID.Value);
 
             int previouseCount = 0;
             if (md_notificationCount.Badge != null && md_notificationCount.Badge.ToString() != "") previouseCount = int.Parse(md_notificationCount.Badge.ToString());
@@ -942,15 +942,91 @@ namespace POS
 
         }
 
+        public static string GetUntilOrEmpty(string text, string stopAt)
+        {
+            if (!String.IsNullOrWhiteSpace(text))
+            {
+                int charLocation = text.IndexOf(stopAt, StringComparison.Ordinal);
+
+                if (charLocation > 0)
+                {
+                    return text.Substring(0, charLocation);
+                }
+            }
+
+            return String.Empty;
+        }
+
         private async void BTN_notifications_Click(object sender, RoutedEventArgs e)
         {
             if (bdrMain.Visibility == Visibility.Collapsed)
             {
-              List<NotificationUser> notifications = await  notificationUser.GetByUserId(userID.Value,"alert");
-
-
                 bdrMain.Visibility = Visibility.Visible;
                 bdrMain.RenderTransform = Animations.borderAnimation(-25, bdrMain, true);
+                List<NotificationUser> notifications = await notificationUser.GetByUserId(userID.Value, "alert",posID.Value);
+                IEnumerable<NotificationUser> orderdNotifications = notifications.OrderByDescending(x => x.createDate);
+               await notificationUser.setAsRead(userID.Value, posID.Value,"alert");
+                md_notificationCount.Badge = "";
+                if (notifications.Count == 0)
+                {
+                    grd_notifications.Visibility = Visibility.Collapsed;
+                    txt_noNoti.Visibility = Visibility.Visible;
+                }
+
+                else
+                {
+                    grd_notifications.Visibility = Visibility.Visible;
+                    txt_noNoti.Visibility = Visibility.Collapsed;
+
+                    txt_firstNotiTitle.Text = resourcemanager.GetString(orderdNotifications.Select(obj => obj.title).FirstOrDefault());
+
+                    txt_firstNotiContent.Text = GetUntilOrEmpty(orderdNotifications.Select(obj => obj.ncontent).FirstOrDefault(), ":")
+                      + " : " + resourcemanager.GetString(orderdNotifications.Select(obj => obj.ncontent).FirstOrDefault().Substring(orderdNotifications.Select(obj => obj.ncontent).FirstOrDefault().LastIndexOf(':') + 1));
+
+                    txt_firstNotiDate.Text = orderdNotifications.Select(obj => obj.createDate).FirstOrDefault().ToString();
+
+                    if (notifications.Count > 1)
+                    {
+                        txt_2NotiTitle.Text = resourcemanager.GetString(orderdNotifications.Select(obj => obj.title).Skip(1).FirstOrDefault());
+                        txt_2NotiContent.Text = GetUntilOrEmpty(orderdNotifications.Select(obj => obj.ncontent).Skip(1).FirstOrDefault(), ":")
+                      + " : " + resourcemanager.GetString(orderdNotifications.Select(obj => obj.ncontent).Skip(1).FirstOrDefault().Substring(orderdNotifications.Select(obj => obj.ncontent).Skip(1).FirstOrDefault().LastIndexOf(':') + 1));
+
+                        txt_2NotiDate.Text = orderdNotifications.Select(obj => obj.createDate).Skip(1).FirstOrDefault().ToString();
+
+                    }
+                    if (notifications.Count > 2)
+                    {
+                        txt_3NotiTitle.Text = resourcemanager.GetString(orderdNotifications.Select(obj => obj.title).Skip(2).FirstOrDefault());
+                        txt_3NotiContent.Text = GetUntilOrEmpty(orderdNotifications.Select(obj => obj.ncontent).Skip(2).FirstOrDefault(), ":")
+                      + " : " + resourcemanager.GetString(orderdNotifications.Select(obj => obj.ncontent).Skip(2).FirstOrDefault().Substring(orderdNotifications.Select(obj => obj.ncontent).Skip(2).FirstOrDefault().LastIndexOf(':') + 1));
+
+                        txt_3NotiDate.Text = orderdNotifications.Select(obj => obj.createDate).Skip(2).FirstOrDefault().ToString();
+
+                    }
+                    if (notifications.Count > 3)
+                    {
+                        txt_4NotiTitle.Text = resourcemanager.GetString(orderdNotifications.Select(obj => obj.title).Skip(3).FirstOrDefault());
+                        txt_4NotiContent.Text = GetUntilOrEmpty(orderdNotifications.Select(obj => obj.ncontent).Skip(3).FirstOrDefault(), ":")
+                      + " : " + resourcemanager.GetString(orderdNotifications.Select(obj => obj.ncontent).Skip(3).FirstOrDefault().Substring(orderdNotifications.Select(obj => obj.ncontent).Skip(3).FirstOrDefault().LastIndexOf(':') + 1));
+
+                        txt_4NotiDate.Text = orderdNotifications.Select(obj => obj.createDate).Skip(3).FirstOrDefault().ToString();
+
+                    }
+                    if (notifications.Count > 4)
+                    {
+                        txt_5NotiTitle.Text = resourcemanager.GetString(orderdNotifications.Select(obj => obj.title).Skip(4).FirstOrDefault());
+                        txt_5NotiContent.Text = GetUntilOrEmpty(orderdNotifications.Select(obj => obj.ncontent).Skip(4).FirstOrDefault(), ":")
+                      + " : " + resourcemanager.GetString(orderdNotifications.Select(obj => obj.ncontent).Skip(4).FirstOrDefault().Substring(orderdNotifications.Select(obj => obj.ncontent).Skip(4).FirstOrDefault().LastIndexOf(':') + 1));
+
+                        txt_5NotiDate.Text = orderdNotifications.Select(obj => obj.createDate).Skip(4).FirstOrDefault().ToString();
+
+                    }
+
+
+
+                }
+
+
             }
             else
             {
@@ -962,7 +1038,7 @@ namespace POS
         private void TextBlock_MouseEnter(object sender, MouseEventArgs e)
         {
             bdr_showAll.Visibility = Visibility.Visible;
-            
+
         }
 
         private void TextBlock_MouseLeave(object sender, MouseEventArgs e)
@@ -980,7 +1056,10 @@ namespace POS
             bdrMain.Visibility = Visibility.Collapsed;
         }
 
-        
+        private void Btn_info_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
 
         private void clearImg()
         {

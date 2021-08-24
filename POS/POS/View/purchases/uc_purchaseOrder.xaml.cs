@@ -180,8 +180,8 @@ namespace POS.View.purchases
 
             txt_items.Text = MainWindow.resourcemanager.GetString("trItems");
             txt_drafts.Text = MainWindow.resourcemanager.GetString("trDrafts");
-            txt_newDraft.Text = MainWindow.resourcemanager.GetString("trNewDraft");
-            txt_purchaseOrder.Text = MainWindow.resourcemanager.GetString("trPurchaseOrders");
+            txt_newDraft.Text = MainWindow.resourcemanager.GetString("trNew");
+            txt_purchaseOrder.Text = MainWindow.resourcemanager.GetString("trOrders");
             txt_emailMessage.Text = MainWindow.resourcemanager.GetString("trSendEmail");
             txt_preview.Text = MainWindow.resourcemanager.GetString("trPreview");
             txt_pdf.Text = MainWindow.resourcemanager.GetString("trPdfBtn");
@@ -1676,10 +1676,8 @@ namespace POS.View.purchases
                     ////// w.selectedItem this is ItemId
                     for (int i = 0; i < w.selectedItems.Count; i++)
                     {
-                        MainWindow.mainWindow.StartAwait();
                         int itemId = w.selectedItems[i];
                         await ChangeItemIdEvent(itemId);
-                        MainWindow.mainWindow.EndAwait();
                     }
                 }
 

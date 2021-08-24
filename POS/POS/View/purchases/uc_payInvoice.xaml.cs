@@ -148,11 +148,11 @@ namespace POS.View
             txt_invoiceImages.Text = MainWindow.resourcemanager.GetString("trImages");
             txt_items.Text = MainWindow.resourcemanager.GetString("trItems");
             txt_drafts.Text = MainWindow.resourcemanager.GetString("trDrafts");
-            txt_newDraft.Text = MainWindow.resourcemanager.GetString("trNewDraft");
+            txt_newDraft.Text = MainWindow.resourcemanager.GetString("trNew");
             txt_payments.Text = MainWindow.resourcemanager.GetString("trPayments");
             txt_returnInvoice.Text = MainWindow.resourcemanager.GetString("trReturn");
             txt_invoices.Text = MainWindow.resourcemanager.GetString("trInvoices");
-            txt_purchaseOrder.Text = MainWindow.resourcemanager.GetString("trPurchaseOrdersBill");
+            txt_purchaseOrder.Text = MainWindow.resourcemanager.GetString("trOrders");
 
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_barcode, MainWindow.resourcemanager.GetString("trBarcodeHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_branch, MainWindow.resourcemanager.GetString("trBranchHint"));

@@ -481,6 +481,28 @@ namespace POS.View.accounts
 
                             if (!s2.Equals("0"))
                             {
+                                #region notification Object
+                                int pos1 = 0;
+                                int pos2 = 0;
+                                if ((int)cb_pos1.SelectedValue != MainWindow.posID.Value)
+                                    pos1 = (int) cb_pos1.SelectedValue;
+                                if ((int)cb_pos2.SelectedValue != MainWindow.posID.Value)
+                                    pos2 = (int)cb_pos2.SelectedValue;
+                                Notification not = new Notification()
+                                {
+                                    title = "trTransferAlertTilte",
+                                    ncontent = "trTransferAlertContent",
+                                    msgType = "alert",
+                                    createUserId = MainWindow.userID.Value,
+                                    updateUserId = MainWindow.userID.Value,
+                                };
+                                if(pos1 != 0)
+                                    await not.Save(not, (int)cb_pos1.SelectedValue, "accountsAlerts_transfers", cb_pos2.Text,0,pos1);
+                                if(pos2 != 0)
+                                    await not.Save(not, (int)cb_pos2.SelectedValue, "accountsAlerts_transfers", cb_pos1.Text, 0,pos2);
+
+                                #endregion
+
                                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                                 Btn_clear_Click(null, null);
 

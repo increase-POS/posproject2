@@ -41,7 +41,7 @@
 	c0-1.4,0.2-2.8,0.6-4.2C68,27.3,58.3,36.5,57.9,48.2C57.5,60,66.7,69.7,78.5,70.1c11.7,0.4,21.5-8.8,21.9-20.6c0.1-2-0.2-4-0.7-5.9
 	C97.6,44.8,95.2,45.5,92.7,45.5z"/>
                     </Border>
-                    <TextBox  x:Name="tb_search" TabIndex="14"
+                    <TextBox  x:Name="tb_search" TabIndex="18"
                               Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                               Padding="10,0,5,0" BorderBrush="{x:Null}"
                               materialDesign:HintAssist.Hint="Enter Here To Start Search ...."  
@@ -49,13 +49,13 @@
                                VerticalAlignment="Center" 
                               Height="40"   Width="auto" Margin="10,5" 
                               TextChanged="Tb_search_TextChanged">
-                        <TextBox.ToolTip>
+                        <!--<TextBox.ToolTip>
                             <ToolTip x:Name="tt_search" Content="Search"
                                     Placement="left" 
                                     HorizontalOffset="15"
                                     PlacementRectangle="50,0,0,0"
                                     VerticalOffset="30"/>
-                        </TextBox.ToolTip>
+                        </TextBox.ToolTip>-->
                     </TextBox>
 
 
@@ -92,7 +92,7 @@
                         </Button.ToolTip>
                     </Button>
                     <ToggleButton DockPanel.Dock="Right"  x:Name="tgl_isActive"  
-                                      Checked="Tgl_isActive_Checked" 
+                                      Checked="Tgl_isActive_Checked"  TabIndex="19"
                                       Unchecked="Tgl_isActive_Unchecked"
                                      VerticalAlignment="Center" Padding="10,15,5,5"  IsChecked="True" 
                                       Margin="0" Height="13" Width="28"    />
@@ -174,7 +174,7 @@
                     <StackPanel  Orientation="Horizontal" >
 
                         <Button x:Name="btn_pdf"   Background="{x:Null}"   Margin="10,0,5,0"
-                          Padding="0" Height="35" 
+                          Padding="0" Height="35"  TabIndex="20"
                           BorderBrush="{x:Null}" Click="Btn_pdf_Click" >
                             <materialDesign:PackIcon Foreground="#D20A0A" Kind="FilePdf"  
                                 
@@ -188,7 +188,7 @@
                                 </materialDesign:PackIcon.ToolTip>
                             </materialDesign:PackIcon>
                         </Button>
-                        <Button   Background="{x:Null}"    Margin="5,0,5,0"
+                        <Button   Background="{x:Null}"    Margin="5,0,5,0"  TabIndex="21"
                           Padding="0" Height="35"  x:Name="btn_print"
                           BorderBrush="{x:Null}" Click="Btn_print_Click" >
                             <materialDesign:PackIcon Foreground="#313131" Kind="Printer"  
@@ -204,7 +204,7 @@
                             </materialDesign:PackIcon>
                         </Button>
                         <Button FlowDirection="LeftToRight"   Background="{x:Null}"    Grid.Column="2" Margin="2.5,0,2.5,0" 
-                            Padding="0" Height="20" Width="25"   x:Name="btn_pieChart"   
+                            Padding="0" Height="20" Width="25"   x:Name="btn_pieChart"   TabIndex="22"
                                        BorderBrush="{x:Null}">
                             <Grid Width="20" Height="20" HorizontalAlignment="Center" VerticalAlignment="Center">
                                 <Path Width="8.8" Height="9.6" Stretch="Fill" Data="M27.7,8.3l-10.2,7.8l9.1,9.1c2.1-2.5,3.4-5.7,3.4-9.2C30,13.1,29.1,10.5,27.7,8.3z" Fill="#DD191B"
@@ -248,7 +248,7 @@
                                 </Path>
                             </Grid>
                         </Button>
-                        <Button   Background="{x:Null}"    Grid.Column="3" Margin="5,0,5,0" 
+                        <Button   Background="{x:Null}"    Grid.Column="3" Margin="5,0,5,0" TabIndex="23"
                             Padding="0" Height="35"   x:Name="btn_exportToExcel"   Click="Btn_exportToExcel_Click"
                                        BorderBrush="{x:Null}">
                             <Path Fill="#378500" Stretch="Fill"
@@ -265,7 +265,7 @@
                                 </Path.ToolTip>
                             </Path>
                         </Button>
-                        <Button   Background="{x:Null}"    Grid.Column="3" Margin="0,1,5,0" 
+                        <Button   Background="{x:Null}"    Grid.Column="3" Margin="0,1,5,0" TabIndex="24"
                             Padding="0" Height="35"   x:Name="btn_preview"   Click="Btn_preview_Click"
                                        BorderBrush="{x:Null}">
                             <Grid FlowDirection="LeftToRight">
@@ -358,6 +358,13 @@
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
                         <!--Base Information-->
@@ -376,20 +383,20 @@
                         </DockPanel>
                         <!--#endregion-->
                         <TextBox x:Name="tb_name"  Grid.Row="1" Text="{Binding name, Mode=OneWay}" Padding="10,0,5,0"   
-                                     BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Name..."  
-                                                          Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
-                           Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                                 BorderBrush="AliceBlue"  MaxLength="20"
+                                  BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Name..."  
+                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                                 Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
+                                 BorderBrush="AliceBlue"  MaxLength="20" TabIndex="0"
                                  LostFocus="validationControl_LostFocus" TextChanged="validationTextbox_TextChanged"
                     materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                   Height="40"   Grid.ColumnSpan="2" Margin="10,5,10,5" >
-                            <TextBox.ToolTip>
+                            <!--<TextBox.ToolTip>
                                 <ToolTip x:Name="tt_name" 
                                               Placement="left" 
                                               HorizontalOffset="5"
                                               PlacementRectangle="50,0,0,0"
                                               VerticalOffset="20"/>
-                            </TextBox.ToolTip>
+                            </TextBox.ToolTip>-->
                         </TextBox>
                         <Path Fill="#E81123" Grid.Row="1" Stretch="Fill" Margin="5,5,15,5" x:Name="p_errorName"
                               HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed" 
@@ -403,19 +410,19 @@
                                  BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Real Delivery Cost..."  
                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                  Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
-                                 BorderBrush="AliceBlue"   
+                                 BorderBrush="AliceBlue"   TabIndex="1"
                                  LostFocus="validationControl_LostFocus" TextChanged="validationTextbox_TextChanged"
                                  PreviewKeyDown="Tb_PreventSpaces" 
                                  PreviewTextInput="Tb_Numbers_PreviewTextInput" 
            MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                   Height="40"    Margin="10,5,10,5" Grid.ColumnSpan="2" >
-                            <TextBox.ToolTip>
+                            <!--<TextBox.ToolTip>
                                 <ToolTip x:Name="tt_realDeliveryCost" 
                                               Placement="left" 
                                               HorizontalOffset="5"
                                               PlacementRectangle="50,0,0,0"
                                               VerticalOffset="20"/>
-                            </TextBox.ToolTip>
+                            </TextBox.ToolTip>-->
                         </TextBox>
                         <Path Fill="#E81123" Grid.Row="2" Stretch="Fill" Margin="5,5,15,5" x:Name="p_errorRealDeliveryCost"
                               HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed" 
@@ -429,19 +436,19 @@
                                  BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Delivery Cost..." 
                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                  Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
-                                 BorderBrush="AliceBlue"   
+                                 BorderBrush="AliceBlue"   TabIndex="2"
                                  LostFocus="validationControl_LostFocus" TextChanged="validationTextbox_TextChanged"
                                  PreviewKeyDown="Tb_PreventSpaces" 
                                  PreviewTextInput="Tb_Numbers_PreviewTextInput"  
                       MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                   Height="40"    Margin="10,5,10,5" >
-                            <TextBox.ToolTip>
+                            <!--<TextBox.ToolTip>
                                 <ToolTip x:Name="tt_deliveryCost" 
                                               Placement="left" 
                                               HorizontalOffset="5"
                                               PlacementRectangle="50,0,0,0"
                                               VerticalOffset="20"/>
-                            </TextBox.ToolTip>
+                            </TextBox.ToolTip>-->
                         </TextBox>
                         <Path Fill="#E81123" Stretch="Fill" Grid.Row="3" Margin="5,5,15,5" x:Name="p_errorDeliveryCost"
                               HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed" 
@@ -454,20 +461,20 @@
                         <ComboBox x:Name="cb_deliveryType" Padding="10,0,5,0"  Grid.Row="4"
                                                   TextBlock.Foreground="#4E4E4E" 
                                                   materialDesign:HintAssist.Hint="Delivery Type..." 
-                                                  TextBlock.FontSize="12" 
+                                                  TextBlock.FontSize="12" TabIndex="3"
                                 Margin="10,5,10,5"        Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
                                                   Height="40"  
                                                   Background="#f8f8f8" 
                                                   BorderBrush="#737373"       BorderThickness="0" 
                                                   FontFamily="Segoe UI"   
                                                   LostFocus="Tb_validateEmptyLostFocus">
-                            <ComboBox.ToolTip>
+                            <!--<ComboBox.ToolTip>
                                 <ToolTip x:Name="tt_deliveryType" Content="Discount Type"
                                                          Placement="left" 
                                                          HorizontalOffset="35"
                                                          PlacementRectangle="50,0,0,0"
                                                          VerticalOffset="20"/>
-                            </ComboBox.ToolTip>
+                            </ComboBox.ToolTip>-->
                         </ComboBox>
                         <Path Fill="#E81123" Stretch="Fill" Grid.Row="4" Margin="5,5,15,5" x:Name="p_errorDeliveryType"
                               HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed" 
@@ -477,10 +484,161 @@
                                 <ToolTip  x:Name="tt_errorDeliveryType"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                             </Path.ToolTip>
                         </Path>
+                        <DockPanel LastChildFill="True" Grid.Row="5">
+                            <TextBlock x:Name="txt_contactInformation" Text="Contact Information" Foreground="#737373" FontSize="10" VerticalAlignment="Center" Margin="5,5,5,5"/>
+                            <Separator Background="#999999" VerticalAlignment="Center" Width="auto" />
+                        </DockPanel>
+                        <Grid  Grid.Row="6" Margin="5,0,5,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <ComboBox Grid.Column="0" x:Name="cb_areaMobile" TabIndex="4" Padding="10,5,5,5"  TextBlock.Foreground="#4E4E4E" TextBlock.FontSize="12" Margin="5,5,0,5" VerticalAlignment="Center"   Height="40" Width="60" Background="#f8f8f8"   BorderBrush="#737373"      BorderThickness="0"  FontFamily="{StaticResource Font-cairo-light}"  />
+                            <TextBox x:Name="tb_mobile" Grid.Column="1" TabIndex="5" Style="{StaticResource MaterialDesignFloatingHintTextBox}" HorizontalAlignment="Stretch" Text="{Binding mobile, Mode=OneWay}" Padding="10,0,5,0"  BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Mobile..."   Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" BorderBrush="AliceBlue" MaxLength="9" PreviewTextInput="NumberValidationTextBox"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}" Height="40"   Margin="5" LostFocus="tb_mobile_LostFocus" TextChanged="tb_mobile_TextChanged" PreviewKeyDown="tb_mobile_PreviewKeyDown"  >
+                                <!--<TextBox.ToolTip>
+                                    <ToolTip x:Name="tt_mobile" Content="Mobile"  Placement="left"   HorizontalOffset="35"  PlacementRectangle="50,0,0,0"    VerticalOffset="20"/>
+                                </TextBox.ToolTip>-->
+                            </TextBox>
+                            <Path Fill="#E81123" Stretch="Fill" Grid.Column="1" DockPanel.Dock="Right" x:Name="p_errorMobile"   HorizontalAlignment="Right" Visibility="Collapsed"   VerticalAlignment="Center" Width="15"  Height="15" Margin="5,5,15,5" Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17L11,17 L11,15 L13,15 L13,17 Z">
+                                <Path.ToolTip>
+                                    <ToolTip x:Name="tt_errorMobile" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                </Path.ToolTip>
+                            </Path>
+                        </Grid>
+                        <Grid  Grid.Column="1" Grid.Row="7" Margin="5,0,5,0" >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <ComboBox x:Name="cb_areaPhone" Padding="10,5,5,5" TextBlock.Foreground="#4E4E4E"
+                                      Grid.Column="0" Height="40" TextBlock.FontSize="12" Margin="5,5,0,5"
+                                      Width="60"  TabIndex="6" Background="#f8f8f8" 
+                                      BorderBrush="#737373"       BorderThickness="0"
+                                     FontFamily="{StaticResource Font-cairo-light}"   
+                                      Grid.Row="2" SelectionChanged="Cb_areaPhone_SelectionChanged"  />
+                            <ComboBox Visibility="Collapsed" x:Name="cb_areaPhoneLocal" Padding="10,5,5,5" TextBlock.Foreground="#4E4E4E"
+                                      SelectedIndex="0" TextBlock.FontSize="12" Margin="5,5,5,5"
+                                      Height="40" Width="60"  Grid.Column="1"
+                                      Background="#f8f8f8" TabIndex="7"
+                                      BorderBrush="#737373"       BorderThickness="0" 
+                                      FontFamily="{StaticResource Font-cairo-light}"  />
+                            <TextBox x:Name="tb_phone"  Text="{Binding phone, Mode=OneWay}" Grid.Column="2"  Padding="10,0,5,0" 
+                                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Phone..."    
+                                      Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
+                                      BorderBrush="AliceBlue" PreviewTextInput="NumberValidationTextBox"
+                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                      MaxLength="15" Height="40"   Margin="5"  TabIndex="8" 
+                                      PreviewKeyDown="tb_phone_PreviewKeyDown">
+                                <!--<TextBox.ToolTip>
+                                    <ToolTip x:Name="tt_phone" Content="Phone"
+                                              Placement="left" 
+                                              HorizontalOffset="35"
+                                              PlacementRectangle="50,0,0,0"
+                                              VerticalOffset="20"/>
+                                </TextBox.ToolTip>-->
+                            </TextBox>
 
-
-                        <TextBox x:Name="tb_notes"  Grid.Row="5" Text="{Binding notes, Mode=OneWay}" 
-                                 Padding="10,0,5,0"  
+                            <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                                  HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed"  
+                                  VerticalAlignment="Center" Width="15"  Height="15"
+                                  Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
+                                <Path.ToolTip>
+                                    <ToolTip  x:Name="tt_error_phone"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                </Path.ToolTip>
+                            </Path>
+                        </Grid>
+                        <Grid  Grid.Row="8"  Margin="5,0,5,0" >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <ComboBox x:Name="cb_areaFax" Padding="10,5,5,5" TextBlock.Foreground="#4E4E4E"
+                                      Grid.Column="0" TextBlock.FontSize="12" Margin="5,5,0,5"
+                                      Height="40" Width="60" TabIndex="9" Background="#f8f8f8" 
+                                      BorderBrush="#737373"       BorderThickness="0"  
+                                      FontFamily="{StaticResource Font-cairo-light}"   
+                                      Grid.Row="2" SelectionChanged="Cb_areaFax_SelectionChanged"  />
+                            <ComboBox Visibility="Collapsed" x:Name="cb_areaFaxLocal" Padding="10,5,5,5" TextBlock.Foreground="#4E4E4E"
+                                      SelectedIndex="0" TextBlock.FontSize="12" Margin="5,5,5,5"
+                                      HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                      Height="40" Width="60"  Grid.Column="1"  
+                                      Background="#f8f8f8" TabIndex="10"
+                                      BorderBrush="#737373"       BorderThickness="0" 
+                                      FontFamily="{StaticResource Font-cairo-light}"  />
+                            <TextBox x:Name="tb_fax"  Text="{Binding fax, Mode=OneWay}" Padding="10,0,5,0" 
+                                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                     BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Fax..."    
+                                     Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
+                                     BorderBrush="AliceBlue" PreviewTextInput="NumberValidationTextBox"
+                                     Height="40"   Margin="5" Grid.Column="2" 
+                                     TabIndex="11" PreviewKeyDown="tb_fax_PreviewKeyDown">
+                                <!--<TextBox.ToolTip>
+                                    <ToolTip x:Name="tt_fax" Content="Fax"
+                                              Placement="left" 
+                                              HorizontalOffset="35"
+                                              PlacementRectangle="50,0,0,0"
+                                              VerticalOffset="20"/>
+                                </TextBox.ToolTip>-->
+                            </TextBox>
+                            <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5" x:Name="p_errorFax"
+                              HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed" 
+                         VerticalAlignment="Center" Width="15"  Height="15"
+                              Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
+                                <Path.ToolTip>
+                                    <ToolTip x:Name="tt_errorFax" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                </Path.ToolTip>
+                            </Path>
+                        </Grid>
+                        <TextBox x:Name="tb_email" Grid.Row="9" Text="{Binding email, Mode=OneWay}"   Padding="10,0,5,0"  
+                                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                     BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Email..."    
+                                     Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
+                                     BorderBrush="AliceBlue" MaxLength="100" 
+                                     materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                     Height="40"   Margin="10,5,10,5" Grid.ColumnSpan="2" 
+                                     LostFocus="Tb_email_LostFocus" TabIndex="12" PreviewKeyDown="tb_email_PreviewKeyDown">
+                            <!--<TextBox.ToolTip>
+                                <ToolTip x:Name="tt_email" Content="Email"
+                                              Placement="left" 
+                                              HorizontalOffset="35"
+                                              PlacementRectangle="50,0,0,0"
+                                              VerticalOffset="20"/>
+                            </TextBox.ToolTip>-->
+                        </TextBox>
+                        <Path Fill="#E81123" Stretch="Fill" Grid.Row="9" Margin="5,5,15,5"
+                              x:Name="p_errorEmail"
+                              HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed" 
+                              VerticalAlignment="Center" Width="15"  Height="15"
+                              Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
+                            <Path.ToolTip>
+                                <ToolTip  x:Name="tt_errorEmail"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                            </Path.ToolTip>
+                        </Path>
+                        <TextBox x:Name="tb_address"  Grid.Row="10"  Text="{Binding address, Mode=OneWay}" Grid.Column="1"  Padding="10,5,5,5" 
+                                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                     BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Address..."    
+                                     Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
+                                     BorderBrush="AliceBlue" MaxLength="100" 
+                                     materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                     Height="40"   Margin="10,5,10,5" 
+                                     LostFocus="Tb_email_LostFocus" TabIndex="13">
+                            <!--<TextBox.ToolTip>
+                                <ToolTip x:Name="tt_address" Content="Address"
+                                              Placement="left" 
+                                              HorizontalOffset="35"
+                                              PlacementRectangle="50,0,0,0"
+                                              VerticalOffset="20"/>
+                            </TextBox.ToolTip>-->
+                        </TextBox>
+                        <DockPanel LastChildFill="True" Grid.Row="11">
+                            <TextBlock  Text="More Information" Foreground="#737373"  FontSize="10" VerticalAlignment="Center" x:Name="txt_moreInformation" Margin="5"/>
+                            <Separator Background="#999999"  Margin="5"  VerticalAlignment="Center" />
+                        </DockPanel>
+                        <TextBox x:Name="tb_notes"  Grid.Row="12" Text="{Binding notes, Mode=OneWay}" 
+                                 Padding="10,0,5,0"  TabIndex="14"
                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                  BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Notes..."    
                                  Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
@@ -488,13 +646,13 @@
                        
                                  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                             MinHeight="70"  Margin="10,5,10,5" >
-                            <TextBox.ToolTip>
+                            <!--<TextBox.ToolTip>
                                 <ToolTip x:Name="tt_notes" Content="Notes"
                                               Placement="left" 
                                               HorizontalOffset="35"
                                               PlacementRectangle="50,0,0,0"
                                               VerticalOffset="20"/>
-                            </TextBox.ToolTip>
+                            </TextBox.ToolTip>-->
                         </TextBox>
                         <Path Fill="#E81123" Grid.Row="5" Stretch="Fill" Margin="15,12,15,5"
                               HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed"  
@@ -517,7 +675,7 @@
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Border Grid.Row="1">
-                        <Button x:Name="btn_add" TabIndex="10"
+                        <Button x:Name="btn_add" TabIndex="15"   
                           Background="#4E4E4E" BorderBrush="{x:Null}"
                     Margin="1,1" Click="Btn_add_Click" >
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -530,16 +688,16 @@
 
                             </StackPanel>
                         </Button>
-                        <Border.ToolTip>
+                        <!--<Border.ToolTip>
                             <ToolTip x:Name="tt_add_Button" Content="Add"
                                     Placement="left" 
                                     HorizontalOffset="15"
                                     PlacementRectangle="50,0,0,0"
                                     VerticalOffset="30"/>
-                        </Border.ToolTip>
+                        </Border.ToolTip>-->
                     </Border>
                     <Border Grid.Row="1" Grid.Column="1">
-                        <Button x:Name="btn_update"  TabIndex="11"
+                        <Button x:Name="btn_update"  TabIndex="16"
                         Background="#4E4E4E" BorderBrush="{x:Null}"
                    Margin="1,1"  Click="Btn_update_Click" >
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -552,7 +710,7 @@
 
                             </StackPanel>
                         </Button>
-                        <Border.ToolTip>
+                        <!--<Border.ToolTip>
 
                             <ToolTip x:Name="tt_update_Button" Content="Update"
                                     Placement="left" 
@@ -560,12 +718,12 @@
                                     PlacementRectangle="50,0,0,0"
                                     VerticalOffset="30"/>
 
-                        </Border.ToolTip>
+                        </Border.ToolTip>-->
                     </Border>
                     <Border Grid.Row="1" Grid.Column="2">
-                        <Button x:Name="btn_delete"  TabIndex="12"
-                        Background="#4E4E4E" BorderBrush="{x:Null}"
-                    Margin="1,1"  Click="Btn_delete_Click" >
+                        <Button x:Name="btn_delete"  TabIndex="17"
+                                Background="#4E4E4E" BorderBrush="{x:Null}"
+                                Margin="1,1"  Click="Btn_delete_Click" >
                             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" VerticalAlignment="Center">
                                 <materialDesign:PackIcon Name="txt_delete_Icon" Kind="Delete" VerticalAlignment="Center" Width="15" Height="15" Margin="0,1,2,0">
 
@@ -575,13 +733,13 @@
                                 </TextBlock>
                             </StackPanel>
                         </Button>
-                        <Border.ToolTip>
+                        <!--<Border.ToolTip>
                             <ToolTip x:Name="tt_delete_Button" Content="delete"
                                     Placement="left" 
                                     HorizontalOffset="15"
                                     PlacementRectangle="50,0,0,0"
                                     VerticalOffset="30"/>
-                        </Border.ToolTip>
+                        </Border.ToolTip>-->
                     </Border>
                 </Grid>
             </Grid>

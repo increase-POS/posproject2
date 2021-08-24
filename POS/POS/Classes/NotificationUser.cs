@@ -26,7 +26,7 @@ namespace POS.Classes
         public Nullable<byte> isActive { get; set; }
 
         //***********************************************
-        public async Task<string> Save(Notification obj , int branchId, string objectName, string prefix, int userId = 0)
+        public async Task<string> Save(Notification obj , int branchId, string objectName, string prefix, int userId = 0, int posId=0)
         {
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
@@ -44,7 +44,7 @@ namespace POS.Classes
                 // encoding parameter to get special characters
                 myContent = HttpUtility.UrlEncode(myContent);
                 request.RequestUri = new Uri(Global.APIUri + "notification/Save?obj=" + myContent + "&branchId="+branchId + "&objectName="+ objectName
-                                                    +"&prefix="+ prefix + "&userId=" + userId);
+                                                    +"&prefix="+ prefix + "&userId=" + userId + "&posId="+posId);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Post;
                 //set content type
@@ -78,7 +78,7 @@ namespace POS.Classes
         public string side { get; set; }
         public string msgType { get; set; }
         public string path { get; set; }
-        public async Task<List<NotificationUser>> GetByUserId(int userId, string type)
+        public async Task<List<NotificationUser>> GetByUserId(int userId, string type,int posId)
         {
             List<NotificationUser> notifications = null;
             // ... Use HttpClient.
@@ -91,7 +91,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "notificationUser/GetByUserId?userId=" + userId + "&type="+ type);
+                request.RequestUri = new Uri(Global.APIUri + "notificationUser/GetByUserId?userId=" + userId + "&type="+ type+"&posId="+posId);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -146,7 +146,7 @@ namespace POS.Classes
                 return "";
             }
         }
-        public async Task<string> setAsRead(int notUserId )
+        public async Task<string> setAsRead(int notUserId, int posId , string type)
         {
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
@@ -160,7 +160,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
               
-                request.RequestUri = new Uri(Global.APIUri + "notificationUser/setAsRead?notUserId=" + notUserId);
+                request.RequestUri = new Uri(Global.APIUri + "notificationUser/setAsRead?notUserId=" + notUserId+"&posId="+posId+"&type="+ type);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Post;
                 //set content type
@@ -176,7 +176,7 @@ namespace POS.Classes
                 return "";
             }
         }
-        public async Task<int> GetCountByUserId( int userId)
+        public async Task<int> GetCountByUserId( int userId, string type, int posId)
         {
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
@@ -188,7 +188,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "notificationUser/GetNotUserCount?userId=" + userId);
+                request.RequestUri = new Uri(Global.APIUri + "notificationUser/GetNotUserCount?userId=" + userId +"&type="+type+"&posId="+posId);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));

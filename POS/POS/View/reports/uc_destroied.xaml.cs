@@ -62,9 +62,11 @@ namespace POS.View.reports
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            MainWindow.mainWindow.StartAwait();
             try
             {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
                 inventory = await statisticModel.GetInventory();
                 falls = await statisticModel.GetInventoryItems();
                 Destroied = await statisticModel.GetDesItems();
@@ -72,54 +74,66 @@ namespace POS.View.reports
                 itemsTransfer = await statisticModel.GetExternalMov();
                 itemsInternalTransfer = await statisticModel.GetInternalMov();
                 comboBranches = await branchModel.GetAllWithoutMain("all");
+
+
+                comboItems = statisticModel.getItemCombo(storages);
+                comboUnits = statisticModel.getUnitCombo(storages);
+                comboSection = statisticModel.getSectionCombo(storages);
+                comboLocation = statisticModel.getLocationCombo(storages);
+
+                comboExternalItemsItems = statisticModel.getExternalItemCombo(itemsTransfer);
+                comboExternalItemsUnits = statisticModel.getExternalUnitCombo(itemsTransfer);
+                comboInternalItemsItems = statisticModel.getExternalItemCombo(itemsInternalTransfer);
+                comboInternalItemsUnits = statisticModel.getExternalUnitCombo(itemsInternalTransfer);
+                comboInternalOperatorType = statisticModel.getTypeCompo(itemsInternalTransfer);
+                comboInternalOperatorOperator = statisticModel.getOperatroCompo(itemsInternalTransfer);
+
+                comboExternalAgentsAgentsType = statisticModel.GetExternalAgentTypeCombos(itemsTransfer);
+                comboExternalAgentsAgents = statisticModel.GetExternalAgentCombos(itemsTransfer);
+                comboExternalInvType = statisticModel.GetExternalInvoiceTypeCombos(itemsTransfer);
+                comboExternalInvoiceInvoice = statisticModel.GetExternalInvoiceCombos(itemsTransfer);
+
+                comboDestroiedItemmsUnits = statisticModel.getDestroiedCombo(Destroied);
+                selectedFatherTab = 4;
+                txt_search.Text = "";
+                paint();
+                grid_detroied.Visibility = Visibility.Visible;
+                bdr_destroied.Background = Brushes.White;
+                path_destroied.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+                fillComboBranches(cb_destroiedBranch);
+                isEnabledButtons();
+                hideAllColumn();
+                fillDestroidEvents();
+                col_branch.Visibility = Visibility.Visible;
+                col_destroiedItemsUnits.Visibility = Visibility.Visible;
+                col_destroiedNumber.Visibility = Visibility.Visible;
+                col_destroiedDate.Visibility = Visibility.Visible;
+                col_destroiedReason.Visibility = Visibility.Visible;
+                col_destroiedAmount.Visibility = Visibility.Visible;
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                MessageBox.Show("No Internat Connection");
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-
-            MainWindow.mainWindow.EndAwait();
-            comboItems = statisticModel.getItemCombo(storages);
-            comboUnits = statisticModel.getUnitCombo(storages);
-            comboSection = statisticModel.getSectionCombo(storages);
-            comboLocation = statisticModel.getLocationCombo(storages);
-
-            comboExternalItemsItems = statisticModel.getExternalItemCombo(itemsTransfer);
-            comboExternalItemsUnits = statisticModel.getExternalUnitCombo(itemsTransfer);
-            comboInternalItemsItems = statisticModel.getExternalItemCombo(itemsInternalTransfer);
-            comboInternalItemsUnits = statisticModel.getExternalUnitCombo(itemsInternalTransfer);
-            comboInternalOperatorType = statisticModel.getTypeCompo(itemsInternalTransfer);
-            comboInternalOperatorOperator = statisticModel.getOperatroCompo(itemsInternalTransfer);
-
-            comboExternalAgentsAgentsType = statisticModel.GetExternalAgentTypeCombos(itemsTransfer);
-            comboExternalAgentsAgents = statisticModel.GetExternalAgentCombos(itemsTransfer);
-            comboExternalInvType = statisticModel.GetExternalInvoiceTypeCombos(itemsTransfer);
-            comboExternalInvoiceInvoice = statisticModel.GetExternalInvoiceCombos(itemsTransfer);
-
-            comboDestroiedItemmsUnits = statisticModel.getDestroiedCombo(Destroied);
-            selectedFatherTab = 4;
-            txt_search.Text = "";
-            paint();
-            grid_detroied.Visibility = Visibility.Visible;
-            bdr_destroied.Background = Brushes.White;
-            path_destroied.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-            fillComboBranches(cb_destroiedBranch);
-            isEnabledButtons();
-            hideAllColumn();
-            fillDestroidEvents();
-            col_branch.Visibility = Visibility.Visible;
-            col_destroiedItemsUnits.Visibility = Visibility.Visible;
-            col_destroiedNumber.Visibility = Visibility.Visible;
-            col_destroiedDate.Visibility = Visibility.Visible;
-            col_destroiedReason.Visibility = Visibility.Visible;
-            col_destroiedAmount.Visibility = Visibility.Visible;
-
         }
 
 
         public uc_destroied()
         {
-            InitializeComponent();
+            try
+            {
+
+                InitializeComponent();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
 
@@ -365,45 +379,153 @@ namespace POS.View.reports
 
         private void Cb_destroiedBranch_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            fillComboItemsUnits();
-            fillDestroidEvents();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                fillComboItemsUnits();
+                fillDestroidEvents();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Chk_destroiedAllBranches_Unchecked(object sender, RoutedEventArgs e)
         {
-            cb_destroiedBranch.IsEnabled = true;
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                cb_destroiedBranch.IsEnabled = true;
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Chk_destroiedAllBranches_Checked(object sender, RoutedEventArgs e)
         {
-            cb_destroiedBranch.SelectedItem = null;
-            cb_destroiedBranch.IsEnabled = false;
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                cb_destroiedBranch.SelectedItem = null;
+                cb_destroiedBranch.IsEnabled = false;
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Cb_destroiedItemsUnits_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            fillDestroidEvents();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                fillDestroidEvents();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Chk_destroiedAllItemsUnits_Checked(object sender, RoutedEventArgs e)
         {
-            cb_destroiedItemsUnits.SelectedItem = null;
-            cb_destroiedItemsUnits.IsEnabled = false;
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                cb_destroiedItemsUnits.SelectedItem = null;
+                cb_destroiedItemsUnits.IsEnabled = false;
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Chk_destroiedAllItemsUnits_Unchecked(object sender, RoutedEventArgs e)
         {
-            cb_destroiedItemsUnits.IsEnabled = true;
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                cb_destroiedItemsUnits.IsEnabled = true;
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Dp_destroiedEndDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            fillDestroidEvents();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                fillDestroidEvents();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Dp_destroiedStartDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            fillDestroidEvents();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                fillDestroidEvents();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void fillDestroyRowChart()
@@ -568,6 +690,9 @@ namespace POS.View.reports
         {
             try
             {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
                 List<ReportParameter> paramarr = new List<ReportParameter>();
 
                 string addpath = "";
@@ -599,10 +724,14 @@ namespace POS.View.reports
                     string filepath = saveFileDialog.FileName;
                     LocalReportExtensions.ExportToPDF(rep, filepath);
                 }
-            }
 
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
             catch (Exception ex)
             {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
@@ -611,6 +740,9 @@ namespace POS.View.reports
         {
             try
             {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
                 List<ReportParameter> paramarr = new List<ReportParameter>();
 
                 string addpath = "";
@@ -634,21 +766,90 @@ namespace POS.View.reports
                 rep.SetParameters(paramarr);
                 rep.Refresh();
                 LocalReportExtensions.PrintToPrinter(rep);
-            }
 
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
             catch (Exception ex)
             {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {
-            Thread t1 = new Thread(() =>
+            try
             {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                Thread t1 = new Thread(() =>
+{
+List<ReportParameter> paramarr = new List<ReportParameter>();
+
+string addpath = "";
+bool isArabic = ReportCls.checkLang();
+if (isArabic)
+{
+addpath = @"\Reports\StatisticReport\Storage\Destructive\Ar\ArDes.rdlc";
+}
+else
+{
+addpath = @"\Reports\StatisticReport\Storage\Destructive\En\Des.rdlc";
+}
+string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+ReportCls.checkLang();
+
+clsReports.itemTransferInvoice(temp, rep, reppath);
+clsReports.setReportLanguage(paramarr);
+clsReports.Header(paramarr);
+
+rep.SetParameters(paramarr);
+
+rep.Refresh();
+this.Dispatcher.Invoke(() =>
+{
+saveFileDialog.Filter = "EXCEL|*.xls;";
+if (saveFileDialog.ShowDialog() == true)
+{
+string filepath = saveFileDialog.FileName;
+LocalReportExtensions.ExportToExcel(rep, filepath);
+}
+});
+
+
+});
+                t1.Start();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
+
+        private void Btn_preview_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                Window.GetWindow(this).Opacity = 0.2;
+                string pdfpath = "";
+
                 List<ReportParameter> paramarr = new List<ReportParameter>();
 
-                string addpath = "";
+
+                //
+                pdfpath = @"\Thumb\report\temp.pdf";
+                pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
+
+                string addpath;
                 bool isArabic = ReportCls.checkLang();
                 if (isArabic)
                 {
@@ -669,66 +870,27 @@ namespace POS.View.reports
                 rep.SetParameters(paramarr);
 
                 rep.Refresh();
-                this.Dispatcher.Invoke(() =>
+
+                LocalReportExtensions.ExportToPDF(rep, pdfpath);
+                wd_previewPdf w = new wd_previewPdf();
+                w.pdfPath = pdfpath;
+                if (!string.IsNullOrEmpty(w.pdfPath))
                 {
-                    saveFileDialog.Filter = "EXCEL|*.xls;";
-                    if (saveFileDialog.ShowDialog() == true)
-                    {
-                        string filepath = saveFileDialog.FileName;
-                        LocalReportExtensions.ExportToExcel(rep, filepath);
-                    }
-                });
+                    w.ShowDialog();
+                    w.wb_pdfWebViewer.Dispose();
 
 
-            });
-            t1.Start();
-        }
-
-        private void Btn_preview_Click(object sender, RoutedEventArgs e)
-        {
-            Window.GetWindow(this).Opacity = 0.2;
-            string pdfpath = "";
-
-            List<ReportParameter> paramarr = new List<ReportParameter>();
-
-
-            //
-            pdfpath = @"\Thumb\report\temp.pdf";
-            pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
-
-            string addpath;
-            bool isArabic = ReportCls.checkLang();
-            if (isArabic)
-            {
-                addpath = @"\Reports\StatisticReport\Storage\Destructive\Ar\ArDes.rdlc";
+                }
+                Window.GetWindow(this).Opacity = 1;
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
-            else
+            catch (Exception ex)
             {
-                addpath = @"\Reports\StatisticReport\Storage\Destructive\En\Des.rdlc";
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-            ReportCls.checkLang();
-
-            clsReports.itemTransferInvoice(temp, rep, reppath);
-            clsReports.setReportLanguage(paramarr);
-            clsReports.Header(paramarr);
-
-            rep.SetParameters(paramarr);
-
-            rep.Refresh();
-
-            LocalReportExtensions.ExportToPDF(rep, pdfpath);
-            wd_previewPdf w = new wd_previewPdf();
-            w.pdfPath = pdfpath;
-            if (!string.IsNullOrEmpty(w.pdfPath))
-            {
-                w.ShowDialog();
-                w.wb_pdfWebViewer.Dispose();
-
-
-            }
-            Window.GetWindow(this).Opacity = 1;
         }
     }
 }

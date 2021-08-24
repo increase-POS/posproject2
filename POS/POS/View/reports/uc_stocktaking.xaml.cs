@@ -57,9 +57,11 @@ namespace POS.View.reports
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            MainWindow.mainWindow.StartAwait();
             try
             {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
                 inventory = await statisticModel.GetInventory();
                 falls = await statisticModel.GetFallsItems();
                 Destroied = await statisticModel.GetDesItems();
@@ -67,68 +69,79 @@ namespace POS.View.reports
                 itemsTransfer = await statisticModel.GetExternalMov();
                 itemsInternalTransfer = await statisticModel.GetInternalMov();
                 comboBranches = await branchModel.GetAllWithoutMain("all");
+
+
+                comboItems = statisticModel.getItemCombo(storages);
+                comboUnits = statisticModel.getUnitCombo(storages);
+                comboSection = statisticModel.getSectionCombo(storages);
+                comboLocation = statisticModel.getLocationCombo(storages);
+
+                comboExternalItemsItems = statisticModel.getExternalItemCombo(itemsTransfer);
+                comboExternalItemsUnits = statisticModel.getExternalUnitCombo(itemsTransfer);
+                comboInternalItemsItems = statisticModel.getExternalItemCombo(itemsInternalTransfer);
+                comboInternalItemsUnits = statisticModel.getExternalUnitCombo(itemsInternalTransfer);
+                comboInternalOperatorType = statisticModel.getTypeCompo(itemsInternalTransfer);
+                comboInternalOperatorOperator = statisticModel.getOperatroCompo(itemsInternalTransfer);
+
+                comboExternalAgentsAgentsType = statisticModel.GetExternalAgentTypeCombos(itemsTransfer);
+                comboExternalAgentsAgents = statisticModel.GetExternalAgentCombos(itemsTransfer);
+                comboExternalInvType = statisticModel.GetExternalInvoiceTypeCombos(itemsTransfer);
+                comboExternalInvoiceInvoice = statisticModel.GetExternalInvoiceCombos(itemsTransfer);
+
+                cbStockType = statisticModel.getStocktakingArchivesTypeCombo(inventory);
+                comboShortFalls = statisticModel.getshortFalls(falls);
+
+
+                hideAllColumn();
+                col_stockTakeNum.Visibility = Visibility.Visible;
+                col_stockTakingCoastType.Visibility = Visibility.Visible;
+                col_stockTakingDate.Visibility = Visibility.Visible;
+                col_branch.Visibility = Visibility.Visible;
+                col_diffPercentage.Visibility = Visibility.Visible;
+                col_itemCountAr.Visibility = Visibility.Visible;
+                col_DestroyedCount.Visibility = Visibility.Visible;
+
+                fillComboBranches(cb_stocktakingArchivedBranch);
+                fillSocktakingEvents();
+
+                fillSocktakingEvents();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                MessageBox.Show("No Internat Connection");
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-
-            MainWindow.mainWindow.EndAwait();
-            comboItems = statisticModel.getItemCombo(storages);
-            comboUnits = statisticModel.getUnitCombo(storages);
-            comboSection = statisticModel.getSectionCombo(storages);
-            comboLocation = statisticModel.getLocationCombo(storages);
-
-            comboExternalItemsItems = statisticModel.getExternalItemCombo(itemsTransfer);
-            comboExternalItemsUnits = statisticModel.getExternalUnitCombo(itemsTransfer);
-            comboInternalItemsItems = statisticModel.getExternalItemCombo(itemsInternalTransfer);
-            comboInternalItemsUnits = statisticModel.getExternalUnitCombo(itemsInternalTransfer);
-            comboInternalOperatorType = statisticModel.getTypeCompo(itemsInternalTransfer);
-            comboInternalOperatorOperator = statisticModel.getOperatroCompo(itemsInternalTransfer);
-
-            comboExternalAgentsAgentsType = statisticModel.GetExternalAgentTypeCombos(itemsTransfer);
-            comboExternalAgentsAgents = statisticModel.GetExternalAgentCombos(itemsTransfer);
-            comboExternalInvType = statisticModel.GetExternalInvoiceTypeCombos(itemsTransfer);
-            comboExternalInvoiceInvoice = statisticModel.GetExternalInvoiceCombos(itemsTransfer);
-
-            cbStockType = statisticModel.getStocktakingArchivesTypeCombo(inventory);
-            comboShortFalls = statisticModel.getshortFalls(falls);
-
-
-            hideAllColumn();
-            col_stockTakeNum.Visibility = Visibility.Visible;
-            col_stockTakingCoastType.Visibility = Visibility.Visible;
-            col_stockTakingDate.Visibility = Visibility.Visible;
-            col_branch.Visibility = Visibility.Visible;
-            col_diffPercentage.Visibility = Visibility.Visible;
-            col_itemCountAr.Visibility = Visibility.Visible;
-            col_DestroyedCount.Visibility = Visibility.Visible;
-
-            fillComboBranches(cb_stocktakingArchivedBranch);
-            fillSocktakingEvents();
-
-            fillSocktakingEvents();
         }
 
 
         public uc_stocktaking()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
-     
+
         public void paint()
         {
-            
+
         }
 
         private void isEnabledButtons()
         {
         }
 
-      
 
 
-     
+
+
         /*11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111*/
         private int selectedStockTab = 0;
         IEnumerable<itemCombo> comboItems;
@@ -196,9 +209,9 @@ namespace POS.View.reports
             }
         }
 
-       
 
-       
+
+
 
         /*2222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222*/
         private int selectedExternalTab = 0;
@@ -221,7 +234,7 @@ namespace POS.View.reports
             cb.DisplayMemberPath = "name";
             cb.ItemsSource = comboBranches;
         }
-        
+
         private void hideAllColumn()
         {
             col_branch.Visibility = Visibility.Hidden;
@@ -342,19 +355,19 @@ namespace POS.View.reports
                 }
             }
 
-            
-            }
+
+        }
 
         /************************************************************************************************************************************/
-    
+
 
         List<ExternalitemCombo> comboInternalItemsItems;
         List<ExternalUnitCombo> comboInternalItemsUnits;
         List<internalTypeCombo> comboInternalOperatorType;
         List<internalOperatorCombo> comboInternalOperatorOperator;
 
-     
-   
+
+
 
 
         /*44444444444444444444444444444444444444444444444444444444444444444444444444444444444444444*/
@@ -377,7 +390,7 @@ namespace POS.View.reports
 
 
 
-      
+
 
         public void paintStockTakingChilds()
         {
@@ -444,49 +457,154 @@ namespace POS.View.reports
 
         private void Cb_stocktakingArchivedBranch_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            fillSocktakingEvents();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                fillSocktakingEvents();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Chk_stocktakingArchivedAllBranches_Checked(object sender, RoutedEventArgs e)
         {
-            cb_stocktakingArchivedBranch.SelectedItem = null;
-            cb_stocktakingArchivedBranch.IsEnabled = false;
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                cb_stocktakingArchivedBranch.SelectedItem = null;
+                cb_stocktakingArchivedBranch.IsEnabled = false;
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Chk_stocktakingArchivedAllBranches_Unchecked(object sender, RoutedEventArgs e)
         {
-            cb_stocktakingArchivedBranch.IsEnabled = true;
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                cb_stocktakingArchivedBranch.IsEnabled = true;
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Cb_stocktakingArchivedType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            fillSocktakingEvents();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                fillSocktakingEvents();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Chk_stocktakingArchivedAllTypes_Checked(object sender, RoutedEventArgs e)
         {
-            cb_stocktakingArchivedType.SelectedItem = null;
-            cb_stocktakingArchivedType.IsEnabled = false;
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                cb_stocktakingArchivedType.SelectedItem = null;
+                cb_stocktakingArchivedType.IsEnabled = false;
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Chk_stocktakingArchivedAllTypes_Unchecked(object sender, RoutedEventArgs e)
         {
-            cb_stocktakingArchivedType.IsEnabled = true;
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                cb_stocktakingArchivedType.IsEnabled = true;
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Dp_stocktakingArchivedEndDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            fillSocktakingEvents();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                fillSocktakingEvents();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Dp_stocktakingArchivedStartDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            fillSocktakingEvents();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                fillSocktakingEvents();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
 
         private void fillComboItemsUnitsFalls()
         {
+
             var temp = cb_stocktakingFalseBranch.SelectedItem as Branch;
             cb_stocktakingFalseType.SelectedValuePath = "ItemsUnitsId";
             cb_stocktakingFalseType.DisplayMemberPath = "ItemsUnits";
@@ -513,6 +631,7 @@ namespace POS.View.reports
                         ItemsUnitsId = g.FirstOrDefault().ItemsUnitsId
                     }).ToList();
             }
+
         }
 
 
@@ -520,44 +639,148 @@ namespace POS.View.reports
 
         private void Dp_stocktakingFalseStartDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            fillShortFallsEvents();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                fillShortFallsEvents();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Dp_stocktakingFalseEndDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            fillShortFallsEvents();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                fillShortFallsEvents();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Chk_stocktakingFalseAllTypes_Checked(object sender, RoutedEventArgs e)
         {
-            fillShortFallsEvents();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                fillShortFallsEvents();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Chk_stocktakingFalseAllTypes_Unchecked(object sender, RoutedEventArgs e)
         {
-            fillShortFallsEvents();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                fillShortFallsEvents();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Cb_stocktakingFalseType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            fillShortFallsEvents();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                fillShortFallsEvents();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Chk_stocktakingFalseAllBranches_Unchecked(object sender, RoutedEventArgs e)
         {
-            fillShortFallsEvents();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                fillShortFallsEvents();
 
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Chk_stocktakingFalseAllBranches_Checked(object sender, RoutedEventArgs e)
         {
-            fillShortFallsEvents();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                fillShortFallsEvents();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Cb_stocktakingFalseBranch_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            fillComboItemsUnitsFalls();
-            fillShortFallsEvents();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                fillComboItemsUnitsFalls();
+                fillShortFallsEvents();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private IEnumerable<InventoryClass> fillListStockTakingRowChart(ComboBox branch, ComboBox cb, DateTime startDate, DateTime endDate)
@@ -739,7 +962,7 @@ new StackedColumnSeries
 
 
         /************************************اتلاف*************************************/
-      
+
 
         private IEnumerable<ItemTransferInvoice> fillListDestroied(ComboBox branch, ComboBox cb, DatePicker startDate, DatePicker endDate)
         {
@@ -755,7 +978,7 @@ new StackedColumnSeries
             return result;
         }
 
-     
+
 
 
 
@@ -905,51 +1128,74 @@ new StackedColumnSeries
             //fillFalsPieChart();
         }
 
-
-   
-
         private void Btn_archives_Click(object sender, RoutedEventArgs e)
         {
-            selectedStocktakingTab = 0;
-            txt_search.Text = "";
-            paintStockTakingChilds();
-            grid_stocktakingArchived.Visibility = Visibility.Visible;
-            bdr_archives.Background = Brushes.White;
-            path_archives.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-            hideAllColumn();
-            col_stockTakeNum.Visibility = Visibility.Visible;
-            col_stockTakingCoastType.Visibility = Visibility.Visible;
-            col_stockTakingDate.Visibility = Visibility.Visible;
-            col_branch.Visibility = Visibility.Visible;
-            col_diffPercentage.Visibility = Visibility.Visible;
-            col_itemCountAr.Visibility = Visibility.Visible;
-            col_DestroyedCount.Visibility = Visibility.Visible;
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                selectedStocktakingTab = 0;
+                txt_search.Text = "";
+                paintStockTakingChilds();
+                grid_stocktakingArchived.Visibility = Visibility.Visible;
+                bdr_archives.Background = Brushes.White;
+                path_archives.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+                hideAllColumn();
+                col_stockTakeNum.Visibility = Visibility.Visible;
+                col_stockTakingCoastType.Visibility = Visibility.Visible;
+                col_stockTakingDate.Visibility = Visibility.Visible;
+                col_branch.Visibility = Visibility.Visible;
+                col_diffPercentage.Visibility = Visibility.Visible;
+                col_itemCountAr.Visibility = Visibility.Visible;
+                col_DestroyedCount.Visibility = Visibility.Visible;
 
-            fillComboBranches(cb_stocktakingArchivedBranch);
-            fillSocktakingEvents();
+                fillComboBranches(cb_stocktakingArchivedBranch);
+                fillSocktakingEvents();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Btn_shortfalls_Click(object sender, RoutedEventArgs e)
         {
-            selectedStocktakingTab = 1;
-            txt_search.Text = "";
-            paintStockTakingChilds();
-            grid_stocktakingShortfalse.Visibility = Visibility.Visible;
-            bdr_shortfalls.Background = Brushes.White;
-            path_shortfalls.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                selectedStocktakingTab = 1;
+                txt_search.Text = "";
+                paintStockTakingChilds();
+                grid_stocktakingShortfalse.Visibility = Visibility.Visible;
+                bdr_shortfalls.Background = Brushes.White;
+                path_shortfalls.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
 
-            hideAllColumn();
-            col_stockTakeNum.Visibility = Visibility.Visible;
-            col_stockTakingCoastType.Visibility = Visibility.Visible;
-            col_stockTakingDate.Visibility = Visibility.Visible;
-            col_branch.Visibility = Visibility.Visible;
-            col_itemCountAr.Visibility = Visibility.Visible;
-            col_itemUnits.Visibility = Visibility.Visible;
-            col_destroiedReason.Visibility = Visibility.Visible;
+                hideAllColumn();
+                col_stockTakeNum.Visibility = Visibility.Visible;
+                col_stockTakingCoastType.Visibility = Visibility.Visible;
+                col_stockTakingDate.Visibility = Visibility.Visible;
+                col_branch.Visibility = Visibility.Visible;
+                col_itemCountAr.Visibility = Visibility.Visible;
+                col_itemUnits.Visibility = Visibility.Visible;
+                col_destroiedReason.Visibility = Visibility.Visible;
 
-            fillComboBranches(cb_stocktakingFalseBranch);
-            fillShortFallsEvents();
-            fillComboItemsUnitsFalls();
+                fillComboBranches(cb_stocktakingFalseBranch);
+                fillShortFallsEvents();
+                fillComboItemsUnitsFalls();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Btn_preview_Click(object sender, RoutedEventArgs e)

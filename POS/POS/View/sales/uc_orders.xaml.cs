@@ -155,7 +155,7 @@ namespace POS.View.sales
             txt_items.Text = MainWindow.resourcemanager.GetString("trItems");
             txt_orders.Text = MainWindow.resourcemanager.GetString("trOrders");
             txt_drafts.Text = MainWindow.resourcemanager.GetString("trDrafts");
-            txt_newDraft.Text = MainWindow.resourcemanager.GetString("trNewDraft");
+            txt_newDraft.Text = MainWindow.resourcemanager.GetString("trNew");
 
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_barcode, MainWindow.resourcemanager.GetString("trBarcodeHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_branch, MainWindow.resourcemanager.GetString("trStore/BranchHint"));

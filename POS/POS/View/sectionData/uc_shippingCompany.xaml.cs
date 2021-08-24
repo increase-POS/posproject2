@@ -39,6 +39,18 @@ namespace POS.View.sectionData
         string searchText = "";
         string basicsPermission = "shippingCompany_basics";
         private static uc_shippingCompany _instance;
+
+        //phone variabels
+        IEnumerable<CountryCode> countrynum;
+        IEnumerable<City> citynum;
+        IEnumerable<City> citynumofcountry;
+
+        int? countryid;
+        Boolean firstchange = false;
+        Boolean firstchangefax = false;
+        CountryCode countrycodes = new CountryCode();
+        City cityCodes = new City();
+
         public static uc_shippingCompany Instance
         {
             get
@@ -86,6 +98,47 @@ namespace POS.View.sectionData
             catch (Exception ex)
             { SectionData.ExceptionMessage(ex, this); }
         }
+
+        //area code methods
+        async Task<IEnumerable<CountryCode>> RefreshCountry()
+        {
+            countrynum = await countrycodes.GetAllCountries();
+            return countrynum;
+        }
+        private async void fillCountries()
+        {
+            if (countrynum is null)
+                await RefreshCountry();
+
+            cb_areaPhone.ItemsSource = countrynum.ToList();
+            cb_areaPhone.SelectedValuePath = "countryId";
+            cb_areaPhone.DisplayMemberPath = "code";
+
+            cb_areaMobile.ItemsSource = countrynum.ToList();
+            cb_areaMobile.SelectedValuePath = "countryId";
+            cb_areaMobile.DisplayMemberPath = "code";
+
+            cb_areaFax.ItemsSource = countrynum.ToList();
+            cb_areaFax.SelectedValuePath = "countryId";
+            cb_areaFax.DisplayMemberPath = "code";
+
+            cb_areaMobile.SelectedValue = MainWindow.Region.countryId;
+            cb_areaPhone.SelectedValue = MainWindow.Region.countryId;
+            cb_areaFax.SelectedValue = MainWindow.Region.countryId;
+
+        }
+
+        async Task<IEnumerable<City>> RefreshCity()
+        {
+            citynum = await cityCodes.Get();
+            return citynum;
+        }
+        private async void fillCity()
+        {
+            if (citynum is null)
+                await RefreshCity();
+        }
+
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
         {//search
             try
@@ -105,12 +158,12 @@ namespace POS.View.sectionData
                     RefreshshComView();
                 }
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
@@ -138,12 +191,12 @@ namespace POS.View.sectionData
                 tgl_shComState = 1;
                 Tb_search_TextChanged(null, null);
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
@@ -159,12 +212,12 @@ namespace POS.View.sectionData
                 tgl_shComState = 0;
                 Tb_search_TextChanged(null, null);
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
@@ -183,12 +236,12 @@ namespace POS.View.sectionData
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
@@ -241,12 +294,12 @@ namespace POS.View.sectionData
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
@@ -285,18 +338,29 @@ namespace POS.View.sectionData
                 tb_deliveryCost.Clear();
                 cb_deliveryType.SelectedIndex = -1;
                 tb_notes.Clear();
+                tb_address.Clear();
+                tb_fax.Clear();
+                tb_email.Clear();
+                tb_mobile.Clear();
+                tb_phone.Clear();
+                cb_areaMobile.SelectedValue = MainWindow.Region.countryId;
+                cb_areaPhone.SelectedIndex = MainWindow.Region.countryId;
+                cb_areaFax.SelectedIndex = MainWindow.Region.countryId;
+
 
                 SectionData.clearValidate(tb_name, p_errorName);
                 SectionData.clearValidate(tb_deliveryCost, p_errorDeliveryCost);
                 SectionData.clearValidate(tb_realDeliveryCost, p_errorRealDeliveryCost);
+                SectionData.clearValidate(tb_email, p_errorEmail);
+                SectionData.clearValidate(tb_mobile, p_errorMobile);
                 SectionData.clearComboBoxValidate(cb_deliveryType, p_errorDeliveryType);
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
@@ -347,50 +411,75 @@ namespace POS.View.sectionData
                     #region validate
                     //chk empty name
                     SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
+                    //chk empty mobile
+                    SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
+                    //validate email
+                    SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
                     //chk empty delivery cost
                     SectionData.validateEmptyTextBox(tb_deliveryCost, p_errorDeliveryCost, tt_errorDeliveryCost, "trEmptyDeliveryCostToolTip");
                     //chk empty real delivery cost
                     SectionData.validateEmptyTextBox(tb_realDeliveryCost, p_errorRealDeliveryCost, tt_errorRealDeliveryCost, "trEmptyRealDeliveryCostToolTip");
                     //chk empty real delivery type
                     SectionData.validateEmptyComboBox(cb_deliveryType, p_errorDeliveryType, tt_errorDeliveryType, "trEmptyDeliveryTypeToolTip");
+
+                    string phoneStr = "";
+                    if (!tb_phone.Text.Equals(""))
+                        phoneStr = cb_areaPhone.Text + "-" + cb_areaPhoneLocal.Text + "-" + tb_phone.Text;
+                    string faxStr = "";
+                    if (!tb_fax.Text.Equals(""))
+                        faxStr = cb_areaFax.Text + "-" + cb_areaFaxLocal.Text + "-" + tb_fax.Text;
+                    bool emailError = false;
+                    if (!tb_email.Text.Equals(""))
+                        if (!ValidatorExtensions.IsValid(tb_email.Text))
+                            emailError = true;
                     #endregion
                     if ((!tb_name.Text.Equals("")) && (!tb_realDeliveryCost.Text.Equals("")) && (!tb_deliveryCost.Text.Equals("")) && (!cb_deliveryType.Text.Equals("")))
                     {
-                        ShippingCompanies shCom = new ShippingCompanies();
-
-                        shCom.name = tb_name.Text;
-                        shCom.RealDeliveryCost = decimal.Parse(tb_realDeliveryCost.Text);
-                        shCom.deliveryCost = decimal.Parse(tb_deliveryCost.Text);
-                        shCom.deliveryType = cb_deliveryType.SelectedValue.ToString();
-                        shCom.balance = 0;
-                        shCom.balanceType = 0;
-                        shCom.notes = tb_notes.Text;
-                        shCom.createUserId = MainWindow.userID;
-                        shCom.isActive = 1;
-
-                        string s = await shCompaniesModel.Save(shCom);
-                        //MessageBox.Show(s);
-                        if (!s.Equals("0"))
-                        {
-                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
-                            Btn_clear_Click(null, null);
-
-                            await RefreshShComList();
-                            Tb_search_TextChanged(null, null);
-                        }
+                        if (emailError)
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorEmailToolTip"), animation: ToasterAnimation.FadeIn);
                         else
-                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                        {
+                            ShippingCompanies shCom = new ShippingCompanies();
+
+                            shCom.name = tb_name.Text;
+                            shCom.RealDeliveryCost = decimal.Parse(tb_realDeliveryCost.Text);
+                            shCom.deliveryCost = decimal.Parse(tb_deliveryCost.Text);
+                            shCom.deliveryType = cb_deliveryType.SelectedValue.ToString();
+                            shCom.balance = 0;
+                            shCom.balanceType = 0;
+                            shCom.notes = tb_notes.Text;
+                            shCom.createUserId = MainWindow.userID;
+                            shCom.isActive = 1;
+                            shCom.email = tb_email.Text;
+                            shCom.phone = phoneStr;
+                            shCom.mobile = cb_areaMobile.Text + "-" + tb_mobile.Text;
+                            shCom.fax = faxStr;
+                            shCom.address = tb_address.Text;
+
+                            string s = await shCompaniesModel.Save(shCom);
+                           
+                            if (!s.Equals("0"))
+                            {
+                                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                                Btn_clear_Click(null, null);
+
+                                await RefreshShComList();
+                                Tb_search_TextChanged(null, null);
+                            }
+                            else
+                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                        }
                     }
+                    else
+                        Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                    if (sender != null)
+                        SectionData.EndAwait(grid_main);
                 }
-                else
-                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-                if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
             }
             catch (Exception ex)
             {
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
@@ -406,44 +495,71 @@ namespace POS.View.sectionData
                     #region validate
                     //chk empty name
                     SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
+                    //chk empty mobile
+                    SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
+                    //validate email
+                    SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
                     //chk empty delivery cost
                     SectionData.validateEmptyTextBox(tb_deliveryCost, p_errorDeliveryCost, tt_errorDeliveryCost, "trEmptyDeliveryCostToolTip");
                     //chk empty real delivery cost
                     SectionData.validateEmptyTextBox(tb_realDeliveryCost, p_errorRealDeliveryCost, tt_errorRealDeliveryCost, "trEmptyRealDeliveryCostToolTip");
                     //chk empty real delivery type
                     SectionData.validateEmptyComboBox(cb_deliveryType, p_errorDeliveryType, tt_errorDeliveryType, "trEmptyDeliveryTypeToolTip");
+
+                    string phoneStr = "";
+                    if (!tb_phone.Text.Equals(""))
+                        phoneStr = cb_areaPhone.Text + "-" + cb_areaPhoneLocal.Text + "-" + tb_phone.Text;
+                    string faxStr = "";
+                    if (!tb_fax.Text.Equals(""))
+                        faxStr = cb_areaFax.Text + "-" + cb_areaFaxLocal.Text + "-" + tb_fax.Text;
+                    bool emailError = false;
+                    if (!tb_email.Text.Equals(""))
+                        if (!ValidatorExtensions.IsValid(tb_email.Text))
+                            emailError = true;
+
                     #endregion
+
                     if ((!tb_name.Text.Equals("")) && (!tb_realDeliveryCost.Text.Equals("")) && (!tb_deliveryCost.Text.Equals("")) && (!cb_deliveryType.Text.Equals("")))
                     {
-                        shCompany.name = tb_name.Text;
-                        shCompany.RealDeliveryCost = decimal.Parse(tb_realDeliveryCost.Text);
-                        shCompany.deliveryCost = decimal.Parse(tb_deliveryCost.Text);
-                        shCompany.deliveryType = cb_deliveryType.SelectedValue.ToString();
-                        shCompany.notes = tb_notes.Text;
-                        shCompany.createUserId = MainWindow.userID;
-
-                        string s = await shCompaniesModel.Save(shCompany);
-
-                        if (!s.Equals("0"))
-                        {
-                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
-
-                            await RefreshShComList();
-                            Tb_search_TextChanged(null, null);
-                        }
+                        if (emailError)
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorEmailToolTip"), animation: ToasterAnimation.FadeIn);
                         else
-                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                        {
+                            shCompany.name = tb_name.Text;
+                            shCompany.RealDeliveryCost = decimal.Parse(tb_realDeliveryCost.Text);
+                            shCompany.deliveryCost = decimal.Parse(tb_deliveryCost.Text);
+                            shCompany.deliveryType = cb_deliveryType.SelectedValue.ToString();
+                            shCompany.notes = tb_notes.Text;
+                            shCompany.createUserId = MainWindow.userID;
+                            shCompany.email = tb_email.Text;
+                            shCompany.phone = phoneStr;
+                            shCompany.mobile = cb_areaMobile.Text + "-" + tb_mobile.Text;
+                            shCompany.fax = faxStr;
+                            shCompany.address = tb_address.Text;
+
+                            string s = await shCompaniesModel.Save(shCompany);
+
+                            if (!s.Equals("0"))
+                            {
+                                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
+
+                                await RefreshShComList();
+                                Tb_search_TextChanged(null, null);
+                            }
+                            else
+                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                        }
                     }
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
@@ -510,12 +626,12 @@ namespace POS.View.sectionData
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
@@ -547,6 +663,9 @@ namespace POS.View.sectionData
                 SectionData.clearValidate(tb_name, p_errorName);
                 SectionData.clearValidate(tb_realDeliveryCost, p_errorRealDeliveryCost);
                 SectionData.clearValidate(tb_deliveryCost, p_errorDeliveryCost);
+                SectionData.clearValidate(tb_mobile , p_errorMobile);
+                SectionData.clearValidate(tb_email , p_errorEmail);
+
                 SectionData.clearComboBoxValidate(cb_deliveryType, p_errorDeliveryType);
 
 
@@ -559,12 +678,18 @@ namespace POS.View.sectionData
                     {
                         cb_deliveryType.SelectedValue = shCompany.deliveryType;
 
+                        SectionData.getMobile(shCompany.mobile, cb_areaMobile, tb_mobile);
+
+                        SectionData.getPhone(shCompany.phone, cb_areaPhone, cb_areaPhoneLocal, tb_phone);
+
+                        SectionData.getPhone(shCompany.fax, cb_areaFax, cb_areaFaxLocal, tb_fax);
+
                         #region delete
                         if (shCompany.canDelete)
                         {
                             txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trDelete");
                             txt_delete_Icon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Delete;
-                            tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
+                            //tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
                         }
 
                         else
@@ -574,13 +699,13 @@ namespace POS.View.sectionData
                                 txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trActive");
                                 txt_delete_Icon.Kind =
                                  MaterialDesignThemes.Wpf.PackIconKind.Check;
-                                tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trActive");
+                                //tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trActive");
                             }
                             else
                             {
                                 txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trInActive");
                                 txt_delete_Icon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Cancel;
-                                tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trInActive");
+                                //tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trInActive");
                             }
                         }
                         #endregion
@@ -588,12 +713,12 @@ namespace POS.View.sectionData
                     }
                 }
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
@@ -602,6 +727,7 @@ namespace POS.View.sectionData
         {//load
             try
             {
+                #region translate
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
                 if (MainWindow.lang.Equals("en"))
@@ -616,6 +742,7 @@ namespace POS.View.sectionData
                 }
 
                 translat();
+                #endregion
 
                 #region fill delivery type
                 var typelist = new[] {
@@ -627,15 +754,20 @@ namespace POS.View.sectionData
                 cb_deliveryType.ItemsSource = typelist;
                 #endregion
 
+                fillCountries();
+
+                fillCity();
+
                 await RefreshShComList();
                 Tb_search_TextChanged(null, null);
+
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
@@ -652,15 +784,25 @@ namespace POS.View.sectionData
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_deliveryCost, MainWindow.resourcemanager.GetString("trDeliveryCostHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_deliveryType, MainWindow.resourcemanager.GetString("trDeliveryTypeHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_notes, MainWindow.resourcemanager.GetString("trNoteHint"));
+            txt_contactInformation.Text = MainWindow.resourcemanager.GetString("trContactInformation");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_mobile, MainWindow.resourcemanager.GetString("trMobileHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_phone, MainWindow.resourcemanager.GetString("trPhoneHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_email, MainWindow.resourcemanager.GetString("trEmailHint"));
+            txt_moreInformation.Text = MainWindow.resourcemanager.GetString("trAnotherInfomation");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_fax, MainWindow.resourcemanager.GetString("trFaxHint"));
 
             dg_shippingCompany.Columns[0].Header = MainWindow.resourcemanager.GetString("trName");
             dg_shippingCompany.Columns[1].Header = MainWindow.resourcemanager.GetString("trRealDeliveryCost");
             dg_shippingCompany.Columns[2].Header = MainWindow.resourcemanager.GetString("trDeliveryCost");
             dg_shippingCompany.Columns[3].Header = MainWindow.resourcemanager.GetString("trDeliveryType");
 
-            tt_add_Button.Content = MainWindow.resourcemanager.GetString("trAdd");
-            tt_update_Button.Content = MainWindow.resourcemanager.GetString("trUpdate");
-            tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
+            //tt_add_Button.Content = MainWindow.resourcemanager.GetString("trAdd");
+            //tt_update_Button.Content = MainWindow.resourcemanager.GetString("trUpdate");
+            //tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
+
+            btn_add.Content = MainWindow.resourcemanager.GetString("trAdd");
+            btn_update.Content = MainWindow.resourcemanager.GetString("trUpdate");
+            btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
 
             tt_clear.Content = MainWindow.resourcemanager.GetString("trClear");
             tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
@@ -669,7 +811,7 @@ namespace POS.View.sectionData
             tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
             tt_pieChart.Content = MainWindow.resourcemanager.GetString("trPieChart");
             tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
-            tt_search.Content = MainWindow.resourcemanager.GetString("trSearch");
+            //tt_search.Content = MainWindow.resourcemanager.GetString("trSearch");
 
 
         }
@@ -755,12 +897,12 @@ namespace POS.View.sectionData
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
@@ -798,12 +940,12 @@ namespace POS.View.sectionData
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
                 if (sender != null)
-                    SectionData.EndAwait(grid_main, this);
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
@@ -850,6 +992,136 @@ namespace POS.View.sectionData
 
             }
             Window.GetWindow(this).Opacity = 1;
+        }
+
+        private void Cb_areaPhone_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                if (firstchange == true)
+                {
+                    if (cb_areaPhone.SelectedValue != null)
+                    {
+                        if (cb_areaPhone.SelectedIndex >= 0)
+                            countryid = int.Parse(cb_areaPhone.SelectedValue.ToString());
+
+                        citynumofcountry = citynum.Where(b => b.countryId == countryid).OrderBy(b => b.cityCode).ToList();
+
+                        cb_areaPhoneLocal.ItemsSource = citynumofcountry;
+                        cb_areaPhoneLocal.SelectedValuePath = "cityId";
+                        cb_areaPhoneLocal.DisplayMemberPath = "cityCode";
+                        if (citynumofcountry.Count() > 0)
+                        {
+
+                            cb_areaPhoneLocal.Visibility = Visibility.Visible;
+                        }
+                        else
+                        {
+                            cb_areaPhoneLocal.Visibility = Visibility.Collapsed;
+                        }
+
+                    }
+                }
+                else
+                {
+                    firstchange = true;
+                }
+            }
+            catch (Exception ex)
+            { SectionData.ExceptionMessage(ex, this, sender); }
+        }
+
+        private void tb_phone_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            e.Handled = e.Key == Key.Space;
+        }
+
+        private void Cb_areaFax_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                if (firstchangefax == true)
+                {
+                    if (cb_areaFax.SelectedValue != null)
+                    {
+                        if (cb_areaFax.SelectedIndex >= 0)
+                            countryid = int.Parse(cb_areaFax.SelectedValue.ToString());
+
+                        citynumofcountry = citynum.Where(b => b.countryId == countryid).OrderBy(b => b.cityCode).ToList();
+
+                        cb_areaFaxLocal.ItemsSource = citynumofcountry;
+                        cb_areaFaxLocal.SelectedValuePath = "cityId";
+                        cb_areaFaxLocal.DisplayMemberPath = "cityCode";
+                        if (citynumofcountry.Count() > 0)
+                        {
+
+                            cb_areaFaxLocal.Visibility = Visibility.Visible;
+                        }
+                        else
+                        {
+                            cb_areaFaxLocal.Visibility = Visibility.Collapsed;
+                        }
+
+                    }
+                }
+                else
+                {
+                    firstchangefax = true;
+                }
+            }
+            catch (Exception ex)
+            { SectionData.ExceptionMessage(ex, this, sender); }
+        }
+
+        private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
+        }
+
+        private void tb_fax_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            e.Handled = e.Key == Key.Space;
+        }
+
+        private void tb_mobile_LostFocus(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
+            }
+            catch (Exception ex)
+            { SectionData.ExceptionMessage(ex, this, sender); }
+        }
+
+        private void tb_mobile_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            try
+            {
+                SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
+            }
+            catch (Exception ex)
+            { SectionData.ExceptionMessage(ex, this, sender); }
+        }
+
+        private void tb_mobile_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            e.Handled = e.Key == Key.Space;
+        }
+
+        private void Tb_email_LostFocus(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
+            }
+            catch (Exception ex)
+            { SectionData.ExceptionMessage(ex, this, sender); }
+        }
+
+        private void tb_email_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            e.Handled = e.Key == Key.Space;
         }
     }
 }

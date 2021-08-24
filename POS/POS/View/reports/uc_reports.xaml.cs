@@ -46,13 +46,26 @@ namespace POS.View.reports
 
         public uc_reports()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this );
+            }
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            #region menu state
-            string menuState = MainWindow.menuIsOpen;
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+
+                #region menu state
+                string menuState = MainWindow.menuIsOpen;
             if (menuState.Equals("open"))
                 ex.IsExpanded = true;
             else
@@ -75,7 +88,16 @@ namespace POS.View.reports
             #endregion
 
             btn_salesReports_Click(null, null);
-            //permission();
+                //permission();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         void permission()
         {
@@ -117,51 +139,100 @@ namespace POS.View.reports
 
         private void btn_salesReports_Click(object sender, RoutedEventArgs e)
         {
-            refreashBachgroundClick(btn_salesReports);
+            try
+            {
+                refreashBachgroundClick(btn_salesReports);
             grid_main.Children.Clear();
             grid_main.Children.Add(uc_saleReport.Instance);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void btn_purchaseReport_Click(object sender, RoutedEventArgs e)
         {
-            refreashBachgroundClick(btn_purchaseReports);
+                try
+                {
+                    refreashBachgroundClick(btn_purchaseReports);
             grid_main.Children.Clear();
             grid_main.Children.Add(uc_purchaseReport.Instance);
-        }
+                }
+                catch (Exception ex)
+                {
+                    SectionData.ExceptionMessage(ex, this, sender);
+                }
+            }
 
         private void btn_storageReports_Click(object sender, RoutedEventArgs e)
         {
-            uc_storage uc = new uc_storage();
+                    try
+                    {
+                        uc_storage uc = new uc_storage();
             refreashBachgroundClick(btn_storageReports);
             grid_main.Children.Clear();
             grid_main.Children.Add(uc);
-        }
+                    }
+                    catch (Exception ex)
+                    {
+                        SectionData.ExceptionMessage(ex, this, sender);
+                    }
+                }
 
         private void btn_accountsReports_Click(object sender, RoutedEventArgs e)
         {
-            uc_accountant uc = new uc_accountant();
+                        try
+                        {
+                            uc_accountant uc = new uc_accountant();
             refreashBachgroundClick(btn_accountsReports);
             grid_main.Children.Clear();
             grid_main.Children.Add(uc);
-        }
+                        }
+                        catch (Exception ex)
+                        {
+                            SectionData.ExceptionMessage(ex, this, sender);
+                        }
+                    }
 
         private void btn_usersReports_Click(object sender, RoutedEventArgs e)
         {
-            refreashBachgroundClick(btn_usersReports);
+                            try
+                            {
+                                refreashBachgroundClick(btn_usersReports);
             grid_main.Children.Clear();
             grid_main.Children.Add(uc_usersReport.Instance);
-        }
+                            }
+                            catch (Exception ex)
+                            {
+                                SectionData.ExceptionMessage(ex, this, sender);
+                            }
+                        }
 
         private async void Ex_Collapsed(object sender, RoutedEventArgs e)
         {
-            int cId = await SectionData.getCloseValueId();
+                                try
+                                {
+                                    int cId = await SectionData.getCloseValueId();
             SectionData.saveMenuState(cId);
-        }
+                                }
+                                catch (Exception ex)
+                                {
+                                    SectionData.ExceptionMessage(ex, this, sender);
+                                }
+                            }
 
         private async void Ex_Expanded(object sender, RoutedEventArgs e)
         {
-            int oId = await SectionData.getOpenValueId();
+                                    try
+                                    {
+                                        int oId = await SectionData.getOpenValueId();
             SectionData.saveMenuState(oId);
-        }
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        SectionData.ExceptionMessage(ex, this, sender);
+                                    }
+                                }
     }
 }

@@ -127,14 +127,22 @@ namespace POS.View.reports
 
         public uc_saleReport()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            MainWindow.mainWindow.StartAwait();
             try
             {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
                 Invoices = await statisticModel.GetSaleitemcount();
                 rowChartInvoice = await statisticModel.GetSaleitemcount();
 
@@ -151,41 +159,45 @@ namespace POS.View.reports
                 comboPoss = await posModel.GetPosAsync();
                 comboVendors = await agentModel.GetAgentsAsync("c");
                 comboUsers = await userModel.GetUsersAsync();
+
+                itemUnitCombos = statisticModel.GetIUComboList(Items);
+                comboCoupon = statisticModel.GetCopComboList(coupons);
+                comboOffer = statisticModel.GetOfferComboList(Offers);
+
+                dynamicComboBranches = new ObservableCollection<Branch>(comboBranches);
+                dynamicComboPoss = new ObservableCollection<Pos>(comboPoss);
+                dynamicComboVendors = new ObservableCollection<Agent>(comboVendors);
+                dynamicComboUsers = new ObservableCollection<User>(comboUsers);
+                dynamicComboItem = new ObservableCollection<ItemUnitCombo>(itemUnitCombos);
+                dynamicComboCoupon = new ObservableCollection<CouponCombo>(comboCoupon);
+                dynamicComboOffer = new ObservableCollection<OfferCombo>(comboOffer);
+
+                fillComboBranches();
+                fillComboPos();
+                fillComboUsers();
+                fillComboVendors();
+                fillComboItems();
+                fillComboCoupon();
+                fillComboOffer();
+
+                chk_invoice.IsChecked = true;
+                chk_posInvoice.IsChecked = true;
+                chk_vendorsInvoice.IsChecked = true;
+                chk_usersInvoice.IsChecked = true;
+                chk_itemInvoice.IsChecked = true;
+                chk_couponInvoice.IsChecked = true;
+                chk_offersInvoice.IsChecked = true;
+
+                fillBranchEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
-               catch (Exception)
+            catch (Exception ex)
             {
-                MessageBox.Show("No Internat Connection");
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-            MainWindow.mainWindow.EndAwait();
-            itemUnitCombos = statisticModel.GetIUComboList(Items);
-            comboCoupon = statisticModel.GetCopComboList(coupons);
-            comboOffer = statisticModel.GetOfferComboList(Offers);
-
-            dynamicComboBranches = new ObservableCollection<Branch>(comboBranches);
-            dynamicComboPoss = new ObservableCollection<Pos>(comboPoss);
-            dynamicComboVendors = new ObservableCollection<Agent>(comboVendors);
-            dynamicComboUsers = new ObservableCollection<User>(comboUsers);
-            dynamicComboItem = new ObservableCollection<ItemUnitCombo>(itemUnitCombos);
-            dynamicComboCoupon = new ObservableCollection<CouponCombo>(comboCoupon);
-            dynamicComboOffer = new ObservableCollection<OfferCombo>(comboOffer);
-
-            fillComboBranches();
-            fillComboPos();
-            fillComboUsers();
-            fillComboVendors();
-            fillComboItems();
-            fillComboCoupon();
-            fillComboOffer();
-
-            chk_invoice.IsChecked = true;
-            chk_posInvoice.IsChecked = true;
-            chk_vendorsInvoice.IsChecked = true;
-            chk_usersInvoice.IsChecked = true;
-            chk_itemInvoice.IsChecked = true;
-            chk_couponInvoice.IsChecked = true;
-            chk_offersInvoice.IsChecked = true;
-
-            fillBranchEvent();
         }
 
         private void fillComboBranches()
@@ -261,7 +273,7 @@ namespace POS.View.reports
         {
             fillDates(startDate, endDate, startTime, endTime);
             var result = Invoices.Where(x => (
-            
+
                ((chkDraft.IsChecked == true ? (x.invType == "sd" || x.invType == "sbd") : false)
                           || (chkReturn.IsChecked == true ? (x.invType == "sb") : false)
                           || (chkInvoice.IsChecked == true ? (x.invType == "s") : false))
@@ -840,7 +852,7 @@ fillColumnChart(cb_Items, selectedItemId);
             }
             else if (selectedTab == 1)
             {
-               
+
                 //cb_pos, selectedPosId
                 // var temp1 = fillList(Invoices, chk_posInvoice, chk_posReturn, chk_posDraft, dp_posStartDate, dp_posEndDate, dt_posStartTime, dt_posEndTime);
                 //  temp1 = temp1.Where(j => (selectedPosId.Count != 0 ? stackedButton.Contains((int)j.posId) : true));
@@ -864,7 +876,7 @@ fillColumnChart(cb_Items, selectedItemId);
                 //   xx = fillList(Invoices, chk_usersInvoice, chk_usersReturn, chk_usersDraft, dp_usersStartDate, dp_usersEndDate, dt_usersStartTime, dt_usersEndTime).ToList();
                 xx = fillPdfList(cb_Items, selectedItemId);
             }
-            else if (selectedTab ==5)
+            else if (selectedTab == 5)
             {
                 //   xx = fillList(Invoices, chk_usersInvoice, chk_usersReturn, chk_usersDraft, dp_usersStartDate, dp_usersEndDate, dt_usersStartTime, dt_usersEndTime).ToList();
                 xx = fillPdfList(cb_Coupons, selectedcouponId);
@@ -874,7 +886,7 @@ fillColumnChart(cb_Items, selectedItemId);
                 //   xx = fillList(Invoices, chk_usersInvoice, chk_usersReturn, chk_usersDraft, dp_usersStartDate, dp_usersEndDate, dt_usersStartTime, dt_usersEndTime).ToList();
                 xx = fillPdfList(cb_offers, selectedOfferId);
             }
-           
+
 
             return xx;
         }
@@ -981,7 +993,7 @@ fillColumnChart(cb_Items, selectedItemId);
             grid_coupons.Visibility = Visibility.Hidden;
             grid_offers.Visibility = Visibility.Hidden;
 
-       
+
         }
 
         private void isEnabledButtons()
@@ -1025,581 +1037,1192 @@ fillColumnChart(cb_Items, selectedItemId);
         }
         private void btn_branch_Click(object sender, RoutedEventArgs e)
         {
-            txt_search.Text = "";
-            hideSatacks();
-            stk_tagsBranches.Visibility = Visibility.Visible;
-            selectedTab = 0;
-            paint();
-            col_branch.Visibility = Visibility.Visible;
-            bdr_branch.Background = Brushes.White;
-            path_branch.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-            grid_branch.Visibility = Visibility.Visible;
-            isEnabledButtons();
-            btn_branch.IsEnabled = false;
-            btn_branch.Opacity = 1;
-            fillBranchEvent();
-            hidAllColumns();
-            col_branch.Visibility = Visibility.Visible;
-            col_count.Visibility = Visibility.Visible;
-            col_totalNet.Visibility = Visibility.Visible;
-            col_discount.Visibility = Visibility.Visible;
-            col_tax.Visibility = Visibility.Visible;
-            col_type.Visibility = Visibility.Visible;
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                txt_search.Text = "";
+                hideSatacks();
+                stk_tagsBranches.Visibility = Visibility.Visible;
+                selectedTab = 0;
+                paint();
+                col_branch.Visibility = Visibility.Visible;
+                bdr_branch.Background = Brushes.White;
+                path_branch.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+                grid_branch.Visibility = Visibility.Visible;
+                isEnabledButtons();
+                btn_branch.IsEnabled = false;
+                btn_branch.Opacity = 1;
+                fillBranchEvent();
+                hidAllColumns();
+                col_branch.Visibility = Visibility.Visible;
+                col_count.Visibility = Visibility.Visible;
+                col_totalNet.Visibility = Visibility.Visible;
+                col_discount.Visibility = Visibility.Visible;
+                col_tax.Visibility = Visibility.Visible;
+                col_type.Visibility = Visibility.Visible;
 
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void btn_pos_Click(object sender, RoutedEventArgs e)
         {
-            txt_search.Text = "";
-            hideSatacks();
-            stk_tagsPos.Visibility = Visibility.Visible;
-            selectedTab = 1;
-            paint();
-            col_pos.Visibility = Visibility.Visible;
-            col_branch.Visibility = Visibility.Visible;
-            bdr_pos.Background = Brushes.White;
-            path_pos.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-            grid_pos.Visibility = Visibility.Visible;
-            isEnabledButtons();
-            btn_pos.IsEnabled = false;
-            btn_pos.Opacity = 1;
-            fillPosEvent();
-            hidAllColumns();
-            col_branch.Visibility = Visibility.Visible;
-            col_count.Visibility = Visibility.Visible;
-            col_pos.Visibility = Visibility.Visible;
-            col_totalNet.Visibility = Visibility.Visible;
-            col_discount.Visibility = Visibility.Visible;
-            col_tax.Visibility = Visibility.Visible;
-            col_type.Visibility = Visibility.Visible;
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                txt_search.Text = "";
+                hideSatacks();
+                stk_tagsPos.Visibility = Visibility.Visible;
+                selectedTab = 1;
+                paint();
+                col_pos.Visibility = Visibility.Visible;
+                col_branch.Visibility = Visibility.Visible;
+                bdr_pos.Background = Brushes.White;
+                path_pos.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+                grid_pos.Visibility = Visibility.Visible;
+                isEnabledButtons();
+                btn_pos.IsEnabled = false;
+                btn_pos.Opacity = 1;
+                fillPosEvent();
+                hidAllColumns();
+                col_branch.Visibility = Visibility.Visible;
+                col_count.Visibility = Visibility.Visible;
+                col_pos.Visibility = Visibility.Visible;
+                col_totalNet.Visibility = Visibility.Visible;
+                col_discount.Visibility = Visibility.Visible;
+                col_tax.Visibility = Visibility.Visible;
+                col_type.Visibility = Visibility.Visible;
 
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void btn_vendors_Click(object sender, RoutedEventArgs e)
         {
-            txt_search.Text = "";
-            hideSatacks();
-            stk_tagsVendors.Visibility = Visibility.Visible;
-            selectedTab = 2;
-            paint();
-            col_vendor.Visibility = Visibility.Visible;
-            bdr_vendors.Background = Brushes.White;
-            path_vendors.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-            grid_vendors.Visibility = Visibility.Visible;
-            isEnabledButtons();
-            btn_vendors.IsEnabled = false;
-            btn_vendors.Opacity = 1;
-            fillVendorsEvent();
-            hidAllColumns();
-            col_branch.Visibility = Visibility.Visible;
-            col_vendor.Visibility = Visibility.Visible;
-            col_agentCompany.Visibility = Visibility.Visible;
-            col_discount.Visibility = Visibility.Visible;
-            col_count.Visibility = Visibility.Visible;
-            col_totalNet.Visibility = Visibility.Visible;
-            col_tax.Visibility = Visibility.Visible;
-            col_type.Visibility = Visibility.Visible;
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                txt_search.Text = "";
+                hideSatacks();
+                stk_tagsVendors.Visibility = Visibility.Visible;
+                selectedTab = 2;
+                paint();
+                col_vendor.Visibility = Visibility.Visible;
+                bdr_vendors.Background = Brushes.White;
+                path_vendors.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+                grid_vendors.Visibility = Visibility.Visible;
+                isEnabledButtons();
+                btn_vendors.IsEnabled = false;
+                btn_vendors.Opacity = 1;
+                fillVendorsEvent();
+                hidAllColumns();
+                col_branch.Visibility = Visibility.Visible;
+                col_vendor.Visibility = Visibility.Visible;
+                col_agentCompany.Visibility = Visibility.Visible;
+                col_discount.Visibility = Visibility.Visible;
+                col_count.Visibility = Visibility.Visible;
+                col_totalNet.Visibility = Visibility.Visible;
+                col_tax.Visibility = Visibility.Visible;
+                col_type.Visibility = Visibility.Visible;
 
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void btn_users_Click(object sender, RoutedEventArgs e)
         {
-            txt_search.Text = "";
-            hideSatacks();
-            stk_tagsUsers.Visibility = Visibility.Visible;
-            selectedTab = 3;
-            paint();
-            col_user.Visibility = Visibility.Visible;
-            bdr_users.Background = Brushes.White;
-            path_users.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-            grid_users.Visibility = Visibility.Visible;
-            isEnabledButtons();
-            btn_users.IsEnabled = false;
-            btn_users.Opacity = 1;
-            fillUsersEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                txt_search.Text = "";
+                hideSatacks();
+                stk_tagsUsers.Visibility = Visibility.Visible;
+                selectedTab = 3;
+                paint();
+                col_user.Visibility = Visibility.Visible;
+                bdr_users.Background = Brushes.White;
+                path_users.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+                grid_users.Visibility = Visibility.Visible;
+                isEnabledButtons();
+                btn_users.IsEnabled = false;
+                btn_users.Opacity = 1;
+                fillUsersEvent();
 
-            hidAllColumns();
-            col_branch.Visibility = Visibility.Visible;
-            col_discount.Visibility = Visibility.Visible;
-            col_pos.Visibility = Visibility.Visible;
-            col_user.Visibility = Visibility.Visible;
-            col_totalNet.Visibility = Visibility.Visible;
-            col_tax.Visibility = Visibility.Visible;
-            col_type.Visibility = Visibility.Visible;
+                hidAllColumns();
+                col_branch.Visibility = Visibility.Visible;
+                col_discount.Visibility = Visibility.Visible;
+                col_pos.Visibility = Visibility.Visible;
+                col_user.Visibility = Visibility.Visible;
+                col_totalNet.Visibility = Visibility.Visible;
+                col_tax.Visibility = Visibility.Visible;
+                col_type.Visibility = Visibility.Visible;
 
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void btn_items_Click(object sender, RoutedEventArgs e)
         {
-            txt_search.Text = "";
-            hideSatacks();
-            stk_tagsItems.Visibility = Visibility.Visible;
-            selectedTab = 4;
-            paint();
-            col_item.Visibility = Visibility.Visible;
-            bdr_items.Background = Brushes.White;
-            path_items.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-            grid_items.Visibility = Visibility.Visible;
-            isEnabledButtons();
-            btn_items.IsEnabled = false;
-            btn_items.Opacity = 1;
-            fillItemsEvent();
-            hidAllColumns();
-            col_item.Visibility = Visibility.Visible;
-            col_itQuantity.Visibility = Visibility.Visible;
-            col_price.Visibility = Visibility.Visible;
-            col_total.Visibility = Visibility.Visible;
-            col_type.Visibility = Visibility.Visible;
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                txt_search.Text = "";
+                hideSatacks();
+                stk_tagsItems.Visibility = Visibility.Visible;
+                selectedTab = 4;
+                paint();
+                col_item.Visibility = Visibility.Visible;
+                bdr_items.Background = Brushes.White;
+                path_items.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+                grid_items.Visibility = Visibility.Visible;
+                isEnabledButtons();
+                btn_items.IsEnabled = false;
+                btn_items.Opacity = 1;
+                fillItemsEvent();
+                hidAllColumns();
+                col_item.Visibility = Visibility.Visible;
+                col_itQuantity.Visibility = Visibility.Visible;
+                col_price.Visibility = Visibility.Visible;
+                col_total.Visibility = Visibility.Visible;
+                col_type.Visibility = Visibility.Visible;
 
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void btn_coupons_Click(object sender, RoutedEventArgs e)
         {
-            txt_search.Text = "";
-            hideSatacks();
-            stk_tagsCoupons.Visibility = Visibility.Visible;
-            selectedTab = 5;
-            paint();
-            bdr_coupon.Background = Brushes.White;
-            path_coupons.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-            grid_coupons.Visibility = Visibility.Visible;
-            isEnabledButtons();
-            btn_coupons.IsEnabled = false;
-            btn_coupons.Opacity = 1;
-            fillCouponsEvent();
-            hidAllColumns();
-            col_coupon.Visibility = Visibility.Visible;
-            col_couponType.Visibility = Visibility.Visible;
-            col_coupoValue.Visibility = Visibility.Visible;
-            col_couponTotalValue.Visibility = Visibility.Visible;
-          
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                txt_search.Text = "";
+                hideSatacks();
+                stk_tagsCoupons.Visibility = Visibility.Visible;
+                selectedTab = 5;
+                paint();
+                bdr_coupon.Background = Brushes.White;
+                path_coupons.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+                grid_coupons.Visibility = Visibility.Visible;
+                isEnabledButtons();
+                btn_coupons.IsEnabled = false;
+                btn_coupons.Opacity = 1;
+                fillCouponsEvent();
+                hidAllColumns();
+                col_coupon.Visibility = Visibility.Visible;
+                col_couponType.Visibility = Visibility.Visible;
+                col_coupoValue.Visibility = Visibility.Visible;
+                col_couponTotalValue.Visibility = Visibility.Visible;
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         private void btn_offers_Click(object sender, RoutedEventArgs e)
         {
-            txt_search.Text = "";
-            hideSatacks();
-            stk_tagsOffers.Visibility = Visibility.Visible;
-            selectedTab = 6;
-            paint();
-           
-            bdr_offers.Background = Brushes.White;
-            path_offers.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-            grid_offers.Visibility = Visibility.Visible;
-            isEnabledButtons();
-            btn_offers.IsEnabled = false;
-            btn_offers.Opacity = 1;
-            fillOffersEvent();
-            hidAllColumns();
-            col_offers.Visibility = Visibility.Visible;
-            col_offersType.Visibility = Visibility.Visible;
-            col_offersValue.Visibility = Visibility.Visible;
-            col_item.Visibility = Visibility.Visible;
-            col_itQuantity.Visibility = Visibility.Visible;
-            col_offersTotalValue.Visibility = Visibility.Visible;
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                txt_search.Text = "";
+                hideSatacks();
+                stk_tagsOffers.Visibility = Visibility.Visible;
+                selectedTab = 6;
+                paint();
+
+                bdr_offers.Background = Brushes.White;
+                path_offers.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+                grid_offers.Visibility = Visibility.Visible;
+                isEnabledButtons();
+                btn_offers.IsEnabled = false;
+                btn_offers.Opacity = 1;
+                fillOffersEvent();
+                hidAllColumns();
+                col_offers.Visibility = Visibility.Visible;
+                col_offersType.Visibility = Visibility.Visible;
+                col_offersValue.Visibility = Visibility.Visible;
+                col_item.Visibility = Visibility.Visible;
+                col_itQuantity.Visibility = Visibility.Visible;
+                col_offersTotalValue.Visibility = Visibility.Visible;
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         #endregion
 
         #region refreshButton
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
-            if (selectedTab == 0)
+            try
             {
-                cb_branches.SelectedItem = null;
-                chk_drafs.IsChecked = false;
-                chk_return.IsChecked = false;
-                chk_invoice.IsChecked = true;
-                dp_endDate.SelectedDate = null;
-                dp_startDate.SelectedDate = null;
-                dt_startTime.SelectedTime = null;
-                dt_endTime.SelectedTime = null;
-                chk_allBranches.IsChecked = false;
-                cb_branches.IsEnabled = true;
-                for (int i = 0; i < comboBrachTemp.Count; i++)
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                if (selectedTab == 0)
                 {
-                    dynamicComboBranches.Add(comboBrachTemp.Skip(i).FirstOrDefault());
+                    cb_branches.SelectedItem = null;
+                    chk_drafs.IsChecked = false;
+                    chk_return.IsChecked = false;
+                    chk_invoice.IsChecked = true;
+                    dp_endDate.SelectedDate = null;
+                    dp_startDate.SelectedDate = null;
+                    dt_startTime.SelectedTime = null;
+                    dt_endTime.SelectedTime = null;
+                    chk_allBranches.IsChecked = false;
+                    cb_branches.IsEnabled = true;
+                    for (int i = 0; i < comboBrachTemp.Count; i++)
+                    {
+                        dynamicComboBranches.Add(comboBrachTemp.Skip(i).FirstOrDefault());
+                    }
+                    comboBrachTemp.Clear();
+                    stk_tagsBranches.Children.Clear();
+                    selectedBranchId.Clear();
+                    fillBranchEvent();
                 }
-                comboBrachTemp.Clear();
-                stk_tagsBranches.Children.Clear();
-                selectedBranchId.Clear();
-                fillBranchEvent();
-            }
 
-            else if (selectedTab == 1)
-            {
-                cb_pos.SelectedItem = null;
-                chk_posDraft.IsChecked = false;
-                chk_posReturn.IsChecked = false;
-                chk_posInvoice.IsChecked = true;
-                dp_posEndDate.SelectedDate = null;
-                dp_posStartDate.SelectedDate = null;
-                dt_posStartTime.SelectedTime = null;
-                dt_posEndTime.SelectedTime = null;
-                chk_allPos.IsChecked = false;
-                cb_pos.IsEnabled = true;
-                for (int i = 0; i < comboPosTemp.Count; i++)
+                else if (selectedTab == 1)
                 {
-                    dynamicComboPoss.Add(comboPosTemp.Skip(i).FirstOrDefault());
+                    cb_pos.SelectedItem = null;
+                    chk_posDraft.IsChecked = false;
+                    chk_posReturn.IsChecked = false;
+                    chk_posInvoice.IsChecked = true;
+                    dp_posEndDate.SelectedDate = null;
+                    dp_posStartDate.SelectedDate = null;
+                    dt_posStartTime.SelectedTime = null;
+                    dt_posEndTime.SelectedTime = null;
+                    chk_allPos.IsChecked = false;
+                    cb_pos.IsEnabled = true;
+                    for (int i = 0; i < comboPosTemp.Count; i++)
+                    {
+                        dynamicComboPoss.Add(comboPosTemp.Skip(i).FirstOrDefault());
+                    }
+                    comboPosTemp.Clear();
+                    stk_tagsPos.Children.Clear();
+                    selectedPosId.Clear();
+                    fillPosEvent();
                 }
-                comboPosTemp.Clear();
-                stk_tagsPos.Children.Clear();
-                selectedPosId.Clear();
-                fillPosEvent();
-            }
 
-            else if (selectedTab == 2)
-            {
-                cb_vendors.SelectedItem = null;
-                chk_vendorsDraft.IsChecked = false;
-                chk_vendorsReturn.IsChecked = false;
-                chk_vendorsInvoice.IsChecked = true;
-                dp_vendorsEndDate.SelectedDate = null;
-                dp_vendorsStartDate.SelectedDate = null;
-                dt_vendorsStartTime.SelectedTime = null;
-                dt_vendorsEndTime.SelectedTime = null;
-                chk_allVendors.IsChecked = false;
-                cb_vendors.IsEnabled = true;
-                for (int i = 0; i < comboVendorTemp.Count; i++)
+                else if (selectedTab == 2)
                 {
-                    dynamicComboVendors.Add(comboVendorTemp.Skip(i).FirstOrDefault());
-                }
-                comboVendorTemp.Clear();
-                stk_tagsVendors.Children.Clear();
-                selectedVendorsId.Clear();
-                fillVendorsEvent();
+                    cb_vendors.SelectedItem = null;
+                    chk_vendorsDraft.IsChecked = false;
+                    chk_vendorsReturn.IsChecked = false;
+                    chk_vendorsInvoice.IsChecked = true;
+                    dp_vendorsEndDate.SelectedDate = null;
+                    dp_vendorsStartDate.SelectedDate = null;
+                    dt_vendorsStartTime.SelectedTime = null;
+                    dt_vendorsEndTime.SelectedTime = null;
+                    chk_allVendors.IsChecked = false;
+                    cb_vendors.IsEnabled = true;
+                    for (int i = 0; i < comboVendorTemp.Count; i++)
+                    {
+                        dynamicComboVendors.Add(comboVendorTemp.Skip(i).FirstOrDefault());
+                    }
+                    comboVendorTemp.Clear();
+                    stk_tagsVendors.Children.Clear();
+                    selectedVendorsId.Clear();
+                    fillVendorsEvent();
 
-            }
+                }
 
-            else if (selectedTab == 3)
-            {
-                cb_users.SelectedItem = null;
-                chk_usersDraft.IsChecked = false;
-                chk_usersReturn.IsChecked = false;
-                chk_usersInvoice.IsChecked = true;
-                dp_usersEndDate.SelectedDate = null;
-                dp_usersStartDate.SelectedDate = null;
-                dt_usersStartTime.SelectedTime = null;
-                dt_usersEndTime.SelectedTime = null;
-                chk_allUsers.IsChecked = false;
-                cb_users.IsEnabled = true;
-                for (int i = 0; i < comboUserTemp.Count; i++)
+                else if (selectedTab == 3)
                 {
-                    dynamicComboUsers.Add(comboUserTemp.Skip(i).FirstOrDefault());
-                }
-                comboUserTemp.Clear();
-                stk_tagsUsers.Children.Clear();
-                selectedUserId.Clear();
-                fillUsersEvent();
+                    cb_users.SelectedItem = null;
+                    chk_usersDraft.IsChecked = false;
+                    chk_usersReturn.IsChecked = false;
+                    chk_usersInvoice.IsChecked = true;
+                    dp_usersEndDate.SelectedDate = null;
+                    dp_usersStartDate.SelectedDate = null;
+                    dt_usersStartTime.SelectedTime = null;
+                    dt_usersEndTime.SelectedTime = null;
+                    chk_allUsers.IsChecked = false;
+                    cb_users.IsEnabled = true;
+                    for (int i = 0; i < comboUserTemp.Count; i++)
+                    {
+                        dynamicComboUsers.Add(comboUserTemp.Skip(i).FirstOrDefault());
+                    }
+                    comboUserTemp.Clear();
+                    stk_tagsUsers.Children.Clear();
+                    selectedUserId.Clear();
+                    fillUsersEvent();
 
-            }
-            else if (selectedTab == 4)
-            {
-                cb_Items.SelectedItem = null;
-                chk_itemDrafs.IsChecked = false;
-                chk_itemReturn.IsChecked = false;
-                chk_itemInvoice.IsChecked = true;
-                dp_ItemEndDate.SelectedDate = null;
-                dp_ItemStartDate.SelectedDate = null;
-                dt_itemStartTime.SelectedTime = null;
-                dt_ItemEndTime.SelectedTime = null;
-                chk_allItems.IsChecked = false;
-                cb_Items.IsEnabled = true;
-                for (int i = 0; i < comboItemTemp.Count; i++)
-                {
-                    dynamicComboItem.Add(comboItemTemp.Skip(i).FirstOrDefault());
                 }
-                comboItemTemp.Clear();
-                stk_tagsItems.Children.Clear();
-                selectedItemId.Clear();
-                fillItemsEvent();
-            }
-            else if (selectedTab == 5)
-            {
-                cb_Coupons.SelectedItem = null;
-                chk_couponDrafs.IsChecked = false;
-                chk_couponReturn.IsChecked = false;
-                chk_couponInvoice.IsChecked = true;
-                dp_couponEndDate.SelectedDate = null;
-                dp_couponStartDate.SelectedDate = null;
-                dt_couponStartTime.SelectedTime = null;
-                dt_couponEndTime.SelectedTime = null;
-                chk_allCoupon.IsChecked = false;
-                cb_Coupons.IsEnabled = true;
-                for (int i = 0; i < comboCouponTemp.Count; i++)
+                else if (selectedTab == 4)
                 {
-                    dynamicComboCoupon.Add(comboCouponTemp.Skip(i).FirstOrDefault());
+                    cb_Items.SelectedItem = null;
+                    chk_itemDrafs.IsChecked = false;
+                    chk_itemReturn.IsChecked = false;
+                    chk_itemInvoice.IsChecked = true;
+                    dp_ItemEndDate.SelectedDate = null;
+                    dp_ItemStartDate.SelectedDate = null;
+                    dt_itemStartTime.SelectedTime = null;
+                    dt_ItemEndTime.SelectedTime = null;
+                    chk_allItems.IsChecked = false;
+                    cb_Items.IsEnabled = true;
+                    for (int i = 0; i < comboItemTemp.Count; i++)
+                    {
+                        dynamicComboItem.Add(comboItemTemp.Skip(i).FirstOrDefault());
+                    }
+                    comboItemTemp.Clear();
+                    stk_tagsItems.Children.Clear();
+                    selectedItemId.Clear();
+                    fillItemsEvent();
                 }
-                comboCouponTemp.Clear();
-                stk_tagsCoupons.Children.Clear();
-                selectedcouponId.Clear();
-                fillCouponsEvent();
-            }
+                else if (selectedTab == 5)
+                {
+                    cb_Coupons.SelectedItem = null;
+                    chk_couponDrafs.IsChecked = false;
+                    chk_couponReturn.IsChecked = false;
+                    chk_couponInvoice.IsChecked = true;
+                    dp_couponEndDate.SelectedDate = null;
+                    dp_couponStartDate.SelectedDate = null;
+                    dt_couponStartTime.SelectedTime = null;
+                    dt_couponEndTime.SelectedTime = null;
+                    chk_allCoupon.IsChecked = false;
+                    cb_Coupons.IsEnabled = true;
+                    for (int i = 0; i < comboCouponTemp.Count; i++)
+                    {
+                        dynamicComboCoupon.Add(comboCouponTemp.Skip(i).FirstOrDefault());
+                    }
+                    comboCouponTemp.Clear();
+                    stk_tagsCoupons.Children.Clear();
+                    selectedcouponId.Clear();
+                    fillCouponsEvent();
+                }
 
-            else if (selectedTab == 6)
-            {
-                cb_offers.SelectedItem = null;
-                chk_offersDrafs.IsChecked = false;
-                chk_offersReturn.IsChecked = false;
-                chk_offersInvoice.IsChecked = true;
-                dp_offersEndDate.SelectedDate = null;
-                dp_offersStartDate.SelectedDate = null;
-                dt_offersStartTime.SelectedTime = null;
-                dt_offersEndTime.SelectedTime = null;
-                chk_allOffers.IsChecked = false;
-                cb_offers.IsEnabled = true;
-                for (int i = 0; i < comboOfferTemp.Count; i++)
+                else if (selectedTab == 6)
                 {
-                    dynamicComboOffer.Add(comboOfferTemp.Skip(i).FirstOrDefault());
+                    cb_offers.SelectedItem = null;
+                    chk_offersDrafs.IsChecked = false;
+                    chk_offersReturn.IsChecked = false;
+                    chk_offersInvoice.IsChecked = true;
+                    dp_offersEndDate.SelectedDate = null;
+                    dp_offersStartDate.SelectedDate = null;
+                    dt_offersStartTime.SelectedTime = null;
+                    dt_offersEndTime.SelectedTime = null;
+                    chk_allOffers.IsChecked = false;
+                    cb_offers.IsEnabled = true;
+                    for (int i = 0; i < comboOfferTemp.Count; i++)
+                    {
+                        dynamicComboOffer.Add(comboOfferTemp.Skip(i).FirstOrDefault());
+                    }
+                    comboOfferTemp.Clear();
+                    stk_tagsOffers.Children.Clear();
+                    selectedOfferId.Clear();
+                    fillOffersEvent();
                 }
-                comboOfferTemp.Clear();
-                stk_tagsOffers.Children.Clear();
-                selectedOfferId.Clear();
-                fillOffersEvent();
+                txt_search.Text = "";
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
-            txt_search.Text = "";
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         #endregion
 
         #region branchesEvents
         private void chk_invoice_Checked(object sender, RoutedEventArgs e)
         {
-            fillBranchEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                fillBranchEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void chk_return_Checked(object sender, RoutedEventArgs e)
         {
-            fillBranchEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                fillBranchEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void chk_drafs_Checked(object sender, RoutedEventArgs e)
         {
-            fillBranchEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); fillBranchEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void chk_invoice_Unchecked(object sender, RoutedEventArgs e)
         {
-            fillBranchEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); fillBranchEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void chk_return_Unchecked(object sender, RoutedEventArgs e)
         {
-            fillBranchEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); fillBranchEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void chk_drafs_Unchecked(object sender, RoutedEventArgs e)
         {
-            fillBranchEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                fillBranchEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void dp_startDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            fillBranchEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                fillBranchEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void dp_endDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            fillBranchEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); fillBranchEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void dt_startTime_SelectedTimeChanged(object sender, RoutedPropertyChangedEventArgs<DateTime?> e)
         {
-            fillBranchEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); fillBranchEvent();
+
+                fillBranchEvent();
+
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void dp_endTime_SelectedTimeChanged(object sender, RoutedPropertyChangedEventArgs<DateTime?> e)
         {
-            fillBranchEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); fillBranchEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
 
         #endregion
 
-      
+
 
         #region posEvents
         private void chk_posInvoice_Checked(object sender, RoutedEventArgs e)
         {
-            fillPosEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                fillPosEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void chk_posReturn_Checked(object sender, RoutedEventArgs e)
         {
-            fillPosEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); fillPosEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void chk_posDrafs_Checked(object sender, RoutedEventArgs e)
         {
-            fillPosEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); fillPosEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void chk_posInvoice_Unchecked(object sender, RoutedEventArgs e)
         {
-            fillPosEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); fillPosEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void chk_posReturn_Unchecked(object sender, RoutedEventArgs e)
         {
-            fillPosEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); fillPosEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void chk_posDrafs_Unchecked(object sender, RoutedEventArgs e)
         {
-            fillPosEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); fillPosEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void dp_posStartDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            fillPosEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); fillPosEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void dp_posEndDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            fillPosEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); fillPosEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void dt_posStartTime_SelectedTimeChanged(object sender, RoutedPropertyChangedEventArgs<DateTime?> e)
         {
-            fillPosEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); fillPosEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void dt_posEndTime_SelectedTimeChanged(object sender, RoutedPropertyChangedEventArgs<DateTime?> e)
         {
-            fillPosEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); fillPosEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         #endregion
 
         #region vendorsEvents
         private void chk_vendorsInvoice_Checked(object sender, RoutedEventArgs e)
         {
-            fillVendorsEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); fillVendorsEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void chk_vendorsReturn_Checked(object sender, RoutedEventArgs e)
         {
-            fillVendorsEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); fillVendorsEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void chk_vendorsDraft_Checked(object sender, RoutedEventArgs e)
         {
-            fillVendorsEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                fillVendorsEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void chk_vendorsInvoice_Unchecked(object sender, RoutedEventArgs e)
         {
-            fillVendorsEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); fillVendorsEvent();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void chk_vendorsReturn_Unchecked(object sender, RoutedEventArgs e)
         {
-            fillVendorsEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                fillVendorsEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void chk_vendorsDraft_Unchecked(object sender, RoutedEventArgs e)
         {
-            fillVendorsEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                fillVendorsEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void dp_vendorsStartDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            fillVendorsEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); fillVendorsEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void dp_vendorsEndDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            fillVendorsEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); fillVendorsEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void dt_vendorsStartTime_SelectedTimeChanged(object sender, RoutedPropertyChangedEventArgs<DateTime?> e)
         {
-            fillVendorsEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); fillVendorsEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void dt_vendorsEndTime_SelectedTimeChanged(object sender, RoutedPropertyChangedEventArgs<DateTime?> e)
         {
-            fillVendorsEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); fillVendorsEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         #endregion
 
         #region usersEvents
         private void chk_usersInvoice_Checked(object sender, RoutedEventArgs e)
         {
-            fillUsersEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); fillUsersEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void chk_usersReturn_Checked(object sender, RoutedEventArgs e)
         {
-            fillUsersEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); fillUsersEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void chk_usersDraft_Checked(object sender, RoutedEventArgs e)
         {
-            fillUsersEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                fillUsersEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void chk_usersInvoice_Unchecked(object sender, RoutedEventArgs e)
         {
-            fillUsersEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); fillUsersEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void chk_usersReturn_Unchecked(object sender, RoutedEventArgs e)
         {
-            fillUsersEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); fillUsersEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void chk_usersDraft_Unchecked(object sender, RoutedEventArgs e)
         {
-            fillUsersEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); fillUsersEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void dp_usersStartDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            fillUsersEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); fillUsersEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void dp_usersEndDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            fillUsersEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); fillUsersEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
 
 
         private void dt_usersEndTime_SelectedTimeChanged(object sender, RoutedPropertyChangedEventArgs<DateTime?> e)
         {
-            fillUsersEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); fillUsersEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void dt_usersStartTime_SelectedTimeChanged(object sender, RoutedPropertyChangedEventArgs<DateTime?> e)
         {
-            fillUsersEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); fillUsersEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         #endregion
 
         #region settings
         private void btn_settings_Click(object sender, RoutedEventArgs e)
         {
-            List<string> Headers = new List<string>();
-            List<string> Headers1 = new List<string>();
-            foreach (var item in dgInvoice.Columns)
+            try
             {
-                Headers.Add(item.Header.ToString());
-            }
-
-            winControlPanel win = new winControlPanel(Headers);
-
-            if (win.ShowDialog() == false)
-            {
-                Headers1.Clear();
-                Headers1.AddRange(win.newHeaderResult);
-            }
-            for (int i = 0; i < Headers1.Count; i++)
-            {
-                if (dgInvoice.Columns[i].Header.ToString() == Headers1[i])
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                List<string> Headers = new List<string>();
+                List<string> Headers1 = new List<string>();
+                foreach (var item in dgInvoice.Columns)
                 {
-                    dgInvoice.Columns[i].Visibility = Visibility.Visible;
+                    Headers.Add(item.Header.ToString());
                 }
-                else
-                    dgInvoice.Columns[i].Visibility = Visibility.Hidden;
-            }
 
+                winControlPanel win = new winControlPanel(Headers);
+
+                if (win.ShowDialog() == false)
+                {
+                    Headers1.Clear();
+                    Headers1.AddRange(win.newHeaderResult);
+                }
+                for (int i = 0; i < Headers1.Count; i++)
+                {
+                    if (dgInvoice.Columns[i].Header.ToString() == Headers1[i])
+                    {
+                        dgInvoice.Columns[i].Visibility = Visibility.Visible;
+                    }
+                    else
+                        dgInvoice.Columns[i].Visibility = Visibility.Hidden;
+                }
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         #endregion
@@ -1608,605 +2231,1246 @@ fillColumnChart(cb_Items, selectedItemId);
 
         private void Chip_OnDeleteClick(object sender, RoutedEventArgs e)
         {
-            var currentChip = (Chip)sender;
-            stk_tagsBranches.Children.Remove(currentChip);
-            var m = comboBrachTemp.Where(j => j.branchId == (Convert.ToInt32(currentChip.Name.Remove(0, 3))));
-            dynamicComboBranches.Add(m.FirstOrDefault());
-            selectedBranchId.Remove(Convert.ToInt32(currentChip.Name.Remove(0, 3)));
-            if (selectedBranchId.Count == 0)
+            try
             {
-                cb_branches.SelectedItem = null;
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                var currentChip = (Chip)sender;
+                stk_tagsBranches.Children.Remove(currentChip);
+                var m = comboBrachTemp.Where(j => j.branchId == (Convert.ToInt32(currentChip.Name.Remove(0, 3))));
+                dynamicComboBranches.Add(m.FirstOrDefault());
+                selectedBranchId.Remove(Convert.ToInt32(currentChip.Name.Remove(0, 3)));
+                if (selectedBranchId.Count == 0)
+                {
+                    cb_branches.SelectedItem = null;
+                }
+                fillBranchEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
-            fillBranchEvent();
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Chip_OnDeletePosClick(object sender, RoutedEventArgs e)
         {
-            var currentChip = (Chip)sender;
-            stk_tagsPos.Children.Remove(currentChip);
-            var m = comboPosTemp.Where(j => j.posId == (Convert.ToInt32(currentChip.Name.Remove(0, 3))));
-            dynamicComboPoss.Add(m.FirstOrDefault());
-            selectedPosId.Remove(Convert.ToInt32(currentChip.Name.Remove(0, 3)));
-            if (selectedPosId.Count == 0)
+            try
             {
-                cb_pos.SelectedItem = null;
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                var currentChip = (Chip)sender;
+                stk_tagsPos.Children.Remove(currentChip);
+                var m = comboPosTemp.Where(j => j.posId == (Convert.ToInt32(currentChip.Name.Remove(0, 3))));
+                dynamicComboPoss.Add(m.FirstOrDefault());
+                selectedPosId.Remove(Convert.ToInt32(currentChip.Name.Remove(0, 3)));
+                if (selectedPosId.Count == 0)
+                {
+                    cb_pos.SelectedItem = null;
+                }
+                fillPosEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
-            fillPosEvent();
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Chip_OnDeleteVendorClick(object sender, RoutedEventArgs e)
         {
-            var currentChip = (Chip)sender;
-            stk_tagsVendors.Children.Remove(currentChip);
-            var m = comboVendorTemp.Where(j => j.agentId == (Convert.ToInt32(currentChip.Name.Remove(0, 3))));
-            dynamicComboVendors.Add(m.FirstOrDefault());
-            selectedVendorsId.Remove(Convert.ToInt32(currentChip.Name.Remove(0, 3)));
-            if (selectedVendorsId.Count == 0)
+            try
             {
-                cb_vendors.SelectedItem = null;
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                var currentChip = (Chip)sender;
+                stk_tagsVendors.Children.Remove(currentChip);
+                var m = comboVendorTemp.Where(j => j.agentId == (Convert.ToInt32(currentChip.Name.Remove(0, 3))));
+                dynamicComboVendors.Add(m.FirstOrDefault());
+                selectedVendorsId.Remove(Convert.ToInt32(currentChip.Name.Remove(0, 3)));
+                if (selectedVendorsId.Count == 0)
+                {
+                    cb_vendors.SelectedItem = null;
+                }
+                fillVendorsEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
-            fillVendorsEvent();
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Chip_OnDeleteUserClick(object sender, RoutedEventArgs e)
         {
-            var currentChip = (Chip)sender;
-            stk_tagsUsers.Children.Remove(currentChip);
-            var m = comboUserTemp.Where(j => j.userId == (Convert.ToInt32(currentChip.Name.Remove(0, 3))));
-            dynamicComboUsers.Add(m.FirstOrDefault());
-            selectedUserId.Remove(Convert.ToInt32(currentChip.Name.Remove(0, 3)));
-            if (selectedUserId.Count == 0)
+            try
             {
-                cb_users.SelectedItem = null;
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); var currentChip = (Chip)sender;
+                stk_tagsUsers.Children.Remove(currentChip);
+                var m = comboUserTemp.Where(j => j.userId == (Convert.ToInt32(currentChip.Name.Remove(0, 3))));
+                dynamicComboUsers.Add(m.FirstOrDefault());
+                selectedUserId.Remove(Convert.ToInt32(currentChip.Name.Remove(0, 3)));
+                if (selectedUserId.Count == 0)
+                {
+                    cb_users.SelectedItem = null;
+                }
+                fillUsersEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
-            fillUsersEvent();
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Chip_OnDeleteItemClick(object sender, RoutedEventArgs e)
         {
-            var currentChip = (Chip)sender;
-            stk_tagsItems.Children.Remove(currentChip);
-            var m = comboItemTemp.Where(j => j.itemUnitId == (Convert.ToInt32(currentChip.Name.Remove(0, 3))));
-            dynamicComboItem.Add(m.FirstOrDefault());
-            selectedItemId.Remove(Convert.ToInt32(currentChip.Name.Remove(0, 3)));
-            if (selectedItemId.Count == 0)
+            try
             {
-                cb_Items.SelectedItem = null;
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); var currentChip = (Chip)sender;
+                stk_tagsItems.Children.Remove(currentChip);
+                var m = comboItemTemp.Where(j => j.itemUnitId == (Convert.ToInt32(currentChip.Name.Remove(0, 3))));
+                dynamicComboItem.Add(m.FirstOrDefault());
+                selectedItemId.Remove(Convert.ToInt32(currentChip.Name.Remove(0, 3)));
+                if (selectedItemId.Count == 0)
+                {
+                    cb_Items.SelectedItem = null;
+                }
+                fillItemsEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
-            fillItemsEvent();
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void cb_branches_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (cb_branches.SelectedItem != null)
+            try
             {
-                if (stk_tagsBranches.Children.Count < 5)
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); if (cb_branches.SelectedItem != null)
                 {
-                    selectedBranch = cb_branches.SelectedItem as Branch;
-                    var b = new MaterialDesignThemes.Wpf.Chip()
+                    if (stk_tagsBranches.Children.Count < 5)
                     {
-                        Content = selectedBranch.name,
-                        Name = "btn" + selectedBranch.branchId.ToString(),
-                        IsDeletable = true,
-                        Margin = new Thickness(5, 0, 5, 0)
-                    };
-                    b.DeleteClick += Chip_OnDeleteClick;
-                    stk_tagsBranches.Children.Add(b);
-                    comboBrachTemp.Add(selectedBranch);
-                    selectedBranchId.Add(selectedBranch.branchId);
-                    dynamicComboBranches.Remove(selectedBranch);
-                    fillBranchEvent();
+                        selectedBranch = cb_branches.SelectedItem as Branch;
+                        var b = new MaterialDesignThemes.Wpf.Chip()
+                        {
+                            Content = selectedBranch.name,
+                            Name = "btn" + selectedBranch.branchId.ToString(),
+                            IsDeletable = true,
+                            Margin = new Thickness(5, 0, 5, 0)
+                        };
+                        b.DeleteClick += Chip_OnDeleteClick;
+                        stk_tagsBranches.Children.Add(b);
+                        comboBrachTemp.Add(selectedBranch);
+                        selectedBranchId.Add(selectedBranch.branchId);
+                        dynamicComboBranches.Remove(selectedBranch);
+                        fillBranchEvent();
+                    }
                 }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
         private void cb_pos_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (cb_pos.SelectedItem != null)
+            try
             {
-                if (stk_tagsPos.Children.Count < 5)
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); if (cb_pos.SelectedItem != null)
                 {
-                    selectedPos = cb_pos.SelectedItem as Pos;
-                    var b = new MaterialDesignThemes.Wpf.Chip()
+                    if (stk_tagsPos.Children.Count < 5)
                     {
-                        Content = selectedPos.name,
-                        Name = "btn" + selectedPos.posId.ToString(),
-                        IsDeletable = true,
-                        Margin = new Thickness(5, 0, 5, 0)
-                    };
-                    b.DeleteClick += Chip_OnDeletePosClick;
-                    stk_tagsPos.Children.Add(b);
-                    comboPosTemp.Add(selectedPos);
-                    selectedPosId.Add(selectedPos.posId);
-                    dynamicComboPoss.Remove(selectedPos);
-                    fillPosEvent();
+                        selectedPos = cb_pos.SelectedItem as Pos;
+                        var b = new MaterialDesignThemes.Wpf.Chip()
+                        {
+                            Content = selectedPos.name,
+                            Name = "btn" + selectedPos.posId.ToString(),
+                            IsDeletable = true,
+                            Margin = new Thickness(5, 0, 5, 0)
+                        };
+                        b.DeleteClick += Chip_OnDeletePosClick;
+                        stk_tagsPos.Children.Add(b);
+                        comboPosTemp.Add(selectedPos);
+                        selectedPosId.Add(selectedPos.posId);
+                        dynamicComboPoss.Remove(selectedPos);
+                        fillPosEvent();
+                    }
                 }
-            }
 
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void cb_vendors_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (cb_vendors.SelectedItem != null)
+            try
             {
-                if (stk_tagsVendors.Children.Count < 5)
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); if (cb_vendors.SelectedItem != null)
                 {
-                    selectedVendor = cb_vendors.SelectedItem as Agent;
-                    var b = new MaterialDesignThemes.Wpf.Chip()
+                    if (stk_tagsVendors.Children.Count < 5)
                     {
-                        Content = selectedVendor.name,
-                        Name = "btn" + selectedVendor.agentId.ToString(),
-                        IsDeletable = true,
-                        Margin = new Thickness(5, 0, 5, 0)
-                    };
-                    b.DeleteClick += Chip_OnDeleteVendorClick;
-                    stk_tagsVendors.Children.Add(b);
-                    comboVendorTemp.Add(selectedVendor);
-                    selectedVendorsId.Add(selectedVendor.agentId);
-                    dynamicComboVendors.Remove(selectedVendor);
-                    fillVendorsEvent();
+                        selectedVendor = cb_vendors.SelectedItem as Agent;
+                        var b = new MaterialDesignThemes.Wpf.Chip()
+                        {
+                            Content = selectedVendor.name,
+                            Name = "btn" + selectedVendor.agentId.ToString(),
+                            IsDeletable = true,
+                            Margin = new Thickness(5, 0, 5, 0)
+                        };
+                        b.DeleteClick += Chip_OnDeleteVendorClick;
+                        stk_tagsVendors.Children.Add(b);
+                        comboVendorTemp.Add(selectedVendor);
+                        selectedVendorsId.Add(selectedVendor.agentId);
+                        dynamicComboVendors.Remove(selectedVendor);
+                        fillVendorsEvent();
+                    }
                 }
-            }
 
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
 
 
         private void chk_allBranches_Click(object sender, RoutedEventArgs e)
         {
-            if (cb_branches.IsEnabled == true)
+            try
             {
-                cb_branches.SelectedItem = null;
-                cb_branches.IsEnabled = false;
-                for (int i = 0; i < comboBrachTemp.Count; i++)
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); if (cb_branches.IsEnabled == true)
                 {
-                    dynamicComboBranches.Add(comboBrachTemp.Skip(i).FirstOrDefault());
-                }
-                comboBrachTemp.Clear();
-                stk_tagsBranches.Children.Clear();
-                selectedBranchId.Clear();
+                    cb_branches.SelectedItem = null;
+                    cb_branches.IsEnabled = false;
+                    for (int i = 0; i < comboBrachTemp.Count; i++)
+                    {
+                        dynamicComboBranches.Add(comboBrachTemp.Skip(i).FirstOrDefault());
+                    }
+                    comboBrachTemp.Clear();
+                    stk_tagsBranches.Children.Clear();
+                    selectedBranchId.Clear();
 
+                }
+                else
+                {
+                    cb_branches.IsEnabled = true;
+                }
+                fillBranchEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
-            else
+            catch (Exception ex)
             {
-                cb_branches.IsEnabled = true;
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-            fillBranchEvent();
         }
 
         private void chk_allPos_Click(object sender, RoutedEventArgs e)
         {
-            if (cb_pos.IsEnabled == true)
+            try
             {
-                cb_pos.SelectedItem = null;
-                cb_pos.IsEnabled = false;
-                for (int i = 0; i < comboPosTemp.Count; i++)
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); if (cb_pos.IsEnabled == true)
                 {
-                    dynamicComboPoss.Add(comboPosTemp.Skip(i).FirstOrDefault());
+                    cb_pos.SelectedItem = null;
+                    cb_pos.IsEnabled = false;
+                    for (int i = 0; i < comboPosTemp.Count; i++)
+                    {
+                        dynamicComboPoss.Add(comboPosTemp.Skip(i).FirstOrDefault());
+                    }
+                    comboPosTemp.Clear();
+                    stk_tagsPos.Children.Clear();
+                    selectedPosId.Clear();
                 }
-                comboPosTemp.Clear();
-                stk_tagsPos.Children.Clear();
-                selectedPosId.Clear();
-            }
-            else
-            {
-                cb_pos.IsEnabled = true;
-            }
+                else
+                {
+                    cb_pos.IsEnabled = true;
+                }
 
-            fillPosEvent();
+                fillPosEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void chk_allVendors_Click(object sender, RoutedEventArgs e)
         {
-            if (cb_vendors.IsEnabled == true)
+            try
             {
-                cb_vendors.SelectedItem = null;
-                cb_vendors.IsEnabled = false;
-                for (int i = 0; i < comboVendorTemp.Count; i++)
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); if (cb_vendors.IsEnabled == true)
                 {
-                    dynamicComboVendors.Add(comboVendorTemp.Skip(i).FirstOrDefault());
+                    cb_vendors.SelectedItem = null;
+                    cb_vendors.IsEnabled = false;
+                    for (int i = 0; i < comboVendorTemp.Count; i++)
+                    {
+                        dynamicComboVendors.Add(comboVendorTemp.Skip(i).FirstOrDefault());
+                    }
+                    comboVendorTemp.Clear();
+                    stk_tagsVendors.Children.Clear();
+                    selectedVendorsId.Clear();
                 }
-                comboVendorTemp.Clear();
-                stk_tagsVendors.Children.Clear();
-                selectedVendorsId.Clear();
-            }
-            else
-            {
-                cb_vendors.IsEnabled = true;
-            }
+                else
+                {
+                    cb_vendors.IsEnabled = true;
+                }
 
-            fillVendorsEvent();
+                fillVendorsEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void chk_allUsers_Click(object sender, RoutedEventArgs e)
         {
-            if (cb_users.IsEnabled == true)
+            try
             {
-                cb_users.SelectedItem = null;
-                cb_users.IsEnabled = false;
-                for (int i = 0; i < comboUserTemp.Count; i++)
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); if (cb_users.IsEnabled == true)
                 {
-                    dynamicComboUsers.Add(comboUserTemp.Skip(i).FirstOrDefault());
+                    cb_users.SelectedItem = null;
+                    cb_users.IsEnabled = false;
+                    for (int i = 0; i < comboUserTemp.Count; i++)
+                    {
+                        dynamicComboUsers.Add(comboUserTemp.Skip(i).FirstOrDefault());
+                    }
+                    comboUserTemp.Clear();
+                    stk_tagsUsers.Children.Clear();
+                    selectedUserId.Clear();
                 }
-                comboUserTemp.Clear();
-                stk_tagsUsers.Children.Clear();
-                selectedUserId.Clear();
-            }
-            else
-            {
-                cb_users.IsEnabled = true;
-            }
+                else
+                {
+                    cb_users.IsEnabled = true;
+                }
 
-            fillUsersEvent();
+                fillUsersEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void cb_Items_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
-            if (cb_Items.SelectedItem != null)
+            try
             {
-                if (stk_tagsItems.Children.Count < 5)
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                if (cb_Items.SelectedItem != null)
                 {
-                    selectedItem = cb_Items.SelectedItem as ItemUnitCombo;
-                    var b = new MaterialDesignThemes.Wpf.Chip()
+                    if (stk_tagsItems.Children.Count < 5)
                     {
-                        Content = selectedItem.itemUnitName,
-                        Name = "btn" + selectedItem.itemUnitId.ToString(),
-                        IsDeletable = true,
-                        Margin = new Thickness(5, 0, 5, 0)
-                    };
-                    b.DeleteClick += Chip_OnDeleteItemClick;
-                    stk_tagsItems.Children.Add(b);
-                    comboItemTemp.Add(selectedItem);
-                    selectedItemId.Add(selectedItem.itemUnitId);
-                    dynamicComboItem.Remove(selectedItem);
-                    fillItemsEvent();
+                        selectedItem = cb_Items.SelectedItem as ItemUnitCombo;
+                        var b = new MaterialDesignThemes.Wpf.Chip()
+                        {
+                            Content = selectedItem.itemUnitName,
+                            Name = "btn" + selectedItem.itemUnitId.ToString(),
+                            IsDeletable = true,
+                            Margin = new Thickness(5, 0, 5, 0)
+                        };
+                        b.DeleteClick += Chip_OnDeleteItemClick;
+                        stk_tagsItems.Children.Add(b);
+                        comboItemTemp.Add(selectedItem);
+                        selectedItemId.Add(selectedItem.itemUnitId);
+                        dynamicComboItem.Remove(selectedItem);
+                        fillItemsEvent();
+                    }
                 }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
         private void chk_allItems_Click(object sender, RoutedEventArgs e)
         {
-            if (cb_Items.IsEnabled == true)
+            try
             {
-                cb_Items.SelectedItem = null;
-                cb_Items.IsEnabled = false;
-                for (int i = 0; i < comboItemTemp.Count; i++)
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); if (cb_Items.IsEnabled == true)
                 {
-                    dynamicComboItem.Add(comboItemTemp.Skip(i).FirstOrDefault());
+                    cb_Items.SelectedItem = null;
+                    cb_Items.IsEnabled = false;
+                    for (int i = 0; i < comboItemTemp.Count; i++)
+                    {
+                        dynamicComboItem.Add(comboItemTemp.Skip(i).FirstOrDefault());
+                    }
+                    comboItemTemp.Clear();
+                    stk_tagsItems.Children.Clear();
+                    selectedItemId.Clear();
                 }
-                comboItemTemp.Clear();
-                stk_tagsItems.Children.Clear();
-                selectedItemId.Clear();
-            }
-            else
-            {
-                cb_Items.IsEnabled = true;
-            }
+                else
+                {
+                    cb_Items.IsEnabled = true;
+                }
 
-            fillItemsEvent();
+                fillItemsEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void chk_itemInvoice_Checked(object sender, RoutedEventArgs e)
         {
-            fillItemsEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                fillItemsEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void chk_itemInvoice_Unchecked(object sender, RoutedEventArgs e)
         {
-            fillItemsEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                fillItemsEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void chk_itemReturn_Checked(object sender, RoutedEventArgs e)
         {
-            fillItemsEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                fillItemsEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void chk_itemReturn_Unchecked(object sender, RoutedEventArgs e)
         {
-            fillItemsEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); fillItemsEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void chk_itemDrafs_Checked(object sender, RoutedEventArgs e)
         {
-            fillItemsEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                fillItemsEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void chk_itemDrafs_Unchecked(object sender, RoutedEventArgs e)
         {
-            fillItemsEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); fillItemsEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void dp_ItemEndDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            fillItemsEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); fillItemsEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void dp_ItemStartDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            fillItemsEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); fillItemsEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void dt_ItemEndTime_SelectedTimeChanged(object sender, RoutedPropertyChangedEventArgs<DateTime?> e)
         {
-            fillItemsEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                fillItemsEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void dt_itemStartTime_SelectedTimeChanged(object sender, RoutedPropertyChangedEventArgs<DateTime?> e)
         {
-            fillItemsEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                fillItemsEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void chk_couponInvoice_Checked(object sender, RoutedEventArgs e)
         {
-            fillCouponsEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                fillCouponsEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void chk_couponInvoice_Unchecked(object sender, RoutedEventArgs e)
         {
-            fillCouponsEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                fillCouponsEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void chk_couponReturn_Unchecked(object sender, RoutedEventArgs e)
         {
-            fillCouponsEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                fillCouponsEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void chk_couponDrafs_Unchecked(object sender, RoutedEventArgs e)
         {
-            fillCouponsEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                fillCouponsEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void dp_couponEndDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            fillCouponsEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                fillCouponsEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void dp_couponStartDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            fillCouponsEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                fillCouponsEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
 
         private void dt_couponEndTime_SelectedTimeChanged(object sender, RoutedPropertyChangedEventArgs<DateTime?> e)
         {
-            fillCouponsEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                fillCouponsEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void dt_couponStartTime_SelectedTimeChanged(object sender, RoutedPropertyChangedEventArgs<DateTime?> e)
         {
-            fillCouponsEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                fillCouponsEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Chip_OnDeleteCouponClick(object sender, RoutedEventArgs e)
         {
-            var currentChip = (Chip)sender;
-            stk_tagsCoupons.Children.Remove(currentChip);
-            var m = comboCouponTemp.Where(j => j.Copcid == (Convert.ToInt32(currentChip.Name.Remove(0, 3))));
-            dynamicComboCoupon.Add(m.FirstOrDefault());
-            selectedcouponId.Remove(Convert.ToInt32(currentChip.Name.Remove(0, 3)));
-            if (selectedcouponId.Count == 0)
+            try
             {
-                cb_Coupons.SelectedItem = null;
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                var currentChip = (Chip)sender;
+                stk_tagsCoupons.Children.Remove(currentChip);
+                var m = comboCouponTemp.Where(j => j.Copcid == (Convert.ToInt32(currentChip.Name.Remove(0, 3))));
+                dynamicComboCoupon.Add(m.FirstOrDefault());
+                selectedcouponId.Remove(Convert.ToInt32(currentChip.Name.Remove(0, 3)));
+                if (selectedcouponId.Count == 0)
+                {
+                    cb_Coupons.SelectedItem = null;
+                }
+                fillCouponsEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
-            fillCouponsEvent();
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
 
         private void chk_couponReturn_Checked(object sender, RoutedEventArgs e)
         {
-            fillCouponsEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); fillCouponsEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void chk_couponDrafs_Checked(object sender, RoutedEventArgs e)
         {
-            fillCouponsEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); fillCouponsEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
 
         private void chk_allCoupon_Click(object sender, RoutedEventArgs e)
         {
-            if (cb_Coupons.IsEnabled == true)
+            try
             {
-                cb_Coupons.SelectedItem = null;
-                cb_Coupons.IsEnabled = false;
-                for (int i = 0; i < comboCouponTemp.Count; i++)
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); if (cb_Coupons.IsEnabled == true)
                 {
-                    dynamicComboCoupon.Add(comboCouponTemp.Skip(i).FirstOrDefault());
+                    cb_Coupons.SelectedItem = null;
+                    cb_Coupons.IsEnabled = false;
+                    for (int i = 0; i < comboCouponTemp.Count; i++)
+                    {
+                        dynamicComboCoupon.Add(comboCouponTemp.Skip(i).FirstOrDefault());
+                    }
+                    comboCouponTemp.Clear();
+                    stk_tagsCoupons.Children.Clear();
+                    selectedcouponId.Clear();
                 }
-                comboCouponTemp.Clear();
-                stk_tagsCoupons.Children.Clear();
-                selectedcouponId.Clear();
-            }
-            else
-            {
-                cb_Coupons.IsEnabled = true;
-            }
+                else
+                {
+                    cb_Coupons.IsEnabled = true;
+                }
 
-            fillCouponsEvent();
+                fillCouponsEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
 
         private void cb_users_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (cb_users.SelectedItem != null)
+            try
             {
-                if (stk_tagsUsers.Children.Count < 5)
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); if (cb_users.SelectedItem != null)
                 {
-                    selectedUser = cb_users.SelectedItem as User;
-                    var b = new MaterialDesignThemes.Wpf.Chip()
+                    if (stk_tagsUsers.Children.Count < 5)
                     {
-                        Content = selectedUser.username,
-                        Name = "btn" + selectedUser.userId.ToString(),
-                        IsDeletable = true,
-                        Margin = new Thickness(5, 0, 5, 0)
-                    };
-                    b.DeleteClick += Chip_OnDeleteUserClick;
-                    stk_tagsUsers.Children.Add(b);
-                    comboUserTemp.Add(selectedUser);
-                    selectedUserId.Add(selectedUser.userId);
-                    dynamicComboUsers.Remove(selectedUser);
-                    fillUsersEvent();
+                        selectedUser = cb_users.SelectedItem as User;
+                        var b = new MaterialDesignThemes.Wpf.Chip()
+                        {
+                            Content = selectedUser.username,
+                            Name = "btn" + selectedUser.userId.ToString(),
+                            IsDeletable = true,
+                            Margin = new Thickness(5, 0, 5, 0)
+                        };
+                        b.DeleteClick += Chip_OnDeleteUserClick;
+                        stk_tagsUsers.Children.Add(b);
+                        comboUserTemp.Add(selectedUser);
+                        selectedUserId.Add(selectedUser.userId);
+                        dynamicComboUsers.Remove(selectedUser);
+                        fillUsersEvent();
+                    }
                 }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
         private void cb_Coupons_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (cb_Coupons.SelectedItem != null)
+            try
             {
-                if (stk_tagsCoupons.Children.Count < 5)
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); if (cb_Coupons.SelectedItem != null)
                 {
-                    selectedCouon = cb_Coupons.SelectedItem as CouponCombo;
-                    var b = new MaterialDesignThemes.Wpf.Chip()
+                    if (stk_tagsCoupons.Children.Count < 5)
                     {
-                        Content = selectedCouon.Copname,
-                        Name = "btn" + selectedCouon.Copcid.ToString(),
-                        IsDeletable = true,
-                        Margin = new Thickness(5, 0, 5, 0)
-                    };
-                    b.DeleteClick += Chip_OnDeleteCouponClick;
-                    stk_tagsCoupons.Children.Add(b);
-                    comboCouponTemp.Add(selectedCouon);
-                    selectedcouponId.Add(selectedCouon.Copcid);
-                    dynamicComboCoupon.Remove(selectedCouon);
-                    fillCouponsEvent();
+                        selectedCouon = cb_Coupons.SelectedItem as CouponCombo;
+                        var b = new MaterialDesignThemes.Wpf.Chip()
+                        {
+                            Content = selectedCouon.Copname,
+                            Name = "btn" + selectedCouon.Copcid.ToString(),
+                            IsDeletable = true,
+                            Margin = new Thickness(5, 0, 5, 0)
+                        };
+                        b.DeleteClick += Chip_OnDeleteCouponClick;
+                        stk_tagsCoupons.Children.Add(b);
+                        comboCouponTemp.Add(selectedCouon);
+                        selectedcouponId.Add(selectedCouon.Copcid);
+                        dynamicComboCoupon.Remove(selectedCouon);
+                        fillCouponsEvent();
+                    }
                 }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
         private void cb_offers_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (cb_offers.SelectedItem != null)
+            try
             {
-                if (stk_tagsOffers.Children.Count < 5)
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                if (cb_offers.SelectedItem != null)
                 {
-                    selectedOffer = cb_offers.SelectedItem as OfferCombo;
-                    var b = new MaterialDesignThemes.Wpf.Chip()
+                    if (stk_tagsOffers.Children.Count < 5)
                     {
-                        Content = selectedOffer.Oname,
-                        Name = "btn" + selectedOffer.OofferId.ToString(),
-                        IsDeletable = true,
-                        Margin = new Thickness(5, 0, 5, 0)
-                    };
-                    b.DeleteClick += Chip_OnDeleteOfferClick;
-                    stk_tagsOffers.Children.Add(b);
-                    comboOfferTemp.Add(selectedOffer);
-                    selectedOfferId.Add(selectedOffer.OofferId);
-                    dynamicComboOffer.Remove(selectedOffer);
-                    fillOffersEvent();
+                        selectedOffer = cb_offers.SelectedItem as OfferCombo;
+                        var b = new MaterialDesignThemes.Wpf.Chip()
+                        {
+                            Content = selectedOffer.Oname,
+                            Name = "btn" + selectedOffer.OofferId.ToString(),
+                            IsDeletable = true,
+                            Margin = new Thickness(5, 0, 5, 0)
+                        };
+                        b.DeleteClick += Chip_OnDeleteOfferClick;
+                        stk_tagsOffers.Children.Add(b);
+                        comboOfferTemp.Add(selectedOffer);
+                        selectedOfferId.Add(selectedOffer.OofferId);
+                        dynamicComboOffer.Remove(selectedOffer);
+                        fillOffersEvent();
+                    }
                 }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
         private void Chip_OnDeleteOfferClick(object sender, RoutedEventArgs e)
         {
-            var currentChip = (Chip)sender;
-            stk_tagsOffers.Children.Remove(currentChip);
-            var m = comboOfferTemp.Where(j => j.OofferId == (Convert.ToInt32(currentChip.Name.Remove(0, 3))));
-            dynamicComboOffer.Add(m.FirstOrDefault());
-            selectedOfferId.Remove(Convert.ToInt32(currentChip.Name.Remove(0, 3)));
-            if (selectedOfferId.Count == 0)
+            try
             {
-                cb_offers.SelectedItem = null;
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); var currentChip = (Chip)sender;
+                stk_tagsOffers.Children.Remove(currentChip);
+                var m = comboOfferTemp.Where(j => j.OofferId == (Convert.ToInt32(currentChip.Name.Remove(0, 3))));
+                dynamicComboOffer.Add(m.FirstOrDefault());
+                selectedOfferId.Remove(Convert.ToInt32(currentChip.Name.Remove(0, 3)));
+                if (selectedOfferId.Count == 0)
+                {
+                    cb_offers.SelectedItem = null;
+                }
+                fillOffersEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
-            fillOffersEvent();
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void chk_allOffers_Click(object sender, RoutedEventArgs e)
         {
-            if (cb_offers.IsEnabled == true)
+            try
             {
-                cb_offers.SelectedItem = null;
-                cb_offers.IsEnabled = false;
-                for (int i = 0; i < comboOfferTemp.Count; i++)
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); if (cb_offers.IsEnabled == true)
                 {
-                    dynamicComboOffer.Add(comboOfferTemp.Skip(i).FirstOrDefault());
+                    cb_offers.SelectedItem = null;
+                    cb_offers.IsEnabled = false;
+                    for (int i = 0; i < comboOfferTemp.Count; i++)
+                    {
+                        dynamicComboOffer.Add(comboOfferTemp.Skip(i).FirstOrDefault());
+                    }
+                    comboOfferTemp.Clear();
+                    stk_tagsOffers.Children.Clear();
+                    selectedOfferId.Clear();
                 }
-                comboOfferTemp.Clear();
-                stk_tagsOffers.Children.Clear();
-                selectedOfferId.Clear();
-            }
-            else
-            {
-                cb_offers.IsEnabled = true;
-            }
+                else
+                {
+                    cb_offers.IsEnabled = true;
+                }
 
-            fillOffersEvent();
+                fillOffersEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void chk_offersInvoice_Checked(object sender, RoutedEventArgs e)
         {
-            fillOffersEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); fillOffersEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void chk_offersInvoice_Unchecked(object sender, RoutedEventArgs e)
         {
-            fillOffersEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); fillOffersEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void chk_offersReturn_Unchecked(object sender, RoutedEventArgs e)
         {
-            fillOffersEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); fillOffersEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void chk_offersReturn_Checked(object sender, RoutedEventArgs e)
         {
-            fillOffersEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); fillOffersEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void chk_offersDrafs_Unchecked(object sender, RoutedEventArgs e)
         {
-            fillOffersEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); fillOffersEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void chk_offersDrafs_Checked(object sender, RoutedEventArgs e)
         {
-            fillOffersEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); fillOffersEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void dp_offersEndDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            fillOffersEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); fillOffersEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void dp_offersStartDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            fillOffersEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); fillOffersEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
 
 
         private void dt_offersEndTime_SelectedTimeChanged(object sender, RoutedPropertyChangedEventArgs<DateTime?> e)
         {
-            fillOffersEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); fillOffersEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void dt_offersStartTime_SelectedTimeChanged(object sender, RoutedPropertyChangedEventArgs<DateTime?> e)
         {
-            fillOffersEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); fillOffersEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         Invoice invoice;
         private async void DgInvoice_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            //invoiceId
-            invoice = new Invoice();
-            if (dgInvoice.SelectedIndex != -1)
+            try
             {
-                ItemTransferInvoice item = dgInvoice.SelectedItem as ItemTransferInvoice;
-                if (item.invoiceId > 0)
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); //invoiceId
+                invoice = new Invoice();
+                if (dgInvoice.SelectedIndex != -1)
                 {
-                    MainWindow.mainWindow.StartAwait();
-                    invoice = await invoice.GetById(item.invoiceId);
-                    MainWindow.mainWindow.BTN_sales_Click(null, null);
-                    uc_sales.Instance.Btn_receiptInvoice_Click(null, null);
-                    uc_receiptInvoice.Instance.UserControl_Loaded(null, null);
-                    uc_receiptInvoice._InvoiceType = invoice.invType;
-                    uc_receiptInvoice.Instance.invoice = invoice;
-                    await uc_receiptInvoice.Instance.fillInvoiceInputs(invoice);
-                    MainWindow.mainWindow.EndAwait();
+                    ItemTransferInvoice item = dgInvoice.SelectedItem as ItemTransferInvoice;
+                    if (item.invoiceId > 0)
+                    {
+                        invoice = await invoice.GetById(item.invoiceId);
+                        MainWindow.mainWindow.BTN_sales_Click(null, null);
+                        uc_sales.Instance.Btn_receiptInvoice_Click(null, null);
+                        uc_receiptInvoice.Instance.UserControl_Loaded(null, null);
+                        uc_receiptInvoice._InvoiceType = invoice.invType;
+                        uc_receiptInvoice.Instance.invoice = invoice;
+                        await uc_receiptInvoice.Instance.fillInvoiceInputs(invoice);
 
 
 
+                    }
                 }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
@@ -2219,30 +3483,30 @@ fillColumnChart(cb_Items, selectedItemId);
 
 
             /********************************************************************************/
-            
-                var temp = fillRowChartList(coupons, chk_couponInvoice, chk_couponReturn, chk_couponDrafs, dp_couponStartDate, dp_couponEndDate, dt_couponStartTime, dt_couponEndTime);
-                temp = temp.Where(j => (selectedcouponId.Count != 0 ? stackedButton.Contains((int)j.CopcId) : true));
-                var result = temp.GroupBy(s => new { s.CopcId }).Select(s => new
-                {
-                    CopcId = s.FirstOrDefault().CopcId,
-                    copName = s.FirstOrDefault().Copname,
-                    invId = s.FirstOrDefault().invoiceId,
-                    copTotalValue = s.Sum(x => x.couponTotalValue)
-                }
-             );
-              
 
-                var name = temp.GroupBy(s => s.invoiceId).Select(s => new
-                {
-                    uUserName = s.FirstOrDefault().Copname
-                });
-                names.AddRange(name.Select(nn => nn.uUserName));
-            pTemp = result.Select(x =>(decimal) x.copTotalValue);
+            var temp = fillRowChartList(coupons, chk_couponInvoice, chk_couponReturn, chk_couponDrafs, dp_couponStartDate, dp_couponEndDate, dt_couponStartTime, dt_couponEndTime);
+            temp = temp.Where(j => (selectedcouponId.Count != 0 ? stackedButton.Contains((int)j.CopcId) : true));
+            var result = temp.GroupBy(s => new { s.CopcId }).Select(s => new
+            {
+                CopcId = s.FirstOrDefault().CopcId,
+                copName = s.FirstOrDefault().Copname,
+                invId = s.FirstOrDefault().invoiceId,
+                copTotalValue = s.Sum(x => x.couponTotalValue)
+            }
+         );
+
+
+            var name = temp.GroupBy(s => s.invoiceId).Select(s => new
+            {
+                uUserName = s.FirstOrDefault().Copname
+            });
+            names.AddRange(name.Select(nn => nn.uUserName));
+            pTemp = result.Select(x => (decimal)x.copTotalValue);
 
             if (selectedTab == 6)
             {
                 names.Clear();
-                 temp = fillRowChartList(Offers, chk_offersInvoice, chk_offersReturn, chk_offersDrafs, dp_offersStartDate, dp_offersEndDate, dt_offersStartTime, dt_offersEndTime);
+                temp = fillRowChartList(Offers, chk_offersInvoice, chk_offersReturn, chk_offersDrafs, dp_offersStartDate, dp_offersEndDate, dt_offersStartTime, dt_offersEndTime);
                 temp = temp.Where(j => (selectedOfferId.Count != 0 ? stackedButton.Contains((int)j.OofferId) : true));
                 var result1 = temp.GroupBy(s => new { s.itemId }).Select(s => new
                 {
@@ -2252,7 +3516,7 @@ fillColumnChart(cb_Items, selectedItemId);
                     offerTotalValue = s.Sum(x => x.offerTotalValue)
                 }
              );
-               
+
                 name = temp.GroupBy(s => s.itemId).Select(s => new
                 {
                     uUserName = s.FirstOrDefault().Oname
@@ -2264,25 +3528,25 @@ fillColumnChart(cb_Items, selectedItemId);
 
 
             SeriesCollection rowChartData = new SeriesCollection();
-        List<decimal> purchase = new List<decimal>();
-        List<decimal> returns = new List<decimal>();
-        List<decimal> sub = new List<decimal>();
-        List<string> titles = new List<string>()
+            List<decimal> purchase = new List<decimal>();
+            List<decimal> returns = new List<decimal>();
+            List<decimal> sub = new List<decimal>();
+            List<string> titles = new List<string>()
             {
                 "المجموع","اجمالي المرتجع","صافي المبيعات"
             };
-            for (int i = 0; i<pTemp.Count(); i++)
+            for (int i = 0; i < pTemp.Count(); i++)
             {
                 purchase.Add(pTemp.ToList().Skip(i).FirstOrDefault());
                 MyAxis.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
             }
 
-    rowChartData.Add(
-          new LineSeries
-          {
-              Values = purchase.AsChartValues(),
-              Title = titles[0]
-});
+            rowChartData.Add(
+                  new LineSeries
+                  {
+                      Values = purchase.AsChartValues(),
+                      Title = titles[0]
+                  });
 
             DataContext = this;
             rowChart.Series = rowChartData;
@@ -2317,249 +3581,11 @@ fillColumnChart(cb_Items, selectedItemId);
         }
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {
-            //   if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
-            //   {
-            List<ReportParameter> paramarr = new List<ReportParameter>();
-            List<ItemTransferInvoice> query = new List<ItemTransferInvoice>();
-            query = converter(filltoprint());
-
-            string addpath = "";
-            bool isArabic = ReportCls.checkLang();
-            if (isArabic)
+            try
             {
-                if (selectedTab == 0)
-                {
-                    addpath = @"\Reports\StatisticReport\Sale\Ar\ArPurSts.rdlc";
-                }
-                else if (selectedTab == 1)
-                {
-                    addpath = @"\Reports\StatisticReport\Sale\Ar\ArPurPosSts.rdlc";
-                }
-                else if (selectedTab == 2)
-                {
-                    addpath = @"\Reports\StatisticReport\Sale\Ar\ArPurVendorSts.rdlc";
-                }
-                else if (selectedTab == 3)
-                {
-                    addpath = @"\Reports\StatisticReport\Sale\Ar\ArPurUserSts.rdlc";
-                }
-                else
-                {
-                    addpath = @"\Reports\StatisticReport\Sale\Ar\ArPurItemSts.rdlc";
-                }
-            }
-            else
-            {
-                //english
-                if (selectedTab == 0)
-                { addpath = @"\Reports\StatisticReport\Sale\En\EnPurSts.rdlc"; }
-                else if (selectedTab == 1)
-                {
-                    addpath = @"\Reports\StatisticReport\Sale\En\EnPurPosSts.rdlc";
-                }
-                else if (selectedTab == 2)
-                {
-                    addpath = @"\Reports\StatisticReport\Sale\En\EnPurVendorSts.rdlc";
-                }
-                else if (selectedTab == 3)
-                {
-                    addpath = @"\Reports\StatisticReport\Sale\En\EnPurUserSts.rdlc";
-                }
-                else
-                {
-                    addpath = @"\Reports\StatisticReport\Sale\En\EnPurItemSts.rdlc";
-                }
-
-            }
-
-
-            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-            ReportCls.checkLang();
-            //  getpuritemcount
-            clsReports.PurStsReport(query, rep, reppath);
-            clsReports.setReportLanguage(paramarr);
-            clsReports.Header(paramarr);
-
-            rep.SetParameters(paramarr);
-
-            rep.Refresh();
-
-            saveFileDialog.Filter = "PDF|*.pdf;";
-
-            if (saveFileDialog.ShowDialog() == true)
-            {
-                string filepath = saveFileDialog.FileName;
-                LocalReportExtensions.ExportToPDF(rep, filepath);
-            }
-            //   }
-            //  else
-            //    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-
-        }
-
-        private void Btn_print_Click(object sender, RoutedEventArgs e)
-        {
-
-            //   if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
-            //   {
-            List<ReportParameter> paramarr = new List<ReportParameter>();
-            List<ItemTransferInvoice> query = new List<ItemTransferInvoice>();
-            query = converter(filltoprint());
-
-            string addpath = "";
-            bool isArabic = ReportCls.checkLang();
-            if (isArabic)
-            {
-                if (selectedTab == 0)
-                {
-                    addpath = @"\Reports\StatisticReport\Sale\Ar\ArPurSts.rdlc";
-                }
-                else if (selectedTab == 1)
-                {
-                    addpath = @"\Reports\StatisticReport\Sale\Ar\ArPurPosSts.rdlc";
-                }
-                else if (selectedTab == 2)
-                {
-                    addpath = @"\Reports\StatisticReport\Sale\Ar\ArPurVendorSts.rdlc";
-                }
-                else if (selectedTab == 3)
-                {
-                    addpath = @"\Reports\StatisticReport\Sale\Ar\ArPurUserSts.rdlc";
-                }
-                else
-                {
-                    addpath = @"\Reports\StatisticReport\Sale\Ar\ArPurItemSts.rdlc";
-                }
-            }
-            else
-            {
-                //english
-                if (selectedTab == 0)
-                { addpath = @"\Reports\StatisticReport\Sale\En\EnPurSts.rdlc"; }
-                else if (selectedTab == 1)
-                {
-                    addpath = @"\Reports\StatisticReport\Sale\En\EnPurPosSts.rdlc";
-                }
-                else if (selectedTab == 2)
-                {
-                    addpath = @"\Reports\StatisticReport\Sale\En\EnPurVendorSts.rdlc";
-                }
-                else if (selectedTab == 3)
-                {
-                    addpath = @"\Reports\StatisticReport\Sale\En\EnPurUserSts.rdlc";
-                }
-                else
-                {
-                    addpath = @"\Reports\StatisticReport\Sale\En\EnPurItemSts.rdlc";
-                }
-
-            }
-
-
-            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-            ReportCls.checkLang();
-            //  getpuritemcount
-            clsReports.PurStsReport(query, rep, reppath);
-            clsReports.setReportLanguage(paramarr);
-            clsReports.Header(paramarr);
-
-            rep.SetParameters(paramarr);
-
-            rep.Refresh();
-
-      
-
-            LocalReportExtensions.PrintToPrinter(rep);
-        }
-        IEnumerable<ItemTransferInvoice> itemTransfers = null;
-
-        private void txt_search_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (selectedTab == 0)
-            {
-                itemTransfers = fillList(Invoices, chk_invoice, chk_return, chk_drafs, dp_startDate, dp_endDate, dt_startTime, dt_endTime)
-                    .Where(j => (selectedBranchId.Count != 0 ? selectedBranchId.Contains((int)j.branchCreatorId) : true));
-
-                dgInvoice.ItemsSource = itemTransfers
-                    .Where(s => 
-                    (s.branchCreatorName.Contains(txt_search.Text) ||
-      s.invNumber.Contains(txt_search.Text)
-      ));
-            }
-            else if (selectedTab == 1)
-            {
-                itemTransfers = fillList(Invoices, chk_posInvoice, chk_posReturn, chk_posDraft, dp_posStartDate, dp_posEndDate, dt_posStartTime, dt_posEndTime)
-                    .Where(j => (selectedPosId.Count != 0 ? selectedPosId.Contains((int)j.posId) : true));
-
-                dgInvoice.ItemsSource = itemTransfers
-                    .Where(s => (s.branchCreatorName.Contains(txt_search.Text) ||
-                   s.posName.Contains(txt_search.Text) ||
-      s.invNumber.Contains(txt_search.Text)
-      ));
-            }
-
-            else if (selectedTab == 2)
-            {
-                itemTransfers = fillList(Invoices, chk_vendorsInvoice, chk_vendorsReturn, chk_vendorsDraft, dp_vendorsStartDate, dp_vendorsEndDate, dt_vendorsStartTime, dt_vendorsEndTime)
-                .Where(j => (selectedVendorsId.Count != 0 ? selectedVendorsId.Contains((int)j.agentId) : true));
-
-                dgInvoice.ItemsSource = itemTransfers
-                    .Where(s => (s.branchCreatorName.Contains(txt_search.Text) ||
-                   s.agentName.Contains(txt_search.Text) ||
-                   s.agentCompany.Contains(txt_search.Text) ||
-      s.invNumber.Contains(txt_search.Text)
-      ));
-            }
-
-            else if (selectedTab == 3)
-            {
-                itemTransfers = fillList(Invoices, chk_usersInvoice, chk_usersReturn, chk_usersDraft, dp_usersStartDate, dp_usersEndDate, dt_usersStartTime, dt_usersEndTime)
-                .Where(j => (selectedUserId.Count != 0 ? selectedUserId.Contains((int)j.updateUserId) : true));
-
-                dgInvoice.ItemsSource = itemTransfers
-                    .Where(s => (s.branchCreatorName.Contains(txt_search.Text) ||
-                   s.posName.Contains(txt_search.Text) ||
-                   s.uUserAccName.Contains(txt_search.Text) ||
-      s.invNumber.Contains(txt_search.Text)
-      ));
-            }
-            else if (selectedTab == 4)
-            {
-                itemTransfers = fillList(Items, chk_itemInvoice, chk_itemReturn, chk_itemDrafs, dp_ItemStartDate, dp_ItemEndDate, dt_itemStartTime, dt_ItemEndTime)
-                .Where(j => (selectedItemId.Count != 0 ? selectedItemId.Contains((int)j.ITitemUnitId) : true));
-
-                dgInvoice.ItemsSource = itemTransfers
-                    .Where(s => (s.ITitemName.Contains(txt_search.Text) ||
-                   s.ITitemUnitName1.Contains(txt_search.Text) ||
-      s.invNumber.Contains(txt_search.Text)
-      ));
-            }
-            else if (selectedTab == 5)
-            {
-                itemTransfers = fillList(coupons, chk_couponInvoice, chk_couponReturn, chk_couponDrafs, dp_couponStartDate, dp_couponEndDate, dt_couponStartTime, dt_couponEndTime).Where(j => (selectedcouponId.Count != 0 ? selectedcouponId.Contains((int)j.CopcId) : true));
-                dgInvoice.ItemsSource = itemTransfers
-                    .Where(s => (s.Copname.Contains(txt_search.Text) ||
-                 
-      s.invNumber.Contains(txt_search.Text)
-      ));
-            }
-            else if (selectedTab == 6)
-            {
-                itemTransfers = fillList(Offers, chk_offersInvoice, chk_offersReturn, chk_offersDrafs, dp_offersStartDate, dp_offersEndDate, dt_offersStartTime, dt_offersEndTime).Where(j => (selectedOfferId.Count != 0 ? selectedOfferId.Contains((int)j.OofferId) : true));
-
-                dgInvoice.ItemsSource = itemTransfers
-                    .Where(s => (s.Oname.Contains(txt_search.Text) ||
-      s.invNumber.Contains(txt_search.Text)
-      ));
-            }
-        }
-
-        private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
-        {
-            Thread t1 = new Thread(() =>
-            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); //   if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
+                                                       //   {
                 List<ReportParameter> paramarr = new List<ReportParameter>();
                 List<ItemTransferInvoice> query = new List<ItemTransferInvoice>();
                 query = converter(filltoprint());
@@ -2625,108 +3651,407 @@ fillColumnChart(cb_Items, selectedItemId);
                 rep.SetParameters(paramarr);
 
                 rep.Refresh();
-                this.Dispatcher.Invoke(() =>
+
+                saveFileDialog.Filter = "PDF|*.pdf;";
+
+                if (saveFileDialog.ShowDialog() == true)
                 {
-                    saveFileDialog.Filter = "EXCEL|*.xls;";
-                    if (saveFileDialog.ShowDialog() == true)
+                    string filepath = saveFileDialog.FileName;
+                    LocalReportExtensions.ExportToPDF(rep, filepath);
+                }
+                //   }
+                //  else
+                //    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
+
+        private void Btn_print_Click(object sender, RoutedEventArgs e)
+        {
+
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); //   if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
+                                                       //   {
+                List<ReportParameter> paramarr = new List<ReportParameter>();
+                List<ItemTransferInvoice> query = new List<ItemTransferInvoice>();
+                query = converter(filltoprint());
+
+                string addpath = "";
+                bool isArabic = ReportCls.checkLang();
+                if (isArabic)
+                {
+                    if (selectedTab == 0)
                     {
-                        string filepath = saveFileDialog.FileName;
-                        LocalReportExtensions.ExportToExcel(rep, filepath);
+                        addpath = @"\Reports\StatisticReport\Sale\Ar\ArPurSts.rdlc";
                     }
-                });
+                    else if (selectedTab == 1)
+                    {
+                        addpath = @"\Reports\StatisticReport\Sale\Ar\ArPurPosSts.rdlc";
+                    }
+                    else if (selectedTab == 2)
+                    {
+                        addpath = @"\Reports\StatisticReport\Sale\Ar\ArPurVendorSts.rdlc";
+                    }
+                    else if (selectedTab == 3)
+                    {
+                        addpath = @"\Reports\StatisticReport\Sale\Ar\ArPurUserSts.rdlc";
+                    }
+                    else
+                    {
+                        addpath = @"\Reports\StatisticReport\Sale\Ar\ArPurItemSts.rdlc";
+                    }
+                }
+                else
+                {
+                    //english
+                    if (selectedTab == 0)
+                    { addpath = @"\Reports\StatisticReport\Sale\En\EnPurSts.rdlc"; }
+                    else if (selectedTab == 1)
+                    {
+                        addpath = @"\Reports\StatisticReport\Sale\En\EnPurPosSts.rdlc";
+                    }
+                    else if (selectedTab == 2)
+                    {
+                        addpath = @"\Reports\StatisticReport\Sale\En\EnPurVendorSts.rdlc";
+                    }
+                    else if (selectedTab == 3)
+                    {
+                        addpath = @"\Reports\StatisticReport\Sale\En\EnPurUserSts.rdlc";
+                    }
+                    else
+                    {
+                        addpath = @"\Reports\StatisticReport\Sale\En\EnPurItemSts.rdlc";
+                    }
+
+                }
 
 
-            });
-            t1.Start();
+                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+                ReportCls.checkLang();
+                //  getpuritemcount
+                clsReports.PurStsReport(query, rep, reppath);
+                clsReports.setReportLanguage(paramarr);
+                clsReports.Header(paramarr);
+
+                rep.SetParameters(paramarr);
+
+                rep.Refresh();
+
+
+
+                LocalReportExtensions.PrintToPrinter(rep);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
+        IEnumerable<ItemTransferInvoice> itemTransfers = null;
+
+        private void txt_search_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                if (selectedTab == 0)
+                {
+                    itemTransfers = fillList(Invoices, chk_invoice, chk_return, chk_drafs, dp_startDate, dp_endDate, dt_startTime, dt_endTime)
+                        .Where(j => (selectedBranchId.Count != 0 ? selectedBranchId.Contains((int)j.branchCreatorId) : true));
+
+                    dgInvoice.ItemsSource = itemTransfers
+                        .Where(s =>
+                        (s.branchCreatorName.Contains(txt_search.Text) ||
+          s.invNumber.Contains(txt_search.Text)
+          ));
+                }
+                else if (selectedTab == 1)
+                {
+                    itemTransfers = fillList(Invoices, chk_posInvoice, chk_posReturn, chk_posDraft, dp_posStartDate, dp_posEndDate, dt_posStartTime, dt_posEndTime)
+                        .Where(j => (selectedPosId.Count != 0 ? selectedPosId.Contains((int)j.posId) : true));
+
+                    dgInvoice.ItemsSource = itemTransfers
+                        .Where(s => (s.branchCreatorName.Contains(txt_search.Text) ||
+                       s.posName.Contains(txt_search.Text) ||
+          s.invNumber.Contains(txt_search.Text)
+          ));
+                }
+
+                else if (selectedTab == 2)
+                {
+                    itemTransfers = fillList(Invoices, chk_vendorsInvoice, chk_vendorsReturn, chk_vendorsDraft, dp_vendorsStartDate, dp_vendorsEndDate, dt_vendorsStartTime, dt_vendorsEndTime)
+                    .Where(j => (selectedVendorsId.Count != 0 ? selectedVendorsId.Contains((int)j.agentId) : true));
+
+                    dgInvoice.ItemsSource = itemTransfers
+                        .Where(s => (s.branchCreatorName.Contains(txt_search.Text) ||
+                       s.agentName.Contains(txt_search.Text) ||
+                       s.agentCompany.Contains(txt_search.Text) ||
+          s.invNumber.Contains(txt_search.Text)
+          ));
+                }
+
+                else if (selectedTab == 3)
+                {
+                    itemTransfers = fillList(Invoices, chk_usersInvoice, chk_usersReturn, chk_usersDraft, dp_usersStartDate, dp_usersEndDate, dt_usersStartTime, dt_usersEndTime)
+                    .Where(j => (selectedUserId.Count != 0 ? selectedUserId.Contains((int)j.updateUserId) : true));
+
+                    dgInvoice.ItemsSource = itemTransfers
+                        .Where(s => (s.branchCreatorName.Contains(txt_search.Text) ||
+                       s.posName.Contains(txt_search.Text) ||
+                       s.uUserAccName.Contains(txt_search.Text) ||
+          s.invNumber.Contains(txt_search.Text)
+          ));
+                }
+                else if (selectedTab == 4)
+                {
+                    itemTransfers = fillList(Items, chk_itemInvoice, chk_itemReturn, chk_itemDrafs, dp_ItemStartDate, dp_ItemEndDate, dt_itemStartTime, dt_ItemEndTime)
+                    .Where(j => (selectedItemId.Count != 0 ? selectedItemId.Contains((int)j.ITitemUnitId) : true));
+
+                    dgInvoice.ItemsSource = itemTransfers
+                        .Where(s => (s.ITitemName.Contains(txt_search.Text) ||
+                       s.ITitemUnitName1.Contains(txt_search.Text) ||
+          s.invNumber.Contains(txt_search.Text)
+          ));
+                }
+                else if (selectedTab == 5)
+                {
+                    itemTransfers = fillList(coupons, chk_couponInvoice, chk_couponReturn, chk_couponDrafs, dp_couponStartDate, dp_couponEndDate, dt_couponStartTime, dt_couponEndTime).Where(j => (selectedcouponId.Count != 0 ? selectedcouponId.Contains((int)j.CopcId) : true));
+                    dgInvoice.ItemsSource = itemTransfers
+                        .Where(s => (s.Copname.Contains(txt_search.Text) ||
+
+          s.invNumber.Contains(txt_search.Text)
+          ));
+                }
+                else if (selectedTab == 6)
+                {
+                    itemTransfers = fillList(Offers, chk_offersInvoice, chk_offersReturn, chk_offersDrafs, dp_offersStartDate, dp_offersEndDate, dt_offersStartTime, dt_offersEndTime).Where(j => (selectedOfferId.Count != 0 ? selectedOfferId.Contains((int)j.OofferId) : true));
+
+                    dgInvoice.ItemsSource = itemTransfers
+                        .Where(s => (s.Oname.Contains(txt_search.Text) ||
+          s.invNumber.Contains(txt_search.Text)
+          ));
+                }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
+
+        private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); Thread t1 = new Thread(() =>
+              {
+                  List<ReportParameter> paramarr = new List<ReportParameter>();
+                  List<ItemTransferInvoice> query = new List<ItemTransferInvoice>();
+                  query = converter(filltoprint());
+
+                  string addpath = "";
+                  bool isArabic = ReportCls.checkLang();
+                  if (isArabic)
+                  {
+                      if (selectedTab == 0)
+                      {
+                          addpath = @"\Reports\StatisticReport\Sale\Ar\ArPurSts.rdlc";
+                      }
+                      else if (selectedTab == 1)
+                      {
+                          addpath = @"\Reports\StatisticReport\Sale\Ar\ArPurPosSts.rdlc";
+                      }
+                      else if (selectedTab == 2)
+                      {
+                          addpath = @"\Reports\StatisticReport\Sale\Ar\ArPurVendorSts.rdlc";
+                      }
+                      else if (selectedTab == 3)
+                      {
+                          addpath = @"\Reports\StatisticReport\Sale\Ar\ArPurUserSts.rdlc";
+                      }
+                      else
+                      {
+                          addpath = @"\Reports\StatisticReport\Sale\Ar\ArPurItemSts.rdlc";
+                      }
+                  }
+                  else
+                  {
+                    //english
+                    if (selectedTab == 0)
+                      { addpath = @"\Reports\StatisticReport\Sale\En\EnPurSts.rdlc"; }
+                      else if (selectedTab == 1)
+                      {
+                          addpath = @"\Reports\StatisticReport\Sale\En\EnPurPosSts.rdlc";
+                      }
+                      else if (selectedTab == 2)
+                      {
+                          addpath = @"\Reports\StatisticReport\Sale\En\EnPurVendorSts.rdlc";
+                      }
+                      else if (selectedTab == 3)
+                      {
+                          addpath = @"\Reports\StatisticReport\Sale\En\EnPurUserSts.rdlc";
+                      }
+                      else
+                      {
+                          addpath = @"\Reports\StatisticReport\Sale\En\EnPurItemSts.rdlc";
+                      }
+
+                  }
+
+
+                  string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+                  ReportCls.checkLang();
+                //  getpuritemcount
+                clsReports.PurStsReport(query, rep, reppath);
+                  clsReports.setReportLanguage(paramarr);
+                  clsReports.Header(paramarr);
+
+                  rep.SetParameters(paramarr);
+
+                  rep.Refresh();
+                  this.Dispatcher.Invoke(() =>
+                  {
+                      saveFileDialog.Filter = "EXCEL|*.xls;";
+                      if (saveFileDialog.ShowDialog() == true)
+                      {
+                          string filepath = saveFileDialog.FileName;
+                          LocalReportExtensions.ExportToExcel(rep, filepath);
+                      }
+                  });
+
+
+              });
+                t1.Start();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Btn_preview_Click(object sender, RoutedEventArgs e)
         {
-            Window.GetWindow(this).Opacity = 0.2;
-            string pdfpath = "";
-
-            List<ReportParameter> paramarr = new List<ReportParameter>();
-            List<ItemTransferInvoice> query = new List<ItemTransferInvoice>();
-
-            //
-            pdfpath = @"\Thumb\report\temp.pdf";
-            pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
-
-            string addpath = "";
-            bool isArabic = ReportCls.checkLang();
-            if (isArabic)
+            try
             {
-                if (selectedTab == 0)
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); Window.GetWindow(this).Opacity = 0.2;
+                string pdfpath = "";
+
+                List<ReportParameter> paramarr = new List<ReportParameter>();
+                List<ItemTransferInvoice> query = new List<ItemTransferInvoice>();
+
+                //
+                pdfpath = @"\Thumb\report\temp.pdf";
+                pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
+
+                string addpath = "";
+                bool isArabic = ReportCls.checkLang();
+                if (isArabic)
                 {
-                    addpath = @"\Reports\StatisticReport\Sale\Ar\ArPurSts.rdlc";
-                }
-                else if (selectedTab == 1)
-                {
-                    addpath = @"\Reports\StatisticReport\Sale\Ar\ArPurPosSts.rdlc";
-                }
-                else if (selectedTab == 2)
-                {
-                    addpath = @"\Reports\StatisticReport\Sale\Ar\ArPurVendorSts.rdlc";
-                }
-                else if (selectedTab == 3)
-                {
-                    addpath = @"\Reports\StatisticReport\Sale\Ar\ArPurUserSts.rdlc";
+                    if (selectedTab == 0)
+                    {
+                        addpath = @"\Reports\StatisticReport\Sale\Ar\ArPurSts.rdlc";
+                    }
+                    else if (selectedTab == 1)
+                    {
+                        addpath = @"\Reports\StatisticReport\Sale\Ar\ArPurPosSts.rdlc";
+                    }
+                    else if (selectedTab == 2)
+                    {
+                        addpath = @"\Reports\StatisticReport\Sale\Ar\ArPurVendorSts.rdlc";
+                    }
+                    else if (selectedTab == 3)
+                    {
+                        addpath = @"\Reports\StatisticReport\Sale\Ar\ArPurUserSts.rdlc";
+                    }
+                    else
+                    {
+                        addpath = @"\Reports\StatisticReport\Sale\Ar\ArPurItemSts.rdlc";
+                    }
                 }
                 else
                 {
-                    addpath = @"\Reports\StatisticReport\Sale\Ar\ArPurItemSts.rdlc";
+                    //english
+                    if (selectedTab == 0)
+                    { addpath = @"\Reports\StatisticReport\Sale\En\EnPurSts.rdlc"; }
+                    else if (selectedTab == 1)
+                    {
+                        addpath = @"\Reports\StatisticReport\Sale\En\EnPurPosSts.rdlc";
+                    }
+                    else if (selectedTab == 2)
+                    {
+                        addpath = @"\Reports\StatisticReport\Sale\En\EnPurVendorSts.rdlc";
+                    }
+                    else if (selectedTab == 3)
+                    {
+                        addpath = @"\Reports\StatisticReport\Sale\En\EnPurUserSts.rdlc";
+                    }
+                    else
+                    {
+                        addpath = @"\Reports\StatisticReport\Sale\En\EnPurItemSts.rdlc";
+                    }
+
                 }
+
+
+                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+                ReportCls.checkLang();
+                //  getpuritemcount
+                clsReports.PurStsReport(query, rep, reppath);
+
+
+                clsReports.setReportLanguage(paramarr);
+                clsReports.Header(paramarr);
+
+                rep.SetParameters(paramarr);
+
+                rep.Refresh();
+
+                LocalReportExtensions.ExportToPDF(rep, pdfpath);
+                wd_previewPdf w = new wd_previewPdf();
+                w.pdfPath = pdfpath;
+                if (!string.IsNullOrEmpty(w.pdfPath))
+                {
+                    w.ShowDialog();
+                    w.wb_pdfWebViewer.Dispose();
+
+
+                }
+                Window.GetWindow(this).Opacity = 1;
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
-            else
+            catch (Exception ex)
             {
-                //english
-                if (selectedTab == 0)
-                { addpath = @"\Reports\StatisticReport\Sale\En\EnPurSts.rdlc"; }
-                else if (selectedTab == 1)
-                {
-                    addpath = @"\Reports\StatisticReport\Sale\En\EnPurPosSts.rdlc";
-                }
-                else if (selectedTab == 2)
-                {
-                    addpath = @"\Reports\StatisticReport\Sale\En\EnPurVendorSts.rdlc";
-                }
-                else if (selectedTab == 3)
-                {
-                    addpath = @"\Reports\StatisticReport\Sale\En\EnPurUserSts.rdlc";
-                }
-                else
-                {
-                    addpath = @"\Reports\StatisticReport\Sale\En\EnPurItemSts.rdlc";
-                }
-
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-
-
-            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-            ReportCls.checkLang();
-            //  getpuritemcount
-            clsReports.PurStsReport(query, rep, reppath);
-
-
-            clsReports.setReportLanguage(paramarr);
-            clsReports.Header(paramarr);
-
-            rep.SetParameters(paramarr);
-
-            rep.Refresh();
-
-            LocalReportExtensions.ExportToPDF(rep, pdfpath);
-            wd_previewPdf w = new wd_previewPdf();
-            w.pdfPath = pdfpath;
-            if (!string.IsNullOrEmpty(w.pdfPath))
-            {
-                w.ShowDialog();
-                w.wb_pdfWebViewer.Dispose();
-
-
-            }
-            Window.GetWindow(this).Opacity = 1;
         }
     }
 }

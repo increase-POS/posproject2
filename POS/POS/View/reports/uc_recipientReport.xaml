@@ -10,7 +10,7 @@
              d:DesignHeight="450" d:DesignWidth="800"
               Loaded="UserControl_Loaded">
     <!--Main Grid-->
-    <Grid Margin="0,15,15,15">
+    <Grid Margin="0,15,15,15" x:Name="grid_main">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*" ></ColumnDefinition>
             <ColumnDefinition Width="auto" ></ColumnDefinition>
@@ -876,7 +876,7 @@
                         <DataGridTextColumn x:Name="col_shipping" Width="*" Header="Shipping" Binding="{Binding shippingCompanyName}"/>
 
                         <DataGridTextColumn x:Name="col_company" Width="*" Header="Company" Binding="{Binding agentCompany}"/>
-                        <DataGridTextColumn x:Name="col_updateDate" Width="*" Header="Date" Binding="{Binding updateDate,StringFormat= d}"/>
+                        <DataGridTextColumn x:Name="col_updateDate" Width="*" Header="Date" Binding="{Binding updateDate,Converter={StaticResource dateFrameConverter }}"/>
                         <DataGridTextColumn x:Name="col_cash" Width="*" Header="Amount" Binding="{Binding cash}"/>
 
                     </DataGrid.Columns>

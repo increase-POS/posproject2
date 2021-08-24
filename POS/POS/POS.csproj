@@ -502,6 +502,9 @@
     <Compile Include="View\windows\wd_generatePackage.xaml.cs">
       <DependentUpon>wd_generatePackage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\windows\wd_info.xaml.cs">
+      <DependentUpon>wd_info.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\windows\wd_inventory.xaml.cs">
       <DependentUpon>wd_inventory.xaml</DependentUpon>
     </Compile>
@@ -929,6 +932,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\windows\wd_generatePackage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\windows\wd_info.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -48,13 +48,13 @@
                                VerticalAlignment="Center" 
                               Height="40"   Width="auto" Margin="10,5" 
                               TextChanged="Tb_search_TextChanged">
-                        <TextBox.ToolTip>
+                        <!--<TextBox.ToolTip>
                             <ToolTip x:Name="tt_search" Content="Search"
                                     Placement="left" 
                                     HorizontalOffset="15"
                                     PlacementRectangle="50,0,0,0"
                                     VerticalOffset="30"/>
-                        </TextBox.ToolTip>
+                        </TextBox.ToolTip>-->
                     </TextBox>
 
 
@@ -530,13 +530,13 @@
                            
                             Height="40"  Margin="10,5,10,5" 
                                      LostFocus="Tb_firstName_LostFocus" TextChanged="Tb_firstName_TextChanged" >
-                                <TextBox.ToolTip>
+                                <!--<TextBox.ToolTip>
                                     <ToolTip x:Name="tt_name" Content="First Name"
                                               Placement="left" 
                                               HorizontalOffset="35"
                                               PlacementRectangle="50,0,0,0"
                                               VerticalOffset="20"/>
-                                </TextBox.ToolTip>
+                                </TextBox.ToolTip>-->
                             </TextBox>
                             <Path Fill="#E81123" Grid.Column="0" Stretch="Fill" x:Name="p_errorFirstName" Grid.Row="0"
                               HorizontalAlignment="Right"   Visibility="Collapsed"  
@@ -558,13 +558,13 @@
                              
                             Height="40"   Margin="10,5,10,5" 
                             LostFocus="Tb_lastName_LostFocus" TextChanged="Tb_lastName_TextChanged" >
-                                <TextBox.ToolTip>
+                                <!--<TextBox.ToolTip>
                                     <ToolTip x:Name="tt_lastName" Content="Last Name"
                                               Placement="left" 
                                               HorizontalOffset="35"
                                               PlacementRectangle="50,0,0,0"
                                               VerticalOffset="20"/>
-                                </TextBox.ToolTip>
+                                </TextBox.ToolTip>-->
                             </TextBox>
                             <Path Fill="#E81123" Stretch="Fill" Grid.Row="1" x:Name="p_errorLastName"
                               HorizontalAlignment="Right" Grid.Column="0"  Visibility="Collapsed" 
@@ -583,13 +583,13 @@
                              materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                              
                             Height="40"  Margin="10,5,10,5"  >
-                                <TextBox.ToolTip>
+                                <!--<TextBox.ToolTip>
                                     <ToolTip x:Name="tt_address" Content="Address"
                                               Placement="left" 
                                               HorizontalOffset="35"
                                               PlacementRectangle="50,0,0,0"
                                               VerticalOffset="20"/>
-                                </TextBox.ToolTip>
+                                </TextBox.ToolTip>-->
                             </TextBox>
                             <Path Fill="#E81123" Stretch="Fill" 
                               HorizontalAlignment="Right" Grid.Column="0" Grid.Row="2" Visibility="Collapsed" 
@@ -626,13 +626,13 @@
                              materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                          
                             Height="40"   Margin="5" Grid.ColumnSpan="2" >
-                                    <TextBox.ToolTip>
+                                    <!--<TextBox.ToolTip>
                                         <ToolTip x:Name="tt_mobile" Content="Mobile"
                                               Placement="left" 
                                               HorizontalOffset="35"
                                               PlacementRectangle="50,0,0,0"
                                               VerticalOffset="20"/>
-                                    </TextBox.ToolTip>
+                                    </TextBox.ToolTip>-->
                                 </TextBox>
                                 <Path Fill="#E81123" Stretch="Fill" x:Name="p_errorMobile"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
@@ -678,13 +678,13 @@
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                       MaxLength="15"
                                      Height="40"   Margin="5" >
-                                    <TextBox.ToolTip>
+                                    <!--<TextBox.ToolTip>
                                         <ToolTip x:Name="tt_phone" Content="Phone"
                                               Placement="left" 
                                               HorizontalOffset="35"
                                               PlacementRectangle="50,0,0,0"
                                               VerticalOffset="20"/>
-                                    </TextBox.ToolTip>
+                                    </TextBox.ToolTip>-->
                                 </TextBox>
 
                                 <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
@@ -706,13 +706,13 @@
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                      Height="40" Margin="10,5,10,5" Grid.ColumnSpan="2" 
                                      LostFocus="Tb_email_LostFocus" >
-                                <TextBox.ToolTip>
+                                <!--<TextBox.ToolTip>
                                     <ToolTip x:Name="tt_email" Content="Email"
                                               Placement="left" 
                                               HorizontalOffset="35"
                                               PlacementRectangle="50,0,0,0"
                                               VerticalOffset="20"/>
-                                </TextBox.ToolTip>
+                                </TextBox.ToolTip>-->
                             </TextBox>
                             <Path Fill="#E81123" Stretch="Fill" Grid.Row="5" Margin="5,5,15,5"  x:Name="p_errorEmail"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
@@ -763,13 +763,13 @@
                                   IsTextSearchEnabled="False"
                                   StaysOpenOnEdit="True"
                                   KeyUp="Cb_job_KeyUp">
-                                    <ComboBox.ToolTip>
+                                    <!--<ComboBox.ToolTip>
                                         <ToolTip x:Name="tt_job" Content="Job"
                                               Placement="left" 
                                               HorizontalOffset="35"
                                               PlacementRectangle="50,0,0,0"
                                               VerticalOffset="20"/>
-                                    </ComboBox.ToolTip>
+                                    </ComboBox.ToolTip>-->
                                 </ComboBox>
 
                                 <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5" x:Name="p_errorJob"
@@ -794,13 +794,13 @@
                                           MaxLength="2"
                                              materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                              Height="40"   Margin="0,5,5,5"  >
-                                        <TextBox.ToolTip>
+                                        <!--<TextBox.ToolTip>
                                             <ToolTip x:Name="tt_workHours" Content="Work Hours"
                                               Placement="left" 
                                               HorizontalOffset="35"
                                               PlacementRectangle="50,0,0,0"
                                               VerticalOffset="20"/>
-                                        </TextBox.ToolTip>
+                                        </TextBox.ToolTip>-->
                                     </TextBox>
 
                                     <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
@@ -835,13 +835,13 @@
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                      Height="auto"  MinHeight="65" Margin="10,5,10,5" Grid.ColumnSpan="2"  
                                      TextWrapping="Wrap">
-                                <TextBox.ToolTip>
+                                <!--<TextBox.ToolTip>
                                     <ToolTip x:Name="tt_notes" Content="Notes"
                                               Placement="left" 
                                               HorizontalOffset="35"
                                               PlacementRectangle="50,0,0,0"
                                               VerticalOffset="20"/>
-                                </TextBox.ToolTip>
+                                </TextBox.ToolTip>-->
                             </TextBox>
 
                             <Path Fill="#E81123" Grid.Row="2" Stretch="Fill" Margin="5,5,15,5"
@@ -890,13 +890,13 @@
                                     
                                      Height="40"  Margin="10,5,10,5" 
                                      LostFocus="Tb_userName_LostFocus" TextChanged="Tb_userName_TextChanged" >
-                                <TextBox.ToolTip>
+                                <!--<TextBox.ToolTip>
                                     <ToolTip x:Name="tt_userName" Content="User Name"
                                               Placement="left" 
                                               HorizontalOffset="35"
                                               PlacementRectangle="50,0,0,0"
                                               VerticalOffset="20"/>
-                                </TextBox.ToolTip>
+                                </TextBox.ToolTip>-->
                             </TextBox>
                             <Path Fill="#E81123" Grid.Row="1" Stretch="Fill" Margin="5,5,15,5"
                                   x:Name="p_errorUserName"
@@ -926,13 +926,13 @@
                                  Height="40"   Margin="10,5,10,5" Grid.ColumnSpan="2" 
                                  LostFocus="Tb_password_LostFocus" 
                                          PasswordChanged="Pb_password_PasswordChanged" >
-                                <PasswordBox.ToolTip>
+                                <!--<PasswordBox.ToolTip>
                                     <ToolTip x:Name="tt_password" Content="Password"
                                               Placement="left" 
                                               HorizontalOffset="35"
                                               PlacementRectangle="50,0,0,0"
                                               VerticalOffset="20"/>
-                                </PasswordBox.ToolTip>
+                                </PasswordBox.ToolTip>-->
                             </PasswordBox>
                             <Path Fill="#E81123" Grid.Row="2" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed" 

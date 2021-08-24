@@ -1,4 +1,5 @@
-﻿using System;
+﻿using POS.Classes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -21,12 +22,21 @@ namespace POS.View.reports
     {
         public uc_accountant()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
-            #region translate
-            if (MainWindow.lang.Equals("en"))
+            {
+                try
+                {
+                    #region translate
+                    if (MainWindow.lang.Equals("en"))
             {
                 MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
                 grid_ucAccountant.FlowDirection = FlowDirection.LeftToRight;
@@ -37,9 +47,14 @@ namespace POS.View.reports
                 grid_ucAccountant.FlowDirection = FlowDirection.RightToLeft;
             }
             translate();
-            #endregion
+                    #endregion
 
-        }
+                }
+                catch (Exception ex)
+                {
+                    SectionData.ExceptionMessage(ex, this, sender);
+                }
+            }
 
         private void translate()
         {
@@ -57,37 +72,72 @@ namespace POS.View.reports
 
         private void Btn_payments_Click(object sender, RoutedEventArgs e)
         {
-                uc_paymentsReport uc = new uc_paymentsReport();
+                    try
+                    {
+                        uc_paymentsReport uc = new uc_paymentsReport();
                 sc_main.Visibility = Visibility.Collapsed;
                 main.Children.Add(uc);
-        }
+                    }
+                    catch (Exception ex)
+                    {
+                        SectionData.ExceptionMessage(ex, this, sender);
+                    }
+                }
 
         private void Btn_recipient_Click(object sender, RoutedEventArgs e)
         {
-            uc_recipientReport uc = new uc_recipientReport();
+                        try
+                        {
+                            uc_recipientReport uc = new uc_recipientReport();
             sc_main.Visibility = Visibility.Collapsed;
             main.Children.Add(uc);
-        }
+                        }
+                        catch (Exception ex)
+                        {
+                            SectionData.ExceptionMessage(ex, this, sender);
+                        }
+                    }
 
         private void Btn_bank_Click(object sender, RoutedEventArgs e)
         {
-            uc_banksReport uc = new uc_banksReport();
+                            try
+                            {
+                                uc_banksReport uc = new uc_banksReport();
             sc_main.Visibility = Visibility.Collapsed;
             main.Children.Add(uc);
-        }
+                            }
+                            catch (Exception ex)
+                            {
+                                SectionData.ExceptionMessage(ex, this, sender);
+                            }
+                        }
 
         private void Btn_pos_Click(object sender, RoutedEventArgs e)
         {
-            uc_posReports uc = new uc_posReports();
+                                try
+                                {
+                                    uc_posReports uc = new uc_posReports();
             sc_main.Visibility = Visibility.Collapsed;
             main.Children.Add(uc);
-        }
+                                }
+                                catch (Exception ex)
+                                {
+                                    SectionData.ExceptionMessage(ex, this, sender);
+                                }
+                            }
 
         private void Btn_statement_Click(object sender, RoutedEventArgs e)
         {
-            uc_accountStatement uc = new uc_accountStatement();
+                                    try
+                                    {
+                                        uc_accountStatement uc = new uc_accountStatement();
             sc_main.Visibility = Visibility.Collapsed;
             main.Children.Add(uc);
-        }
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        SectionData.ExceptionMessage(ex, this, sender);
+                                    }
+                                }
     }
 }

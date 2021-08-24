@@ -108,8 +108,14 @@ namespace POS.View.purchases
 
         public uc_purchaseReport()
         {
+		try
+				{
             InitializeComponent();
-        }
+         }
+		 catch (Exception ex)
+            {
+				SectionData.ExceptionMessage(ex,this );
+            }  }
         private List<ItemTransferInvoice> converter(List<ItemTransferInvoice> query)
         {
             foreach (var item in query)
@@ -140,9 +146,11 @@ namespace POS.View.purchases
         }
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            MainWindow.mainWindow.StartAwait();
-            try
-            {
+           try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					 
                 Invoices = await statisticModel.GetPuritemcount();
                 rowChartInvoice = await statisticModel.GetPuritemcount();
                 Items = await statisticModel.GetPuritem();
@@ -152,12 +160,7 @@ namespace POS.View.purchases
                 comboPoss = await posModel.GetPosAsync();
                 comboVendors = await agentModel.GetAgentsAsync("v");
                 comboUsers = await userModel.GetUsersAsync();
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("No Internat Connection");
-            }
-            MainWindow.mainWindow.EndAwait();
+             
             itemUnitCombos = statisticModel.GetIUComboList(Items);
 
             dynamicComboBranches = new ObservableCollection<Branch>(comboBranches);
@@ -179,7 +182,17 @@ namespace POS.View.purchases
             chk_itemInvoice.IsChecked = true;
 
             fillBranchEvent();
-        }
+        
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		 }
 
         private void fillComboBranches()
         {
@@ -854,7 +867,11 @@ fillColumnChart(cb_Items, selectedItemId);
         }
         private void btn_branch_Click(object sender, RoutedEventArgs e)
         {
-            txt_search.Text = "";
+          try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					   txt_search.Text = "";
             hideSatacks();
             stk_tagsBranches.Visibility = Visibility.Visible;
             selectedTab = 0;
@@ -872,11 +889,25 @@ fillColumnChart(cb_Items, selectedItemId);
             col_totalNet.Visibility = Visibility.Visible;
 
 
-        }
+        
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		 }
 
         private void btn_pos_Click(object sender, RoutedEventArgs e)
         {
-            txt_search.Text = "";
+           try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					  txt_search.Text = "";
             hideSatacks();
             stk_tagsPos.Visibility = Visibility.Visible;
             selectedTab = 1;
@@ -893,11 +924,25 @@ fillColumnChart(cb_Items, selectedItemId);
             col_count.Visibility = Visibility.Visible;
             col_pos.Visibility = Visibility.Visible;
             col_totalNet.Visibility = Visibility.Visible;
-        }
+        
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		 }
 
         private void btn_vendors_Click(object sender, RoutedEventArgs e)
         {
-            txt_search.Text = "";
+          try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					   txt_search.Text = "";
             hideSatacks();
             stk_tagsVendors.Visibility = Visibility.Visible;
             selectedTab = 2;
@@ -917,11 +962,25 @@ fillColumnChart(cb_Items, selectedItemId);
             col_count.Visibility = Visibility.Visible;
             col_totalNet.Visibility = Visibility.Visible;
             col_tax.Visibility = Visibility.Visible;
-        }
+        
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		 }
 
         private void btn_users_Click(object sender, RoutedEventArgs e)
         {
-            txt_search.Text = "";
+           try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					  txt_search.Text = "";
             hideSatacks();
             stk_tagsUsers.Visibility = Visibility.Visible;
             selectedTab = 3;
@@ -939,11 +998,25 @@ fillColumnChart(cb_Items, selectedItemId);
             col_user.Visibility = Visibility.Visible;
             col_totalNet.Visibility = Visibility.Visible;
             col_discount.Visibility = Visibility.Visible;
-        }
+       
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		  }
 
         private void btn_items_Click(object sender, RoutedEventArgs e)
         {
-            txt_search.Text = "";
+          try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					   txt_search.Text = "";
             hideSatacks();
             stk_tagsItems.Visibility = Visibility.Visible;
             selectedTab = 4;
@@ -960,13 +1033,27 @@ fillColumnChart(cb_Items, selectedItemId);
             col_itQuantity.Visibility = Visibility.Visible;
             col_price.Visibility = Visibility.Visible;
             col_subTotal.Visibility = Visibility.Visible;
-        }
+         
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		}
         #endregion
 
         #region refreshButton
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
-            if (selectedTab == 0)
+           try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					  if (selectedTab == 0)
             {
                 cb_branches.SelectedItem = null;
                 chk_drafs.IsChecked = false;
@@ -1078,59 +1165,209 @@ fillColumnChart(cb_Items, selectedItemId);
 
             }
             txt_search.Text = "";
-        }
+         
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		}
         #endregion
 
         #region branchesEvents
         private void chk_invoice_Checked(object sender, RoutedEventArgs e)
         {
-            fillBranchEvent();
-        }
+            try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					 fillBranchEvent();
+        
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		 }
 
         private void chk_return_Checked(object sender, RoutedEventArgs e)
         {
-            fillBranchEvent();
-        }
+           try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					  fillBranchEvent();
+        
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		 }
 
         private void chk_drafs_Checked(object sender, RoutedEventArgs e)
         {
-            fillBranchEvent();
-        }
+           try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					  fillBranchEvent();
+        
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		 }
 
         private void chk_invoice_Unchecked(object sender, RoutedEventArgs e)
         {
-            fillBranchEvent();
-        }
+           try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					  fillBranchEvent();
+         
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		}
 
         private void chk_return_Unchecked(object sender, RoutedEventArgs e)
         {
-            fillBranchEvent();
-        }
+           try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					  fillBranchEvent();
+        
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		 }
 
         private void chk_drafs_Unchecked(object sender, RoutedEventArgs e)
         {
-            fillBranchEvent();
-        }
+           try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					  fillBranchEvent();
+        
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		 }
 
         private void dp_startDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            fillBranchEvent();
-        }
+            try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					 fillBranchEvent();
+        
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		 }
 
         private void dp_endDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            fillBranchEvent();
-        }
+           try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					  fillBranchEvent();
+       
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		  }
 
         private void dt_startTime_SelectedTimeChanged(object sender, RoutedPropertyChangedEventArgs<DateTime?> e)
         {
-            fillBranchEvent();
-        }
+          try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					   fillBranchEvent();
+        
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		 }
 
         private void dp_endTime_SelectedTimeChanged(object sender, RoutedPropertyChangedEventArgs<DateTime?> e)
         {
-            fillBranchEvent();
-        }
+          try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					   fillBranchEvent();
+        
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		 }
 
 
         #endregion
@@ -1139,166 +1376,581 @@ fillColumnChart(cb_Items, selectedItemId);
 
         #region posEvents
         private void chk_posInvoice_Checked(object sender, RoutedEventArgs e)
-        {
+        {try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					 
             fillPosEvent();
-        }
+        
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		 }
 
         private void chk_posReturn_Checked(object sender, RoutedEventArgs e)
-        {
+        {try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					 
             fillPosEvent();
-        }
+        
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		 }
 
         private void chk_posDrafs_Checked(object sender, RoutedEventArgs e)
         {
-            fillPosEvent();
-        }
+          try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					   fillPosEvent();
+       
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		  }
 
         private void chk_posInvoice_Unchecked(object sender, RoutedEventArgs e)
-        {
+        {try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					 
             fillPosEvent();
-        }
+       
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		  }
 
         private void chk_posReturn_Unchecked(object sender, RoutedEventArgs e)
-        {
+        {try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					 
             fillPosEvent();
-        }
+       
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		  }
 
         private void chk_posDrafs_Unchecked(object sender, RoutedEventArgs e)
         {
-            fillPosEvent();
-        }
+           try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					   fillPosEvent();
+         
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		}
 
         private void dp_posStartDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            fillPosEvent();
-        }
+          try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					   fillPosEvent();
+        
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }}
 
         private void dp_posEndDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
-        {
+        { try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
             fillPosEvent();
-        }
+       
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            } }
 
         private void dt_posStartTime_SelectedTimeChanged(object sender, RoutedPropertyChangedEventArgs<DateTime?> e)
         {
-            fillPosEvent();
-        }
+          try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					   fillPosEvent();
+       
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            } }
 
         private void dt_posEndTime_SelectedTimeChanged(object sender, RoutedPropertyChangedEventArgs<DateTime?> e)
-        {
+        {try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					 
             fillPosEvent();
-        }
+       
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            } }
         #endregion
 
         #region vendorsEvents
         private void chk_vendorsInvoice_Checked(object sender, RoutedEventArgs e)
-        {
+        {try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					 
             fillVendorsEvent();
-        }
+        
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }}
 
         private void chk_vendorsReturn_Checked(object sender, RoutedEventArgs e)
         {
-            fillVendorsEvent();
-        }
+          try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					   fillVendorsEvent();
+        
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }}
 
         private void chk_vendorsDraft_Checked(object sender, RoutedEventArgs e)
-        {
+        {try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					 
             fillVendorsEvent();
-        }
+        
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }}
 
         private void chk_vendorsInvoice_Unchecked(object sender, RoutedEventArgs e)
         {
-            fillVendorsEvent();
-        }
+          try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					   fillVendorsEvent();
+       
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            } }
 
         private void chk_vendorsReturn_Unchecked(object sender, RoutedEventArgs e)
         {
-            fillVendorsEvent();
-        }
+          try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					   fillVendorsEvent();
+        
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+			}
 
         private void chk_vendorsDraft_Unchecked(object sender, RoutedEventArgs e)
-        {
+        {try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					 
             fillVendorsEvent();
-        }
+          
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		}
 
         private void dp_vendorsStartDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
-        {
+        {try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					 
             fillVendorsEvent();
-        }
+         
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		 }
 
         private void dp_vendorsEndDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            fillVendorsEvent();
-        }
+          try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					   fillVendorsEvent();
+          
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		}
 
         private void dt_vendorsStartTime_SelectedTimeChanged(object sender, RoutedPropertyChangedEventArgs<DateTime?> e)
         {
-            fillVendorsEvent();
-        }
+           try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					  fillVendorsEvent();
+         
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		 }
 
         private void dt_vendorsEndTime_SelectedTimeChanged(object sender, RoutedPropertyChangedEventArgs<DateTime?> e)
         {
-            fillVendorsEvent();
-        }
+           try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					  fillVendorsEvent();
+          
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		}
         #endregion
 
         #region usersEvents
         private void chk_usersInvoice_Checked(object sender, RoutedEventArgs e)
         {
-            fillUsersEvent();
-        }
+           try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					  fillUsersEvent();
+         
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		 }
 
         private void chk_usersReturn_Checked(object sender, RoutedEventArgs e)
         {
-            fillUsersEvent();
-        }
+           try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					  fillUsersEvent();
+         
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		 }
 
         private void chk_usersDraft_Checked(object sender, RoutedEventArgs e)
         {
-            fillUsersEvent();
-        }
+          try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					   fillUsersEvent();
+         
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		 }
 
         private void chk_usersInvoice_Unchecked(object sender, RoutedEventArgs e)
         {
-            fillUsersEvent();
-        }
+          try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					   fillUsersEvent();
+         
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		 }
 
         private void chk_usersReturn_Unchecked(object sender, RoutedEventArgs e)
         {
-            fillUsersEvent();
-        }
+           try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					  fillUsersEvent();
+          
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		}
 
         private void chk_usersDraft_Unchecked(object sender, RoutedEventArgs e)
         {
-            fillUsersEvent();
-        }
+          try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					   fillUsersEvent();
+        
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		  }
 
         private void dp_usersStartDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            fillUsersEvent();
-        }
+          try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					   fillUsersEvent();
+        
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		  }
 
         private void dp_usersEndDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            fillUsersEvent();
-        }
+           try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					  fillUsersEvent();
+         
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		 }
 
 
 
         private void dt_usersEndTime_SelectedTimeChanged(object sender, RoutedPropertyChangedEventArgs<DateTime?> e)
-        {
+        {try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					 
             fillUsersEvent();
-        }
+         
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		 }
 
         private void dt_usersStartTime_SelectedTimeChanged(object sender, RoutedPropertyChangedEventArgs<DateTime?> e)
         {
-            fillUsersEvent();
-        }
+           try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					  fillUsersEvent();
+       
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		   }
         #endregion
 
         #region settings
         private void btn_settings_Click(object sender, RoutedEventArgs e)
         {
-            List<string> Headers = new List<string>();
+           try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					  List<string> Headers = new List<string>();
             List<string> Headers1 = new List<string>();
             foreach (var item in dgInvoice.Columns)
             {
@@ -1322,7 +1974,17 @@ fillColumnChart(cb_Items, selectedItemId);
                     dgInvoice.Columns[i].Visibility = Visibility.Hidden;
             }
 
-        }
+          
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		}
 
         #endregion
 
@@ -1330,7 +1992,11 @@ fillColumnChart(cb_Items, selectedItemId);
 
         private void Chip_OnDeleteClick(object sender, RoutedEventArgs e)
         {
-            var currentChip = (Chip)sender;
+          try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					   var currentChip = (Chip)sender;
             stk_tagsBranches.Children.Remove(currentChip);
             var m = comboBrachTemp.Where(j => j.branchId == (Convert.ToInt32(currentChip.Name.Remove(0, 3))));
             dynamicComboBranches.Add(m.FirstOrDefault());
@@ -1340,11 +2006,25 @@ fillColumnChart(cb_Items, selectedItemId);
                 cb_branches.SelectedItem = null;
             }
             fillBranchEvent();
-        }
+        
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		  }
 
         private void Chip_OnDeletePosClick(object sender, RoutedEventArgs e)
         {
-            var currentChip = (Chip)sender;
+          try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					   var currentChip = (Chip)sender;
             stk_tagsPos.Children.Remove(currentChip);
             var m = comboPosTemp.Where(j => j.posId == (Convert.ToInt32(currentChip.Name.Remove(0, 3))));
             dynamicComboPoss.Add(m.FirstOrDefault());
@@ -1354,11 +2034,25 @@ fillColumnChart(cb_Items, selectedItemId);
                 cb_pos.SelectedItem = null;
             }
             fillPosEvent();
-        }
+        
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		  }
 
         private void Chip_OnDeleteVendorClick(object sender, RoutedEventArgs e)
         {
-            var currentChip = (Chip)sender;
+         try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					    var currentChip = (Chip)sender;
             stk_tagsVendors.Children.Remove(currentChip);
             var m = comboVendorTemp.Where(j => j.agentId == (Convert.ToInt32(currentChip.Name.Remove(0, 3))));
             dynamicComboVendors.Add(m.FirstOrDefault());
@@ -1368,11 +2062,25 @@ fillColumnChart(cb_Items, selectedItemId);
                 cb_vendors.SelectedItem = null;
             }
             fillVendorsEvent();
-        }
+        
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		  }
 
         private void Chip_OnDeleteUserClick(object sender, RoutedEventArgs e)
         {
-            var currentChip = (Chip)sender;
+          try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					   var currentChip = (Chip)sender;
             stk_tagsUsers.Children.Remove(currentChip);
             var m = comboUserTemp.Where(j => j.userId == (Convert.ToInt32(currentChip.Name.Remove(0, 3))));
             dynamicComboUsers.Add(m.FirstOrDefault());
@@ -1383,13 +2091,27 @@ fillColumnChart(cb_Items, selectedItemId);
             }
             fillUsersEvent();
 
-        }
+         
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		 }
 
 
 
         private void cb_branches_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (cb_branches.SelectedItem != null)
+          try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					   if (cb_branches.SelectedItem != null)
             {
                 if (stk_tagsBranches.Children.Count < 5)
                 {
@@ -1409,11 +2131,25 @@ fillColumnChart(cb_Items, selectedItemId);
                     fillBranchEvent();
                 }
             }
-        }
+         
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		 }
 
         private void cb_pos_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (cb_pos.SelectedItem != null)
+           try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					  if (cb_pos.SelectedItem != null)
             {
                 if (stk_tagsPos.Children.Count < 5)
                 {
@@ -1433,11 +2169,25 @@ fillColumnChart(cb_Items, selectedItemId);
                     fillPosEvent();
                 }
             }
-        }
+         
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		 }
 
         private void cb_vendors_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (cb_vendors.SelectedItem != null)
+          try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					   if (cb_vendors.SelectedItem != null)
             {
                 if (stk_tagsVendors.Children.Count < 5)
                 {
@@ -1458,11 +2208,25 @@ fillColumnChart(cb_Items, selectedItemId);
                 }
             }
 
-        }
+        
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		  }
 
         private void cb_users_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (cb_users.SelectedItem != null)
+           try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					  if (cb_users.SelectedItem != null)
             {
                 if (stk_tagsUsers.Children.Count < 5)
                 {
@@ -1482,10 +2246,24 @@ fillColumnChart(cb_Items, selectedItemId);
                     fillUsersEvent();
                 }
             }
-        }
+          
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		}
         private void Chip_OnDeleteItemClick(object sender, RoutedEventArgs e)
         {
-            var currentChip = (Chip)sender;
+           try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					  var currentChip = (Chip)sender;
             stk_tagsItems.Children.Remove(currentChip);
             var m = comboItemTemp.Where(j => j.itemUnitId == (Convert.ToInt32(currentChip.Name.Remove(0, 3))));
             dynamicComboItem.Add(m.FirstOrDefault());
@@ -1495,11 +2273,25 @@ fillColumnChart(cb_Items, selectedItemId);
                 cb_Items.SelectedItem = null;
             }
             fillItemsEvent();
-        }
+         
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		 }
 
         private void cb_Items_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					 
             if (cb_Items.SelectedItem != null)
             {
                 if (stk_tagsItems.Children.Count < 5)
@@ -1520,11 +2312,25 @@ fillColumnChart(cb_Items, selectedItemId);
                     fillItemsEvent();
                 }
             }
-        }
+         
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		 }
 
         private void chk_allBranches_Click(object sender, RoutedEventArgs e)
         {
-            if (cb_branches.IsEnabled == true)
+          try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					   if (cb_branches.IsEnabled == true)
             {
                 cb_branches.SelectedItem = null;
                 cb_branches.IsEnabled = false;
@@ -1542,11 +2348,25 @@ fillColumnChart(cb_Items, selectedItemId);
                 cb_branches.IsEnabled = true;
             }
             fillBranchEvent();
-        }
+         
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		 }
 
         private void chk_allPos_Click(object sender, RoutedEventArgs e)
         {
-            if (cb_pos.IsEnabled == true)
+          try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					   if (cb_pos.IsEnabled == true)
             {
                 cb_pos.SelectedItem = null;
                 cb_pos.IsEnabled = false;
@@ -1564,11 +2384,25 @@ fillColumnChart(cb_Items, selectedItemId);
             }
 
             fillPosEvent();
-        }
+         
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		 }
 
         private void chk_allVendors_Click(object sender, RoutedEventArgs e)
         {
-            if (cb_vendors.IsEnabled == true)
+           try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					  if (cb_vendors.IsEnabled == true)
             {
                 cb_vendors.SelectedItem = null;
                 cb_vendors.IsEnabled = false;
@@ -1586,10 +2420,24 @@ fillColumnChart(cb_Items, selectedItemId);
             }
 
             fillVendorsEvent();
-        }
+         
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		 }
 
         private void chk_allUsers_Click(object sender, RoutedEventArgs e)
-        {
+        {try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					 
             if (cb_users.IsEnabled == true)
             {
                 cb_users.SelectedItem = null;
@@ -1608,11 +2456,25 @@ fillColumnChart(cb_Items, selectedItemId);
             }
 
             fillUsersEvent();
-        }
+        
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		  }
 
         private void chk_allItems_Click(object sender, RoutedEventArgs e)
         {
-            if (cb_Items.IsEnabled == true)
+           try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					  if (cb_Items.IsEnabled == true)
             {
                 cb_Items.SelectedItem = null;
                 cb_Items.IsEnabled = false;
@@ -1630,69 +2492,223 @@ fillColumnChart(cb_Items, selectedItemId);
             }
 
             fillItemsEvent();
-        }
+        
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		  }
 
         private void chk_itemInvoice_Checked(object sender, RoutedEventArgs e)
         {
-            fillItemsEvent();
-        }
+          try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					   fillItemsEvent();
+          
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		}
 
         private void chk_itemInvoice_Unchecked(object sender, RoutedEventArgs e)
         {
-            fillItemsEvent();
-        }
+           try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					  fillItemsEvent();
+        
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		  }
 
         private void chk_itemReturn_Checked(object sender, RoutedEventArgs e)
         {
-            fillItemsEvent();
-        }
+          try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					   fillItemsEvent();
+         
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		 }
 
         private void chk_itemReturn_Unchecked(object sender, RoutedEventArgs e)
-        {
+        {try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					 
             fillItemsEvent();
-        }
+         
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		 }
 
         private void chk_itemDrafs_Checked(object sender, RoutedEventArgs e)
         {
-            fillItemsEvent();
-        }
+          try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					   fillItemsEvent();
+         
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		 }
 
         private void chk_itemDrafs_Unchecked(object sender, RoutedEventArgs e)
-        {
+        {try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					  
             fillItemsEvent();
-        }
+         
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		 }
 
         private void dp_ItemEndDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            fillItemsEvent();
-        }
+          try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					   fillItemsEvent();
+         
+			  
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		 }
 
         private void dp_ItemStartDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            fillItemsEvent();
-        }
+          try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					   fillItemsEvent();
+       
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		 }
 
         private void dt_ItemEndTime_SelectedTimeChanged(object sender, RoutedPropertyChangedEventArgs<DateTime?> e)
         {
-            fillItemsEvent();
-        }
+          try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					   fillItemsEvent();
+       
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		 }
 
         private void dt_itemStartTime_SelectedTimeChanged(object sender, RoutedPropertyChangedEventArgs<DateTime?> e)
         {
-            fillItemsEvent();
-        }
+         try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					    fillItemsEvent();
+       
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		 }
 
         Invoice invoice;
         private async void DgInvoice_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            //invoiceId
+          try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					   //invoiceId
             invoice = new Invoice();
             if (dgInvoice.SelectedIndex != -1)
             {
                 ItemTransferInvoice item = dgInvoice.SelectedItem as ItemTransferInvoice;
                 if (item.invoiceId > 0)
                 {
-                    MainWindow.mainWindow.StartAwait();
                     invoice = await invoice.GetById(item.invoiceId);
                     MainWindow.mainWindow.BTN_purchases_Click(null, null);
                     uc_purchases.Instance.btn_payInvoice_Click(null, null);
@@ -1700,14 +2716,27 @@ fillColumnChart(cb_Items, selectedItemId);
                     uc_payInvoice._InvoiceType = invoice.invType;
                     uc_payInvoice.Instance.invoice = invoice;
                     await uc_payInvoice.Instance.fillInvoiceInputs(invoice);
-                    MainWindow.mainWindow.EndAwait();
                 }
             }
-        }
+      
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		  }
 
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {
-            //   if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
+          try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					   //   if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
             //   {
             List<ReportParameter> paramarr = new List<ReportParameter>();
             List<ItemTransferInvoice> query = new List<ItemTransferInvoice>();
@@ -1786,11 +2815,25 @@ fillColumnChart(cb_Items, selectedItemId);
             //  else
             //    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
 
-        }
+        
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		}
 
         private void Btn_print_Click(object sender, RoutedEventArgs e)
         {
-            //   if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
+            try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					 //   if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
             //   {
             List<ReportParameter> paramarr = new List<ReportParameter>();
             List<ItemTransferInvoice> query = new List<ItemTransferInvoice>();
@@ -1859,10 +2902,24 @@ fillColumnChart(cb_Items, selectedItemId);
             rep.Refresh();
 
             LocalReportExtensions.PrintToPrinter(rep);
-        }
+        
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		}
         private void txt_search_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (selectedTab==0)
+          try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					   if (selectedTab==0)
             {
                 itemTransfers = fillList(Invoices, chk_invoice, chk_return, chk_drafs, dp_startDate, dp_endDate, dt_startTime, dt_endTime)
                     .Where(j => (selectedBranchId.Count != 0 ? selectedBranchId.Contains((int)j.branchCreatorId) : true));
@@ -1920,11 +2977,25 @@ fillColumnChart(cb_Items, selectedItemId);
       s.invNumber.Contains(txt_search.Text)
       ));
             }
-        }
+      
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		  }
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {
-            Thread t1 = new Thread(() =>
+           try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					  Thread t1 = new Thread(() =>
             {
                 List<ReportParameter> paramarr = new List<ReportParameter>();
                 List<ItemTransferInvoice> query = new List<ItemTransferInvoice>();
@@ -2003,11 +3074,25 @@ fillColumnChart(cb_Items, selectedItemId);
 
             });
             t1.Start();
-        }
+       
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		 }
 
         private void Btn_preview_Click(object sender, RoutedEventArgs e)
         {
-            Window.GetWindow(this).Opacity = 0.2;
+           try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					  Window.GetWindow(this).Opacity = 0.2;
             string pdfpath = "";
 
             List<ReportParameter> paramarr = new List<ReportParameter>();
@@ -2090,7 +3175,17 @@ fillColumnChart(cb_Items, selectedItemId);
 
             }
             Window.GetWindow(this).Opacity = 1;
-        }
+       
+			  if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		 }
     }
 }
 

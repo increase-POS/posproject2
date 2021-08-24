@@ -50,13 +50,13 @@
                                VerticalAlignment="Center" 
                               Height="40"   Width="auto" Margin="10,5" 
                               TextChanged="Tb_search_TextChanged">
-                        <TextBox.ToolTip>
+                        <!--<TextBox.ToolTip>
                             <ToolTip x:Name="tt_search" Content="Search"
                                     Placement="left" 
                                     HorizontalOffset="15"
                                     PlacementRectangle="50,0,0,0"
                                     VerticalOffset="30"/>
-                        </TextBox.ToolTip>
+                        </TextBox.ToolTip>-->
                     </TextBox>
 
 
@@ -376,9 +376,9 @@
                          MaxLength="50" 
                          materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}" 
                          Height="40"  Margin="10,5,10,5"  >
-                            <TextBox.ToolTip>
+                            <!--<TextBox.ToolTip>
                                 <ToolTip x:Name="tt_name" Content="Name" Placement="left"   HorizontalOffset="35" PlacementRectangle="50,0,0,0" VerticalOffset="20"/>
-                            </TextBox.ToolTip>
+                            </TextBox.ToolTip>-->
                         </TextBox>
                         <Path Grid.Row="2" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5" x:Name="p_errorName"  HorizontalAlignment="Right"  Grid.Column="2" Visibility="Collapsed" VerticalAlignment="Center" Width="15"  Height="15" Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 ZM12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
                             <Path.ToolTip>
@@ -398,9 +398,9 @@
                          BorderBrush="AliceBlue"   TextChanged="Tb_accNum_TextChanged" 
                          LostFocus="Tb_accNum_LostFocus"   MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                          Height="40" Margin="10,5,10,5"  PreviewKeyDown="Tb_accNumber_PreviewKeyDown" >
-                            <TextBox.ToolTip>
+                            <!--<TextBox.ToolTip>
                                 <ToolTip x:Name="tt_accNum" Content="Account Number" Placement="left"  HorizontalOffset="35" PlacementRectangle="50,0,0,0"  VerticalOffset="20"/>
-                            </TextBox.ToolTip>
+                            </TextBox.ToolTip>-->
                         </TextBox>
                         <Path Grid.Row="3" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5" x:Name="p_errorAccNum" HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed"  VerticalAlignment="Center" Width="15"  Height="15"   Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2ZM12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17Z">
                             <Path.ToolTip>
@@ -426,9 +426,9 @@
                             </Grid.ColumnDefinitions>
                             <ComboBox Grid.Column="0" x:Name="cb_area" Padding="10,5,5,5"   TextBlock.Foreground="#4E4E4E" TabIndex="3"  TextBlock.FontSize="12" Margin="5,5,0,5" VerticalAlignment="Center"   Height="40" Width="60" Background="#f8f8f8"   BorderBrush="#737373"      BorderThickness="0"  FontFamily="{StaticResource Font-cairo-light}"    Grid.Row="0" />
                             <TextBox x:Name="tb_mobile" Grid.Column="1" Style="{StaticResource MaterialDesignFloatingHintTextBox}" HorizontalAlignment="Stretch" Text="{Binding mobile, Mode=OneWay}" Padding="10,0,5,0"  TabIndex="4"  BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Mobile..."   Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" BorderBrush="AliceBlue" MaxLength="9" PreviewTextInput="NumberValidationTextBox"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}" Height="40"   Margin="5" LostFocus="tb_mobile_LostFocus" TextChanged="tb_mobile_TextChanged" PreviewKeyDown="Tb_mobile_PreviewKeyDown"  >
-                                <TextBox.ToolTip>
+                                <!--<TextBox.ToolTip>
                                     <ToolTip x:Name="tt_mobile" Content="Mobile"  Placement="left"   HorizontalOffset="35"  PlacementRectangle="50,0,0,0"    VerticalOffset="20"/>
-                                </TextBox.ToolTip>
+                                </TextBox.ToolTip>-->
                             </TextBox>
                             <Path Fill="#E81123" Stretch="Fill" Grid.Column="1" DockPanel.Dock="Right" x:Name="p_errorMobile"   HorizontalAlignment="Right" Visibility="Collapsed"   VerticalAlignment="Center" Width="15"  Height="15" Margin="5,5,15,5" Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17L11,17 L11,15 L13,15 L13,17 Z">
                                 <Path.ToolTip>
@@ -478,13 +478,13 @@
                                      PreviewKeyDown="tb_phone_PreviewKeyDown"
                                      LostFocus="Tb_phone_LostFocus" 
                                      TextChanged="Tb_phone_TextChanged" >
-                                <TextBox.ToolTip>
+                                <!--<TextBox.ToolTip>
                                     <ToolTip x:Name="tt_phone" Content="Phone"
                                              Placement="left" 
                                              HorizontalOffset="35"
                                              PlacementRectangle="50,0,0,0"
                                              VerticalOffset="20"/>
-                                </TextBox.ToolTip>
+                                </TextBox.ToolTip>-->
                             </TextBox>
                             <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5" x:Name="p_errorPhone"
                                   HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed"  
@@ -506,13 +506,13 @@
                                      Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                      BorderBrush="AliceBlue" VerticalAlignment="Center" MaxLength="100" MinHeight="40" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                      HorizontalAlignment="Stretch" >
-                            <TextBox.ToolTip>
+                            <!--<TextBox.ToolTip>
                                 <ToolTip x:Name="tt_address" Content="Address"
                                               Placement="left" 
                                               HorizontalOffset="35"
                                               PlacementRectangle="50,0,0,0"
                                               VerticalOffset="20"/>
-                            </TextBox.ToolTip>
+                            </TextBox.ToolTip>-->
                         </TextBox>
                         <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right"  Visibility="Collapsed" 
@@ -535,13 +535,13 @@
                                  HorizontalAlignment="Stretch" VerticalAlignment="Center"  
                                  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                  MinHeight="70"  Grid.ColumnSpan="2" >
-                            <TextBox.ToolTip>
+                            <!--<TextBox.ToolTip>
                                 <ToolTip x:Name="tt_notes" Content="Notes"
                                               Placement="left" 
                                               HorizontalOffset="35"
                                               PlacementRectangle="50,0,0,0"
                                               VerticalOffset="20"/>
-                            </TextBox.ToolTip>
+                            </TextBox.ToolTip>-->
                         </TextBox>
                         <Path Fill="#E81123" Stretch="Fill" Margin="15,12,15,5"
                               HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed"  

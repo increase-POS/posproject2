@@ -766,34 +766,34 @@ namespace POS.Classes
                 grid.Opacity = 1;
             }
         }
-        static public void EndAwait(Grid grid, Window window)
-        {
-            MahApps.Metro.Controls.ProgressRing progressRing = FindControls.FindVisualChildren<MahApps.Metro.Controls.ProgressRing>(window)
-                .Where(x => x.Name == "prg_awaitRing").FirstOrDefault();
-            grid.Children.Remove(progressRing);
+        //static public void EndAwait(Grid grid, Window window)
+        //{
+        //    MahApps.Metro.Controls.ProgressRing progressRing = FindControls.FindVisualChildren<MahApps.Metro.Controls.ProgressRing>(window)
+        //        .Where(x => x.Name == "prg_awaitRing").FirstOrDefault();
+        //    grid.Children.Remove(progressRing);
 
-            var progressRingList = FindControls.FindVisualChildren<MahApps.Metro.Controls.ProgressRing>(window)
-                 .Where(x => x.Name == "prg_awaitRing");
-            if(progressRingList.Count() == 0)
-            {
-                grid.IsEnabled = true;
-                grid.Opacity = 1;
-            }
-         }
-        static public void EndAwait(Grid grid, UserControl window)
-        {
-            MahApps.Metro.Controls.ProgressRing progressRing = FindControls.FindVisualChildren<MahApps.Metro.Controls.ProgressRing>(window)
-                .Where(x => x.Name == "prg_awaitRing").FirstOrDefault();
-            grid.Children.Remove(progressRing);
+        //    var progressRingList = FindControls.FindVisualChildren<MahApps.Metro.Controls.ProgressRing>(window)
+        //         .Where(x => x.Name == "prg_awaitRing");
+        //    if(progressRingList.Count() == 0)
+        //    {
+        //        grid.IsEnabled = true;
+        //        grid.Opacity = 1;
+        //    }
+        // }
+        //static public void EndAwait(Grid grid, UserControl window)
+        //{
+        //    MahApps.Metro.Controls.ProgressRing progressRing = FindControls.FindVisualChildren<MahApps.Metro.Controls.ProgressRing>(window)
+        //        .Where(x => x.Name == "prg_awaitRing").FirstOrDefault();
+        //    grid.Children.Remove(progressRing);
 
-            var progressRingList = FindControls.FindVisualChildren<MahApps.Metro.Controls.ProgressRing>(window)
-                 .Where(x => x.Name == "prg_awaitRing");
-            if (progressRingList.Count() == 0)
-            {
-                grid.IsEnabled = true;
-                grid.Opacity = 1;
-            }
-        }
+        //    var progressRingList = FindControls.FindVisualChildren<MahApps.Metro.Controls.ProgressRing>(window)
+        //         .Where(x => x.Name == "prg_awaitRing");
+        //    if (progressRingList.Count() == 0)
+        //    {
+        //        grid.IsEnabled = true;
+        //        grid.Opacity = 1;
+        //    }
+        //}
 
         static SetValues valueModel = new SetValues();
         static UserSetValues uSetValueModel = new UserSetValues();

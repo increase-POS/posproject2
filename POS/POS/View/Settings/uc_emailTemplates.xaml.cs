@@ -358,9 +358,7 @@ namespace POS.View.Settings
         }
         async Task<IEnumerable<SetValues>> RefreshSetValuessList()
         {
-            MainWindow.mainWindow.StartAwait();
             //setValuess = await setValuesModel.Get();
-            MainWindow.mainWindow.EndAwait();
             return setValuess;
         }
         void RefreshSetValuesView()

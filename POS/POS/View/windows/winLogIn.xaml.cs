@@ -151,23 +151,28 @@ namespace POS.View.windows
             var lanSettings = await setModel.GetAll();
             set = lanSettings.Where(l => l.name == "language").FirstOrDefault<SettingCls>();
             var lanValues = await valueModel.GetAll();
-            languages = lanValues.Where(vl => vl.settingId == set.settingId).ToList<SetValues>();
-           
-            usValues = await usValueModel.GetAll();
-            if (usValues.Count > 0)
+
+            if (lanValues.Count > 0)
             {
-                var curUserValues = usValues.Where(c => c.userId == userId);
+                languages = lanValues.Where(vl => vl.settingId == set.settingId).ToList<SetValues>();
 
-                if (curUserValues.Count() > 0)
+                usValues = await usValueModel.GetAll();
+                if (usValues.Count > 0)
                 {
-                    foreach (var l in curUserValues)
-                        if (languages.Any(c => c.valId == l.valId))
-                        {
-                            usLanguage = l;
-                        }
+                    var curUserValues = usValues.Where(c => c.userId == userId);
 
-                    var lan = await valueModel.GetByID(usLanguage.valId.Value);
-                    return lan.value;
+                    if (curUserValues.Count() > 0)
+                    {
+                        foreach (var l in curUserValues)
+                            if (languages.Any(c => c.valId == l.valId))
+                            {
+                                usLanguage = l;
+                            }
+
+                        var lan = await valueModel.GetByID(usLanguage.valId.Value);
+                        return lan.value;
+                    }
+                    else return "en";
                 }
                 else return "en";
             }
@@ -237,8 +242,16 @@ namespace POS.View.windows
                             MainWindow.userID = user.userId;
                             MainWindow.userLogin = user;
 
-                            MainWindow.lang = await getUserLanguage(user.userId);
-                            lang = MainWindow.lang;
+                            try
+                            {
+                                MainWindow.lang = await getUserLanguage(user.userId);
+                                lang = MainWindow.lang;
+                            }
+                            catch
+                            {
+                                MainWindow.lang = "en";
+                                lang = MainWindow.lang;
+                            }
                             string m = await SectionData.getUserMenuIsOpen(user.userId);
                             if (!m.Equals("-1"))
                                 MainWindow.menuIsOpen = m;

@@ -30,9 +30,14 @@ namespace POS.View.reports
     public partial class uc_accountStatement : UserControl
     {
         public uc_accountStatement()
-        {
+        {try
+				{
             InitializeComponent();
-        }
+			}
+        catch (Exception ex)
+            {
+				SectionData.ExceptionMessage(ex,this );
+            } }
         Statistics statisticModel = new Statistics();
 
         List<CashTransferSts> statement;
@@ -45,16 +50,21 @@ namespace POS.View.reports
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
+					try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					  
             #region translate
             if (MainWindow.lang.Equals("en"))
             {
                 MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
-                grid_ucAccountStatement.FlowDirection = FlowDirection.LeftToRight;
+                    grid_main.FlowDirection = FlowDirection.LeftToRight;
             }
             else
             {
                 MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
-                grid_ucAccountStatement.FlowDirection = FlowDirection.RightToLeft;
+                    grid_main.FlowDirection = FlowDirection.RightToLeft;
             }
             translate();
             #endregion
@@ -73,7 +83,16 @@ namespace POS.View.reports
             fillVendorsEvents();
             hideAllColumn();
 
-        }
+       if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		 }
 
         private void translate()
         {
@@ -188,19 +207,61 @@ namespace POS.View.reports
         /*********************************************************************************/
         private void Cb_vendors_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            fillVendorsEvents();
-        }
+            
+					try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					  fillVendorsEvents();
+      if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		  }
 
         private void Chk_allVendors_Checked(object sender, RoutedEventArgs e)
         {
+					try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					  
             cb_vendorsDate.SelectedItem = null;
             cb_vendorsDate.IsEnabled = false;
-        }
+       if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		 }
 
         private void Chk_allVendors_Unchecked(object sender, RoutedEventArgs e)
         {
-            cb_vendorsDate.IsEnabled = true;
-        }
+          
+					try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					    cb_vendorsDate.IsEnabled = true;
+      if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		  }
 
 
         /*Customer*/
@@ -208,55 +269,181 @@ namespace POS.View.reports
 
         private void Cb_customer_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            fillCustomersEvents();
-        }
+          
+					try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					    fillCustomersEvents();
+       if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		 }
 
         private void Chk_allCustomers_Checked(object sender, RoutedEventArgs e)
         {
-            cb_customerDate.IsEnabled = false;
+          
+					try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					    cb_customerDate.IsEnabled = false;
             cb_customerDate.SelectedItem = null;
-        }
+       if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		 }
 
         private void Chk_allCustomers_Unchecked(object sender, RoutedEventArgs e)
         {
-            cb_customerDate.IsEnabled = true;
-        }
+         
+					try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					     cb_customerDate.IsEnabled = true;
+      if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		  }
 
         /*User*/
         /*********************************************************************************/
         private void Cb_users_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+					try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					  
             fillUserEvents();
-        }
+       if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		 }
 
         private void Chk_allUsers_Checked(object sender, RoutedEventArgs e)
         {
-            cb_userDate.SelectedItem = null;
+            
+					try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					  cb_userDate.SelectedItem = null;
             cb_userDate.IsEnabled = false;
-        }
+    if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		    }
 
         private void Chk_allUsers_Unchecked(object sender, RoutedEventArgs e)
         {
+					try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					  
             cb_userDate.IsEnabled = true;
-        }
+       if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		 }
 
         /*Shipping*/
         /*********************************************************************************/
         private void Cb_shipping_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            fillShippingEvents();
-        }
+           
+					try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					   fillShippingEvents();
+       if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		 }
 
         private void Chk_allShippings_Checked(object sender, RoutedEventArgs e)
         {
+					try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					  
             cb_shippingDate.IsEnabled = false;
             cb_shippingDate.SelectedItem = null;
-        }
+       if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		 }
 
         private void Chk_allShippings_Unchecked(object sender, RoutedEventArgs e)
         {
+					try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					  
             cb_shippingDate.IsEnabled = true;
-        }
+       if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		 }
 
         /*********************************************************************/
 
@@ -352,6 +539,11 @@ namespace POS.View.reports
 
         private void Btn_vendor_Click(object sender, RoutedEventArgs e)
         {
+					try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					  
             selectedTab = 0;
             paint();
             bdr_vendor.Background = Brushes.White;
@@ -365,11 +557,25 @@ namespace POS.View.reports
 
             fillDateCombo(cb_vendorsDate);
             fillVendorCombo(vendorCombo, cb_vendors);
-        }
+       if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		 }
 
         private void Btn_customer_Click(object sender, RoutedEventArgs e)
         {
-            selectedTab = 1;
+          
+					try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					    selectedTab = 1;
             paint();
             bdr_customer.Background = Brushes.White;
             path_customer.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
@@ -382,11 +588,25 @@ namespace POS.View.reports
 
             fillDateCombo(cb_customerDate);
             fillVendorCombo(customerCombo, cb_customer);
-        }
+        if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		}
 
         private void Btn_user_Click(object sender, RoutedEventArgs e)
         {
-            selectedTab = 2;
+         
+					try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					     selectedTab = 2;
             paint();
             bdr_user.Background = Brushes.White;
             path_user.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
@@ -399,11 +619,25 @@ namespace POS.View.reports
 
             fillDateCombo(cb_userDate);
             fillSalaryCombo(userCombo, cb_users);
-        }
+       if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		 }
 
         private void Btn_shipping_Click(object sender, RoutedEventArgs e)
         {
-            cb_vendors.SelectedItem = null;
+         
+					try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					     cb_vendors.SelectedItem = null;
             selectedTab = 6;
             paint();
             bdr_shipping.Background = Brushes.White;
@@ -418,7 +652,16 @@ namespace POS.View.reports
             fillDateCombo(cb_shippingDate);
             fillShippingCombo(ShippingCombo, cb_shipping);
             fillShippingEvents();
-        }
+       if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		 }
 
         /*Fill Events*/
         /*********************************************************************************/
@@ -760,7 +1003,12 @@ namespace POS.View.reports
 
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
-            txt_search.Text = "";
+          
+					try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					    txt_search.Text = "";
             if (selectedTab == 0)
             {
                 cb_vendors.SelectedItem = null;
@@ -790,11 +1038,25 @@ namespace POS.View.reports
                 fillShippingEvents();
             }
 
-        }
+       if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		 }
 
         private void Txt_search_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (selectedTab == 0)
+         
+					try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					     if (selectedTab == 0)
             {
                 temp = statisticModel.getstate(fillList(statement, cb_vendors, cb_vendorsDate));
                 dgPayments.ItemsSource = temp.Where(obj => obj.transNum.Contains(txt_search.Text) ||
@@ -822,11 +1084,25 @@ namespace POS.View.reports
                 obj.Description.Contains(txt_search.Text) ||
                 obj.Description1.Contains(txt_search.Text));
             }
-        }
+       if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		 }
 
         private async void Btn_emailMessage_Click(object sender, RoutedEventArgs e)
         {
-            if (txt_for.Text == "Required")
+           
+					try
+					{
+						if (sender != null)
+					  SectionData.StartAwait(grid_main);
+					   if (txt_for.Text == "Required")
             {
                 // btn_emailMessage.Visibility = Visibility.Visible;
 
@@ -972,7 +1248,16 @@ namespace POS.View.reports
             {
                 // btn_emailMessage.Visibility = Visibility.Hidden;
             }
-        }
+       if (sender != null)
+			  SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this,sender);
+            }
+		 }
 
         private void Btn_preview_Click(object sender, RoutedEventArgs e)
         {

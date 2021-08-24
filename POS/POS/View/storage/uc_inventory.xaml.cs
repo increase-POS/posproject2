@@ -139,7 +139,7 @@ namespace POS.View.storage
             btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
             btn_archive.Content = MainWindow.resourcemanager.GetString("trArchive");
 
-            txt_newDraft.Text = MainWindow.resourcemanager.GetString("trNewDraft");
+            txt_newDraft.Text = MainWindow.resourcemanager.GetString("trNew");
             txt_drafts.Text = MainWindow.resourcemanager.GetString("trDraft");
             txt_inventory.Text = MainWindow.resourcemanager.GetString("trInventory");
             txt_printInvoice.Text = MainWindow.resourcemanager.GetString("trPrint");

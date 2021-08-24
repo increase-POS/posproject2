@@ -604,9 +604,7 @@ namespace POS.View.storage
                 w.ShowDialog();
                 if (w.isActive)
                 {
-                    MainWindow.mainWindow.StartAwait();
                     ChangeItemIdEvent(w.selectedItem);
-                    MainWindow.mainWindow.EndAwait();
                 }
 
                 Window.GetWindow(this).Opacity = 1;

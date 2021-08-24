@@ -44,7 +44,12 @@ namespace POS.View.reports
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            payments = await statisticModel.GetPayments();// Deposite
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                payments = await statisticModel.GetPayments();// Deposite
             recipient = await statisticModel.GetReceipt();// Pull
             BankChart = await statisticModel.GetBankTrans();
 
@@ -61,6 +66,15 @@ namespace POS.View.reports
             fillBanksCombo(cb_paymentsBank);
             fillUserCombo(userPaymentsCombo, cb_paymentsUser);
             fillAccCombo(accPaymentsCombo, cb_paymentsAccountant);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void fillBanksCombo(ComboBox cb)
@@ -102,7 +116,14 @@ namespace POS.View.reports
         }
         public uc_banksReport()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
         private static uc_banksReport _instance;
         public static uc_banksReport Instance
@@ -184,7 +205,12 @@ namespace POS.View.reports
 
         private void Btn_vendor_Click(object sender, RoutedEventArgs e)
         {
-            selectedTab = 0;
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                selectedTab = 0;
             paint();
             bdr_payments.Background = Brushes.White;
             path_payments.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
@@ -197,11 +223,25 @@ namespace POS.View.reports
             fillBanksCombo(cb_paymentsBank);
             fillUserCombo(userPaymentsCombo, cb_paymentsUser);
             fillAccCombo(accPaymentsCombo, cb_paymentsAccountant);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Btn_customer_Click(object sender, RoutedEventArgs e)
         {
-            selectedTab = 1;
+                try
+                {
+                    if (sender != null)
+                        SectionData.StartAwait(grid_main);
+
+                    selectedTab = 1;
             paint();
             bdr_recipient.Background = Brushes.White;
             path_recipient.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
@@ -215,6 +255,15 @@ namespace POS.View.reports
             fillBanksCombo(cb_recipientBank);
             fillUserCombo(userRecipientCombo, cb_recipientUser);
             fillAccCombo(accRecipientCombo, cb_recipientAccountant);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         /*Fill Events*/
@@ -454,125 +503,433 @@ namespace POS.View.reports
 
         private void Cb_banks_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            fillPyamentsEvents();
+                    try
+                    {
+                        if (sender != null)
+                            SectionData.StartAwait(grid_main);
+
+                        fillPyamentsEvents();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Chk_allBanks_Checked(object sender, RoutedEventArgs e)
         {
-            cb_paymentsBank.IsEnabled = false;
+                        try
+                        {
+                            if (sender != null)
+                                SectionData.StartAwait(grid_main);
+
+                            cb_paymentsBank.IsEnabled = false;
             cb_paymentsBank.SelectedItem = null;
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Chk_allBanks_Unchecked(object sender, RoutedEventArgs e)
         {
-            cb_paymentsBank.IsEnabled = true;
+                            try
+                            {
+                                if (sender != null)
+                                    SectionData.StartAwait(grid_main);
+
+                                cb_paymentsBank.IsEnabled = true;
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Cb_paymentsUser_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            fillPyamentsEvents();
+                                try
+                                {
+                                    if (sender != null)
+                                        SectionData.StartAwait(grid_main);
+
+                                    fillPyamentsEvents();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Chk_allPyamentsUser_Checked(object sender, RoutedEventArgs e)
         {
-            cb_paymentsUser.IsEnabled = false;
+                                    try
+                                    {
+                                        if (sender != null)
+                                            SectionData.StartAwait(grid_main);
+
+                                        cb_paymentsUser.IsEnabled = false;
             cb_paymentsUser.SelectedItem = null;
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Chk_allPyamentsUser_Unchecked(object sender, RoutedEventArgs e)
         {
-            cb_paymentsUser.IsEnabled = true;
+                                        try
+                                        {
+                                            if (sender != null)
+                                                SectionData.StartAwait(grid_main);
+
+                                            cb_paymentsUser.IsEnabled = true;
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Dp_paymentsStartDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            fillPyamentsEvents();
+                                            try
+                                            {
+                                                if (sender != null)
+                                                    SectionData.StartAwait(grid_main);
+
+                                                fillPyamentsEvents();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Dp_paymentsEndDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            fillPyamentsEvents();
+                                                try
+                                                {
+                                                    if (sender != null)
+                                                        SectionData.StartAwait(grid_main);
+
+                                                    fillPyamentsEvents();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Cb_paymentsAccountant_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            fillPyamentsEvents();
+                                                    try
+                                                    {
+                                                        if (sender != null)
+                                                            SectionData.StartAwait(grid_main);
+                                                        fillPyamentsEvents();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Chk_allpaymentsAccountant_Checked(object sender, RoutedEventArgs e)
         {
-            cb_paymentsAccountant.IsEnabled = false;
+                                                        try
+                                                        {
+                                                            if (sender != null)
+                                                                SectionData.StartAwait(grid_main);
+
+                                                            cb_paymentsAccountant.IsEnabled = false;
             cb_paymentsAccountant.SelectedItem = null;
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Chk_allpaymentsAccountant_Unchecked(object sender, RoutedEventArgs e)
         {
-            cb_paymentsAccountant.IsEnabled = true;
+                                                            try
+                                                            {
+                                                                if (sender != null)
+                                                                    SectionData.StartAwait(grid_main);
+
+                                                                cb_paymentsAccountant.IsEnabled = true;
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         /****************************************************************/
 
         private void Cb_recipientBank_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            fillRecipientsEvents();
+                                                                try
+                                                                {
+                                                                    if (sender != null)
+                                                                        SectionData.StartAwait(grid_main);
+
+                                                                    fillRecipientsEvents();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Chk_allRecipientBanks_Checked(object sender, RoutedEventArgs e)
         {
-            cb_recipientBank.IsEnabled = false;
+                                                                    try
+                                                                    {
+                                                                        if (sender != null)
+                                                                            SectionData.StartAwait(grid_main);
+                                                                        cb_recipientBank.IsEnabled = false;
             cb_recipientBank.SelectedItem = null;
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Chk_allRecipientBanks_Unchecked(object sender, RoutedEventArgs e)
         {
-            cb_recipientBank.IsEnabled = true;
+                                                                        try
+                                                                        {
+                                                                            if (sender != null)
+                                                                                SectionData.StartAwait(grid_main);
+
+                                                                            cb_recipientBank.IsEnabled = true;
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Cb_recipientUser_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            fillRecipientsEvents();
+                                                                            try
+                                                                            {
+                                                                                if (sender != null)
+                                                                                    SectionData.StartAwait(grid_main);
+
+                                                                                fillRecipientsEvents();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Chk_allRecipientUsers_Checked(object sender, RoutedEventArgs e)
         {
-            cb_recipientUser.IsEnabled = false;
+                                                                                try
+                                                                                {
+                                                                                    if (sender != null)
+                                                                                        SectionData.StartAwait(grid_main);
+                                                                                    cb_recipientUser.IsEnabled = false;
             cb_recipientUser.SelectedItem = null;
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Chk_allRecipientUsers_Unchecked(object sender, RoutedEventArgs e)
         {
-            cb_recipientUser.IsEnabled = true;
+                                                                                    try
+                                                                                    {
+                                                                                        if (sender != null)
+                                                                                            SectionData.StartAwait(grid_main);
+
+                                                                                        cb_recipientUser.IsEnabled = true;
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Cb_recipientAccountant_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            fillRecipientsEvents();
+                                                                                        try
+                                                                                        {
+                                                                                            if (sender != null)
+                                                                                                SectionData.StartAwait(grid_main);
+                                                                                            fillRecipientsEvents();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Chk_allRecipientAccountant_Checked(object sender, RoutedEventArgs e)
         {
-            cb_recipientAccountant.IsEnabled = false;
+                                                                                            try
+                                                                                            {
+                                                                                                if (sender != null)
+                                                                                                    SectionData.StartAwait(grid_main);
+                                                                                                cb_recipientAccountant.IsEnabled = false;
             cb_recipientAccountant.SelectedItem = null;
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Chk_allRecipientAccountant_Unchecked(object sender, RoutedEventArgs e)
         {
-            cb_recipientAccountant.IsEnabled = true;
+                                                                                                try
+                                                                                                {
+                                                                                                    if (sender != null)
+                                                                                                        SectionData.StartAwait(grid_main);
+
+                                                                                                    cb_recipientAccountant.IsEnabled = true;
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Dp_recipientEndDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            fillRecipientsEvents();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+
+                fillRecipientsEvents();
+            if (sender != null)
+                SectionData.EndAwait(grid_main);
         }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this, sender);
+        }
+    }
 
         private void Dp_recipientStartDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            fillRecipientsEvents();
+                                                                                                    try
+                                                                                                    {
+                                                                                                        if (sender != null)
+                                                                                                            SectionData.StartAwait(grid_main);
+                                                                                                        fillRecipientsEvents();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
-            txt_search.Text = "";
+                                                                                                        try
+                                                                                                        {
+                                                                                                            if (sender != null)
+                                                                                                                SectionData.StartAwait(grid_main);
+                                                                                                            txt_search.Text = "";
             if (selectedTab == 0)
             {
                 cb_paymentsBank.SelectedItem = null;
@@ -597,11 +954,25 @@ namespace POS.View.reports
                 dp_recipientEndDate.SelectedDate = null;
                 fillRecipientsEvents();
             }
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Txt_search_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (selectedTab == 0)
+                                                                                                            try
+                                                                                                            {
+                                                                                                                if (sender != null)
+                                                                                                                    SectionData.StartAwait(grid_main);
+                                                                                                                if (selectedTab == 0)
             {
                 var temp = fillList(payments, cb_paymentsBank, cb_paymentsUser, cb_paymentsAccountant, dp_paymentsStartDate, dp_paymentsEndDate).Where(s => s.side == "bn" && s.isConfirm == 1);
                 dgPayments.ItemsSource = temp.Where(obj => (
@@ -621,15 +992,28 @@ namespace POS.View.reports
                 obj.userAcc.Contains(txt_search.Text)
                 ));
             }
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         ReportCls reportclass = new ReportCls();
         LocalReport rep = new LocalReport();
         SaveFileDialog saveFileDialog = new SaveFileDialog();
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                List<ReportParameter> paramarr = new List<ReportParameter>();
+                                                                                                                try
+                                                                                                                {
+                                                                                                                    if (sender != null)
+                                                                                                                        SectionData.StartAwait(grid_main);
+
+                                                                                                                    List<ReportParameter> paramarr = new List<ReportParameter>();
 
                 string addpath = "";
                 bool isArabic = ReportCls.checkLang();
@@ -676,19 +1060,27 @@ namespace POS.View.reports
                     string filepath = saveFileDialog.FileName;
                     LocalReportExtensions.ExportToPDF(rep, filepath);
                 }
-            }
 
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
             catch (Exception ex)
             {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
         private void Btn_print_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                List<ReportParameter> paramarr = new List<ReportParameter>();
+                                                                                                                try
+                                                                                                                {
+                                                                                                                    if (sender != null)
+                                                                                                                        SectionData.StartAwait(grid_main);
+
+                                                                                                                    List<ReportParameter> paramarr = new List<ReportParameter>();
 
                 string addpath = "";
                 bool isArabic = ReportCls.checkLang();
@@ -727,18 +1119,26 @@ namespace POS.View.reports
                 rep.SetParameters(paramarr);
                 rep.Refresh();
                 LocalReportExtensions.PrintToPrinter(rep);
-            }
 
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
             catch (Exception ex)
             {
-
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {
-            Thread t1 = new Thread(() =>
+                                                                                                                        try
+                                                                                                                        {
+                                                                                                                            if (sender != null)
+                                                                                                                                SectionData.StartAwait(grid_main);
+                                                                                                                            Thread t1 = new Thread(() =>
             {
                 List<ReportParameter> paramarr = new List<ReportParameter>();
 
@@ -792,11 +1192,25 @@ namespace POS.View.reports
 
             });
             t1.Start();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Btn_preview_Click(object sender, RoutedEventArgs e)
         {
-            Window.GetWindow(this).Opacity = 0.2;
+                                                                                                                            try
+                                                                                                                            {
+                                                                                                                                if (sender != null)
+                                                                                                                                    SectionData.StartAwait(grid_main);
+                                                                                                                                Window.GetWindow(this).Opacity = 0.2;
             string pdfpath = "";
 
             List<ReportParameter> paramarr = new List<ReportParameter>();
@@ -855,6 +1269,16 @@ namespace POS.View.reports
 
             }
             Window.GetWindow(this).Opacity = 1;
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
     }
 }

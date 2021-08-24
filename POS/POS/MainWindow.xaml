@@ -63,8 +63,8 @@
         </EventTrigger>
     </Window.Triggers>
     <!--FlowDirection="RightToLeft"-->
-    <Grid  >
-        <Grid Margin="0" x:Name="grid_mainWindow" MouseDown="Grid_MouseDown">
+    <Grid Margin="0" x:Name="grid_mainWindow" >
+        <Grid  MouseDown="Grid_MouseDown">
             <Grid.RowDefinitions>
                 <RowDefinition Height="60"/>
                 <RowDefinition Height="*"/>
@@ -120,11 +120,17 @@
 	c-10.9,7.6-23.2,10.8-36.2,10.8c-34.1,0.2-68.1,0.2-102.2,0c-10.7,0-21.1-2.3-30.1-8.3c-15.6-10.4-20.8-25.3-18.1-43.3
 	c0.8-5.4,2.8-10.5,4.9-15.6c-0.3,5-1,9.9-1,14.9c-0.1,17.6,9.9,30.5,27.1,34.9c7.9,2.1,16,2.3,24.2,1.5c0.1-1.8,0.3-3.5,0.4-5
 	c7.9-1.4,15.5-2.8,23.4-4.2c0,2.7,0,5.6,0,8.6C227.9,269.3,229.9,269.3,232.2,269.3z" />
-                    <TextBlock Text="Increase POS" FontSize="16" FontWeight="Bold" 
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Orientation="Horizontal">
+                        <TextBlock Text="Increase POS" FontSize="16" FontWeight="Bold" 
                            Foreground="White" Grid.Column="1"
                        VerticalAlignment="Center" Margin="5,5,5,5"/>
-                    <materialDesign:PackIcon  Grid.Column="1" Foreground="Silver" Kind="InfoCircle"  FlowDirection="LeftToRight"
-                                         Width="20" Height="20"   Margin="110,22,5,5" />
+                        <Button Grid.Column="1" x:Name="btn_info" Click="Btn_info_Click"
+                    Background="{x:Null}" BorderBrush="{x:Null}"  
+                    Padding="0"  >
+                            <materialDesign:PackIcon   Foreground="Silver" Kind="InfoCircle"  FlowDirection="LeftToRight"
+                                         Width="20" Height="20"    />
+                        </Button>
+                    </StackPanel>
                     <StackPanel Grid.Column="2" VerticalAlignment="Center" Orientation="Horizontal"
                                 x:Name="sp_mainTrack">
                         <TextBlock FontSize="14" FontWeight="Regular" Foreground="White" 
@@ -159,14 +165,14 @@
 
 
                 <materialDesign:Badged       Height="auto" Grid.Column="5"  Name="md_notificationCount" Margin="10,10,10,10" VerticalAlignment="Center"   
-                      BadgeBackground="{StaticResource MainColorRed}"  BadgeForeground="White"  Badge="+9">
+                      BadgeBackground="{StaticResource MainColorRed}"  BadgeForeground="White"  >
                     <Button Grid.Column="5" x:Name="BTN_notifications"
                     Background="{x:Null}" BorderBrush="{x:Null}" Width="25" Height="25" Click="BTN_notifications_Click"
                     Padding="0" >
                         <materialDesign:PackIcon Foreground="White" Kind="Bell" 
                                          Width="25" Height="25"/>
                         <Button.Triggers>
-                           
+
                             <EventTrigger RoutedEvent="Button.Click">
                                 <BeginStoryboard>
                                     <Storyboard>
@@ -695,90 +701,96 @@
         </Grid>
         <Border x:Name="bdrMain" Visibility="Collapsed" VerticalAlignment="Top" Height="auto" Width="auto" Margin="0,70,150,70" HorizontalAlignment="Right" >
             <Grid>
-        <Border x:Name="bdr_shadow" Background="White" CornerRadius="10"  Height="350" Width="250">
+                <Border x:Name="bdr_shadow" Background="White" CornerRadius="10"  Height="450" Width="250">
 
-            <Border.Effect>
-                <DropShadowEffect   ShadowDepth="0" Color="Gray" BlurRadius="20"/>
-            </Border.Effect>
-        </Border>
-        <Border  x:Name="bdr_notification"  CornerRadius="10" Background="White" Height="350" Width="250" >
-           
-            <Grid >
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="60"></RowDefinition>
-                    <RowDefinition Height="*"></RowDefinition>
-                    <RowDefinition Height="auto"></RowDefinition>
-                </Grid.RowDefinitions>
-
-                <Border Background="{StaticResource MainColorBlue}" CornerRadius="10,10,0,0">
-                    <TextBlock  Text="Notifications" Foreground="White" FontSize="24" FontWeight="Bold" Padding="20,0,20,0" VerticalAlignment="Center"></TextBlock>
-
-                 
+                    <Border.Effect>
+                        <DropShadowEffect   ShadowDepth="0" Color="Gray" BlurRadius="20"/>
+                    </Border.Effect>
                 </Border>
-                
-                <Grid Grid.Row="1" x:Name="grd_notifications">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"></RowDefinition>
-                        <RowDefinition Height="*"></RowDefinition>
-                        <RowDefinition Height="*"></RowDefinition>
-                        <RowDefinition Height="*"></RowDefinition>
-                        <RowDefinition Height="*"></RowDefinition>
-                    </Grid.RowDefinitions>
-                    
-                    <Border Grid.Row="0" BorderThickness="0,0,0,1" Margin="5,3,5,0" BorderBrush="{StaticResource MainColorlightGrey}">
-                        <StackPanel>
-                    <TextBlock  Margin="5,5,5,0" Foreground="{StaticResource MainColorGrey}" FontSize="14" Text="You have a new Notification"></TextBlock>
-                            <TextBlock Margin="5,2,5,5" Text="2021/08/23" FontSize="10" Foreground="#8e8e8e"></TextBlock>
-                        </StackPanel>
-                    </Border>
-                    <Border Grid.Row="1" BorderThickness="0,0,0,1" Margin="5,3,5,0" BorderBrush="{StaticResource MainColorlightGrey}">
-                        <StackPanel>
-                            <TextBlock  Margin="5,5,5,0" Foreground="{StaticResource MainColorGrey}" FontSize="14" Text="You have a new Notification"></TextBlock>
-                            <TextBlock Margin="5,2,5,5" Text="2021/08/23" FontSize="10" Foreground="#8e8e8e"></TextBlock>
-                        </StackPanel>
-                    </Border>
-                    <Border Grid.Row="2" BorderThickness="0,0,0,1" Margin="5,3,5,0" BorderBrush="{StaticResource MainColorlightGrey}">
-                        <StackPanel>
-                            <TextBlock  Margin="5,5,5,0" Foreground="{StaticResource MainColorGrey}" FontSize="14" Text="You have a new Notification"></TextBlock>
-                            <TextBlock Margin="5,2,5,5" Text="2021/08/23" FontSize="10" Foreground="#8e8e8e"></TextBlock>
-                        </StackPanel>
-                    </Border>
+                <Border  x:Name="bdr_notification"  CornerRadius="10" Background="White" Height="450" Width="250" >
+
+                    <Grid >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="60"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="auto"></RowDefinition>
+                        </Grid.RowDefinitions>
+
+                        <Border Background="{StaticResource MainColorBlue}" CornerRadius="10,10,0,0">
+                            <TextBlock  Text="Notifications" Foreground="White" FontSize="24" FontWeight="Bold" Padding="20,0,20,0" VerticalAlignment="Center"></TextBlock>
 
 
-
-                    <Border Grid.Row="3" BorderThickness="0,0,0,1" Margin="5,3,5,0" BorderBrush="{StaticResource MainColorlightGrey}">
-                        <StackPanel>
-                            <TextBlock  Margin="5,5,5,0" Foreground="{StaticResource MainColorGrey}" FontSize="14" Text="You have a new Notification"></TextBlock>
-                            <TextBlock Margin="5,2,5,5" Text="2021/08/23" FontSize="10" Foreground="#8e8e8e"></TextBlock>
-                        </StackPanel>
-                    </Border>
-
-                    <Border Grid.Row="4" BorderThickness="0,0,0,0" Margin="5,3,5,0" BorderBrush="{StaticResource MainColorlightGrey}">
-                        <StackPanel>
-                            <TextBlock  Margin="5,5,5,0" Foreground="{StaticResource MainColorGrey}" FontSize="14" Text="You have a new Notification"></TextBlock>
-                            <TextBlock Margin="5,2,5,5" Text="2021/08/23" FontSize="10" Foreground="#8e8e8e"></TextBlock>
-                        </StackPanel>
-                    </Border>
-                </Grid>
-                <Border Grid.Row="2" BorderBrush="{StaticResource MainColorlightGrey}" BorderThickness="0,1,0,0">
-                    <StackPanel>
-                        <Button Content="Show All" Background="Transparent" BorderBrush="Transparent" Foreground="{StaticResource MainColorBlue}"  HorizontalAlignment="Center"  FontSize="18" Margin="0,5,0,0" MouseEnter="TextBlock_MouseEnter" MouseLeave="TextBlock_MouseLeave" Click="Button_Click">           
-                 </Button>
-                        <Border x:Name="bdr_showAll" Visibility="Hidden" BorderThickness="0,0,0,1" BorderBrush="{StaticResource MainColorBlue}" HorizontalAlignment="Center" Width="80" Margin="0,-5,0,10">
                         </Border>
-                    </StackPanel>
+                        <TextBlock x:Name="txt_noNoti" Grid.Row="1" VerticalAlignment="Center" Text="No Notifications There!" Margin="5,20,5,20" TextAlignment="Center" TextWrapping="Wrap" FontSize="16"  Foreground="{StaticResource MainColorlightGrey}"></TextBlock>
+                        <Grid Grid.Row="1" x:Name="grd_notifications">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                            </Grid.RowDefinitions>
+
+                            <Border Grid.Row="0" BorderThickness="0,0,0,1" Margin="5,3,5,0" BorderBrush="{StaticResource MainColorlightGrey}">
+                                <StackPanel>
+                                    <TextBlock x:Name="txt_firstNotiTitle" Margin="5,0,5,1" Foreground="{StaticResource MainColorBlue}" FontSize="14"></TextBlock>
+                                    <TextBlock x:Name="txt_firstNotiContent" TextWrapping="Wrap" Margin="5,0,5,0" Height="30" Foreground="{StaticResource MainColorGrey}"  FontSize="12">
+                                    </TextBlock>
+                                    <TextBlock x:Name="txt_firstNotiDate" Margin="5,2,5,5"  FontSize="10" Foreground="#8e8e8e"></TextBlock>
+                                </StackPanel>
+                            </Border>
+                            <Border Grid.Row="1" BorderThickness="0,0,0,1" Margin="5,3,5,0" BorderBrush="{StaticResource MainColorlightGrey}">
+                                <StackPanel>
+                                    <TextBlock x:Name="txt_2NotiTitle" Margin="5,0,5,1" Foreground="{StaticResource MainColorBlue}" FontSize="14" ></TextBlock>
+                                    <TextBlock x:Name="txt_2NotiContent" TextWrapping="Wrap" Margin="5,0,5,0" Height="30" Foreground="{StaticResource MainColorGrey}" FontSize="12" ></TextBlock>
+                                    <TextBlock x:Name="txt_2NotiDate" Margin="5,2,5,5"  FontSize="10" Foreground="#8e8e8e"></TextBlock>
+                                </StackPanel>
+                            </Border>
+                            <Border Grid.Row="2" BorderThickness="0,0,0,1" Margin="5,3,5,0" BorderBrush="{StaticResource MainColorlightGrey}">
+                                <StackPanel>
+                                    <TextBlock x:Name="txt_3NotiTitle" Margin="5,0,5,1" Foreground="{StaticResource MainColorBlue}" FontSize="14" ></TextBlock>
+                                    <TextBlock x:Name="txt_3NotiContent" TextWrapping="Wrap" Margin="5,0,5,0" Height="30" Foreground="{StaticResource MainColorGrey}" FontSize="12" ></TextBlock>
+                                    <TextBlock x:Name="txt_3NotiDate" Margin="5,2,5,5"  FontSize="10" Foreground="#8e8e8e"></TextBlock>
+                                </StackPanel>
+                            </Border>
+
+
+
+                            <Border Grid.Row="3" BorderThickness="0,0,0,1" Margin="5,3,5,0" BorderBrush="{StaticResource MainColorlightGrey}">
+                                <StackPanel>
+                                    <TextBlock x:Name="txt_4NotiTitle" Margin="5,0,5,1" Foreground="{StaticResource MainColorBlue}" FontSize="14" ></TextBlock>
+                                    <TextBlock x:Name="txt_4NotiContent" TextWrapping="Wrap" Margin="5,0,5,0" Height="30" Foreground="{StaticResource MainColorGrey}" FontSize="12" ></TextBlock>
+                                    <TextBlock x:Name="txt_4NotiDate" Margin="5,2,5,5"  FontSize="10" Foreground="#8e8e8e"></TextBlock>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Grid.Row="4" BorderThickness="0,0,0,0" Margin="5,3,5,0" BorderBrush="{StaticResource MainColorlightGrey}">
+                                <StackPanel>
+                                    <TextBlock x:Name="txt_5NotiTitle" Margin="5,0,5,1" Foreground="{StaticResource MainColorBlue}" FontSize="14" ></TextBlock>
+                                    <TextBlock x:Name="txt_5NotiContent" TextWrapping="Wrap" Margin="5,0,5,0" Height="30" Foreground="{StaticResource MainColorGrey}" FontSize="12" ></TextBlock>
+                                    <TextBlock x:Name="txt_5NotiDate" Margin="5,2,5,5"  FontSize="10" Foreground="#8e8e8e"></TextBlock>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+                        <Border Grid.Row="2" BorderBrush="{StaticResource MainColorlightGrey}" BorderThickness="0,1,0,0">
+                            <StackPanel>
+                                <Button Content="Show All" Background="Transparent" BorderBrush="Transparent" Foreground="{StaticResource MainColorBlue}"  HorizontalAlignment="Center"  FontSize="18" Margin="0,5,0,0" MouseEnter="TextBlock_MouseEnter" MouseLeave="TextBlock_MouseLeave" Click="Button_Click">
+                                </Button>
+                                <Border x:Name="bdr_showAll" Visibility="Hidden" BorderThickness="0,0,0,1" BorderBrush="{StaticResource MainColorBlue}" HorizontalAlignment="Center" Width="80" Margin="0,-5,0,10">
+                                </Border>
+                            </StackPanel>
+
+                        </Border>
+                    </Grid>
+
 
                 </Border>
-            </Grid>
-
-
-        </Border>
-        <Border x:Name="path_notification" >
-        <Path  Fill="{StaticResource MainColorBlue}" VerticalAlignment="Top" Margin="0,-20,70,0" Stretch="Fill"  Grid.ColumnSpan="2" HorizontalAlignment="Right"
+                <Border x:Name="path_notification" >
+                    <Path  Fill="{StaticResource MainColorBlue}" VerticalAlignment="Top" Margin="0,-20,70,0" Stretch="Fill"  Grid.ColumnSpan="2" HorizontalAlignment="Right"
                                Grid.Column="0"   
                      Width="35" Height="25"  
                               Data="M31,12l19,38H0l19-38C21.5,7,28.5,7,31,12z"/>
-        </Border>
+                </Border>
             </Grid>
         </Border>
     </Grid>

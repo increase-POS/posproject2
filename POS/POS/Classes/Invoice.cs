@@ -101,7 +101,8 @@ namespace POS.Classes
         public string shipUserName { get; set; }
         public string status { get; set; }
         public int invStatusId { get; set; }
-
+        public decimal manualDiscountValue { get; set; }
+        public string manualDiscountType { get; set; }
         // for report
         public int countP { get; set; }
         public int countS { get; set; }

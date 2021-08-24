@@ -84,7 +84,7 @@ namespace POS.View.windows
                 lst_selectedInvoices.ItemsSource = selectedInvoices;
                 lst_selectedInvoices.SelectedValuePath = "invNumber";
                 lst_selectedInvoices.DisplayMemberPath = "invoiceId";
-                SectionData.EndAwait(grid_mainGrid,this);
+                SectionData.EndAwait(grid_mainGrid);
                 if (sender != null)
                     SectionData.EndAwait(grid_invoices);
             }

@@ -9,7 +9,7 @@
              xmlns:local="clr-namespace:POS.View.reports"
              mc:Ignorable="d" 
                 d:DesignHeight="600" d:DesignWidth="800" Loaded="UserControl_Loaded">
-    <Grid Margin="0,15,15,15">
+    <Grid Margin="0,15,15,15" x:Name="grid_main">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"></ColumnDefinition>
             <ColumnDefinition Width="auto" ></ColumnDefinition>

@@ -49,13 +49,13 @@
                                VerticalAlignment="Center" 
                               Height="40"   Width="auto" Margin="10,5" 
                               TextChanged="Tb_search_TextChanged">
-                            <TextBox.ToolTip>
+                            <!--<TextBox.ToolTip>
                                 <ToolTip x:Name="tt_search" Content="Search"
                                     Placement="left" 
                                     HorizontalOffset="15"
                                     PlacementRectangle="50,0,0,0"
                                     VerticalOffset="30"/>
-                            </TextBox.ToolTip>
+                            </TextBox.ToolTip>-->
                         </TextBox>
 
 
@@ -377,13 +377,13 @@
                                      BorderBrush="AliceBlue" TextChanged="Tb_code_TextChanged" LostFocus="Tb_code_LostFocus"
                                      MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                      Height="40" Margin="10,5,10,5" Grid.ColumnSpan="2" PreviewKeyDown="Tb_code_PreviewKeyDown" PreviewTextInput="Tb_code_PreviewTextInput" >
-                                <TextBox.ToolTip>
+                                <!--<TextBox.ToolTip>
                                     <ToolTip x:Name="tt_code" Content="Code"
                                               Placement="left" 
                                               HorizontalOffset="35"
                                               PlacementRectangle="50,0,0,0"
                                               VerticalOffset="20"/>
-                                </TextBox.ToolTip>
+                                </TextBox.ToolTip>-->
                                 </TextBox>
 
                             <Path Fill="#E81123" Stretch="Fill" Margin="0,15,15,15" x:Name="p_errorCode"
@@ -404,13 +404,13 @@
                                      TextChanged="Tb_name_TextChanged" LostFocus="Tb_name_LostFocus"
                                       MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                      Height="40"  Margin="10,5,10,5" Grid.Row="2" >
-                            <TextBox.ToolTip>
+                            <!--<TextBox.ToolTip>
                                 <ToolTip x:Name="tt_name" Content="Name"
                                               Placement="left" 
                                               HorizontalOffset="35"
                                               PlacementRectangle="50,0,0,0"
                                               VerticalOffset="20"/>
-                            </TextBox.ToolTip>
+                            </TextBox.ToolTip>-->
                         </TextBox>
                         <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5" x:Name="p_errorName"
                                   HorizontalAlignment="Right"  Grid.Row="2" Visibility="Collapsed" 
@@ -429,13 +429,13 @@
                                       BorderBrush="#737373"       BorderThickness="0" 
                                       FontFamily="Segoe UI"   
                                       Grid.Row="3" SelectionChanged="Cb_branchId_SelectionChanged">
-                                <ComboBox.ToolTip>
+                                <!--<ComboBox.ToolTip>
                                     <ToolTip x:Name="tt_branch" Content="Parent Branch"
                                               Placement="left" 
                                               HorizontalOffset="35"
                                               PlacementRectangle="50,0,0,0"
                                               VerticalOffset="20"/>
-                                </ComboBox.ToolTip>
+                                </ComboBox.ToolTip>-->
                             </ComboBox>
                             <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5" x:Name="p_errorSelectBranch"
                                   HorizontalAlignment="Right"  Grid.Row="3"  Visibility="Collapsed" 
@@ -454,13 +454,13 @@
                                  HorizontalAlignment="Stretch" VerticalAlignment="Center"  
                                  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                  MinHeight="70"  Grid.ColumnSpan="2" >
-                            <TextBox.ToolTip>
+                            <!--<TextBox.ToolTip>
                                 <ToolTip x:Name="tt_notes" Content="Notes"
                                               Placement="left" 
                                               HorizontalOffset="35"
                                               PlacementRectangle="50,0,0,0"
                                               VerticalOffset="20"/>
-                            </TextBox.ToolTip>
+                            </TextBox.ToolTip>-->
                         </TextBox>
                         <Path Fill="#E81123" Stretch="Fill" Margin="15,12,15,5"
                               HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed"  

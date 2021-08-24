@@ -2272,4 +2272,40 @@ Please add Email in setting</value>
   <data name="trBankAlertTilte" xml:space="preserve">
     <value>trBankAlertTilte</value>
   </data>
+  <data name="trCompanySettings" xml:space="preserve">
+    <value>Company Settings</value>
+  </data>
+  <data name="trCreate" xml:space="preserve">
+    <value>Create</value>
+  </data>
+  <data name="trCreateInvocie" xml:space="preserve">
+    <value>Create Invocie</value>
+  </data>
+  <data name="trOverrideStorageLimitAlert" xml:space="preserve">
+    <value>Override storage limit</value>
+  </data>
+  <data name="trReciptOfInvoice" xml:space="preserve">
+    <value>Recipt of invoice</value>
+  </data>
+  <data name="trTransferAlertContent" xml:space="preserve">
+    <value>Transfer pending confirmation</value>
+  </data>
+  <data name="trTransferAlertTilte" xml:space="preserve">
+    <value>Transfer Operation</value>
+  </data>
+  <data name="trUsersSettings" xml:space="preserve">
+    <value>user settings</value>
+  </data>
+  <data name="trWaitingExecuteOrder" xml:space="preserve">
+    <value>Waiting execute order</value>
+  </data>
+  <data name="trExecuteOrder" xml:space="preserve">
+    <value>Execute order</value>
+  </data>
+  <data name="trTransfersAdmin" xml:space="preserve">
+    <value>Transfers Admin</value>
+  </data>
+  <data name="trNew" xml:space="preserve">
+    <value>New</value>
+  </data>
 </root>

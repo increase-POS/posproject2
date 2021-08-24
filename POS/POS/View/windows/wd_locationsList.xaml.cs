@@ -106,7 +106,7 @@ namespace POS.View.windows
                 lst_selectedLocations.ItemsSource = selectedLocations;
                 lst_selectedLocations.SelectedValuePath = "x";
                 lst_selectedLocations.DisplayMemberPath = "locationId";
-                SectionData.EndAwait(grid_mainGrid,this);
+                SectionData.EndAwait(grid_mainGrid);
 
                 if (sender != null)
                     SectionData.EndAwait(grid_locations);

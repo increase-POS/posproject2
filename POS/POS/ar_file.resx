@@ -2251,4 +2251,40 @@
   <data name="trBankAlertTilte" xml:space="preserve">
     <value>trBankAlertTilte</value>
   </data>
+  <data name="trCompanySettings" xml:space="preserve">
+    <value>إعدادات الشركة</value>
+  </data>
+  <data name="trCreate" xml:space="preserve">
+    <value>إنشاء</value>
+  </data>
+  <data name="trOverrideStorageLimitAlert" xml:space="preserve">
+    <value>تجاوز حدود التخزين</value>
+  </data>
+  <data name="trTransferAlertContent" xml:space="preserve">
+    <value>عملية تحويل بانتظار التأكيد</value>
+  </data>
+  <data name="trTransferAlertTilte" xml:space="preserve">
+    <value>عملية تحويل</value>
+  </data>
+  <data name="trUsersSettings" xml:space="preserve">
+    <value>إعدادات المستخدم</value>
+  </data>
+  <data name="trWaitingExecuteOrder" xml:space="preserve">
+    <value>طلب مبيعات بانتظار التنفيذ</value>
+  </data>
+  <data name="trCreateInvocie" xml:space="preserve">
+    <value>إنشاء فاتورة</value>
+  </data>
+  <data name="trExecuteOrder" xml:space="preserve">
+    <value>تنفيذ طلب مبيعات</value>
+  </data>
+  <data name="trTransfersAdmin" xml:space="preserve">
+    <value>تحويلات ادارية</value>
+  </data>
+  <data name="trReciptOfInvoice" xml:space="preserve">
+    <value>استلام فاتورة</value>
+  </data>
+  <data name="trNew" xml:space="preserve">
+    <value>جديد</value>
+  </data>
 </root>

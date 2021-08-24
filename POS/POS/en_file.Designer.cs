@@ -808,6 +808,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Company Settings.
+        /// </summary>
+        internal static string trCompanySettings {
+            get {
+                return ResourceManager.GetString("trCompanySettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Completed.
         /// </summary>
         internal static string trCompleted {
@@ -961,6 +970,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create.
+        /// </summary>
+        internal static string trCreate {
+            get {
+                return ResourceManager.GetString("trCreate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create date.
         /// </summary>
         internal static string trCreateDate {
@@ -975,6 +993,15 @@ namespace POS {
         internal static string trCreatedOper {
             get {
                 return ResourceManager.GetString("trCreatedOper", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create Invocie.
+        /// </summary>
+        internal static string trCreateInvocie {
+            get {
+                return ResourceManager.GetString("trCreateInvocie", resourceCulture);
             }
         }
         
@@ -2707,6 +2734,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Execute order.
+        /// </summary>
+        internal static string trExecuteOrder {
+            get {
+                return ResourceManager.GetString("trExecuteOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Expired.
         /// </summary>
         internal static string trExpired {
@@ -3670,6 +3706,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New.
+        /// </summary>
+        internal static string trNew {
+            get {
+                return ResourceManager.GetString("trNew", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New draft.
         /// </summary>
         internal static string trNewDraft {
@@ -3892,6 +3937,15 @@ namespace POS {
         internal static string trOrders {
             get {
                 return ResourceManager.GetString("trOrders", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Override storage limit.
+        /// </summary>
+        internal static string trOverrideStorageLimitAlert {
+            get {
+                return ResourceManager.GetString("trOverrideStorageLimitAlert", resourceCulture);
             }
         }
         
@@ -4765,6 +4819,15 @@ namespace POS {
         internal static string trRecipientTooltip {
             get {
                 return ResourceManager.GetString("trRecipientTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recipt of invoice.
+        /// </summary>
+        internal static string trReciptOfInvoice {
+            get {
+                return ResourceManager.GetString("trReciptOfInvoice", resourceCulture);
             }
         }
         
@@ -5984,6 +6047,24 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Transfer pending confirmation.
+        /// </summary>
+        internal static string trTransferAlertContent {
+            get {
+                return ResourceManager.GetString("trTransferAlertContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Transfer Operation.
+        /// </summary>
+        internal static string trTransferAlertTilte {
+            get {
+                return ResourceManager.GetString("trTransferAlertTilte", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Transfer Number.
         /// </summary>
         internal static string trTransferNumberTooltip {
@@ -5998,6 +6079,15 @@ namespace POS {
         internal static string trTransfers {
             get {
                 return ResourceManager.GetString("trTransfers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Transfers Admin.
+        /// </summary>
+        internal static string trTransfersAdmin {
+            get {
+                return ResourceManager.GetString("trTransfersAdmin", resourceCulture);
             }
         }
         
@@ -6200,6 +6290,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to user settings.
+        /// </summary>
+        internal static string trUsersSettings {
+            get {
+                return ResourceManager.GetString("trUsersSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User Type.
         /// </summary>
         internal static string trUserType {
@@ -6385,6 +6484,15 @@ namespace POS {
         internal static string trWaiting {
             get {
                 return ResourceManager.GetString("trWaiting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Waiting execute order.
+        /// </summary>
+        internal static string trWaitingExecuteOrder {
+            get {
+                return ResourceManager.GetString("trWaitingExecuteOrder", resourceCulture);
             }
         }
         

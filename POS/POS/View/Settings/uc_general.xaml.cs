@@ -407,8 +407,13 @@ namespace POS.View.Settings
                             else
                                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
+
+                            uc_settings objUC1 = new uc_settings();
+                            objUC1.UserControl_Loaded(null , null);
+                           
                             //update languge in main window
                             MainWindow parentWindow = Window.GetWindow(this) as MainWindow;
+
                             if (parentWindow != null)
                             {
                                 //access property of the MainWindow class that exposes the access rights...
@@ -416,22 +421,24 @@ namespace POS.View.Settings
                                 {
                                     MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
                                     parentWindow.grid_mainWindow.FlowDirection = FlowDirection.LeftToRight;
+                                    
                                 }
                                 else
                                 {
                                     MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
                                     parentWindow.grid_mainWindow.FlowDirection = FlowDirection.RightToLeft;
+                                    
                                 }
 
                                 parentWindow.translate();
 
                                 UserControl_Loaded(null, null);
-                                //translate();
-                                //cb_language.ItemsSource = null;
-                                //fillLanguages();
-                                //await getDefaultLanguage();
+
+
+                          
 
                             }
+
 
                         }
                     }
