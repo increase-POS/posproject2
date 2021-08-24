@@ -28,7 +28,7 @@ namespace POS.View.reports
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
