@@ -1054,10 +1054,10 @@ namespace POS.View
         private void Btn_preview_Click(object sender, RoutedEventArgs e)
         {
             Window.GetWindow(this).Opacity = 0.2;
-
-
-            List<ReportParameter> paramarr = new List<ReportParameter>();
-            string pdfpath;
+            string pdfpath = "";
+         
+                List<ReportParameter> paramarr = new List<ReportParameter>();
+           
 
             //
             pdfpath = @"\Thumb\report\temp.pdf";
@@ -1081,8 +1081,8 @@ namespace POS.View
             rep.SetParameters(paramarr);
 
             rep.Refresh();
-
-            LocalReportExtensions.ExportToPDF(rep, pdfpath);
+       
+        LocalReportExtensions.ExportToPDF(rep, pdfpath);
             wd_previewPdf w = new wd_previewPdf();
             w.pdfPath = pdfpath;
             if (!string.IsNullOrEmpty(w.pdfPath))

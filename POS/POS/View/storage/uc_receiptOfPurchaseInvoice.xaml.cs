@@ -921,7 +921,7 @@ namespace POS.View.storage
                         {
                             int itemLocId = readyItemsLoc[i].itemsLocId;
                             int quantity = (int)readyItemsLoc[i].quantity;
-                            await itemLocationModel.decreaseItemLocationQuantity(itemLocId, quantity, MainWindow.userID.Value, "reciptInvoice_invoice",not);
+                            await itemLocationModel.decreaseItemLocationQuantity(itemLocId, quantity, MainWindow.userID.Value, "storageAlerts_minMaxItem", not);
                         }
                         Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                     }
@@ -968,7 +968,7 @@ namespace POS.View.storage
             invoice.invType = "p";
             invoice.updateUserId = MainWindow.userID.Value;
             await invoiceModel.saveInvoice(invoice);
-            await itemLocationModel.recieptInvoice(invoiceItems, MainWindow.branchID.Value, MainWindow.userID.Value, "reciptInvoice_invoice", not); // increase item quantity in DB
+            await itemLocationModel.recieptInvoice(invoiceItems, MainWindow.branchID.Value, MainWindow.userID.Value, "storageAlerts_minMaxItem", not); // increase item quantity in DB
         }
 
 

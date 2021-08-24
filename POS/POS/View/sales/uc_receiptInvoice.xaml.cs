@@ -787,7 +787,7 @@ namespace POS.View
                 };
                 Branch branch = new Branch();
                 branch = await branch.getBranchById(MainWindow.branchID.Value);
-                await not.Save(not, MainWindow.branchID.Value, "reciptInvoice_invoice", branch.name, (int)invoice.shipUserId);
+                await not.Save(not, MainWindow.branchID.Value, "saleAlerts_shippingUser", branch.name, (int)invoice.shipUserId);
                 #endregion
                 await saveOrderStatus(invoice.invoiceId, "ex");
             }
@@ -903,7 +903,7 @@ namespace POS.View
                             updateUserId = MainWindow.userID.Value,
                         };
                         #endregion
-                        await itemLocationModel.decreaseAmounts(invoiceItems, MainWindow.branchID.Value, MainWindow.userID.Value, "reciptInvoice_invoice", not); // update item quantity in DB
+                        await itemLocationModel.decreaseAmounts(invoiceItems, MainWindow.branchID.Value, MainWindow.userID.Value, "storageAlerts_minMaxItem", not); // update item quantity in DB
                         await invoice.recordPosCashTransfer(invoice,"si");                                                                                                         //if (paid > 0)
                                                                                                                                    //{
                         switch (cb_paymentProcessType.SelectedIndex)
@@ -951,7 +951,7 @@ namespace POS.View
                             updateUserId = MainWindow.userID.Value,
                         };
                         #endregion
-                        await itemLocationModel.recieptInvoice(invoiceItems, MainWindow.branchID.Value, MainWindow.userID.Value, "reciptInvoice_invoice", not); // update item quantity in DB
+                        await itemLocationModel.recieptInvoice(invoiceItems, MainWindow.branchID.Value, MainWindow.userID.Value, "storageAlerts_minMaxItem", not); // update item quantity in DB
                         await invoice.recordPosCashTransfer(invoice, "sb");
                         switch (cb_paymentProcessType.SelectedIndex)
                         {

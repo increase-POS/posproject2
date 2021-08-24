@@ -951,5 +951,10 @@ new StackedColumnSeries
             fillShortFallsEvents();
             fillComboItemsUnitsFalls();
         }
+
+        private void Btn_preview_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

@@ -2150,7 +2150,7 @@
     <value>تاريخ الإنشاء</value>
   </data>
   <data name="trDeliverOrderAlertContent" xml:space="preserve">
-    <value>trDeliverOrderAlertContent</value>
+    <value>تم تكليفك بتوصيل طلبية</value>
   </data>
   <data name="trDeliverOrderAlertTilte" xml:space="preserve">
     <value>طلب توصيل</value>
@@ -2232,5 +2232,23 @@
   </data>
   <data name="trTheUserHasNoEmail" xml:space="preserve">
     <value>لايوجد بريد الكتروني للمستخدم</value>
+  </data>
+  <data name="trPurchaseInvoiceAlertContent" xml:space="preserve">
+    <value>فاتورة شراء بانتظار الاستلام</value>
+  </data>
+  <data name="trPurchaseInvoiceAlertTilte" xml:space="preserve">
+    <value>فاتورة شراء</value>
+  </data>
+  <data name="trPurchaseReturnInvoiceAlertContent" xml:space="preserve">
+    <value>فاتورة مرتجع شراء بانتظار التنفيذ</value>
+  </data>
+  <data name="trPurchaseReturnInvoiceAlertTilte" xml:space="preserve">
+    <value>فاتورة مرتجع مشتريات</value>
+  </data>
+  <data name="trBankAlertContent" xml:space="preserve">
+    <value>trBankAlertContent</value>
+  </data>
+  <data name="trBankAlertTilte" xml:space="preserve">
+    <value>trBankAlertTilte</value>
   </data>
 </root>

@@ -383,5 +383,10 @@ namespace POS.View.sales
             }
 
         }
+
+        private void Btn_preview_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

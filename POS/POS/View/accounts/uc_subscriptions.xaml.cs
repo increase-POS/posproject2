@@ -174,5 +174,10 @@ namespace POS.View.accounts
         private void Btn_print_Click(object sender, RoutedEventArgs e)
         {
         }
+
+        private void Btn_preview_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

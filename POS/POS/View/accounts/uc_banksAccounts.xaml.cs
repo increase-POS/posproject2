@@ -398,6 +398,17 @@ namespace POS.View.accounts
 
                             if (!s.Equals("0"))
                             {
+                                #region notification Object
+                                Notification not = new Notification()
+                                {
+                                    title = "trBankAlertTilte",
+                                    ncontent = "trBankAlertContent",
+                                    msgType = "alert",
+                                    createUserId = MainWindow.userID.Value,
+                                    updateUserId = MainWindow.userID.Value,
+                                };
+                                await not.Save(not, MainWindow.branchID.Value, "accountsAlerts_bankUserPermission", cb_opperationType.Text,(int)cb_user.SelectedValue);
+                                #endregion
                                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                                 Btn_clear_Click(null, null);
 
@@ -912,5 +923,48 @@ namespace POS.View.accounts
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
+            private void Btn_preview1_Click(object sender, RoutedEventArgs e)
+            {
+                Window.GetWindow(this).Opacity = 0.2;
+                string pdfpath = "";
+
+                List<ReportParameter> paramarr = new List<ReportParameter>();
+
+
+                //
+                pdfpath = @"\Thumb\report\temp.pdf";
+                pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
+
+                string addpath = "";
+                bool isArabic = ReportCls.checkLang();
+                if (isArabic)
+                {
+                    addpath = @"\Reports\Account\Ar\ArBankAccReport.rdlc";
+                }
+                else addpath = @"\Reports\Account\EN\BankAccReport.rdlc";
+                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+                ReportCls.checkLang();
+
+                clsReports.bankAccReport(cashesQuery, rep, reppath);
+                clsReports.setReportLanguage(paramarr);
+                clsReports.Header(paramarr);
+
+                rep.SetParameters(paramarr);
+
+                rep.Refresh();
+
+                LocalReportExtensions.ExportToPDF(rep, pdfpath);
+                wd_previewPdf w = new wd_previewPdf();
+                w.pdfPath = pdfpath;
+                if (!string.IsNullOrEmpty(w.pdfPath))
+                {
+                    w.ShowDialog();
+                    w.wb_pdfWebViewer.Dispose();
+
+
+                }
+                Window.GetWindow(this).Opacity = 1;
+            }
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.Win32;
 using netoaster;
 using POS.Classes;
+using POS.View.windows;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -698,6 +699,50 @@ namespace POS.View.storage
                     SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
+        }
+
+        private void Btn_preview_Click(object sender, RoutedEventArgs e)
+        {
+            Window.GetWindow(this).Opacity = 0.2;
+            string pdfpath = "";
+
+            List<ReportParameter> paramarr = new List<ReportParameter>();
+
+
+            //
+            pdfpath = @"\Thumb\report\temp.pdf";
+            pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
+
+            string addpath;
+            bool isArabic = ReportCls.checkLang();
+            if (isArabic)
+            {
+                addpath = @"\Reports\Store\Ar\ArStorageReport.rdlc";
+            }
+            else addpath = @"\Reports\Store\EN\StorageReport.rdlc";
+            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+            ReportCls.checkLang();
+
+            clsReports.itemLocation(itemLocationListQuery, rep, reppath);
+            clsReports.setReportLanguage(paramarr);
+            clsReports.Header(paramarr);
+
+            rep.SetParameters(paramarr);
+
+            rep.Refresh();
+
+            LocalReportExtensions.ExportToPDF(rep, pdfpath);
+            wd_previewPdf w = new wd_previewPdf();
+            w.pdfPath = pdfpath;
+            if (!string.IsNullOrEmpty(w.pdfPath))
+            {
+                w.ShowDialog();
+                w.wb_pdfWebViewer.Dispose();
+
+
+            }
+            Window.GetWindow(this).Opacity = 1;
         }
     }
 }

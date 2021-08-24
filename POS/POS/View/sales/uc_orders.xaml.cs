@@ -1625,7 +1625,7 @@ SectionData.isAdminPermision())
                                 createUserId = MainWindow.userID.Value,
                                 updateUserId = MainWindow.userID.Value,
                             };
-                            await notification.Save(not, (int)cb_branch.SelectedValue, "reciptInvoice_invoice", branch.name);
+                            await notification.Save(not, (int)cb_branch.SelectedValue, "saleAlerts_executeOrder", branch.name);
                             #endregion
                             refreshDraftNotification();
                         }

@@ -843,5 +843,10 @@ namespace POS.View
 
             ExportToExcel.Export(DTForExcel);
         }
+
+        private void Btn_preview_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
  } 

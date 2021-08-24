@@ -1537,7 +1537,51 @@ namespace POS.View.accounts
             }
         }
 
-        private  void Btn_pdf1_Click(object sender, RoutedEventArgs e)
+        private void Btn_preview1_Click(object sender, RoutedEventArgs e)
+        {
+            Window.GetWindow(this).Opacity = 0.2;
+            string pdfpath = "";
+
+            List<ReportParameter> paramarr = new List<ReportParameter>();
+
+
+            //
+            pdfpath = @"\Thumb\report\temp.pdf";
+            pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
+
+            string addpath = "";
+            bool isArabic = ReportCls.checkLang();
+            if (isArabic)
+            {
+                addpath = @"\Reports\Account\Ar\ArPayAccReport.rdlc";
+            }
+            else addpath = @"\Reports\Account\EN\PayAccReport.rdlc";
+            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+            ReportCls.checkLang();
+
+            clsReports.bankAccReport(cashesQuery, rep, reppath);
+            clsReports.setReportLanguage(paramarr);
+            clsReports.Header(paramarr);
+
+            rep.SetParameters(paramarr);
+
+            rep.Refresh();
+
+            LocalReportExtensions.ExportToPDF(rep, pdfpath);
+            wd_previewPdf w = new wd_previewPdf();
+            w.pdfPath = pdfpath;
+            if (!string.IsNullOrEmpty(w.pdfPath))
+            {
+                w.ShowDialog();
+                w.wb_pdfWebViewer.Dispose();
+
+
+            }
+            Window.GetWindow(this).Opacity = 1;
+        }
+
+        private void Btn_pdf1_Click(object sender, RoutedEventArgs e)
         {
             try
             {

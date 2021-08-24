@@ -358,6 +358,24 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to trBankAlertContent.
+        /// </summary>
+        internal static string trBankAlertContent {
+            get {
+                return ResourceManager.GetString("trBankAlertContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to trBankAlertTilte.
+        /// </summary>
+        internal static string trBankAlertTilte {
+            get {
+                return ResourceManager.GetString("trBankAlertTilte", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to البنك....
         /// </summary>
         internal static string trBankHint {
@@ -1069,7 +1087,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to trDeliverOrderAlertContent.
+        ///   Looks up a localized string similar to تم تكليفك بتوصيل طلبية.
         /// </summary>
         internal static string trDeliverOrderAlertContent {
             get {
@@ -4445,6 +4463,24 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to فاتورة شراء بانتظار الاستلام.
+        /// </summary>
+        internal static string trPurchaseInvoiceAlertContent {
+            get {
+                return ResourceManager.GetString("trPurchaseInvoiceAlertContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to فاتورة شراء.
+        /// </summary>
+        internal static string trPurchaseInvoiceAlertTilte {
+            get {
+                return ResourceManager.GetString("trPurchaseInvoiceAlertTilte", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to فواتير الشراء.
         /// </summary>
         internal static string trPurchaseInvoices {
@@ -4504,6 +4540,24 @@ namespace POS {
         internal static string trPurchaseReturnInvoice {
             get {
                 return ResourceManager.GetString("trPurchaseReturnInvoice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to فاتورة مرتجع شراء بانتظار التنفيذ.
+        /// </summary>
+        internal static string trPurchaseReturnInvoiceAlertContent {
+            get {
+                return ResourceManager.GetString("trPurchaseReturnInvoiceAlertContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to فاتورة مرتجع مشتريات.
+        /// </summary>
+        internal static string trPurchaseReturnInvoiceAlertTilte {
+            get {
+                return ResourceManager.GetString("trPurchaseReturnInvoiceAlertTilte", resourceCulture);
             }
         }
         

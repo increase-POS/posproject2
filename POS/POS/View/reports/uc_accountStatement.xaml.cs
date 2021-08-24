@@ -973,5 +973,15 @@ namespace POS.View.reports
                 // btn_emailMessage.Visibility = Visibility.Hidden;
             }
         }
+
+        private void Btn_preview_Click(object sender, RoutedEventArgs e)
+        {
+          
+        }
+
+        private void Btn_pdf_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

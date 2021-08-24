@@ -3157,5 +3157,10 @@ namespace POS.View
         {
 
         }
+
+        private void Btn_preview_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

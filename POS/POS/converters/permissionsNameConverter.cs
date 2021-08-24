@@ -12,9 +12,9 @@ namespace POS.converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value.Equals("suppliersBasics") || value.Equals("customersBasics") || value.Equals("usersBasics") || value.Equals("cardsBasics") ||
-                value.Equals("branchesBasics") || value.Equals("storesBasics") || value.Equals("posBasics") || value.Equals("banksBasics")
-                || value.Equals("shippingCompanyBasics") )
+            if (value.Equals("suppliers_basics") || value.Equals("customers_basics") || value.Equals("users_basics") || value.Equals("banks_basics")
+                || value.Equals("branches_basics") || value.Equals("stores_basics") || value.Equals("pos_basics") || value.Equals("cards_basics")
+                || value.Equals("shippingCompany_basics") )
             {
                 value = MainWindow.resourcemanager.GetString("trPermissionsBasics");
             }

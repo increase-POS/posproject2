@@ -641,5 +641,10 @@ namespace POS.View.catalog
                 SectionData.ExceptionMessage(ex,this,sender);
             }
         }
+
+        private void Btn_preview_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

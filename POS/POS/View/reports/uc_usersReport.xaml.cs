@@ -1252,6 +1252,11 @@ namespace POS.View.reports
         {
 
         }
+
+        private void Btn_preview_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
 

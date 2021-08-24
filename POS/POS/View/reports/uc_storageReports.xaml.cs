@@ -3643,6 +3643,11 @@ new StackedColumnSeries
             fillFalsRowChart();
             fillFalsPieChart();
         }
+
+        private void Btn_preview_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
 

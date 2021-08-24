@@ -269,7 +269,10 @@ namespace POS
             groupObjects = await groupObject.GetUserpermission(userLogin.userId);
 
             #endregion
-
+            #region notifications 
+            setNotifications();
+            //setTimer();
+            #endregion
             //#region
             //Pos pos = new Pos();
             //pos = await pos.getPosById((int)posID);
@@ -939,10 +942,13 @@ namespace POS
 
         }
 
-        private void BTN_notifications_Click(object sender, RoutedEventArgs e)
+        private async void BTN_notifications_Click(object sender, RoutedEventArgs e)
         {
             if (bdrMain.Visibility == Visibility.Collapsed)
             {
+              List<NotificationUser> notifications = await  notificationUser.GetByUserId(userID.Value,"alert");
+
+
                 bdrMain.Visibility = Visibility.Visible;
                 bdrMain.RenderTransform = Animations.borderAnimation(-25, bdrMain, true);
             }

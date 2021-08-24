@@ -2171,7 +2171,7 @@ Please add Email in setting</value>
     <value>Create date</value>
   </data>
   <data name="trDeliverOrderAlertContent" xml:space="preserve">
-    <value>trDeliverOrderAlertContent</value>
+    <value>You have been assigned to deliver an order</value>
   </data>
   <data name="trDeliverOrderAlertTilte" xml:space="preserve">
     <value>Deliver Order</value>
@@ -2253,5 +2253,23 @@ Please add Email in setting</value>
   </data>
   <data name="trTheUserHasNoEmail" xml:space="preserve">
     <value>The user does not have email</value>
+  </data>
+  <data name="trPurchaseInvoiceAlertContent" xml:space="preserve">
+    <value>Purchase invoice awaiting receipt</value>
+  </data>
+  <data name="trPurchaseInvoiceAlertTilte" xml:space="preserve">
+    <value>Purchase Invoice</value>
+  </data>
+  <data name="trPurchaseReturnInvoiceAlertContent" xml:space="preserve">
+    <value>Purchase return invoice pending execution</value>
+  </data>
+  <data name="trPurchaseReturnInvoiceAlertTilte" xml:space="preserve">
+    <value>Purchase Return Invoice</value>
+  </data>
+  <data name="trBankAlertContent" xml:space="preserve">
+    <value>trBankAlertContent</value>
+  </data>
+  <data name="trBankAlertTilte" xml:space="preserve">
+    <value>trBankAlertTilte</value>
   </data>
 </root>

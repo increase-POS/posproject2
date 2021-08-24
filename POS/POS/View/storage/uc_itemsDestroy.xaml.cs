@@ -412,7 +412,7 @@ namespace POS.View.storage
                                     if (cb_user.SelectedIndex != -1)
                                         await recordCash(invoiceModel);
                                    
-                                    await itemLocationModel.decreaseItemLocationQuantity((int)invItemLoc.itemLocationId, (int)invItemLoc.amountDestroyed, MainWindow.userID.Value, "reciptInvoice_invoice", not);
+                                    await itemLocationModel.decreaseItemLocationQuantity((int)invItemLoc.itemLocationId, (int)invItemLoc.amountDestroyed, MainWindow.userID.Value, "storageAlerts_minMaxItem", not);
                                     await refreshDestroyDetails();
                                     Btn_clear_Click(null, null);
                                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
@@ -467,7 +467,7 @@ namespace POS.View.storage
                                         {
                                             int itemLocId = readyItemsLoc[i].itemsLocId;
                                             int quantity = (int)readyItemsLoc[i].quantity;
-                                            await itemLocationModel.decreaseItemLocationQuantity(itemLocId, quantity, MainWindow.userID.Value, "reciptInvoice_invoice", not);
+                                            await itemLocationModel.decreaseItemLocationQuantity(itemLocId, quantity, MainWindow.userID.Value, "storageAlerts_minMaxItem", not);
                                         }
                                         Btn_clear_Click(null, null);
                                         Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
@@ -961,7 +961,49 @@ namespace POS.View.storage
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
+        private void Btn_preview_Click(object sender, RoutedEventArgs e)
+        {
+            Window.GetWindow(this).Opacity = 0.2;
+            string pdfpath = "";
 
-        
+            List<ReportParameter> paramarr = new List<ReportParameter>();
+
+
+            //
+            pdfpath = @"\Thumb\report\temp.pdf";
+            pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
+
+            string addpath;
+            bool isArabic = ReportCls.checkLang();
+            if (isArabic)
+            {
+                addpath = @"\Reports\Store\Ar\ArDestroyReport.rdlc";
+            }
+            else addpath = @"\Reports\Store\EN\DestroyReport.rdlc";
+            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+            ReportCls.checkLang();
+
+            clsReports.invItem(invItemsQuery, rep, reppath);
+            clsReports.setReportLanguage(paramarr);
+            clsReports.Header(paramarr);
+
+            rep.SetParameters(paramarr);
+
+            rep.Refresh();
+
+            LocalReportExtensions.ExportToPDF(rep, pdfpath);
+            wd_previewPdf w = new wd_previewPdf();
+            w.pdfPath = pdfpath;
+            if (!string.IsNullOrEmpty(w.pdfPath))
+            {
+                w.ShowDialog();
+                w.wb_pdfWebViewer.Dispose();
+
+
+            }
+            Window.GetWindow(this).Opacity = 1;
+        }
+
     }
 }

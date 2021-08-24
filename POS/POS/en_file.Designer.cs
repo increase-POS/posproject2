@@ -367,6 +367,24 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to trBankAlertContent.
+        /// </summary>
+        internal static string trBankAlertContent {
+            get {
+                return ResourceManager.GetString("trBankAlertContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to trBankAlertTilte.
+        /// </summary>
+        internal static string trBankAlertTilte {
+            get {
+                return ResourceManager.GetString("trBankAlertTilte", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bank....
         /// </summary>
         internal static string trBankHint {
@@ -1078,7 +1096,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to trDeliverOrderAlertContent.
+        ///   Looks up a localized string similar to You have been assigned to deliver an order.
         /// </summary>
         internal static string trDeliverOrderAlertContent {
             get {
@@ -4490,6 +4508,24 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Purchase invoice awaiting receipt.
+        /// </summary>
+        internal static string trPurchaseInvoiceAlertContent {
+            get {
+                return ResourceManager.GetString("trPurchaseInvoiceAlertContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Purchase Invoice.
+        /// </summary>
+        internal static string trPurchaseInvoiceAlertTilte {
+            get {
+                return ResourceManager.GetString("trPurchaseInvoiceAlertTilte", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Purchase Invoices.
         /// </summary>
         internal static string trPurchaseInvoices {
@@ -4549,6 +4585,24 @@ namespace POS {
         internal static string trPurchaseReturnInvoice {
             get {
                 return ResourceManager.GetString("trPurchaseReturnInvoice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Purchase return invoice pending execution.
+        /// </summary>
+        internal static string trPurchaseReturnInvoiceAlertContent {
+            get {
+                return ResourceManager.GetString("trPurchaseReturnInvoiceAlertContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Purchase Return Invoice.
+        /// </summary>
+        internal static string trPurchaseReturnInvoiceAlertTilte {
+            get {
+                return ResourceManager.GetString("trPurchaseReturnInvoiceAlertTilte", resourceCulture);
             }
         }
         

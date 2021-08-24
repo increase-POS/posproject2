@@ -796,7 +796,20 @@ namespace POS.View
                             && !tb.Text.Trim().Equals("") && decimal.Parse(tb_total.Text) > 0 && valid)
                         {
                             if (_InvoiceType == "pbd") //pbd means purchase bounse draft
-                                await addInvoice("pbw", "pb"); // pbw means waiting purchase bounce 
+                            {
+                                #region notification Object
+                                Notification not = new Notification()
+                                {
+                                    title = "trPurchaseReturnInvoiceAlertTilte",
+                                    ncontent = "trPurchaseReturnInvoiceAlertContent",
+                                    msgType = "alert",
+                                    createUserId = MainWindow.userID.Value,
+                                    updateUserId = MainWindow.userID.Value,
+                                };
+                                await not.Save(not, (int)cb_branch.SelectedValue, "storageAlerts_ctreatePurchaseReturnInvoice", cb_branch.Text);
+                                #endregion
+                                await addInvoice("pbw", "pb"); // pbw means waiting purchase bounce
+                            }
                             else if (_InvoiceType == "po")//po  purchase order
                                 await addInvoice("pw", "pi");
                             else//pw  waiting purchase invoice
@@ -810,7 +823,7 @@ namespace POS.View
                                     createUserId = MainWindow.userID.Value,
                                     updateUserId = MainWindow.userID.Value,
                                 };
-                                await not.Save(not, (int)cb_branch.SelectedValue, "reciptInvoice_invoice", cb_branch.Text);
+                                await not.Save(not, (int)cb_branch.SelectedValue, "storageAlerts_ctreatePurchaseInvoice", cb_branch.Text);
                                 #endregion
 
                                 await addInvoice("pw", "pi");

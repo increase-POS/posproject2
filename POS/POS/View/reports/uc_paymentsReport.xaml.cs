@@ -4,6 +4,7 @@ using LiveCharts.Wpf;
 using Microsoft.Reporting.WinForms;
 using Microsoft.Win32;
 using POS.Classes;
+using POS.View.windows;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -1720,6 +1721,107 @@ namespace POS.View.reports
 
             });
             t1.Start();
+        }
+
+        private void Btn_preview_Click(object sender, RoutedEventArgs e)
+        {
+            Window.GetWindow(this).Opacity = 0.2;
+            string pdfpath = "";
+
+            List<ReportParameter> paramarr = new List<ReportParameter>();
+
+
+            //
+            pdfpath = @"\Thumb\report\temp.pdf";
+            pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
+
+            string addpath = "";
+            bool isArabic = ReportCls.checkLang();
+            if (isArabic)
+            {
+                if (selectedTab == 0)
+                {
+                    addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArVendor.rdlc";
+                }
+                else if (selectedTab == 1)
+                {
+                    addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArCustomer.rdlc";
+                }
+                else if (selectedTab == 2)
+                {
+                    addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArUser.rdlc";
+                }
+                else if (selectedTab == 3)
+                {
+                    addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArSalary.rdlc";
+                }
+                else if (selectedTab == 4)
+                {
+                    addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArGeneralExpenses.rdlc";
+                }
+                else if (selectedTab == 5)
+                {
+                    addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArAdministrativePull.rdlc";
+                }
+                else if (selectedTab == 6)
+                {
+                    addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArShipping.rdlc";
+                }
+            }
+            else
+            {
+                if (selectedTab == 0)
+                {
+                    addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\Vendor.rdlc";
+                }
+                else if (selectedTab == 1)
+                {
+                    addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\Customer.rdlc";
+                }
+                else if (selectedTab == 2)
+                {
+                    addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\User.rdlc";
+                }
+                else if (selectedTab == 3)
+                {
+                    addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\Salary.rdlc";
+                }
+                else if (selectedTab == 4)
+                {
+                    addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\GeneralExpenses.rdlc";
+                }
+                else if (selectedTab == 5)
+                {
+                    addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\AdministrativePull.rdlc";
+                }
+                else if (selectedTab == 6)
+                {
+                    addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\Shipping.rdlc";
+                }
+            }
+            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+            ReportCls.checkLang();
+
+            clsReports.cashTransferSts(temp, rep, reppath);
+            clsReports.setReportLanguage(paramarr);
+            clsReports.Header(paramarr);
+
+            rep.SetParameters(paramarr);
+
+            rep.Refresh();
+
+            LocalReportExtensions.ExportToPDF(rep, pdfpath);
+            wd_previewPdf w = new wd_previewPdf();
+            w.pdfPath = pdfpath;
+            if (!string.IsNullOrEmpty(w.pdfPath))
+            {
+                w.ShowDialog();
+                w.wb_pdfWebViewer.Dispose();
+
+
+            }
+            Window.GetWindow(this).Opacity = 1;
         }
     }
 }

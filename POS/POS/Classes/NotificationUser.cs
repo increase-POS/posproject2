@@ -73,7 +73,12 @@ namespace POS.Classes
         public Nullable<int> createUserId { get; set; }
         public Nullable<int> updateUserId { get; set; }
 
-        public async Task<List<NotificationUser>> GetByUserId(int userId)
+        public string title { get; set; }
+        public string ncontent { get; set; }
+        public string side { get; set; }
+        public string msgType { get; set; }
+        public string path { get; set; }
+        public async Task<List<NotificationUser>> GetByUserId(int userId, string type)
         {
             List<NotificationUser> notifications = null;
             // ... Use HttpClient.
@@ -86,7 +91,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "notificationUser/Get?userId="+userId);
+                request.RequestUri = new Uri(Global.APIUri + "notificationUser/GetByUserId?userId=" + userId + "&type="+ type);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));

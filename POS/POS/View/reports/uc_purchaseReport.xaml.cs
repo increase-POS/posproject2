@@ -2004,6 +2004,93 @@ fillColumnChart(cb_Items, selectedItemId);
             });
             t1.Start();
         }
+
+        private void Btn_preview_Click(object sender, RoutedEventArgs e)
+        {
+            Window.GetWindow(this).Opacity = 0.2;
+            string pdfpath = "";
+
+            List<ReportParameter> paramarr = new List<ReportParameter>();
+            List<ItemTransferInvoice> query = new List<ItemTransferInvoice>();
+
+            //
+            pdfpath = @"\Thumb\report\temp.pdf";
+            pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
+
+            string addpath = "";
+            bool isArabic = ReportCls.checkLang();
+            if (isArabic)
+            {
+                if (selectedTab == 0)
+                {
+                    addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurSts.rdlc";
+                }
+                else if (selectedTab == 1)
+                {
+                    addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurPosSts.rdlc";
+                }
+                else if (selectedTab == 2)
+                {
+                    addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurVendorSts.rdlc";
+                }
+                else if (selectedTab == 3)
+                {
+                    addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurUserSts.rdlc";
+                }
+                else
+                {
+                    addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurItemSts.rdlc";
+                }
+            }
+            else
+            {
+                //english
+                if (selectedTab == 0)
+                { addpath = @"\Reports\StatisticReport\Purchase\En\EnPurSts.rdlc"; }
+                else if (selectedTab == 1)
+                {
+                    addpath = @"\Reports\StatisticReport\Purchase\En\EnPurPosSts.rdlc";
+                }
+                else if (selectedTab == 2)
+                {
+                    addpath = @"\Reports\StatisticReport\Purchase\En\EnPurVendorSts.rdlc";
+                }
+                else if (selectedTab == 3)
+                {
+                    addpath = @"\Reports\StatisticReport\Purchase\En\EnPurUserSts.rdlc";
+                }
+                else
+                {
+                    addpath = @"\Reports\StatisticReport\Purchase\En\EnPurItemSts.rdlc";
+                }
+
+            }
+
+
+            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+            ReportCls.checkLang();
+            //  getpuritemcount
+            clsReports.PurStsReport(query, rep, reppath);
+            clsReports.setReportLanguage(paramarr);
+            clsReports.Header(paramarr);
+
+            rep.SetParameters(paramarr);
+
+            rep.Refresh();
+
+            LocalReportExtensions.ExportToPDF(rep, pdfpath);
+            wd_previewPdf w = new wd_previewPdf();
+            w.pdfPath = pdfpath;
+            if (!string.IsNullOrEmpty(w.pdfPath))
+            {
+                w.ShowDialog();
+                w.wb_pdfWebViewer.Dispose();
+
+
+            }
+            Window.GetWindow(this).Opacity = 1;
+        }
     }
 }
 
