@@ -2835,3 +2835,7 @@ E:\GitHub\posproject2\POS\POS\obj\Debug\View\Settings\uc_reportSetting.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\Settings\uc_reportSetting.baml
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_info.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_info.baml
+D:\myproj\posproject2\POS\POS\obj\Debug\View\Settings\uc_reportSetting.g.cs
+D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\wd_info.g.cs
+D:\myproj\posproject2\POS\POS\obj\Debug\View\Settings\uc_reportSetting.baml
+D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\wd_info.baml

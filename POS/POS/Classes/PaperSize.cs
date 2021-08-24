@@ -11,7 +11,7 @@ using System.Web;
 
 namespace POS.Classes
 {
-    public class PaperSize
+    public class Papersize
     {
 
         public int sizeId { get; set; }
@@ -24,9 +24,9 @@ namespace POS.Classes
 
 
 
-        public async Task<List<PaperSize>> GetAll()
+        public async Task<List<Papersize>> GetAll()
         {
-            List<PaperSize> memberships = null;
+            List<Papersize> memberships = null;
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
             using (var client = new HttpClient())
@@ -47,20 +47,20 @@ namespace POS.Classes
                 {
                     var jsonString = await response.Content.ReadAsStringAsync();
 
-                    memberships = JsonConvert.DeserializeObject<List<PaperSize>>(jsonString);
+                    memberships = JsonConvert.DeserializeObject<List<Papersize>>(jsonString);
 
                     return memberships;
                 }
                 else //web api sent error response 
                 {
-                    memberships = new List<PaperSize>();
+                    memberships = new List<Papersize>();
                 }
                 return memberships;
             }
 
         }
 
-        public async Task<string> Save(PaperSize obj)
+        public async Task<string> Save(Papersize obj)
         {
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
@@ -94,9 +94,9 @@ namespace POS.Classes
             }
         }
 
-        public async Task<PaperSize> GetByID(int sizeId)
+        public async Task<Papersize> GetByID(int sizeId)
         {
-            PaperSize obj = new PaperSize();
+            Papersize obj = new Papersize();
 
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
@@ -119,7 +119,7 @@ namespace POS.Classes
                 {
                     var jsonString = await response.Content.ReadAsStringAsync();
 
-                    obj = JsonConvert.DeserializeObject<PaperSize>(jsonString);
+                    obj = JsonConvert.DeserializeObject<Papersize>(jsonString);
 
                     return obj;
                 }

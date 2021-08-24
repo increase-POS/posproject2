@@ -208,6 +208,41 @@ namespace POS.Classes
             rep.DataSources.Clear();
             rep.DataSources.Add(new ReportDataSource("DataSetItemTransferInvoice", itemTransferInvoices));
         }
+        public static void categoryReport(IEnumerable<Category> categoryQuery, LocalReport rep, string reppath)
+        {
+            rep.ReportPath = reppath;
+            rep.EnableExternalImages = true;
+            rep.DataSources.Clear();
+            rep.DataSources.Add(new ReportDataSource("DataSetCategory", categoryQuery));
+        }
+        public static void itemReport(IEnumerable<Item> itemQuery, LocalReport rep, string reppath)
+        {
+            rep.ReportPath = reppath;
+            rep.EnableExternalImages = true;
+            rep.DataSources.Clear();
+            rep.DataSources.Add(new ReportDataSource("DataSetItem", itemQuery));
+        }
+        public static void properyReport(IEnumerable<Property> propertyQuery, LocalReport rep, string reppath)
+        {
+            rep.ReportPath = reppath;
+            rep.EnableExternalImages = true;
+            rep.DataSources.Clear();
+            rep.DataSources.Add(new ReportDataSource("DataSetProperty", propertyQuery));
+        }
+        public static void storageCostReport(IEnumerable<StorageCost> storageCostQuery, LocalReport rep, string reppath)
+        {
+            rep.ReportPath = reppath;
+            rep.EnableExternalImages = true;
+            rep.DataSources.Clear();
+            rep.DataSources.Add(new ReportDataSource("DataSetStorageCost", storageCostQuery));
+        }
+        public static void unitReport(IEnumerable<Unit> unitQuery, LocalReport rep, string reppath)
+        {
+            rep.ReportPath = reppath;
+            rep.EnableExternalImages = true;
+            rep.DataSources.Clear();
+            rep.DataSources.Add(new ReportDataSource("DataSetUnit", unitQuery));
+        }
 
     }
 }
