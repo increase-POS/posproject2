@@ -118,7 +118,7 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn Width="*"   Header="Date" Binding="{Binding Path=inventoryDate,StringFormat=d}">
+                        <DataGridTextColumn Width="*"   Header="Date" Binding="{Binding Path=inventoryDate,Converter={StaticResource dateFrameConverter}}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Style.Triggers>

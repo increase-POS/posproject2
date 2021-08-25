@@ -23,12 +23,18 @@
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
-                <Border  x:Name="bdr_mainImage" Width="{Binding Path=ActualHeight, ElementName=bdr_mainImage}" FlowDirection="LeftToRight" >
+                <Button   IsCancel="true"  HorizontalAlignment="Right" VerticalAlignment="Top" Background="{x:Null}" 
+                             BorderBrush="{x:Null}"  Foreground="White" Margin="5"  x:Name="btn_colse" Click="Btn_colse_Click"
+                             FontWeight="SemiBold" Width="24" Padding="0" ToolTip="Close"  FontSize="14">
+                    <materialDesign:PackIcon Foreground="#8C8C8C" Kind="Close"  
+                                         Width="20" Height="20"/>
+                </Button>
+                <Border  x:Name="bdr_mainImage" Margin="0,15,0,5" Width="{Binding Path=ActualHeight, ElementName=bdr_mainImage}" FlowDirection="LeftToRight" >
                     <Border.Background>
-                        <ImageBrush x:Name="img_mainLogo"  Stretch="Fill"  ImageSource="/pic/increase-logo.png"/>
+                        <ImageBrush x:Name="img_mainLogo"  Stretch="Uniform"  ImageSource="/pic/increase-logo.png"/>
                     </Border.Background>
                 </Border>
-                <Grid Grid.Row="1"   Margin="20,10"  >
+                <Grid Grid.Row="1"   Margin="20,5,20,5"  >
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="2.5*"  />
@@ -37,24 +43,24 @@
                     <Rectangle   Stretch="Fill" 
                             RadiusY="15" RadiusX="15" Width="auto" Height="auto"
                                            Fill="{StaticResource MainColorBlue}" />
-                    <TextBlock Text="Program" FontSize="16" FontWeight="Regular"  HorizontalAlignment="Center"
+                        <TextBlock Text="Program" FontSize="16" FontWeight="SemiBold"  HorizontalAlignment="Center"
                            Foreground="White" Grid.Column="1"
                        VerticalAlignment="Center"  />
                     </Grid>
                     <StackPanel Margin="10,0" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
-                        <TextBlock Text="Increase POS" FontSize="16" FontWeight="Bold"  HorizontalAlignment="Center"
+                        <TextBlock Text="Increase POS" FontSize="16" FontWeight="SemiBold"  HorizontalAlignment="Center"
                            Foreground="#8C8C8C" Grid.Column="1"
                        VerticalAlignment="Center" Margin="10,5,10,5"/>
                         <TextBlock   Text="-" FontSize="16" FontWeight="Bold"  HorizontalAlignment="Center"
                            Foreground="#8C8C8C" Grid.Column="1"
                        VerticalAlignment="Center" Margin="10,5,10,5"/>
-                        <TextBlock Text="Version 1.1.0" FontSize="16" FontWeight="Bold"  HorizontalAlignment="Center"
+                        <TextBlock Text="Version 1.1.0" FontSize="16" FontWeight="SemiBold"  HorizontalAlignment="Center"
                            Foreground="#8C8C8C" Grid.Column="1"
                        VerticalAlignment="Center" Margin="10,5,10,5"/>
                     </StackPanel>
                    
                 </Grid>
-                <Grid Grid.Row="2"   Margin="20,10"  >
+                <Grid Grid.Row="2"   Margin="20,5"  >
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="2.5*"  />
@@ -63,37 +69,72 @@
                         <Rectangle   Stretch="Fill" 
                             RadiusY="15" RadiusX="15" Width="auto" Height="auto"
                                            Fill="{StaticResource MainColorBlue}" />
-                        <TextBlock Text="Development" FontSize="16" FontWeight="Regular"  HorizontalAlignment="Center"
+                        <TextBlock Text="Development" FontSize="16" FontWeight="SemiBold"  HorizontalAlignment="Center"
                            Foreground="White" Grid.Column="1"
                        VerticalAlignment="Center"  />
                     </Grid>
                     <StackPanel Margin="10,0" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
-                        <TextBlock Text="شركة انكريس للتجارة العامة ذ.م.م" FontSize="16" FontWeight="Bold"  HorizontalAlignment="Center"
+                        <TextBlock Text="شركة انكريس للتجارة العامة ذ.م.م" FontSize="16" FontWeight="SemiBold"  HorizontalAlignment="Center"
                            Foreground="#8C8C8C" Grid.Column="1"
                        VerticalAlignment="Center" Margin="10,5,10,5"/>
 
-                        <Border x:Name="bdr_supMainImage" Margin="10,0,10,0" Height="40"  Width="{Binding Path=ActualHeight, ElementName=bdr_supMainImage}" 
+                        <Border x:Name="bdr_supMainImage" Margin="10,0,10,0" Height="60"  Width="{Binding Path=ActualHeight, ElementName=bdr_supMainImage}" 
                                 FlowDirection="LeftToRight"   >
                             <Border.Background>
-                                <ImageBrush x:Name="img_supMainLogo"  Stretch="Fill"  ImageSource="/pic/increase-logo.png"/>
+                                <ImageBrush x:Name="img_supMainLogo"  Stretch="Uniform"  ImageSource="/pic/increase-logo.png"/>
                             </Border.Background>
                         </Border>
                     </StackPanel>
 
                 </Grid>
                 <Border  Grid.Row="3"   Margin="20,0"      Height="2" BorderThickness="0" Background="{StaticResource MainColorlightGrey}" />
-                    <StackPanel Grid.Row="4"   Margin="20,10"  Orientation="Horizontal" HorizontalAlignment="Left">
-                        <TextBlock Text="Increase POS" FontSize="16" FontWeight="Bold"  HorizontalAlignment="Center"
+                    <StackPanel Grid.Row="4"   Margin="20,10,20,2.5"  Orientation="Horizontal" HorizontalAlignment="Left">
+                        <TextBlock Text="Address:" FontSize="16" FontWeight="SemiBold"  HorizontalAlignment="Center"
+                           Foreground="{StaticResource MainColorBlue}" Grid.Column="1"
+                       VerticalAlignment="Center" Margin="10,5,10,5"/>
+                    <TextBlock   Text="دولة الكويت - حولي - شارع ابن خلدون - برج زينة - مكتب 13" FontSize="16" FontWeight="SemiBold"  HorizontalAlignment="Center"
                            Foreground="#8C8C8C" Grid.Column="1"
                        VerticalAlignment="Center" Margin="10,5,10,5"/>
-                        <TextBlock   Text="-" FontSize="16" FontWeight="Bold"  HorizontalAlignment="Center"
+                        
+                    </StackPanel>
+                <Grid Grid.Row="5"   Margin="20,2.5,20,10" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel  Orientation="Horizontal" HorizontalAlignment="Left">
+                        <TextBlock Text="Sales:" FontSize="16" FontWeight="SemiBold"  HorizontalAlignment="Center"
+                           Foreground="{StaticResource MainColorBlue}" Grid.Column="1"
+                       VerticalAlignment="Center" Margin="10,5,5,5"/>
+                        <TextBlock   Text="92255222" FontSize="12" FontWeight="SemiBold"  HorizontalAlignment="Center"
                            Foreground="#8C8C8C" Grid.Column="1"
-                       VerticalAlignment="Center" Margin="10,5,10,5"/>
-                        <TextBlock Text="Version 1.1.0" FontSize="16" FontWeight="Bold"  HorizontalAlignment="Center"
+                       VerticalAlignment="Center" Margin="0"/>
+                        <TextBlock   Text="-" FontSize="16" FontWeight="SemiBold"  HorizontalAlignment="Center"
                            Foreground="#8C8C8C" Grid.Column="1"
-                       VerticalAlignment="Center" Margin="10,5,10,5"/>
+                       VerticalAlignment="Center" Margin="5"/>
+                        <TextBlock   Text="Sales@in.com.kw" FontSize="12" FontWeight="SemiBold"  HorizontalAlignment="Center"
+                           Foreground="#8C8C8C" Grid.Column="1"
+                       VerticalAlignment="Center" Margin="0"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1"   Orientation="Horizontal" HorizontalAlignment="Left">
+
+                        <TextBlock Text="Support:" FontSize="16" FontWeight="SemiBold"  HorizontalAlignment="Center"
+                           Foreground="{StaticResource MainColorBlue}" Grid.Column="1"
+                       VerticalAlignment="Center" Margin="10,5,5,5"/>
+                        <TextBlock   Text="92255222" FontSize="12" FontWeight="SemiBold"  HorizontalAlignment="Center"
+                           Foreground="#8C8C8C" Grid.Column="1"
+                       VerticalAlignment="Center" Margin="0"/>
+                        <TextBlock   Text="-" FontSize="16" FontWeight="SemiBold"  HorizontalAlignment="Center"
+                           Foreground="#8C8C8C" Grid.Column="1"
+                       VerticalAlignment="Center" Margin="4"/>
+                        <TextBlock   Text="Sales@in.com.kw" FontSize="12" FontWeight="SemiBold"  HorizontalAlignment="Center"
+                           Foreground="#8C8C8C" Grid.Column="1"
+                       VerticalAlignment="Center" Margin="0"/>
+
                     </StackPanel>
 
+                </Grid>
+                
             </Grid>
 
         </Border>

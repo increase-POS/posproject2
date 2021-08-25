@@ -94,7 +94,8 @@ namespace POS
         public static string rep_printer_name;
         public static string sale_printer_name;
         public static string paperSize;
-   
+        public static string rep_print_count;
+
         static public PosSetting posSetting = new PosSetting();
 
         async Task Getprintparameter()

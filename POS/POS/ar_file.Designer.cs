@@ -574,6 +574,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to لا يمكن ارسال مسودة فاتورة.
+        /// </summary>
+        internal static string trCanNotSendDraftInvoice {
+            get {
+                return ResourceManager.GetString("trCanNotSendDraftInvoice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to بطاقات.
         /// </summary>
         internal static string trCard {

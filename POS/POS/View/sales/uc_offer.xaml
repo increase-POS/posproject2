@@ -150,7 +150,7 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn Width="*"  Header="Start date" Binding="{Binding Path=name}">
+                        <DataGridTextColumn Width="*"  Header="Start date" Binding="{Binding Path=name,Converter={StaticResource dateFrameConverter}}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Style.Triggers>
@@ -161,7 +161,7 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn Width="*"  Header="End date" Binding="{Binding Path=name}">
+                        <DataGridTextColumn Width="*"  Header="End date" Binding="{Binding Path=name,Converter={StaticResource dateFrameConverter}}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Style.Triggers>

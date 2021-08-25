@@ -2323,4 +2323,7 @@ Please add Email in setting</value>
   <data name="trFavorite" xml:space="preserve">
     <value>Favorite</value>
   </data>
+  <data name="trCanNotSendDraftInvoice" xml:space="preserve">
+    <value>Can not send draft invoice</value>
+  </data>
 </root>

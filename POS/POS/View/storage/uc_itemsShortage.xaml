@@ -118,7 +118,7 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn Width="*"   Header="Date" Binding="{Binding Path=inventoryDate,StringFormat=d}">
+                        <DataGridTextColumn Width="*"   Header="Date" Binding="{Binding Path=inventoryDate,Converter={StaticResource dateFrameConverter}}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Style.Triggers>
@@ -420,11 +420,11 @@
                                     Margin="10,5,10,5" Grid.ColumnSpan="2">
 
                             </TextBlock>
-                            <TextBox Visibility="Visible" x:Name="tb_amount" Grid.Row="4" Text="{Binding amount, Mode=OneWay}" Padding="10,0,5,0"                               Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                            <TextBox Visibility="Visible" x:Name="tb_amount" Grid.Row="4" Text="{Binding amount, Mode=OneWay}" Padding="10,0,5,0"                             
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Amount Shortageed..."    
                                      Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
-                                    BorderBrush="AliceBlue"  
-                                         PreviewTextInput="NumberValidationTextBox"  PreviewKeyDown="space_PreviewKeyDown"
+                                    BorderBrush="AliceBlue"    Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                    PreviewTextInput="NumberValidationTextBox"  PreviewKeyDown="space_PreviewKeyDown"
                                     MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                     Height="40"   Margin="10,5,10,5" Grid.ColumnSpan="2" LostFocus="input_LostFocus" />
                             <Path Fill="#E81123" Grid.Row="4" Stretch="Fill" Margin="15,12,15,5"
@@ -459,8 +459,8 @@
                                 </Path.ToolTip>
                             </Path>
                             <TextBox x:Name="tb_reasonOfShortage" Grid.Row="6"  Text="{Binding test, Mode=OneWay}" 
-                                          Style="{StaticResource MaterialDesignFloatingHintTextBox}" Padding="10,0,5,0" 
-                            BorderThickness="1"  materialDesign:HintAssist.Hint="Reason of shortage..."   
+                            Style="{StaticResource MaterialDesignFloatingHintTextBox}" materialDesign:HintAssist.Hint="Reason of shortage..."   
+                            BorderThickness="1"  Padding="10,0,5,0"   
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                  BorderBrush="AliceBlue" 
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"

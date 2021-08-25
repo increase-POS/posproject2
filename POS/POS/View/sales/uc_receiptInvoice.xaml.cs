@@ -1051,16 +1051,16 @@ namespace POS.View
             {
             if (sender != null)
                     SectionData.StartAwait(grid_main);
-                if ((
-(MainWindow.groupObject.HasPermissionAction(invoicePermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
-&&
-(invoice.invType == "sd" || invoice.invType == "s"))
-|| (invoice.invType != "sd" && invoice.invType != "s"))
+                                if ((
+                (MainWindow.groupObject.HasPermissionAction(invoicePermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+                &&
+                (invoice.invType == "sd" || invoice.invType == "s"))
+                || (invoice.invType != "sd" && invoice.invType != "s"))
                 {
-                    if (logInProcessing)
-                    {
-                        logInProcessing = false;
-                        awaitSaveBtn(true);
+                    //if (logInProcessing)
+                    //{
+                    //    logInProcessing = false;
+                        //awaitSaveBtn(true);
                         //check mandatory inputs
                         bool valid = await validateInvoiceValues();
 
@@ -1081,9 +1081,9 @@ namespace POS.View
                             }
                             clearInvoice();
                         }
-                        awaitSaveBtn(false);
-                        logInProcessing = true;
-                    }
+                        //awaitSaveBtn(false);
+                        //logInProcessing = true;
+                    //}
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -2463,14 +2463,11 @@ namespace POS.View
                                        || invoice.invType == "sbd" || invoice.invType == "pbd"
                                        || invoice.invType == "ord" || invoice.invType == "imd" || invoice.invType == "exd")
             {
-                MessageBox.Show("can not print Draft Invoice");
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPrintDraftInvoice"), animation: ToasterAnimation.FadeIn);
             }
             else
             {
-                //  ReportCls rr = new ReportCls();
-                // MessageBox.Show(rr.GetLogoImagePath());
-
-
+              
 
                 if (invoice.invoiceId > 0)
                 {
@@ -2538,13 +2535,11 @@ namespace POS.View
                              || invoice.invType == "sbd" || invoice.invType == "pbd"
                              || invoice.invType == "ord" || invoice.invType == "imd" || invoice.invType == "exd")
                 {
-                    MessageBox.Show("can not print Draft Invoice");
+                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPrintDraftInvoice"), animation: ToasterAnimation.FadeIn);
                 }
                 else
                 {
-                    //  ReportCls rr = new ReportCls();
-                    // MessageBox.Show(rr.GetLogoImagePath());
-
+                   
                     List<ReportParameter> paramarr = new List<ReportParameter>();
 
 
@@ -2627,13 +2622,11 @@ namespace POS.View
                     || invoice.invType == "sbd" || invoice.invType == "pbd"
                     || invoice.invType == "ord" || invoice.invType == "imd" || invoice.invType == "exd")
                 {
-                    MessageBox.Show("can not print Draft Invoice");
+                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPrintDraftInvoice"), animation: ToasterAnimation.FadeIn);
                 }
                 else
                 {
-                    //  ReportCls rr = new ReportCls();
-                    // MessageBox.Show(rr.GetLogoImagePath());
-
+                    
                     List<ReportParameter> paramarr = new List<ReportParameter>();
 
                     string reppath = reportclass.GetreceiptInvoiceRdlcpath(invoice);
@@ -2680,11 +2673,12 @@ namespace POS.View
                         rep.SetParameters(paramarr);
                         rep.Refresh();
 
-                        LocalReportExtensions.PrintToPrinter(rep);
+                        LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.rep_printer_name, short.Parse(MainWindow.rep_print_count));
                     }
                     else
                     {
-                        MessageBox.Show("can not print Empty Invoice");
+                      
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPrintEmptyInvoice"), animation: ToasterAnimation.FadeIn);
                     }
                 }
 
@@ -2791,8 +2785,8 @@ namespace POS.View
                 }       
                 else
                 {
-                    //MessageBox.Show("save the invoice to preview");
-                    MessageBox.Show(MainWindow.resourcemanager.GetString("trSaveInvoiceToPreview"));
+                    
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trSaveInvoiceToPreview"), animation: ToasterAnimation.FadeIn);
                 }
 
                 if (sender != null)
@@ -2819,7 +2813,7 @@ namespace POS.View
                     || invoice.invType == "sbd" || invoice.invType == "pbd"
                     || invoice.invType == "ord" || invoice.invType == "imd" || invoice.invType == "exd")
                     {
-                        MessageBox.Show("can not send Draft Invoice");
+                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trCanNotSendDraftInvoice"), animation: ToasterAnimation.FadeIn);
                     }
                     else
                     {
@@ -2884,7 +2878,7 @@ namespace POS.View
                                             if (msg == "Failure sending mail.")
                                             {
                                                 // msg = "No Internet connection";
-                                                //  MessageBox.Show("");
+                                               
                                                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoInternetConnection"), animation: ToasterAnimation.FadeIn);
                                             }
                                             else if (msg == "mailsent")

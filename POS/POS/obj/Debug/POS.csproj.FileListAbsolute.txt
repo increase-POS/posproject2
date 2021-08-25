@@ -2845,3 +2845,7 @@ E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_reportSystmSetting.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_reportCopyCountSetting.baml
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_reportPrinterSetting.baml
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_reportSystmSetting.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_dragdrop.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_favorite.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_dragdrop.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_favorite.baml

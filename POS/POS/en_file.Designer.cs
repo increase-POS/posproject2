@@ -583,6 +583,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Can not send draft invoice.
+        /// </summary>
+        internal static string trCanNotSendDraftInvoice {
+            get {
+                return ResourceManager.GetString("trCanNotSendDraftInvoice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cards.
         /// </summary>
         internal static string trCard {

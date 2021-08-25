@@ -880,7 +880,7 @@ namespace POS.View.accounts
 
                 rep.SetParameters(paramarr);
                 rep.Refresh();
-                LocalReportExtensions.PrintToPrinter(rep);
+                LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.rep_printer_name, short.Parse(MainWindow.rep_print_count));
 
                 if (sender != null)
                     SectionData.EndAwait(grid_ucBonds);

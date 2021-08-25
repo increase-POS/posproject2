@@ -2302,4 +2302,7 @@
   <data name="trFavorite" xml:space="preserve">
     <value>المفضلة</value>
   </data>
+  <data name="trCanNotSendDraftInvoice" xml:space="preserve">
+    <value>لا يمكن ارسال مسودة فاتورة</value>
+  </data>
 </root>

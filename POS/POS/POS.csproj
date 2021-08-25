@@ -499,6 +499,12 @@
     <Compile Include="View\windows\wd_deliveryReceiptInvoice.xaml.cs">
       <DependentUpon>wd_deliveryReceiptInvoice.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\windows\wd_dragdrop.xaml.cs">
+      <DependentUpon>wd_dragdrop.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\windows\wd_favorite.xaml.cs">
+      <DependentUpon>wd_favorite.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\windows\wd_generatePackage.xaml.cs">
       <DependentUpon>wd_generatePackage.xaml</DependentUpon>
     </Compile>
@@ -939,6 +945,14 @@
     <Page Include="View\windows\wd_deliveryReceiptInvoice.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\windows\wd_dragdrop.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\windows\wd_favorite.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="View\windows\wd_generatePackage.xaml">
       <SubType>Designer</SubType>

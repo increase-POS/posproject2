@@ -137,7 +137,7 @@ namespace POS.View.sales
             dg_billDetails.Columns[5].Header = MainWindow.resourcemanager.GetString("trPrice");
             dg_billDetails.Columns[6].Header = MainWindow.resourcemanager.GetString("trAmount");
 
-            txt_discount.Text = MainWindow.resourcemanager.GetString("trDiscount");
+            txt_discountCoupon.Text = MainWindow.resourcemanager.GetString("trDiscount");
             txt_tax.Text = MainWindow.resourcemanager.GetString("trTax");
             txt_sum.Text = MainWindow.resourcemanager.GetString("trSum");
             txt_total.Text = MainWindow.resourcemanager.GetString("trTotal");
@@ -190,7 +190,7 @@ namespace POS.View.sales
                     grid_main.FlowDirection = FlowDirection.RightToLeft;
                 }
                 tb_moneyIcon.Text = MainWindow.Currency;
-                tb_discountMoneyIcon.Text = MainWindow.Currency;
+                tb_discountCouponMoneyIcon.Text = MainWindow.Currency;
 
 
 
@@ -712,7 +712,7 @@ namespace POS.View.sales
             else
                 tb_taxValue.Text = "0";
             lst_coupons.Items.Clear();
-            tb_discount.Text = "0";
+            tb_discountCoupon.Text = "0";
 
             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSaleOrder");
             SectionData.clearComboBoxValidate(cb_customer, p_errorCustomer);
@@ -734,7 +734,7 @@ namespace POS.View.sales
                     dp_desrvedDate.IsEnabled = true;
                     tb_note.IsEnabled = true;
                     tb_barcode.IsEnabled = true;
-                    tb_discount.IsEnabled = true;
+                    tb_discountCoupon.IsEnabled = true;
                     btn_save.IsEnabled = true;
                     //btn_updateCustomer.IsEnabled = true;
                     tb_coupon.IsEnabled = true;
@@ -750,7 +750,7 @@ namespace POS.View.sales
                     dp_desrvedDate.IsEnabled = false;
                     tb_note.IsEnabled = false;
                     tb_barcode.IsEnabled = false;
-                    tb_discount.IsEnabled = false;
+                    tb_discountCoupon.IsEnabled = false;
                     btn_save.IsEnabled = false;
                     //btn_updateCustomer.IsEnabled = false;
                     tb_coupon.IsEnabled = false;
@@ -766,7 +766,7 @@ namespace POS.View.sales
                     dp_desrvedDate.IsEnabled = false;
                     tb_note.IsEnabled = false;
                     tb_barcode.IsEnabled = false;
-                    tb_discount.IsEnabled = false;
+                    tb_discountCoupon.IsEnabled = false;
                     btn_save.IsEnabled = true;
                     //btn_updateCustomer.IsEnabled = false;
                     tb_coupon.IsEnabled = false;
@@ -782,8 +782,8 @@ namespace POS.View.sales
                 invoice.posId = MainWindow.posID.Value;
             }
             invoice.invType = invType;
-            if (!tb_discount.Text.Equals(""))
-                invoice.discountValue = decimal.Parse(tb_discount.Text);
+            if (!tb_discountCoupon.Text.Equals(""))
+                invoice.discountValue = decimal.Parse(tb_discountCoupon.Text);
 
             invoice.total = _Sum;
             invoice.totalNet = decimal.Parse(tb_total.Text);
@@ -912,7 +912,7 @@ namespace POS.View.sales
                     discountValue = SectionData.calcPercentage(_Sum, discountValue);
                 _Discount += discountValue;
             }
-            tb_discount.Text = _Discount.ToString();
+            tb_discountCoupon.Text = _Discount.ToString();
             #endregion
             decimal taxValue = _Tax;
             if (MainWindow.isInvTax == 1)
@@ -1131,7 +1131,7 @@ namespace POS.View.sales
             tb_taxValue.Text = invoice.tax.ToString();
             tb_note.Text = invoice.notes;
             tb_sum.Text = invoice.total.ToString();
-            tb_discount.Text = invoice.discountValue.ToString();
+            tb_discountCoupon.Text = invoice.discountValue.ToString();
             cb_company.SelectedValue = invoice.shippingCompanyId;
             cb_user.SelectedValue = invoice.shipUserId;
             tb_barcode.Clear();

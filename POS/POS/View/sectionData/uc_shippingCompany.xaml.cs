@@ -935,7 +935,7 @@ namespace POS.View.sectionData
 
                     rep.SetParameters(paramarr);
                     rep.Refresh();
-                    LocalReportExtensions.PrintToPrinter(rep);
+                    LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.rep_printer_name, short.Parse(MainWindow.rep_print_count));
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
