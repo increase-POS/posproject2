@@ -75,7 +75,6 @@ namespace POS.View.windows
        
         private void translate()
         {
-            txt_title.Text = winLogIn.resourcemanager.GetString("trInstallationSettings");
        
         }
 

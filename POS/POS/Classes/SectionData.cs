@@ -714,6 +714,8 @@ namespace POS.Classes
                     _sender = (sender as ComboBox).Name;
                 else if (sender.GetType().Name == "DatePicker")
                     _sender = (sender as DatePicker).Name;
+                else if (sender.GetType().Name == "TimePicker")
+                    _sender = (sender as TimePicker).Name;
                 else if (sender.GetType().Name == "DataGrid")
                     _sender = (sender as DataGrid).Name;
                 else if (sender.GetType().Name == "ToggleButton")

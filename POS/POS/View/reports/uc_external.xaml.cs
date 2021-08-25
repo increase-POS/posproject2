@@ -61,11 +61,11 @@ namespace POS.View.reports
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-           try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
-					 
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
                 inventory = await statisticModel.GetInventory();
                 falls = await statisticModel.GetInventoryItems();
                 Destroied = await statisticModel.GetDesItems();
@@ -73,70 +73,70 @@ namespace POS.View.reports
                 itemsTransfer = await statisticModel.GetExternalMov();
                 itemsInternalTransfer = await statisticModel.GetInternalMov();
                 comboBranches = await branchModel.GetAllWithoutMain("all");
-            
 
-            MainWindow.mainWindow.EndAwait();
-            comboItems = statisticModel.getItemCombo(storages);
-            comboUnits = statisticModel.getUnitCombo(storages);
-            comboSection = statisticModel.getSectionCombo(storages);
-            comboLocation = statisticModel.getLocationCombo(storages);
 
-            comboExternalItemsItems = statisticModel.getExternalItemCombo(itemsTransfer);
-            comboExternalItemsUnits = statisticModel.getExternalUnitCombo(itemsTransfer);
-            comboInternalItemsItems = statisticModel.getExternalItemCombo(itemsInternalTransfer);
-            comboInternalItemsUnits = statisticModel.getExternalUnitCombo(itemsInternalTransfer);
-            comboInternalOperatorType = statisticModel.getTypeCompo(itemsInternalTransfer);
-            comboInternalOperatorOperator = statisticModel.getOperatroCompo(itemsInternalTransfer);
+                comboItems = statisticModel.getItemCombo(storages);
+                comboUnits = statisticModel.getUnitCombo(storages);
+                comboSection = statisticModel.getSectionCombo(storages);
+                comboLocation = statisticModel.getLocationCombo(storages);
 
-            comboExternalAgentsAgentsType = statisticModel.GetExternalAgentTypeCombos(itemsTransfer);
-            comboExternalAgentsAgents = statisticModel.GetExternalAgentCombos(itemsTransfer);
-            comboExternalInvType = statisticModel.GetExternalInvoiceTypeCombos(itemsTransfer);
-            comboExternalInvoiceInvoice = statisticModel.GetExternalInvoiceCombos(itemsTransfer);
+                comboExternalItemsItems = statisticModel.getExternalItemCombo(itemsTransfer);
+                comboExternalItemsUnits = statisticModel.getExternalUnitCombo(itemsTransfer);
+                comboInternalItemsItems = statisticModel.getExternalItemCombo(itemsInternalTransfer);
+                comboInternalItemsUnits = statisticModel.getExternalUnitCombo(itemsInternalTransfer);
+                comboInternalOperatorType = statisticModel.getTypeCompo(itemsInternalTransfer);
+                comboInternalOperatorOperator = statisticModel.getOperatroCompo(itemsInternalTransfer);
 
-          
+                comboExternalAgentsAgentsType = statisticModel.GetExternalAgentTypeCombos(itemsTransfer);
+                comboExternalAgentsAgents = statisticModel.GetExternalAgentCombos(itemsTransfer);
+                comboExternalInvType = statisticModel.GetExternalInvoiceTypeCombos(itemsTransfer);
+                comboExternalInvoiceInvoice = statisticModel.GetExternalInvoiceCombos(itemsTransfer);
 
-            
 
-            fillComboExternalAgentsAgentsType();
-            fillComboExternalInvType();
-            fillComboExternalAgentsAgents();
-            fillComboExternalInvoiceInvoice();
-            fillComboExternalAgentsAgents();
-            fillComboExternalAgentsAgentsType();
 
-            chk_externalAgentsIn.IsChecked = true;
-            chk_externalItemsIn.IsChecked = true;
-            chk_externalAgentsOut.IsChecked = true;
-            chk_externalItemsOut.IsChecked = true;
 
-            paint();
-            fillComboBranches(cb_externalItemsBranches);
-     temp = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
-            showSelectedTabColumn();
-            dgStock.ItemsSource = temp;
-            fillExternalPieChart();
 
-        
-			  if (sender != null)
-			  SectionData.EndAwait(grid_main);
+                fillComboExternalAgentsAgentsType();
+                fillComboExternalInvType();
+                fillComboExternalAgentsAgents();
+                fillComboExternalInvoiceInvoice();
+                fillComboExternalAgentsAgents();
+                fillComboExternalAgentsAgentsType();
+
+                chk_externalAgentsIn.IsChecked = true;
+                chk_externalItemsIn.IsChecked = true;
+                chk_externalAgentsOut.IsChecked = true;
+                chk_externalItemsOut.IsChecked = true;
+
+                paint();
+                fillComboBranches(cb_externalItemsBranches);
+                temp = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
+                showSelectedTabColumn();
+                dgStock.ItemsSource = temp;
+                fillExternalPieChart();
+
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-				if (sender != null)
-				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-		 }
+        }
         public uc_external()
         {
-		try
-				{
-            InitializeComponent();
-      }
-		 catch (Exception ex)
+            try
             {
-				SectionData.ExceptionMessage(ex,this );
-            }  }
+                InitializeComponent();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
 
 
 
@@ -148,7 +148,7 @@ namespace POS.View.reports
             grid_externalAgents.Visibility = Visibility.Hidden;
             grid_externalInvoices.Visibility = Visibility.Hidden;
 
-       
+
             path_item.Fill = Brushes.White;
             path_agent.Fill = Brushes.White;
             path_invoice.Fill = Brushes.White;
@@ -158,12 +158,12 @@ namespace POS.View.reports
             bdr_invoice.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
         }
 
-        
+
         public void paint()
         {
         }
 
-     
+
 
 
         private void isEnabledButtonsExternal()
@@ -172,126 +172,127 @@ namespace POS.View.reports
             btn_invoice.IsEnabled = true;
             btn_agent.IsEnabled = true;
         }
-       
+
         private void isEnabledButtons()
         {
         }
-     
+
 
         private void btn_external_Click(object sender, RoutedEventArgs e)
         {
-          
+
         }
         private void btn_externalItems_Click(object sender, RoutedEventArgs e)
         {
-          try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
-					   selectedExternalTab = 0;
-            txt_search.Text = "";
-            paintExternlaChilds();
-            isEnabledButtonsExternal();
-            grid_externalItems.Visibility = Visibility.Visible;
-            bdr_item.Background = Brushes.White;
-            path_item.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-            isEnabledButtons();
-            btn_item.IsEnabled = false;
-            btn_item.Opacity = 1;
-            fillComboBranches(cb_externalItemsBranches);
-           temp = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
-            showSelectedTabColumn();
-            dgStock.ItemsSource = temp;
-            fillExternalPieChart();
-         
-			  if (sender != null)
-			  SectionData.EndAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                selectedExternalTab = 0;
+                txt_search.Text = "";
+                paintExternlaChilds();
+                isEnabledButtonsExternal();
+                grid_externalItems.Visibility = Visibility.Visible;
+                bdr_item.Background = Brushes.White;
+                path_item.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+                isEnabledButtons();
+                btn_item.IsEnabled = false;
+                btn_item.Opacity = 1;
+                fillComboBranches(cb_externalItemsBranches);
+                temp = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
+                showSelectedTabColumn();
+                dgStock.ItemsSource = temp;
+                fillExternalPieChart();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-				if (sender != null)
-				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-		}
+        }
 
         private void btn_externalAgents_Click(object sender, RoutedEventArgs e)
-        {try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
-					 
-            selectedExternalTab = 1;
-            txt_search.Text = "";
-            paintExternlaChilds();
-            isEnabledButtonsExternal();
-            grid_externalAgents.Visibility = Visibility.Visible;
-            bdr_agent.Background = Brushes.White;
-            path_agent.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-            isEnabledButtons();
-            btn_agent.IsEnabled = false;
-            btn_agent.Opacity = 1;
-            fillComboBranches(cb_externalAgentsBranches);
-          
-         temp = fillList(itemsTransfer, cb_externalAgentsBranches, cb_externalAgentsAgentsType, cb_externalAgentsCustomer, dp_externalAgentsStartDate, dp_externalAgentsEndDate, chk_externalAgentsAllBranches, chk_externalAgentsAllAgentsType, chk_externalAgentsAllCustomers, chk_externalAgentsIn, chk_externalAgentsOut);
-            showSelectedTabColumn();
-            dgStock.ItemsSource = temp;
-            fillExternalPieChart();
-         
-			  if (sender != null)
-			  SectionData.EndAwait(grid_main);
+        {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                selectedExternalTab = 1;
+                txt_search.Text = "";
+                paintExternlaChilds();
+                isEnabledButtonsExternal();
+                grid_externalAgents.Visibility = Visibility.Visible;
+                bdr_agent.Background = Brushes.White;
+                path_agent.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+                isEnabledButtons();
+                btn_agent.IsEnabled = false;
+                btn_agent.Opacity = 1;
+                fillComboBranches(cb_externalAgentsBranches);
+
+                temp = fillList(itemsTransfer, cb_externalAgentsBranches, cb_externalAgentsAgentsType, cb_externalAgentsCustomer, dp_externalAgentsStartDate, dp_externalAgentsEndDate, chk_externalAgentsAllBranches, chk_externalAgentsAllAgentsType, chk_externalAgentsAllCustomers, chk_externalAgentsIn, chk_externalAgentsOut);
+                showSelectedTabColumn();
+                dgStock.ItemsSource = temp;
+                fillExternalPieChart();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-				if (sender != null)
-				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-		}
+        }
 
         private void btn_externalInvoices_Click(object sender, RoutedEventArgs e)
         {
-          try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
-					   selectedExternalTab = 2;
-            txt_search.Text = "";
-            paintExternlaChilds();
-            isEnabledButtonsExternal();
-            btn_invoice.IsEnabled = false;
-            btn_invoice.Opacity = 1;
-            grid_externalInvoices.Visibility = Visibility.Visible;
-            path_invoice.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-            bdr_invoice.Background = Brushes.White;
-            fillComboBranches(cb_externalInvoicesBranches);
-           temp = fillList(itemsTransfer, cb_externalInvoicesBranches, cb_externalInvoicesInvoiceType, cb_externalInvoicesInvoice, dp_externalInvoicesStartDate, dp_externalInvoicesEndDate, chk_externalInvoicesAllBranches, chk_externalInvoicesAllInvoicesType, chk_externalInvoicesALlInvoice, null, null)
-            .GroupBy(x => new { x.branchId, x.invoiceId })
-                          .Select(s => new ItemTransferInvoice
-                          {
-                              branchId = s.FirstOrDefault().branchId,
-                              branchName = s.FirstOrDefault().branchName,
-                              AgentTypeAgent = s.FirstOrDefault().AgentTypeAgent,
-                              ItemUnits = s.FirstOrDefault().ItemUnits
-                            ,
-                              invNumber = s.FirstOrDefault().invNumber,
-                              invType = s.FirstOrDefault().invType,
-                              quantity = s.FirstOrDefault().quantity
-                          });
-            showSelectedTabColumn();
-            dgStock.ItemsSource = temp;
-            fillExternalPieChart();
-         
-			  if (sender != null)
-			  SectionData.EndAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                selectedExternalTab = 2;
+                txt_search.Text = "";
+                paintExternlaChilds();
+                isEnabledButtonsExternal();
+                btn_invoice.IsEnabled = false;
+                btn_invoice.Opacity = 1;
+                grid_externalInvoices.Visibility = Visibility.Visible;
+                path_invoice.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+                bdr_invoice.Background = Brushes.White;
+                fillComboBranches(cb_externalInvoicesBranches);
+                temp = fillList(itemsTransfer, cb_externalInvoicesBranches, cb_externalInvoicesInvoiceType, cb_externalInvoicesInvoice, dp_externalInvoicesStartDate, dp_externalInvoicesEndDate, chk_externalInvoicesAllBranches, chk_externalInvoicesAllInvoicesType, chk_externalInvoicesALlInvoice, null, null)
+                 .GroupBy(x => new { x.branchId, x.invoiceId })
+                               .Select(s => new ItemTransferInvoice
+                               {
+                                   branchId = s.FirstOrDefault().branchId,
+                                   branchName = s.FirstOrDefault().branchName,
+                                   AgentTypeAgent = s.FirstOrDefault().AgentTypeAgent,
+                                   ItemUnits = s.FirstOrDefault().ItemUnits
+                                 ,
+                                   invNumber = s.FirstOrDefault().invNumber,
+                                   invType = s.FirstOrDefault().invType,
+                                   quantity = s.FirstOrDefault().quantity
+                               });
+                showSelectedTabColumn();
+                dgStock.ItemsSource = temp;
+                fillExternalPieChart();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-				if (sender != null)
-				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-		}
+        }
 
 
 
@@ -367,7 +368,7 @@ namespace POS.View.reports
 
 
 
-       
+
 
 
 
@@ -687,964 +688,965 @@ namespace POS.View.reports
             return result;
         }
 
-       
+
         private void cb_externalItemsBranches_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-           try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
-					  cb_externalItemsItems.IsEnabled = true;
-            chk_externalItemsAllItems.IsEnabled = true;
-            fillComboExternalItemsItems();
-           temp = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
-            dgStock.ItemsSource = temp;
-            fillExternalPieChart();
-         
-			  if (sender != null)
-			  SectionData.EndAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                cb_externalItemsItems.IsEnabled = true;
+                chk_externalItemsAllItems.IsEnabled = true;
+                fillComboExternalItemsItems();
+                temp = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
+                dgStock.ItemsSource = temp;
+                fillExternalPieChart();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-				if (sender != null)
-				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-		}
+        }
 
         private void chk_externalItemsAllBranches_Checked(object sender, RoutedEventArgs e)
         {
-          try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
-					   cb_externalItemsBranches.IsEnabled = false;
-            cb_externalItemsBranches.SelectedItem = null;
-            cb_externalItemsItems.IsEnabled = true;
-            chk_externalItemsAllItems.IsEnabled = true;
-            fillComboExternalItemsItems();
-           temp = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
-            dgStock.ItemsSource = temp;
-            fillExternalPieChart();
-         
-			  if (sender != null)
-			  SectionData.EndAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                cb_externalItemsBranches.IsEnabled = false;
+                cb_externalItemsBranches.SelectedItem = null;
+                cb_externalItemsItems.IsEnabled = true;
+                chk_externalItemsAllItems.IsEnabled = true;
+                fillComboExternalItemsItems();
+                temp = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
+                dgStock.ItemsSource = temp;
+                fillExternalPieChart();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-				if (sender != null)
-				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-		}
+        }
 
         private void chk_externalItemsAllBranches_Unchecked(object sender, RoutedEventArgs e)
         {
-          try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
-					   cb_externalItemsBranches.IsEnabled = true;
-            cb_externalItemsItems.IsEnabled = false;
-            cb_externalItemsItems.SelectedItem = null;
-            chk_externalItemsAllItems.IsEnabled = false;
-            chk_externalItemsAllItems.IsChecked = false;
-           temp = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
-            dgStock.ItemsSource = temp;
-            fillExternalPieChart();
-         
-			  if (sender != null)
-			  SectionData.EndAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                cb_externalItemsBranches.IsEnabled = true;
+                cb_externalItemsItems.IsEnabled = false;
+                cb_externalItemsItems.SelectedItem = null;
+                chk_externalItemsAllItems.IsEnabled = false;
+                chk_externalItemsAllItems.IsChecked = false;
+                temp = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
+                dgStock.ItemsSource = temp;
+                fillExternalPieChart();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-				if (sender != null)
-				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-		}
+        }
 
         private void chk_externalItemsIn_Checked(object sender, RoutedEventArgs e)
         {
-      try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
-					   temp = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
-            dgStock.ItemsSource = temp;
-            fillExternalPieChart();
-         
-			  if (sender != null)
-			  SectionData.EndAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                temp = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
+                dgStock.ItemsSource = temp;
+                fillExternalPieChart();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-				if (sender != null)
-				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-		}
+        }
 
         private void chk_externalItemsIn_Unchecked(object sender, RoutedEventArgs e)
         {
-      try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
-					  temp= fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
-            dgStock.ItemsSource = temp;
-            fillExternalPieChart();
-         
-			  if (sender != null)
-			  SectionData.EndAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                temp = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
+                dgStock.ItemsSource = temp;
+                fillExternalPieChart();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-				if (sender != null)
-				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-		}
+        }
 
         private void chk_externalItemsOut_Checked(object sender, RoutedEventArgs e)
         {
-      try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
-					  temp = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
-            dgStock.ItemsSource = temp;
-            fillExternalPieChart();
-       
-			  if (sender != null)
-			  SectionData.EndAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                temp = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
+                dgStock.ItemsSource = temp;
+                fillExternalPieChart();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-				if (sender != null)
-				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-		  }
+        }
 
         private void chk_externalItemsOut_Unchecked(object sender, RoutedEventArgs e)
         {
-          try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
-					   temp = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
-            dgStock.ItemsSource = temp;
-            fillExternalPieChart();
-        
-			  if (sender != null)
-			  SectionData.EndAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                temp = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
+                dgStock.ItemsSource = temp;
+                fillExternalPieChart();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-				if (sender != null)
-				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-		 }
+        }
 
         private void dp_externalItemsEndDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-     try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
-					  temp = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
-            dgStock.ItemsSource = temp;
-            fillExternalPieChart();
-        
-			  if (sender != null)
-			  SectionData.EndAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                temp = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
+                dgStock.ItemsSource = temp;
+                fillExternalPieChart();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-				if (sender != null)
-				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-		 }
+        }
 
         private void dp_externalItemsStartDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-        try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
-					     temp = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
-            dgStock.ItemsSource = temp;
-            fillExternalPieChart();
-        
-			  if (sender != null)
-			  SectionData.EndAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                temp = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
+                dgStock.ItemsSource = temp;
+                fillExternalPieChart();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-				if (sender != null)
-				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-		 }
+        }
 
         private void cb_externalItemsItems_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-        try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
-					     cb_externalItemsUnits.IsEnabled = true;
-            chk_externalItemsAllUnits.IsEnabled = true;
-            fillComboExternalItemsUnits();
-     temp = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
-            dgStock.ItemsSource = temp;
-            fillExternalPieChart();
-        
-			  if (sender != null)
-			  SectionData.EndAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                cb_externalItemsUnits.IsEnabled = true;
+                chk_externalItemsAllUnits.IsEnabled = true;
+                fillComboExternalItemsUnits();
+                temp = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
+                dgStock.ItemsSource = temp;
+                fillExternalPieChart();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-				if (sender != null)
-				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-		 }
+        }
 
         private void chk_externalItemsAllItems_Checked(object sender, RoutedEventArgs e)
         {
-       try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
-					      cb_externalItemsItems.IsEnabled = false;
-            cb_externalItemsItems.SelectedItem = null;
-            cb_externalItemsUnits.IsEnabled = true;
-            chk_externalItemsAllUnits.IsEnabled = true;
-            fillComboExternalItemsUnits();
-         
-			  if (sender != null)
-			  SectionData.EndAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                cb_externalItemsItems.IsEnabled = false;
+                cb_externalItemsItems.SelectedItem = null;
+                cb_externalItemsUnits.IsEnabled = true;
+                chk_externalItemsAllUnits.IsEnabled = true;
+                fillComboExternalItemsUnits();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-				if (sender != null)
-				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-		}
+        }
 
         private void chk_externalItemsAllItems_Unchecked(object sender, RoutedEventArgs e)
         {
-         try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
-					    cb_externalItemsItems.IsEnabled = true;
-            cb_externalItemsUnits.IsEnabled = false;
-            cb_externalItemsUnits.SelectedItem = null;
-            chk_externalItemsAllUnits.IsEnabled = false;
-            chk_externalItemsAllUnits.IsChecked = false;
-        
-			  if (sender != null)
-			  SectionData.EndAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                cb_externalItemsItems.IsEnabled = true;
+                cb_externalItemsUnits.IsEnabled = false;
+                cb_externalItemsUnits.SelectedItem = null;
+                chk_externalItemsAllUnits.IsEnabled = false;
+                chk_externalItemsAllUnits.IsChecked = false;
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-				if (sender != null)
-				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-		 }
+        }
 
         private void cb_externalItemsUnits_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-        try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
-					    temp = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
-            dgStock.ItemsSource = temp;
-            fillExternalPieChart();
-         
-			  if (sender != null)
-			  SectionData.EndAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                temp = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
+                dgStock.ItemsSource = temp;
+                fillExternalPieChart();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-				if (sender != null)
-				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-		}
+        }
 
         private void chk_externalItemsAllUnits_Checked(object sender, RoutedEventArgs e)
         {
-        try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
-					     cb_externalItemsUnits.IsEnabled = false;
-            cb_externalItemsUnits.SelectedItem = null;
-         
-			  if (sender != null)
-			  SectionData.EndAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                cb_externalItemsUnits.IsEnabled = false;
+                cb_externalItemsUnits.SelectedItem = null;
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-				if (sender != null)
-				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-		}
+        }
 
         private void chk_externalItemsAllUnits_Unchecked(object sender, RoutedEventArgs e)
         {
-        try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
-					     cb_externalItemsUnits.IsEnabled = true;
-         
-			  if (sender != null)
-			  SectionData.EndAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                cb_externalItemsUnits.IsEnabled = true;
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-				if (sender != null)
-				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-		}
-       
+        }
+
         private void cb_externalAgentsBranches_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-         try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
-					    cb_externalAgentsAgentsType.IsEnabled = true;
-            chk_externalAgentsAllAgentsType.IsEnabled = true;
-            fillComboExternalAgentsAgentsType();
-           temp= fillList(itemsTransfer, cb_externalAgentsBranches, cb_externalAgentsAgentsType, cb_externalAgentsCustomer, dp_externalAgentsStartDate, dp_externalAgentsEndDate, chk_externalAgentsAllBranches, chk_externalAgentsAllAgentsType, chk_externalAgentsAllCustomers, chk_externalAgentsIn, chk_externalAgentsOut);
-            dgStock.ItemsSource = temp;
-            fillExternalPieChart();
-         
-			  if (sender != null)
-			  SectionData.EndAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                cb_externalAgentsAgentsType.IsEnabled = true;
+                chk_externalAgentsAllAgentsType.IsEnabled = true;
+                fillComboExternalAgentsAgentsType();
+                temp = fillList(itemsTransfer, cb_externalAgentsBranches, cb_externalAgentsAgentsType, cb_externalAgentsCustomer, dp_externalAgentsStartDate, dp_externalAgentsEndDate, chk_externalAgentsAllBranches, chk_externalAgentsAllAgentsType, chk_externalAgentsAllCustomers, chk_externalAgentsIn, chk_externalAgentsOut);
+                dgStock.ItemsSource = temp;
+                fillExternalPieChart();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-				if (sender != null)
-				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-		}
+        }
 
         private void cb_externalAgentsAgentsType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-         try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
-					    cb_externalAgentsCustomer.IsEnabled = true;
-            chk_externalAgentsAllCustomers.IsEnabled = true;
-            fillComboExternalAgentsAgents();
-           temp = fillList(itemsTransfer, cb_externalAgentsBranches, cb_externalAgentsAgentsType, cb_externalAgentsCustomer, dp_externalAgentsStartDate, dp_externalAgentsEndDate, chk_externalAgentsAllBranches, chk_externalAgentsAllAgentsType, chk_externalAgentsAllCustomers, chk_externalAgentsIn, chk_externalAgentsOut);
-            dgStock.ItemsSource = temp;
-            fillExternalPieChart();
-         
-			  if (sender != null)
-			  SectionData.EndAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                cb_externalAgentsCustomer.IsEnabled = true;
+                chk_externalAgentsAllCustomers.IsEnabled = true;
+                fillComboExternalAgentsAgents();
+                temp = fillList(itemsTransfer, cb_externalAgentsBranches, cb_externalAgentsAgentsType, cb_externalAgentsCustomer, dp_externalAgentsStartDate, dp_externalAgentsEndDate, chk_externalAgentsAllBranches, chk_externalAgentsAllAgentsType, chk_externalAgentsAllCustomers, chk_externalAgentsIn, chk_externalAgentsOut);
+                dgStock.ItemsSource = temp;
+                fillExternalPieChart();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-				if (sender != null)
-				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-		}
+        }
 
         private void cb_externalAgentsCustomer_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-         try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
-					    temp = fillList(itemsTransfer, cb_externalAgentsBranches, cb_externalAgentsAgentsType, cb_externalAgentsCustomer, dp_externalAgentsStartDate, dp_externalAgentsEndDate, chk_externalAgentsAllBranches, chk_externalAgentsAllAgentsType, chk_externalAgentsAllCustomers, chk_externalAgentsIn, chk_externalAgentsOut);
-            dgStock.ItemsSource = temp;
-            fillExternalPieChart();
-         
-			  if (sender != null)
-			  SectionData.EndAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                temp = fillList(itemsTransfer, cb_externalAgentsBranches, cb_externalAgentsAgentsType, cb_externalAgentsCustomer, dp_externalAgentsStartDate, dp_externalAgentsEndDate, chk_externalAgentsAllBranches, chk_externalAgentsAllAgentsType, chk_externalAgentsAllCustomers, chk_externalAgentsIn, chk_externalAgentsOut);
+                dgStock.ItemsSource = temp;
+                fillExternalPieChart();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-				if (sender != null)
-				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-		}
+        }
 
         private void chk_externalAgentsAllBranches_Checked(object sender, RoutedEventArgs e)
         {
-         try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
-					    cb_externalAgentsBranches.IsEnabled = false;
-            cb_externalAgentsBranches.SelectedItem = null;
-            cb_externalAgentsAgentsType.IsEnabled = true;
-            chk_externalAgentsAllAgentsType.IsEnabled = true;
-            fillComboExternalAgentsAgentsType();
-         
-			  if (sender != null)
-			  SectionData.EndAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                cb_externalAgentsBranches.IsEnabled = false;
+                cb_externalAgentsBranches.SelectedItem = null;
+                cb_externalAgentsAgentsType.IsEnabled = true;
+                chk_externalAgentsAllAgentsType.IsEnabled = true;
+                fillComboExternalAgentsAgentsType();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-				if (sender != null)
-				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-		}
+        }
 
         private void chk_externalAgentsAllAgentsType_Checked(object sender, RoutedEventArgs e)
         {
-         try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
-					    cb_externalAgentsAgentsType.IsEnabled = false;
-            cb_externalAgentsAgentsType.SelectedItem = null;
-            cb_externalAgentsCustomer.IsEnabled = true;
-            chk_externalAgentsAllCustomers.IsEnabled = true;
-            fillComboExternalAgentsAgents();
-         
-			  if (sender != null)
-			  SectionData.EndAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                cb_externalAgentsAgentsType.IsEnabled = false;
+                cb_externalAgentsAgentsType.SelectedItem = null;
+                cb_externalAgentsCustomer.IsEnabled = true;
+                chk_externalAgentsAllCustomers.IsEnabled = true;
+                fillComboExternalAgentsAgents();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-				if (sender != null)
-				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-		}
+        }
 
         private void chk_externalAgentsAllCustomers_Checked(object sender, RoutedEventArgs e)
         {
-         try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
-					    cb_externalAgentsCustomer.IsEnabled = false;
-            cb_externalAgentsCustomer.SelectedItem = null;
-         
-			  if (sender != null)
-			  SectionData.EndAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                cb_externalAgentsCustomer.IsEnabled = false;
+                cb_externalAgentsCustomer.SelectedItem = null;
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-				if (sender != null)
-				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-		}
+        }
 
         private void chk_externalAgentsAllBranches_Unchecked(object sender, RoutedEventArgs e)
         {
-         try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
-					    cb_externalAgentsBranches.IsEnabled = true;
-            cb_externalAgentsAgentsType.IsEnabled = false;
-            cb_externalAgentsAgentsType.SelectedItem = null;
-            chk_externalAgentsAllAgentsType.IsEnabled = false;
-            chk_externalAgentsAllAgentsType.IsChecked = false;
-         
-			  if (sender != null)
-			  SectionData.EndAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                cb_externalAgentsBranches.IsEnabled = true;
+                cb_externalAgentsAgentsType.IsEnabled = false;
+                cb_externalAgentsAgentsType.SelectedItem = null;
+                chk_externalAgentsAllAgentsType.IsEnabled = false;
+                chk_externalAgentsAllAgentsType.IsChecked = false;
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-				if (sender != null)
-				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-		}
+        }
 
         private void chk_externalAgentsAllAgentsType_Unchecked(object sender, RoutedEventArgs e)
         {
-          try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
-					   cb_externalAgentsAgentsType.IsEnabled = true;
-            cb_externalAgentsCustomer.IsEnabled = false;
-            cb_externalAgentsCustomer.SelectedItem = null;
-            chk_externalAgentsAllCustomers.IsEnabled = false;
-            chk_externalAgentsAllCustomers.IsChecked = false;
-         
-			  if (sender != null)
-			  SectionData.EndAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                cb_externalAgentsAgentsType.IsEnabled = true;
+                cb_externalAgentsCustomer.IsEnabled = false;
+                cb_externalAgentsCustomer.SelectedItem = null;
+                chk_externalAgentsAllCustomers.IsEnabled = false;
+                chk_externalAgentsAllCustomers.IsChecked = false;
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-				if (sender != null)
-				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-		}
+        }
 
         private void chk_externalAgentsAllCustomers_Unchecked(object sender, RoutedEventArgs e)
         {
-          try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
-					   cb_externalAgentsCustomer.IsEnabled = true;
-        
-			  if (sender != null)
-			  SectionData.EndAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                cb_externalAgentsCustomer.IsEnabled = true;
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-				if (sender != null)
-				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-		 }
+        }
 
         private void chk_externalAgentsIn_Checked(object sender, RoutedEventArgs e)
         {
-       try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
-					 temp = fillList(itemsTransfer, cb_externalAgentsBranches, cb_externalAgentsAgentsType, cb_externalAgentsCustomer, dp_externalAgentsStartDate, dp_externalAgentsEndDate, chk_externalAgentsAllBranches, chk_externalAgentsAllAgentsType, chk_externalAgentsAllCustomers, chk_externalAgentsIn, chk_externalAgentsOut);
-            dgStock.ItemsSource = temp;
-            fillExternalPieChart();
-         
-			  if (sender != null)
-			  SectionData.EndAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                temp = fillList(itemsTransfer, cb_externalAgentsBranches, cb_externalAgentsAgentsType, cb_externalAgentsCustomer, dp_externalAgentsStartDate, dp_externalAgentsEndDate, chk_externalAgentsAllBranches, chk_externalAgentsAllAgentsType, chk_externalAgentsAllCustomers, chk_externalAgentsIn, chk_externalAgentsOut);
+                dgStock.ItemsSource = temp;
+                fillExternalPieChart();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-				if (sender != null)
-				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-		}
+        }
 
         private void chk_externalAgentsIn_Unchecked(object sender, RoutedEventArgs e)
         {
-         try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
-					   temp = fillList(itemsTransfer, cb_externalAgentsBranches, cb_externalAgentsAgentsType, cb_externalAgentsCustomer, dp_externalAgentsStartDate, dp_externalAgentsEndDate, chk_externalAgentsAllBranches, chk_externalAgentsAllAgentsType, chk_externalAgentsAllCustomers, chk_externalAgentsIn, chk_externalAgentsOut);
-            dgStock.ItemsSource = temp;
-            fillExternalPieChart();
-        
-			  if (sender != null)
-			  SectionData.EndAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                temp = fillList(itemsTransfer, cb_externalAgentsBranches, cb_externalAgentsAgentsType, cb_externalAgentsCustomer, dp_externalAgentsStartDate, dp_externalAgentsEndDate, chk_externalAgentsAllBranches, chk_externalAgentsAllAgentsType, chk_externalAgentsAllCustomers, chk_externalAgentsIn, chk_externalAgentsOut);
+                dgStock.ItemsSource = temp;
+                fillExternalPieChart();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-				if (sender != null)
-				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-		 }
+        }
 
         private void chk_externalAgentsOut_Checked(object sender, RoutedEventArgs e)
         {
-         try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
-					  temp = fillList(itemsTransfer, cb_externalAgentsBranches, cb_externalAgentsAgentsType, cb_externalAgentsCustomer, dp_externalAgentsStartDate, dp_externalAgentsEndDate, chk_externalAgentsAllBranches, chk_externalAgentsAllAgentsType, chk_externalAgentsAllCustomers, chk_externalAgentsIn, chk_externalAgentsOut);
-            dgStock.ItemsSource = temp;
-            fillExternalPieChart();
-         
-			  if (sender != null)
-			  SectionData.EndAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                temp = fillList(itemsTransfer, cb_externalAgentsBranches, cb_externalAgentsAgentsType, cb_externalAgentsCustomer, dp_externalAgentsStartDate, dp_externalAgentsEndDate, chk_externalAgentsAllBranches, chk_externalAgentsAllAgentsType, chk_externalAgentsAllCustomers, chk_externalAgentsIn, chk_externalAgentsOut);
+                dgStock.ItemsSource = temp;
+                fillExternalPieChart();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-				if (sender != null)
-				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-		}
+        }
 
         private void chk_externalAgentsOut_Unchecked(object sender, RoutedEventArgs e)
         {
-         try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
-					  temp= fillList(itemsTransfer, cb_externalAgentsBranches, cb_externalAgentsAgentsType, cb_externalAgentsCustomer, dp_externalAgentsStartDate, dp_externalAgentsEndDate, chk_externalAgentsAllBranches, chk_externalAgentsAllAgentsType, chk_externalAgentsAllCustomers, chk_externalAgentsIn, chk_externalAgentsOut);
-            dgStock.ItemsSource = temp;
-            fillExternalPieChart();
-        
-			  if (sender != null)
-			  SectionData.EndAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                temp = fillList(itemsTransfer, cb_externalAgentsBranches, cb_externalAgentsAgentsType, cb_externalAgentsCustomer, dp_externalAgentsStartDate, dp_externalAgentsEndDate, chk_externalAgentsAllBranches, chk_externalAgentsAllAgentsType, chk_externalAgentsAllCustomers, chk_externalAgentsIn, chk_externalAgentsOut);
+                dgStock.ItemsSource = temp;
+                fillExternalPieChart();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-				if (sender != null)
-				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-		 }
+        }
 
         private void dp_externalAgentsEndDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-         try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
-					 temp = fillList(itemsTransfer, cb_externalAgentsBranches, cb_externalAgentsAgentsType, cb_externalAgentsCustomer, dp_externalAgentsStartDate, dp_externalAgentsEndDate, chk_externalAgentsAllBranches, chk_externalAgentsAllAgentsType, chk_externalAgentsAllCustomers, chk_externalAgentsIn, chk_externalAgentsOut);
-            dgStock.ItemsSource = temp;
-            fillExternalPieChart();
-         
-			  if (sender != null)
-			  SectionData.EndAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                temp = fillList(itemsTransfer, cb_externalAgentsBranches, cb_externalAgentsAgentsType, cb_externalAgentsCustomer, dp_externalAgentsStartDate, dp_externalAgentsEndDate, chk_externalAgentsAllBranches, chk_externalAgentsAllAgentsType, chk_externalAgentsAllCustomers, chk_externalAgentsIn, chk_externalAgentsOut);
+                dgStock.ItemsSource = temp;
+                fillExternalPieChart();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-				if (sender != null)
-				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-		}
+        }
 
         private void dp_externalAgentsStartDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-        try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
-					   temp= fillList(itemsTransfer, cb_externalAgentsBranches, cb_externalAgentsAgentsType, cb_externalAgentsCustomer, dp_externalAgentsStartDate, dp_externalAgentsEndDate, chk_externalAgentsAllBranches, chk_externalAgentsAllAgentsType, chk_externalAgentsAllCustomers, chk_externalAgentsIn, chk_externalAgentsOut);
-            dgStock.ItemsSource = temp;
-            fillExternalPieChart();
-        
-			  if (sender != null)
-			  SectionData.EndAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                temp = fillList(itemsTransfer, cb_externalAgentsBranches, cb_externalAgentsAgentsType, cb_externalAgentsCustomer, dp_externalAgentsStartDate, dp_externalAgentsEndDate, chk_externalAgentsAllBranches, chk_externalAgentsAllAgentsType, chk_externalAgentsAllCustomers, chk_externalAgentsIn, chk_externalAgentsOut);
+                dgStock.ItemsSource = temp;
+                fillExternalPieChart();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-				if (sender != null)
-				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-		 }
+        }
 
-   
+
         private void cb_externalInvoicesBranches_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-        try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
-					     cb_externalInvoicesInvoiceType.IsEnabled = true;
-            chk_externalInvoicesAllInvoicesType.IsEnabled = true;
-            fillComboExternalInvType();
-        temp = fillList(itemsTransfer, cb_externalInvoicesBranches, cb_externalInvoicesInvoiceType, cb_externalInvoicesInvoice, dp_externalInvoicesStartDate, dp_externalInvoicesEndDate, chk_externalInvoicesAllBranches, chk_externalInvoicesAllInvoicesType, chk_externalInvoicesALlInvoice, null, null).GroupBy(x => new { x.branchId, x.invoiceId })
-                          .Select(s => new ItemTransferInvoice
-                          {
-                              branchId = s.FirstOrDefault().branchId,
-                              branchName = s.FirstOrDefault().branchName,
-                              AgentTypeAgent = s.FirstOrDefault().AgentTypeAgent,
-                              ItemUnits = s.FirstOrDefault().ItemUnits
-                            ,
-                              invNumber = s.FirstOrDefault().invNumber,
-                              invType = s.FirstOrDefault().invType,
-                              quantity = s.FirstOrDefault().quantity
-                          }); ;
-            dgStock.ItemsSource = temp;
-            fillExternalPieChart();
-        
-			  if (sender != null)
-			  SectionData.EndAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                cb_externalInvoicesInvoiceType.IsEnabled = true;
+                chk_externalInvoicesAllInvoicesType.IsEnabled = true;
+                fillComboExternalInvType();
+                temp = fillList(itemsTransfer, cb_externalInvoicesBranches, cb_externalInvoicesInvoiceType, cb_externalInvoicesInvoice, dp_externalInvoicesStartDate, dp_externalInvoicesEndDate, chk_externalInvoicesAllBranches, chk_externalInvoicesAllInvoicesType, chk_externalInvoicesALlInvoice, null, null).GroupBy(x => new { x.branchId, x.invoiceId })
+                                  .Select(s => new ItemTransferInvoice
+                                  {
+                                      branchId = s.FirstOrDefault().branchId,
+                                      branchName = s.FirstOrDefault().branchName,
+                                      AgentTypeAgent = s.FirstOrDefault().AgentTypeAgent,
+                                      ItemUnits = s.FirstOrDefault().ItemUnits
+                                    ,
+                                      invNumber = s.FirstOrDefault().invNumber,
+                                      invType = s.FirstOrDefault().invType,
+                                      quantity = s.FirstOrDefault().quantity
+                                  }); ;
+                dgStock.ItemsSource = temp;
+                fillExternalPieChart();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-				if (sender != null)
-				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-		 }
+        }
 
         private void chk_externalInvoicesAllBranches_Checked(object sender, RoutedEventArgs e)
         {
-        try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
-					     cb_externalInvoicesBranches.IsEnabled = false;
-            cb_externalInvoicesBranches.SelectedItem = null;
-            cb_externalInvoicesInvoiceType.IsEnabled = true;
-            chk_externalInvoicesAllInvoicesType.IsEnabled = true;
-            fillComboExternalInvType();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                cb_externalInvoicesBranches.IsEnabled = false;
+                cb_externalInvoicesBranches.SelectedItem = null;
+                cb_externalInvoicesInvoiceType.IsEnabled = true;
+                chk_externalInvoicesAllInvoicesType.IsEnabled = true;
+                fillComboExternalInvType();
 
-       
-			  if (sender != null)
-			  SectionData.EndAwait(grid_main);
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-				if (sender != null)
-				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-		  }
+        }
 
         private void chk_externalInvoicesAllBranches_Unchecked(object sender, RoutedEventArgs e)
         {
-        try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
-					     cb_externalInvoicesBranches.IsEnabled = true;
-            cb_externalInvoicesInvoiceType.IsEnabled = false;
-            cb_externalInvoicesInvoiceType.SelectedItem = null;
-            chk_externalInvoicesAllInvoicesType.IsEnabled = false;
-            chk_externalInvoicesAllInvoicesType.IsChecked = false;
-        
-			  if (sender != null)
-			  SectionData.EndAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                cb_externalInvoicesBranches.IsEnabled = true;
+                cb_externalInvoicesInvoiceType.IsEnabled = false;
+                cb_externalInvoicesInvoiceType.SelectedItem = null;
+                chk_externalInvoicesAllInvoicesType.IsEnabled = false;
+                chk_externalInvoicesAllInvoicesType.IsChecked = false;
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-				if (sender != null)
-				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-		 }
+        }
 
         private void dp_externalInvoicesEndDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-         try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
-					   temp
-                = fillList(itemsTransfer, cb_externalInvoicesBranches, cb_externalInvoicesInvoiceType, cb_externalInvoicesInvoice, dp_externalInvoicesStartDate, dp_externalInvoicesEndDate, chk_externalInvoicesAllBranches, chk_externalInvoicesAllInvoicesType, chk_externalInvoicesALlInvoice, null, null).GroupBy(x => new { x.branchId, x.invoiceId })
-                          .Select(s => new ItemTransferInvoice
-                          {
-                              branchId = s.FirstOrDefault().branchId,
-                              branchName = s.FirstOrDefault().branchName,
-                              AgentTypeAgent = s.FirstOrDefault().AgentTypeAgent,
-                              ItemUnits = s.FirstOrDefault().ItemUnits
-                            ,
-                              invNumber = s.FirstOrDefault().invNumber,
-                              invType = s.FirstOrDefault().invType,
-                              quantity = s.FirstOrDefault().quantity
-                          }); ;
-            dgStock.ItemsSource = temp;
-            fillExternalPieChart();
-       
-			  if (sender != null)
-			  SectionData.EndAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                temp
+         = fillList(itemsTransfer, cb_externalInvoicesBranches, cb_externalInvoicesInvoiceType, cb_externalInvoicesInvoice, dp_externalInvoicesStartDate, dp_externalInvoicesEndDate, chk_externalInvoicesAllBranches, chk_externalInvoicesAllInvoicesType, chk_externalInvoicesALlInvoice, null, null).GroupBy(x => new { x.branchId, x.invoiceId })
+                   .Select(s => new ItemTransferInvoice
+                   {
+                       branchId = s.FirstOrDefault().branchId,
+                       branchName = s.FirstOrDefault().branchName,
+                       AgentTypeAgent = s.FirstOrDefault().AgentTypeAgent,
+                       ItemUnits = s.FirstOrDefault().ItemUnits
+                     ,
+                       invNumber = s.FirstOrDefault().invNumber,
+                       invType = s.FirstOrDefault().invType,
+                       quantity = s.FirstOrDefault().quantity
+                   }); ;
+                dgStock.ItemsSource = temp;
+                fillExternalPieChart();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-				if (sender != null)
-				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-		  }
+        }
 
         private void dp_externalInvoicesStartDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-        try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
-					    temp= fillList(itemsTransfer, cb_externalInvoicesBranches, cb_externalInvoicesInvoiceType, cb_externalInvoicesInvoice, dp_externalInvoicesStartDate, dp_externalInvoicesEndDate, chk_externalInvoicesAllBranches, chk_externalInvoicesAllInvoicesType, chk_externalInvoicesALlInvoice, null, null).GroupBy(x => new { x.branchId, x.invoiceId })
-                          .Select(s => new ItemTransferInvoice
-                          {
-                              branchId = s.FirstOrDefault().branchId,
-                              branchName = s.FirstOrDefault().branchName,
-                              AgentTypeAgent = s.FirstOrDefault().AgentTypeAgent,
-                              ItemUnits = s.FirstOrDefault().ItemUnits
-                            ,
-                              invNumber = s.FirstOrDefault().invNumber,
-                              invType = s.FirstOrDefault().invType,
-                              quantity = s.FirstOrDefault().quantity
-                          }); ;
-            dgStock.ItemsSource = temp;
-            fillExternalPieChart();
-       
-			  if (sender != null)
-			  SectionData.EndAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                temp = fillList(itemsTransfer, cb_externalInvoicesBranches, cb_externalInvoicesInvoiceType, cb_externalInvoicesInvoice, dp_externalInvoicesStartDate, dp_externalInvoicesEndDate, chk_externalInvoicesAllBranches, chk_externalInvoicesAllInvoicesType, chk_externalInvoicesALlInvoice, null, null).GroupBy(x => new { x.branchId, x.invoiceId })
+                  .Select(s => new ItemTransferInvoice
+                  {
+                      branchId = s.FirstOrDefault().branchId,
+                      branchName = s.FirstOrDefault().branchName,
+                      AgentTypeAgent = s.FirstOrDefault().AgentTypeAgent,
+                      ItemUnits = s.FirstOrDefault().ItemUnits
+                    ,
+                      invNumber = s.FirstOrDefault().invNumber,
+                      invType = s.FirstOrDefault().invType,
+                      quantity = s.FirstOrDefault().quantity
+                  }); ;
+                dgStock.ItemsSource = temp;
+                fillExternalPieChart();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-				if (sender != null)
-				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-		  }
+        }
 
         private void cb_externalInvoicesInvoiceType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-        try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
-					     cb_externalInvoicesInvoice.IsEnabled = true;
-            chk_externalInvoicesALlInvoice.IsEnabled = true;
-            fillComboExternalInvoiceInvoice();
-           temp = fillList(itemsTransfer, cb_externalInvoicesBranches, cb_externalInvoicesInvoiceType, cb_externalInvoicesInvoice, dp_externalInvoicesStartDate, dp_externalInvoicesEndDate, chk_externalInvoicesAllBranches, chk_externalInvoicesAllInvoicesType, chk_externalInvoicesALlInvoice, null, null).GroupBy(x => new { x.branchId, x.invoiceId })
-                          .Select(s => new ItemTransferInvoice
-                          {
-                              branchId = s.FirstOrDefault().branchId,
-                              branchName = s.FirstOrDefault().branchName,
-                              AgentTypeAgent = s.FirstOrDefault().AgentTypeAgent,
-                              ItemUnits = s.FirstOrDefault().ItemUnits
-                            ,
-                              invNumber = s.FirstOrDefault().invNumber,
-                              invType = s.FirstOrDefault().invType,
-                              quantity = s.FirstOrDefault().quantity
-                          }); ;
-            dgStock.ItemsSource = temp;
-            fillExternalPieChart();
-        
-			  if (sender != null)
-			  SectionData.EndAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                cb_externalInvoicesInvoice.IsEnabled = true;
+                chk_externalInvoicesALlInvoice.IsEnabled = true;
+                fillComboExternalInvoiceInvoice();
+                temp = fillList(itemsTransfer, cb_externalInvoicesBranches, cb_externalInvoicesInvoiceType, cb_externalInvoicesInvoice, dp_externalInvoicesStartDate, dp_externalInvoicesEndDate, chk_externalInvoicesAllBranches, chk_externalInvoicesAllInvoicesType, chk_externalInvoicesALlInvoice, null, null).GroupBy(x => new { x.branchId, x.invoiceId })
+                               .Select(s => new ItemTransferInvoice
+                               {
+                                   branchId = s.FirstOrDefault().branchId,
+                                   branchName = s.FirstOrDefault().branchName,
+                                   AgentTypeAgent = s.FirstOrDefault().AgentTypeAgent,
+                                   ItemUnits = s.FirstOrDefault().ItemUnits
+                                 ,
+                                   invNumber = s.FirstOrDefault().invNumber,
+                                   invType = s.FirstOrDefault().invType,
+                                   quantity = s.FirstOrDefault().quantity
+                               }); ;
+                dgStock.ItemsSource = temp;
+                fillExternalPieChart();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-				if (sender != null)
-				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-		 }
+        }
 
         private void chk_externalInvoicesAllInvoicesType_Checked(object sender, RoutedEventArgs e)
         {
-        try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
-					     cb_externalInvoicesInvoiceType.IsEnabled = false;
-            cb_externalInvoicesInvoiceType.SelectedItem = null;
-            cb_externalInvoicesInvoice.IsEnabled = true;
-            chk_externalInvoicesALlInvoice.IsEnabled = true;
-            fillComboExternalInvoiceInvoice();
-       
-			  if (sender != null)
-			  SectionData.EndAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                cb_externalInvoicesInvoiceType.IsEnabled = false;
+                cb_externalInvoicesInvoiceType.SelectedItem = null;
+                cb_externalInvoicesInvoice.IsEnabled = true;
+                chk_externalInvoicesALlInvoice.IsEnabled = true;
+                fillComboExternalInvoiceInvoice();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-				if (sender != null)
-				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-		  }
+        }
 
         private void chk_externalInvoicesAllInvoicesType_Unchecked(object sender, RoutedEventArgs e)
         {
-          try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
-					   cb_externalInvoicesInvoiceType.IsEnabled = true;
-            cb_externalInvoicesInvoice.IsEnabled = false;
-            cb_externalInvoicesInvoice.SelectedItem = null;
-            chk_externalInvoicesALlInvoice.IsEnabled = false;
-            chk_externalInvoicesALlInvoice.IsChecked = false;
-       
-			  if (sender != null)
-			  SectionData.EndAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                cb_externalInvoicesInvoiceType.IsEnabled = true;
+                cb_externalInvoicesInvoice.IsEnabled = false;
+                cb_externalInvoicesInvoice.SelectedItem = null;
+                chk_externalInvoicesALlInvoice.IsEnabled = false;
+                chk_externalInvoicesALlInvoice.IsChecked = false;
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-				if (sender != null)
-				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-		  }
+        }
 
         private void cb_externalInvoicesInvoice_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-          try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
-					   dgStock.ItemsSource = fillList(itemsTransfer, cb_externalInvoicesBranches, cb_externalInvoicesInvoiceType, cb_externalInvoicesInvoice, dp_externalInvoicesStartDate, dp_externalInvoicesEndDate, chk_externalInvoicesAllBranches, chk_externalInvoicesAllInvoicesType, chk_externalInvoicesALlInvoice, null, null).GroupBy(x => new { x.branchId, x.invoiceId })
-                          .Select(s => new ItemTransferInvoice
-                          {
-                              branchId = s.FirstOrDefault().branchId,
-                              branchName = s.FirstOrDefault().branchName,
-                              AgentTypeAgent = s.FirstOrDefault().AgentTypeAgent,
-                              ItemUnits = s.FirstOrDefault().ItemUnits
-                            ,
-                              invNumber = s.FirstOrDefault().invNumber,
-                              invType = s.FirstOrDefault().invType,
-                              quantity = s.FirstOrDefault().quantity
-                          }); ;
-            fillExternalPieChart();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                dgStock.ItemsSource = fillList(itemsTransfer, cb_externalInvoicesBranches, cb_externalInvoicesInvoiceType, cb_externalInvoicesInvoice, dp_externalInvoicesStartDate, dp_externalInvoicesEndDate, chk_externalInvoicesAllBranches, chk_externalInvoicesAllInvoicesType, chk_externalInvoicesALlInvoice, null, null).GroupBy(x => new { x.branchId, x.invoiceId })
+                   .Select(s => new ItemTransferInvoice
+                   {
+                       branchId = s.FirstOrDefault().branchId,
+                       branchName = s.FirstOrDefault().branchName,
+                       AgentTypeAgent = s.FirstOrDefault().AgentTypeAgent,
+                       ItemUnits = s.FirstOrDefault().ItemUnits
+                     ,
+                       invNumber = s.FirstOrDefault().invNumber,
+                       invType = s.FirstOrDefault().invType,
+                       quantity = s.FirstOrDefault().quantity
+                   }); ;
+                fillExternalPieChart();
 
-         
-			  if (sender != null)
-			  SectionData.EndAwait(grid_main);
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-				if (sender != null)
-				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-		}
+        }
 
         private void chk_externalInvoicesALlInvoice_Checked(object sender, RoutedEventArgs e)
-        {try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
-					 
-            cb_externalInvoicesInvoice.IsEnabled = false;
-            cb_externalInvoicesInvoice.SelectedItem = null;
-      
-			  if (sender != null)
-			  SectionData.EndAwait(grid_main);
+        {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                cb_externalInvoicesInvoice.IsEnabled = false;
+                cb_externalInvoicesInvoice.SelectedItem = null;
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-				if (sender != null)
-				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-		   }
+        }
 
         private void chk_externalInvoicesALlInvoice_Unchecked(object sender, RoutedEventArgs e)
         {
-        try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
-					     cb_externalInvoicesInvoice.IsEnabled = true;
-        
-			  if (sender != null)
-			  SectionData.EndAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                cb_externalInvoicesInvoice.IsEnabled = true;
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-				if (sender != null)
-				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-		 }
+        }
 
 
 
@@ -1888,7 +1890,7 @@ namespace POS.View.reports
             cb.DisplayMemberPath = "name";
             cb.ItemsSource = comboBranches;
         }
-       
+
         private void hideAllColumn()
         {
             col_branch.Visibility = Visibility.Hidden;
@@ -1933,42 +1935,42 @@ namespace POS.View.reports
         private void showSelectedTabColumn()
         {
             hideAllColumn();
-           
-                if (selectedExternalTab == 0)
-                {
-                    hideAllColumn();
-                    col_branch.Visibility = Visibility.Visible;
-                    col_item.Visibility = Visibility.Visible;
-                    col_unit.Visibility = Visibility.Visible;
-                    col_quantity.Visibility = Visibility.Visible;
-                    col_agentTypeAgent.Visibility = Visibility.Visible;
-                    col_invTypeNumber.Visibility = Visibility.Visible;
-                }
-                else if (selectedExternalTab == 1)
-                {
-                    hideAllColumn();
-                    col_branch.Visibility = Visibility.Visible;
-                    col_itemUnits.Visibility = Visibility.Visible;
-                    col_agent.Visibility = Visibility.Visible;
-                    col_quantity.Visibility = Visibility.Visible;
-                    col_agentType.Visibility = Visibility.Visible;
-                    col_invTypeNumber.Visibility = Visibility.Visible;
-                }
-                else if (selectedExternalTab == 2)
-                {
-                    hideAllColumn();
-                    col_branch.Visibility = Visibility.Visible;
-                    col_invType.Visibility = Visibility.Visible;
-                    col_invNumber.Visibility = Visibility.Visible;
-                    col_quantity.Visibility = Visibility.Visible;
-                    col_agentTypeAgent.Visibility = Visibility.Visible;
-                    col_itemUnits.Visibility = Visibility.Visible;
-                }
+
+            if (selectedExternalTab == 0)
+            {
+                hideAllColumn();
+                col_branch.Visibility = Visibility.Visible;
+                col_item.Visibility = Visibility.Visible;
+                col_unit.Visibility = Visibility.Visible;
+                col_quantity.Visibility = Visibility.Visible;
+                col_agentTypeAgent.Visibility = Visibility.Visible;
+                col_invTypeNumber.Visibility = Visibility.Visible;
+            }
+            else if (selectedExternalTab == 1)
+            {
+                hideAllColumn();
+                col_branch.Visibility = Visibility.Visible;
+                col_itemUnits.Visibility = Visibility.Visible;
+                col_agent.Visibility = Visibility.Visible;
+                col_quantity.Visibility = Visibility.Visible;
+                col_agentType.Visibility = Visibility.Visible;
+                col_invTypeNumber.Visibility = Visibility.Visible;
+            }
+            else if (selectedExternalTab == 2)
+            {
+                hideAllColumn();
+                col_branch.Visibility = Visibility.Visible;
+                col_invType.Visibility = Visibility.Visible;
+                col_invNumber.Visibility = Visibility.Visible;
+                col_quantity.Visibility = Visibility.Visible;
+                col_agentTypeAgent.Visibility = Visibility.Visible;
+                col_itemUnits.Visibility = Visibility.Visible;
+            }
 
 
         }
         /************************************************************************************************************************************/
-   
+
         List<ExternalitemCombo> comboInternalItemsItems;
         List<ExternalUnitCombo> comboInternalItemsUnits;
         List<internalTypeCombo> comboInternalOperatorType;
@@ -1976,149 +1978,149 @@ namespace POS.View.reports
         IEnumerable<ItemTransferInvoice> temp = null;
         private void txt_search_TextChanged(object sender, TextChangedEventArgs e)
         {
-try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
-					 
-            if (selectedExternalTab == 0)
+            try
             {
-                temp  = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut)
-            .Where(s => (s.branchName.Contains(txt_search.Text) ||
-       s.itemName.Contains(txt_search.Text) ||
-       s.unitName.Contains(txt_search.Text) ||
-       s.agentName.Contains(txt_search.Text) ||
-       s.agentType.Contains(txt_search.Text)||
-       s.invNumber.Contains(txt_search.Text)||
-       s.invType.Contains(txt_search.Text)
-       ));
-                dgStock.ItemsSource = temp;
-                fillExternalPieChart();
-            }
-            else if (selectedExternalTab == 1)
-            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
-                temp  = fillList(itemsTransfer, cb_externalAgentsBranches, cb_externalAgentsAgentsType, cb_externalAgentsCustomer, dp_externalAgentsStartDate, dp_externalAgentsEndDate, chk_externalAgentsAllBranches, chk_externalAgentsAllAgentsType, chk_externalAgentsAllCustomers, chk_externalAgentsIn, chk_externalAgentsOut)
+                if (selectedExternalTab == 0)
+                {
+                    temp = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut)
+                .Where(s => (s.branchName.Contains(txt_search.Text) ||
+           s.itemName.Contains(txt_search.Text) ||
+           s.unitName.Contains(txt_search.Text) ||
+           s.agentName.Contains(txt_search.Text) ||
+           s.agentType.Contains(txt_search.Text) ||
+           s.invNumber.Contains(txt_search.Text) ||
+           s.invType.Contains(txt_search.Text)
+           ));
+                    dgStock.ItemsSource = temp;
+                    fillExternalPieChart();
+                }
+                else if (selectedExternalTab == 1)
+                {
 
-
-              .Where(s => (s.branchName.Contains(txt_search.Text) ||
-       s.itemName.Contains(txt_search.Text) ||
-       s.unitName.Contains(txt_search.Text) ||
-       s.agentName.Contains(txt_search.Text) ||
-       s.agentType.Contains(txt_search.Text) ||
-       s.invNumber.Contains(txt_search.Text) ||
-       s.invType.Contains(txt_search.Text)
-       ));
-                dgStock.ItemsSource = temp;
-                fillExternalPieChart();
-            }
+                    temp = fillList(itemsTransfer, cb_externalAgentsBranches, cb_externalAgentsAgentsType, cb_externalAgentsCustomer, dp_externalAgentsStartDate, dp_externalAgentsEndDate, chk_externalAgentsAllBranches, chk_externalAgentsAllAgentsType, chk_externalAgentsAllCustomers, chk_externalAgentsIn, chk_externalAgentsOut)
 
 
-            else
-            {
-                temp = fillList(itemsTransfer, cb_externalInvoicesBranches, cb_externalInvoicesInvoiceType, cb_externalInvoicesInvoice, dp_externalInvoicesStartDate, dp_externalInvoicesEndDate, chk_externalInvoicesAllBranches, chk_externalInvoicesAllInvoicesType, chk_externalInvoicesALlInvoice, null, null)
-           .GroupBy(x => new { x.branchId, x.invoiceId })
-                         .Select(s => new ItemTransferInvoice
-                         {
-                             branchId = s.FirstOrDefault().branchId,
-                             branchName = s.FirstOrDefault().branchName,
-                             AgentTypeAgent = s.FirstOrDefault().AgentTypeAgent,
-                             ItemUnits = s.FirstOrDefault().ItemUnits
-                           ,
-                             invNumber = s.FirstOrDefault().invNumber,
-                             invType = s.FirstOrDefault().invType,
-                             quantity = s.FirstOrDefault().quantity
-                         })
-            .Where(s => (s.branchName.Contains(txt_search.Text) ||
-       s.ItemUnits.Contains(txt_search.Text) ||
-       s.AgentTypeAgent.Contains(txt_search.Text) ||
-       s.invNumber.Contains(txt_search.Text) ||
-       s.invType.Contains(txt_search.Text)
-       ));
-                dgStock.ItemsSource = temp;
-                fillExternalPieChart();
-            }
+                  .Where(s => (s.branchName.Contains(txt_search.Text) ||
+           s.itemName.Contains(txt_search.Text) ||
+           s.unitName.Contains(txt_search.Text) ||
+           s.agentName.Contains(txt_search.Text) ||
+           s.agentType.Contains(txt_search.Text) ||
+           s.invNumber.Contains(txt_search.Text) ||
+           s.invType.Contains(txt_search.Text)
+           ));
+                    dgStock.ItemsSource = temp;
+                    fillExternalPieChart();
+                }
 
 
-        
-			  if (sender != null)
-			  SectionData.EndAwait(grid_main);
+                else
+                {
+                    temp = fillList(itemsTransfer, cb_externalInvoicesBranches, cb_externalInvoicesInvoiceType, cb_externalInvoicesInvoice, dp_externalInvoicesStartDate, dp_externalInvoicesEndDate, chk_externalInvoicesAllBranches, chk_externalInvoicesAllInvoicesType, chk_externalInvoicesALlInvoice, null, null)
+               .GroupBy(x => new { x.branchId, x.invoiceId })
+                             .Select(s => new ItemTransferInvoice
+                             {
+                                 branchId = s.FirstOrDefault().branchId,
+                                 branchName = s.FirstOrDefault().branchName,
+                                 AgentTypeAgent = s.FirstOrDefault().AgentTypeAgent,
+                                 ItemUnits = s.FirstOrDefault().ItemUnits
+                               ,
+                                 invNumber = s.FirstOrDefault().invNumber,
+                                 invType = s.FirstOrDefault().invType,
+                                 quantity = s.FirstOrDefault().quantity
+                             })
+                .Where(s => (s.branchName.Contains(txt_search.Text) ||
+           s.ItemUnits.Contains(txt_search.Text) ||
+           s.AgentTypeAgent.Contains(txt_search.Text) ||
+           s.invNumber.Contains(txt_search.Text) ||
+           s.invType.Contains(txt_search.Text)
+           ));
+                    dgStock.ItemsSource = temp;
+                    fillExternalPieChart();
+                }
+
+
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-				if (sender != null)
-				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-		 }
+        }
 
         private void btn_refresh_Click(object sender, RoutedEventArgs e)
         {
-         try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
-					    txt_search.Text = "";
-            if (selectedExternalTab == 0)
+            try
             {
-                cb_externalItemsBranches.SelectedItem = null;
-                cb_externalItemsItems.SelectedItem = null;
-                cb_externalItemsUnits.SelectedItem = null;
-                chk_externalItemsAllBranches.IsChecked = false;
-                chk_externalItemsAllItems.IsChecked = false;
-                chk_externalItemsAllUnits.IsChecked = false;
-                chk_externalItemsIn.IsChecked = true;
-                chk_externalItemsOut.IsChecked = true;
-                dp_externalItemsEndDate.SelectedDate = null;
-                dp_externalItemsStartDate.SelectedDate = null;
-            }
-            else if (selectedExternalTab == 1)
-            {
-                cb_externalAgentsBranches.SelectedItem = null;
-                cb_externalAgentsAgentsType.SelectedItem = null;
-                cb_externalAgentsCustomer.SelectedItem = null;
-                chk_externalAgentsAllBranches.IsChecked = false;
-                chk_externalAgentsAllAgentsType.IsChecked = false;
-                chk_externalAgentsAllCustomers.IsChecked = false;
-                chk_externalAgentsIn.IsChecked = true;
-                chk_externalAgentsOut.IsChecked = true;
-                dp_externalAgentsEndDate.SelectedDate = null;
-                dp_externalAgentsStartDate.SelectedDate = null;
-            }
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                txt_search.Text = "";
+                if (selectedExternalTab == 0)
+                {
+                    cb_externalItemsBranches.SelectedItem = null;
+                    cb_externalItemsItems.SelectedItem = null;
+                    cb_externalItemsUnits.SelectedItem = null;
+                    chk_externalItemsAllBranches.IsChecked = false;
+                    chk_externalItemsAllItems.IsChecked = false;
+                    chk_externalItemsAllUnits.IsChecked = false;
+                    chk_externalItemsIn.IsChecked = true;
+                    chk_externalItemsOut.IsChecked = true;
+                    dp_externalItemsEndDate.SelectedDate = null;
+                    dp_externalItemsStartDate.SelectedDate = null;
+                }
+                else if (selectedExternalTab == 1)
+                {
+                    cb_externalAgentsBranches.SelectedItem = null;
+                    cb_externalAgentsAgentsType.SelectedItem = null;
+                    cb_externalAgentsCustomer.SelectedItem = null;
+                    chk_externalAgentsAllBranches.IsChecked = false;
+                    chk_externalAgentsAllAgentsType.IsChecked = false;
+                    chk_externalAgentsAllCustomers.IsChecked = false;
+                    chk_externalAgentsIn.IsChecked = true;
+                    chk_externalAgentsOut.IsChecked = true;
+                    dp_externalAgentsEndDate.SelectedDate = null;
+                    dp_externalAgentsStartDate.SelectedDate = null;
+                }
 
-            else if (selectedExternalTab == 2)
-            {
-                cb_externalInvoicesBranches.SelectedItem = null;
-                cb_externalInvoicesInvoice.SelectedItem = null;
-                cb_externalInvoicesInvoiceType.SelectedItem = null;
-                chk_externalInvoicesAllBranches.IsChecked = false;
-                chk_externalInvoicesALlInvoice.IsChecked = false;
-                chk_externalInvoicesAllInvoicesType.IsChecked = false;
-              
-                dp_externalInvoicesEndDate.SelectedDate = null;
-                dp_externalInvoicesStartDate.SelectedDate = null;
-            }
-         
-			  if (sender != null)
-			  SectionData.EndAwait(grid_main);
+                else if (selectedExternalTab == 2)
+                {
+                    cb_externalInvoicesBranches.SelectedItem = null;
+                    cb_externalInvoicesInvoice.SelectedItem = null;
+                    cb_externalInvoicesInvoiceType.SelectedItem = null;
+                    chk_externalInvoicesAllBranches.IsChecked = false;
+                    chk_externalInvoicesALlInvoice.IsChecked = false;
+                    chk_externalInvoicesAllInvoicesType.IsChecked = false;
+
+                    dp_externalInvoicesEndDate.SelectedDate = null;
+                    dp_externalInvoicesStartDate.SelectedDate = null;
+                }
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-				if (sender != null)
-				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-		}
+        }
         ReportCls reportclass = new ReportCls();
         LocalReport rep = new LocalReport();
         SaveFileDialog saveFileDialog = new SaveFileDialog();
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {
             try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
-					 
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
                 List<ReportParameter> paramarr = new List<ReportParameter>();
 
                 string addpath = "";
@@ -2137,7 +2139,7 @@ try
                     {
                         addpath = @"\Reports\StatisticReport\Storage\External\Ar\ArInvoice.rdlc";
                     }
-                    
+
                 }
                 else
                 {
@@ -2153,7 +2155,7 @@ try
                     {
                         addpath = @"\Reports\StatisticReport\Storage\External\En\Invoice.rdlc";
                     }
-                  
+
                 }
                 string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
@@ -2174,26 +2176,26 @@ try
                     string filepath = saveFileDialog.FileName;
                     LocalReportExtensions.ExportToPDF(rep, filepath);
                 }
-            
-         
-			  if (sender != null)
-			  SectionData.EndAwait(grid_main);
+
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-				if (sender != null)
-				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-		}
+        }
 
         private void Btn_print_Click(object sender, RoutedEventArgs e)
         {
-           try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
-					 
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
                 List<ReportParameter> paramarr = new List<ReportParameter>();
 
                 string addpath = "";
@@ -2212,7 +2214,7 @@ try
                     {
                         addpath = @"\Reports\StatisticReport\Storage\External\Ar\ArInvoice.rdlc";
                     }
-                 
+
                 }
                 else
                 {
@@ -2228,7 +2230,7 @@ try
                     {
                         addpath = @"\Reports\StatisticReport\Storage\External\En\Invoice.rdlc";
                     }
-                 
+
                 }
                 string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
@@ -2241,28 +2243,114 @@ try
                 rep.SetParameters(paramarr);
                 rep.Refresh();
                 LocalReportExtensions.PrintToPrinter(rep);
-           
-       
-			  if (sender != null)
-			  SectionData.EndAwait(grid_main);
+
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-				if (sender != null)
-				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-		  }
+        }
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {
-           try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
-					  Thread t1 = new Thread(() =>
+            try
             {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                Thread t1 = new Thread(() =>
+      {
+          List<ReportParameter> paramarr = new List<ReportParameter>();
+
+          string addpath = "";
+          bool isArabic = ReportCls.checkLang();
+          if (isArabic)
+          {
+              if (selectedExternalTab == 0)
+              {
+                  addpath = @"\Reports\StatisticReport\Storage\External\Ar\ArItem.rdlc";
+              }
+              else if (selectedExternalTab == 1)
+              {
+                  addpath = @"\Reports\StatisticReport\Storage\External\Ar\ArAgent.rdlc";
+              }
+              else if (selectedExternalTab == 2)
+              {
+                  addpath = @"\Reports\StatisticReport\Storage\External\Ar\ArInvoice.rdlc";
+              }
+
+          }
+          else
+          {
+              if (selectedExternalTab == 0)
+              {
+                  addpath = @"\Reports\StatisticReport\Storage\External\En\Item.rdlc";
+              }
+              else if (selectedExternalTab == 1)
+              {
+                  addpath = @"\Reports\StatisticReport\Storage\External\En\Agent.rdlc";
+              }
+              else if (selectedExternalTab == 2)
+              {
+                  addpath = @"\Reports\StatisticReport\Storage\External\En\Invoice.rdlc";
+              }
+
+          }
+          string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+          ReportCls.checkLang();
+
+          clsReports.itemTransferInvoice(temp, rep, reppath);
+          clsReports.setReportLanguage(paramarr);
+          clsReports.Header(paramarr);
+
+          rep.SetParameters(paramarr);
+
+          rep.Refresh();
+          this.Dispatcher.Invoke(() =>
+          {
+              saveFileDialog.Filter = "EXCEL|*.xls;";
+              if (saveFileDialog.ShowDialog() == true)
+              {
+                  string filepath = saveFileDialog.FileName;
+                  LocalReportExtensions.ExportToExcel(rep, filepath);
+              }
+          });
+
+
+      });
+                t1.Start();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
+
+        private void Btn_preview_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                Window.GetWindow(this).Opacity = 0.2;
+                string pdfpath = "";
+
                 List<ReportParameter> paramarr = new List<ReportParameter>();
+
+
+                //
+                pdfpath = @"\Thumb\report\temp.pdf";
+                pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
 
                 string addpath = "";
                 bool isArabic = ReportCls.checkLang();
@@ -2309,115 +2397,29 @@ try
                 rep.SetParameters(paramarr);
 
                 rep.Refresh();
-                this.Dispatcher.Invoke(() =>
+
+                LocalReportExtensions.ExportToPDF(rep, pdfpath);
+                wd_previewPdf w = new wd_previewPdf();
+                w.pdfPath = pdfpath;
+                if (!string.IsNullOrEmpty(w.pdfPath))
                 {
-                    saveFileDialog.Filter = "EXCEL|*.xls;";
-                    if (saveFileDialog.ShowDialog() == true)
-                    {
-                        string filepath = saveFileDialog.FileName;
-                        LocalReportExtensions.ExportToExcel(rep, filepath);
-                    }
-                });
+                    w.ShowDialog();
+                    w.wb_pdfWebViewer.Dispose();
 
 
-            });
-            t1.Start();
-         
-			  if (sender != null)
-			  SectionData.EndAwait(grid_main);
+                }
+                Window.GetWindow(this).Opacity = 1;
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-				if (sender != null)
-				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
-		}
-
-        private void Btn_preview_Click(object sender, RoutedEventArgs e)
-        {
-           try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
-					  Window.GetWindow(this).Opacity = 0.2;
-            string pdfpath = "";
-
-            List<ReportParameter> paramarr = new List<ReportParameter>();
-
-
-            //
-            pdfpath = @"\Thumb\report\temp.pdf";
-            pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
-
-            string addpath="";
-            bool isArabic = ReportCls.checkLang();
-            if (isArabic)
-            {
-                if (selectedExternalTab == 0)
-                {
-                    addpath = @"\Reports\StatisticReport\Storage\External\Ar\ArItem.rdlc";
-                }
-                else if (selectedExternalTab == 1)
-                {
-                    addpath = @"\Reports\StatisticReport\Storage\External\Ar\ArAgent.rdlc";
-                }
-                else if (selectedExternalTab == 2)
-                {
-                    addpath = @"\Reports\StatisticReport\Storage\External\Ar\ArInvoice.rdlc";
-                }
-
-            }
-            else
-            {
-                if (selectedExternalTab == 0)
-                {
-                    addpath = @"\Reports\StatisticReport\Storage\External\En\Item.rdlc";
-                }
-                else if (selectedExternalTab == 1)
-                {
-                    addpath = @"\Reports\StatisticReport\Storage\External\En\Agent.rdlc";
-                }
-                else if (selectedExternalTab == 2)
-                {
-                    addpath = @"\Reports\StatisticReport\Storage\External\En\Invoice.rdlc";
-                }
-
-            }
-            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-            ReportCls.checkLang();
-
-            clsReports.itemTransferInvoice(temp, rep, reppath);
-            clsReports.setReportLanguage(paramarr);
-            clsReports.Header(paramarr);
-
-            rep.SetParameters(paramarr);
-
-            rep.Refresh();
-
-            LocalReportExtensions.ExportToPDF(rep, pdfpath);
-            wd_previewPdf w = new wd_previewPdf();
-            w.pdfPath = pdfpath;
-            if (!string.IsNullOrEmpty(w.pdfPath))
-            {
-                w.ShowDialog();
-                w.wb_pdfWebViewer.Dispose();
-
-
-            }
-            Window.GetWindow(this).Opacity = 1;
-        
-			  if (sender != null)
-			  SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-				if (sender != null)
-				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
-            }
-		 }
+        }
     }
 }
 

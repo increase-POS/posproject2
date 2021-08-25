@@ -2308,4 +2308,19 @@ Please add Email in setting</value>
   <data name="trNew" xml:space="preserve">
     <value>New</value>
   </data>
+  <data name="trNoNotifications" xml:space="preserve">
+    <value>No Notifications There!</value>
+  </data>
+  <data name="trNotifications" xml:space="preserve">
+    <value>Notifications</value>
+  </data>
+  <data name="trReturnInvoices" xml:space="preserve">
+    <value>Return Invoices</value>
+  </data>
+  <data name="trShowAll" xml:space="preserve">
+    <value>Show All</value>
+  </data>
+  <data name="trFavorite" xml:space="preserve">
+    <value>Favorite</value>
+  </data>
 </root>

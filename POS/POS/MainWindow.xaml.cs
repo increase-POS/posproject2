@@ -137,15 +137,6 @@ namespace POS
             }
             else
             {
-                /*
-                if (posSetting.reportPrinterId > 0)
-                {
-
-                }
-                */
-
-             //   rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.repname));
-               // sale_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.salname));
         
             }
         }
@@ -159,10 +150,15 @@ namespace POS
         static public MainWindow mainWindow;
         public MainWindow()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
 
-            mainWindow = this;
-            windowFlowDirection();
+                mainWindow = this;
+                windowFlowDirection();
+            }
+            catch(Exception ex)
+            {  SectionData.ExceptionMessage(ex,this);}
 
         }
 
@@ -184,234 +180,206 @@ namespace POS
 
         public async void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
-            StartAwait();
-            grid_mainWindow.IsEnabled = false;
+            //try
+            //{
+            //    if (sender != null)
+            //        SectionData.StartAwait(grid_mainWindow);
 
-            //MessageBox.Show(MainWindow.lang +"-"+ MainWindow.Region.name +"-"+ MainWindow.Currency+"-"+MainWindow.tax +"-");
-            //MessageBox.Show(MainWindow.lang + "-" + MainWindow.Region.name + "-" + MainWindow.Currency + "-" + MainWindow.tax + "-" + MainWindow.dateFormat);
+                grid_mainWindow.IsEnabled = false;
 
-            //MessageBox.Show(MainWindow.posID.ToString()+"-"+MainWindow.branchID.ToString());
-
-            #region bonni
+                #region bonni
 #pragma warning disable CS0436 // Type conflicts with imported type
-            TabTipAutomation.IgnoreHardwareKeyboard = HardwareKeyboardIgnoreOptions.IgnoreAll;
+                TabTipAutomation.IgnoreHardwareKeyboard = HardwareKeyboardIgnoreOptions.IgnoreAll;
 #pragma warning restore CS0436 // Type conflicts with imported type
 #pragma warning disable CS0436 // Type conflicts with imported type
 #pragma warning restore CS0436 // Type conflicts with imported type
 #pragma warning disable CS0436 // Type conflicts with imported type
-            TabTipAutomation.ExceptionCatched += TabTipAutomationOnTest;
+                TabTipAutomation.ExceptionCatched += TabTipAutomationOnTest;
 #pragma warning restore CS0436 // Type conflicts with imported type
-            this.Height = SystemParameters.MaximizedPrimaryScreenHeight;
-            //this.Width = SystemParameters.MaximizedPrimaryScreenHeight;
-            timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromSeconds(1);
-            timer.Tick += timer_Tick;
-            timer.Start();
+                this.Height = SystemParameters.MaximizedPrimaryScreenHeight;
+                //this.Width = SystemParameters.MaximizedPrimaryScreenHeight;
+                timer = new DispatcherTimer();
+                timer.Interval = TimeSpan.FromSeconds(1);
+                timer.Tick += timer_Tick;
+                timer.Start();
 
-            // idle timer
-            idletimer = new DispatcherTimer();
-            idletimer.Interval = TimeSpan.FromMinutes(Idletime);
-            idletimer.Tick += timer_Idle;
-            idletimer.Start();
-
-
-            //thread
-            threadtimer = new DispatcherTimer();
-            threadtimer.Interval = TimeSpan.FromSeconds(threadtime);
-            threadtimer.Tick += timer_Thread;
-            threadtimer.Start();
+                // idle timer
+                idletimer = new DispatcherTimer();
+                idletimer.Interval = TimeSpan.FromMinutes(Idletime);
+                idletimer.Tick += timer_Idle;
+                idletimer.Start();
 
 
+                //thread
+                threadtimer = new DispatcherTimer();
+                threadtimer.Interval = TimeSpan.FromSeconds(threadtime);
+                threadtimer.Tick += timer_Thread;
+                threadtimer.Start();
 
 
-            #endregion
-
-            #region get default System info
 
 
-            tax = decimal.Parse(await getDefaultTax());
+                #endregion
 
-            dateFormat = await getDefaultDateForm();
+                #region get default System info
 
-            CountryCode c = await getDefaultRegion();
-            Region = c;
-            Currency = c.currency;
 
-            StorageCost = decimal.Parse(await getDefaultStorageCost());
-
-            List<SettingCls> settingsCls = await setModel.GetAll();
-            List<SetValues> settingsValues = await valueModel.GetAll();
-
-            SettingCls set = new SettingCls();
-            SetValues setV = new SetValues();
-            //get company name
-            List<char> charsToRemove = new List<char>() { '@', '_', ',', '.', '-' };
-
-            set = settingsCls.Where(s => s.name == "com_name").FirstOrDefault<SettingCls>();
-            nameId = set.settingId;
-            setV = settingsValues.Where(i => i.settingId == nameId).FirstOrDefault();
-            if (setV != null)
-                companyName = setV.value;
-            //get company address
-            set = settingsCls.Where(s => s.name == "com_address").FirstOrDefault<SettingCls>();
-            addressId = set.settingId;
-            setV = settingsValues.Where(i => i.settingId == addressId).FirstOrDefault();
-            if (setV != null)
-                Address = setV.value;
-            //get company email
-            set = settingsCls.Where(s => s.name == "com_email").FirstOrDefault<SettingCls>();
-            emailId = set.settingId;
-            setV = settingsValues.Where(i => i.settingId == emailId).FirstOrDefault();
-            if (setV != null)
-                Email = setV.value;
-            //get company mobile
-            set = settingsCls.Where(s => s.name == "com_mobile").FirstOrDefault<SettingCls>();
-            mobileId = set.settingId;
-            setV = settingsValues.Where(i => i.settingId == mobileId).FirstOrDefault();
-            if (setV != null)
-            {
-                charsToRemove.ForEach(x => setV.value = setV.value.Replace(x.ToString(), String.Empty));
-                Mobile = setV.value;
-            }
-            //get company phone
-            set = settingsCls.Where(s => s.name == "com_phone").FirstOrDefault<SettingCls>();
-            phoneId = set.settingId;
-            setV = settingsValues.Where(i => i.settingId == phoneId).FirstOrDefault();
-            if (setV != null)
-            {
-                charsToRemove.ForEach(x => setV.value = setV.value.Replace(x.ToString(), String.Empty));
-                Phone = setV.value;
-            }
-            //get company fax
-            set = settingsCls.Where(s => s.name == "com_fax").FirstOrDefault<SettingCls>();
-            faxId = set.settingId;
-            setV = settingsValues.Where(i => i.settingId == faxId).FirstOrDefault();
-            if (setV != null)
-            {
-                charsToRemove.ForEach(x => setV.value = setV.value.Replace(x.ToString(), String.Empty));
-                Fax = setV.value;
-            }
-            //get company logo
-            set = settingsCls.Where(s => s.name == "com_logo").FirstOrDefault<SettingCls>();
-            logoId = set.settingId;
-            setV = settingsValues.Where(i => i.settingId == logoId).FirstOrDefault();
-            if (setV != null)
-            {
-                logoImage = setV.value;
-                await setV.getImg(logoImage);
-            }
-            #endregion
-
-            translate();
-
-            #region user personal info
-            txt_userName.Text = userLogin.name;
-            txt_userJob.Text = userLogin.job;
+                tax = decimal.Parse(await getDefaultTax());
 
             try
             {
-                if (!string.IsNullOrEmpty(userLogin.image))
-                {
-                    byte[] imageBuffer = await userModel.downloadImage(userLogin.image); // read this as BLOB from your DB
-
-                    var bitmapImage = new BitmapImage();
-
-                    using (var memoryStream = new System.IO.MemoryStream(imageBuffer))
-                    {
-                        bitmapImage.BeginInit();
-                        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                        bitmapImage.StreamSource = memoryStream;
-                        bitmapImage.EndInit();
-                    }
-
-                    img_userLogin.Fill = new ImageBrush(bitmapImage);
-                }
-                else
-                {
-                    clearImg();
-                }
+                dateFormat = await getDefaultDateForm();
             }
             catch
             {
-                clearImg();
+
             }
-            #endregion
+                CountryCode c = await getDefaultRegion();
+                Region = c;
+                Currency = c.currency;
 
-            #region 
+                StorageCost = decimal.Parse(await getDefaultStorageCost());
 
-            groupObjects = await groupObject.GetUserpermission(userLogin.userId);
+                List<SettingCls> settingsCls = await setModel.GetAll();
+                List<SetValues> settingsValues = await valueModel.GetAll();
 
-            #endregion
-            #region notifications 
-            setNotifications();
-            //setTimer();
-            #endregion
-            //#region
-            //Pos pos = new Pos();
-            //pos = await pos.getPosById((int)posID);
-            //txt_posLogin.Text = pos.code;
-            ///////////////////////////////////////////
-            //Branch branch = new Branch();
-            // branch = await branch.getBranchById((int)MainWindow.branchID);
-            //txt_branchLogin.Text = branch.name;
-            //#endregion
+                SettingCls set = new SettingCls();
+                SetValues setV = new SetValues();
+                //get company name
+                List<char> charsToRemove = new List<char>() { '@', '_', ',', '.', '-' };
 
-            getprintSitting();
+                set = settingsCls.Where(s => s.name == "com_name").FirstOrDefault<SettingCls>();
+                nameId = set.settingId;
+                setV = settingsValues.Where(i => i.settingId == nameId).FirstOrDefault();
+                if (setV != null)
+                    companyName = setV.value;
+                //get company address
+                set = settingsCls.Where(s => s.name == "com_address").FirstOrDefault<SettingCls>();
+                addressId = set.settingId;
+                setV = settingsValues.Where(i => i.settingId == addressId).FirstOrDefault();
+                if (setV != null)
+                    Address = setV.value;
+                //get company email
+                set = settingsCls.Where(s => s.name == "com_email").FirstOrDefault<SettingCls>();
+                emailId = set.settingId;
+                setV = settingsValues.Where(i => i.settingId == emailId).FirstOrDefault();
+                if (setV != null)
+                    Email = setV.value;
+                //get company mobile
+                set = settingsCls.Where(s => s.name == "com_mobile").FirstOrDefault<SettingCls>();
+                mobileId = set.settingId;
+                setV = settingsValues.Where(i => i.settingId == mobileId).FirstOrDefault();
+                if (setV != null)
+                {
+                    charsToRemove.ForEach(x => setV.value = setV.value.Replace(x.ToString(), String.Empty));
+                    Mobile = setV.value;
+                }
+                //get company phone
+                set = settingsCls.Where(s => s.name == "com_phone").FirstOrDefault<SettingCls>();
+                phoneId = set.settingId;
+                setV = settingsValues.Where(i => i.settingId == phoneId).FirstOrDefault();
+                if (setV != null)
+                {
+                    charsToRemove.ForEach(x => setV.value = setV.value.Replace(x.ToString(), String.Empty));
+                    Phone = setV.value;
+                }
+                //get company fax
+                set = settingsCls.Where(s => s.name == "com_fax").FirstOrDefault<SettingCls>();
+                faxId = set.settingId;
+                setV = settingsValues.Where(i => i.settingId == faxId).FirstOrDefault();
+                if (setV != null)
+                {
+                    charsToRemove.ForEach(x => setV.value = setV.value.Replace(x.ToString(), String.Empty));
+                    Fax = setV.value;
+                }
+                //get company logo
+                set = settingsCls.Where(s => s.name == "com_logo").FirstOrDefault<SettingCls>();
+                logoId = set.settingId;
+                setV = settingsValues.Where(i => i.settingId == logoId).FirstOrDefault();
+                if (setV != null)
+                {
+                    logoImage = setV.value;
+                    await setV.getImg(logoImage);
+                }
+                #endregion
 
-            BTN_Home_Click(null, null);
-            grid_mainWindow.IsEnabled = true;
-            EndAwait();
-            btn_reports.Visibility = Visibility.Visible;
+                translate();
 
+                #region user personal info
+                txt_userName.Text = userLogin.name;
+                txt_userJob.Text = userLogin.job;
+
+                try
+                {
+                    if (!string.IsNullOrEmpty(userLogin.image))
+                    {
+                        byte[] imageBuffer = await userModel.downloadImage(userLogin.image); // read this as BLOB from your DB
+
+                        var bitmapImage = new BitmapImage();
+
+                        using (var memoryStream = new System.IO.MemoryStream(imageBuffer))
+                        {
+                            bitmapImage.BeginInit();
+                            bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                            bitmapImage.StreamSource = memoryStream;
+                            bitmapImage.EndInit();
+                        }
+
+                        img_userLogin.Fill = new ImageBrush(bitmapImage);
+                    }
+                    else
+                    {
+                        clearImg();
+                    }
+                }
+                catch
+                {
+                    clearImg();
+                }
+                #endregion
+
+                #region 
+
+                groupObjects = await groupObject.GetUserpermission(userLogin.userId);
+
+                #endregion
+
+                #region notifications 
+                setNotifications();
+                //setTimer();
+                #endregion
+
+
+                getprintSitting();
+
+                BTN_Home_Click(null, null);
+                grid_mainWindow.IsEnabled = true;
+          
+                btn_reports.Visibility = Visibility.Visible;
+
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_mainWindow);
+            //}
+            //catch (Exception ex)
+            //{
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_mainWindow);
+            //    SectionData.ExceptionMessage(ex, this, sender);
+            //}
 
         }
+
+
         void permission()
         {
             if (!SectionData.isAdminPermision())
                 foreach (Button button in FindControls.FindVisualChildren<Button>(this))
                 {
-                    //if (path.Name == "path_" + button.Tag)
-                    //{
-                    //    //MessageBox.Show("Hey i'm in " + "path_" + button.Tag);
-                    //    path.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
-                    //    break;
-                    //}
                     if (button.Tag != null)
                         if (MainWindow.groupObject.HasPermission(button.Tag.ToString(), MainWindow.groupObjects))
                             button.Visibility = Visibility.Visible;
                         else button.Visibility = Visibility.Collapsed;
                 }
-            //if (MainWindow.groupObject.HasPermission(btn_sectionData.Tag.ToString(), MainWindow.groupObjects))
-            //    btn_sectionData.Visibility = Visibility.Visible;
-            //else btn_sectionData.Visibility = Visibility.Collapsed;
-
-            //if (MainWindow.groupObject.HasPermission(btn_sectionData.Tag.ToString(), MainWindow.groupObjects))
-            //    btn_sectionData.Visibility = Visibility.Visible;
-            //else btn_sectionData.Visibility = Visibility.Collapsed;
-
-            //if (MainWindow.groupObject.HasPermission(btn_sectionData.Tag.ToString(), MainWindow.groupObjects))
-            //    btn_sectionData.Visibility = Visibility.Visible;
-            //else btn_sectionData.Visibility = Visibility.Collapsed;
-
-            //if (MainWindow.groupObject.HasPermission(btn_sectionData.Tag.ToString(), MainWindow.groupObjects))
-            //    btn_sectionData.Visibility = Visibility.Visible;
-            //else btn_sectionData.Visibility = Visibility.Collapsed;
-
-            //if (MainWindow.groupObject.HasPermission(btn_sectionData.Tag.ToString(), MainWindow.groupObjects))
-            //    btn_sectionData.Visibility = Visibility.Visible;
-            //else btn_sectionData.Visibility = Visibility.Collapsed;
-
-            //if (MainWindow.groupObject.HasPermission(btn_sectionData.Tag.ToString(), MainWindow.groupObjects))
-            //    btn_sectionData.Visibility = Visibility.Visible;
-            //else btn_sectionData.Visibility = Visibility.Collapsed;
-
-            //if (MainWindow.groupObject.HasPermission(btn_sectionData.Tag.ToString(), MainWindow.groupObjects))
-            //    btn_sectionData.Visibility = Visibility.Visible;
-            //else btn_sectionData.Visibility = Visibility.Collapsed;
-
-            //if (MainWindow.groupObject.HasPermission(btn_sectionData.Tag.ToString(), MainWindow.groupObjects))
-            //    btn_sectionData.Visibility = Visibility.Visible;
-            //else btn_sectionData.Visibility = Visibility.Collapsed;
         }
 
         #region notifications
@@ -465,56 +433,86 @@ namespace POS
         #endregion
         void timer_Idle(object sender, EventArgs e)
         {
-            if (IdleClass.IdleTime.Minutes >= Idletime)
-            {
+            //try
+            //{
+            //    if (sender != null)
+            //        SectionData.StartAwait(grid_mainWindow);
 
-                BTN_logOut_Click(null, null);
-                idletimer.Stop();
-            }
+                if (IdleClass.IdleTime.Minutes >= Idletime)
+                {
+                    BTN_logOut_Click(null, null);
+                    idletimer.Stop();
+                }
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_mainWindow);
+            //}
+            //catch (Exception ex)
+            //{
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_mainWindow);
+            //    SectionData.ExceptionMessage(ex, this, sender);
+            //}
 
         }
         async void timer_Thread(object sendert, EventArgs et)
         {
+            //try
+            //{
+            //    if (sendert != null)
+            //        SectionData.StartAwait(grid_mainWindow);
 
-            //  User thruser = new User();
-            UsersLogs thrlog = new UsersLogs();
-            try
-            {
-                thrlog = await thrlog.GetByID((int)userLogInID);
-                //grid_mainWindow.IsEnabled = true;
-                //EndAwait();
-            }
-            catch (Exception ex)
-            {
-                SectionData.ExceptionMessage(ex, this);
-                //grid_mainWindow.IsEnabled = false;
-                //StartAwait();
-            }
+                //  User thruser = new User();
+                UsersLogs thrlog = new UsersLogs();
+            
+               thrlog = await thrlog.GetByID((int)userLogInID);
 
-            if (thrlog.sOutDate != null)
-            {
-                BTN_logOut_Click(null, null);
-                threadtimer.Stop();
-
-            }
+                if (thrlog.sOutDate != null)
+                {
+                    BTN_logOut_Click(null, null);
+                    threadtimer.Stop();
+                }
+            //        if (sendert != null)
+            //            SectionData.EndAwait(grid_mainWindow);
+            //}
+            //catch (Exception ex)
+            //{
+            //    if (sendert != null)
+            //        SectionData.EndAwait(grid_mainWindow);
+            //    SectionData.ExceptionMessage(ex, this, sendert);
+            //}
 
         }
-        public void StartAwait()
-        {
-            MainWindow.mainWindow.prg_awaitRing.IsActive = true;
-            MainWindow.mainWindow.grid_main.IsEnabled = false;
-            MainWindow.mainWindow.grid_main.Opacity = 0.6;
-        }
-        public void EndAwait()
-        {
-            MainWindow.mainWindow.prg_awaitRing.IsActive = false;
-            MainWindow.mainWindow.grid_main.IsEnabled = true;
-            MainWindow.mainWindow.grid_main.Opacity = 1;
-        }
+        //public void StartAwait()
+        //{
+        //    MainWindow.mainWindow.prg_awaitRing.IsActive = true;
+        //    MainWindow.mainWindow.grid_main.IsEnabled = false;
+        //    MainWindow.mainWindow.grid_main.Opacity = 0.6;
+        //}
+        //public void EndAwait()
+        //{
+        //    MainWindow.mainWindow.prg_awaitRing.IsActive = false;
+        //    MainWindow.mainWindow.grid_main.IsEnabled = true;
+        //    MainWindow.mainWindow.grid_main.Opacity = 1;
+        //}
         void timer_Tick(object sender, EventArgs e)
         {
-            txtTime.Text = DateTime.Now.ToShortTimeString();
-            txtDate.Text = DateTime.Now.ToShortDateString();
+            //try
+            //{
+            //    if (sender != null)
+            //        SectionData.StartAwait(grid_mainWindow);
+
+                txtTime.Text = DateTime.Now.ToShortTimeString();
+                txtDate.Text = DateTime.Now.ToShortDateString();
+
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_mainWindow);
+            //}
+            //catch (Exception ex)
+            //{
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_mainWindow);
+            //    SectionData.ExceptionMessage(ex, this, sender);
+            //}
         }
         private void TabTipAutomationOnTest(Exception exception)
         {
@@ -544,9 +542,25 @@ namespace POS
         }
         private void BTN_logOut_Click(object sender, RoutedEventArgs e)
         {
-            close();
-            Application.Current.Shutdown();
-            System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
+            //try
+            //{
+            //    if (sender != null)
+            //        SectionData.StartAwait(grid_mainWindow);
+
+                close();
+
+                Application.Current.Shutdown();
+                System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
+
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_mainWindow);
+            //}
+            //catch (Exception ex)
+            //{
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_mainWindow);
+            //    SectionData.ExceptionMessage(ex, this, sender);
+            //}
         }
         async void close()
         {
@@ -559,14 +573,23 @@ namespace POS
         }
         private void BTN_Close_Click(object sender, RoutedEventArgs e)
         {
-            close();
-            Application.Current.Shutdown();
+            //try
+            //{
+            //    if (sender != null)
+            //        SectionData.StartAwait(grid_mainWindow);
+                close();
+                Application.Current.Shutdown();
+
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_mainWindow);
+            //}
+            //catch (Exception ex)
+            //{
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_mainWindow);
+            //    SectionData.ExceptionMessage(ex, this, sender);
+            //}
         }
-        //protected override void OnClosed(EventArgs e)
-        //{
-        //    base.OnClosed(e);
-        //    this.RemoveLogicalChild(this.Content);    // since protected method
-        //}
 
         private void BTN_Minimize_Click(object sender, RoutedEventArgs e)
         {
@@ -625,54 +648,58 @@ namespace POS
 
             mi_changePassword.Header = resourcemanager.GetString("trChangePassword");
             BTN_logOut.Header = resourcemanager.GetString("trLogOut");
+
+            txt_notifications.Text = resourcemanager.GetString("trNotifications");
+            txt_noNoti.Text = resourcemanager.GetString("trNoNotifications");
+            btn_showAll.Content = resourcemanager.GetString("trShowAll");
         }
 
         //فتح
         private async void BTN_Menu_Click(object sender, RoutedEventArgs e)
         {
-            if (!menuState)
-            {
-                Storyboard sb = this.FindResource("Storyboard1") as Storyboard;
-                sb.Begin();
-                menuState = true;
-            }
-            else
-            {
-                Storyboard sb = this.FindResource("Storyboard2") as Storyboard;
-                sb.Begin();
-                menuState = false;
-            }
+            //try
+            //{
+            //    if (sender != null)
+            //        SectionData.StartAwait(grid_mainWindow);
+
+                if (!menuState)
+                {
+                    Storyboard sb = this.FindResource("Storyboard1") as Storyboard;
+                    sb.Begin();
+                    menuState = true;
+                }
+                else
+                {
+                    Storyboard sb = this.FindResource("Storyboard2") as Storyboard;
+                    sb.Begin();
+                    menuState = false;
+                }
 
 
-            #region tooltipVisibility
-            FN_tooltipVisibility(BTN_menu);
-            FN_tooltipVisibility(BTN_home);
-            FN_tooltipVisibility(btn_catalog);
-            FN_tooltipVisibility(btn_storage);
-            FN_tooltipVisibility(btn_purchase);
-            FN_tooltipVisibility(btn_sales);
-            FN_tooltipVisibility(btn_reports);
-            FN_tooltipVisibility(btn_accounts);
-            FN_tooltipVisibility(btn_sectionData);
-            FN_tooltipVisibility(btn_settings);
-            #endregion
+                #region tooltipVisibility
+                FN_tooltipVisibility(BTN_menu);
+                FN_tooltipVisibility(BTN_home);
+                FN_tooltipVisibility(btn_catalog);
+                FN_tooltipVisibility(btn_storage);
+                FN_tooltipVisibility(btn_purchase);
+                FN_tooltipVisibility(btn_sales);
+                FN_tooltipVisibility(btn_reports);
+                FN_tooltipVisibility(btn_accounts);
+                FN_tooltipVisibility(btn_sectionData);
+                FN_tooltipVisibility(btn_settings);
+                    #endregion
 
-
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_mainWindow);
+            //}
+            //catch (Exception ex)
+            //{
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_mainWindow);
+            //    SectionData.ExceptionMessage(ex, this, sender);
+            //}
         }
 
-        //async Task<double> DoCount()
-        //{
-        //    return await Task<double>.Run(() =>
-        //    {
-        //        double d = 0;
-
-        //        for (d = 0; d < 150000000; d++)
-        //        {
-
-        //        }
-        //        return d;
-        //    });
-        //}
 
         void fn_pathOpenCollapsed()
         {
@@ -698,22 +725,30 @@ namespace POS
 
         private void BTN_Home_Click(object sender, RoutedEventArgs e)
         {
+            //try
+            //{
+            //    if (sender != null)
+            //        SectionData.StartAwait(grid_mainWindow);
 
-            colorTextRefreash(txt_home);
-            FN_pathVisible(path_openHome);
-            fn_ColorIconRefreash(path_iconHome);
-            grid_main.Children.Clear();
-            grid_main.Children.Add(uc_home.Instance);
-            if (isHome)
-            {
-                uc_home.Instance.timerAnimation();
-                isHome = false;
-            }
-            //else
-            //    grid_main.Children.Add(uc_home.Instance);
-
-            //uc_home uc = new uc_home();
-            //grid_main.Children.Add(uc);
+                colorTextRefreash(txt_home);
+                FN_pathVisible(path_openHome);
+                fn_ColorIconRefreash(path_iconHome);
+                grid_main.Children.Clear();
+                grid_main.Children.Add(uc_home.Instance);
+                if (isHome)
+                {
+                    uc_home.Instance.timerAnimation();
+                    isHome = false;
+                }
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_mainWindow);
+            //}
+            //catch (Exception ex)
+            //{
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_mainWindow);
+            //    SectionData.ExceptionMessage(ex, this, sender);
+            //}
 
         }
 
@@ -730,13 +765,26 @@ namespace POS
 
         private void btn_Keyboard_Click(object sender, RoutedEventArgs e)
         {
-            if (TabTip.Close())
-            {
-#pragma warning disable CS0436 // Type conflicts with imported type
-                TabTip.OpenUndockedAndStartPoolingForClosedEvent();
-#pragma warning restore CS0436 // Type conflicts with imported type
-            }
+            //try
+            //{
+            //    if (sender != null)
+            //        SectionData.StartAwait(grid_mainWindow);
 
+                if (TabTip.Close())
+                {
+    #pragma warning disable CS0436 // Type conflicts with imported type
+                    TabTip.OpenUndockedAndStartPoolingForClosedEvent();
+    #pragma warning restore CS0436 // Type conflicts with imported type
+                }
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_mainWindow);
+            //}
+            //catch (Exception ex)
+            //{
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_mainWindow);
+            //    SectionData.ExceptionMessage(ex, this, sender);
+            //}
 
         }
 
@@ -761,28 +809,34 @@ namespace POS
 
         private void BTN_SectionData_Click(object sender, RoutedEventArgs e)
         {
-            // BranchStore branchStore = new BranchStore();
-            //var lst = branchStore.GetByBranchIdtable(2);
-            //if (MainWindow.groupObject.HasPermission(BTN_sectionData.Tag.ToString(), MainWindow.groupObjects))
+            //try
             //{
-            colorTextRefreash(txt_sectiondata);
-            FN_pathVisible(path_openSectionData);
-            fn_ColorIconRefreash(path_iconSectionData);
-            grid_main.Children.Clear();
-            grid_main.Children.Add(UC_SectionData.Instance);
-            //UC_SectionData uc = new UC_SectionData();
-            //grid_main.Children.Add(uc);
-            isHome = true;
-            Button button = sender as Button;
-            initializationMainTrack(button.Tag.ToString(), 0);
+            //    if (sender != null)
+            //        SectionData.StartAwait(grid_mainWindow);
+
+                colorTextRefreash(txt_sectiondata);
+                FN_pathVisible(path_openSectionData);
+                fn_ColorIconRefreash(path_iconSectionData);
+                grid_main.Children.Clear();
+                grid_main.Children.Add(UC_SectionData.Instance);
+        
+                isHome = true;
+                Button button = sender as Button;
+                initializationMainTrack(button.Tag.ToString(), 0);
+
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_mainWindow);
             //}
-            //else
-            //    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+            //catch (Exception ex)
+            //{
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_mainWindow);
+            //    SectionData.ExceptionMessage(ex, this, sender);
+            //}
+
         }
         public void initializationMainTrack(string tag, int level)
         {
-            //sp_mainTrack.Children.Clear();
-
             if (level == 0)
             {
                 txt_secondLevelTrack.Visibility = Visibility.Collapsed;
@@ -932,21 +986,52 @@ namespace POS
         }
         private void BTN_catalog_Click(object sender, RoutedEventArgs e)
         {
-            colorTextRefreash(txt_catalog);
-            FN_pathVisible(path_openCatalog);
-            fn_ColorIconRefreash(path_iconCatalog);
-            grid_main.Children.Clear();
-            grid_main.Children.Add(UC_catalog.Instance);
-            isHome = true;
+            //try
+            //{
+            //    if (sender != null)
+            //        SectionData.StartAwait(grid_mainWindow);
 
-            Button button = sender as Button;
-            initializationMainTrack(button.Tag.ToString(), 0);
+                colorTextRefreash(txt_catalog);
+                FN_pathVisible(path_openCatalog);
+                fn_ColorIconRefreash(path_iconCatalog);
+                grid_main.Children.Clear();
+                grid_main.Children.Add(UC_catalog.Instance);
+                isHome = true;
+
+                Button button = sender as Button;
+                initializationMainTrack(button.Tag.ToString(), 0);
+
+
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_mainWindow);
+            //}
+            //catch (Exception ex)
+            //{
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_mainWindow);
+            //    SectionData.ExceptionMessage(ex, this, sender);
+            //}
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            e.Cancel = true;
-            this.Visibility = Visibility.Hidden;
+            //try
+            //{
+            //    if (sender != null)
+            //        SectionData.StartAwait(grid_mainWindow);
+
+                e.Cancel = true;
+                this.Visibility = Visibility.Hidden;
+
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_mainWindow);
+            //}
+            //catch (Exception ex)
+            //{
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_mainWindow);
+            //    SectionData.ExceptionMessage(ex, this, sender);
+            //}
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
@@ -956,12 +1041,27 @@ namespace POS
 
         private async void Mi_changePassword_Click(object sender, RoutedEventArgs e)
         {//change password
-            Window.GetWindow(this).Opacity = 0.2;
-            wd_changePassword w = new wd_changePassword();
-            w.ShowDialog();
-            Window.GetWindow(this).Opacity = 1;
+            //try
+            //{
+            //    if (sender != null)
+            //        SectionData.StartAwait(grid_mainWindow);
 
-            userLogin = await userModel.getUserById(w.userID);
+                Window.GetWindow(this).Opacity = 0.2;
+                wd_changePassword w = new wd_changePassword();
+                w.ShowDialog();
+                Window.GetWindow(this).Opacity = 1;
+
+                userLogin = await userModel.getUserById(w.userID);
+
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_mainWindow);
+            //}
+            //catch (Exception ex)
+            //{
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_mainWindow);
+            //    SectionData.ExceptionMessage(ex, this, sender);
+            //}
         }
 
 
@@ -1035,91 +1135,131 @@ namespace POS
 
         private async void BTN_notifications_Click(object sender, RoutedEventArgs e)
         {
-            if (bdrMain.Visibility == Visibility.Collapsed)
-            {
-                bdrMain.Visibility = Visibility.Visible;
-                bdrMain.RenderTransform = Animations.borderAnimation(-25, bdrMain, true);
-                List<NotificationUser> notifications = await notificationUser.GetByUserId(userID.Value, "alert", posID.Value);
-                IEnumerable<NotificationUser> orderdNotifications = notifications.OrderByDescending(x => x.createDate);
-                await notificationUser.setAsRead(userID.Value, posID.Value, "alert");
-                md_notificationCount.Badge = "";
-                if (notifications.Count == 0)
-                {
-                    grd_notifications.Visibility = Visibility.Collapsed;
-                    txt_noNoti.Visibility = Visibility.Visible;
-                }
+            //try
+            //{
+            //    if (sender != null)
+            //        SectionData.StartAwait(grid_mainWindow);
 
+                if (bdrMain.Visibility == Visibility.Collapsed)
+                {
+                    bdrMain.Visibility = Visibility.Visible;
+                    bdrMain.RenderTransform = Animations.borderAnimation(-25, bdrMain, true);
+                    List<NotificationUser> notifications = await notificationUser.GetByUserId(userID.Value, "alert", posID.Value);
+                    IEnumerable<NotificationUser> orderdNotifications = notifications.OrderByDescending(x => x.createDate);
+                    await notificationUser.setAsRead(userID.Value, posID.Value, "alert");
+                    md_notificationCount.Badge = "";
+                    if (notifications.Count == 0)
+                    {
+                        grd_notifications.Visibility = Visibility.Collapsed;
+                        txt_noNoti.Visibility = Visibility.Visible;
+                    }
+
+                    else
+                    {
+                        grd_notifications.Visibility = Visibility.Visible;
+                        txt_noNoti.Visibility = Visibility.Collapsed;
+
+                        txt_firstNotiTitle.Text = resourcemanager.GetString(orderdNotifications.Select(obj => obj.title).FirstOrDefault());
+
+                        txt_firstNotiContent.Text = GetUntilOrEmpty(orderdNotifications.Select(obj => obj.ncontent).FirstOrDefault(), ":")
+                          + " : " + resourcemanager.GetString(orderdNotifications.Select(obj => obj.ncontent).FirstOrDefault().Substring(orderdNotifications.Select(obj => obj.ncontent).FirstOrDefault().LastIndexOf(':') + 1));
+
+                        txt_firstNotiDate.Text = orderdNotifications.Select(obj => obj.createDate).FirstOrDefault().ToString();
+
+                        if (notifications.Count > 1)
+                        {
+                            txt_2NotiTitle.Text = resourcemanager.GetString(orderdNotifications.Select(obj => obj.title).Skip(1).FirstOrDefault());
+                            txt_2NotiContent.Text = GetUntilOrEmpty(orderdNotifications.Select(obj => obj.ncontent).Skip(1).FirstOrDefault(), ":")
+                          + " : " + resourcemanager.GetString(orderdNotifications.Select(obj => obj.ncontent).Skip(1).FirstOrDefault().Substring(orderdNotifications.Select(obj => obj.ncontent).Skip(1).FirstOrDefault().LastIndexOf(':') + 1));
+
+                            txt_2NotiDate.Text = orderdNotifications.Select(obj => obj.createDate).Skip(1).FirstOrDefault().ToString();
+
+                        }
+                        if (notifications.Count > 2)
+                        {
+                            txt_3NotiTitle.Text = resourcemanager.GetString(orderdNotifications.Select(obj => obj.title).Skip(2).FirstOrDefault());
+                            txt_3NotiContent.Text = GetUntilOrEmpty(orderdNotifications.Select(obj => obj.ncontent).Skip(2).FirstOrDefault(), ":")
+                          + " : " + resourcemanager.GetString(orderdNotifications.Select(obj => obj.ncontent).Skip(2).FirstOrDefault().Substring(orderdNotifications.Select(obj => obj.ncontent).Skip(2).FirstOrDefault().LastIndexOf(':') + 1));
+
+                            txt_3NotiDate.Text = orderdNotifications.Select(obj => obj.createDate).Skip(2).FirstOrDefault().ToString();
+
+                        }
+                        if (notifications.Count > 3)
+                        {
+                            txt_4NotiTitle.Text = resourcemanager.GetString(orderdNotifications.Select(obj => obj.title).Skip(3).FirstOrDefault());
+                            txt_4NotiContent.Text = GetUntilOrEmpty(orderdNotifications.Select(obj => obj.ncontent).Skip(3).FirstOrDefault(), ":")
+                          + " : " + resourcemanager.GetString(orderdNotifications.Select(obj => obj.ncontent).Skip(3).FirstOrDefault().Substring(orderdNotifications.Select(obj => obj.ncontent).Skip(3).FirstOrDefault().LastIndexOf(':') + 1));
+
+                            txt_4NotiDate.Text = orderdNotifications.Select(obj => obj.createDate).Skip(3).FirstOrDefault().ToString();
+
+                        }
+                        if (notifications.Count > 4)
+                        {
+                            txt_5NotiTitle.Text = resourcemanager.GetString(orderdNotifications.Select(obj => obj.title).Skip(4).FirstOrDefault());
+                            txt_5NotiContent.Text = GetUntilOrEmpty(orderdNotifications.Select(obj => obj.ncontent).Skip(4).FirstOrDefault(), ":")
+                          + " : " + resourcemanager.GetString(orderdNotifications.Select(obj => obj.ncontent).Skip(4).FirstOrDefault().Substring(orderdNotifications.Select(obj => obj.ncontent).Skip(4).FirstOrDefault().LastIndexOf(':') + 1));
+
+                            txt_5NotiDate.Text = orderdNotifications.Select(obj => obj.createDate).Skip(4).FirstOrDefault().ToString();
+
+                        }
+                    }
+
+                }
                 else
                 {
-                    grd_notifications.Visibility = Visibility.Visible;
-                    txt_noNoti.Visibility = Visibility.Collapsed;
-
-                    txt_firstNotiTitle.Text = resourcemanager.GetString(orderdNotifications.Select(obj => obj.title).FirstOrDefault());
-
-                    txt_firstNotiContent.Text = GetUntilOrEmpty(orderdNotifications.Select(obj => obj.ncontent).FirstOrDefault(), ":")
-                      + " : " + resourcemanager.GetString(orderdNotifications.Select(obj => obj.ncontent).FirstOrDefault().Substring(orderdNotifications.Select(obj => obj.ncontent).FirstOrDefault().LastIndexOf(':') + 1));
-
-                    txt_firstNotiDate.Text = orderdNotifications.Select(obj => obj.createDate).FirstOrDefault().ToString();
-
-                    if (notifications.Count > 1)
-                    {
-                        txt_2NotiTitle.Text = resourcemanager.GetString(orderdNotifications.Select(obj => obj.title).Skip(1).FirstOrDefault());
-                        txt_2NotiContent.Text = GetUntilOrEmpty(orderdNotifications.Select(obj => obj.ncontent).Skip(1).FirstOrDefault(), ":")
-                      + " : " + resourcemanager.GetString(orderdNotifications.Select(obj => obj.ncontent).Skip(1).FirstOrDefault().Substring(orderdNotifications.Select(obj => obj.ncontent).Skip(1).FirstOrDefault().LastIndexOf(':') + 1));
-
-                        txt_2NotiDate.Text = orderdNotifications.Select(obj => obj.createDate).Skip(1).FirstOrDefault().ToString();
-
-                    }
-                    if (notifications.Count > 2)
-                    {
-                        txt_3NotiTitle.Text = resourcemanager.GetString(orderdNotifications.Select(obj => obj.title).Skip(2).FirstOrDefault());
-                        txt_3NotiContent.Text = GetUntilOrEmpty(orderdNotifications.Select(obj => obj.ncontent).Skip(2).FirstOrDefault(), ":")
-                      + " : " + resourcemanager.GetString(orderdNotifications.Select(obj => obj.ncontent).Skip(2).FirstOrDefault().Substring(orderdNotifications.Select(obj => obj.ncontent).Skip(2).FirstOrDefault().LastIndexOf(':') + 1));
-
-                        txt_3NotiDate.Text = orderdNotifications.Select(obj => obj.createDate).Skip(2).FirstOrDefault().ToString();
-
-                    }
-                    if (notifications.Count > 3)
-                    {
-                        txt_4NotiTitle.Text = resourcemanager.GetString(orderdNotifications.Select(obj => obj.title).Skip(3).FirstOrDefault());
-                        txt_4NotiContent.Text = GetUntilOrEmpty(orderdNotifications.Select(obj => obj.ncontent).Skip(3).FirstOrDefault(), ":")
-                      + " : " + resourcemanager.GetString(orderdNotifications.Select(obj => obj.ncontent).Skip(3).FirstOrDefault().Substring(orderdNotifications.Select(obj => obj.ncontent).Skip(3).FirstOrDefault().LastIndexOf(':') + 1));
-
-                        txt_4NotiDate.Text = orderdNotifications.Select(obj => obj.createDate).Skip(3).FirstOrDefault().ToString();
-
-                    }
-                    if (notifications.Count > 4)
-                    {
-                        txt_5NotiTitle.Text = resourcemanager.GetString(orderdNotifications.Select(obj => obj.title).Skip(4).FirstOrDefault());
-                        txt_5NotiContent.Text = GetUntilOrEmpty(orderdNotifications.Select(obj => obj.ncontent).Skip(4).FirstOrDefault(), ":")
-                      + " : " + resourcemanager.GetString(orderdNotifications.Select(obj => obj.ncontent).Skip(4).FirstOrDefault().Substring(orderdNotifications.Select(obj => obj.ncontent).Skip(4).FirstOrDefault().LastIndexOf(':') + 1));
-
-                        txt_5NotiDate.Text = orderdNotifications.Select(obj => obj.createDate).Skip(4).FirstOrDefault().ToString();
-
-                    }
-
-
-
+                    bdrMain.Visibility = Visibility.Collapsed;
                 }
 
-
-            }
-            else
-            {
-                bdrMain.Visibility = Visibility.Collapsed;
-            }
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_mainWindow);
+            //}
+            //catch (Exception ex)
+            //{
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_mainWindow);
+            //    SectionData.ExceptionMessage(ex, this, sender);
+            //}
         }
 
 
         private void TextBlock_MouseEnter(object sender, MouseEventArgs e)
         {
-            bdr_showAll.Visibility = Visibility.Visible;
+            //try
+            //{
+            //    if (sender != null)
+            //        SectionData.StartAwait(grid_mainWindow);
 
+                bdr_showAll.Visibility = Visibility.Visible;
+
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_mainWindow);
+            //}
+            //catch (Exception ex)
+            //{
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_mainWindow);
+            //    SectionData.ExceptionMessage(ex, this, sender);
+            //}
         }
 
         private void TextBlock_MouseLeave(object sender, MouseEventArgs e)
         {
-            bdr_showAll.Visibility = Visibility.Hidden;
+            //try
+            //{
+            //    if (sender != null)
+            //        SectionData.StartAwait(grid_mainWindow);
+
+                bdr_showAll.Visibility = Visibility.Hidden;
+
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_mainWindow);
+            //}
+            //catch (Exception ex)
+            //{
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_mainWindow);
+            //    SectionData.ExceptionMessage(ex, this, sender);
+            //}
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -1129,12 +1269,37 @@ namespace POS
 
         private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            bdrMain.Visibility = Visibility.Collapsed;
+            //try
+            //{
+            //    if (sender != null)
+            //        SectionData.StartAwait(grid_mainWindow);
+
+                bdrMain.Visibility = Visibility.Collapsed;
+
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_mainWindow);
+            //}
+            //catch (Exception ex)
+            //{
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_mainWindow);
+            //    SectionData.ExceptionMessage(ex, this, sender);
+            //}
         }
 
         private void Btn_info_Click(object sender, RoutedEventArgs e)
         {
-
+            try
+            {
+                Window.GetWindow(this).Opacity = 0.2;
+                wd_info w = new wd_info();
+                w.ShowDialog();
+                Window.GetWindow(this).Opacity = 1;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void clearImg()
@@ -1150,85 +1315,169 @@ namespace POS
 
         public void BTN_purchases_Click(object sender, RoutedEventArgs e)
         {
-            colorTextRefreash(txt_purchases);
-            FN_pathVisible(path_openPurchases);
-            fn_ColorIconRefreash(path_iconPurchases);
-            grid_main.Children.Clear();
-            grid_main.Children.Add(uc_purchases.Instance);
-            //grid_main.Children.Add(uc_payInvoice.Instance);
-            //uc_purchases uc = new uc_purchases();
-            //grid_main.Children.Add(uc);
-            isHome = true;
-            Button button = sender as Button;
-            initializationMainTrack(button.Tag.ToString(), 0);
+            //try
+            //{
+            //    if (sender != null)
+            //        SectionData.StartAwait(grid_mainWindow);
+
+                colorTextRefreash(txt_purchases);
+                FN_pathVisible(path_openPurchases);
+                fn_ColorIconRefreash(path_iconPurchases);
+                grid_main.Children.Clear();
+                grid_main.Children.Add(uc_purchases.Instance);
+           
+                isHome = true;
+                Button button = sender as Button;
+                initializationMainTrack(button.Tag.ToString(), 0);
+
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_mainWindow);
+            //}
+            //catch (Exception ex)
+            //{
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_mainWindow);
+            //    SectionData.ExceptionMessage(ex, this, sender);
+            //}
         }
 
         public void BTN_sales_Click(object sender, RoutedEventArgs e)
         {
-            colorTextRefreash(txt_sales);
-            FN_pathVisible(path_openSales);
-            fn_ColorIconRefreash(path_iconSales);
-            grid_main.Children.Clear();
-            grid_main.Children.Add(uc_sales.Instance);
-            //uc_sales uc = new uc_sales();
-            //grid_main.Children.Add(uc);
-            isHome = true;
-            Button button = sender as Button;
-            initializationMainTrack(button.Tag.ToString(), 0);
+            //try
+            //{
+            //    if (sender != null)
+            //        SectionData.StartAwait(grid_mainWindow);
+
+                colorTextRefreash(txt_sales);
+                FN_pathVisible(path_openSales);
+                fn_ColorIconRefreash(path_iconSales);
+                grid_main.Children.Clear();
+                grid_main.Children.Add(uc_sales.Instance);
+           
+                isHome = true;
+                Button button = sender as Button;
+                initializationMainTrack(button.Tag.ToString(), 0);
+
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_mainWindow);
+            //}
+            //catch (Exception ex)
+            //{
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_mainWindow);
+            //    SectionData.ExceptionMessage(ex, this, sender);
+            //}
         }
 
         private void BTN_accounts_Click(object sender, RoutedEventArgs e)
         {
-            colorTextRefreash(txt_accounting);
-            FN_pathVisible(path_openAccount);
-            fn_ColorIconRefreash(path_iconAccounts);
+            //try
+            //{
+            //    if (sender != null)
+            //        SectionData.StartAwait(grid_mainWindow);
 
-            grid_main.Children.Clear();
-            grid_main.Children.Add(uc_accounts.Instance);
-            //uc_accounts uc = new uc_accounts();
-            //grid_main.Children.Add(uc);
-            isHome = true;
-            Button button = sender as Button;
-            initializationMainTrack(button.Tag.ToString(), 0);
+                colorTextRefreash(txt_accounting);
+                FN_pathVisible(path_openAccount);
+                fn_ColorIconRefreash(path_iconAccounts);
+
+                grid_main.Children.Clear();
+                grid_main.Children.Add(uc_accounts.Instance);
+        
+                isHome = true;
+                Button button = sender as Button;
+                initializationMainTrack(button.Tag.ToString(), 0);
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_mainWindow);
+            //}
+            //catch (Exception ex)
+            //{
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_mainWindow);
+            //    SectionData.ExceptionMessage(ex, this, sender);
+            //}
         }
 
         private void BTN_reports_Click(object sender, RoutedEventArgs e)
         {
-            colorTextRefreash(txt_reports);
-            FN_pathVisible(path_openReports);
-            fn_ColorIconRefreash(path_iconReports);
-            isHome = true;
-            grid_main.Children.Clear();
-            grid_main.Children.Add(uc_reports.Instance);
-            Button button = sender as Button;
-            initializationMainTrack(button.Tag.ToString(), 0);
+            //try
+            //{
+            //    if (sender != null)
+            //        SectionData.StartAwait(grid_mainWindow);
+
+                colorTextRefreash(txt_reports);
+                FN_pathVisible(path_openReports);
+                fn_ColorIconRefreash(path_iconReports);
+                isHome = true;
+                grid_main.Children.Clear();
+                grid_main.Children.Add(uc_reports.Instance);
+                Button button = sender as Button;
+                initializationMainTrack(button.Tag.ToString(), 0);
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_mainWindow);
+            //}
+            //catch (Exception ex)
+            //{
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_mainWindow);
+            //    SectionData.ExceptionMessage(ex, this, sender);
+            //}
         }
 
         public void BTN_settings_Click(object sender, RoutedEventArgs e)
         {
-            colorTextRefreash(txt_settings);
-            FN_pathVisible(path_openSettings);
-            fn_ColorIconRefreash(path_iconSettings);
-            isHome = true;
-            grid_main.Children.Clear();
-            grid_main.Children.Add(uc_settings.Instance);
-            Button button = sender as Button;
-            initializationMainTrack(button.Tag.ToString(), 0);
+            //try
+            //{
+            //    if (sender != null)
+            //        SectionData.StartAwait(grid_mainWindow);
+
+                colorTextRefreash(txt_settings);
+                FN_pathVisible(path_openSettings);
+                fn_ColorIconRefreash(path_iconSettings);
+                isHome = true;
+                grid_main.Children.Clear();
+                grid_main.Children.Add(uc_settings.Instance);
+                Button button = sender as Button;
+                initializationMainTrack(button.Tag.ToString(), 0);
+
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_mainWindow);
+            //}
+            //catch (Exception ex)
+            //{
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_mainWindow);
+            //    SectionData.ExceptionMessage(ex, this, sender);
+            //}
         }
 
         private void BTN_storage_Click(object sender, RoutedEventArgs e)
         {
-            Button button = sender as Button;
-            initializationMainTrack(button.Tag.ToString(), 0);
-            colorTextRefreash(txt_storage);
-            FN_pathVisible(path_openStorage);
-            fn_ColorIconRefreash(path_iconStorage);
-            grid_main.Children.Clear();
-            grid_main.Children.Add(View.uc_storage.Instance);
-            //uc_storage uc = new uc_storage();
-            //grid_main.Children.Add(uc);
-            isHome = true;
+            //try
+            //{
+            //    if (sender != null)
+            //        SectionData.StartAwait(grid_mainWindow);
 
+                Button button = sender as Button;
+                initializationMainTrack(button.Tag.ToString(), 0);
+                colorTextRefreash(txt_storage);
+                FN_pathVisible(path_openStorage);
+                fn_ColorIconRefreash(path_iconStorage);
+                grid_main.Children.Clear();
+                grid_main.Children.Add(View.uc_storage.Instance);
+            
+                isHome = true;
+
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_mainWindow);
+            //}
+            //catch (Exception ex)
+            //{
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_mainWindow);
+            //    SectionData.ExceptionMessage(ex, this, sender);
+            //}
         }
     }
 }

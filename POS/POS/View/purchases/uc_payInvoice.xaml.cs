@@ -795,6 +795,7 @@ namespace POS.View
                         if (cb_branch.SelectedIndex != -1 && cb_vendor.SelectedIndex != -1 && !tb_invoiceNumber.Equals("") && billDetails.Count > 0
                             && !tb.Text.Trim().Equals("") && decimal.Parse(tb_total.Text) > 0 && valid)
                         {
+                            branchModel = await branchModel.getBranchById(MainWindow.branchID.Value);
                             if (_InvoiceType == "pbd") //pbd means purchase bounse draft
                             {
                                 #region notification Object
@@ -806,12 +807,25 @@ namespace POS.View
                                     createUserId = MainWindow.userID.Value,
                                     updateUserId = MainWindow.userID.Value,
                                 };
-                                await not.Save(not, (int)cb_branch.SelectedValue, "storageAlerts_ctreatePurchaseReturnInvoice", cb_branch.Text);
+                                await not.Save(not, (int)cb_branch.SelectedValue, "storageAlerts_ctreatePurchaseReturnInvoice",branchModel.name);
                                 #endregion
                                 await addInvoice("pbw", "pb"); // pbw means waiting purchase bounce
                             }
-                            else if (_InvoiceType == "po")//po  purchase order
-                                await addInvoice("pw", "pi");
+                            //else if (_InvoiceType == "po")//po  purchase order
+                            //{
+                            //    #region notification Object
+                            //    Notification not = new Notification()
+                            //    {
+                            //        title = "trPurchaseInvoiceAlertTilte",
+                            //        ncontent = "trPurchaseInvoiceAlertContent",
+                            //        msgType = "alert",
+                            //        createUserId = MainWindow.userID.Value,
+                            //        updateUserId = MainWindow.userID.Value,
+                            //    };
+                            //    await not.Save(not, (int)cb_branch.SelectedValue, "storageAlerts_ctreatePurchaseInvoice", cb_branch.Text);
+                            //    #endregion
+                            //    await addInvoice("pw", "pi");
+                            //}
                             else//pw  waiting purchase invoice
                             {
                                 #region notification Object
@@ -823,7 +837,7 @@ namespace POS.View
                                     createUserId = MainWindow.userID.Value,
                                     updateUserId = MainWindow.userID.Value,
                                 };
-                                await not.Save(not, (int)cb_branch.SelectedValue, "storageAlerts_ctreatePurchaseInvoice", cb_branch.Text);
+                                await not.Save(not, (int)cb_branch.SelectedValue, "storageAlerts_ctreatePurchaseInvoice", branchModel.name);
                                 #endregion
 
                                 await addInvoice("pw", "pi");
@@ -995,7 +1009,7 @@ namespace POS.View
                 w.userId = MainWindow.userLogin.userId;
                 w.duration = 1; // view drafts which created during 1 last days 
 
-                w.title = MainWindow.resourcemanager.GetString("trPurchaseInvoices");
+                w.title = MainWindow.resourcemanager.GetString("trInvoices");
 
                 if (w.ShowDialog() == true)
                 {
@@ -1003,7 +1017,7 @@ namespace POS.View
                     {
                         invoice = w.invoice;
 
-                        this.DataContext = invoice;
+                        //this.DataContext = invoice;
 
                         _InvoiceType = invoice.invType;
                         // set title to bill
@@ -1042,7 +1056,7 @@ namespace POS.View
                 w.userId = MainWindow.userLogin.userId;
                 // w.duration = 1; // view drafts which created during 1 last days 
 
-                w.title = MainWindow.resourcemanager.GetString("trPurchaseOrders");
+                w.title = MainWindow.resourcemanager.GetString("trOrders");
 
                 if (w.ShowDialog() == true)
                 {
@@ -1050,7 +1064,7 @@ namespace POS.View
                     {
                         invoice = w.invoice;
 
-                        this.DataContext = invoice;
+                        //this.DataContext = invoice;
 
                         _InvoiceType = invoice.invType;
                         // set title to bill
@@ -1111,7 +1125,7 @@ namespace POS.View
                     Window.GetWindow(this).Opacity = 0.2;
                     wd_invoice w = new wd_invoice();
 
-                    w.title = MainWindow.resourcemanager.GetString("trPurchaseInvoices");
+                    w.title = MainWindow.resourcemanager.GetString("trReturn");
                     // purchase invoices
                     w.invoiceType = "p, pw"; // invoice type to view in grid
                     w.branchCreatorId = MainWindow.branchID.Value;
@@ -1124,7 +1138,7 @@ namespace POS.View
                             _InvoiceType = "pbd";
                             invoice = w.invoice;
 
-                            this.DataContext = invoice;
+                           // this.DataContext = invoice;
 
                             await fillInvoiceInputs(invoice);
                             mainInvoiceItems = invoiceItems;
@@ -1180,7 +1194,7 @@ namespace POS.View
         }
         private void inputEditable()
         {
-            if (_InvoiceType == "pbd" || _InvoiceType == "pbw") // return invoice
+            if (_InvoiceType == "pbw") // purchase invoice
             {
                 dg_billDetails.Columns[0].Visibility = Visibility.Visible; //make delete column visible
                 dg_billDetails.Columns[5].IsReadOnly = false; //make price read only
@@ -1192,6 +1206,24 @@ namespace POS.View
                 tb_note.IsEnabled = false;
                 tb_barcode.IsEnabled = false;
                 cb_branch.IsEnabled = false;
+                tb_discount.IsEnabled = false;
+                cb_typeDiscount.IsEnabled = false;
+                btn_save.IsEnabled = true;
+                tb_invoiceNumber.IsEnabled = false;
+                tb_taxValue.IsEnabled = false;
+            }
+            if (_InvoiceType == "pbd") // return invoice
+            {
+                dg_billDetails.Columns[0].Visibility = Visibility.Visible; //make delete column visible
+                dg_billDetails.Columns[5].IsReadOnly = false; //make price read only
+                dg_billDetails.Columns[3].IsReadOnly = true; //make unit read only
+                dg_billDetails.Columns[4].IsReadOnly = false; //make count read only
+                cb_vendor.IsEnabled = false;
+                dp_desrvedDate.IsEnabled = false;
+                dp_invoiceDate.IsEnabled = false;
+                tb_note.IsEnabled = false;
+                tb_barcode.IsEnabled = false;
+                cb_branch.IsEnabled = true;
                 tb_discount.IsEnabled = false;
                 cb_typeDiscount.IsEnabled = false;
                 btn_save.IsEnabled = true;
@@ -2241,7 +2273,7 @@ namespace POS.View
                         wd_cashTransfer w = new wd_cashTransfer();
 
                         w.invId = invoice.invoiceId;
-
+                        w.title = MainWindow.resourcemanager.GetString("trPayments"); 
                         w.ShowDialog();
 
                         Window.GetWindow(this).Opacity = 1;

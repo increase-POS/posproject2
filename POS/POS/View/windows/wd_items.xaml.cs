@@ -183,6 +183,11 @@ namespace POS.View.windows
                 defaultPurchase = 1;
                 defaultSale = 0;
             }
+            else if (CardType.Equals("order"))
+            {
+                defaultPurchase = 0;
+                defaultSale = 0;
+            }
             items = await itemModel.GetSaleOrPurItems(category.categoryId,defaultSale,defaultPurchase,branchId);
             return items;
         }

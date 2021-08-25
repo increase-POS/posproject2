@@ -83,8 +83,10 @@ namespace POS.View.windows
                     SectionData.StartAwait(grid_main);
 
                 bool valid = true;
-            //return;
-            for(int i=0; i<orderList.Count; i++)
+                //return;
+                if (selectedItemsLocations.Count == 0)
+                    valid = false;
+            for(int i=0; i<selectedItemsLocations.Count; i++)
             {
                 if (_Quantity[i] < orderList[i].quantity)
                 {
@@ -112,7 +114,8 @@ namespace POS.View.windows
         {
                     try
                     {
-                        this.Close();
+                DialogResult = false;
+                this.Close();
             }
             catch (Exception ex)
             {

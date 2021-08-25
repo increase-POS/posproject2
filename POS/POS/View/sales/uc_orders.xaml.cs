@@ -1218,14 +1218,14 @@ SectionData.isAdminPermision())
                     w.invoiceType = "or";
                     w.userId = MainWindow.userLogin.userId;
                     w.duration = 1; // view orders which updated during 1 last days 
-                    w.title = MainWindow.resourcemanager.GetString("trSalesOrders");
+                    w.title = MainWindow.resourcemanager.GetString("trOrders");
 
                     if (w.ShowDialog() == true)
                     {
                         if (w.invoice != null)
                         {
                             invoice = w.invoice;
-                            this.DataContext = invoice;
+                           // this.DataContext = invoice;
 
                             _InvoiceType = invoice.invType;
                             refreshDocCount(invoice.invoiceId);
@@ -1268,14 +1268,14 @@ SectionData.isAdminPermision())
                     w.invoiceStatus = "ex";
                     w.userId = MainWindow.userLogin.userId;
 
-                    w.title = MainWindow.resourcemanager.GetString("trSalesOrders");
+                    w.title = MainWindow.resourcemanager.GetString("trWaitConfirmUser");
 
                     if (w.ShowDialog() == true)
                     {
                         if (w.invoice != null)
                         {
                             invoice = w.invoice;
-                            this.DataContext = invoice;
+                            //this.DataContext = invoice;
 
                             _InvoiceType = invoice.invType;
                             refreshDocCount(invoice.invoiceId);
@@ -1710,16 +1710,14 @@ SectionData.isAdminPermision())
                     //items
                     Window.GetWindow(this).Opacity = 0.2;
                     wd_items w = new wd_items();
-                    w.CardType = "sales";
+                    w.CardType = "order";
                     w.ShowDialog();
                     if (w.isActive)
                     {
                         for (int i = 0; i < w.selectedItems.Count; i++)
                         {
-                            MainWindow.mainWindow.StartAwait();
                             int itemId = w.selectedItems[i];
                             await ChangeItemIdEvent(itemId);
-                            MainWindow.mainWindow.EndAwait();
                         }
                     }
 

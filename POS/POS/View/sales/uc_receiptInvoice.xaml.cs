@@ -1276,7 +1276,7 @@ namespace POS.View
                 w.userId = MainWindow.userLogin.userId;
                 w.duration = 1; // view drafts which updated during 1 last days 
 
-                w.title = MainWindow.resourcemanager.GetString("trSalesInvoices");
+                w.title = MainWindow.resourcemanager.GetString("trInvoices");
 
                 if (w.ShowDialog() == true)
                 {
@@ -1435,7 +1435,7 @@ namespace POS.View
                 {
                     Window.GetWindow(this).Opacity = 0.2;
                     wd_invoice w = new wd_invoice();
-                    w.title = MainWindow.resourcemanager.GetString("trInvoices");
+                    w.title = MainWindow.resourcemanager.GetString("trReturn");
                     w.branchCreatorId = MainWindow.branchID.Value;
                     // sales invoices
                     w.invoiceType = "s"; // invoice type to view in grid
@@ -1446,7 +1446,7 @@ namespace POS.View
                             _InvoiceType = "sbd";
                             invoice = w.invoice;
 
-                            this.DataContext = invoice;
+                            //this.DataContext = invoice;
                             await fillInvoiceInputs(invoice);
                             mainInvoiceItems = invoiceItems;
                             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesReturnInvoice");
@@ -1534,6 +1534,8 @@ namespace POS.View
                     tb_processNum.IsEnabled = false;
                     cb_coupon.IsEnabled = false;
                     btn_clearCoupon.IsEnabled = false;
+                    tb_discount.IsEnabled = false;
+                    cb_typeDiscount.IsEnabled = false;
                     break;
                 case "sd": // sales draft invoice
                     dg_billDetails.Columns[0].Visibility = Visibility.Visible; //make delete column visible
@@ -1561,6 +1563,8 @@ namespace POS.View
                     {
                         cb_paymentProcessType.IsEnabled = true;
                     }
+                    tb_discount.IsEnabled = true;
+                    cb_typeDiscount.IsEnabled = true;
                     break;
                 case "or": //sales order
                     dg_billDetails.Columns[0].Visibility = Visibility.Visible; //make delete column visible
@@ -1588,7 +1592,8 @@ namespace POS.View
                     {
                         cb_paymentProcessType.IsEnabled = true;
                     }
-
+                    tb_discount.IsEnabled = true;
+                    cb_typeDiscount.IsEnabled = true;
                     break;
                 case "s": //sales invoice
                     dg_billDetails.Columns[0].Visibility = Visibility.Collapsed; //make delete column unvisible
@@ -1608,6 +1613,8 @@ namespace POS.View
                     tb_processNum.IsEnabled = false;
                     cb_coupon.IsEnabled = false;
                     btn_clearCoupon.IsEnabled = false;
+                    tb_discount.IsEnabled = false;
+                    cb_typeDiscount.IsEnabled = false;
                     break;
                 case "q": //qoutation invoice
                     dg_billDetails.Columns[0].Visibility = Visibility.Collapsed; //make delete column unvisible
@@ -1636,6 +1643,8 @@ namespace POS.View
                     {
                         cb_paymentProcessType.IsEnabled = true;
                     }
+                    tb_discount.IsEnabled = false;
+                    cb_typeDiscount.IsEnabled = false;
                     break;
             }
         }
@@ -1777,26 +1786,29 @@ namespace POS.View
         {
             #region calculate discount value 
             _Discount = 0;
-            foreach (CouponInvoice coupon in selectedCoupons)
-            {
-                string discountType = coupon.discountType.ToString();
-                decimal discountValue = (decimal)coupon.discountValue;
-                if (discountType == "2")
-                    discountValue = SectionData.calcPercentage(_Sum, discountValue);
-                _Discount += discountValue;
-            }
-            tb_discountCoupon.Text = _Discount.ToString();
-            #endregion
-            #region manaula discount
             decimal manualDiscount = 0;
-            if (cb_typeDiscount.SelectedIndex != -1 && cb_typeDiscount.SelectedIndex != 0 && tb_discount.Text != "")
-            {                
-                int manualDisType = cb_typeDiscount.SelectedIndex;
-                manualDiscount = decimal.Parse(tb_discount.Text);
-                if (manualDisType == 2)
-                    manualDiscount = SectionData.calcPercentage(_Sum, manualDiscount);
+            if (_Sum > 0)
+            {
+                foreach (CouponInvoice coupon in selectedCoupons)
+                {
+                    string discountType = coupon.discountType.ToString();
+                    decimal discountValue = (decimal)coupon.discountValue;
+                    if (discountType == "2")
+                        discountValue = SectionData.calcPercentage(_Sum, discountValue);
+                    _Discount += discountValue;
+                }
+                tb_discountCoupon.Text = _Discount.ToString();
+                #endregion
+                #region manaula discount           
+                if (cb_typeDiscount.SelectedIndex != -1 && cb_typeDiscount.SelectedIndex != 0 && tb_discount.Text != "")
+                {
+                    int manualDisType = cb_typeDiscount.SelectedIndex;
+                    manualDiscount = decimal.Parse(tb_discount.Text);
+                    if (manualDisType == 2)
+                        manualDiscount = SectionData.calcPercentage(_Sum, manualDiscount);
+                }
+                #endregion
             }
-            #endregion
             decimal taxValue = _Tax;
             decimal total = _Sum - _Discount - manualDiscount + _DeliveryCost;
             if (MainWindow.isInvTax == 1)
@@ -2973,7 +2985,7 @@ namespace POS.View
                         if (w.invoice != null)
                         {
                             invoice = w.invoice;
-                            this.DataContext = invoice;
+                           // this.DataContext = invoice;
 
                             _InvoiceType = invoice.invType;
                             // set title to bill
@@ -3219,6 +3231,7 @@ namespace POS.View
                         wd_cashTransfer w = new wd_cashTransfer();
 
                         w.invId = invoice.invoiceId;
+                        w.title = MainWindow.resourcemanager.GetString("trReceived");
 
                         w.ShowDialog();
 

@@ -2779,6 +2779,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Favorite.
+        /// </summary>
+        internal static string trFavorite {
+            get {
+                return ResourceManager.GetString("trFavorite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fax.
         /// </summary>
         internal static string trFax {
@@ -3788,6 +3797,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No Notifications There!.
+        /// </summary>
+        internal static string trNoNotifications {
+            get {
+                return ResourceManager.GetString("trNoNotifications", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Normal Item.
         /// </summary>
         internal static string trNormalItem {
@@ -3820,6 +3838,15 @@ namespace POS {
         internal static string trNotification {
             get {
                 return ResourceManager.GetString("trNotification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notifications.
+        /// </summary>
+        internal static string trNotifications {
+            get {
+                return ResourceManager.GetString("trNotifications", resourceCulture);
             }
         }
         
@@ -4940,6 +4967,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Return Invoices.
+        /// </summary>
+        internal static string trReturnInvoices {
+            get {
+                return ResourceManager.GetString("trReturnInvoices", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Salary.
         /// </summary>
         internal static string trSalary {
@@ -5521,6 +5557,15 @@ namespace POS {
         internal static string trShouldInputOneSerialNumberAtLeast {
             get {
                 return ResourceManager.GetString("trShouldInputOneSerialNumberAtLeast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show All.
+        /// </summary>
+        internal static string trShowAll {
+            get {
+                return ResourceManager.GetString("trShowAll", resourceCulture);
             }
         }
         

@@ -35,6 +35,7 @@ namespace POS.View.windows
         }
 
         public int invId;
+        public string title;
         CashTransfer cashModel = new CashTransfer();
         IEnumerable<CashTransfer> cashes;
         IEnumerable<CashTransfer> cashesQuery; 
@@ -75,7 +76,7 @@ namespace POS.View.windows
 
         private void translate()
         {
-            txt_accounts.Text = MainWindow.resourcemanager.GetString("trPayments/Received");
+            txt_accounts.Text = title;
             MaterialDesignThemes.Wpf.HintAssist.SetHint(txb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
             dg_accounts.Columns[0].Header = MainWindow.resourcemanager.GetString("trTransferNumberTooltip");
             dg_accounts.Columns[1].Header = MainWindow.resourcemanager.GetString("trDepositor/Recipient");

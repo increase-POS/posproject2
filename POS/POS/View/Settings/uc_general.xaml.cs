@@ -432,10 +432,19 @@ namespace POS.View.Settings
 
                                 parentWindow.translate();
 
+                                //parentWindow
                                 UserControl_Loaded(null, null);
 
+                                uc_settings set = new uc_settings();
+                                //parentWindow.grid_main.Children.Clear();
+                                //parentWindow.grid_main.Children.Add(set);
+                                //uc_general g = new uc_general();
+                                //set.Content = g;
+                                //set.ex.Visibility = Visibility.Visible;
+                                set.UserControl_Loaded(null , null);
 
-                          
+                                this.UserControl_Loaded(null , null);
+
 
                             }
 
@@ -653,6 +662,34 @@ namespace POS.View.Settings
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
 
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
+
+        private void Btn_backup_Click(object sender, RoutedEventArgs e)
+        {//drag&drop
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+
+                if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+                {
+                    Window.GetWindow(this).Opacity = 0.2;
+                    wd_favorite w = new wd_favorite();
+                    w.ShowDialog();
+                    Window.GetWindow(this).Opacity = 1;
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }

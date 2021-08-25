@@ -717,7 +717,7 @@
                         </Grid.RowDefinitions>
 
                         <Border Background="{StaticResource MainColorBlue}" CornerRadius="10,10,0,0">
-                            <TextBlock  Text="Notifications" Foreground="White" FontSize="24" FontWeight="Bold" Padding="20,0,20,0" VerticalAlignment="Center"></TextBlock>
+                            <TextBlock x:Name="txt_notifications"  Text="Notifications" Foreground="White" FontSize="24" FontWeight="Bold" Padding="20,0,20,0" VerticalAlignment="Center"></TextBlock>
 
 
                         </Border>
@@ -774,7 +774,7 @@
                         </Grid>
                         <Border Grid.Row="2" BorderBrush="{StaticResource MainColorlightGrey}" BorderThickness="0,1,0,0">
                             <StackPanel>
-                                <Button Content="Show All" Background="Transparent" BorderBrush="Transparent" Foreground="{StaticResource MainColorBlue}"  HorizontalAlignment="Center"  FontSize="18" Margin="0,5,0,0" MouseEnter="TextBlock_MouseEnter" MouseLeave="TextBlock_MouseLeave" Click="Button_Click">
+                                <Button x:Name="btn_showAll" Content="Show All" Background="Transparent" BorderBrush="Transparent" Foreground="{StaticResource MainColorBlue}"  HorizontalAlignment="Center"  FontSize="18" Margin="0,5,0,0" MouseEnter="TextBlock_MouseEnter" MouseLeave="TextBlock_MouseLeave" Click="Button_Click">
                                 </Button>
                                 <Border x:Name="bdr_showAll" Visibility="Hidden" BorderThickness="0,0,0,1" BorderBrush="{StaticResource MainColorBlue}" HorizontalAlignment="Center" Width="80" Margin="0,-5,0,10">
                                 </Border>

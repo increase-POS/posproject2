@@ -2287,4 +2287,19 @@
   <data name="trNew" xml:space="preserve">
     <value>جديد</value>
   </data>
+  <data name="trNoNotifications" xml:space="preserve">
+    <value>لا يوجد إشعارات!</value>
+  </data>
+  <data name="trNotifications" xml:space="preserve">
+    <value>الإشعارات</value>
+  </data>
+  <data name="trReturnInvoices" xml:space="preserve">
+    <value>فواتير المرتجع</value>
+  </data>
+  <data name="trShowAll" xml:space="preserve">
+    <value>عرض الكل</value>
+  </data>
+  <data name="trFavorite" xml:space="preserve">
+    <value>المفضلة</value>
+  </data>
 </root>

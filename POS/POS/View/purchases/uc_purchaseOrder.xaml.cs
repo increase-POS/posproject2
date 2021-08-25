@@ -71,7 +71,7 @@ namespace POS.View.purchases
                 w.userId = MainWindow.userLogin.userId;
                 w.duration = 1; // view purchase orders which created during  last one day 
 
-                w.title = MainWindow.resourcemanager.GetString("trPurchaseOrders");
+                w.title = MainWindow.resourcemanager.GetString("trOrders");
 
                 if (w.ShowDialog() == true)
                 {

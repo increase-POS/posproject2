@@ -1080,7 +1080,7 @@ namespace POS.View.sales
                     if (w.invoice != null)
                     {
                         invoice = w.invoice;
-                        this.DataContext = invoice;
+                       // this.DataContext = invoice;
 
                         _InvoiceType = invoice.invType;
                         refreshDocCount(invoice.invoiceId);
@@ -1445,16 +1445,14 @@ namespace POS.View.sales
                 {
                     Window.GetWindow(this).Opacity = 0.2;
                     wd_items w = new wd_items();
-                    w.CardType = "sales";
+                    w.CardType = "order";
                     w.ShowDialog();
                     if (w.isActive)
                     {
                         for (int i = 0; i < w.selectedItems.Count; i++)
                         {
-                            MainWindow.mainWindow.StartAwait();
                             int itemId = w.selectedItems[i];
                             await ChangeItemIdEvent(itemId);
-                            MainWindow.mainWindow.EndAwait();
                         }
                     }
 

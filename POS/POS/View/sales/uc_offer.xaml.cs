@@ -150,6 +150,8 @@ namespace POS.View
 
                 if (!int.TryParse(tb_discountValue.Text, out _numValue))
                     tb_discountValue.Text = _numValue.ToString();
+                else
+                    _numValue =int.Parse( tb_discountValue.Text);
             }
             catch (Exception ex)
             {
