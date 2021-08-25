@@ -457,6 +457,8 @@ namespace POS_Server.Controllers
                                              shippingCompanyId = b.shippingCompanyId,
                                              shipUserId = b.shipUserId,
                                              userId = b.userId,
+                                             manualDiscountType = b.manualDiscountType,
+                                             manualDiscountValue = b.manualDiscountValue,
                                          })
 
                                .FirstOrDefault();
@@ -504,6 +506,8 @@ namespace POS_Server.Controllers
                                              shippingCompanyId = b.shippingCompanyId,
                                              shipUserId = b.shipUserId,
                                              userId = b.userId,
+                                             manualDiscountType = b.manualDiscountType,
+                                             manualDiscountValue = b.manualDiscountValue,
                                          })
 
                                .FirstOrDefault();
@@ -578,6 +582,8 @@ namespace POS_Server.Controllers
                                                 shippingCompanyId = b.shippingCompanyId,
                                                 shipUserId = b.shipUserId,
                                                 userId = b.userId,
+                                                manualDiscountType = b.manualDiscountType,
+                                                manualDiscountValue = b.manualDiscountValue,
                                             })
                         .ToList();
                         if (invoicesList != null)
@@ -632,6 +638,8 @@ namespace POS_Server.Controllers
                                                 shippingCompanyId = b.shippingCompanyId,
                                                 shipUserId = b.shipUserId,
                                                 userId = b.userId,
+                                                manualDiscountType = b.manualDiscountType,
+                                                manualDiscountValue = b.manualDiscountValue,
                                             })
                         .ToList();
                         if (invoicesList != null)
@@ -721,6 +729,8 @@ namespace POS_Server.Controllers
                                             shippingCompanyId = b.shippingCompanyId,
                                             shipUserId = b.shipUserId,
                                             userId = b.userId,
+                                            manualDiscountType = b.manualDiscountType,
+                                            manualDiscountValue = b.manualDiscountValue,
                                         })
                     .ToList();
 
@@ -823,6 +833,8 @@ namespace POS_Server.Controllers
                                             shippingCompanyId = b.shippingCompanyId,
                                             shipUserId = b.shipUserId,
                                             userId = b.userId,
+                                            manualDiscountType = b.manualDiscountType,
+                                            manualDiscountValue = b.manualDiscountValue,
                                         })
                     .ToList().Count;
                     return Ok(invoicesCount);
@@ -896,6 +908,8 @@ namespace POS_Server.Controllers
                                             shippingCompanyId = b.shippingCompanyId,
                                             shipUserId = b.shipUserId,
                                             userId = b.userId,
+                                            manualDiscountType = b.manualDiscountType,
+                                            manualDiscountValue = b.manualDiscountValue,
                                         })
                     .ToList();
                     if (invoicesList != null)
@@ -981,6 +995,8 @@ namespace POS_Server.Controllers
                                             shippingCompanyId = b.shippingCompanyId,
                                             shipUserId = b.shipUserId,
                                             userId = b.userId,
+                                            manualDiscountType = b.manualDiscountType,
+                                            manualDiscountValue = b.manualDiscountValue,
                                         })
                     .ToList().Count;
                    
@@ -1047,6 +1063,8 @@ namespace POS_Server.Controllers
                                             shippingCompanyId = b.shippingCompanyId,
                                             shipUserId = b.shipUserId,
                                             userId = b.userId,
+                                            manualDiscountType = b.manualDiscountType,
+                                            manualDiscountValue = b.manualDiscountValue,
                                         })
                     .ToList();
                     if (invoicesList != null)
@@ -1124,6 +1142,8 @@ namespace POS_Server.Controllers
                                             shippingCompanyId = b.shippingCompanyId,
                                             shipUserId = b.shipUserId,
                                             userId = b.userId,
+                                            manualDiscountType = b.manualDiscountType,
+                                            manualDiscountValue = b.manualDiscountValue,
                                         })
                     .ToList().Count;
                   
@@ -1195,6 +1215,8 @@ namespace POS_Server.Controllers
                                             shipUserName = y.username,
                                             status = s.status,
                                             userId = b.userId,
+                                            manualDiscountType = b.manualDiscountType,
+                                            manualDiscountValue = b.manualDiscountValue,
                                         })
                     .ToList();
                     if (invoicesList != null)
@@ -1277,6 +1299,8 @@ namespace POS_Server.Controllers
                                             branchCreatorId = b.branchCreatorId,
                                             shippingCompanyId = b.shippingCompanyId,
                                             shipUserId = b.shipUserId,
+                                            manualDiscountType = b.manualDiscountType,
+                                            manualDiscountValue = b.manualDiscountValue,
                                         }).ToList();
                     if (invoicesList != null)
                     {
@@ -1345,6 +1369,8 @@ namespace POS_Server.Controllers
                                             branchCreatorId = b.branchCreatorId,
                                             shippingCompanyId = b.shippingCompanyId,
                                             shipUserId = b.shipUserId,
+                                            manualDiscountType = b.manualDiscountType,
+                                            manualDiscountValue = b.manualDiscountValue,
                                         }).ToList();
                 
                     if (invoicesList == null)
@@ -1418,6 +1444,8 @@ namespace POS_Server.Controllers
                                             branchCreatorId = b.branchCreatorId,
                                             shippingCompanyId = b.shippingCompanyId,
                                             shipUserId = b.shipUserId,
+                                            manualDiscountType = b.manualDiscountType,
+                                            manualDiscountValue = b.manualDiscountValue,
                                         }).ToList();
                     if (invoicesList != null)
                     {
@@ -1496,6 +1524,8 @@ namespace POS_Server.Controllers
                                             isApproved = b.isApproved,
                                             branchCreatorId = b.branchCreatorId,
                                             userId = b.userId,
+                                            manualDiscountType = b.manualDiscountType,
+                                            manualDiscountValue = b.manualDiscountValue,
                                         }).ToList();
                     if (invoicesList != null)
                     {
@@ -1575,6 +1605,8 @@ namespace POS_Server.Controllers
                                                 shippingCompanyId = b.shippingCompanyId,
                                                 shipUserId = b.shipUserId,
                                                 userId = b.userId,
+                                                manualDiscountType = b.manualDiscountType,
+                                                manualDiscountValue = b.manualDiscountValue,
                                             })
                         .ToList();
                         if (invoicesList != null)
@@ -1629,6 +1661,8 @@ namespace POS_Server.Controllers
                                                 shippingCompanyId = b.shippingCompanyId,
                                                 shipUserId = b.shipUserId,
                                                 userId = b.userId,
+                                                manualDiscountType = b.manualDiscountType,
+                                                manualDiscountValue = b.manualDiscountValue,
                                             })
                         .ToList();
                         if (invoicesList != null)
@@ -1714,6 +1748,8 @@ namespace POS_Server.Controllers
                             tmpInvoice.shippingCompanyId = newObject.shippingCompanyId;
                             tmpInvoice.shipUserId = newObject.shipUserId;
                             tmpInvoice.userId = newObject.userId;
+                            tmpInvoice.manualDiscountType = newObject.manualDiscountType;
+                            tmpInvoice.manualDiscountValue = newObject.manualDiscountValue;
                         }
                         entity.SaveChanges();
                         return Ok(tmpInvoice.invoiceId);

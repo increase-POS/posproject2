@@ -34,6 +34,11 @@ namespace POS_Server
         public Nullable<byte> isActive { get; set; }
         public decimal balance { get; set; }
         public Nullable<byte> balanceType { get; set; }
+        public string email { get; set; }
+        public string phone { get; set; }
+        public string mobile { get; set; }
+        public string fax { get; set; }
+        public string address { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<cashTransfer> cashTransfer { get; set; }

@@ -56,6 +56,8 @@ namespace POS_Server
         public Nullable<int> shipUserId { get; set; }
         public string prevStatus { get; set; }
         public Nullable<int> userId { get; set; }
+        public decimal manualDiscountValue { get; set; }
+        public string manualDiscountType { get; set; }
     
         public virtual agents agents { get; set; }
         public virtual branches branches { get; set; }

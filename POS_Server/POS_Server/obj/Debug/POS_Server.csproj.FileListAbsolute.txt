@@ -530,3 +530,4 @@ C:\Users\Administrator\Documents\POS-ServerTest\bin\POS_Server.dll.config
 C:\Users\Administrator\Documents\POS-ServerTest\bin\POS_Server.dll
 C:\Users\Administrator\Documents\POS-ServerTest\bin\POS_Server.pdb
 C:\Users\Administrator\Documents\POS-ServerTest\POS_Server\bin\POS_Server.xml
+C:\Users\Administrator\Documents\POS-ServerTest\POS_Server\obj\Debug\POS_Server.csproj.AssemblyReference.cache

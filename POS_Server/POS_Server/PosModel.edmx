@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="incposdbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="incposdbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="agentMemberships">
           <Key>
             <PropertyRef Name="agentMembershipsId" />
@@ -411,6 +411,8 @@
           <Property Name="shipUserId" Type="int" />
           <Property Name="prevStatus" Type="nvarchar" MaxLength="10" />
           <Property Name="userId" Type="int" />
+          <Property Name="manualDiscountValue" Type="decimal" Precision="20" Scale="3" Nullable="false" />
+          <Property Name="manualDiscountType" Type="nvarchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="invoiceStatus">
           <Key>
@@ -649,6 +651,7 @@
           <Property Name="updateDate" Type="datetime2" Precision="7" />
           <Property Name="createUserId" Type="int" />
           <Property Name="updateUserId" Type="int" />
+          <Property Name="posId" Type="int" />
         </EntityType>
         <EntityType Name="objects">
           <Key>
@@ -698,6 +701,13 @@
           <Property Name="createDate" Type="datetime2" Precision="7" />
           <Property Name="updateDate" Type="datetime2" Precision="7" />
         </EntityType>
+        <EntityType Name="paperSize">
+          <Key>
+            <PropertyRef Name="sizeId" />
+          </Key>
+          <Property Name="sizeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="paperSize" Type="nvarchar" MaxLength="200" />
+        </EntityType>
         <EntityType Name="Points">
           <Key>
             <PropertyRef Name="pointId" />
@@ -736,6 +746,17 @@
           <Property Name="note" Type="ntext" />
           <Property Name="balanceAll" Type="decimal" Precision="20" Scale="2" />
         </EntityType>
+        <EntityType Name="posSetting">
+          <Key>
+            <PropertyRef Name="posSettingId" />
+          </Key>
+          <Property Name="posSettingId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="posId" Type="int" />
+          <Property Name="saleInvPrinterId" Type="int" />
+          <Property Name="reportPrinterId" Type="int" />
+          <Property Name="saleInvPapersizeId" Type="int" />
+          <Property Name="posSerial" Type="nvarchar" MaxLength="1000" />
+        </EntityType>
         <EntityType Name="posUsers">
           <Key>
             <PropertyRef Name="posUserId" />
@@ -743,6 +764,18 @@
           <Property Name="posUserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="userId" Type="int" />
           <Property Name="posId" Type="int" />
+          <Property Name="createDate" Type="datetime2" Precision="7" />
+          <Property Name="updateDate" Type="datetime2" Precision="7" />
+          <Property Name="createUserId" Type="int" />
+          <Property Name="updateUserId" Type="int" />
+        </EntityType>
+        <EntityType Name="printers">
+          <Key>
+            <PropertyRef Name="printerId" />
+          </Key>
+          <Property Name="printerId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="500" />
+          <Property Name="printFor" Type="nvarchar" MaxLength="50" />
           <Property Name="createDate" Type="datetime2" Precision="7" />
           <Property Name="updateDate" Type="datetime2" Precision="7" />
           <Property Name="createUserId" Type="int" />
@@ -851,6 +884,11 @@
           <Property Name="isActive" Type="tinyint" />
           <Property Name="balance" Type="decimal" Precision="20" Scale="3" Nullable="false" />
           <Property Name="balanceType" Type="tinyint" />
+          <Property Name="email" Type="nvarchar" MaxLength="200" />
+          <Property Name="phone" Type="nvarchar" MaxLength="100" />
+          <Property Name="mobile" Type="nvarchar" MaxLength="100" />
+          <Property Name="fax" Type="nvarchar" MaxLength="100" />
+          <Property Name="address" Type="ntext" />
         </EntityType>
         <EntityType Name="storageCost">
           <Key>
@@ -2601,6 +2639,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_notificationUser_pos">
+          <End Role="pos" Type="Self.pos" Multiplicity="0..1" />
+          <End Role="notificationUser" Type="Self.notificationUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="pos">
+              <PropertyRef Name="posId" />
+            </Principal>
+            <Dependent Role="notificationUser">
+              <PropertyRef Name="posId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_notificationUser_users">
           <End Role="users" Type="Self.users" Multiplicity="0..1" />
           <End Role="notificationUser" Type="Self.notificationUser" Multiplicity="*" />
@@ -2793,6 +2843,54 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_posSetting_paperSize">
+          <End Role="paperSize" Type="Self.paperSize" Multiplicity="0..1" />
+          <End Role="posSetting" Type="Self.posSetting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="paperSize">
+              <PropertyRef Name="sizeId" />
+            </Principal>
+            <Dependent Role="posSetting">
+              <PropertyRef Name="saleInvPapersizeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_posSetting_pos">
+          <End Role="pos" Type="Self.pos" Multiplicity="0..1" />
+          <End Role="posSetting" Type="Self.posSetting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="pos">
+              <PropertyRef Name="posId" />
+            </Principal>
+            <Dependent Role="posSetting">
+              <PropertyRef Name="posId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_posSetting_printers">
+          <End Role="printers" Type="Self.printers" Multiplicity="0..1" />
+          <End Role="posSetting" Type="Self.posSetting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="printers">
+              <PropertyRef Name="printerId" />
+            </Principal>
+            <Dependent Role="posSetting">
+              <PropertyRef Name="saleInvPrinterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_posSetting_printers1">
+          <End Role="printers" Type="Self.printers" Multiplicity="0..1" />
+          <End Role="posSetting" Type="Self.posSetting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="printers">
+              <PropertyRef Name="printerId" />
+            </Principal>
+            <Dependent Role="posSetting">
+              <PropertyRef Name="reportPrinterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_posUsers_pos">
           <End Role="pos" Type="Self.pos" Multiplicity="0..1" />
           <End Role="posUsers" Type="Self.posUsers" Multiplicity="*" />
@@ -2838,6 +2936,30 @@
             </Principal>
             <Dependent Role="posUsers">
               <PropertyRef Name="createUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_printers_users">
+          <End Role="users" Type="Self.users" Multiplicity="0..1" />
+          <End Role="printers" Type="Self.printers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="printers">
+              <PropertyRef Name="createUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_printers_users1">
+          <End Role="users" Type="Self.users" Multiplicity="0..1" />
+          <End Role="printers" Type="Self.printers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="printers">
+              <PropertyRef Name="updateUserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3195,9 +3317,12 @@
           <EntitySet Name="objects" EntityType="Self.objects" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="offers" EntityType="Self.offers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="packages" EntityType="Self.packages" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="paperSize" EntityType="Self.paperSize" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Points" EntityType="Self.Points" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="pos" EntityType="Self.pos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="posSetting" EntityType="Self.posSetting" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="posUsers" EntityType="Self.posUsers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="printers" EntityType="Self.printers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="properties" EntityType="Self.properties" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="propertiesItems" EntityType="Self.propertiesItems" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sections" EntityType="Self.sections" Schema="dbo" store:Type="Tables" />
@@ -3757,6 +3882,10 @@
             <End Role="notification" EntitySet="notification" />
             <End Role="notificationUser" EntitySet="notificationUser" />
           </AssociationSet>
+          <AssociationSet Name="FK_notificationUser_pos" Association="Self.FK_notificationUser_pos">
+            <End Role="pos" EntitySet="pos" />
+            <End Role="notificationUser" EntitySet="notificationUser" />
+          </AssociationSet>
           <AssociationSet Name="FK_notificationUser_users" Association="Self.FK_notificationUser_users">
             <End Role="users" EntitySet="users" />
             <End Role="notificationUser" EntitySet="notificationUser" />
@@ -3821,6 +3950,22 @@
             <End Role="users" EntitySet="users" />
             <End Role="pos" EntitySet="pos" />
           </AssociationSet>
+          <AssociationSet Name="FK_posSetting_paperSize" Association="Self.FK_posSetting_paperSize">
+            <End Role="paperSize" EntitySet="paperSize" />
+            <End Role="posSetting" EntitySet="posSetting" />
+          </AssociationSet>
+          <AssociationSet Name="FK_posSetting_pos" Association="Self.FK_posSetting_pos">
+            <End Role="pos" EntitySet="pos" />
+            <End Role="posSetting" EntitySet="posSetting" />
+          </AssociationSet>
+          <AssociationSet Name="FK_posSetting_printers" Association="Self.FK_posSetting_printers">
+            <End Role="printers" EntitySet="printers" />
+            <End Role="posSetting" EntitySet="posSetting" />
+          </AssociationSet>
+          <AssociationSet Name="FK_posSetting_printers1" Association="Self.FK_posSetting_printers1">
+            <End Role="printers" EntitySet="printers" />
+            <End Role="posSetting" EntitySet="posSetting" />
+          </AssociationSet>
           <AssociationSet Name="FK_posUsers_pos" Association="Self.FK_posUsers_pos">
             <End Role="pos" EntitySet="pos" />
             <End Role="posUsers" EntitySet="posUsers" />
@@ -3836,6 +3981,14 @@
           <AssociationSet Name="FK_posUsers_users2" Association="Self.FK_posUsers_users2">
             <End Role="users" EntitySet="users" />
             <End Role="posUsers" EntitySet="posUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_printers_users" Association="Self.FK_printers_users">
+            <End Role="users" EntitySet="users" />
+            <End Role="printers" EntitySet="printers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_printers_users1" Association="Self.FK_printers_users1">
+            <End Role="users" EntitySet="users" />
+            <End Role="printers" EntitySet="printers" />
           </AssociationSet>
           <AssociationSet Name="FK_properties_users" Association="Self.FK_properties_users">
             <End Role="users" EntitySet="users" />
@@ -3942,8 +4095,7 @@
             <End Role="usersLogs" EntitySet="usersLogs" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="incposdbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -4469,6 +4621,8 @@
           <NavigationProperty Name="users5" Relationship="Self.FK_invoices_users5" FromRole="invoices" ToRole="users" />
           <NavigationProperty Name="invoiceStatus" Relationship="Self.FK_invoiceStatus_invoices" FromRole="invoices" ToRole="invoiceStatus" />
           <NavigationProperty Name="itemsTransfer" Relationship="Self.FK_itemsTransfer_invoices" FromRole="invoices" ToRole="itemsTransfer" />
+          <Property Name="manualDiscountValue" Type="Decimal" Nullable="false" Precision="20" Scale="3" />
+          <Property Name="manualDiscountType" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="invoiceStatus">
           <Key>
@@ -4786,6 +4940,8 @@
           <NavigationProperty Name="users" Relationship="Self.FK_notificationUser_users" FromRole="notificationUser" ToRole="users" />
           <NavigationProperty Name="users1" Relationship="Self.FK_notificationUser_users1" FromRole="notificationUser" ToRole="users" />
           <NavigationProperty Name="users2" Relationship="Self.FK_notificationUser_users2" FromRole="notificationUser" ToRole="users" />
+          <Property Name="posId" Type="Int32" />
+          <NavigationProperty Name="pos" Relationship="incposdbModel.FK_notificationUser_pos" FromRole="notificationUser" ToRole="pos" />
         </EntityType>
         <EntityType Name="objects">
           <Key>
@@ -4897,6 +5053,8 @@
           <NavigationProperty Name="users1" Relationship="Self.FK_pos_users1" FromRole="pos" ToRole="users" />
           <NavigationProperty Name="posUsers" Relationship="Self.FK_posUsers_pos" FromRole="pos" ToRole="posUsers" />
           <NavigationProperty Name="usersLogs" Relationship="Self.FK_usersLogs_pos" FromRole="pos" ToRole="usersLogs" />
+          <NavigationProperty Name="posSetting" Relationship="incposdbModel.FK_posSetting_pos" FromRole="pos" ToRole="posSetting" />
+          <NavigationProperty Name="notificationUser" Relationship="incposdbModel.FK_notificationUser_pos" FromRole="pos" ToRole="notificationUser" />
         </EntityType>
         <EntityType Name="posUsers">
           <Key>
@@ -5037,6 +5195,11 @@
           <Property Name="balanceType" Type="Byte" />
           <NavigationProperty Name="cashTransfer" Relationship="Self.FK_cashTransfer_shippingCompanies" FromRole="shippingCompanies" ToRole="cashTransfer" />
           <NavigationProperty Name="invoices" Relationship="Self.FK_invoices_shippingCompanies" FromRole="shippingCompanies" ToRole="invoices" />
+          <Property Name="email" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="phone" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="mobile" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="fax" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="storageCost">
           <Key>
@@ -5245,6 +5408,8 @@
           <NavigationProperty Name="userSetValues1" Relationship="Self.FK_userSetValues_users1" FromRole="users" ToRole="userSetValues" />
           <NavigationProperty Name="userSetValues2" Relationship="Self.FK_userSetValues_users2" FromRole="users" ToRole="userSetValues" />
           <NavigationProperty Name="usersLogs" Relationship="Self.FK_usersLogs_users" FromRole="users" ToRole="usersLogs" />
+          <NavigationProperty Name="printers" Relationship="incposdbModel.FK_printers_users" FromRole="users" ToRole="printers" />
+          <NavigationProperty Name="printers1" Relationship="incposdbModel.FK_printers_users1" FromRole="users" ToRole="printers" />
         </EntityType>
         <EntityType Name="userSetValues">
           <Key>
@@ -8247,7 +8412,161 @@
             <End Role="users" EntitySet="users" />
             <End Role="usersLogs" EntitySet="usersLogs" />
           </AssociationSet>
+          <EntitySet Name="paperSize" EntityType="incposdbModel.paperSize" />
+          <EntitySet Name="posSetting" EntityType="incposdbModel.posSetting" />
+          <EntitySet Name="printers" EntityType="incposdbModel.printers" />
+          <AssociationSet Name="FK_posSetting_pos" Association="incposdbModel.FK_posSetting_pos">
+            <End Role="pos" EntitySet="pos" />
+            <End Role="posSetting" EntitySet="posSetting" />
+          </AssociationSet>
+          <AssociationSet Name="FK_posSetting_printers" Association="incposdbModel.FK_posSetting_printers">
+            <End Role="printers" EntitySet="printers" />
+            <End Role="posSetting" EntitySet="posSetting" />
+          </AssociationSet>
+          <AssociationSet Name="FK_posSetting_printers1" Association="incposdbModel.FK_posSetting_printers1">
+            <End Role="printers" EntitySet="printers" />
+            <End Role="posSetting" EntitySet="posSetting" />
+          </AssociationSet>
+          <AssociationSet Name="FK_printers_users" Association="incposdbModel.FK_printers_users">
+            <End Role="users" EntitySet="users" />
+            <End Role="printers" EntitySet="printers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_printers_users1" Association="incposdbModel.FK_printers_users1">
+            <End Role="users" EntitySet="users" />
+            <End Role="printers" EntitySet="printers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_posSetting_paperSize" Association="incposdbModel.FK_posSetting_paperSize">
+            <End Role="paperSize" EntitySet="paperSize" />
+            <End Role="posSetting" EntitySet="posSetting" />
+          </AssociationSet>
+          <AssociationSet Name="FK_notificationUser_pos" Association="incposdbModel.FK_notificationUser_pos">
+            <End Role="pos" EntitySet="pos" />
+            <End Role="notificationUser" EntitySet="notificationUser" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="paperSize">
+          <Key>
+            <PropertyRef Name="sizeId" />
+          </Key>
+          <Property Name="sizeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="paperSize1" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="posSetting" Relationship="incposdbModel.FK_posSetting_paperSize" FromRole="paperSize" ToRole="posSetting" />
+        </EntityType>
+        <EntityType Name="posSetting">
+          <Key>
+            <PropertyRef Name="posSettingId" />
+          </Key>
+          <Property Name="posSettingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="posId" Type="Int32" />
+          <Property Name="saleInvPrinterId" Type="Int32" />
+          <Property Name="reportPrinterId" Type="Int32" />
+          <Property Name="posSerial" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="pos" Relationship="incposdbModel.FK_posSetting_pos" FromRole="posSetting" ToRole="pos" />
+          <NavigationProperty Name="printers" Relationship="incposdbModel.FK_posSetting_printers" FromRole="posSetting" ToRole="printers" />
+          <NavigationProperty Name="printers1" Relationship="incposdbModel.FK_posSetting_printers1" FromRole="posSetting" ToRole="printers" />
+          <Property Name="saleInvPapersizeId" Type="Int32" />
+          <NavigationProperty Name="paperSize" Relationship="incposdbModel.FK_posSetting_paperSize" FromRole="posSetting" ToRole="paperSize" />
+        </EntityType>
+        <EntityType Name="printers">
+          <Key>
+            <PropertyRef Name="printerId" />
+          </Key>
+          <Property Name="printerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="printFor" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="createDate" Type="DateTime" Precision="7" />
+          <Property Name="updateDate" Type="DateTime" Precision="7" />
+          <Property Name="createUserId" Type="Int32" />
+          <Property Name="updateUserId" Type="Int32" />
+          <NavigationProperty Name="posSetting" Relationship="incposdbModel.FK_posSetting_printers" FromRole="printers" ToRole="posSetting" />
+          <NavigationProperty Name="posSetting1" Relationship="incposdbModel.FK_posSetting_printers1" FromRole="printers" ToRole="posSetting" />
+          <NavigationProperty Name="users" Relationship="incposdbModel.FK_printers_users" FromRole="printers" ToRole="users" />
+          <NavigationProperty Name="users1" Relationship="incposdbModel.FK_printers_users1" FromRole="printers" ToRole="users" />
+        </EntityType>
+        <Association Name="FK_posSetting_pos">
+          <End Type="incposdbModel.pos" Role="pos" Multiplicity="0..1" />
+          <End Type="incposdbModel.posSetting" Role="posSetting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="pos">
+              <PropertyRef Name="posId" />
+            </Principal>
+            <Dependent Role="posSetting">
+              <PropertyRef Name="posId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_posSetting_printers">
+          <End Type="incposdbModel.printers" Role="printers" Multiplicity="0..1" />
+          <End Type="incposdbModel.posSetting" Role="posSetting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="printers">
+              <PropertyRef Name="printerId" />
+            </Principal>
+            <Dependent Role="posSetting">
+              <PropertyRef Name="saleInvPrinterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_posSetting_printers1">
+          <End Type="incposdbModel.printers" Role="printers" Multiplicity="0..1" />
+          <End Type="incposdbModel.posSetting" Role="posSetting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="printers">
+              <PropertyRef Name="printerId" />
+            </Principal>
+            <Dependent Role="posSetting">
+              <PropertyRef Name="reportPrinterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_printers_users">
+          <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
+          <End Type="incposdbModel.printers" Role="printers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="printers">
+              <PropertyRef Name="createUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_printers_users1">
+          <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
+          <End Type="incposdbModel.printers" Role="printers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="printers">
+              <PropertyRef Name="updateUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_posSetting_paperSize">
+          <End Type="incposdbModel.paperSize" Role="paperSize" Multiplicity="0..1" />
+          <End Type="incposdbModel.posSetting" Role="posSetting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="paperSize">
+              <PropertyRef Name="sizeId" />
+            </Principal>
+            <Dependent Role="posSetting">
+              <PropertyRef Name="saleInvPapersizeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_notificationUser_pos">
+          <End Type="incposdbModel.pos" Role="pos" Multiplicity="0..1" />
+          <End Type="incposdbModel.notificationUser" Role="notificationUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="pos">
+              <PropertyRef Name="posId" />
+            </Principal>
+            <Dependent Role="notificationUser">
+              <PropertyRef Name="posId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -8649,6 +8968,8 @@
           <EntitySetMapping Name="invoices">
             <EntityTypeMapping TypeName="incposdbModel.invoices">
               <MappingFragment StoreEntitySet="invoices">
+                <ScalarProperty Name="manualDiscountType" ColumnName="manualDiscountType" />
+                <ScalarProperty Name="manualDiscountValue" ColumnName="manualDiscountValue" />
                 <ScalarProperty Name="invoiceId" ColumnName="invoiceId" />
                 <ScalarProperty Name="invNumber" ColumnName="invNumber" />
                 <ScalarProperty Name="agentId" ColumnName="agentId" />
@@ -8926,6 +9247,7 @@
           <EntitySetMapping Name="notificationUser">
             <EntityTypeMapping TypeName="incposdbModel.notificationUser">
               <MappingFragment StoreEntitySet="notificationUser">
+                <ScalarProperty Name="posId" ColumnName="posId" />
                 <ScalarProperty Name="notUserId" ColumnName="notUserId" />
                 <ScalarProperty Name="notId" ColumnName="notId" />
                 <ScalarProperty Name="userId" ColumnName="userId" />
@@ -9137,6 +9459,11 @@
           <EntitySetMapping Name="shippingCompanies">
             <EntityTypeMapping TypeName="incposdbModel.shippingCompanies">
               <MappingFragment StoreEntitySet="shippingCompanies">
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="fax" ColumnName="fax" />
+                <ScalarProperty Name="mobile" ColumnName="mobile" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="email" ColumnName="email" />
                 <ScalarProperty Name="shippingCompanyId" ColumnName="shippingCompanyId" />
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="RealDeliveryCost" ColumnName="RealDeliveryCost" />
@@ -9274,6 +9601,39 @@
                 <ScalarProperty Name="sOutDate" ColumnName="sOutDate" />
                 <ScalarProperty Name="posId" ColumnName="posId" />
                 <ScalarProperty Name="userId" ColumnName="userId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="paperSize">
+            <EntityTypeMapping TypeName="incposdbModel.paperSize">
+              <MappingFragment StoreEntitySet="paperSize">
+                <ScalarProperty Name="paperSize1" ColumnName="paperSize" />
+                <ScalarProperty Name="sizeId" ColumnName="sizeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="posSetting">
+            <EntityTypeMapping TypeName="incposdbModel.posSetting">
+              <MappingFragment StoreEntitySet="posSetting">
+                <ScalarProperty Name="saleInvPapersizeId" ColumnName="saleInvPapersizeId" />
+                <ScalarProperty Name="posSerial" ColumnName="posSerial" />
+                <ScalarProperty Name="reportPrinterId" ColumnName="reportPrinterId" />
+                <ScalarProperty Name="saleInvPrinterId" ColumnName="saleInvPrinterId" />
+                <ScalarProperty Name="posId" ColumnName="posId" />
+                <ScalarProperty Name="posSettingId" ColumnName="posSettingId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="printers">
+            <EntityTypeMapping TypeName="incposdbModel.printers">
+              <MappingFragment StoreEntitySet="printers">
+                <ScalarProperty Name="updateUserId" ColumnName="updateUserId" />
+                <ScalarProperty Name="createUserId" ColumnName="createUserId" />
+                <ScalarProperty Name="updateDate" ColumnName="updateDate" />
+                <ScalarProperty Name="createDate" ColumnName="createDate" />
+                <ScalarProperty Name="printFor" ColumnName="printFor" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="printerId" ColumnName="printerId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

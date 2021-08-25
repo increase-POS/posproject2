@@ -33,27 +33,33 @@ namespace POS_Server.Controllers
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    var List = (from S in  entity.shippingCompanies                                         
-                                         select new ShippingCompaniesModel()
-                                         {
-                                            shippingCompanyId=S.shippingCompanyId,
-                                            name=S.name,
-                                            RealDeliveryCost=S.RealDeliveryCost,
-                                            deliveryCost=S.deliveryCost,
-                                            deliveryType=S.deliveryType,
-                                            notes=S.notes,
-                                            isActive=S.isActive,
-                                            createDate = S.createDate,
-                                            updateDate = S.updateDate,
-                                            createUserId = S.createUserId,
-                                            updateUserId=S.updateUserId,
-                                             balance=S.balance,
-balanceType =S.balanceType,
+                    var List = (from S in entity.shippingCompanies
+                                select new ShippingCompaniesModel()
+                                {
+                                    shippingCompanyId = S.shippingCompanyId,
+                                    name = S.name,
+                                    RealDeliveryCost = S.RealDeliveryCost,
+                                    deliveryCost = S.deliveryCost,
+                                    deliveryType = S.deliveryType,
+                                    notes = S.notes,
+                                    isActive = S.isActive,
+                                    createDate = S.createDate,
+                                    updateDate = S.updateDate,
+                                    createUserId = S.createUserId,
+                                    updateUserId = S.updateUserId,
+                                    balance = S.balance,
+                                    balanceType = S.balanceType,
+
+                                    email = S.email,
+                                    phone = S.phone,
+                                    mobile = S.mobile,
+                                    fax = S.fax,
+                                    address = S.address,
 
 
-                                         }).ToList();
+                                }).ToList();
                     /*
- public int membershipId { get; set; }
+    public int membershipId { get; set; }
         public string name { get; set; }
         public Nullable<decimal> deliveryDiscount { get; set; }
         public string deliveryDiscountType { get; set; }
@@ -78,9 +84,9 @@ balanceType =S.balanceType,
                             if (List[i].isActive == 1)
                             {
                                 int shippingCompanyId = (int)List[i].shippingCompanyId;
-                                var itemsI= entity.invoices.Where(x => x.shippingCompanyId == shippingCompanyId).Select(b => new { b.invoiceId }).FirstOrDefault();
-                               
-                                if ((itemsI is null)  )
+                                var itemsI = entity.invoices.Where(x => x.shippingCompanyId == shippingCompanyId).Select(b => new { b.invoiceId }).FirstOrDefault();
+
+                                if ((itemsI is null))
                                     canDelete = true;
                             }
                             List[i].canDelete = canDelete;
@@ -120,20 +126,24 @@ balanceType =S.balanceType,
                    .Where(u => u.shippingCompanyId == shippingCompanyId)
                    .Select(S => new
                    {
-                           S.shippingCompanyId,
-                           S.name,
-                           S.RealDeliveryCost,
-                           S.deliveryCost,
-                           S.deliveryType,
-                           S.notes,
-                           S.createDate,
-                           S.updateDate,
-                           S.createUserId,
-                           S.updateUserId,
-                           S.isActive,
+                       S.shippingCompanyId,
+                       S.name,
+                       S.RealDeliveryCost,
+                       S.deliveryCost,
+                       S.deliveryType,
+                       S.notes,
+                       S.createDate,
+                       S.updateDate,
+                       S.createUserId,
+                       S.updateUserId,
+                       S.isActive,
                        S.balance,
-                      S.balanceType,
-
+                       S.balanceType,
+                       S.email,
+                       S.phone,
+                       S.mobile,
+                       S.fax,
+                       S.address,
 
                    })
                    .FirstOrDefault();
@@ -179,7 +189,7 @@ balanceType =S.balanceType,
                     Nullable<int> id = null;
                     newObject.createUserId = id;
                 }
-               
+
                 try
                 {
                     using (incposdbEntities entity = new incposdbEntities())
@@ -190,8 +200,8 @@ balanceType =S.balanceType,
                             newObject.createDate = DateTime.Now;
                             newObject.updateDate = DateTime.Now;
                             newObject.updateUserId = newObject.createUserId;
-                         
-                      
+
+
                             locationEntity.Add(newObject);
                             entity.SaveChanges();
                             message = newObject.shippingCompanyId.ToString();
@@ -203,21 +213,25 @@ balanceType =S.balanceType,
                             tmpObject.updateDate = DateTime.Now;
                             tmpObject.updateUserId = newObject.updateUserId;
 
-                            tmpObject.name  =newObject.name;
-                            tmpObject.RealDeliveryCost  =newObject.RealDeliveryCost;
-                            tmpObject.deliveryCost  =newObject.deliveryCost;
-                            tmpObject.deliveryType  =newObject.deliveryType;
-                            tmpObject.notes  =newObject.notes;
-                            tmpObject.isActive=newObject.isActive;
+                            tmpObject.name = newObject.name;
+                            tmpObject.RealDeliveryCost = newObject.RealDeliveryCost;
+                            tmpObject.deliveryCost = newObject.deliveryCost;
+                            tmpObject.deliveryType = newObject.deliveryType;
+                            tmpObject.notes = newObject.notes;
+                            tmpObject.isActive = newObject.isActive;
                             tmpObject.balance = newObject.balance;
                             tmpObject.balanceType = newObject.balanceType;
-
+                            tmpObject.email = newObject.email;
+                            tmpObject.phone = newObject.phone;
+                            tmpObject.mobile = newObject.mobile;
+                            tmpObject.fax = newObject.fax;
+                            tmpObject.address = newObject.address;
 
                             entity.SaveChanges();
 
                             message = tmpObject.shippingCompanyId.ToString();
                         }
-                      //  entity.SaveChanges();
+                        //  entity.SaveChanges();
                     }
                 }
                 catch
@@ -230,7 +244,7 @@ balanceType =S.balanceType,
 
         [HttpPost]
         [Route("Delete")]
-        public string Delete(int shippingCompanyId, int userId,bool final)
+        public string Delete(int shippingCompanyId, int userId, bool final)
         {
             var re = Request;
             var headers = re.Headers;
@@ -254,8 +268,8 @@ balanceType =S.balanceType,
                             shippingCompanies objectDelete = entity.shippingCompanies.Find(shippingCompanyId);
 
                             entity.shippingCompanies.Remove(objectDelete);
-                        message=    entity.SaveChanges();
-                          
+                            message = entity.SaveChanges();
+
                             return message.ToString();
                         }
                     }
@@ -275,7 +289,7 @@ balanceType =S.balanceType,
                             objectDelete.isActive = 0;
                             objectDelete.updateUserId = userId;
                             objectDelete.updateDate = DateTime.Now;
-                            message= entity.SaveChanges();
+                            message = entity.SaveChanges();
 
                             return message.ToString(); ;
                         }

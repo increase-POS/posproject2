@@ -12,22 +12,28 @@ namespace POS_Server
     using System;
     using System.Collections.Generic;
     
-    public partial class notificationUser
+    public partial class printers
     {
-        public int notUserId { get; set; }
-        public Nullable<int> notId { get; set; }
-        public Nullable<int> userId { get; set; }
-        public bool isRead { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public printers()
+        {
+            this.posSetting = new HashSet<posSetting>();
+            this.posSetting1 = new HashSet<posSetting>();
+        }
+    
+        public int printerId { get; set; }
+        public string name { get; set; }
+        public string printFor { get; set; }
         public Nullable<System.DateTime> createDate { get; set; }
         public Nullable<System.DateTime> updateDate { get; set; }
         public Nullable<int> createUserId { get; set; }
         public Nullable<int> updateUserId { get; set; }
-        public Nullable<int> posId { get; set; }
     
-        public virtual notification notification { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<posSetting> posSetting { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<posSetting> posSetting1 { get; set; }
         public virtual users users { get; set; }
         public virtual users users1 { get; set; }
-        public virtual users users2 { get; set; }
-        public virtual pos pos { get; set; }
     }
 }

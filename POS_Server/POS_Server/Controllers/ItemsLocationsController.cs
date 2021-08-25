@@ -13,6 +13,11 @@ namespace POS_Server.Controllers
     [RoutePrefix("api/ItemsLocations")]
     public class ItemsLocationsController : ApiController
     {
+        ItemsUnitsController itemsUnitsController = new ItemsUnitsController();
+        GroupObjectController group = new GroupObjectController();
+        NotificationController notificationController = new NotificationController();
+        notificationUserController notUserController = new notificationUserController();
+
         [HttpGet]
         [Route("Get")]
         public IHttpActionResult Get(int branchId)
@@ -388,7 +393,7 @@ namespace POS_Server.Controllers
         }
         [HttpPost]
         [Route("receiptInvoice")]
-        public IHttpActionResult receiptInvoice(string itemLocationObject, int branchId,int userId)
+        public IHttpActionResult receiptInvoice(string itemLocationObject, int branchId,int userId, string objectName, string notificationObj)
         {
             var re = Request;
             var headers = re.Headers;
@@ -413,12 +418,68 @@ namespace POS_Server.Controllers
                                      select l.locationId).SingleOrDefault();
                     foreach (itemsTransfer item in itemList)
                     {
-                        increaseItemQuantity(item.itemUnitId.Value, freeZoneLocation, (int)item.quantity,userId);      
+                        var itemId = entity.itemsUnits.Where(x => x.itemUnitId == item.itemUnitId).Select(x => x.itemId).Single();
+                        var itemV = entity.items.Find(itemId);
+
+                        increaseItemQuantity(item.itemUnitId.Value, freeZoneLocation, (int)item.quantity,userId);
+
+                       bool isExcedded = isExceddMaxQuantity((int)item.itemUnitId,branchId ,userId );
+                        if (isExcedded == true) //add notification
+                        {
+                            notificationController.addNotifications(objectName,notificationObj, branchId, itemV.name);                        
+                        }
                     }
                 }
             }
             return Ok(1);
         }
+
+        public bool isExceddMaxQuantity(int itemUnitId, int branchId, int userId)
+        {
+            bool isExcedded = false;
+            try
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var itemId = entity.itemsUnits.Where(x => x.itemUnitId == itemUnitId).Select(x => x.itemId).Single();
+                    var item = entity.items.Find(itemId);
+                    int maxUnitId = (int)item.maxUnitId;
+                    int maxQuantity = (int)item.max;
+                    var maxUnit = entity.itemsUnits.Where(x => x.itemId == itemId && x.unitId == maxUnitId).FirstOrDefault();
+                    if (maxUnit == null)
+                        isExcedded = false;
+                    else
+                    {
+                        int itemUnitQuantity = getItemAmount(maxUnit.itemUnitId, branchId);
+                        if (itemUnitQuantity >= maxQuantity)
+                        {
+                            isExcedded = true;
+                        }
+                        if (isExcedded == false)
+                        {
+                            int smallestItemUnit = entity.itemsUnits.Where(x => x.itemId == itemId && x.subUnitId == x.unitId).Select(x => x.itemUnitId).Single();
+                            int smallUnitQuantity = getLevelItemUnitAmount(smallestItemUnit, maxUnit.itemUnitId, branchId);
+                            int unitValue = itemsUnitsController.getLargeUnitConversionQuan(smallestItemUnit, maxUnit.itemUnitId);
+                            int quantity = 0;
+                            if (unitValue != 0)
+                                quantity = smallUnitQuantity / unitValue;
+
+                            quantity += itemUnitQuantity;
+                            if (quantity >= maxQuantity)
+                            {
+                                isExcedded =  true;
+                            }
+                        }
+                      
+                    }
+                }
+            }
+            catch
+            {
+            }
+            return isExcedded;
+        }
+        
         [HttpPost]
         [Route("generatePackage")]
         public IHttpActionResult generatePackage(int packageParentId, int quantity, int locationId, int branchId, int userId)
@@ -553,7 +614,7 @@ namespace POS_Server.Controllers
             { 
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    decreaseItemLocationQuantity(itemLocId, fromQuantity, userId);
+                    decreaseItemLocationQuantity(itemLocId, fromQuantity, userId,"","");
                     increaseItemQuantity(toItemUnitId, locationId, toQuantity, userId); 
                 }
             }
@@ -894,7 +955,7 @@ namespace POS_Server.Controllers
         private int getItemUnitAmount(int itemUnitId,int branchId)
         {
             int amount = 0;
-
+        
             using (incposdbEntities entity = new incposdbEntities())
             {
                 var itemInLocs = (from b in entity.branches
@@ -919,10 +980,82 @@ namespace POS_Server.Controllers
                 var unit = entity.itemsUnits.Where(x => x.itemUnitId == itemUnitId).Select(x => new { x.unitId, x.itemId }).FirstOrDefault();
                 var upperUnit = entity.itemsUnits.Where(x => x.subUnitId == unit.unitId && x.itemId == unit.itemId).Select(x => new { x.unitValue, x.itemUnitId }).FirstOrDefault();
 
-                if (upperUnit != null && itemUnitId == upperUnit.itemUnitId)
+                if ((upperUnit != null && itemUnitId == upperUnit.itemUnitId ) )
                     return amount;
                 if (upperUnit != null)
                     amount += (int)upperUnit.unitValue * getItemUnitAmount(upperUnit.itemUnitId,branchId);
+                
+                return amount;
+            }    
+        }
+        private int getItemAmount(int itemUnitId,int branchId)
+        {
+            int amount = 0;
+        
+            using (incposdbEntities entity = new incposdbEntities())
+            {
+                var itemInLocs = (from b in entity.branches
+                                  where b.branchId == branchId
+                                  join s in entity.sections on b.branchId equals s.branchId 
+                                  join l in entity.locations on s.sectionId equals l.sectionId
+                                  join il in entity.itemsLocations on l.locationId equals il.locationId
+                                  where il.itemUnitId == itemUnitId && il.quantity > 0
+                                  select new
+                                  {
+                                      il.itemsLocId,
+                                      il.quantity,
+                                      il.itemUnitId,
+                                      il.locationId,
+                                      s.sectionId,
+                                  }).ToList();
+                for (int i = 0; i < itemInLocs.Count; i++)
+                {
+                    amount += (int) itemInLocs[i].quantity;
+                }
+
+                var unit = entity.itemsUnits.Where(x => x.itemUnitId == itemUnitId).Select(x => new { x.unitId, x.itemId }).FirstOrDefault();
+                var upperUnit = entity.itemsUnits.Where(x => x.subUnitId == unit.unitId && x.itemId == unit.itemId).Select(x => new { x.unitValue, x.itemUnitId }).FirstOrDefault();
+
+                if ((upperUnit != null && itemUnitId == upperUnit.itemUnitId ) || upperUnit == null)
+                    return amount;
+                if (upperUnit != null)
+                    amount += (int)upperUnit.unitValue * getItemUnitAmount(upperUnit.itemUnitId,branchId);
+                
+                return amount;
+            }    
+        }
+        private int getLevelItemUnitAmount(int itemUnitId,int topLevelUnit, int branchId)
+        {
+            int amount = 0;
+        
+            using (incposdbEntities entity = new incposdbEntities())
+            {
+                var itemInLocs = (from b in entity.branches
+                                  where b.branchId == branchId
+                                  join s in entity.sections on b.branchId equals s.branchId 
+                                  join l in entity.locations on s.sectionId equals l.sectionId
+                                  join il in entity.itemsLocations on l.locationId equals il.locationId
+                                  where il.itemUnitId == itemUnitId && il.quantity > 0
+                                  select new
+                                  {
+                                      il.itemsLocId,
+                                      il.quantity,
+                                      il.itemUnitId,
+                                      il.locationId,
+                                      s.sectionId,
+                                  }).ToList();
+                for (int i = 0; i < itemInLocs.Count; i++)
+                {
+                    amount += (int) itemInLocs[i].quantity;
+                }
+
+                var unit = entity.itemsUnits.Where(x => x.itemUnitId == itemUnitId).Select(x => new { x.unitId, x.itemId }).FirstOrDefault();
+                var upperUnit = entity.itemsUnits.Where(x => x.subUnitId == unit.unitId && x.itemId == unit.itemId).Select(x => new { x.unitValue, x.itemUnitId }).FirstOrDefault();
+
+                if ((upperUnit != null && itemUnitId == upperUnit.itemUnitId ) || upperUnit == null)
+                    return amount;
+                if (upperUnit != null && upperUnit.itemUnitId != topLevelUnit)
+                    amount += (int)upperUnit.unitValue * getLevelItemUnitAmount(upperUnit.itemUnitId, topLevelUnit,branchId);
                 
                 return amount;
             }    
@@ -1083,7 +1216,7 @@ namespace POS_Server.Controllers
         }
         [HttpPost]
         [Route("decreaseItemLocationQuantity")]
-        public void decreaseItemLocationQuantity( int itemLocId, int quantity, int userId)
+        public void decreaseItemLocationQuantity( int itemLocId, int quantity, int userId, string objectName, string notificationObj)
         {
             using (incposdbEntities entity = new incposdbEntities())
             {
@@ -1094,11 +1227,68 @@ namespace POS_Server.Controllers
                 itemL.updateDate = DateTime.Now;
                 itemL.updateUserId = userId;
                 entity.SaveChanges();
+                if(objectName != "")
+                {
+                    var branchId = (from l in entity.itemsLocations
+                                    where l.itemsLocId == itemLocId
+                                    select l.locations.branchId).Single();
+                    bool isExcedded = isExceddMinQuantity((int)itemL.itemUnitId,(int) branchId, userId);
+                    if (isExcedded == true) //add notification
+                    {
+                        var itemId = entity.itemsUnits.Where(x => x.itemUnitId == itemL.itemUnitId).Select(x => x.itemId).Single();
+                        var itemV = entity.items.Find(itemId);
+                        notificationController.addNotifications(objectName, notificationObj, (int)branchId, itemV.name);
+                    }
+                }
             }
         }
+
+        public bool isExceddMinQuantity(int itemUnitId, int branchId, int userId)
+        {
+            bool isExcedded = false;
+            try
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var itemId = entity.itemsUnits.Where(x => x.itemUnitId == itemUnitId).Select(x => x.itemId).Single();
+                    var item = entity.items.Find(itemId);
+                    int minUnitId = (int)item.minUnitId;
+                    int minQuantity = (int)item.min;
+                    var minUnit = entity.itemsUnits.Where(x => x.itemId == itemId && x.unitId == minUnitId).FirstOrDefault();
+                    if (minUnit == null)
+                        isExcedded = false;
+                    else
+                    {
+                        int itemUnitQuantity = getItemAmount(minUnit.itemUnitId, branchId);
+                        if (itemUnitQuantity <= minQuantity)
+                        {
+                            isExcedded = true;
+                        }
+                        if (isExcedded == false)
+                        {
+                            int smallestItemUnit = entity.itemsUnits.Where(x => x.itemId == itemId && x.subUnitId == x.unitId).Select(x => x.itemUnitId).Single();
+                            int smallUnitQuantity = getLevelItemUnitAmount(smallestItemUnit, minUnit.itemUnitId, branchId);
+                            int unitValue = itemsUnitsController.getLargeUnitConversionQuan(smallestItemUnit, minUnit.itemUnitId);
+                            int quantity = 0;
+                            if (unitValue != 0)
+                                quantity = smallUnitQuantity / unitValue;
+
+                            quantity += itemUnitQuantity;
+                            if (quantity <= minQuantity)
+                                isExcedded = true;
+                        }
+                    }
+                }
+            }
+            catch
+            {
+            }
+            return isExcedded;
+        }
+
         [HttpPost]
         [Route("decraseAmounts")]
-        public Boolean decraseAmounts(string itemLocationObject, int branchId, int userId)
+        public Boolean decraseAmounts(string itemLocationObject, int branchId, int userId, string objectName, string notificationObj)
         {
             var re = Request;
             var headers = re.Headers;
@@ -1122,6 +1312,14 @@ namespace POS_Server.Controllers
                     foreach (itemsTransfer item in itemList)
                     {
                         updateItemQuantity(item.itemUnitId.Value, branchId, (int)item.quantity, userId);
+                       
+                        bool isExcedded = isExceddMinQuantity((int)item.itemUnitId, (int)branchId, userId);
+                        if (isExcedded == true) //add notification
+                        {
+                            var itemId = entity.itemsUnits.Where(x => x.itemUnitId == item.itemUnitId).Select(x => x.itemId).Single();
+                            var itemV = entity.items.Find(itemId);
+                            notificationController.addNotifications(objectName, notificationObj, (int)branchId, itemV.name);
+                        }
                     }
                 }
                 return true;

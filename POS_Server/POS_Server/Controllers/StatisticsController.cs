@@ -1798,6 +1798,386 @@ else
             return NotFound();
         }
 
+
+        // عدد العناصر في فواتير الطلبات
+       
+        [HttpGet]
+        [Route("Getorderitemcount")]
+        public IHttpActionResult Getorderitemcount()
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var invListm = (from I in entity.invoices
+
+                                        //  join B in entity.branches on I.branchId equals B.branchId into JB
+                                    join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
+                                    join A in entity.agents on I.agentId equals A.agentId into JA
+                                    join U in entity.users on I.createUserId equals U.userId into JU
+                                    join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
+                                    join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
+                                    join P in entity.pos on I.posId equals P.posId into JP
+
+                                    //   from JBB in JB
+                                    from JPP in JP.DefaultIfEmpty()
+                                    from JUU in JU.DefaultIfEmpty()
+                                    from JUPUS in JUPUSR.DefaultIfEmpty()
+                                    from JIMM in JIM.DefaultIfEmpty()
+                                    from JAA in JA.DefaultIfEmpty()
+                                    from JBCC in JBC.DefaultIfEmpty()
+                                    where (I.invType == "or" )
+
+                                    select new
+                                    {
+
+                                        I.invoiceId,
+                                        count = entity.itemsTransfer.Where(x => x.invoiceId == I.invoiceId).Count(),
+                                        I.invNumber,
+
+                                        I.posId,
+                                        I.invType,
+                                        I.total,
+                                        I.totalNet,
+                                        I.paid,
+                                        I.deserved,
+                                        I.deservedDate,
+                                        I.invDate,
+                                        I.invoiceMainId,
+                                        I.invCase,
+                                        I.invTime,
+                                        I.notes,
+                                        I.vendorInvNum,
+                                        I.vendorInvDate,
+                                        I.createUserId,
+                                        I.updateDate,
+                                        I.updateUserId,
+                                        I.branchId,
+                                        discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
+                                        I.discountType,
+                                        I.tax,
+                                        I.name,
+                                        I.isApproved,
+
+                                        //
+                                        I.branchCreatorId,
+                                        branchCreatorName = JBCC.name,
+                                        //
+                                        // branchName = JBB.name,
+
+                                        //     branchType = JBB.type,
+                                        posName = JPP.name,
+                                        posCode = JPP.code,
+
+                                        agentCode = JAA.code,
+                                        //
+                                        agentName = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb")) ?
+                                        "unknown" : JAA.name,
+
+
+                                        //   agentType = JAA.type,
+                                        agentType = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
+                                        ? "c" : JAA.type,
+                                        agentId = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
+                                        ? 0 : I.agentId,
+
+
+                                        cuserName = JUU.name,
+                                        cuserLast = JUU.lastname,
+                                        cUserAccName = JUU.username,
+                                        uuserName = JUPUS.name,
+                                        uuserLast = JUPUS.lastname,
+                                        uUserAccName = JUPUS.username,
+                                        agentCompany = ((JAA.company == null || JAA.company == "") && (I.invType == "s" || I.invType == "sb")) ?
+                                        "unknown" : JAA.company,
+
+
+
+
+
+                                        //username
+
+                                        //  I.invoiceId,
+                                        //    JBB.name
+                                    }).ToList();
+
+
+                    if (invListm == null)
+                        return NotFound();
+                    else
+                        return Ok(invListm);
+                }
+
+            }
+
+            //else
+            return NotFound();
+        }
+
+        // عدد العناصر في فواتير الطلبات
+
+        [HttpGet]
+        [Route("GetPurorderitemcount")]
+        public IHttpActionResult GetPurorderitemcount()
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var invListm = (from I in entity.invoices
+
+                                        //  join B in entity.branches on I.branchId equals B.branchId into JB
+                                    join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
+                                    join A in entity.agents on I.agentId equals A.agentId into JA
+                                    join U in entity.users on I.createUserId equals U.userId into JU
+                                    join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
+                                    join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
+                                    join P in entity.pos on I.posId equals P.posId into JP
+
+                                    //   from JBB in JB
+                                    from JPP in JP.DefaultIfEmpty()
+                                    from JUU in JU.DefaultIfEmpty()
+                                    from JUPUS in JUPUSR.DefaultIfEmpty()
+                                    from JIMM in JIM.DefaultIfEmpty()
+                                    from JAA in JA.DefaultIfEmpty()
+                                    from JBCC in JBC.DefaultIfEmpty()
+                                    where (I.invType == "po")
+
+                                    select new
+                                    {
+
+                                        I.invoiceId,
+                                        count = entity.itemsTransfer.Where(x => x.invoiceId == I.invoiceId).Count(),
+                                        I.invNumber,
+
+                                        I.posId,
+                                        I.invType,
+                                        I.total,
+                                        I.totalNet,
+                                        I.paid,
+                                        I.deserved,
+                                        I.deservedDate,
+                                        I.invDate,
+                                        I.invoiceMainId,
+                                        I.invCase,
+                                        I.invTime,
+                                        I.notes,
+                                        I.vendorInvNum,
+                                        I.vendorInvDate,
+                                        I.createUserId,
+                                        I.updateDate,
+                                        I.updateUserId,
+                                        I.branchId,
+                                        discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
+                                        I.discountType,
+                                        I.tax,
+                                        I.name,
+                                        I.isApproved,
+
+                                        //
+                                        I.branchCreatorId,
+                                        branchCreatorName = JBCC.name,
+                                        //
+                                        // branchName = JBB.name,
+
+                                        //     branchType = JBB.type,
+                                        posName = JPP.name,
+                                        posCode = JPP.code,
+
+                                        agentCode = JAA.code,
+                                        //
+                                        agentName = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb")) ?
+                                        "unknown" : JAA.name,
+
+
+                                        //   agentType = JAA.type,
+                                        agentType = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
+                                        ? "c" : JAA.type,
+                                        agentId = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
+                                        ? 0 : I.agentId,
+
+
+                                        cuserName = JUU.name,
+                                        cuserLast = JUU.lastname,
+                                        cUserAccName = JUU.username,
+                                        uuserName = JUPUS.name,
+                                        uuserLast = JUPUS.lastname,
+                                        uUserAccName = JUPUS.username,
+                                        agentCompany = ((JAA.company == null || JAA.company == "") && (I.invType == "s" || I.invType == "sb")) ?
+                                        "unknown" : JAA.company,
+
+
+
+
+
+                                        //username
+
+                                        //  I.invoiceId,
+                                        //    JBB.name
+                                    }).ToList();
+
+
+                    if (invListm == null)
+                        return NotFound();
+                    else
+                        return Ok(invListm);
+                }
+
+            }
+
+            //else
+            return NotFound();
+        }
+
+
+
+        // عدد العناصر في فواتير عرض السعر
+
+
+        [HttpGet]
+        [Route("GetQtitemcount")]
+        public IHttpActionResult GetQtitemcount()
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var invListm = (from I in entity.invoices
+
+                                        //  join B in entity.branches on I.branchId equals B.branchId into JB
+                                    join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
+                                    join A in entity.agents on I.agentId equals A.agentId into JA
+                                    join U in entity.users on I.createUserId equals U.userId into JU
+                                    join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
+                                    join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
+                                    join P in entity.pos on I.posId equals P.posId into JP
+
+                                    //   from JBB in JB
+                                    from JPP in JP.DefaultIfEmpty()
+                                    from JUU in JU.DefaultIfEmpty()
+                                    from JUPUS in JUPUSR.DefaultIfEmpty()
+                                    from JIMM in JIM.DefaultIfEmpty()
+                                    from JAA in JA.DefaultIfEmpty()
+                                    from JBCC in JBC.DefaultIfEmpty()
+                                    where (I.invType == "q" )
+
+                                    select new
+                                    {
+
+                                        I.invoiceId,
+                                        count = entity.itemsTransfer.Where(x => x.invoiceId == I.invoiceId).Count(),
+                                        I.invNumber,
+
+                                        I.posId,
+                                        I.invType,
+                                        I.total,
+                                        I.totalNet,
+                                        I.paid,
+                                        I.deserved,
+                                        I.deservedDate,
+                                        I.invDate,
+                                        I.invoiceMainId,
+                                        I.invCase,
+                                        I.invTime,
+                                        I.notes,
+                                        I.vendorInvNum,
+                                        I.vendorInvDate,
+                                        I.createUserId,
+                                        I.updateDate,
+                                        I.updateUserId,
+                                        I.branchId,
+                                        discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
+                                        I.discountType,
+                                        I.tax,
+                                        I.name,
+                                        I.isApproved,
+
+                                        //
+                                        I.branchCreatorId,
+                                        branchCreatorName = JBCC.name,
+                                        //
+                                        // branchName = JBB.name,
+
+                                        //     branchType = JBB.type,
+                                        posName = JPP.name,
+                                        posCode = JPP.code,
+
+                                        agentCode = JAA.code,
+                                        //
+                                        agentName = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb")) ?
+                                        "unknown" : JAA.name,
+
+
+                                        //   agentType = JAA.type,
+                                        agentType = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
+                                        ? "c" : JAA.type,
+                                        agentId = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
+                                        ? 0 : I.agentId,
+
+
+                                        cuserName = JUU.name,
+                                        cuserLast = JUU.lastname,
+                                        cUserAccName = JUU.username,
+                                        uuserName = JUPUS.name,
+                                        uuserLast = JUPUS.lastname,
+                                        uUserAccName = JUPUS.username,
+                                        agentCompany = ((JAA.company == null || JAA.company == "") && (I.invType == "s" || I.invType == "sb")) ?
+                                        "unknown" : JAA.company,
+
+
+
+
+
+                                        //username
+
+                                        //  I.invoiceId,
+                                        //    JBB.name
+                                    }).ToList();
+
+
+                    if (invListm == null)
+                        return NotFound();
+                    else
+                        return Ok(invListm);
+                }
+
+            }
+
+            //else
+            return NotFound();
+        }
+
+
         //
         //الفواتير التي فيها كوبون
         //  join IC in entity.couponsInvoices on I.invoiceId equals IC.InvoiceId 

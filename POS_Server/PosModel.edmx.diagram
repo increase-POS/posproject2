@@ -246,6 +246,16 @@
         <AssociationConnector Association="incposdbModel.FK_userSetValues_users1" ManuallyRouted="false" />
         <AssociationConnector Association="incposdbModel.FK_userSetValues_users2" ManuallyRouted="false" />
         <AssociationConnector Association="incposdbModel.FK_usersLogs_users" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="incposdbModel.paperSize" Width="1.5" PointX="3.375" PointY="3.75" />
+        <EntityTypeShape EntityType="incposdbModel.posSetting" Width="1.5" PointX="20.5" PointY="99" />
+        <EntityTypeShape EntityType="incposdbModel.printers" Width="1.5" PointX="3" PointY="102" />
+        <AssociationConnector Association="incposdbModel.FK_posSetting_pos" />
+        <AssociationConnector Association="incposdbModel.FK_posSetting_printers" />
+        <AssociationConnector Association="incposdbModel.FK_posSetting_printers1" />
+        <AssociationConnector Association="incposdbModel.FK_printers_users" />
+        <AssociationConnector Association="incposdbModel.FK_printers_users1" />
+        <AssociationConnector Association="incposdbModel.FK_posSetting_paperSize" />
+        <AssociationConnector Association="incposdbModel.FK_notificationUser_pos" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

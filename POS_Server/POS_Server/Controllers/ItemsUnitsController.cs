@@ -660,7 +660,7 @@ namespace POS_Server.Controllers
             }
             return amount;
         }
-        private int getLargeUnitConversionQuan(int fromItemUnit, int toItemUnit)
+        public int getLargeUnitConversionQuan(int fromItemUnit, int toItemUnit)
         {
             int amount = 0;
 

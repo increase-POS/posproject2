@@ -269,10 +269,14 @@
     <Compile Include="Controllers\ItemsUnitsController.cs" />
     <Compile Include="Controllers\MedalAgentController.cs" />
     <Compile Include="Controllers\MembershipsController.cs" />
+    <Compile Include="Controllers\NotificationController.cs" />
     <Compile Include="Controllers\notificationUserController.cs" />
     <Compile Include="Controllers\ObjectsController.cs" />
     <Compile Include="Controllers\PackageController.cs" />
+    <Compile Include="Controllers\PaperSizeController.cs" />
     <Compile Include="Controllers\PointsController.cs" />
+    <Compile Include="Controllers\PosSettingController.cs" />
+    <Compile Include="Controllers\PrinterController.cs" />
     <Compile Include="Controllers\SessionController.cs" />
     <Compile Include="Controllers\shippingCompaniesController.cs" />
     <Compile Include="Controllers\StatisticsController.cs" />
@@ -392,9 +396,11 @@
     <Compile Include="Models\MedalAgentModel.cs" />
     <Compile Include="Models\MedalModel.cs" />
     <Compile Include="Models\MembershipsModel.cs" />
+    <Compile Include="Models\NotificationUserModel.cs" />
     <Compile Include="Models\ObjectsModel.cs" />
     <Compile Include="Models\PackageModel.cs" />
     <Compile Include="Models\PointsModel.cs" />
+    <Compile Include="Models\PosSettingModel.cs" />
     <Compile Include="Models\SectionModel.cs" />
     <Compile Include="Models\LocationModel.cs" />
     <Compile Include="Models\OfferModel.cs" />
@@ -427,6 +433,9 @@
     <Compile Include="packages.cs">
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="paperSize.cs">
+      <DependentUpon>PosModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Points.cs">
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>
@@ -448,7 +457,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>PosModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="posSetting.cs">
+      <DependentUpon>PosModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="posUsers.cs">
+      <DependentUpon>PosModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="printers.cs">
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>
     <Compile Include="properties.cs">

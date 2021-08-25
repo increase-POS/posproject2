@@ -522,6 +522,8 @@
     <NavigationProperty Name="users5" Relationship="Self.FK_invoices_users5" FromRole="invoices" ToRole="users" />
     <NavigationProperty Name="invoiceStatus" Relationship="Self.FK_invoiceStatus_invoices" FromRole="invoices" ToRole="invoiceStatus" />
     <NavigationProperty Name="itemsTransfer" Relationship="Self.FK_itemsTransfer_invoices" FromRole="invoices" ToRole="itemsTransfer" />
+    <Property Name="manualDiscountValue" Type="Decimal" Nullable="false" Precision="20" Scale="3" />
+    <Property Name="manualDiscountType" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="invoiceStatus">
     <Key>
@@ -839,6 +841,8 @@
     <NavigationProperty Name="users" Relationship="Self.FK_notificationUser_users" FromRole="notificationUser" ToRole="users" />
     <NavigationProperty Name="users1" Relationship="Self.FK_notificationUser_users1" FromRole="notificationUser" ToRole="users" />
     <NavigationProperty Name="users2" Relationship="Self.FK_notificationUser_users2" FromRole="notificationUser" ToRole="users" />
+    <Property Name="posId" Type="Int32" />
+    <NavigationProperty Name="pos" Relationship="incposdbModel.FK_notificationUser_pos" FromRole="notificationUser" ToRole="pos" />
   </EntityType>
   <EntityType Name="objects">
     <Key>
@@ -950,6 +954,8 @@
     <NavigationProperty Name="users1" Relationship="Self.FK_pos_users1" FromRole="pos" ToRole="users" />
     <NavigationProperty Name="posUsers" Relationship="Self.FK_posUsers_pos" FromRole="pos" ToRole="posUsers" />
     <NavigationProperty Name="usersLogs" Relationship="Self.FK_usersLogs_pos" FromRole="pos" ToRole="usersLogs" />
+    <NavigationProperty Name="posSetting" Relationship="incposdbModel.FK_posSetting_pos" FromRole="pos" ToRole="posSetting" />
+    <NavigationProperty Name="notificationUser" Relationship="incposdbModel.FK_notificationUser_pos" FromRole="pos" ToRole="notificationUser" />
   </EntityType>
   <EntityType Name="posUsers">
     <Key>
@@ -1090,6 +1096,11 @@
     <Property Name="balanceType" Type="Byte" />
     <NavigationProperty Name="cashTransfer" Relationship="Self.FK_cashTransfer_shippingCompanies" FromRole="shippingCompanies" ToRole="cashTransfer" />
     <NavigationProperty Name="invoices" Relationship="Self.FK_invoices_shippingCompanies" FromRole="shippingCompanies" ToRole="invoices" />
+    <Property Name="email" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="phone" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="mobile" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="fax" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="storageCost">
     <Key>
@@ -1298,6 +1309,8 @@
     <NavigationProperty Name="userSetValues1" Relationship="Self.FK_userSetValues_users1" FromRole="users" ToRole="userSetValues" />
     <NavigationProperty Name="userSetValues2" Relationship="Self.FK_userSetValues_users2" FromRole="users" ToRole="userSetValues" />
     <NavigationProperty Name="usersLogs" Relationship="Self.FK_usersLogs_users" FromRole="users" ToRole="usersLogs" />
+    <NavigationProperty Name="printers" Relationship="incposdbModel.FK_printers_users" FromRole="users" ToRole="printers" />
+    <NavigationProperty Name="printers1" Relationship="incposdbModel.FK_printers_users1" FromRole="users" ToRole="printers" />
   </EntityType>
   <EntityType Name="userSetValues">
     <Key>
@@ -4300,5 +4313,159 @@
       <End Role="users" EntitySet="users" />
       <End Role="usersLogs" EntitySet="usersLogs" />
     </AssociationSet>
+    <EntitySet Name="paperSize" EntityType="incposdbModel.paperSize" />
+    <EntitySet Name="posSetting" EntityType="incposdbModel.posSetting" />
+    <EntitySet Name="printers" EntityType="incposdbModel.printers" />
+    <AssociationSet Name="FK_posSetting_pos" Association="incposdbModel.FK_posSetting_pos">
+      <End Role="pos" EntitySet="pos" />
+      <End Role="posSetting" EntitySet="posSetting" />
+    </AssociationSet>
+    <AssociationSet Name="FK_posSetting_printers" Association="incposdbModel.FK_posSetting_printers">
+      <End Role="printers" EntitySet="printers" />
+      <End Role="posSetting" EntitySet="posSetting" />
+    </AssociationSet>
+    <AssociationSet Name="FK_posSetting_printers1" Association="incposdbModel.FK_posSetting_printers1">
+      <End Role="printers" EntitySet="printers" />
+      <End Role="posSetting" EntitySet="posSetting" />
+    </AssociationSet>
+    <AssociationSet Name="FK_printers_users" Association="incposdbModel.FK_printers_users">
+      <End Role="users" EntitySet="users" />
+      <End Role="printers" EntitySet="printers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_printers_users1" Association="incposdbModel.FK_printers_users1">
+      <End Role="users" EntitySet="users" />
+      <End Role="printers" EntitySet="printers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_posSetting_paperSize" Association="incposdbModel.FK_posSetting_paperSize">
+      <End Role="paperSize" EntitySet="paperSize" />
+      <End Role="posSetting" EntitySet="posSetting" />
+    </AssociationSet>
+    <AssociationSet Name="FK_notificationUser_pos" Association="incposdbModel.FK_notificationUser_pos">
+      <End Role="pos" EntitySet="pos" />
+      <End Role="notificationUser" EntitySet="notificationUser" />
+    </AssociationSet>
   </EntityContainer>
+  <EntityType Name="paperSize">
+    <Key>
+      <PropertyRef Name="sizeId" />
+    </Key>
+    <Property Name="sizeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="paperSize1" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="posSetting" Relationship="incposdbModel.FK_posSetting_paperSize" FromRole="paperSize" ToRole="posSetting" />
+  </EntityType>
+  <EntityType Name="posSetting">
+    <Key>
+      <PropertyRef Name="posSettingId" />
+    </Key>
+    <Property Name="posSettingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="posId" Type="Int32" />
+    <Property Name="saleInvPrinterId" Type="Int32" />
+    <Property Name="reportPrinterId" Type="Int32" />
+    <Property Name="posSerial" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="pos" Relationship="incposdbModel.FK_posSetting_pos" FromRole="posSetting" ToRole="pos" />
+    <NavigationProperty Name="printers" Relationship="incposdbModel.FK_posSetting_printers" FromRole="posSetting" ToRole="printers" />
+    <NavigationProperty Name="printers1" Relationship="incposdbModel.FK_posSetting_printers1" FromRole="posSetting" ToRole="printers" />
+    <Property Name="saleInvPapersizeId" Type="Int32" />
+    <NavigationProperty Name="paperSize" Relationship="incposdbModel.FK_posSetting_paperSize" FromRole="posSetting" ToRole="paperSize" />
+  </EntityType>
+  <EntityType Name="printers">
+    <Key>
+      <PropertyRef Name="printerId" />
+    </Key>
+    <Property Name="printerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="printFor" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="createDate" Type="DateTime" Precision="7" />
+    <Property Name="updateDate" Type="DateTime" Precision="7" />
+    <Property Name="createUserId" Type="Int32" />
+    <Property Name="updateUserId" Type="Int32" />
+    <NavigationProperty Name="posSetting" Relationship="incposdbModel.FK_posSetting_printers" FromRole="printers" ToRole="posSetting" />
+    <NavigationProperty Name="posSetting1" Relationship="incposdbModel.FK_posSetting_printers1" FromRole="printers" ToRole="posSetting" />
+    <NavigationProperty Name="users" Relationship="incposdbModel.FK_printers_users" FromRole="printers" ToRole="users" />
+    <NavigationProperty Name="users1" Relationship="incposdbModel.FK_printers_users1" FromRole="printers" ToRole="users" />
+  </EntityType>
+  <Association Name="FK_posSetting_pos">
+    <End Type="incposdbModel.pos" Role="pos" Multiplicity="0..1" />
+    <End Type="incposdbModel.posSetting" Role="posSetting" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="pos">
+        <PropertyRef Name="posId" />
+      </Principal>
+      <Dependent Role="posSetting">
+        <PropertyRef Name="posId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_posSetting_printers">
+    <End Type="incposdbModel.printers" Role="printers" Multiplicity="0..1" />
+    <End Type="incposdbModel.posSetting" Role="posSetting" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="printers">
+        <PropertyRef Name="printerId" />
+      </Principal>
+      <Dependent Role="posSetting">
+        <PropertyRef Name="saleInvPrinterId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_posSetting_printers1">
+    <End Type="incposdbModel.printers" Role="printers" Multiplicity="0..1" />
+    <End Type="incposdbModel.posSetting" Role="posSetting" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="printers">
+        <PropertyRef Name="printerId" />
+      </Principal>
+      <Dependent Role="posSetting">
+        <PropertyRef Name="reportPrinterId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_printers_users">
+    <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
+    <End Type="incposdbModel.printers" Role="printers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="printers">
+        <PropertyRef Name="createUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_printers_users1">
+    <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
+    <End Type="incposdbModel.printers" Role="printers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="printers">
+        <PropertyRef Name="updateUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_posSetting_paperSize">
+    <End Type="incposdbModel.paperSize" Role="paperSize" Multiplicity="0..1" />
+    <End Type="incposdbModel.posSetting" Role="posSetting" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="paperSize">
+        <PropertyRef Name="sizeId" />
+      </Principal>
+      <Dependent Role="posSetting">
+        <PropertyRef Name="saleInvPapersizeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_notificationUser_pos">
+    <End Type="incposdbModel.pos" Role="pos" Multiplicity="0..1" />
+    <End Type="incposdbModel.notificationUser" Role="notificationUser" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="pos">
+        <PropertyRef Name="posId" />
+      </Principal>
+      <Dependent Role="notificationUser">
+        <PropertyRef Name="posId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

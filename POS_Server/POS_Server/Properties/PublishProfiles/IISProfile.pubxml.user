@@ -8,7 +8,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <TimeStampOfAssociatedLegacyPublishXmlFile />
     <EncryptedPassword />
     <_PublishTargetUrl>http://localhost:44/</_PublishTargetUrl>
-    <History>True|2021-08-21T22:22:56.3088654Z;True|2021-08-19T02:36:24.2592537+03:00;</History>
+    <History>True|2021-08-25T12:01:54.9515139Z;True|2021-08-25T11:31:07.0643901+03:00;True|2021-08-24T16:25:42.4998463+03:00;True|2021-08-24T15:45:14.4502935+03:00;True|2021-08-24T12:10:58.9826667+03:00;True|2021-08-24T01:39:35.8795951+03:00;True|2021-08-23T16:07:05.4730825+03:00;True|2021-08-23T13:53:28.8226084+03:00;True|2021-08-22T11:55:37.1124163+03:00;True|2021-08-22T01:22:56.3088654+03:00;True|2021-08-19T02:36:24.2592537+03:00;</History>
   </PropertyGroup>
   <ItemGroup>
     <File Include="Areas/HelpPage/HelpPage.css">
@@ -111,13 +111,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/05/2021 14:45:16</publishTime>
     </File>
     <File Include="bin/POS_Server.dll">
-      <publishTime>08/22/2021 01:22:54</publishTime>
+      <publishTime>08/25/2021 15:01:52</publishTime>
     </File>
     <File Include="bin/POS_Server.pdb">
-      <publishTime>08/22/2021 01:22:54</publishTime>
+      <publishTime>08/25/2021 15:01:52</publishTime>
     </File>
     <File Include="bin/POS_Server.xml">
-      <publishTime>08/22/2021 01:22:52</publishTime>
+      <publishTime>08/25/2021 15:01:51</publishTime>
     </File>
     <File Include="bin/roslyn/csc.exe">
       <publishTime>07/05/2021 14:45:16</publishTime>
@@ -363,7 +363,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/05/2021 14:45:13</publishTime>
     </File>
     <File Include="PosModel.edmx.diagram">
-      <publishTime>08/18/2021 16:52:02</publishTime>
+      <publishTime>08/24/2021 12:04:25</publishTime>
     </File>
     <File Include="Scripts/bootstrap.js">
       <publishTime>07/05/2021 14:45:13</publishTime>
@@ -408,7 +408,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/05/2021 14:45:13</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>08/22/2021 01:22:55</publishTime>
+      <publishTime>08/22/2021 11:55:36</publishTime>
     </File>
   </ItemGroup>
 </Project>

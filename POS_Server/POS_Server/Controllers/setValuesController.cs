@@ -110,6 +110,49 @@ namespace POS_Server.Controllers
         }
 
 
+        [HttpGet]
+        [Route("GetBySetvalNote")]
+        public IHttpActionResult GetBySetvalNote(string setvalnote)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    //setting sett = entity.setting.Where(s => s.name == name).FirstOrDefault();
+                    var setValuesList = entity.setValues.ToList().Where(x => x.notes == setvalnote)
+                         .Select(X => new {
+                             X.valId,
+                             X.value,
+                             X.isDefault,
+                             X.isSystem,
+                             X.settingId,
+                             X.notes,
+                             name= entity.setting.ToList().Where(s => s.settingId == X.settingId).FirstOrDefault().name,
+
+                })
+                         .ToList();
+
+                    if (setValuesList == null)
+                        return NotFound();
+                    else
+                        return Ok(setValuesList);
+                }
+            }
+            //else
+            return NotFound();
+        }
+
 
         // GET api/<controller>  Get medal By ID 
         [HttpGet]
@@ -281,11 +324,11 @@ namespace POS_Server.Controllers
                     {
                         setValues defItem = new setValues();
                         var sEntity = entity.Set<setValues>();
+                       
+                            defItem = entity.setValues.Where(p => p.settingId == Object.settingId ).FirstOrDefault();
 
-                        defItem = entity.setValues.Where(p => p.settingId == Object.settingId).FirstOrDefault();
-
-
-
+                     
+                      
                         if (Object.valId == 0)
                         {
                             if (Object.isDefault == 1)
@@ -316,13 +359,13 @@ namespace POS_Server.Controllers
                                 defItem.isDefault = 0;//reset the other default to 0 if exist
                             }
                             var tmps1 = sEntity.ToList();
-                            var tmps = tmps1.Where(p => p.notes == Object.notes && p.settingId == Object.settingId && p.valId == Object.valId).FirstOrDefault();
-                            //   tmps.valId = Object.valId;
-                            // tmps.notes = Object.notes;
+                            var tmps = tmps1.Where(p => p.notes == Object.notes &&  p.settingId == Object.settingId && p.valId == Object.valId).FirstOrDefault();
+                         //   tmps.valId = Object.valId;
+                           // tmps.notes = Object.notes;
                             tmps.value = Object.value;
                             tmps.isDefault = Object.isDefault;
                             tmps.isSystem = Object.isSystem;
-
+                         
                             tmps.settingId = Object.settingId;
                             entity.SaveChanges();
                             message = tmps.valId.ToString();

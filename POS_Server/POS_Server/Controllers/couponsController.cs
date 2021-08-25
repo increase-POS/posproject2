@@ -83,6 +83,60 @@ namespace POS_Server.Controllers
             //else
                 return NotFound();
         }
+        [HttpGet]
+        [Route("GetEffictive")]
+        public IHttpActionResult GetEffictive()
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var couponsList = entity.coupons.Where(x => x.remainQ > 0 && x.startDate <= DateTime.Now && x.endDate >= DateTime.Now && x.isActive == 1)
+                  
+                   .Select(c => new CouponModel{
+                    cId= c.cId,
+                       name =   c.name ,
+                       code = c.code,
+                       isActive = c.isActive,
+                       discountType = c.discountType,
+                       discountValue = c.discountValue,
+                       startDate =  c.startDate,
+                       endDate=c.endDate,
+                       notes  =c.notes,
+                       quantity  =  c.quantity,
+                       remainQ = c.remainQ,
+                       invMin  = c.invMin,
+                       invMax  = c.invMax ,
+                       createDate = c.createDate,
+                       updateDate = c.updateDate ,
+                       createUserId=  c.createUserId,
+                       updateUserId =  c.updateUserId ,
+                       barcode = c.barcode,
+                   })
+                   .ToList();
+
+                   
+
+                    if (couponsList == null)
+                        return NotFound();
+                    else
+                        return Ok(couponsList);
+                }
+            }
+            //else
+                return NotFound();
+        }
 
 
 

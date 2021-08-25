@@ -396,6 +396,8 @@
     <EntitySetMapping Name="invoices">
       <EntityTypeMapping TypeName="incposdbModel.invoices">
         <MappingFragment StoreEntitySet="invoices">
+          <ScalarProperty Name="manualDiscountType" ColumnName="manualDiscountType" />
+          <ScalarProperty Name="manualDiscountValue" ColumnName="manualDiscountValue" />
           <ScalarProperty Name="invoiceId" ColumnName="invoiceId" />
           <ScalarProperty Name="invNumber" ColumnName="invNumber" />
           <ScalarProperty Name="agentId" ColumnName="agentId" />
@@ -673,6 +675,7 @@
     <EntitySetMapping Name="notificationUser">
       <EntityTypeMapping TypeName="incposdbModel.notificationUser">
         <MappingFragment StoreEntitySet="notificationUser">
+          <ScalarProperty Name="posId" ColumnName="posId" />
           <ScalarProperty Name="notUserId" ColumnName="notUserId" />
           <ScalarProperty Name="notId" ColumnName="notId" />
           <ScalarProperty Name="userId" ColumnName="userId" />
@@ -884,6 +887,11 @@
     <EntitySetMapping Name="shippingCompanies">
       <EntityTypeMapping TypeName="incposdbModel.shippingCompanies">
         <MappingFragment StoreEntitySet="shippingCompanies">
+          <ScalarProperty Name="address" ColumnName="address" />
+          <ScalarProperty Name="fax" ColumnName="fax" />
+          <ScalarProperty Name="mobile" ColumnName="mobile" />
+          <ScalarProperty Name="phone" ColumnName="phone" />
+          <ScalarProperty Name="email" ColumnName="email" />
           <ScalarProperty Name="shippingCompanyId" ColumnName="shippingCompanyId" />
           <ScalarProperty Name="name" ColumnName="name" />
           <ScalarProperty Name="RealDeliveryCost" ColumnName="RealDeliveryCost" />
@@ -1021,6 +1029,39 @@
           <ScalarProperty Name="sOutDate" ColumnName="sOutDate" />
           <ScalarProperty Name="posId" ColumnName="posId" />
           <ScalarProperty Name="userId" ColumnName="userId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="paperSize">
+      <EntityTypeMapping TypeName="incposdbModel.paperSize">
+        <MappingFragment StoreEntitySet="paperSize">
+          <ScalarProperty Name="paperSize1" ColumnName="paperSize" />
+          <ScalarProperty Name="sizeId" ColumnName="sizeId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="posSetting">
+      <EntityTypeMapping TypeName="incposdbModel.posSetting">
+        <MappingFragment StoreEntitySet="posSetting">
+          <ScalarProperty Name="saleInvPapersizeId" ColumnName="saleInvPapersizeId" />
+          <ScalarProperty Name="posSerial" ColumnName="posSerial" />
+          <ScalarProperty Name="reportPrinterId" ColumnName="reportPrinterId" />
+          <ScalarProperty Name="saleInvPrinterId" ColumnName="saleInvPrinterId" />
+          <ScalarProperty Name="posId" ColumnName="posId" />
+          <ScalarProperty Name="posSettingId" ColumnName="posSettingId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="printers">
+      <EntityTypeMapping TypeName="incposdbModel.printers">
+        <MappingFragment StoreEntitySet="printers">
+          <ScalarProperty Name="updateUserId" ColumnName="updateUserId" />
+          <ScalarProperty Name="createUserId" ColumnName="createUserId" />
+          <ScalarProperty Name="updateDate" ColumnName="updateDate" />
+          <ScalarProperty Name="createDate" ColumnName="createDate" />
+          <ScalarProperty Name="printFor" ColumnName="printFor" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="printerId" ColumnName="printerId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
