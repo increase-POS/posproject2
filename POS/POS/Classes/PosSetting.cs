@@ -21,11 +21,11 @@ namespace POS.Classes
 
         public string posSerial { get; set; }
 
-        public int repprinterId { get; set; }
+     //   public int repprinterId { get; set; }
         public string repname { get; set; }
         public string repprintFor { get; set; }
 
-        public int salprinterId { get; set; }
+       // public int salprinterId { get; set; }
         public string salname { get; set; }
         public string salprintFor { get; set; }
 

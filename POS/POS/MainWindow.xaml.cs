@@ -55,7 +55,7 @@ namespace POS
         internal static int? userID;
         internal static User userLogin;
         internal static int? userLogInID;
-        internal static int? posID = 2;
+        internal static int? posID = 4;
         //مخزن الجميلية الرئيسي
         internal static int? branchID = 2;
         //مخزن الجميلية الفرقان
@@ -75,6 +75,8 @@ namespace POS
         static SetValues valueModel = new SetValues();
         static int nameId, addressId, emailId, mobileId, phoneId, faxId, logoId, taxId;
         public static string logoImage;
+
+
         ImageBrush myBrush = new ImageBrush();
         NotificationUser notificationUser = new NotificationUser();
 
@@ -82,7 +84,78 @@ namespace POS
         DispatcherTimer idletimer;//  logout timer
         DispatcherTimer threadtimer;//  repeat timer for check other login
         DispatcherTimer notTimer;//  repeat timer for notifications
+                                 // print setting
+        public static string sale_copy_count;
+        public static string pur_copy_count;
+        public static string print_on_save_sale;
+        public static string print_on_save_pur;
+        public static string email_on_save_sale;
+        public static string email_on_save_pur;
+        public static string rep_printer_name;
+        public static string sale_printer_name;
+        public static string paperSize;
+   
+        static public PosSetting posSetting = new PosSetting();
 
+        async Task Getprintparameter()
+        {
+            List<SetValues> printList = new List<SetValues>();
+            printList = await valueModel.GetBySetvalNote("print");
+            sale_copy_count = printList.Where(X => X.name == "sale_copy_count").FirstOrDefault().value;
+
+            pur_copy_count = printList.Where(X => X.name == "pur_copy_count").FirstOrDefault().value;
+
+            print_on_save_sale = printList.Where(X => X.name == "print_on_save_sale").FirstOrDefault().value;
+
+            print_on_save_pur = printList.Where(X => X.name == "print_on_save_pur").FirstOrDefault().value;
+
+            email_on_save_sale = printList.Where(X => X.name == "email_on_save_sale").FirstOrDefault().value;
+
+            email_on_save_pur = printList.Where(X => X.name == "email_on_save_pur").FirstOrDefault().value;
+
+
+
+        }
+        async Task GetReportlang()
+        {
+            List<SetValues> replangList = new List<SetValues>();
+            replangList = await valueModel.GetBySetName("report_lang");
+            Reportlang = replangList.Where(r => r.isDefault == 1).FirstOrDefault().value;
+
+        }
+        async Task getPrintersNames()
+        {
+            posSetting = await posSetting.GetByposId((int)MainWindow.posID);
+            rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.repname));
+            sale_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.salname));
+            paperSize = posSetting.paperSize1;
+
+            if (posSetting is null || posSetting.posSettingId <= 0)
+            {
+
+
+            }
+            else
+            {
+                /*
+                if (posSetting.reportPrinterId > 0)
+                {
+
+                }
+                */
+
+             //   rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.repname));
+               // sale_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.salname));
+        
+            }
+        }
+        public void getprintSitting()
+        {
+            Getprintparameter();
+            GetReportlang();
+
+            getPrintersNames();
+        }
         static public MainWindow mainWindow;
         public MainWindow()
         {
@@ -282,6 +355,9 @@ namespace POS
             // branch = await branch.getBranchById((int)MainWindow.branchID);
             //txt_branchLogin.Text = branch.name;
             //#endregion
+
+            getprintSitting();
+
             BTN_Home_Click(null, null);
             grid_mainWindow.IsEnabled = true;
             EndAwait();
@@ -369,7 +445,7 @@ namespace POS
         }
         private async void refreshNotificationCount()
         {
-            int notCount = await notificationUser.GetCountByUserId(userID.Value,"alert",posID.Value);
+            int notCount = await notificationUser.GetCountByUserId(userID.Value, "alert", posID.Value);
 
             int previouseCount = 0;
             if (md_notificationCount.Badge != null && md_notificationCount.Badge.ToString() != "") previouseCount = int.Parse(md_notificationCount.Badge.ToString());
@@ -963,9 +1039,9 @@ namespace POS
             {
                 bdrMain.Visibility = Visibility.Visible;
                 bdrMain.RenderTransform = Animations.borderAnimation(-25, bdrMain, true);
-                List<NotificationUser> notifications = await notificationUser.GetByUserId(userID.Value, "alert",posID.Value);
+                List<NotificationUser> notifications = await notificationUser.GetByUserId(userID.Value, "alert", posID.Value);
                 IEnumerable<NotificationUser> orderdNotifications = notifications.OrderByDescending(x => x.createDate);
-               await notificationUser.setAsRead(userID.Value, posID.Value,"alert");
+                await notificationUser.setAsRead(userID.Value, posID.Value, "alert");
                 md_notificationCount.Badge = "";
                 if (notifications.Count == 0)
                 {
