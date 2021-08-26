@@ -1050,8 +1050,8 @@ t1.Start();
                 tt_deleteGroup_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
 
                 MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_notes, MainWindow.resourcemanager.GetString("trNoteHint"));
-                tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
-                tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
+                //tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
+                //tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
                 //tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
 
                 dg_group.Columns[0].Header = MainWindow.resourcemanager.GetString("trName");

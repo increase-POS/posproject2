@@ -2849,3 +2849,5 @@ E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_dragdrop.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_favorite.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_dragdrop.baml
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_favorite.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_userPath.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_userPath.baml

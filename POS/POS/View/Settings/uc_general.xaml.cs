@@ -701,6 +701,26 @@ namespace POS.View.Settings
             }
         }
 
+        private void Btn_userPath_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                //if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+                //{
+                    Window.GetWindow(this).Opacity = 0.2;
+                    wd_userPath w = new wd_userPath();
+                    w.ShowDialog();
+                    Window.GetWindow(this).Opacity = 1;
+                //}
+                //else
+                //    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             try

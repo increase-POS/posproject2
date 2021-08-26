@@ -181,22 +181,20 @@ namespace POS
 
         public async void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
-            //try
-            //{
-            //    if (sender != null)
-            //        SectionData.StartAwait(grid_mainWindow);
-
-                grid_mainWindow.IsEnabled = false;
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_mainWindow);
 
                 #region bonni
-#pragma warning disable CS0436 // Type conflicts with imported type
+                #pragma warning disable CS0436 // Type conflicts with imported type
                 TabTipAutomation.IgnoreHardwareKeyboard = HardwareKeyboardIgnoreOptions.IgnoreAll;
-#pragma warning restore CS0436 // Type conflicts with imported type
-#pragma warning disable CS0436 // Type conflicts with imported type
-#pragma warning restore CS0436 // Type conflicts with imported type
-#pragma warning disable CS0436 // Type conflicts with imported type
+                #pragma warning restore CS0436 // Type conflicts with imported type
+                #pragma warning disable CS0436 // Type conflicts with imported type
+                #pragma warning restore CS0436 // Type conflicts with imported type
+                #pragma warning disable CS0436 // Type conflicts with imported type
                 TabTipAutomation.ExceptionCatched += TabTipAutomationOnTest;
-#pragma warning restore CS0436 // Type conflicts with imported type
+                #pragma warning restore CS0436 // Type conflicts with imported type
                 this.Height = SystemParameters.MaximizedPrimaryScreenHeight;
                 //this.Width = SystemParameters.MaximizedPrimaryScreenHeight;
                 timer = new DispatcherTimer();
@@ -353,34 +351,98 @@ namespace POS
 
                 getprintSitting();
 
-                BTN_Home_Click(null, null);
-                grid_mainWindow.IsEnabled = true;
-          
+                permission();
+                //BTN_Home_Click(null, null);
                 btn_reports.Visibility = Visibility.Visible;
+                //grid_mainWindow.IsEnabled = true;
 
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_mainWindow);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_mainWindow);
-            //    SectionData.ExceptionMessage(ex, this, sender);
-            //}
+                if (sender != null)
+                    SectionData.EndAwait(grid_mainWindow);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_mainWindow);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
 
         }
 
 
+        bool loadingDefaultPath(string first = "accounts", string second = "bonds")
+        {
+            bool load = false;
+            if (!string.IsNullOrEmpty(first) && !string.IsNullOrEmpty(second))
+            {
+                foreach (Button button in FindControls.FindVisualChildren<Button>(this))
+                {
+                    if (button.Tag != null)
+                        if (button.Tag.ToString() == first && MainWindow.groupObject.HasPermission(first, MainWindow.groupObjects))
+                        {
+                            button.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                            //load = true;
+                            break;
+                        }
+                }
+
+                if (first == "home")
+                    load = loadingSecondLevel(second, uc_home.Instance);
+                if (first == "catalog")
+                    load = loadingSecondLevel(second, UC_catalog.Instance);
+                if (first == "storage")
+                    load = loadingSecondLevel(second, POS.View.uc_storage.Instance);
+                if (first == "purchase")
+                    load = loadingSecondLevel(second, uc_purchases.Instance);
+                if (first == "sales")
+                    load = loadingSecondLevel(second, uc_sales.Instance);
+                if (first == "accounts")
+                    load = loadingSecondLevel(second, uc_accounts.Instance);
+                if (first == "reports")
+                    load = loadingSecondLevel(second, uc_reports.Instance);
+                if (first == "sectionData")
+                    load = loadingSecondLevel(second, UC_SectionData.Instance);
+                if (first == "settings")
+                    load = loadingSecondLevel(second, uc_settings.Instance);
+
+            }
+            return load;
+        }
+        bool loadingSecondLevel(string second , UserControl userControl)
+        {
+            foreach (Border border in FindControls.FindVisualChildren<Border>(userControl))
+            {
+                if (border.Tag != null)
+                    if (border.Tag.ToString() == second && MainWindow.groupObject.HasPermission(second, MainWindow.groupObjects))
+                    {
+                        Button button = FindControls.FindVisualChildren<Button>(this).Where(x => x.Name == "btn_" + border.Tag).FirstOrDefault();
+                        button.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                        return true;
+                    }
+            }
+            return false;
+        }
         void permission()
         {
+            bool loadWindow = false;
+            loadWindow = loadingDefaultPath();
             if (!SectionData.isAdminPermision())
                 foreach (Button button in FindControls.FindVisualChildren<Button>(this))
                 {
                     if (button.Tag != null)
                         if (MainWindow.groupObject.HasPermission(button.Tag.ToString(), MainWindow.groupObjects))
+                        {
                             button.Visibility = Visibility.Visible;
+                            if (!loadWindow)
+                            {
+                                button.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                                loadWindow = true;
+                            }
+                        }
                         else button.Visibility = Visibility.Collapsed;
                 }
+            else
+                if (!loadWindow)
+                BTN_Home_Click(BTN_home, null);
         }
 
         #region notifications
@@ -395,16 +457,10 @@ namespace POS
         {
             try
             {
-                if (sendert != null)
-                    SectionData.StartAwait(grid_main);
                 setNotifications();
-                if (sendert != null)
-                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                if (sendert != null)
-                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sendert);
             }
         }
@@ -434,34 +490,25 @@ namespace POS
         #endregion
         void timer_Idle(object sender, EventArgs e)
         {
-            //try
-            //{
-            //    if (sender != null)
-            //        SectionData.StartAwait(grid_mainWindow);
 
+            try
+            {
                 if (IdleClass.IdleTime.Minutes >= Idletime)
                 {
                     BTN_logOut_Click(null, null);
                     idletimer.Stop();
                 }
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_mainWindow);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_mainWindow);
-            //    SectionData.ExceptionMessage(ex, this, sender);
-            //}
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
 
         }
         async void timer_Thread(object sendert, EventArgs et)
         {
-            //try
-            //{
-            //    if (sendert != null)
-            //        SectionData.StartAwait(grid_mainWindow);
-
+            try
+            {
                 //  User thruser = new User();
                 UsersLogs thrlog = new UsersLogs();
             
@@ -472,48 +519,28 @@ namespace POS
                     BTN_logOut_Click(null, null);
                     threadtimer.Stop();
                 }
-            //        if (sendert != null)
-            //            SectionData.EndAwait(grid_mainWindow);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sendert != null)
-            //        SectionData.EndAwait(grid_mainWindow);
-            //    SectionData.ExceptionMessage(ex, this, sendert);
-            //}
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sendert);
+            }
 
         }
-        //public void StartAwait()
-        //{
-        //    MainWindow.mainWindow.prg_awaitRing.IsActive = true;
-        //    MainWindow.mainWindow.grid_main.IsEnabled = false;
-        //    MainWindow.mainWindow.grid_main.Opacity = 0.6;
-        //}
-        //public void EndAwait()
-        //{
-        //    MainWindow.mainWindow.prg_awaitRing.IsActive = false;
-        //    MainWindow.mainWindow.grid_main.IsEnabled = true;
-        //    MainWindow.mainWindow.grid_main.Opacity = 1;
-        //}
+         
         void timer_Tick(object sender, EventArgs e)
         {
-            //try
-            //{
-            //    if (sender != null)
-            //        SectionData.StartAwait(grid_mainWindow);
-
+            try
+            {
+                
                 txtTime.Text = DateTime.Now.ToShortTimeString();
                 txtDate.Text = DateTime.Now.ToShortDateString();
 
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_mainWindow);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_mainWindow);
-            //    SectionData.ExceptionMessage(ex, this, sender);
-            //}
+
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         private void TabTipAutomationOnTest(Exception exception)
         {
@@ -543,25 +570,25 @@ namespace POS
         }
         private void BTN_logOut_Click(object sender, RoutedEventArgs e)
         {
-            //try
-            //{
-            //    if (sender != null)
-            //        SectionData.StartAwait(grid_mainWindow);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_mainWindow);
 
                 close();
 
                 Application.Current.Shutdown();
                 System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
 
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_mainWindow);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_mainWindow);
-            //    SectionData.ExceptionMessage(ex, this, sender);
-            //}
+                if (sender != null)
+                    SectionData.EndAwait(grid_mainWindow);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_mainWindow);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         async void close()
         {
@@ -574,27 +601,33 @@ namespace POS
         }
         private void BTN_Close_Click(object sender, RoutedEventArgs e)
         {
-            //try
-            //{
-            //    if (sender != null)
-            //        SectionData.StartAwait(grid_mainWindow);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_mainWindow);
                 close();
                 Application.Current.Shutdown();
 
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_mainWindow);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_mainWindow);
-            //    SectionData.ExceptionMessage(ex, this, sender);
-            //}
+                if (sender != null)
+                    SectionData.EndAwait(grid_mainWindow);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_mainWindow);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
-
         private void BTN_Minimize_Click(object sender, RoutedEventArgs e)
         {
-            this.WindowState = System.Windows.WindowState.Minimized;
+            try
+            {
+                this.WindowState = System.Windows.WindowState.Minimized;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         void colorTextRefreash(TextBlock txt)
         {
@@ -658,11 +691,9 @@ namespace POS
         //فتح
         private async void BTN_Menu_Click(object sender, RoutedEventArgs e)
         {
-            //try
-            //{
-            //    if (sender != null)
-            //        SectionData.StartAwait(grid_mainWindow);
-
+            try
+            {
+                 
                 if (!menuState)
                 {
                     Storyboard sb = this.FindResource("Storyboard1") as Storyboard;
@@ -688,20 +719,15 @@ namespace POS
                 FN_tooltipVisibility(btn_accounts);
                 FN_tooltipVisibility(btn_sectionData);
                 FN_tooltipVisibility(btn_settings);
-                    #endregion
+                #endregion
 
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_mainWindow);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_mainWindow);
-            //    SectionData.ExceptionMessage(ex, this, sender);
-            //}
+
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
-
-
         void fn_pathOpenCollapsed()
         {
             path_openCatalog.Visibility = Visibility.Collapsed;
@@ -716,20 +742,15 @@ namespace POS
 
 
         }
-
         void FN_pathVisible(Path p)
         {
             fn_pathOpenCollapsed();
             p.Visibility = Visibility.Visible;
         }
-
-
         private void BTN_Home_Click(object sender, RoutedEventArgs e)
         {
-            //try
-            //{
-            //    if (sender != null)
-            //        SectionData.StartAwait(grid_mainWindow);
+            try
+            {
 
                 colorTextRefreash(txt_home);
                 FN_pathVisible(path_openHome);
@@ -741,35 +762,21 @@ namespace POS
                     uc_home.Instance.timerAnimation();
                     isHome = false;
                 }
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_mainWindow);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_mainWindow);
-            //    SectionData.ExceptionMessage(ex, this, sender);
-            //}
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
 
         }
 
 
-        private void btn_Keyboard_Checked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void btn_Keyboard_Unchecked(object sender, RoutedEventArgs e)
-        {
-
-        }
+       
 
         private void btn_Keyboard_Click(object sender, RoutedEventArgs e)
         {
-            //try
-            //{
-            //    if (sender != null)
-            //        SectionData.StartAwait(grid_mainWindow);
+            try
+            {
 
                 if (TabTip.Close())
                 {
@@ -777,17 +784,13 @@ namespace POS
                     TabTip.OpenUndockedAndStartPoolingForClosedEvent();
     #pragma warning restore CS0436 // Type conflicts with imported type
                 }
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_mainWindow);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_mainWindow);
-            //    SectionData.ExceptionMessage(ex, this, sender);
-            //}
-
         }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+        }
+
+    }
 
         User userModel = new User();
         UsersLogs userLogsModel = new UsersLogs();
@@ -810,30 +813,22 @@ namespace POS
 
         private void BTN_SectionData_Click(object sender, RoutedEventArgs e)
         {
-            //try
-            //{
-            //    if (sender != null)
-            //        SectionData.StartAwait(grid_mainWindow);
-
+            try
+            {
                 colorTextRefreash(txt_sectiondata);
                 FN_pathVisible(path_openSectionData);
                 fn_ColorIconRefreash(path_iconSectionData);
                 grid_main.Children.Clear();
                 grid_main.Children.Add(UC_SectionData.Instance);
-        
+
                 isHome = true;
                 Button button = sender as Button;
                 initializationMainTrack(button.Tag.ToString(), 0);
-
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_mainWindow);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_mainWindow);
-            //    SectionData.ExceptionMessage(ex, this, sender);
-            //}
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
 
         }
         public void initializationMainTrack(string tag, int level)
@@ -987,52 +982,36 @@ namespace POS
         }
         private void BTN_catalog_Click(object sender, RoutedEventArgs e)
         {
-            //try
-            //{
-            //    if (sender != null)
-            //        SectionData.StartAwait(grid_mainWindow);
-
+            try
+            {
                 colorTextRefreash(txt_catalog);
                 FN_pathVisible(path_openCatalog);
                 fn_ColorIconRefreash(path_iconCatalog);
                 grid_main.Children.Clear();
                 grid_main.Children.Add(UC_catalog.Instance);
                 isHome = true;
-
                 Button button = sender as Button;
                 initializationMainTrack(button.Tag.ToString(), 0);
-
-
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_mainWindow);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_mainWindow);
-            //    SectionData.ExceptionMessage(ex, this, sender);
-            //}
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            //try
-            //{
-            //    if (sender != null)
-            //        SectionData.StartAwait(grid_mainWindow);
+            try
+            {
 
                 e.Cancel = true;
                 this.Visibility = Visibility.Hidden;
 
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_mainWindow);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_mainWindow);
-            //    SectionData.ExceptionMessage(ex, this, sender);
-            //}
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
@@ -1042,10 +1021,8 @@ namespace POS
 
         private async void Mi_changePassword_Click(object sender, RoutedEventArgs e)
         {//change password
-            //try
-            //{
-            //    if (sender != null)
-            //        SectionData.StartAwait(grid_mainWindow);
+            try
+            {
 
                 Window.GetWindow(this).Opacity = 0.2;
                 wd_changePassword w = new wd_changePassword();
@@ -1054,15 +1031,11 @@ namespace POS
 
                 userLogin = await userModel.getUserById(w.userID);
 
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_mainWindow);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_mainWindow);
-            //    SectionData.ExceptionMessage(ex, this, sender);
-            //}
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
 
@@ -1136,10 +1109,8 @@ namespace POS
 
         private async void BTN_notifications_Click(object sender, RoutedEventArgs e)
         {
-            //try
-            //{
-            //    if (sender != null)
-            //        SectionData.StartAwait(grid_mainWindow);
+            try
+            {
 
                 if (bdrMain.Visibility == Visibility.Collapsed)
                 {
@@ -1211,56 +1182,40 @@ namespace POS
                     bdrMain.Visibility = Visibility.Collapsed;
                 }
 
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_mainWindow);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_mainWindow);
-            //    SectionData.ExceptionMessage(ex, this, sender);
-            //}
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
 
         private void TextBlock_MouseEnter(object sender, MouseEventArgs e)
         {
-            //try
-            //{
-            //    if (sender != null)
-            //        SectionData.StartAwait(grid_mainWindow);
+            try
+            {
 
                 bdr_showAll.Visibility = Visibility.Visible;
 
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_mainWindow);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_mainWindow);
-            //    SectionData.ExceptionMessage(ex, this, sender);
-            //}
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void TextBlock_MouseLeave(object sender, MouseEventArgs e)
         {
-            //try
-            //{
-            //    if (sender != null)
-            //        SectionData.StartAwait(grid_mainWindow);
+            try
+            {
 
                 bdr_showAll.Visibility = Visibility.Hidden;
 
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_mainWindow);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_mainWindow);
-            //    SectionData.ExceptionMessage(ex, this, sender);
-            //}
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -1270,22 +1225,14 @@ namespace POS
 
         private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            //try
-            //{
-            //    if (sender != null)
-            //        SectionData.StartAwait(grid_mainWindow);
-
+            try
+            {
                 bdrMain.Visibility = Visibility.Collapsed;
-
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_mainWindow);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_mainWindow);
-            //    SectionData.ExceptionMessage(ex, this, sender);
-            //}
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void Btn_info_Click(object sender, RoutedEventArgs e)
@@ -1316,96 +1263,66 @@ namespace POS
 
         public void BTN_purchases_Click(object sender, RoutedEventArgs e)
         {
-            //try
-            //{
-            //    if (sender != null)
-            //        SectionData.StartAwait(grid_mainWindow);
-
+            try
+            {
                 colorTextRefreash(txt_purchases);
                 FN_pathVisible(path_openPurchases);
                 fn_ColorIconRefreash(path_iconPurchases);
                 grid_main.Children.Clear();
                 grid_main.Children.Add(uc_purchases.Instance);
-           
                 isHome = true;
                 Button button = sender as Button;
                 initializationMainTrack(button.Tag.ToString(), 0);
 
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_mainWindow);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_mainWindow);
-            //    SectionData.ExceptionMessage(ex, this, sender);
-            //}
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         public void BTN_sales_Click(object sender, RoutedEventArgs e)
         {
-            //try
-            //{
-            //    if (sender != null)
-            //        SectionData.StartAwait(grid_mainWindow);
-
+            try
+            {
                 colorTextRefreash(txt_sales);
                 FN_pathVisible(path_openSales);
                 fn_ColorIconRefreash(path_iconSales);
                 grid_main.Children.Clear();
                 grid_main.Children.Add(uc_sales.Instance);
-           
                 isHome = true;
                 Button button = sender as Button;
                 initializationMainTrack(button.Tag.ToString(), 0);
-
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_mainWindow);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_mainWindow);
-            //    SectionData.ExceptionMessage(ex, this, sender);
-            //}
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void BTN_accounts_Click(object sender, RoutedEventArgs e)
         {
-            //try
-            //{
-            //    if (sender != null)
-            //        SectionData.StartAwait(grid_mainWindow);
-
+            try
+            {
                 colorTextRefreash(txt_accounting);
                 FN_pathVisible(path_openAccount);
                 fn_ColorIconRefreash(path_iconAccounts);
-
                 grid_main.Children.Clear();
                 grid_main.Children.Add(uc_accounts.Instance);
-        
                 isHome = true;
                 Button button = sender as Button;
                 initializationMainTrack(button.Tag.ToString(), 0);
-
-                if (sender != null)
-                    SectionData.EndAwait(grid_mainWindow);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_mainWindow);
-            //    SectionData.ExceptionMessage(ex, this, sender);
-            //}
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void BTN_reports_Click(object sender, RoutedEventArgs e)
         {
-            //try
-            //{
-            //    if (sender != null)
-            //        SectionData.StartAwait(grid_mainWindow);
-
+            try
+            {
                 colorTextRefreash(txt_reports);
                 FN_pathVisible(path_openReports);
                 fn_ColorIconRefreash(path_iconReports);
@@ -1414,25 +1331,17 @@ namespace POS
                 grid_main.Children.Add(uc_reports.Instance);
                 Button button = sender as Button;
                 initializationMainTrack(button.Tag.ToString(), 0);
-
-                if (sender != null)
-                    SectionData.EndAwait(grid_mainWindow);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_mainWindow);
-            //    SectionData.ExceptionMessage(ex, this, sender);
-            //}
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         public void BTN_settings_Click(object sender, RoutedEventArgs e)
         {
-            //try
-            //{
-            //    if (sender != null)
-            //        SectionData.StartAwait(grid_mainWindow);
-
+            try
+            {
                 colorTextRefreash(txt_settings);
                 FN_pathVisible(path_openSettings);
                 fn_ColorIconRefreash(path_iconSettings);
@@ -1441,25 +1350,17 @@ namespace POS
                 grid_main.Children.Add(uc_settings.Instance);
                 Button button = sender as Button;
                 initializationMainTrack(button.Tag.ToString(), 0);
-
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_mainWindow);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_mainWindow);
-            //    SectionData.ExceptionMessage(ex, this, sender);
-            //}
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void BTN_storage_Click(object sender, RoutedEventArgs e)
         {
-            //try
-            //{
-            //    if (sender != null)
-            //        SectionData.StartAwait(grid_mainWindow);
-
+            try
+            {
                 Button button = sender as Button;
                 initializationMainTrack(button.Tag.ToString(), 0);
                 colorTextRefreash(txt_storage);
@@ -1467,18 +1368,12 @@ namespace POS
                 fn_ColorIconRefreash(path_iconStorage);
                 grid_main.Children.Clear();
                 grid_main.Children.Add(View.uc_storage.Instance);
-            
                 isHome = true;
-
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_mainWindow);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_mainWindow);
-            //    SectionData.ExceptionMessage(ex, this, sender);
-            //}
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
     }
 }

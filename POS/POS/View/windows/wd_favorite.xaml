@@ -44,8 +44,20 @@
         </Grid>
         <Border BorderThickness="1,0,1,1"  Grid.Row="2"
                     CornerRadius="0,0,7,7" BorderBrush="#999999"  Background="White">
-            <Grid x:Name="grid_mainGrid" >
-               
+                <Grid x:Name="grid_mainGrid" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="50"/>
+                </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" x:Name="txt_categories"  Text="Categories" Margin="10" Foreground="Gray" FontSize="16" HorizontalAlignment="Center" />
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                    <WrapPanel x:Name="pnl_categories" Margin="10" Orientation="Vertical"/>
+                </ScrollViewer>
+                <Button Content="Save" Grid.Row="10" Grid.ColumnSpan="5" TabIndex="12"
+                       Margin="10,2.5" x:Name="btn_save" Click="Btn_save_Click"
+                          Background="#178DD2" BorderBrush="{x:Null}"  />
+
             </Grid>
 
         </Border>

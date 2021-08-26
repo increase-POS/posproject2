@@ -787,6 +787,40 @@
                         </Border>
                     </Grid>
                 </Border>
+                <Border Background="White" CornerRadius="7"  Height="140" Width="260" MinHeight="100" BorderThickness="1" BorderBrush="#178DD2" Margin="10,0,10,20">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"></ColumnDefinition>
+                            <ColumnDefinition Width="3*"></ColumnDefinition>
+                            <ColumnDefinition Width="40"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Path Fill="#178DD2" Stretch="Fill" Margin="20,10,0,10"  
+                              HorizontalAlignment="Center" Grid.Column="0"   
+                         VerticalAlignment="Center" Height="60" Width="60"
+                              Data="M189.54,168.58c8.46-1.24,16.72.11,23.89,5.32a2.9,2.9,0,0,0,3.69.15q25.86-15,51.82-29.81a2.92,2.92,0,0,0,1.83-3c-.17-2.58.72-5.66-.41-7.63s-4.18-2.88-6.43-4.17c-15.23-8.72-30.49-17.4-45.69-26.18-2.15-1.24-3.75-1.4-6,0-11.4,7.3-25.93,6.74-37.26-1.19a33.34,33.34,0,0,1-13.22-34.79c2.79-12.56,13.65-22.76,26.75-25.15.75-.14,1.47-.36,2.21-.55H199c3.54,1.18,7.3,1.93,10.57,3.62C220.41,50.81,226.8,59.64,227.92,72a.86.86,0,0,1,0,.23c-.84,5.91,2.14,9,7.23,11.7,15.64,8.46,31,17.48,46.38,26.35a4,4,0,0,0,4.22,0c3.65-1.74,7.29-3.74,11.17-4.69,16.82-4.13,34.66,6.1,39.49,22.32,5.27,17.7-3.31,35.59-20.09,41.8-10.85,4-21.13,2.53-30.8-3.54a3.23,3.23,0,0,0-3.9-.07Q256,180.89,230.19,195.58a3.61,3.61,0,0,0-2,3.43,60.94,60.94,0,0,1-.93,10c-2.91,13.48-14.72,23.88-28.82,25.65a33.52,33.52,0,0,1-33.74-18A33.15,33.15,0,0,1,189.54,168.58Zm18.58-86.11a5.73,5.73,0,0,0-3.31-4.1c-2.12-1.07-4.31-2-6.4-3.09-1.75-.92-2-2.19-.63-3.5,3.29-3.12,3.61-7,3.14-11.13-.43-3.83-3-6.27-6.53-6.41-4.76-.18-7.33,1.56-8.09,5.79s-.46,8.34,2.9,11.68c1.46,1.45,1.18,2.64-.65,3.62-1,.52-2,.88-3,1.38A35,35,0,0,0,181,79.25a5.17,5.17,0,0,0-1.89,5.86,4.52,4.52,0,0,0,4.67,3.09c3.28,0,6.56,0,9.84,0v0c3.4,0,6.81.1,10.21,0A4.51,4.51,0,0,0,208.12,82.47Z"/>
+                        <StackPanel Grid.Column="1" VerticalAlignment="Top" Grid.ColumnSpan="2" Margin="5,20,0,0" HorizontalAlignment="Left">
+                            <TextBlock x:Name="txt_userPath" HorizontalAlignment="Right" Width="135" Foreground="#6e6e6e" Text="User Path" FontSize="18" FontWeight="SemiBold"></TextBlock>
+                            <TextBlock x:Name="txt_userPathHint" Text="User Path..." Foreground="#949494" FontSize="10" Margin="5,2,0,0"></TextBlock>
+                        </StackPanel>
+                        <Border Height="25" Width="25" CornerRadius="25" Grid.Column="2" VerticalAlignment="Bottom" Margin="0,0,10,10"
+                                Background="White" HorizontalAlignment="Center">
+                            <Button x:Name="btn_userPath" Background="Transparent" BorderThickness="0"
+                                 Padding="0" VerticalAlignment="Center" HorizontalAlignment="Center"
+                       Height="auto" Width="auto" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="Btn_userPath_Click">
+                                <Path       VerticalAlignment="Center" HorizontalAlignment="Center"
+                                    Height="25" Width="25"  
+                                Fill="#178DD2" Stretch="Fill" 
+                           Grid.Column="0"  
+                              Data="M25.2,150c0,22.8,5.7,43.5,16.8,62.7s26.4,34.2,45.3,45.6c19.2,11.1,39.9,16.8,62.7,16.8s43.5-5.7,62.7-16.8
+	c19.2-11.1,34.2-26.4,45.3-45.6c11.1-19.2,16.8-39.9,16.8-62.7s-5.7-43.5-16.8-62.7c-11.1-19.2-26.4-34.2-45.3-45.3
+	c-19.2-11.4-39.9-16.8-62.7-16.8S106.5,30.9,87.3,42S53.1,68.4,42,87.3C30.6,106.5,25.2,127.2,25.2,150z M108,99.6
+	c-2.1-2.1-3-4.5-3-7.5c0-2.7,0.9-5.4,3-7.5l16.5-16.8c2.1-2.1,4.5-3,7.2-3c2.7,0,5.1,0.9,7.2,3l72.9,74.4c2.1,2.1,3,4.5,3,7.5
+	s-0.9,5.4-3,7.5l-72.9,74.7c-2.1,2.1-4.5,3-7.2,3c-2.7,0-5.1-0.9-7.2-3L108,215.1c-2.1-2.1-3-4.5-3-7.5c0-2.7,0.9-5.4,3-7.5
+	l49.5-50.1L108,99.6z"/>
+                            </Button>
+                        </Border>
+                    </Grid>
+                </Border>
 
                 <Border Background="White" CornerRadius="7"  Height="140" Width="260" BorderThickness="1" BorderBrush="#178DD2" MinHeight="100" Margin="10,0,10,20">
                     <Grid>

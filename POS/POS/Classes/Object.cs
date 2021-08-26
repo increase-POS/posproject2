@@ -15,18 +15,11 @@ namespace POS.Classes
 {
    public class Object
     {
-        //public int id { get; set; }
-        //public Nullable<int> groupId { get; set; }
-        //public Nullable<int> objectId { get; set; }
         public int objectId { get; set; }
-        public Nullable<int> parentObjectId { get; set; }
         public string name { get; set; }
-        public string notes { get; set; }
+        public Nullable<int> parentObjectId { get; set; }
         public string objectType { get; set; }
-        //public Nullable<byte> addOb { get; set; }
-        //public Nullable<byte> updateOb { get; set; }
-        //public Nullable<byte> deleteOb { get; set; }
-        //public Nullable<byte> showOb { get; set; }
+        public string notes { get; set; }
         public Nullable<System.DateTime> createDate { get; set; }
         public Nullable<System.DateTime> updateDate { get; set; }
         public Nullable<int> createUserId { get; set; }

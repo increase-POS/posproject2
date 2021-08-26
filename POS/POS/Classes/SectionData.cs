@@ -703,7 +703,9 @@ namespace POS.Classes
         
         static async public void ExceptionMessage(Exception ex ,object window, object sender = null)
         {
-            string _window , _sender = "";
+            try
+            {
+                string _window , _sender = "";
 
             _window = window.GetType().Name;
 
@@ -740,6 +742,11 @@ namespace POS.Classes
                 Toaster.ShowWarning(MainWindow.mainWindow, message: MainWindow.resourcemanager.GetString("trNoInternetConnection"), animation: ToasterAnimation.FadeIn);
             else
                 Toaster.ShowWarning(MainWindow.mainWindow, message: ex.HResult + " || " + ex.Message, animation: ToasterAnimation.FadeIn);
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(exception.Message.ToString());
+            }
         }
         static public void StartAwait(Grid grid)
         {

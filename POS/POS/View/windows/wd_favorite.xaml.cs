@@ -64,17 +64,76 @@ namespace POS.View.windows
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
+
+     
         Category categoryModel = new Category();
+        Categoryuser categoryuserModel = new Categoryuser();
+        Category category = new Category();
         List<Category> categoryLst = new List<Category>();
+        List<Categoryuser> categoryuserLst = new List<Categoryuser>();
+        List<TextBlock> categoryTextblocks = new List<TextBlock>();
+        TextBlock tx;
+        int index = 0;
         private async void getCategories()
         {
            categoryLst = await categoryModel.GetAllCategories();
+
+            foreach (var c in categoryLst)
+            {
+                tx = new TextBlock();
+                tx.Width = 250; tx.Height = 50;
+                tx.Margin = new Thickness(5);
+                tx.FontSize = 12; tx.Foreground = new SolidColorBrush(Colors.Black);
+                tx.Background = new SolidColorBrush(Colors.Pink);
+                tx.HorizontalAlignment = HorizontalAlignment.Center;
+                tx.VerticalAlignment = VerticalAlignment.Center;
+                tx.TextAlignment = TextAlignment.Center;
+                tx.Text = c.name;
+                tx.Tag = c.categoryId;
+                tx.Name = "tx"+c.categoryId;
+                tx.AllowDrop = true;
+                tx.MouseDown += this.wpMouseDown;
+                tx.DragEnter += this.wpDragEnter;
+                tx.Drop += this.wpDrop;
+
+                pnl_categories.Children.Add(tx);
+                categoryTextblocks.Add(tx);
+            }
+        }
+
+        private async void wpDrop(object sender, DragEventArgs e)
+        {
+            categoryTextblocks[index].Text = (sender as TextBlock).Text;
+            categoryTextblocks[index].Tag = (sender as TextBlock).Tag;
+            categoryTextblocks[index].Name = (sender as TextBlock).Name;
+            int id = int.Parse(e.Data.GetData(DataFormats.Text, true).ToString());
+            category =  await categoryModel.GetCategoryByID(id);
+            (sender as TextBlock).Text = category.name ;
+            (sender as TextBlock).Tag = category.categoryId;
+            
+        }
+
+        private void wpDragEnter(object sender, DragEventArgs e)
+        {
+            e.Effects = DragDropEffects.Move;
+        }
+        private void wpMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                if (categoryTextblocks.Contains(sender as TextBlock))
+                {
+                    index = categoryTextblocks.FindIndex(c => c.Tag == (sender as TextBlock).Tag);
+                }
+                DragDrop.DoDragDrop(sender as TextBlock , (sender as TextBlock).Tag.ToString() , DragDropEffects.All);
+            }
         }
 
         private void translate()
         {
             txt_title.Text = MainWindow.resourcemanager.GetString("trFavorite");
-            //MaterialDesignThemes.Wpf.HintAssist.SetHint(pb_oldPassword, MainWindow.resourcemanager.GetString("trOldPasswordHint"));
+            txt_categories.Text = MainWindow.resourcemanager.GetString("trCategories");
+            btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -91,8 +150,14 @@ namespace POS.View.windows
         }
 
         private void Btn_colse_Click(object sender, RoutedEventArgs e)
-        {
+        {//close
 
+        }
+
+        private async void Btn_save_Click(object sender, RoutedEventArgs e)
+        {//save
+            categoryuserLst = await categoryuserModel.GetByUserId(MainWindow.userID.Value);
+            MessageBox.Show(categoryuserLst.Count.ToString());
         }
     }
 }
