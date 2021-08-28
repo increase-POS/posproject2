@@ -2915,3 +2915,15 @@ F:\increase\sales\POS\POS\obj\Debug\View\windows\wd_setupGeneralSetting.baml
 F:\increase\sales\POS\POS\obj\Debug\View\windows\wd_setupServer.baml
 F:\increase\sales\POS\POS\obj\Debug\View\windows\wd_unitConversion.baml
 F:\increase\sales\POS\POS\obj\Debug\View\windows\wd_userPath.baml
+D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\wd_dragdrop.g.cs
+D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\wd_favorite.g.cs
+D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\wd_reportCopyCountSetting.g.cs
+D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\wd_reportPrinterSetting.g.cs
+D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\wd_reportSystmSetting.g.cs
+D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\wd_userPath.g.cs
+D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\wd_dragdrop.baml
+D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\wd_favorite.baml
+D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\wd_reportCopyCountSetting.baml
+D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\wd_reportPrinterSetting.baml
+D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\wd_reportSystmSetting.baml
+D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\wd_userPath.baml

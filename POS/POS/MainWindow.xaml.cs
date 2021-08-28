@@ -94,10 +94,12 @@ namespace POS
         public static string sale_printer_name;
         public static string paperSize;
         public static string rep_print_count;
-
+        public static string docPapersize;
+     public static string rep_copy_count;
         static public PosSetting posSetting = new PosSetting();
+   
 
-        async Task Getprintparameter()
+        public static async Task Getprintparameter()
         {
             List<SetValues> printList = new List<SetValues>();
             printList = await valueModel.GetBySetvalNote("print");
@@ -113,40 +115,55 @@ namespace POS
 
             email_on_save_pur = printList.Where(X => X.name == "email_on_save_pur").FirstOrDefault().value;
 
+            sale_copy_count = printList.Where(X => X.name == "sale_copy_count").FirstOrDefault().value;
+
+            pur_copy_count = printList.Where(X => X.name == "pur_copy_count").FirstOrDefault().value;
+
+            rep_copy_count = printList.Where(X => X.name == "rep_copy_count").FirstOrDefault().value;
+
 
 
         }
-        async Task GetReportlang()
+        public static async Task GetReportlang()
         {
             List<SetValues> replangList = new List<SetValues>();
             replangList = await valueModel.GetBySetName("report_lang");
             Reportlang = replangList.Where(r => r.isDefault == 1).FirstOrDefault().value;
 
         }
-        async Task getPrintersNames()
+        public static async Task getPrintersNames()
         {
             posSetting = await posSetting.GetByposId((int)MainWindow.posID);
             rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.repname));
             sale_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.salname));
             paperSize = posSetting.paperSize1;
-
+            docPapersize = posSetting.docPapersize;
+            /*
             if (posSetting is null || posSetting.posSettingId <= 0)
             {
 
-
+                rep_printer_name = "";
+                sale_printer_name = "";
             }
             else
             {
-        
+             
+              
+
+                //   rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.repname));
+                // sale_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.salname));
+
             }
+            */
         }
-        public async Task getprintSitting()
+        public static async Task getprintSitting()
         {
             await Getprintparameter();
             await GetReportlang();
 
             await getPrintersNames();
         }
+
         static public MainWindow mainWindow;
         public MainWindow()
         {
@@ -348,7 +365,7 @@ namespace POS
                 #endregion
 
 
-                getprintSitting();
+              await  getprintSitting();
 
                 permission();
                 //BTN_Home_Click(null, null);

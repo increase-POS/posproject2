@@ -158,6 +158,5 @@ C:\Users\HP\Documents\GitHub\posproject2\POS\netoaster\obj\Debug\netoaster.cspro
 C:\Users\HP\Documents\GitHub\posproject2\POS\netoaster\obj\Debug\netoaster.csproj.CoreCompileInputs.cache
 C:\Users\HP\Documents\GitHub\posproject2\POS\netoaster\obj\Debug\netoaster.dll
 C:\Users\HP\Documents\GitHub\posproject2\POS\netoaster\obj\Debug\netoaster.pdb
-D:\myproj\posproject2\POS\netoaster\obj\Debug\netoaster.csprojAssemblyReference.cache
 C:\Users\HP\Documents\GitHub\posproject2\POS\netoaster\obj\Debug\netoaster.csprojAssemblyReference.cache
 E:\GitHub\posproject2\POS\netoaster\obj\Debug\netoaster.csprojAssemblyReference.cache

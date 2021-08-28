@@ -33,6 +33,84 @@ namespace POS.View.windows
             { SectionData.ExceptionMessage(ex, this); }
         }
         BrushConverter bc = new BrushConverter();
+
+        // print
+        SetValues print_on_save_salerow = new SetValues();
+        SetValues print_on_save_purrow = new SetValues();
+        SetValues email_on_save_salerow = new SetValues();
+        SetValues email_on_save_purrow = new SetValues();
+        SetValues setvalueModel = new SetValues();
+        string print_on_save_sale;
+        string print_on_save_pur;
+        string email_on_save_sale;
+        string email_on_save_pur;
+
+        List<SetValues> printList = new List<SetValues>();
+
+        async Task Getprintparameter()
+        {
+
+            printList = await setvalueModel.GetBySetvalNote("print");
+      
+
+          
+
+            print_on_save_salerow = printList.Where(X => X.name == "print_on_save_sale").FirstOrDefault();
+            print_on_save_sale = print_on_save_salerow.value;
+
+            print_on_save_purrow = printList.Where(X => X.name == "print_on_save_pur").FirstOrDefault();
+            print_on_save_pur = print_on_save_purrow.value;
+
+            email_on_save_salerow = printList.Where(X => X.name == "email_on_save_sale").FirstOrDefault();
+            email_on_save_sale = email_on_save_salerow.value;
+
+            email_on_save_purrow = printList.Where(X => X.name == "email_on_save_pur").FirstOrDefault();
+            email_on_save_pur = email_on_save_purrow.value;
+           
+            if (print_on_save_pur == "1")
+            {
+                tgl_printOnSavePur.IsChecked = true;
+            }
+            else
+            {
+                tgl_printOnSavePur.IsChecked = false;
+            }
+            //
+            if (print_on_save_sale == "1")
+            {
+                tgl_printOnSaveSale.IsChecked = true;
+            }
+            else
+            {
+                tgl_printOnSaveSale.IsChecked = false;
+            }
+            //
+            if (email_on_save_pur == "1")
+            {
+                tgl_emailOnSavePur.IsChecked = true;
+            }
+            else
+            {
+                tgl_emailOnSavePur.IsChecked = false;
+            }
+            //////////////////
+            if (email_on_save_sale == "1")
+            {
+                tgl_emailOnSaveSale.IsChecked = true;
+            }
+            else
+            {
+                tgl_emailOnSaveSale.IsChecked = false;
+            }
+
+            /*
+            tgl_printOnSaveSale
+            tgl_emailOnSavePur
+            tgl_emailOnSaveSale
+            */
+          
+        }
+
         private void Btn_colse_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
@@ -60,6 +138,9 @@ namespace POS.View.windows
 
                 //translate();
                 #endregion
+
+                //code
+                Getprintparameter();
 
 
                 if (sender != null)
@@ -120,9 +201,56 @@ namespace POS.View.windows
             }
         }
 
-        private void Btn_save_Click(object sender, RoutedEventArgs e)
+        private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {
+            string msg = "";
 
+            if ((bool)tgl_printOnSavePur.IsChecked)
+            {
+                print_on_save_purrow.value = "1";
+
+            }
+            else
+            {
+                print_on_save_purrow.value = "0";
+            }
+            if ((bool)tgl_printOnSaveSale.IsChecked)
+            {
+                print_on_save_salerow.value = "1";
+
+            }
+            else
+            {
+                print_on_save_salerow.value = "0";
+            }
+            if ((bool)tgl_emailOnSavePur.IsChecked)
+            {
+                email_on_save_purrow.value = "1";
+
+            }
+            else
+            {
+                email_on_save_purrow.value = "0";
+            }
+            if ((bool)tgl_emailOnSaveSale.IsChecked)
+            {
+                email_on_save_salerow.value = "1";
+
+            }
+            else
+            {
+                email_on_save_salerow.value = "0";
+            }
+            msg = await setvalueModel.Save(print_on_save_purrow);
+            msg = await setvalueModel.Save(print_on_save_salerow);
+            msg = await setvalueModel.Save(email_on_save_purrow);
+            msg = await setvalueModel.Save(email_on_save_salerow);
+
+
+            await Getprintparameter();
+            await MainWindow.Getprintparameter();
+            if(int.Parse(msg)>0)
+            MessageBox.Show("saved");
         }
     }
 }

@@ -23,7 +23,7 @@ namespace POS.View.windows
     /// </summary>
     public partial class wd_reportCopyCountSetting : Window
     {
-        
+
         public wd_reportCopyCountSetting()
         {
             try
@@ -34,6 +34,36 @@ namespace POS.View.windows
             { SectionData.ExceptionMessage(ex, this); }
         }
         BrushConverter bc = new BrushConverter();
+
+        //print
+
+        string sale_copy_count;
+        string pur_copy_count;
+        string rep_copy_count;
+        SetValues setvalueModel = new SetValues();
+        List<SetValues> printList = new List<SetValues>();
+
+        public SetValues sale_copy_countrow = new SetValues();
+        public SetValues pur_copy_countrow = new SetValues();
+        public SetValues rep_copy_countrow = new SetValues();
+
+        async Task refreshWindow()
+        {
+            printList = await setvalueModel.GetBySetvalNote("print");
+
+            sale_copy_countrow = printList.Where(X => X.name == "sale_copy_count").FirstOrDefault();
+            sale_copy_count = sale_copy_countrow.value;
+            pur_copy_countrow = printList.Where(X => X.name == "pur_copy_count").FirstOrDefault();
+            pur_copy_count = pur_copy_countrow.value;
+            rep_copy_countrow = printList.Where(X => X.name == "rep_copy_count").FirstOrDefault();
+            rep_copy_count = rep_copy_countrow.value;
+
+            tb_purCopyCount.Text = pur_copy_count;
+
+            tb_saleCopyCount.Text = sale_copy_count;
+            tb_repPrintCount.Text = rep_copy_count;
+        }
+
         private void Btn_colse_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
@@ -61,6 +91,9 @@ namespace POS.View.windows
 
                 //translate();
                 #endregion
+
+                //
+                await refreshWindow();
 
 
                 if (sender != null)
@@ -94,7 +127,7 @@ namespace POS.View.windows
             { SectionData.ExceptionMessage(ex, this, sender); }
         }
 
-        List<SettingCls> set = new List<SettingCls>();
+
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
@@ -121,11 +154,28 @@ namespace POS.View.windows
             }
         }
 
-        private void Btn_save_Click(object sender, RoutedEventArgs e)
+        private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {
 
+
+            string msg;
+
+            sale_copy_countrow.value = (string)tb_saleCopyCount.Text;
+            pur_copy_countrow.value = (string)tb_purCopyCount.Text;
+            rep_copy_countrow.value = (string)tb_repPrintCount.Text;
+            msg = await setvalueModel.Save(sale_copy_countrow);
+            msg = await setvalueModel.Save(pur_copy_countrow);
+            msg = await setvalueModel.Save(rep_copy_countrow);
+
+            await refreshWindow();
+            await MainWindow.Getprintparameter();
+            if (int.Parse(msg) > 0)
+            {
+                MessageBox.Show("saved");
+            }
+
         }
-       
+
         private void Tb_validateEmptyLostFocus(object sender, RoutedEventArgs e)
         {
             try
@@ -144,11 +194,11 @@ namespace POS.View.windows
             {
                 if (name == "TextBox")
                 {
-                     if ((sender as TextBox).Name == "tb_purCopyCount")
+                    if ((sender as TextBox).Name == "tb_purCopyCount")
                         SectionData.validateEmptyTextBox((TextBox)sender, p_errorPurCopyCount, tt_errorPurCopyCount, "trEmptyError");
                     else if ((sender as TextBox).Name == "tb_saleCopyCount")
                         SectionData.validateEmptyTextBox((TextBox)sender, p_errorSaleCopyCount, tt_errorSaleCopyCount, "trEmptyError");
-                    else if((sender as TextBox).Name == "tb_repPrintCount")
+                    else if ((sender as TextBox).Name == "tb_repPrintCount")
                         SectionData.validateEmptyTextBox((TextBox)sender, p_errorRepPrintCount, tt_errorRepPrintCount, "trEmptyError");
                 }
             }

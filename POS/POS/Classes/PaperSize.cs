@@ -16,6 +16,7 @@ namespace POS.Classes
 
         public int sizeId { get; set; }
         public string paperSize1 { get; set; }
+        public string printfor { get; set; }
         /// <summary>
         /// ///////////////////////////////////////
         /// </summary>

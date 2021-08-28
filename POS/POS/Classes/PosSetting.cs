@@ -31,16 +31,18 @@ namespace POS.Classes
 
         public int sizeId { get; set; }
         public string paperSize1 { get; set; }
- 
-    /// <summary>
-    /// ///////////////////////////////////////
-    /// </summary>
-    /// <returns></returns>
-    /// 
+        public Nullable<int> docPapersizeId { get; set; }
+        public string docPapersize { get; set; }
+
+        /// <summary>
+        /// ///////////////////////////////////////
+        /// </summary>
+        /// <returns></returns>
+        /// 
 
 
 
-    public async Task<List<PosSetting>> GetAll()
+        public async Task<List<PosSetting>> GetAll()
         {
             List<PosSetting> memberships = null;
             // ... Use HttpClient.

@@ -13,6 +13,17 @@ using System.Web;
 
 namespace POS.Classes
 {
+
+    class updateCategoryuser
+    {
+        public int id { get; set; }
+        public Nullable<int> categoryId { get; set; }
+        public Nullable<int> userId { get; set; }
+        public Nullable<int> sequence { get; set; }
+        public Nullable<int> createUserId { get; set; }
+        public Nullable<int> updateUserId { get; set; }
+
+    }
     class Categoryuser
     {
         public int id { get; set; }
@@ -227,9 +238,9 @@ namespace POS.Classes
 
 
         // update list
-        public async Task<string> UpdateCatUserList(int userId, List<Categoryuser> newlist)
+        public async Task<string> UpdateCatUserList(int userId, List<updateCategoryuser> newlist)
         {
-
+            
             string message = "";
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
@@ -246,9 +257,9 @@ namespace POS.Classes
                 HttpRequestMessage request = new HttpRequestMessage();
                 // encoding parameter to get special characters
                 myContent = HttpUtility.UrlEncode(myContent);
-                request.RequestUri = new Uri(Global.APIUri + "categoryuser/UpdateCatUserList?userId=" + userId + "&newlist=" + myContent );
+                request.RequestUri = new Uri(Global.APIUri + "categoryuser/UpdateCatUserList?newlist=" + myContent);
                 request.Headers.Add("APIKey", Global.APIKey);
-                request.Headers.Add("userId", userId.ToString());
+               request.Headers.Add("userId", userId.ToString());
                 request.Method = HttpMethod.Post;
                 //set content type
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));

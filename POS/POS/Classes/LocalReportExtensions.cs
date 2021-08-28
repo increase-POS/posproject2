@@ -309,7 +309,16 @@ namespace Microsoft.Reporting.WinForms
             }
             else
             {
-                printDoc.PrinterSettings.PrinterName = printerName;
+                if ( printerName == ""|| printerName is null)
+                {
+
+                }
+                else
+                {
+printDoc.PrinterSettings.PrinterName = printerName;
+                }
+              
+                
                printDoc.PrintPage += new PrintPageEventHandler(PrintPage);
               
                 m_currentPageIndex = 0;
