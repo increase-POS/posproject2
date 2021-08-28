@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using POS_Server.Classes;
 using POS_Server.Models;
 using System;
 using System.Collections.Generic;
@@ -248,7 +249,7 @@ namespace POS_Server.Controllers
         // add or update agent
         [HttpPost]
         [Route("Save")]
-        public int Save(string agentObject)
+        public IHttpActionResult Save(string agentObject)
         {
             var re = Request;
             var headers = re.Headers;
@@ -284,10 +285,25 @@ namespace POS_Server.Controllers
                         var agentEntity = entity.Set<agents>();
                         if (agentObj.agentId == 0)
                         {
-                            agentObj.createDate = DateTime.Now;
-                            agentObj.updateDate = DateTime.Now;
-                            agentObj.updateUserId = agentObj.createUserId;
-                           agent = agentEntity.Add(agentObj);
+                            ProgramInfo programInfo = new ProgramInfo();
+                            int agentMaxCount = 0;
+                            if (agentObj.type == "c")
+                                agentMaxCount = programInfo.getCustomerCount();
+                            else if (agentObj.type == "v")
+                                agentMaxCount = programInfo.getVendorCount();
+
+                            int agentCount = entity.agents.Where(x => x.type == agentObj.type).Count();
+                            if (agentCount >= agentMaxCount)
+                            {
+                                return Ok(-1);
+                            }
+                            else
+                            {
+                                agentObj.createDate = DateTime.Now;
+                                agentObj.updateDate = DateTime.Now;
+                                agentObj.updateUserId = agentObj.createUserId;
+                                agent = agentEntity.Add(agentObj);
+                            }
                         }
                         else
                         {
@@ -312,17 +328,17 @@ namespace POS_Server.Controllers
                             agent.balanceType = agentObj.balanceType;
                         }
                         entity.SaveChanges();
+                        return Ok(agent.agentId);
                     }
-                    return agent.agentId;
                 }
 
                 catch
                 {
-                    return 0;
+                    return Ok(0);
                 }
             }
             else
-                return 0;
+                return NotFound();
         }
         [HttpPost]
         [Route("Delete")]

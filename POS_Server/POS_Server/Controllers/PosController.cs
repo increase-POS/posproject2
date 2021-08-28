@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using POS_Server.Classes;
 using POS_Server.Models;
 using System;
 using System.Collections.Generic;
@@ -191,7 +192,7 @@ namespace POS_Server.Controllers
         // add or update pos
         [HttpPost]
         [Route("Save")]
-        public string Save(string posObject)
+        public IHttpActionResult Save(string posObject)
         {
             var re = Request;
             var headers = re.Headers;
@@ -223,19 +224,31 @@ namespace POS_Server.Controllers
                 {
                     using (incposdbEntities entity = new incposdbEntities())
                     {
+                        pos tmpPos = new pos();
                         var unitEntity = entity.Set<pos>();
                         if (newObject.posId == 0)
                         {
-                            newObject.createDate = DateTime.Now;
-                            newObject.updateDate = DateTime.Now;
-                            newObject.updateUserId = newObject.createUserId;
+                            ProgramInfo programInfo = new ProgramInfo();
+                            int posMaxCount = programInfo.getPosCount();
+                            int posCount = entity.pos.Count();
+                            if (posCount >= posMaxCount)
+                            {
+                                return Ok(-1);
+                            }
+                            else
+                            {
+                                newObject.createDate = DateTime.Now;
+                                newObject.updateDate = DateTime.Now;
+                                newObject.updateUserId = newObject.createUserId;
 
-                            unitEntity.Add(newObject);
-                            message = "Pos Is Added Successfully";
+                               tmpPos = unitEntity.Add(newObject);
+                                entity.SaveChanges();
+                                return Ok(tmpPos.posId);
+                            }
                         }
                         else
                         {
-                            var tmpPos = entity.pos.Where(p => p.posId == newObject.posId).FirstOrDefault();
+                            tmpPos = entity.pos.Where(p => p.posId == newObject.posId).FirstOrDefault();
                             tmpPos.name = newObject.name;
                             tmpPos.code = newObject.code;
                             tmpPos.branchId = newObject.branchId;
@@ -245,17 +258,17 @@ namespace POS_Server.Controllers
                             tmpPos.isActive = newObject.isActive;
                             tmpPos.balance = newObject.balance;
                             tmpPos.balanceAll = newObject.balanceAll;
-                            message = "Pos Is Updated Successfully";
+                            entity.SaveChanges();
+                            return Ok(tmpPos.posId);
                         }
-                        entity.SaveChanges();
                     }
                 }
                 catch
                 {
-                    message = "an error ocurred";
+                    return Ok(0);
                 }
             }
-            return message;
+            return NotFound();
         }
 
         [HttpPost]

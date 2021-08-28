@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="232f915542e245e984add5759f11c8a2" Name="Diagram1">
+      <Diagram DiagramId="232f915542e245e984add5759f11c8a2" Name="Diagram1" ZoomLevel="89">
         <EntityTypeShape EntityType="incposdbModel.agentMemberships" Width="1.5" PointX="7.5" PointY="95.125" IsExpanded="true" />
         <EntityTypeShape EntityType="incposdbModel.agents" Width="1.5" PointX="6" PointY="85" IsExpanded="true" />
         <EntityTypeShape EntityType="incposdbModel.banks" Width="1.5" PointX="18.5" PointY="69.75" IsExpanded="true" />
@@ -256,6 +256,8 @@
         <AssociationConnector Association="incposdbModel.FK_printers_users1" />
         <AssociationConnector Association="incposdbModel.FK_posSetting_paperSize" />
         <AssociationConnector Association="incposdbModel.FK_notificationUser_pos" />
+        <EntityTypeShape EntityType="incposdbModel.sysdiagrams" Width="1.5" PointX="0.75" PointY="4.75" />
+        <EntityTypeShape EntityType="incposdbModel.ProgramDetails" Width="1.5" PointX="5.75" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -239,6 +239,7 @@
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Classes\Calculate.cs" />
+    <Compile Include="Classes\ProgramInfo.cs" />
     <Compile Include="Controllers\AgentController.cs" />
     <Compile Include="Controllers\BranchesUsersController.cs" />
     <Compile Include="Controllers\AgentMembershipsController.cs" />
@@ -466,6 +467,9 @@
     <Compile Include="printers.cs">
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="ProgramDetails.cs">
+      <DependentUpon>PosModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="properties.cs">
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>
@@ -495,6 +499,9 @@
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>
     <Compile Include="subscriptionFees.cs">
+      <DependentUpon>PosModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sysdiagrams.cs">
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>
     <Compile Include="sysEmails.cs">

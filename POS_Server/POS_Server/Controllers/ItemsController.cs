@@ -11,6 +11,7 @@ using System.Web;
 using System.IO;
 using LinqKit;
 using Microsoft.Ajax.Utilities;
+using POS_Server.Classes;
 
 namespace POS_Server.Controllers
 {
@@ -1074,7 +1075,7 @@ namespace POS_Server.Controllers
         // add or update item
         [HttpPost]
         [Route("Save")]
-        public int Save(string itemObject)
+        public IHttpActionResult Save(string itemObject)
         {
             var re = Request;
             var headers = re.Headers;
@@ -1125,12 +1126,23 @@ namespace POS_Server.Controllers
                         var ItemEntity = entity.Set<items>();
                         if (itemObj.itemId == 0)
                         {
+                            ProgramInfo programInfo = new ProgramInfo();
+                            int itemMaxCount = programInfo.getItemCount();
+                            int itemsCount = entity.items.Count();
+                            if (itemsCount >= itemMaxCount)
+                            {
+                                return Ok(-1);
+                            }
+                            else
+                            {
+                                itemObj.createDate = DateTime.Now;
+                                itemObj.updateDate = DateTime.Now;
+                                itemObj.updateUserId = itemObj.createUserId;
 
-                            itemObj.createDate = DateTime.Now;
-                            itemObj.updateDate = DateTime.Now;
-                            itemObj.updateUserId = itemObj.createUserId;
-
-                            itemModel = ItemEntity.Add(itemObj);
+                                itemModel = ItemEntity.Add(itemObj);
+                                entity.SaveChanges();
+                                return Ok(itemObj.itemId);
+                            }
                         }
                         else
                         {
@@ -1151,17 +1163,17 @@ namespace POS_Server.Controllers
                             itemModel.updateDate = DateTime.Now;
                             itemModel.updateUserId = itemObj.updateUserId;
                             itemModel.isActive = itemObj.isActive;
-                        }
-                        entity.SaveChanges();
-                        return itemModel.itemId;
+                            entity.SaveChanges();
+                            return Ok(itemModel.itemId);
+                        }                      
                     }
                 }
                 catch
                 {
-                    return 0;
+                    return Ok(0);
                 }
             }
-            return 0;
+            return NotFound();
         }
         [HttpPost]
         [Route("Delete")]
