@@ -48,6 +48,7 @@ namespace POS.View.Settings
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+                MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
 
 
                 #region translate
@@ -66,7 +67,6 @@ namespace POS.View.Settings
             #endregion
 
 
-                MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }

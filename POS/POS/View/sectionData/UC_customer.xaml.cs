@@ -131,7 +131,7 @@ namespace POS.View
                 countrynum = await countrycodes.GetAllCountries();
             return countrynum;
         }
-        private async void fillCountries()
+        private async Task fillCountries()
         {
             
                 if (countrynum is null)
@@ -160,7 +160,7 @@ namespace POS.View
                 citynum = await cityCodes.Get();
             return citynum;
         }
-        private async void fillCity()
+        private async Task fillCity()
         {
                 if (citynum is null)
                     await RefreshCity();
@@ -516,7 +516,7 @@ namespace POS.View
             }
         }
 
-        private async void getImg()
+        private async Task getImg()
         {
            
                 if (string.IsNullOrEmpty(agent.image))
@@ -617,7 +617,7 @@ namespace POS.View
             }
         }
 
-        private async void activate()
+        private async Task activate()
         {//activate
             
                 agent.isActive = 1;

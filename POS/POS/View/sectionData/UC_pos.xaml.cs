@@ -99,7 +99,7 @@ namespace POS.View
             { SectionData.ExceptionMessage(ex, this); }
         }
 
-        private async void fillBranches()
+        private async Task fillBranches()
         {
 
             var branches = await branchModel.GetAllWithoutMain("all");
@@ -541,7 +541,7 @@ namespace POS.View
             }
         }
 
-        private async void activate()
+        private async Task activate()
         {//activate
 
             pos.isActive = 1;

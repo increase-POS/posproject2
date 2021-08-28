@@ -79,7 +79,7 @@ namespace POS.View.windows
             }
         }
        
-        private async void fillFirstLevel()
+        private async Task fillFirstLevel()
         {
             #region fill FirstLevel
             firstLevel = objects.Where(x => string.IsNullOrEmpty( x.parentObjectId.ToString()) && x.objectType == "basic" );
@@ -157,7 +157,8 @@ namespace POS.View.windows
 
         private void Btn_save_Click(object sender, RoutedEventArgs e)
         {
-
+            MessageBox.Show($"First: id-{cb_firstLevel.SelectedValue} name-{cb_firstLevel.Text} \n" +
+                            $"second: id-{cb_secondLevel.SelectedValue} name-{cb_secondLevel.Text}" );
         }
          
     }

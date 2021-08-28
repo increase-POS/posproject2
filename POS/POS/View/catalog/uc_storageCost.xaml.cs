@@ -496,7 +496,7 @@ namespace POS.View.catalog
             }
         }
 
-        private async void activate()
+        private async Task activate()
         {//activate
             storageCost.isActive = 1;
 

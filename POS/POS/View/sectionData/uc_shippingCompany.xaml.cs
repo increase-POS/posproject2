@@ -105,7 +105,7 @@ namespace POS.View.sectionData
             countrynum = await countrycodes.GetAllCountries();
             return countrynum;
         }
-        private async void fillCountries()
+        private async Task fillCountries()
         {
             if (countrynum is null)
                 await RefreshCountry();
@@ -133,7 +133,7 @@ namespace POS.View.sectionData
             citynum = await cityCodes.Get();
             return citynum;
         }
-        private async void fillCity()
+        private async Task fillCity()
         {
             if (citynum is null)
                 await RefreshCity();
@@ -636,7 +636,7 @@ namespace POS.View.sectionData
             }
         }
 
-        private async void activate()
+        private async Task activate()
         {//activate
 
             shCompany.isActive = 1;

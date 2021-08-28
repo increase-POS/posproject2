@@ -142,6 +142,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+                MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
                 //load
                 btn_locations.IsEnabled = false;
                 if (MainWindow.lang.Equals("en"))
@@ -166,7 +167,6 @@ namespace POS.View
                     Tb_search_TextChanged(null, null);
                 });
 
-                MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -388,7 +388,7 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
-        private async void activate()
+        private async Task activate()
         {//activate
             section.isActive = 1;
 

@@ -838,7 +838,7 @@ namespace POS.View
             }
         }
 
-        private async void activate()
+        private async Task activate()
         {//activate
 
 
@@ -1663,7 +1663,7 @@ namespace POS.View
         #endregion
 
         #region fill
-        async void fillCategories()
+        async Task fillCategories()
         {
             categories = await categoryModel.GetAllCategories(MainWindow.userID.Value);
             if (categories != null)
@@ -1671,7 +1671,7 @@ namespace POS.View
             cb_categorie.SelectedValuePath = "categoryId";
             cb_categorie.DisplayMemberPath = "name";
         }
-        async void fillStorageCost()
+        async Task fillStorageCost()
         {
             storageCosts = await storageCost.Get();
             cb_storageCost.ItemsSource = storageCosts.ToList();
@@ -1679,7 +1679,7 @@ namespace POS.View
             cb_storageCost.DisplayMemberPath = "name";
         }
 
-        private async void fillUnits()
+        private async Task fillUnits()
         {
             units = await unitModel.GetUnitsAsync();
             cb_minUnit.ItemsSource = units.ToList();
@@ -1701,14 +1701,14 @@ namespace POS.View
             cb_unit.SelectedValuePath = "unitId";
             cb_unit.DisplayMemberPath = "name";
         }
-        async void fillProperties()
+        async Task fillProperties()
         {
             properties = await propertyModel.getProperty();
             cb_selectProperties.ItemsSource = properties.ToList();
             cb_selectProperties.SelectedValuePath = "propertyId";
             cb_selectProperties.DisplayMemberPath = "name";
         }
-        async void fillBarcodeList()
+        async Task fillBarcodeList()
         {
             barcodesList = await itemUnitModel.getAllBarcodes();
         }
@@ -1808,7 +1808,7 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
-        async void refreshSerials(int itemId)
+        async Task refreshSerials(int itemId)
         {
 
             // get all item serials
@@ -1816,7 +1816,7 @@ namespace POS.View
             dg_serials.ItemsSource = itemSerials;
 
         }
-        async void refreshPropertiesGrid(int itemId)
+        async Task refreshPropertiesGrid(int itemId)
         {
 
             itemsProp = await itemsPropModel.Get(item.itemId);
@@ -1828,7 +1828,7 @@ namespace POS.View
             itemUnits = await itemUnitModel.GetAllItemUnits(itemId);
             dg_unit.ItemsSource = itemUnits.ToList();
         }
-        async void refreshServicesGrid(int itemId)
+        async Task refreshServicesGrid(int itemId)
         {
 
             services = await serviceModel.GetItemServices(item.itemId);
@@ -2160,7 +2160,7 @@ namespace POS.View
             categories = await categoryModel.GetAllCategories(MainWindow.userID.Value);
             return categories;
         }
-        async void RefrishCategoriesCard()
+        async Task RefrishCategoriesCard()
         {
 
             if (categories is null)
@@ -2326,7 +2326,7 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
-        private async void getImg()
+        private async Task getImg()
         {
 
 
@@ -2359,7 +2359,7 @@ namespace POS.View
             }
 
         }
-        public async void ChangeCategoryIdEvent(int categoryId)
+        public async Task ChangeCategoryIdEvent(int categoryId)
         {
             category = categories.ToList().Find(c => c.categoryId == categoryId);
             if (categories.Where(x =>
@@ -2376,7 +2376,7 @@ namespace POS.View
 
         }
 
-        public async void ChangeItemIdEvent(int itemId)
+        public async Task ChangeItemIdEvent(int itemId)
         {
 
 
@@ -2795,7 +2795,7 @@ namespace POS.View
         #endregion
         #region categoryPathControl Y
 
-        async void generateTrack(int categorypaPathId)
+        async Task generateTrack(int categorypaPathId)
         {
 
             grid_categoryControlPath.Children.Clear();
@@ -3168,7 +3168,7 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
-        private async void fillParentItemCombo()
+        private async Task fillParentItemCombo()
         {
 
             if (items is null)

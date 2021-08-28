@@ -292,7 +292,7 @@ namespace POS.View.accounts
         }
 
         Pos posModel = new Pos();
-        private async void calcBalance(string _type, decimal ammount)
+        private async Task calcBalance(string _type, decimal ammount)
         {//balance for pos
             int s = 0;
             //increase pos balance
@@ -590,6 +590,7 @@ namespace POS.View.accounts
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_ucBonds);
+                MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
 
                 #region translate
                 if (MainWindow.lang.Equals("en"))
@@ -652,7 +653,6 @@ namespace POS.View.accounts
                 Tb_search_TextChanged(null, null);
 
 
-                MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
 
                 if (sender != null)
                     SectionData.EndAwait(grid_ucBonds);
@@ -818,7 +818,7 @@ namespace POS.View.accounts
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
         }
 
-        private async void fillVendors()
+        private async Task fillVendors()
         {
             agents = await agentModel.GetAgentsActive("v");
 
@@ -827,7 +827,7 @@ namespace POS.View.accounts
             cb_depositorV.SelectedValuePath = "agentId";
         }
 
-        private async void fillCustomers()
+        private async Task fillCustomers()
         {
             agents = await agentModel.GetAgentsActive("c");
 
@@ -838,7 +838,7 @@ namespace POS.View.accounts
 
 
 
-        private async void fillUsers()
+        private async Task fillUsers()
         {
             users = await userModel.GetUsersActive();
 

@@ -64,7 +64,7 @@ namespace POS.Classes
 
         }
 
-        public static async void isCodeExist(string randomNum, string type)
+        public static async Task isCodeExist(string randomNum, string type)
         {
             try
             {
@@ -506,7 +506,7 @@ namespace POS.Classes
             }
         }
 
-        public static async void getImg(string type, string imageUri, Button button)
+        public static async Task getImg(string type, string imageUri, Button button)
         {
             try
             {
@@ -673,7 +673,7 @@ namespace POS.Classes
         }
 
         static List<Branch> branches;
-        static public async void fillBranches(ComboBox combo, string type )
+        static public async Task fillBranches(ComboBox combo, string type )
         {
             if (isAdminPermision())
             branches = await branchModel.GetAll();
@@ -857,7 +857,7 @@ namespace POS.Classes
             SetValues closeValue = menuValues.Where(o => o.value == "close").FirstOrDefault();
             return closeValue.valId;
         }
-        static public async void saveMenuState(int valId)
+        static public async Task saveMenuState(int valId)
         {
             int oId = await getOpenValueId();
             int cId = await getCloseValueId();

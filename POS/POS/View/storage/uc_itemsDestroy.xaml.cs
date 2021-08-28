@@ -81,6 +81,7 @@ namespace POS.View.storage
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
+                MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
                 if (MainWindow.lang.Equals("en"))
                 {
                     MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
@@ -97,7 +98,6 @@ namespace POS.View.storage
                 fillItemCombo();
                 await fillUsers();
                 Tb_search_TextChanged(null, null);
-                MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -166,7 +166,7 @@ namespace POS.View.storage
              items = await item.GetItemsWichHasUnits();
              return items;
         }
-        private async void fillItemCombo()
+        private async Task fillItemCombo()
         {
             if (items is null)
                 await RefrishItems();

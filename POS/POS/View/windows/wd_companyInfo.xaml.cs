@@ -331,7 +331,7 @@ namespace POS.View.windows
             countrynum = await countrycodes.GetAllCountries();
             return countrynum;
         }
-        private async void fillCountries()
+        private async Task fillCountries()
         {
             if (countrynum is null)
                 await RefreshCountry();
@@ -358,7 +358,7 @@ namespace POS.View.windows
             citynum = await cityCodes.Get();
             return citynum;
         }
-        private async void fillCity()
+        private async Task fillCity()
         {
             if (citynum is null)
                 await RefreshCity();

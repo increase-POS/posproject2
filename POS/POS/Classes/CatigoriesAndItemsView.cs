@@ -360,8 +360,11 @@ namespace POS.Classes
         ////////////////darg and drop events/////////////////////
         private async void ucDrop(object sender, DragEventArgs e)
         {
-            //get dropped id
-            int curIndex = newCategories.FindIndex(c => c.categoryId == (sender as UC_squareCard).ContentId);
+
+            try
+            {
+                //get dropped id
+                int curIndex = newCategories.FindIndex(c => c.categoryId == (sender as UC_squareCard).ContentId);
             //get dropped category
             category = await categoryModel.GetCategoryByID((sender as UC_squareCard).ContentId);
             //get dragged category
@@ -382,30 +385,51 @@ namespace POS.Classes
                 catUser.sequence = i;
                 categoriesUser.Add(catUser);
             }
-            //await categorUserModel.UpdateCatUserList(MainWindow.userID.Value, categoriesUser);
+                //await categorUserModel.UpdateCatUserList(MainWindow.userID.Value, categoriesUser);
 
 
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private void ucDragEnter(object sender, DragEventArgs e)
-        {
-            e.Effects = DragDropEffects.Copy;
+            {
+                try
+                {
+                    e.Effects = DragDropEffects.Copy;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
        
         private void ucMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.LeftButton == MouseButtonState.Pressed)
+                {
+                    try
+                    {
+                        if (e.LeftButton == MouseButtonState.Pressed)
             {
                 //get dragged id
                 index = newCategories.FindIndex(c => c.categoryId == (sender as UC_squareCard).ContentId);
                 DragDrop.DoDragDrop(sender as UC_squareCard, (sender as UC_squareCard).ContentId.ToString(), DragDropEffects.All);
               
             }
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
         ////////////////////////////////////////////////////////////
         void catalogCard_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            UC_squareCard uc = (UC_squareCard)sender;
+                    {
+                        try
+                        {
+                            UC_squareCard uc = (UC_squareCard)sender;
             uc = gridCatigories.Children.OfType<UC_squareCard>().Where(x => x.Name.ToString() == "categorie" + uc.categoryCardView.category.categoryId).FirstOrDefault();
 
             gridCatigories.Children.Remove(uc);
@@ -427,6 +451,11 @@ namespace POS.Classes
             
             pastCatalogCard = uc.categoryCardView.category.categoryId;
             idCatigories = uc.categoryCardView.category.categoryId;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         #endregion
@@ -505,7 +534,9 @@ namespace POS.Classes
         }
         void rectangleCardView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            UC_rectangleCard uc = (UC_rectangleCard)sender;
+            try
+            {
+                UC_rectangleCard uc = (UC_rectangleCard)sender;
             uc = gridCatigorieItems.Children.OfType<UC_rectangleCard>().Where(x => x.Name.ToString() == "CardName" + uc.cardViewitem.item.itemId).FirstOrDefault();
 
             gridCatigorieItems.Children.Remove(uc);
@@ -522,6 +553,11 @@ namespace POS.Classes
             }
             pastCatalogItem = uc.cardViewitem.item.itemId;
             idItem = uc.cardViewitem.item.itemId;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         #region User
@@ -562,8 +598,10 @@ namespace POS.Classes
             return uc;
         }
         void rectangleCardViewUsers_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            UC_rectangleCard uc = (UC_rectangleCard)sender;
+            {
+                try
+                {
+                    UC_rectangleCard uc = (UC_rectangleCard)sender;
             uc = gridCatigorieItems.Children.OfType<UC_rectangleCard>().Where(x => x.Name.ToString() == "CardName" + uc.cardViewitem.user.userId).FirstOrDefault();
 
             gridCatigorieItems.Children.Remove(uc);
@@ -580,6 +618,11 @@ namespace POS.Classes
             }
             pastCatalogItem = uc.cardViewitem.user.userId;
             idItem = uc.cardViewitem.user.userId;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         #endregion
@@ -621,8 +664,10 @@ namespace POS.Classes
             return uc;
         }
         void rectangleCardViewAgents_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            UC_rectangleCard uc = (UC_rectangleCard)sender;
+                {
+                    try
+                    {
+                        UC_rectangleCard uc = (UC_rectangleCard)sender;
             uc = gridCatigorieItems.Children.OfType<UC_rectangleCard>().Where(x => x.Name.ToString() == "CardName" + uc.cardViewitem.agent.agentId).FirstOrDefault();
 
             gridCatigorieItems.Children.Remove(uc);
@@ -639,6 +684,11 @@ namespace POS.Classes
             }
             pastCatalogItem = uc.cardViewitem.agent.agentId;
             idItem = uc.cardViewitem.agent.agentId;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         #endregion

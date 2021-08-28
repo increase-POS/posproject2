@@ -129,7 +129,7 @@ namespace POS.View
                 countrynum = await countrycodes.GetAllCountries();
                 return countrynum;
         }
-        private async void fillCountries()
+        private async Task fillCountries()
         {
            
                 if (countrynum is null)
@@ -154,13 +154,13 @@ namespace POS.View
                 return citynum;
 
         }
-        private async void fillCity()
+        private async Task fillCity()
         {
                 if (citynum is null)
                     await RefreshCity();
         }
 
-        private async void fillJobCombo()
+        private async Task fillJobCombo()
         {
                 if (users == null) users = await userModel.GetUsersAsync();
                 usersQuery = users.Where(s => s.isActive == 1);
@@ -735,7 +735,7 @@ namespace POS.View
             }
         }
 
-        private async void activate()
+        private async Task activate()
         {//activate
             user.isActive = 1;
            

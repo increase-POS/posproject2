@@ -877,7 +877,7 @@ namespace POS.View
             }
         }
 
-        private async void activate()
+        private async Task activate()
         {//activate
             offer.isActive = 1;
 

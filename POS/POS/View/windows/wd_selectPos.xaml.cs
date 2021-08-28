@@ -85,7 +85,7 @@ namespace POS.View.windows
             }
         }
 
-        private async void fillBranch()
+        private async Task fillBranch()
         {
             branches = await branchModel.GetBranchesActive("b");
             cb_branch.ItemsSource = branches;

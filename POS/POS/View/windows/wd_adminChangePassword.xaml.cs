@@ -80,7 +80,7 @@ namespace POS.View.windows
             }
         }
 
-        private async void fillUsers()
+        private async Task fillUsers()
         {
             List<User> users =  await userModel.GetUsersActive();
 

@@ -112,6 +112,7 @@ namespace POS.View.accounts
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_ucposAccounts);
+                MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
 
                 #region translate
                 if (MainWindow.lang.Equals("en"))
@@ -191,7 +192,6 @@ namespace POS.View.accounts
                 {
                     Tb_search_TextChanged(null, null);
                 });
-                MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
 
                 if (sender != null)
                     SectionData.EndAwait(grid_ucposAccounts);
@@ -698,7 +698,7 @@ namespace POS.View.accounts
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
-        private async void confirmOpr()
+        private async Task confirmOpr()
         {
             cashtrans.isConfirm = 1;
             string s = await cashModel.Save(cashtrans);

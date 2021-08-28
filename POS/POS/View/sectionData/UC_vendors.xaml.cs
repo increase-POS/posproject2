@@ -302,7 +302,6 @@ namespace POS.View
                 BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
                 brush.ImageSource = temp;
                 img_vendor.Background = brush;
-                MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -579,7 +578,7 @@ namespace POS.View
             }
         }
 
-        private async void activate()
+        private async Task activate()
         {//activate
             agent.isActive = 1;
 
@@ -1172,7 +1171,7 @@ namespace POS.View
             }
         }
 
-        public async void ChangeItemIdEvent(int userId)
+        public async Task ChangeItemIdEvent(int userId)
         {
 
             #region

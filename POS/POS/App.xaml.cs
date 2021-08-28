@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Threading;
 using System.Globalization;
+using POS.Classes;
+
 namespace POS
 {
     /// <summary>
@@ -17,7 +19,9 @@ namespace POS
     {
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+            try
+            {
+                Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-US");
 
 
@@ -25,6 +29,11 @@ namespace POS
             logIn.Show();
 
         }
+		 catch (Exception ex)
+            {
+				SectionData.ExceptionMessage(ex,this, sender);
+        }
+    }
        
     }
 }

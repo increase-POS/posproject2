@@ -140,12 +140,12 @@ namespace POS
         
             }
         }
-        public void getprintSitting()
+        public async Task getprintSitting()
         {
-            Getprintparameter();
-            GetReportlang();
+            await Getprintparameter();
+            await GetReportlang();
 
-            getPrintersNames();
+            await getPrintersNames();
         }
         static public MainWindow mainWindow;
         public MainWindow()
@@ -162,7 +162,7 @@ namespace POS
 
         }
 
-        async void windowFlowDirection()
+        async Task windowFlowDirection()
         {
             #region translate
             if (lang.Equals("en"))
@@ -460,7 +460,7 @@ namespace POS
         {
             refreshNotificationCount();
         }
-        private async void refreshNotificationCount()
+        private async Task refreshNotificationCount()
         {
             int notCount = await notificationUser.GetCountByUserId(userID.Value, "alert", posID.Value);
 
@@ -582,7 +582,7 @@ namespace POS
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
-        async void close()
+        async Task close()
         {
             //log out
             //update lognin record

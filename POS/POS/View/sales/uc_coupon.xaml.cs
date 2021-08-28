@@ -791,7 +791,7 @@ namespace POS.View
             }
         }
 
-        private async void activate()
+        private async Task activate()
         {//activate
             coupon.isActive = 1;
 

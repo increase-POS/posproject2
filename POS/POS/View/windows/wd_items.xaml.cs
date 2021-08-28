@@ -140,7 +140,7 @@ namespace POS.View.windows
             categories = await categoryModel.GetAllCategories(MainWindow.userID.Value);
             return categories;
         }
-        async void RefrishCategoriesCard()
+        async Task RefrishCategoriesCard()
         {
             if (categories is null)
                 await RefrishCategories();
@@ -243,7 +243,7 @@ namespace POS.View.windows
             }
 
         }
-        public async void ChangeCategoryIdEvent(int categoryId)
+        public async Task ChangeCategoryIdEvent(int categoryId)
         {
             category = categories.ToList().Find(c => c.categoryId == categoryId);
 
@@ -582,7 +582,7 @@ namespace POS.View.windows
         #endregion
         #region categoryPathControl Y
 
-        async void generateTrack(int categorypaPathId)
+        async Task generateTrack(int categorypaPathId)
         {
             grid_categoryControlPath.Children.Clear();
             IEnumerable<Category> categoriesPath = await
@@ -606,7 +606,7 @@ namespace POS.View.windows
                     b.DataContext = item;
                     b.Name = "category" + item.categoryId;
                     b.Tag = item.categoryId;
-                    b.Click += new RoutedEventHandler(getCategoryIdFromPath);
+                    b.Click += new RoutedEventHandler( getCategoryIdFromPath);
                     count++;
                     grid_categoryControlPath.Children.Add(b);
                 }

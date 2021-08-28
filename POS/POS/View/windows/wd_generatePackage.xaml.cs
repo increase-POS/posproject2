@@ -55,14 +55,14 @@ namespace POS.View.windows
             }
 
         }
-        private async void fillItemCombo()
+        private async Task fillItemCombo()
         {
             items = await item.GetItemsByType("p");     // return items with type = package     
             cb_item.ItemsSource = items;
             cb_item.SelectedValuePath = "itemId";
             cb_item.DisplayMemberPath = "name";
         }
-        private async void fillLocationCombo()
+        private async Task fillLocationCombo()
         {
             locations = await location.GetLocsByBranchId(MainWindow.branchID.Value);      
             cb_location.ItemsSource = locations;

@@ -132,6 +132,7 @@ namespace POS.View.accounts
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_ucBankAccounts);
+                MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
                 btn_add.IsEnabled = true;
                 dp_endSearchDate.SelectedDate = DateTime.Now;
                 dp_startSearchDate.SelectedDate = DateTime.Now;
@@ -203,7 +204,6 @@ namespace POS.View.accounts
 
                 await RefreshCashesList();
                 Tb_search_TextChanged(null, null);
-                MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
                 if (sender != null)
                     SectionData.EndAwait(grid_ucBankAccounts);
             }
@@ -467,7 +467,7 @@ namespace POS.View.accounts
             }
         }
 
-        private async void calcBalance(decimal ammount)
+        private async Task calcBalance(decimal ammount)
         {
             Pos pos = await posModel.getPosById(MainWindow.posID.Value);
 

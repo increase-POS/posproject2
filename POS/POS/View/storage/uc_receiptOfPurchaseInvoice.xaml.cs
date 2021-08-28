@@ -110,6 +110,7 @@ namespace POS.View.storage
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+                MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
 
                 MainWindow.mainWindow.KeyDown += HandleKeyPress;
 
@@ -133,7 +134,6 @@ namespace POS.View.storage
                 CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(dg_billDetails.Items);
                 ((INotifyCollectionChanged)myCollectionView).CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
                 #endregion
-                MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -150,7 +150,7 @@ namespace POS.View.storage
             refreshInvoiceNotification();
             refreshReturnNotification();
         }
-        private async void refreshInvoiceNotification()
+        private async Task refreshInvoiceNotification()
         {
             string invoiceType = "pw"; 
             int invoiceCount = await invoice.GetCountBranchInvoices(invoiceType,0, MainWindow.branchID.Value);
@@ -163,7 +163,7 @@ namespace POS.View.storage
             else
                 md_invoiceCount.Badge = invoiceCount.ToString();
         }
-        private async void refreshReturnNotification()
+        private async Task refreshReturnNotification()
         {
             string invoiceType = "pbw";
             int returnsCount = await invoice.GetCountBranchInvoices(invoiceType,0, MainWindow.branchID.Value);

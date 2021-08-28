@@ -372,7 +372,7 @@ namespace POS.View
             refreshDraftNotification();
             refreshOrdersNotification();
         }
-        private async void  refreshDraftNotification()
+        private async Task refreshDraftNotification()
         {
             string invoiceType = "pd ,pbd";
             int duration = 2;
@@ -393,7 +393,7 @@ namespace POS.View
                     md_draft.Badge = draftCount.ToString();
             }
         }
-        private async void  refreshOrdersNotification()
+        private async Task refreshOrdersNotification()
         {
             string invoiceType = "po";
             int duration = 0;
@@ -414,7 +414,7 @@ namespace POS.View
                     md_orders.Badge = ordersCount.ToString();
             }
         }
-        private async void refreshDocCount(int invoiceId)
+        private async Task refreshDocCount(int invoiceId)
         {
             DocImage doc = new DocImage();
             int docCount = await doc.GetDocCount("Invoices",invoiceId);
@@ -435,7 +435,7 @@ namespace POS.View
                     md_docImage.Badge = docCount.ToString();
             }
         }
-        private async void  refreshPaymentsNotification(int invoiceId)
+        private async Task refreshPaymentsNotification(int invoiceId)
         {
             int paymentsCount = await cashTransfer.GetCashCount(invoice.invoiceId);
             int previouseCount = 0;
@@ -516,7 +516,7 @@ namespace POS.View
         #endregion
         #region Get Id By Click  Y
 
-        public async void ChangeCategoryIdEvent(int categoryId)
+        public async Task ChangeCategoryIdEvent(int categoryId)
         {
         }
 

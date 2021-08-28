@@ -119,7 +119,7 @@ namespace POS.View
             countrynum = await countrycodes.GetAllCountries();
             return countrynum;
         }
-        private async void fillCountries()
+        private async Task fillCountries()
         {
             if (countrynum is null)
                 await RefreshCountry();
@@ -142,7 +142,7 @@ namespace POS.View
             citynum = await cityCodes.Get();
             return citynum;
         }
-        private async void fillCity()
+        private async Task fillCity()
         {
             if (citynum is null)
                 await RefreshCity();
@@ -436,7 +436,7 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
-        async void AddFreeThone(int branchId)
+        async Task AddFreeThone(int branchId)
         {
             var section = new Classes.Section();
             section.name = "FreeZone";
@@ -642,7 +642,7 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
-        private async void activate()
+        private async Task activate()
         {//activate
             store.isActive = 1;
 
@@ -700,7 +700,7 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
-        async void fillComboBranchParent()
+        async Task fillComboBranchParent()
         {
             var branchesWithMain = await branchModel.GetAll();
             cb_branch.ItemsSource = branchesWithMain.Where(b => b.type == "b" || b.type == "bs");

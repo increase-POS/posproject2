@@ -396,7 +396,7 @@ namespace POS.View.sectionData
             }
         }
 
-        private async void activate()
+        private async Task activate()
         {//activate
            
                 card.isActive = 1;

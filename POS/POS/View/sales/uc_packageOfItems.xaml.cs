@@ -165,7 +165,7 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
-        async void fillBarcodeList()
+        async Task fillBarcodeList()
         {
             barcodesList = await itemUnitModel.getAllBarcodes();
         }
@@ -253,7 +253,7 @@ namespace POS.View
 
             return days.ToString("00000") + seconds.ToString("00000") + counter.ToString("00");
         }
-        async void fillCategories()
+        async Task fillCategories()
         {
             categories = await categoryModel.GetAllCategories(MainWindow.userID.Value);
             cb_categorie.ItemsSource = categories.ToList();
@@ -391,7 +391,7 @@ namespace POS.View
             return categories;
         }
 
-        async void RefrishCategoriesCard()
+        async Task RefrishCategoriesCard()
         {
             if (categories is null)
                 await RefrishCategories();
@@ -506,7 +506,7 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
-        private async void getImg()
+        private async Task getImg()
         {
             if (string.IsNullOrEmpty(item.image))
             {
@@ -537,7 +537,7 @@ namespace POS.View
             }
 
         }
-        public async void ChangeCategoryIdEvent(int categoryId)
+        public async Task ChangeCategoryIdEvent(int categoryId)
         {
             category = categories.ToList().Find(c => c.categoryId == categoryId);
 
@@ -554,7 +554,7 @@ namespace POS.View
             Txb_searchitems_TextChanged(null, null);
         }
 
-        public async void ChangeItemIdEvent(int itemId)
+        public async Task ChangeItemIdEvent(int itemId)
         {//change id
             item = items.ToList().Find(c => c.itemId == itemId);
             if (item != null)
@@ -924,7 +924,7 @@ namespace POS.View
 
         #region categoryPathControl Y
 
-        async void generateTrack(int categorypaPathId)
+        async Task generateTrack(int categorypaPathId)
         {
             grid_categoryControlPath.Children.Clear();
             IEnumerable<Category> categoriesPath = await
@@ -1430,7 +1430,7 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
-        private async void activate()
+        private async Task activate()
         {//activate
             item.isActive = 1;
 

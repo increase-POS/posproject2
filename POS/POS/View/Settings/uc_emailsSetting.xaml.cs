@@ -526,7 +526,7 @@ namespace POS.View.Settings
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
-        private async void activate()
+        private async Task activate()
         {//activate
             sysEmail.isActive = 1;
 
@@ -608,6 +608,7 @@ namespace POS.View.Settings
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
+                MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
                 if (MainWindow.lang.Equals("en"))
                 { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
                     grid_main.FlowDirection = FlowDirection.LeftToRight; }
@@ -621,7 +622,6 @@ namespace POS.View.Settings
                 FillSideCombo();
                 await RefreshSysEmailList();
                 Tb_search_TextChanged(null, null);
-                MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -632,7 +632,7 @@ namespace POS.View.Settings
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
-        private async void fillBranches()
+        private async Task fillBranches()
         {
             var branches = await branchModel.GetAllWithoutMain("all");
             cb_branchId.ItemsSource = branches;

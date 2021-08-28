@@ -61,7 +61,7 @@ namespace POS.View.windows
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
-        private async void fillParentItemCombo()
+        private async Task fillParentItemCombo()
         {
             //إنشاء إجراء من API يعيد فقط الحزم
             items = await item.GetAllItems();
@@ -71,7 +71,7 @@ namespace POS.View.windows
             cb_item.DisplayMemberPath = "name";
         }
 
-        private async void setToquantityMessage()
+        private async Task setToquantityMessage()
         {
             int quantity = 0;
             int remain = 0;
@@ -361,7 +361,7 @@ namespace POS.View.windows
 
             btn_save.Content = MainWindow.resourcemanager.GetString("trConvert");
         }
-        private async void fillItemCombo()
+        private async Task fillItemCombo()
         {
             if (items is null)
                 await RefrishItems();

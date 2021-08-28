@@ -129,7 +129,7 @@ namespace POS.View.windows
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
-        private async void chkUser()
+        private async Task chkUser()
         {
             string password = Md5Encription.MD5Hash("Inc-m" + pb_password.Password);
 

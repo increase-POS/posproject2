@@ -88,7 +88,8 @@ namespace POS.View.accounts
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_ucOrderAccounts);
-               
+                MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
+
                 //SectionData.fillBranches(cb_branch, "bs");/////permissions
 
                 #region fill branch combo1
@@ -185,7 +186,6 @@ namespace POS.View.accounts
                 await RefreshInvoiceList();
                 Tb_search_TextChanged(null, null);
 
-                MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
                 if (sender != null)
                     SectionData.EndAwait(grid_ucOrderAccounts);
             }
@@ -406,7 +406,7 @@ namespace POS.View.accounts
             return s;
         }
 
-        private async void calcBalance(decimal ammount)
+        private async Task calcBalance(decimal ammount)
         {
             int s = 0;
             //increase pos balance
@@ -826,7 +826,7 @@ namespace POS.View.accounts
             }
         }
 
-        private async void fillCustomers()
+        private async Task fillCustomers()
         {
             agents = await agentModel.GetAgentsActive("c");
             cb_customer.ItemsSource = agents;
@@ -834,7 +834,7 @@ namespace POS.View.accounts
             cb_customer.SelectedValuePath = "agentId";
             cb_salesMan.SelectedIndex = -1;
         }
-        private async void fillUsers()
+        private async Task fillUsers()
         {
             users = await userModel.GetUsersActive();
 

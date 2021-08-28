@@ -189,32 +189,7 @@ namespace POS.View.windows
             txt_close.Text = resourcemanager.GetString("trClose");
         }
         bool logInProcessing = true;
-        //void awaitSaveBtn(bool isAwait)
-        //{
-        //    if (isAwait == true)
-        //    {
-        //        this.prg_awaitRing.IsActive = true;
-        //        this.grid_logs.IsEnabled = false;
-        //        this.grid_logs.Opacity = 0.6;
-
-        //        //btnLogIn.IsEnabled = false;
-        //        //wait_saveBtn.Visibility = Visibility.Visible;
-        //        //wait_saveBtn.IsIndeterminate = true;
-        //    }
-        //    else
-        //    {
-
-        //        this.prg_awaitRing.IsActive = false;
-        //        this.grid_logs.IsEnabled = true;
-        //        this.grid_logs.Opacity = 1;
-
-        //        //btnLogIn.IsEnabled = true;
-        //        //wait_saveBtn.Visibility = Visibility.Collapsed;
-        //        //wait_saveBtn.IsIndeterminate = false;
-        //    }
-
-
-        //}
+       
         private async void btnLogIn_Click(object sender, RoutedEventArgs e)
         {//login
             try

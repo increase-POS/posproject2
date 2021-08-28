@@ -87,14 +87,14 @@ namespace POS.View.windows
             cb_dateForm.ItemsSource = typelist;
         }
 
-        private async void fillCurrencies()
+        private async Task fillCurrencies()
         {
             cb_currency.ItemsSource = await countryModel.GetAllRegion();
             cb_currency.DisplayMemberPath = "currency";
             cb_currency.SelectedValuePath = "countryId";
         }
 
-        private async void fillRegions()
+        private async Task fillRegions()
         {
             cb_region.ItemsSource = await countryModel.GetAllRegion();
             cb_region.DisplayMemberPath = "name";
@@ -102,7 +102,7 @@ namespace POS.View.windows
         }
 
 
-        private async void fillLanguages()
+        private async Task fillLanguages()
         {
             languages = await valueModel.GetBySetName("language");
             foreach (var v in languages)
@@ -262,7 +262,7 @@ namespace POS.View.windows
             }
         }
 
-        private async void saveDateform()
+        private async Task saveDateform()
         {
             if (!cb_dateForm.Text.Equals(""))
             {
@@ -284,7 +284,7 @@ namespace POS.View.windows
             }
         }
 
-        private async void saveTax()
+        private async Task saveTax()
         {
             if (!tb_tax.Text.Equals(""))
             {
@@ -306,7 +306,7 @@ namespace POS.View.windows
             }
         }
 
-        private async void saveCurrency()////////????????????????
+        private async Task saveCurrency()////////????????????????
         {
             string s = "";
             if (!cb_currency.Text.Equals(""))
@@ -330,7 +330,7 @@ namespace POS.View.windows
 
         }
 
-        private async void saveRegion()
+        private async Task saveRegion()
         {
             string s = "";
             List<CountryCode> c = await countryModel.GetAllRegion();
@@ -357,7 +357,7 @@ namespace POS.View.windows
             }
         }
 
-        private async void saveLanguage()
+        private async Task saveLanguage()
         {
             if (!cb_language.Text.Equals(""))
             {

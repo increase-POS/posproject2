@@ -116,7 +116,7 @@ namespace POS.View
 
             return countrynum;
         }
-        private async void fillCountries()
+        private async Task fillCountries()
         {
 
             if (countrynum is null)
@@ -143,7 +143,7 @@ namespace POS.View
 
             return citynum;
         }
-        private async void fillCity()
+        private async Task fillCity()
         {
 
             if (citynum is null)
@@ -273,7 +273,7 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
-        async void fillComboBranchParent()
+        async Task fillComboBranchParent()
         {
 
             var branchesWithMain = await branchModel.GetAll();
@@ -500,7 +500,7 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
-        async void AddFreeThone(int branchId)
+        async Task AddFreeThone(int branchId)
         {
 
             var section = new Classes.Section();
@@ -708,7 +708,7 @@ namespace POS.View
             }
         }
 
-        private async void activate()
+        private async Task activate()
         {//activate
 
             branch.isActive = 1;

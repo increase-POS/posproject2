@@ -271,7 +271,7 @@ namespace POS.View.windows
             lst_images.DisplayMemberPath = "docName";
             lst_images.SelectedValuePath = "id";
         }
-        private async void getImg(string imageName)
+        private async Task getImg(string imageName)
         {
             
             try

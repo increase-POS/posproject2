@@ -110,7 +110,7 @@ namespace POS.View
 
             return countrynum;
         }
-        private async void fillCountries()
+        private async Task<bool> fillCountries()
         {
 
             if (countrynum is null)
@@ -127,7 +127,7 @@ namespace POS.View
             cb_area.SelectedValue = MainWindow.Region.countryId;
             cb_areaPhone.SelectedValue = MainWindow.Region.countryId;
 
-
+            return true;
         }
 
         async Task<IEnumerable<City>> RefreshCity()
@@ -135,7 +135,7 @@ namespace POS.View
             citynum = await cityCodes.Get();
             return citynum;
         }
-        private async void fillCity()
+        private async Task fillCity()
         {
 
             if (citynum is null)
@@ -534,7 +534,7 @@ namespace POS.View
             }
         }
 
-        private async void activate()
+        private async Task activate()
         {//activate
 
             bank.isActive = 1;

@@ -143,7 +143,7 @@ namespace POS.View.purchases
 
         #region Branches Functions
          
-        private async void fillDgPos(CheckBox chkInvoice,CheckBox chkReturn,CheckBox chkDraft,ComboBox comboBox,CheckBox all,DatePicker startDate,DatePicker endDate,TimePicker startTime, TimePicker endTime,TextBox search)
+        private async Task fillDgPos(CheckBox chkInvoice,CheckBox chkReturn,CheckBox chkDraft,ComboBox comboBox,CheckBox all,DatePicker startDate,DatePicker endDate,TimePicker startTime, TimePicker endTime,TextBox search)
         {
             fillDatesBranches(startDate,endDate,startTime,endTime);
             var temp = cb_branches.SelectedItem as Branch;
@@ -184,7 +184,7 @@ namespace POS.View.purchases
             cb_branches.ItemsSource = Branches;
         }
 
-        private async void fillPieChartBranches()
+        private async Task fillPieChartBranches()
         {
             //fillDatesBranches();
             var temp = cb_branches.SelectedItem as Branch;
@@ -221,7 +221,7 @@ namespace POS.View.purchases
             chart1.Series = piechartData;
         }
 
-        private async void fillRowChart()
+        private async Task fillRowChart()
         {
             //fillDatesBranches();
             var temp = cb_branches.SelectedItem as Branch;
@@ -271,7 +271,7 @@ namespace POS.View.purchases
 
         }
 
-        private async void fillColumnChart()
+        private async Task fillColumnChart()
         {
             //fillDatesBranches();
             var temp = cb_branches.SelectedItem as Branch;

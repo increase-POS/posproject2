@@ -75,8 +75,9 @@ namespace POS.View.storage
                     if (sender != null)
                         SectionData.StartAwait(grid_main);
 
+                MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
 
-                    if (MainWindow.lang.Equals("en"))
+                if (MainWindow.lang.Equals("en"))
                 {
                     MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
                     grid_main.FlowDirection = FlowDirection.LeftToRight;
@@ -115,7 +116,6 @@ namespace POS.View.storage
                 };
 
                 #endregion
-                MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }

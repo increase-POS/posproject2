@@ -67,6 +67,7 @@ namespace POS.View.storage
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+                MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
 
                 if (_InventoryType.Equals("d") && invItemsLocations.Count > 0)
                 {
@@ -83,7 +84,6 @@ namespace POS.View.storage
                 }
                 clearInventory();
                 timer.Stop();
-                MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -172,7 +172,7 @@ namespace POS.View.storage
             }
         }
         #endregion
-        private async void refreshDocCount(int inventoryId)
+        private async Task refreshDocCount(int inventoryId)
         {
             DocImage doc = new DocImage();
             int docCount = await doc.GetDocCount("Inventory", inventoryId);
@@ -266,7 +266,7 @@ namespace POS.View.storage
             inputEditable();
             dg_items.ItemsSource = invItemsLocations.ToList();
         }
-        private async void inputEditable()
+        private async Task inputEditable()
         {
             if (_InventoryType == "d") // draft
             {

@@ -100,7 +100,7 @@ namespace POS.View
             }
 
         }
-        private async void fillCategories()
+        private async Task fillCategories()
         {
             if (categories is null)
                 await RefrishCategories();
@@ -579,7 +579,7 @@ namespace POS.View
             }
         }
 
-        private async void activate()
+        private async Task activate()
         {//activate
 
             category.isActive = 1;
@@ -1166,7 +1166,7 @@ namespace POS.View
         #endregion
         #region categoryPathControl Y
 
-        async void generateTrack(int categorypaPathId)
+        async Task generateTrack(int categorypaPathId)
         {
 
             grid_categoryControlPath.Children.Clear();
@@ -1272,7 +1272,7 @@ namespace POS.View
             }
         }
 
-        private async void getImg()
+        private async Task getImg()
         {
 
             if (string.IsNullOrEmpty(category.image))

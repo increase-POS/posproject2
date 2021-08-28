@@ -584,7 +584,7 @@ namespace POS.View.sales
         }
 
 
-        private async void activate()
+        private async Task activate()
         {//activate
             medal.isActive = 1;
 

@@ -84,6 +84,8 @@ namespace POS.View.accounts
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_ucReceivedAccounts);
+                MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
+
                 #region translate
                 if (MainWindow.lang.Equals("en"))
             {
@@ -161,7 +163,6 @@ namespace POS.View.accounts
                 await RefreshCashesList();
                 Tb_search_TextChanged(null, null);
 
-                MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
 
                 if (sender != null)
                     SectionData.EndAwait(grid_ucReceivedAccounts);
@@ -587,7 +588,7 @@ namespace POS.View.accounts
             return s;
         }
 
-        private async void calcBalance(decimal ammount , string depositor , int agentid)
+        private async Task calcBalance(decimal ammount , string depositor , int agentid)
         {
             int s = 0;
             //increase pos balance
@@ -597,7 +598,7 @@ namespace POS.View.accounts
             s = await pos.savePos(pos);
         }
 
-        private async void calcUserBalance(float value, int userId)
+        private async Task calcUserBalance(float value, int userId)
         {//balance for user
             User user = await userModel.getUserById(userId);
 
@@ -619,7 +620,7 @@ namespace POS.View.accounts
 
         }
 
-        private async void calcShippingComBalance(decimal value, int shippingcompanyId)
+        private async Task calcShippingComBalance(decimal value, int shippingcompanyId)
         {//balance for shipping company
             ShippingCompanies shCom = await shCompanyModel.GetByID(shippingcompanyId);
 
@@ -1122,7 +1123,7 @@ namespace POS.View.accounts
             }
         }
 
-        private async void fillVendors()
+        private async Task fillVendors()
         {
             agents = await agentModel.GetAgentsActive("v");
 
@@ -1131,7 +1132,7 @@ namespace POS.View.accounts
             cb_depositorV.SelectedValuePath = "agentId";
         }
 
-        private async void fillCustomers()
+        private async Task fillCustomers()
         {
             agents = await agentModel.GetAgentsActive("c");
 
@@ -1140,7 +1141,7 @@ namespace POS.View.accounts
             cb_depositorC.SelectedValuePath = "agentId";
         }
 
-        private async void fillUsers()
+        private async Task fillUsers()
         {
             users = await userModel.GetUsersActive();
 
@@ -1149,7 +1150,7 @@ namespace POS.View.accounts
             cb_depositorU.SelectedValuePath = "userId";
         }
 
-        private async void fillShippingCompanies()
+        private async Task fillShippingCompanies()
         {
             shCompanies = await shCompanyModel.Get();
 

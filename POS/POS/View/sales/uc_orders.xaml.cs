@@ -269,7 +269,7 @@ namespace POS.View.sales
             refreshDraftNotification();
             refreshOrdersWaitNotification();
         }
-        private async void refreshDraftNotification()
+        private async Task refreshDraftNotification()
         {
             string invoiceType = "ord";
             int duration = 2;
@@ -290,7 +290,7 @@ namespace POS.View.sales
                     md_draft.Badge = draftCount.ToString();
             }
         }
-        private async void refreshOrdersWaitNotification()
+        private async Task refreshOrdersWaitNotification()
         {
             string invoiceType = "s";
             int ordersCount = await invoice.getDeliverOrdersCount(invoiceType, "ex", MainWindow.userID.Value);
@@ -310,7 +310,7 @@ namespace POS.View.sales
                     md_ordersWait.Badge = ordersCount.ToString();
             }
         }       
-        private async void refreshDocCount(int invoiceId)
+        private async Task refreshDocCount(int invoiceId)
         {
             DocImage doc = new DocImage();
             int docCount = await doc.GetDocCount("Invoices", invoiceId);

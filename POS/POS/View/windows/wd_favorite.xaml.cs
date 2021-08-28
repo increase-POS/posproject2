@@ -74,7 +74,7 @@ namespace POS.View.windows
         List<TextBlock> categoryTextblocks = new List<TextBlock>();
         TextBlock tx;
         int index = 0;
-        private async void getCategories()
+        private async Task getCategories()
         {
            categoryLst = await categoryModel.GetAllCategories(MainWindow.userID.Value);
 

@@ -363,7 +363,7 @@ namespace POS.View.purchases
         }
         #endregion
         #region notification
-        private async void refreshDraftNotification()
+        private async Task refreshDraftNotification()
         {
             string invoiceType = "pod";
             int duration = 2;
@@ -384,7 +384,7 @@ namespace POS.View.purchases
                     md_draft.Badge = draftCount.ToString();
             }
         }
-        private async void refreshDocCount(int invoiceId)
+        private async Task refreshDocCount(int invoiceId)
         {
             DocImage doc = new DocImage();
             int docCount = await doc.GetDocCount("Invoices", invoiceId);
@@ -466,7 +466,7 @@ namespace POS.View.purchases
         #endregion
         #region Get Id By Click  Y
 
-        public async void ChangeCategoryIdEvent(int categoryId)
+        public async Task ChangeCategoryIdEvent(int categoryId)
         {
         }
         public async Task ChangeItemIdEvent(int itemId)

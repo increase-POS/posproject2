@@ -127,6 +127,7 @@ namespace POS.View.storage
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+                MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
 
                 MainWindow.mainWindow.KeyDown -= HandleKeyPress;
 
@@ -148,7 +149,6 @@ namespace POS.View.storage
                 else
                     clearProcess();
                 timer.Stop();
-                MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -229,7 +229,7 @@ namespace POS.View.storage
             refreshDraftNotification();
             refreshOrderWaitNotification();
         }
-        private async void refreshDraftNotification()
+        private async Task refreshDraftNotification()
         {
             string invoiceType = "imd ,exd";
             int duration = 2;
@@ -250,7 +250,7 @@ namespace POS.View.storage
                     md_draftsCount.Badge = draftCount.ToString();
             }
         }
-        private async void refreshOrderWaitNotification()
+        private async Task refreshOrderWaitNotification()
         {
             string invoiceType = "exw";
             

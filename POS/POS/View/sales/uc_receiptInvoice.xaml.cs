@@ -333,7 +333,7 @@ namespace POS.View
             refreshOrdersWaitNotification();
             refreshQuotationNotification();
         }
-        private async void refreshDraftNotification()
+        private async Task refreshDraftNotification()
         {
             string invoiceType = "sd ,sbd";
             int duration = 2;
@@ -354,7 +354,7 @@ namespace POS.View
                     md_draft.Badge = draftCount.ToString();
             }
         }
-        private async void refreshOrdersWaitNotification()
+        private async Task refreshOrdersWaitNotification()
         {
             string invoiceType = "or";
             int ordersCount = await invoice.GetCountBranchInvoices(invoiceType,0, MainWindow.branchID.Value);
@@ -374,7 +374,7 @@ namespace POS.View
                     md_ordersWait.Badge = ordersCount.ToString();
             }
         }
-        private async void refreshQuotationNotification()
+        private async Task refreshQuotationNotification()
         {
             string invoiceType = "q";
             int ordersCount = await invoice.GetCountBranchInvoices(invoiceType, MainWindow.branchID.Value);
@@ -394,7 +394,7 @@ namespace POS.View
                     md_quotations.Badge = ordersCount.ToString();
             }
         }
-        private async void refreshDocCount(int invoiceId)
+        private async Task refreshDocCount(int invoiceId)
         {
             DocImage doc = new DocImage();
             int docCount = await doc.GetDocCount("Invoices", invoiceId);
@@ -414,7 +414,7 @@ namespace POS.View
                     md_docImage.Badge = docCount.ToString();
             }
         }
-        private async void refreshPaymentsNotification(int invoiceId)
+        private async Task refreshPaymentsNotification(int invoiceId)
         {
             int paymentsCount = await cashTransfer.GetCashCount(invoice.invoiceId); 
             int previouseCount = 0;
@@ -1152,7 +1152,7 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
-        private async void clearInvoice()
+        private async Task clearInvoice()
         {
             _Sum = 0;
             _Tax = 0;

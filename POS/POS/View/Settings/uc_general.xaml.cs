@@ -100,6 +100,8 @@ namespace POS.View.Settings
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+                MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
+
                 #region translate
                 if (MainWindow.lang.Equals("en"))
                 {
@@ -182,7 +184,6 @@ namespace POS.View.Settings
                 else
                     cb_dateForm.SelectedIndex = -1;
                 #endregion
-                MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -248,14 +249,14 @@ namespace POS.View.Settings
         }
 
         int usValueId = 0;
-        private async void fillCurrencies()
+        private async Task fillCurrencies()
         {
             cb_currency.ItemsSource = await countryModel.GetAllRegion();
             cb_currency.DisplayMemberPath = "currency";
             cb_currency.SelectedValuePath = "countryId";
         }
 
-        private async void fillLanguages()
+        private async Task fillLanguages()
         {
             var lanSettings = await setModel.GetAll();
             set = lanSettings.Where(l => l.name == "language").FirstOrDefault<SettingCls>();
@@ -273,7 +274,7 @@ namespace POS.View.Settings
 
         }
 
-        private async void fillRegions()
+        private async Task fillRegions()
         {
             cb_region.ItemsSource = await countryModel.GetAllRegion();
             cb_region.DisplayMemberPath = "name";
