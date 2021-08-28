@@ -20,6 +20,7 @@ namespace POS_Server
         public Nullable<int> reportPrinterId { get; set; }
         public string posSerial { get; set; }
         public Nullable<int> saleInvPapersizeId { get; set; }
+        public Nullable<int> docPapersizeId { get; set; }
     
         public virtual pos pos { get; set; }
         public virtual printers printers { get; set; }

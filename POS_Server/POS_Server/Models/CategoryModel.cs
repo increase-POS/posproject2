@@ -21,5 +21,7 @@ namespace POS_Server.Models
         public Nullable<int> updateUserId { get; set; }
         public string notes { get; set; }
         public Boolean canDelete { get; set; }
+        public Nullable<int> sequence { get; set; }
+        public Nullable<int> id { get; set; }
     }
 }

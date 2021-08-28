@@ -6,7 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-
+using System.Data.Entity.Migrations;
 namespace POS_Server.Controllers
 {
     [RoutePrefix("api/categoryuser")]
@@ -20,7 +20,7 @@ namespace POS_Server.Controllers
             var re = Request;
             var headers = re.Headers;
             string token = "";
-          
+
             if (headers.Contains("APIKey"))
             {
                 token = headers.GetValues("APIKey").First();
@@ -33,8 +33,9 @@ namespace POS_Server.Controllers
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var List = entity.categoryuser
-                  
-                   .Select(c => new  {
+
+                   .Select(c => new
+                   {
                        c.id,
                        c.categoryId,
                        c.userId,
@@ -43,7 +44,7 @@ namespace POS_Server.Controllers
                        c.updateDate,
                        c.createUserId,
                        c.updateUserId,
- 
+
                    })
                    .ToList();
 
@@ -68,8 +69,71 @@ namespace POS_Server.Controllers
                 }
             }
             //else
-                return NotFound();
+            return NotFound();
         }
+
+
+        [HttpGet]
+        [Route("GetByUserId")]
+        public IHttpActionResult GetByUserId(int userId)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var List = (from cu in entity.categoryuser
+                                join c in entity.categories on cu.categoryId equals c.categoryId
+                                where cu.userId == userId
+
+                                select new
+                                {
+                                    cu.id,
+
+                                    cu.userId,
+                                    cu.sequence,
+                                    cu.createDate,
+                                    cu.updateDate,
+                                    cu.createUserId,
+                                    cu.updateUserId,
+                                    cu.categoryId,
+                                    //category
+
+                                    c.name,
+                                    c.categoryCode,
+
+                                    c.details,
+                                    c.image,
+                                    c.notes,
+                                    c.parentId,
+                                    c.taxes,
+
+                                    c.isActive,
+                                })
+                   .ToList();
+
+
+
+                    if (List == null)
+                        return NotFound();
+                    else
+                        return Ok(List);
+                }
+            }
+            //else
+            return NotFound();
+        }
+
 
         #region
         [HttpPost]
@@ -142,6 +206,74 @@ namespace POS_Server.Controllers
         }
         #endregion
 
+
+
+        #region
+        [HttpPost]
+        [Route("UpdateCatUserList")]
+
+        public int UpdateCatUserList(string newlist,int userId)
+        {
+            
+            var re = Request;
+            var headers = re.Headers;
+            int res = 0;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+         
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+            newlist = newlist.Replace("\\", string.Empty);
+            newlist = newlist.Trim('"');
+            List<categoryuser> newCatlist = JsonConvert.DeserializeObject<List<categoryuser>>(newlist, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+            if (valid)
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                
+                    if (newCatlist.Count() > 0)
+                    {
+                        
+                        foreach (categoryuser newcatRow in newCatlist)
+                        {
+                            //if(newcatRow.id>0)
+                            newcatRow.userId = userId;
+                            if (newcatRow.createDate == null)
+                            {
+                                newcatRow.createDate = DateTime.Now;
+                                newcatRow.updateDate = DateTime.Now;
+                                newcatRow.updateUserId = newcatRow.createUserId;
+                            }
+                            else
+                            {
+                                newcatRow.updateDate = DateTime.Now;
+                               
+                            }
+
+                            entity.categoryuser.AddOrUpdate(newcatRow);
+                            res = entity.SaveChanges();
+                        }
+                    
+                    }
+                 
+
+                    return res;
+
+
+                }
+
+            }
+            else
+            {
+                return -1;
+            }
+
+        }
+        #endregion
+
         // GET api/<controller>  Get  By ID 
         [HttpGet]
         [Route("GetByID")]
@@ -168,7 +300,8 @@ namespace POS_Server.Controllers
                 {
                     var list = entity.categoryuser
                    .Where(c => c.id == cId)
-                   .Select(c => new {
+                   .Select(c => new
+                   {
                        c.id,
                        c.categoryId,
                        c.userId,
@@ -192,56 +325,6 @@ namespace POS_Server.Controllers
                 return NotFound();
         }
 
-        [HttpGet]
-        [Route("GetByUserId")]
-        public IHttpActionResult GetByUserId()
-        {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            int cId = 0;
-            if (headers.Contains("APIKey"))
-            {
-                token = headers.GetValues("APIKey").First();
-            }
-            if (headers.Contains("Id"))
-            {
-                cId = Convert.ToInt32(headers.GetValues("Id").First());
-            }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid)
-            {
-                using (incposdbEntities entity = new incposdbEntities())
-                {
-                    var list = entity.categoryuser
-                   .Where(c => c.id == cId)
-                   .Select(c => new {
-                       c.id,
-                       c.categoryId,
-                       c.userId,
-                       c.sequence,
-                       c.createDate,
-                       c.updateDate,
-                       c.createUserId,
-                       c.updateUserId,
-
-
-                   })
-                   .ToList();
-
-                    if (list == null)
-                        return NotFound();
-                    else
-                        return Ok(list);
-                }
-            }
-            else
-                return NotFound();
-        }
-
-
 
 
         // add or update 
@@ -252,14 +335,14 @@ namespace POS_Server.Controllers
             var re = Request;
             var headers = re.Headers;
             string token = "";
-            string message ="";
+            string message = "";
             if (headers.Contains("APIKey"))
             {
                 token = headers.GetValues("APIKey").First();
             }
             Validation validation = new Validation();
             bool valid = validation.CheckApiKey(token);
-            
+
             if (valid)
             {
                 newObject = newObject.Replace("\\", string.Empty);
@@ -296,28 +379,28 @@ namespace POS_Server.Controllers
                             Object.updateDate = DateTime.Now;
                             Object.updateUserId = Object.createUserId;
                             sEntity.Add(Object);
-                             message = Object.id.ToString();
+                            message = Object.id.ToString();
                             entity.SaveChanges();
                         }
                         else
                         {
 
                             var tmps = entity.categoryuser.Where(p => p.id == Object.id).FirstOrDefault();
-                           
-                            tmps.id=Object.id;
+
+                            tmps.id = Object.id;
 
                             tmps.categoryId = Object.categoryId;
-                            tmps.userId= Object.userId;
-                            tmps.sequence= Object.sequence;
-                            tmps.createDate=Object.createDate;
+                            tmps.userId = Object.userId;
+                            tmps.sequence = Object.sequence;
+                            tmps.createDate = Object.createDate;
                             tmps.updateDate = DateTime.Now;// server current date
-                            
+
                             tmps.updateUserId = Object.updateUserId;
                             entity.SaveChanges();
                             message = tmps.id.ToString();
                         }
-                       
-                       
+
+
                     }
                     return message; ;
                 }
@@ -347,27 +430,27 @@ namespace POS_Server.Controllers
             bool valid = validation.CheckApiKey(token);
             if (valid)
             {
-               
-                    try
-                    {
-                        using (incposdbEntities entity = new incposdbEntities())
-                        {
-                            categoryuser sObj = entity.categoryuser.Find(Id);
-                       
-                            entity.categoryuser.Remove(sObj);
-                            entity.SaveChanges();
 
-                            return Ok(" Deleted Successfully");
-                        }
-                    }
-                    catch
+                try
+                {
+                    using (incposdbEntities entity = new incposdbEntities())
                     {
-                        return NotFound();
-                    }
-                
-                
+                        categoryuser sObj = entity.categoryuser.Find(Id);
 
-               
+                        entity.categoryuser.Remove(sObj);
+                        entity.SaveChanges();
+
+                        return Ok(" Deleted Successfully");
+                    }
+                }
+                catch
+                {
+                    return NotFound();
+                }
+
+
+
+
             }
             else
                 return NotFound();
@@ -375,7 +458,7 @@ namespace POS_Server.Controllers
 
         [HttpGet]
         [Route("GetSubCategoriesSeq")]
-        public IHttpActionResult GetSubCategories(int categoryId,int userId)
+        public IHttpActionResult GetSubCategories(int categoryId, int userId)
         {
             var re = Request;
             var headers = re.Headers;
@@ -418,8 +501,8 @@ namespace POS_Server.Controllers
                                               }
 
 
-                      ) .Where(c => c.parentId == categoryId && c.isActive == 1 && c.userId==userId).OrderBy(c => c.sequence)
-                      
+                      ).Where(c => c.parentId == categoryId && c.isActive == 1 && c.userId == userId).OrderBy(c => c.sequence)
+
                        .ToList();
                         if (categoriesList == null)
                             return NotFound();
@@ -467,7 +550,7 @@ namespace POS_Server.Controllers
 
         [HttpGet]
         [Route("GetCatTreeByIdSeq")]
-        public IHttpActionResult GetCatTreeByIdSeq(int categoryID,int userId)
+        public IHttpActionResult GetCatTreeByIdSeq(int categoryID, int userId)
         {
             var re = Request;
             var headers = re.Headers;
@@ -520,7 +603,7 @@ namespace POS_Server.Controllers
                                         }
 
 
-                      ).Where(c => c.categoryId == parentid && c.userId==userId).OrderBy(c=> c.sequence)
+                      ).Where(c => c.categoryId == parentid && c.userId == userId).OrderBy(c => c.sequence)
                           .FirstOrDefault();
 
 
@@ -537,7 +620,7 @@ namespace POS_Server.Controllers
                         tempcate.taxes = category.taxes;
                         tempcate.updateDate = category.updateDate;
                         tempcate.updateUserId = category.updateUserId;
-                      
+
 
                         parentid = (int)tempcate.parentId;
 

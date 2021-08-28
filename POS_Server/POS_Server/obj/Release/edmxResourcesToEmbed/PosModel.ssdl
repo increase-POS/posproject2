@@ -702,6 +702,7 @@
     </Key>
     <Property Name="sizeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="paperSize" Type="nvarchar" MaxLength="200" />
+    <Property Name="printfor" Type="nvarchar" MaxLength="200" />
   </EntityType>
   <EntityType Name="Points">
     <Key>
@@ -751,6 +752,7 @@
     <Property Name="reportPrinterId" Type="int" />
     <Property Name="saleInvPapersizeId" Type="int" />
     <Property Name="posSerial" Type="nvarchar" MaxLength="1000" />
+    <Property Name="docPapersizeId" Type="int" />
   </EntityType>
   <EntityType Name="posUsers">
     <Key>
@@ -775,6 +777,33 @@
     <Property Name="updateDate" Type="datetime2" Precision="7" />
     <Property Name="createUserId" Type="int" />
     <Property Name="updateUserId" Type="int" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="ProgramDetails">
+    <Key>
+      <PropertyRef Name="branchCount" />
+      <PropertyRef Name="posCount" />
+      <PropertyRef Name="userCount" />
+      <PropertyRef Name="vendorCount" />
+      <PropertyRef Name="customerCount" />
+      <PropertyRef Name="itemCount" />
+      <PropertyRef Name="saleinvCount" />
+      <PropertyRef Name="storeCount" />
+    </Key>
+    <Property Name="id" Type="int" />
+    <Property Name="programName" Type="nvarchar" MaxLength="500" />
+    <Property Name="branchCount" Type="int" Nullable="false" />
+    <Property Name="posCount" Type="int" Nullable="false" />
+    <Property Name="userCount" Type="int" Nullable="false" />
+    <Property Name="vendorCount" Type="int" Nullable="false" />
+    <Property Name="customerCount" Type="int" Nullable="false" />
+    <Property Name="itemCount" Type="int" Nullable="false" />
+    <Property Name="saleinvCount" Type="int" Nullable="false" />
+    <Property Name="programIncId" Type="int" />
+    <Property Name="versionIncId" Type="int" />
+    <Property Name="versionName" Type="nvarchar" MaxLength="500" />
+    <Property Name="storeCount" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="properties">
     <Key>
@@ -913,6 +942,16 @@
     <Property Name="createUserId" Type="int" />
     <Property Name="updateUserId" Type="int" />
     <Property Name="isActive" Type="tinyint" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
   </EntityType>
   <EntityType Name="sysEmails">
     <Key>
@@ -3328,11 +3367,29 @@
     <EntitySet Name="shippingCompanies" EntityType="Self.shippingCompanies" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="storageCost" EntityType="Self.storageCost" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="subscriptionFees" EntityType="Self.subscriptionFees" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="sysEmails" EntityType="Self.sysEmails" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="units" EntityType="Self.units" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="users" EntityType="Self.users" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="userSetValues" EntityType="Self.userSetValues" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="usersLogs" EntityType="Self.usersLogs" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProgramDetails" EntityType="Self.ProgramDetails" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [ProgramDetails].[id] AS [id], 
+    [ProgramDetails].[programName] AS [programName], 
+    [ProgramDetails].[branchCount] AS [branchCount], 
+    [ProgramDetails].[posCount] AS [posCount], 
+    [ProgramDetails].[userCount] AS [userCount], 
+    [ProgramDetails].[vendorCount] AS [vendorCount], 
+    [ProgramDetails].[customerCount] AS [customerCount], 
+    [ProgramDetails].[itemCount] AS [itemCount], 
+    [ProgramDetails].[saleinvCount] AS [saleinvCount], 
+    [ProgramDetails].[programIncId] AS [programIncId], 
+    [ProgramDetails].[versionIncId] AS [versionIncId], 
+    [ProgramDetails].[versionName] AS [versionName], 
+    [ProgramDetails].[storeCount] AS [storeCount]
+    FROM [dbo].[ProgramDetails] AS [ProgramDetails]</DefiningQuery>
+    </EntitySet>
     <AssociationSet Name="FK_agentMemberships_agents" Association="Self.FK_agentMemberships_agents">
       <End Role="agents" EntitySet="agents" />
       <End Role="agentMemberships" EntitySet="agentMemberships" />

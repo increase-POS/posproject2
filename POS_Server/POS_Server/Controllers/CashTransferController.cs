@@ -1235,7 +1235,7 @@ namespace POS_Server.Controllers
                                                        bondId = C.bondId,
                                                        shippingCompanyId = C.shippingCompanyId,
                                                    }).Where(C => ((type == "all") ? true : C.transType == type)
-                                                                          && ((side == "all") ? true : C.side == side) && C.invId == invId).FirstOrDefault();
+                                                                          && ((side == "all") ? true : C.side == side) && C.invId == invId && C.processType != "inv").FirstOrDefault();
 
 
 

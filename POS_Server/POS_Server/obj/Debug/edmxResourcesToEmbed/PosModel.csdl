@@ -4344,6 +4344,8 @@
       <End Role="pos" EntitySet="pos" />
       <End Role="notificationUser" EntitySet="notificationUser" />
     </AssociationSet>
+    <EntitySet Name="sysdiagrams" EntityType="incposdbModel.sysdiagrams" />
+    <EntitySet Name="ProgramDetails" EntityType="incposdbModel.ProgramDetails" />
   </EntityContainer>
   <EntityType Name="paperSize">
     <Key>
@@ -4352,6 +4354,7 @@
     <Property Name="sizeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="paperSize1" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="posSetting" Relationship="incposdbModel.FK_posSetting_paperSize" FromRole="paperSize" ToRole="posSetting" />
+    <Property Name="printfor" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="posSetting">
     <Key>
@@ -4367,6 +4370,7 @@
     <NavigationProperty Name="printers1" Relationship="incposdbModel.FK_posSetting_printers1" FromRole="posSetting" ToRole="printers" />
     <Property Name="saleInvPapersizeId" Type="Int32" />
     <NavigationProperty Name="paperSize" Relationship="incposdbModel.FK_posSetting_paperSize" FromRole="posSetting" ToRole="paperSize" />
+    <Property Name="docPapersizeId" Type="Int32" />
   </EntityType>
   <EntityType Name="printers">
     <Key>
@@ -4468,4 +4472,39 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="ProgramDetails">
+    <Key>
+      <PropertyRef Name="branchCount" />
+      <PropertyRef Name="posCount" />
+      <PropertyRef Name="userCount" />
+      <PropertyRef Name="vendorCount" />
+      <PropertyRef Name="customerCount" />
+      <PropertyRef Name="itemCount" />
+      <PropertyRef Name="saleinvCount" />
+      <PropertyRef Name="storeCount" />
+    </Key>
+    <Property Name="id" Type="Int32" />
+    <Property Name="programName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="branchCount" Type="Int32" Nullable="false" />
+    <Property Name="posCount" Type="Int32" Nullable="false" />
+    <Property Name="userCount" Type="Int32" Nullable="false" />
+    <Property Name="vendorCount" Type="Int32" Nullable="false" />
+    <Property Name="customerCount" Type="Int32" Nullable="false" />
+    <Property Name="itemCount" Type="Int32" Nullable="false" />
+    <Property Name="saleinvCount" Type="Int32" Nullable="false" />
+    <Property Name="programIncId" Type="Int32" />
+    <Property Name="versionIncId" Type="Int32" />
+    <Property Name="versionName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="storeCount" Type="Int32" Nullable="false" />
+  </EntityType>
 </Schema>

@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using POS_Server.Classes;
 using POS_Server.Models;
 using System;
 using System.Collections.Generic;
@@ -266,12 +267,12 @@ namespace POS_Server.Controllers
         // add or update unit
         [HttpPost]
         [Route("Save")]
-        public int Save(string userObject)
+        public IHttpActionResult Save(string userObject)
         {
             var re = Request;
             var headers = re.Headers;
             string token = "";
-            users tmpUser = new users();
+           
             if (headers.Contains("APIKey"))
             {
                 token = headers.GetValues("APIKey").First();
@@ -281,6 +282,7 @@ namespace POS_Server.Controllers
 
             if (valid)
             {
+                users tmpUser = new users();
                 userObject = userObject.Replace("\\", string.Empty);
                 userObject = userObject.Trim('"');
                 users newObject = JsonConvert.DeserializeObject<users>(userObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
@@ -298,16 +300,45 @@ namespace POS_Server.Controllers
                 {
                     using (incposdbEntities entity = new incposdbEntities())
                     { 
-                        var unitEntity = entity.Set<users>();
+                        var userEntity = entity.Set<users>();
+                        var catEntity = entity.Set<categoryuser>();
                         if (newObject.userId == 0)
                         {
-                            newObject.createDate = DateTime.Now;
-                            newObject.updateDate = DateTime.Now;
-                            newObject.updateUserId = newObject.createUserId;
-                            newObject.balance = 0;
-                            newObject.balanceType = 0;
-                            tmpUser= unitEntity.Add(newObject);
-                            entity.SaveChanges();
+                            ProgramInfo programInfo = new ProgramInfo();
+                            int userMaxCount = programInfo.getUserCount();
+                            int usersCount = entity.users.Count();
+                            if (usersCount >= userMaxCount)
+                            {
+                                return Ok(-1);
+                            }
+                            else
+                            {
+                                newObject.createDate = DateTime.Now;
+                                newObject.updateDate = DateTime.Now;
+                                newObject.updateUserId = newObject.createUserId;
+                                newObject.balance = 0;
+                                newObject.balanceType = 0;
+                                tmpUser = userEntity.Add(newObject);
+                                // get all categories
+                                var categories = entity.categories.Where(x => x.isActive == 1).Select(x => x.categoryId).ToList();
+                                for (int i = 0; i < categories.Count; i++)
+                                {
+                                    int categoryId = categories[i];
+                                    categoryuser cu = new categoryuser()
+                                    {
+                                        categoryId = categoryId,
+                                        userId = tmpUser.userId,
+                                        sequence = 0,
+                                        createDate = DateTime.Now,
+                                        updateDate = DateTime.Now,
+                                        createUserId = newObject.createUserId,
+                                        updateUserId = newObject.updateUserId,
+                                    };
+                                    catEntity.Add(cu);
+                                }
+                                entity.SaveChanges();
+                                return Ok( tmpUser.userId);
+                            }
                         }
                         else
                         {
@@ -331,16 +362,16 @@ namespace POS_Server.Controllers
                             tmpUser.balanceType = newObject.balanceType;
                             tmpUser.isOnline = newObject.isOnline;
                             entity.SaveChanges();
+                            return Ok(tmpUser.userId);
                         }
-                  
-                    }
+                    }                
                 }
                 catch
                 {
-                    return 0;
+                    return Ok(0);
                 }
             }
-            return tmpUser.userId;
+            return NotFound();
         }
 
         [HttpPost]
@@ -370,6 +401,7 @@ namespace POS_Server.Controllers
                     {
                         using (incposdbEntities entity = new incposdbEntities())
                         {
+                            entity.categoryuser.RemoveRange(entity.categoryuser.Where(x => x.userId == delUserId));
 
                             users usersDelete = entity.users.Find(delUserId);
                             entity.users.Remove(usersDelete);

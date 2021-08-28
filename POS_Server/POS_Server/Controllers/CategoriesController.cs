@@ -19,7 +19,7 @@ namespace POS_Server.Controllers
 
         [HttpGet]
         [Route("GetAllCategories")]
-        public IHttpActionResult GetAllCategories()
+        public IHttpActionResult GetAllCategories(int userId)
         {
             var re = Request;
             var headers = re.Headers;
@@ -38,24 +38,26 @@ namespace POS_Server.Controllers
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    var categoriesList = entity.categories
-                    .Select(p => new CategoryModel {
-                        categoryId = p.categoryId,
-                        name = p.name,
-                        categoryCode = p.categoryCode,
-                        createDate = p.createDate,
-                        createUserId = p.createUserId,
-                        details = p.details,
-                        image = p.image,
-                        notes = p.notes,
-                        parentId = p.parentId,
-                        taxes = p.taxes,
-                        updateDate = p.updateDate,
-                        updateUserId = p.updateUserId,
-                        isActive = p.isActive,
-                    })
-                    .ToList();
-
+                    var categoriesList = (from p in entity.categories 
+                             join cu in entity.categoryuser on p.categoryId equals cu.categoryId where cu.userId == userId
+                             select new CategoryModel()
+                             {
+                                 categoryId = p.categoryId,
+                                 name = p.name,
+                                 categoryCode = p.categoryCode,
+                                 createDate = p.createDate,
+                                 createUserId = p.createUserId,
+                                 details = p.details,
+                                 image = p.image,
+                                 notes = p.notes,
+                                 parentId = p.parentId,
+                                 taxes = p.taxes,
+                                 updateDate = p.updateDate,
+                                 updateUserId = p.updateUserId,
+                                 isActive = p.isActive,
+                                 sequence = cu.sequence,
+                                 id = cu.id
+                             }).ToList().OrderBy(x => x.sequence).ToList();
                     if (categoriesList.Count > 0)
                     {
                         for (int i = 0; i < categoriesList.Count; i++)
@@ -86,7 +88,7 @@ namespace POS_Server.Controllers
 
         [HttpGet]
         [Route("GetSubCategories")]
-        public IHttpActionResult GetSubCategories(int categoryId)
+        public IHttpActionResult GetSubCategories(int categoryId, int userId)
         {
             var re = Request;
             var headers = re.Headers;
@@ -106,24 +108,44 @@ namespace POS_Server.Controllers
                 {
                     if (categoryId != 0)
                     {
-                        var categoriesList = entity.categories
-                       .Where(c => c.parentId == categoryId && c.isActive == 1)
-                       .Select(p => new {
-                           p.categoryId,
-                           p.name,
-                           p.categoryCode,
-                           p.createDate,
-                           p.createUserId,
-                           p.details,
-                           p.image,
-                           p.notes,
-                           p.parentId,
-                           p.taxes,
-                           p.updateDate,
-                           p.updateUserId,
-                           p.isActive,
-                       })
-                       .ToList();
+                       // var categoriesList = entity.categories
+                       //.Where(c => c.parentId == categoryId && c.isActive == 1)
+                       //.Select(p => new {
+                       //    p.categoryId,
+                       //    p.name,
+                       //    p.categoryCode,
+                       //    p.createDate,
+                       //    p.createUserId,
+                       //    p.details,
+                       //    p.image,
+                       //    p.notes,
+                       //    p.parentId,
+                       //    p.taxes,
+                       //    p.updateDate,
+                       //    p.updateUserId,
+                       //    p.isActive,
+                       //})
+                       //.ToList();
+                        var categoriesList = (from p in entity.categories.Where(x => x.parentId == categoryId && x.isActive == 1)
+                                 join cu in entity.categoryuser on p.categoryId equals cu.categoryId
+                                 where cu.userId == userId
+                                 select new CategoryModel() {
+                                     categoryId = p.categoryId,
+                                     name = p.name,
+                                     categoryCode = p.categoryCode,
+                                     createDate = p.createDate,
+                                     createUserId = p.createUserId,
+                                     details = p.details,
+                                     image = p.image,
+                                     notes = p.notes,
+                                     parentId = p.parentId,
+                                     taxes = p.taxes,
+                                     updateDate = p.updateDate,
+                                     updateUserId = p.updateUserId,
+                                     isActive = p.isActive,
+                                     sequence = cu.sequence,
+                                 }).ToList().OrderBy(x => x.sequence).ToList();
+
                         if (categoriesList == null)
                             return NotFound();
                         else
@@ -131,23 +153,44 @@ namespace POS_Server.Controllers
                     }
                     else
                     {
-                        var categoriesList = entity.categories
-                       .Where(c => c.parentId == 0 && c.isActive == 1)
-                       .Select(p => new {
-                           p.categoryId,
-                           p.name,
-                           p.categoryCode,
-                           p.createDate,
-                           p.createUserId,
-                           p.details,
-                           p.image,
-                           p.notes,
-                           p.parentId,
-                           p.taxes,
-                           p.updateDate,
-                           p.updateUserId,
-                       })
-                       .ToList();
+                       // var categoriesList = entity.categories
+                       //.Where(c => c.parentId == 0 && c.isActive == 1)
+                       //.Select(p => new {
+                       //    p.categoryId,
+                       //    p.name,
+                       //    p.categoryCode,
+                       //    p.createDate,
+                       //    p.createUserId,
+                       //    p.details,
+                       //    p.image,
+                       //    p.notes,
+                       //    p.parentId,
+                       //    p.taxes,
+                       //    p.updateDate,
+                       //    p.updateUserId,
+                       //})
+                       //.ToList();
+                        var categoriesList = (from p in entity.categories.Where(x => x.parentId == 0 && x.isActive == 1)
+                                              join cu in entity.categoryuser on p.categoryId equals cu.categoryId
+                                              where cu.userId == userId
+                                              select new CategoryModel()
+                                              {
+                                                  categoryId = p.categoryId,
+                                                  name = p.name,
+                                                  categoryCode = p.categoryCode,
+                                                  createDate = p.createDate,
+                                                  createUserId = p.createUserId,
+                                                  details = p.details,
+                                                  image = p.image,
+                                                  notes = p.notes,
+                                                  parentId = p.parentId,
+                                                  taxes = p.taxes,
+                                                  updateDate = p.updateDate,
+                                                  updateUserId = p.updateUserId,
+                                                  isActive = p.isActive,
+                                                  sequence = cu.sequence,
+                                              }).ToList().OrderBy(x => x.sequence).ToList();
+
                         if (categoriesList == null)
                             return NotFound();
                         else
@@ -177,24 +220,65 @@ namespace POS_Server.Controllers
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-
-                    var category = entity.categories
-                   .Where(c => c.categoryId == categoryId)
-                   .Select(p => new {
-                       p.categoryId,
-                       p.name,
-                       p.categoryCode,
-                       p.createDate,
-                       p.createUserId,
-                       p.details,
-                       p.image,
-                       p.notes,
-                       p.parentId,
-                       p.taxes,
-                       p.updateDate,
-                       p.updateUserId,
-                   })
-                   .FirstOrDefault();
+                    /*
+                     var categoriesList = (from p in entity.categories 
+                             join cu in entity.categoryuser on p.categoryId equals cu.categoryId where cu.userId == userId
+                             select new CategoryModel()
+                             {
+                                 categoryId = p.categoryId,
+                                 name = p.name,
+                                 categoryCode = p.categoryCode,
+                                 createDate = p.createDate,
+                                 createUserId = p.createUserId,
+                                 details = p.details,
+                                 image = p.image,
+                                 notes = p.notes,
+                                 parentId = p.parentId,
+                                 taxes = p.taxes,
+                                 updateDate = p.updateDate,
+                                 updateUserId = p.updateUserId,
+                                 isActive = p.isActive,
+                                 sequence = cu.sequence,
+                                 id = cu.id
+                             }).ToList().OrderBy(x => x.sequence).ToList();
+                     */
+                    var category = (from p in entity.categories
+                                          join cu in entity.categoryuser on p.categoryId equals cu.categoryId
+                                          select new CategoryModel()
+                                          {
+                                              categoryId = p.categoryId,
+                                              name = p.name,
+                                              categoryCode = p.categoryCode,
+                                              createDate = p.createDate,
+                                              createUserId = p.createUserId,
+                                              details = p.details,
+                                              image = p.image,
+                                              notes = p.notes,
+                                              parentId = p.parentId,
+                                              taxes = p.taxes,
+                                              updateDate = p.updateDate,
+                                              updateUserId = p.updateUserId,
+                                              isActive = p.isActive,
+                                              sequence = cu.sequence,
+                                              id = cu.id
+                                          }).ToList().Where(c => c.categoryId == categoryId).FirstOrDefault();
+                    // var category = entity.categories
+                    //.Where(c => c.categoryId == categoryId)
+                    //.Select(p => new {
+                    //    p.categoryId,
+                    //    p.name,
+                    //    p.categoryCode,
+                    //    p.createDate,
+                    //    p.createUserId,
+                    //    p.details,
+                    //    p.image,
+                    //    p.notes,
+                    //    p.parentId,
+                    //    p.taxes,
+                    //    p.updateDate,
+                    //    p.updateUserId,
+                    //})
+                    //.FirstOrDefault();
 
                     if (category == null)
                         return NotFound();
@@ -240,10 +324,11 @@ namespace POS_Server.Controllers
                 }
                 try
                 {
-                    categories tmpCategory;
+                    categories tmpCategory;                    
                     using (incposdbEntities entity = new incposdbEntities())
                     {
                         var categoryEntity = entity.Set<categories>();
+                        var catEntity = entity.Set<categoryuser>();
                         if (newObject.categoryId == 0)
                         {
                             newObject.createDate = DateTime.Now;
@@ -251,6 +336,24 @@ namespace POS_Server.Controllers
                             newObject.updateUserId = newObject.createUserId;
 
                             tmpCategory = categoryEntity.Add(newObject);
+
+                            // get all users
+                            var users = entity.users.Where(x => x.isActive == 1).Select(x => x.userId).ToList();
+                            for (int i = 0; i < users.Count; i++)
+                            {
+                                int userId = users[i];
+                                categoryuser cu = new categoryuser()
+                                {
+                                    categoryId = tmpCategory.categoryId,
+                                    userId = userId,
+                                    sequence = 0,
+                                    createDate = DateTime.Now,
+                                    updateDate = DateTime.Now,
+                                    createUserId = newObject.createUserId,
+                                    updateUserId = newObject.updateUserId,
+                                };
+                                catEntity.Add(cu);
+                            }
                             entity.SaveChanges();
                         }
                         else
@@ -383,6 +486,8 @@ namespace POS_Server.Controllers
 
                             if (childCategories == null)
                             {
+                                entity.categoryuser.RemoveRange(entity.categoryuser.Where(x => x.categoryId == categoryId));
+
                                 var tmpCategory = entity.categories.Where(p => p.categoryId == categoryId).First();
                                 entity.categories.Remove(tmpCategory);
 

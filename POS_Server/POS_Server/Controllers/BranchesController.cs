@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using POS_Server.Classes;
 using POS_Server.Models;
 using System;
 using System.Collections.Generic;
@@ -313,7 +314,7 @@ namespace POS_Server.Controllers
         // add or update branch
         [HttpPost]
         [Route("Save")]
-        public string Save(string branchObject)
+        public IHttpActionResult Save(string branchObject)
         {
             var re = Request;
             var headers = re.Headers;
@@ -347,14 +348,35 @@ namespace POS_Server.Controllers
                         var branchEntity = entity.Set<branches>();
                         if (newObject.branchId == 0)
                         {
-                            newObject.createDate = DateTime.Now;
-                            newObject.updateDate = DateTime.Now;
-                            newObject.updateUserId = newObject.createUserId;
+
+                            ProgramInfo programInfo = new ProgramInfo();
+                            int branchMaxCount = 0;
+                            int branchesCount = 0;
+                            if (newObject.type == "b")
+                            {
+                                branchMaxCount = programInfo.getBranchCount();
+                                branchesCount = entity.branches.Where(x => x.type == "b").Count();
+                            }
+                            else if(newObject.type == "s")
+                            {
+                                branchMaxCount = programInfo.getStroeCount();
+                                branchesCount = entity.branches.Where(x => x.type == "s").Count();
+                            }
+                            if (branchesCount >= branchMaxCount)
+                            {
+                                return Ok(-1);
+                            }
+                            else
+                            {
+                                newObject.createDate = DateTime.Now;
+                                newObject.updateDate = DateTime.Now;
+                                newObject.updateUserId = newObject.createUserId;
 
 
-                            branchEntity.Add(newObject);
-                            entity.SaveChanges();
-                            return newObject.branchId.ToString();
+                                branchEntity.Add(newObject);
+                                entity.SaveChanges();
+                                return Ok(newObject.branchId);
+                            }
                         }
                         else
                         {
@@ -372,20 +394,18 @@ namespace POS_Server.Controllers
                             tmpBranch.updateUserId = newObject.updateUserId;
                             tmpBranch.isActive = newObject.isActive;
                             entity.SaveChanges();
-                            return newObject.branchId.ToString();
+                            return Ok( newObject.branchId);
                         }
                         // entity.SaveChanges();
                     }
-
                 }
-
                 catch
                 {
-                    return "-1";
+                    return Ok(0);
                 }
             }
             else
-                return "-1";
+                return NotFound();
         }
 
         [HttpPost]
