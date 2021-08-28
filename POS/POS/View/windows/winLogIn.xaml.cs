@@ -222,9 +222,9 @@ namespace POS.View.windows
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                if (logInProcessing)
-                {
-                    logInProcessing = false;
+                //if (logInProcessing)
+                //{
+                //    logInProcessing = false;
                     //awaitSaveBtn(true);
                     clearValidate(txtUserName, p_errorUserName);
                     clearPasswordValidate(txtPassword, p_errorPassword);
@@ -308,8 +308,8 @@ namespace POS.View.windows
                     else
                         showTextBoxValidate(txtUserName, p_errorUserName, tt_errorUserName, "trUserNotFound");
                     //awaitSaveBtn(false);
-                    logInProcessing = true;
-                }
+                    //logInProcessing = true;
+                //}
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }

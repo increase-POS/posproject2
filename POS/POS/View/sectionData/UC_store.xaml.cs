@@ -407,13 +407,16 @@ namespace POS.View
                             store.isActive = 1;
                             store.parentId = Convert.ToInt32(cb_branch.SelectedValue);
 
-                            string s = await storeModel.saveBranch(store);
-                            if (!s.Equals("-1"))
-                            {
-                                AddFreeThone(int.Parse(s));
-                            }
-                            else
+                            int s = int.Parse( await storeModel.saveBranch(store));
+                            if(s == -1) // upgrade message
+                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpgrade"), animation: ToasterAnimation.FadeIn);
+                            else if(s == 0)// an error occure
                                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                            else
+                            {
+                                AddFreeThone(s);
+                            }
+                           
 
                             await RefreshStoresList();
                             Tb_search_TextChanged(null, null);
@@ -660,6 +663,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+                MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
                 if (MainWindow.lang.Equals("en"))
                 {
                     MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());

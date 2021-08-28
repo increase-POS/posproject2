@@ -166,6 +166,7 @@ namespace POS.View
                     Tb_search_TextChanged(null, null);
                 });
 
+                MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }

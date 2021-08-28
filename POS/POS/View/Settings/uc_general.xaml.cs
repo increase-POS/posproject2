@@ -31,7 +31,6 @@ namespace POS.View.Settings
         static SetValues valueModel = new SetValues();
         static UserSetValues usValueModel = new UserSetValues();
         static CountryCode countryModel = new CountryCode();
-
         static SettingCls set = new SettingCls();
         static SetValues language = new SetValues();
         static SetValues tax = new SetValues();
@@ -41,7 +40,6 @@ namespace POS.View.Settings
         static UserSetValues usValue = new UserSetValues();
         static CountryCode region = new CountryCode();
         static List<SetValues> languages = new List<SetValues>();
-
         static int taxId = 0, costId = 0, dateFormId;
         string usersSettingsPermission = "general_usersSettings";
         string companySettingsPermission = "general_companySettings";
@@ -102,8 +100,6 @@ namespace POS.View.Settings
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-
-
                 #region translate
                 if (MainWindow.lang.Equals("en"))
                 {
@@ -118,9 +114,7 @@ namespace POS.View.Settings
 
                 translate();
                 #endregion
-
                 fillRegions();
-
                 #region get default region
                 await getDefaultRegion();
                 if (region != null)
@@ -131,17 +125,13 @@ namespace POS.View.Settings
                     cb_region.Text = region.name;
                 }
                 #endregion
-
                 fillLanguages();
-
                 #region get default language
                 await getDefaultLanguage();
                 if (usLanguage != null)
                     cb_language.SelectedValue = usLanguage.valId;
                 #endregion
-
                 fillCurrencies();
-
                 #region get default currency
                 if (region != null)
                 {
@@ -153,19 +143,16 @@ namespace POS.View.Settings
                     tb_currency.Text = region.currency;
                 }
                 #endregion
-
                 #region get default tax
                 await getDefaultTax();
                 if (tax != null)
                     tb_tax.Text = tax.value;
                 #endregion
-
                 #region get default cost
                 //await getDefaultCost();
                 //if (cost != null)
                 //    tb_storageCost.Text = cost.value;
                 #endregion
-
                 #region fill process type
                 DateTimeFormatInfo dtfi = DateTimeFormatInfo.CurrentInfo;
                 //var typelist = new[] {
@@ -188,7 +175,6 @@ namespace POS.View.Settings
                 //cb_dateForm.SelectedIndex = 0;
 
                 #endregion
-
                 #region get default date form
                 await getDefaultDateForm();
                 if (dateForm != null)
@@ -196,7 +182,7 @@ namespace POS.View.Settings
                 else
                     cb_dateForm.SelectedIndex = -1;
                 #endregion
-
+                MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }

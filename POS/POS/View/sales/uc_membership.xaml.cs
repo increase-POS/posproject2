@@ -249,6 +249,7 @@ namespace POS.View.sales
         {
             try
             {
+                MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
 
 
 

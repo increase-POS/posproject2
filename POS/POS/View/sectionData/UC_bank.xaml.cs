@@ -191,6 +191,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+                MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
 
                 #region translate
                 if (MainWindow.lang.Equals("en"))

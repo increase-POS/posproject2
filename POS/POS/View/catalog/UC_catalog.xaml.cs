@@ -83,15 +83,17 @@ namespace POS.View
                 translate();
                 #endregion
 
-                permission();
+                if (!stopPermission)
+                    permission();
 
-               
+
             }
             catch (Exception ex)
             {
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
+        public bool stopPermission;
         void permission()
         {
             bool loadWindow = false;
@@ -114,6 +116,7 @@ namespace POS.View
                 }
             else
                 Btn_categorie_Click(btn_categories, null);
+            stopPermission = true;
         }
 
         void refreashBackground()
@@ -138,11 +141,11 @@ namespace POS.View
 
         void refreashBachgroundClick(Button btn)
         {
-           
-                refreashBackground();
-                btn.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
-                btn.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
-           
+
+            refreashBackground();
+            btn.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+            btn.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+
         }
 
 
@@ -159,7 +162,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
@@ -176,7 +179,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
@@ -194,7 +197,7 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
@@ -210,7 +213,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
@@ -227,20 +230,36 @@ namespace POS.View
             catch (Exception ex)
             {
 
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
         private async void Ex_Collapsed(object sender, RoutedEventArgs e)
         {
-            int cId = await SectionData.getCloseValueId();
-            SectionData.saveMenuState(cId);
+            try
+            {
+                int cId = await SectionData.getCloseValueId();
+                SectionData.saveMenuState(cId);
+            }
+            catch (Exception ex)
+            {
+
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private async void Ex_Expanded(object sender, RoutedEventArgs e)
         {
-            int oId = await SectionData.getOpenValueId();
-            SectionData.saveMenuState(oId);
+            try
+            {
+                int oId = await SectionData.getOpenValueId();
+                SectionData.saveMenuState(oId);
+            }
+            catch (Exception ex)
+            {
+
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
     }
 }

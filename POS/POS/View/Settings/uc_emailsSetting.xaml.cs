@@ -621,6 +621,7 @@ namespace POS.View.Settings
                 FillSideCombo();
                 await RefreshSysEmailList();
                 Tb_search_TextChanged(null, null);
+                MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }

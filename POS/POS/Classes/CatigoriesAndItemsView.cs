@@ -260,7 +260,15 @@ namespace POS.Classes
         }
         #region Catalog
         public int pastCatalogCard = -1;
-        
+         /// ////////////////////drag and drop///////////////////////////////////////
+        List<Category> newCategories = new List<Category>();
+        List<Categoryuser> categoriesUser = new List<Categoryuser>();
+        int _columnCount , index = 0 ;
+        Category category = new Category();
+        Category categoryModel = new Category();
+        Categoryuser categorUserModel = new Categoryuser();
+        /// ////////////////////////////////////////////////////////////
+       
         public void FN_refrishCatalogCard(List<Category> categories ,int columnCount)
         {
             gridCatigories.Children.Clear();
@@ -295,6 +303,8 @@ namespace POS.Classes
                 itemCardView.category = item;
                 itemCardView.row = row;
                 itemCardView.column = column;
+                newCategories = categories;
+                _columnCount = columnCount;
                 FN_createCatalogCard(itemCardView, columnCount);
 
 
@@ -338,9 +348,61 @@ namespace POS.Classes
             gridCatigories.Children.Add(uc);
             uc.MouseDoubleClick += new MouseButtonEventHandler(catalogCard_MouseDoubleClick);
             //uc.MouseEnter += new MouseEventHandler(UserControl_MouseEnter);
+            //////////////////darg and drop////////////////////
+            uc.AllowDrop = true;
+            uc.MouseDown += this.ucMouseDown;
+            uc.DragEnter += this.ucDragEnter;
+            uc.Drop += this.ucDrop;
+            ////////////////////////////////////////////////////
             return uc;
         }
+      
+        ////////////////darg and drop events/////////////////////
+        private async void ucDrop(object sender, DragEventArgs e)
+        {
+            //get dropped id
+            int curIndex = newCategories.FindIndex(c => c.categoryId == (sender as UC_squareCard).ContentId);
+            //get dropped category
+            category = await categoryModel.GetCategoryByID((sender as UC_squareCard).ContentId);
+            //get dragged category
+            Category dragedCategory = await categoryModel.GetCategoryByID(Convert.ToInt32(e.Data.GetData(DataFormats.Text , true)));
+            //set dropped category
+            newCategories[curIndex] = dragedCategory;
+            //set dragged category
+            newCategories[index] = category;
+            FN_refrishCatalogCard(newCategories , _columnCount);
+            int i = 0;
+            foreach(var c in newCategories)
+            {
+                i++;
+                Categoryuser catUser = new Categoryuser();
+                catUser.id = c.id.Value;
+                catUser.userId = MainWindow.userID.Value;
+                catUser.categoryId = c.categoryId;
+                catUser.sequence = i;
+                categoriesUser.Add(catUser);
+            }
+            //await categorUserModel.UpdateCatUserList(MainWindow.userID.Value, categoriesUser);
 
+
+        }
+
+        private void ucDragEnter(object sender, DragEventArgs e)
+        {
+            e.Effects = DragDropEffects.Copy;
+        }
+       
+        private void ucMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                //get dragged id
+                index = newCategories.FindIndex(c => c.categoryId == (sender as UC_squareCard).ContentId);
+                DragDrop.DoDragDrop(sender as UC_squareCard, (sender as UC_squareCard).ContentId.ToString(), DragDropEffects.All);
+              
+            }
+        }
+        ////////////////////////////////////////////////////////////
         void catalogCard_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             UC_squareCard uc = (UC_squareCard)sender;

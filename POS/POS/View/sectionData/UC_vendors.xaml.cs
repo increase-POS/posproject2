@@ -121,9 +121,10 @@ namespace POS.View
             countrynum = await countrycodes.GetAllCountries();
             return countrynum;
         }
-        private async void fillCountries()
+        private async Task<bool> fillCountries()
         {
-            if (countrynum is null)
+          
+                if (countrynum is null)
                 await RefreshCountry();
 
             cb_areaPhone.ItemsSource = countrynum.ToList();
@@ -142,6 +143,7 @@ namespace POS.View
             cb_areaPhone.SelectedValue = MainWindow.Region.countryId;
             cb_areaFax.SelectedValue = MainWindow.Region.countryId;
 
+            return true;
         }
 
         async Task<IEnumerable<City>> RefreshCity()
@@ -149,10 +151,11 @@ namespace POS.View
             citynum = await cityCodes.Get();
             return citynum;
         }
-        private async void fillCity()
+        private async Task<bool> fillCity()
         {
             if (citynum is null)
                 await RefreshCity();
+            return true;
         }
 
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
@@ -261,6 +264,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+                MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
                 // for pagination onTop Always
                 btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
                 //CreateGridCardContainer();
@@ -286,9 +290,9 @@ namespace POS.View
                     Tb_search_TextChanged(null, null);
                 });
 
-                fillCountries();
+               await fillCountries();
 
-                fillCity();
+                await fillCity();
 
                 Keyboard.Focus(tb_name);
 
@@ -298,6 +302,7 @@ namespace POS.View
                 BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
                 brush.ImageSource = temp;
                 img_vendor.Background = brush;
+                MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }

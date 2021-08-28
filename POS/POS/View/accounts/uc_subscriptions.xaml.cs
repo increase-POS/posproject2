@@ -116,7 +116,7 @@ namespace POS.View.accounts
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-
+            MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
         }
 
         private void Tb_validateEmptyLostFocus(object sender, RoutedEventArgs e)

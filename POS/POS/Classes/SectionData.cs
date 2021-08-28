@@ -725,27 +725,28 @@ namespace POS.Classes
                 else
                     _sender = sender.GetType().Name;
 
-            ErrorClass errorClass = new ErrorClass();
-            errorClass.num = ex.HResult.ToString();
-            errorClass.msg = ex.Message;
-            errorClass.windowName = _window;
-            errorClass.sender = _sender;
-            errorClass.posId = MainWindow.posID;
-            errorClass.branchId = MainWindow.branchID;
-            errorClass.createUserId = MainWindow.userLogin.userId;
-
-
-        await errorClass.Save(errorClass);
 
             //Message
             if (ex.HResult == -2146233088)
-                Toaster.ShowWarning(MainWindow.mainWindow, message: MainWindow.resourcemanager.GetString("trNoInternetConnection"), animation: ToasterAnimation.FadeIn);
+                Toaster.ShowError(MainWindow.mainWindow, message: MainWindow.resourcemanager.GetString("trNoInternetConnection"), animation: ToasterAnimation.FadeIn);
             else
-                Toaster.ShowWarning(MainWindow.mainWindow, message: ex.HResult + " || " + ex.Message, animation: ToasterAnimation.FadeIn);
+                Toaster.ShowError(MainWindow.mainWindow, message: ex.HResult + " || " + ex.Message, animation: ToasterAnimation.FadeIn);
+
+
+
+                ErrorClass errorClass = new ErrorClass();
+                errorClass.num = ex.HResult.ToString();
+                errorClass.msg = ex.Message;
+                errorClass.windowName = _window;
+                errorClass.sender = _sender;
+                errorClass.posId = MainWindow.posID;
+                errorClass.branchId = MainWindow.branchID;
+                errorClass.createUserId = MainWindow.userLogin.userId;
+                await errorClass.Save(errorClass);
             }
-            catch (Exception exception)
+            catch  
             {
-                MessageBox.Show(exception.Message.ToString());
+
             }
         }
         static public void StartAwait(Grid grid)

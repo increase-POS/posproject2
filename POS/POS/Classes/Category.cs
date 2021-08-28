@@ -29,6 +29,7 @@ namespace POS.Classes
         public Boolean canDelete { get; set; }
         public Nullable<int> userId { get; set; }
         public Nullable<int> sequence { get; set; }
+        public Nullable<int> id { get; set; }
 
         // adding or editing  category by calling API metod "save"
         // if categoryId = 0 will call save else call edit

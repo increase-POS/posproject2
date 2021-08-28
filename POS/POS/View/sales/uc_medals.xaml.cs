@@ -94,6 +94,7 @@ namespace POS.View.sales
             {//load
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+                MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
 
                 if (MainWindow.lang.Equals("en"))
                 {

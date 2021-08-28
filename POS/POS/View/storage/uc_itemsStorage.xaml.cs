@@ -115,6 +115,7 @@ namespace POS.View.storage
                 };
 
                 #endregion
+                MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }

@@ -42,6 +42,8 @@ namespace POS
         public static ResourceManager resourcemanagerreport;
         bool menuState = false;
         //ToolTip="{Binding Properties.Settings.Default.Lang}"
+        public static string firstPath = "accounts";
+        public static string secondPath = "bonds";
         public static string lang;
         public static string Reportlang = "en";
         public static string companyName;
@@ -55,16 +57,13 @@ namespace POS
         internal static int? userID;
         internal static User userLogin;
         internal static int? userLogInID;
-        internal static int? posID = 4;
-        //مخزن الجميلية الرئيسي
-        internal static int? branchID = 2;
-        //مخزن الجميلية الفرقان
-        //internal static int? branchID = 12;
+        internal static int? posID = 2;
+        internal static int? branchID;
         bool isHome = false;
-        internal static int? isInvTax = 1;
-        internal static decimal? tax = 2;
+        internal static int? isInvTax;
+        internal static decimal? tax;
         internal static string dateFormat;
-        internal static decimal? StorageCost = 100;
+        internal static decimal? StorageCost;
         public static int Idletime = 5;
         public static int threadtime = 5;
         public static string menuIsOpen = "close";
@@ -369,7 +368,7 @@ namespace POS
         }
 
 
-        bool loadingDefaultPath(string first = "accounts", string second = "bonds")
+        bool loadingDefaultPath(string first, string second)
         {
             bool load = false;
             if (!string.IsNullOrEmpty(first) && !string.IsNullOrEmpty(second))
@@ -380,51 +379,44 @@ namespace POS
                         if (button.Tag.ToString() == first && MainWindow.groupObject.HasPermission(first, MainWindow.groupObjects))
                         {
                             button.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
-                            //load = true;
+                            load = true;
                             break;
                         }
                 }
 
                 if (first == "home")
-                    load = loadingSecondLevel(second, uc_home.Instance);
+                      loadingSecondLevel(second, uc_home.Instance);
                 if (first == "catalog")
-                    load = loadingSecondLevel(second, UC_catalog.Instance);
+                      loadingSecondLevel(second, UC_catalog.Instance);
                 if (first == "storage")
-                    load = loadingSecondLevel(second, POS.View.uc_storage.Instance);
+                      loadingSecondLevel(second, POS.View.uc_storage.Instance);
                 if (first == "purchase")
-                    load = loadingSecondLevel(second, uc_purchases.Instance);
+                     loadingSecondLevel(second, uc_purchases.Instance);
                 if (first == "sales")
-                    load = loadingSecondLevel(second, uc_sales.Instance);
+                     loadingSecondLevel(second, uc_sales.Instance);
                 if (first == "accounts")
-                    load = loadingSecondLevel(second, uc_accounts.Instance);
+                    loadingSecondLevel(second, uc_accounts.Instance);
                 if (first == "reports")
-                    load = loadingSecondLevel(second, uc_reports.Instance);
+                     loadingSecondLevel(second, uc_reports.Instance);
                 if (first == "sectionData")
-                    load = loadingSecondLevel(second, UC_SectionData.Instance);
+                     loadingSecondLevel(second, UC_SectionData.Instance);
                 if (first == "settings")
-                    load = loadingSecondLevel(second, uc_settings.Instance);
+                     loadingSecondLevel(second, uc_settings.Instance);
 
             }
             return load;
         }
-        bool loadingSecondLevel(string second , UserControl userControl)
+
+        void loadingSecondLevel(string second , UserControl userControl)
         {
-            foreach (Border border in FindControls.FindVisualChildren<Border>(userControl))
-            {
-                if (border.Tag != null)
-                    if (border.Tag.ToString() == second && MainWindow.groupObject.HasPermission(second, MainWindow.groupObjects))
-                    {
-                        Button button = FindControls.FindVisualChildren<Button>(this).Where(x => x.Name == "btn_" + border.Tag).FirstOrDefault();
-                        button.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
-                        return true;
-                    }
-            }
-            return false;
+            userControl.RaiseEvent(new RoutedEventArgs(FrameworkElement.LoadedEvent));
+            var button = userControl.FindName("btn_" + second) as Button;
+            button.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
         }
         void permission()
         {
             bool loadWindow = false;
-            loadWindow = loadingDefaultPath();
+            loadWindow = loadingDefaultPath(firstPath,secondPath);
             if (!SectionData.isAdminPermision())
                 foreach (Button button in FindControls.FindVisualChildren<Button>(this))
                 {

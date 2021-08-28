@@ -83,6 +83,7 @@ namespace POS.View.storage
                 }
                 clearInventory();
                 timer.Stop();
+                MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }

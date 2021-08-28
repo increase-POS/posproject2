@@ -91,7 +91,8 @@ namespace POS.View
                 translate();
                 #endregion
 
-                permission();
+                if (!stopPermission)
+                    permission();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -102,6 +103,7 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
+        public bool stopPermission;
         void permission()
         {
             bool loadWindow = false;
@@ -124,6 +126,7 @@ namespace POS.View
                 }
             else
                 Btn_receiptInvoice_Click(btn_reciptInvoice, null);
+            stopPermission = true;
         }
         void refreashBackground()
         {
@@ -305,14 +308,28 @@ namespace POS.View
 
         private async void Ex_Collapsed(object sender, RoutedEventArgs e)
         {
-            int cId = await SectionData.getCloseValueId();
-            SectionData.saveMenuState(cId);
+            try
+            {
+                int cId = await SectionData.getCloseValueId();
+                SectionData.saveMenuState(cId);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private async void Ex_Expanded(object sender, RoutedEventArgs e)
         {
-            int oId = await SectionData.getOpenValueId();
-            SectionData.saveMenuState(oId);
+            try
+            {
+                int oId = await SectionData.getOpenValueId();
+                SectionData.saveMenuState(oId);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
     }
 }

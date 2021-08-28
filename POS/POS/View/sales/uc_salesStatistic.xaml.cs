@@ -62,6 +62,7 @@ namespace POS.View.sales
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
 
+                MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
             SectionData.defaultDatePickerStyle(dp_startSearchDate);
             SectionData.defaultDatePickerStyle(dp_endSearchDate);
 

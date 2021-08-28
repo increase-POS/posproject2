@@ -651,7 +651,10 @@ namespace POS.View.accounts
                 await RefreshBondsList();
                 Tb_search_TextChanged(null, null);
 
-                if(sender != null)
+
+                MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
+
+                if (sender != null)
                     SectionData.EndAwait(grid_ucBonds);
             }
             catch (Exception ex)
@@ -732,17 +735,7 @@ namespace POS.View.accounts
             dg_bonds.Columns[3].Header = MainWindow.resourcemanager.GetString("trCashTooltip");
             dg_bonds.Columns[4].Header = MainWindow.resourcemanager.GetString("trDocDateTooltip");
 
-            //tt_number.Content = MainWindow.resourcemanager.GetString("trDocNumTooltip");
-            //tt_depositorV.Content = MainWindow.resourcemanager.GetString("trRecipientTooltip");
-            //tt_depositorC.Content = MainWindow.resourcemanager.GetString("trRecipientTooltip");
-            //tt_depositorU.Content = MainWindow.resourcemanager.GetString("trRecipientTooltip");
-            //tt_paymentType.Content = MainWindow.resourcemanager.GetString("trPaymentTypeTooltip");
-            //tt_card.Content = MainWindow.resourcemanager.GetString("trCardTooltip");
-            //tt_amount.Content = MainWindow.resourcemanager.GetString("trCashTooltip");
-            //tt_deserveDate.Content = MainWindow.resourcemanager.GetString("trDocDateTooltip");
-            //tt_search.Content = MainWindow.resourcemanager.GetString("trSearch");
-            //tt_notes.Content = MainWindow.resourcemanager.GetString("trNote");
-
+             
             tt_clear.Content = MainWindow.resourcemanager.GetString("trClear");
             tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
             tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");

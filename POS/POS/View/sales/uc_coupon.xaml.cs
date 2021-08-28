@@ -95,6 +95,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+                MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
                 //load
                 var dislist = new[] {
             new { Text = MainWindow.resourcemanager.GetString("trValueDiscount"), Value = "1" },

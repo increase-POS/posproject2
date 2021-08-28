@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:POS.View"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"  Tag="customers"
                xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              d:DesignHeight="700" d:DesignWidth="985" Loaded="UserControl_Loaded" LostFocus="UserControl_LostFocus">
 
@@ -798,22 +798,29 @@
                                 <TextBlock  Text="More Information" Foreground="#737373"  FontSize="10" VerticalAlignment="Center" x:Name="txt_moreInformation" Margin="5"/>
                                 <Separator Background="#999999"  Margin="5"  VerticalAlignment="Center" />
                             </DockPanel>
-                            <TextBox x:Name="tb_upperLimit" Grid.Row="8" Text="{Binding maxDeserve, Mode=OneWay}" Padding="10,0,5,0"  
+                            <StackPanel Grid.Row="8" Orientation="Horizontal" Margin="10,5,10,5">
+                                <TextBlock   x:Name="txt_isOpenUpperLimit"
+                                   Margin="0,0,5,0" Text="Open" Foreground="#6e6e6e"
+                                   HorizontalAlignment="Left" VerticalAlignment="Center"
+                                   FontSize="12"/>
+                                <ToggleButton DockPanel.Dock="Right"  x:Name="tgl_isOpenUpperLimit"  
+                                      Checked="Tgl_customerIsActive_Checked" 
+                                      Unchecked="Tgl_customerIsActive_Unchecked"
+                                        VerticalAlignment="Center" Padding="10,15,5,5"  IsChecked="True" 
+                                      Margin="0" Height="13" Width="28"  TabIndex="15" />
+                              
+                                <TextBox x:Name="tb_upperLimit" Grid.Row="8" Text="{Binding maxDeserve, Mode=OneWay}" Padding="10,0,5,0"  
                                       Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="The upper limit of the entitlement..."    
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                  BorderBrush="AliceBlue" MaxLength="100" PreviewTextInput="NumberValidationTextBox"
                       TabIndex="12"
                     materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                  Height="40"   Margin="10,5,10,5" Grid.ColumnSpan="2" PreviewKeyDown="tb_upperLimit_PreviewKeyDown" >
-                                <!--<TextBox.ToolTip>
-                                    <ToolTip x:Name="tt_upperLimit" Content="UpperLimit"
-                                              Placement="left" 
-                                              HorizontalOffset="35"
-                                              PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="20"/>
-                                </TextBox.ToolTip>-->
-                            </TextBox>
+                  Height="40"   Margin="5,5,0,5" Grid.ColumnSpan="2" PreviewKeyDown="tb_upperLimit_PreviewKeyDown" />
+                            </StackPanel>
+                            
+
+
 
                             <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed" 

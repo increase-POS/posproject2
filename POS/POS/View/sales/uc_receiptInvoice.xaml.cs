@@ -233,6 +233,7 @@ namespace POS.View
 
                  if (sender != null)
                     SectionData.StartAwait(grid_main);
+                MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
                 MainWindow.mainWindow.KeyDown += HandleKeyPress;
                 tb_moneyIcon.Text = MainWindow.Currency;
                 tb_moneyIconTotal.Text = MainWindow.Currency;
@@ -836,6 +837,7 @@ namespace POS.View
                 invoice.branchCreatorId = MainWindow.branchID.Value;
                 invoice.posId = MainWindow.posID.Value;
             }
+          
             if (invoice.invType != "s" || invoice.invoiceId == 0)
             {
                 invoice.posId = MainWindow.posID;
@@ -865,13 +867,14 @@ namespace POS.View
                     invoice.shippingCompanyId = (int)cb_company.SelectedValue;
                 if (cb_user.SelectedIndex != -1)
                     invoice.shipUserId = (int)cb_user.SelectedValue;
+                
                 invoice.paid = 0;
                 invoice.deserved = invoice.totalNet;
                 invoice.createUserId = MainWindow.userID;
                 invoice.updateUserId = MainWindow.userID;
 
                 // build invoice NUM 
-                if (invoice.invNumber == null || invoice.invType == "or" || invoice.invType == "q")
+                if (invoice.invNumber == null || invoice.invType == "or" || invoice.invType == "q" || invType == "s")
                 {
                     invoice.invNumber = await invoice.generateInvNumber("si");
                 }
@@ -882,9 +885,7 @@ namespace POS.View
                 int invoiceId = int.Parse(await invoiceModel.saveInvoice(invoice));
                 invoice.invoiceId = invoiceId;
                 if (invoiceId == -1)// إظهار رسالة الترقية
-                {
-
-                }
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpgrade"), animation: ToasterAnimation.FadeIn);
                 else if (invoiceId == 0) // an error occure
                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                 else

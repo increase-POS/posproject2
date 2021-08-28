@@ -280,6 +280,7 @@ namespace POS.View
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
+                MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
                 var dislist = new[] {
             new { Text = MainWindow.resourcemanager.GetString("trValueDiscount"), Value = "1" },
             new { Text = MainWindow.resourcemanager.GetString("trPercentageDiscount"), Value = "2" },

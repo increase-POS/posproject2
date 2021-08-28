@@ -45,7 +45,8 @@ namespace POS.View.accounts
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+
+        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             #region menu state
             string menuState = MainWindow.menuIsOpen;
@@ -73,17 +74,21 @@ namespace POS.View.accounts
                 }
                 translate();
                 #endregion
+                if(!stopPermission)
                 permission();
             }
             catch (Exception ex)
             {
                 SectionData.ExceptionMessage(ex, this, sender);
             }
+            //await _loaded(sender);
         }
+        public bool stopPermission;
+         
         void permission()
         {
             bool loadWindow = false;
-            if (!SectionData.isAdminPermision())
+                if (!SectionData.isAdminPermision())
                 foreach (Border border in FindControls.FindVisualChildren<Border>(this))
                 {
                     if (border.Tag != null)
@@ -102,7 +107,7 @@ namespace POS.View.accounts
                 }
             else
                 Btn_pos_Click(btn_posAccounting, null);
-
+            stopPermission = true;
         }
         private void translate()
         {
@@ -217,8 +222,8 @@ namespace POS.View.accounts
 
                 grid_main.Children.Clear();
                 grid_main.Children.Add(uc_bonds.Instance);
-                Button button = sender as Button;
-                MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
+                //Button button = sender as Button;
+                //MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
             }
             catch (Exception ex)
             {
@@ -291,14 +296,28 @@ namespace POS.View.accounts
 
         private async void Ex_Collapsed(object sender, RoutedEventArgs e)
         {
-            int cId = await SectionData.getCloseValueId();
+            try
+            {
+                int cId = await SectionData.getCloseValueId();
             SectionData.saveMenuState(cId);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private async void Ex_Expanded(object sender, RoutedEventArgs e)
         {
-            int oId = await SectionData.getOpenValueId();
+                try
+                {
+                    int oId = await SectionData.getOpenValueId();
             SectionData.saveMenuState(oId);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
     }
 }
