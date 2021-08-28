@@ -1174,7 +1174,7 @@ namespace POS.View.sales
                     billDetails[dg_billDetails.SelectedIndex].itemUnitId = (int)cmb.SelectedValue;
                     //var unit = itemUnits.ToList().Find(x => x.itemUnitId == (int)cmb.SelectedValue);
                     var unit = await itemUnitModel.GetById((int)cmb.SelectedValue);
-                    int availableAmount = await itemLocationModel.getAmountInBranch(itemUnitId, MainWindow.branchID.Value);
+                    //int availableAmount = await itemLocationModel.getAmountInBranch(itemUnitId, MainWindow.branchID.Value);
 
                     int oldCount = 0;
                     long newCount = 0;
@@ -1183,19 +1183,19 @@ namespace POS.View.sales
 
                     //"tb_amont"
                     tb = dg_billDetails.Columns[4].GetCellContent(dg_billDetails.Items[dg_billDetails.SelectedIndex]) as TextBlock;
-                    tb.Text = availableAmount.ToString();
+                    //tb.Text = availableAmount.ToString();
 
                     oldCount = billDetails[dg_billDetails.SelectedIndex].Count;
                     oldPrice = billDetails[dg_billDetails.SelectedIndex].Price;
 
-                    if (availableAmount < oldCount)
-                    {
-                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountNotAvailableToolTip"), animation: ToasterAnimation.FadeIn);
-                        newCount = availableAmount;
-                        tb = dg_billDetails.Columns[4].GetCellContent(dg_billDetails.Items[dg_billDetails.SelectedIndex]) as TextBlock;
-                        tb.Text = availableAmount.ToString();
-                    }
-                    else
+                    //if (availableAmount < oldCount)
+                    //{
+                    //    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountNotAvailableToolTip"), animation: ToasterAnimation.FadeIn);
+                    //    newCount = availableAmount;
+                    //    tb = dg_billDetails.Columns[4].GetCellContent(dg_billDetails.Items[dg_billDetails.SelectedIndex]) as TextBlock;
+                    //    tb.Text = availableAmount.ToString();
+                    //}
+                    //else
                         newCount = oldCount;
 
                     // old total for changed item

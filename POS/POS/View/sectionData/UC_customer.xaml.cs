@@ -330,9 +330,8 @@ namespace POS.View
                             int s =int.Parse( await agentModel.saveAgent(agent));
 
                             if (s == -1)// إظهار رسالة الترقية
-                            {
+                                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpgrade"), animation: ToasterAnimation.FadeIn);
 
-                            }
                             else if (s == 0) // an error occure
                                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                             else

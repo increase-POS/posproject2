@@ -380,10 +380,9 @@ namespace POS.View
                             int s = await posModel.savePos(pos);
 
                             if(s == -1)// إظهار رسالة الترقية
-                            {
+                                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpgrade"), animation: ToasterAnimation.FadeIn);
 
-                            }
-                            else if(s == 0) // an error occure
+                            else if (s == 0) // an error occure
                                   Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                             else
                             {

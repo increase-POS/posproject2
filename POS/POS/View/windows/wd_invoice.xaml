@@ -5,11 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:POS.View.windows"
         mc:Ignorable="d" KeyDown="HandleKeyPress"
-             xmlns:converters="clr-namespace:POS.converters"
-             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-         WindowStyle="None" WindowStartupLocation="CenterScreen"
-        ResizeMode="NoResize" Margin="0"
-      Height="400" Width="600"   Background="Transparent" AllowsTransparency="True"
+        xmlns:converters="clr-namespace:POS.converters"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        WindowStyle="None" WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize" Margin="0" 
+        Height="400" Width="600"   Background="Transparent" AllowsTransparency="True"
         Loaded="Window_Loaded" MouseDown="Window_MouseDown">
     <Grid Grid.Column="1" Grid.Row="1"   x:Name="grid_ucInvoice" >
         <Grid.RowDefinitions>
@@ -66,7 +66,7 @@
 	c0.2,0,0.3,0.1,0.4,0.1c0,0.1,0.1,0.3,0.1,0.4C16.4,13.5,16.4,13.6,16.3,13.7z M16.3,11.8c-0.1,0-0.3,0.1-0.4,0.1h-4.3
 	c-0.2,0-0.3,0-0.4-0.1c0-0.1-0.1-0.2-0.1-0.4s0-0.3,0.1-0.4c0.1,0,0.3-0.1,0.4-0.1h4.3c0.2,0,0.3,0.1,0.4,0.1c0,0.1,0.1,0.2,0.1,0.4
 	S16.4,11.7,16.3,11.8z"/>
-                        <TextBlock Text="Invoices" x:Name="txt_Invoices" Foreground="White" 
+                        <TextBlock Text="Invoice" x:Name="txt_Invoices" Foreground="White" 
                                    HorizontalAlignment="Left" VerticalAlignment="Center" 
                               Grid.Column="1"      Margin="5,0"/>
                     </Grid>

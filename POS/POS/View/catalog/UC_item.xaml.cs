@@ -604,9 +604,8 @@ namespace POS.View
 
                         int res =int.Parse( await itemModel.saveItem(item));
                         if (res == -1)// إظهار رسالة الترقية
-                        {
+                            Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpgrade"), animation: ToasterAnimation.FadeIn);
 
-                        }
                         else if (res == 0) // an error occure
                             Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                         else

@@ -78,7 +78,6 @@ namespace POS.View.windows
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
-
         private void Txb_search_TextChanged(object sender, TextChangedEventArgs e)
         {
             try
@@ -125,10 +124,9 @@ namespace POS.View.windows
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
-
         private void translat()
         {
-            txt_Invoices.Text = MainWindow.resourcemanager.GetString("trInvoices");
+            //txt_Invoices.Text = MainWindow.resourcemanager.GetString("trInvoices");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(txb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
 
             dg_Invoice.Columns[0].Header = MainWindow.resourcemanager.GetString("trInvoiceNumber");
@@ -137,7 +135,6 @@ namespace POS.View.windows
 
             btn_select.Content = MainWindow.resourcemanager.GetString("trSelect");
         }
-
         private async Task refreshInvoices()
         {
             if (userId != 0 && (invoiceStatus == "" || invoiceStatus == null))/// to display draft invoices
@@ -194,6 +191,7 @@ namespace POS.View.windows
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
+
 
     }
 }

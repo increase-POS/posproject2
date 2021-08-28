@@ -885,7 +885,7 @@ namespace POS.View
                 int invoiceId = int.Parse(await invoiceModel.saveInvoice(invoice));
                 invoice.invoiceId = invoiceId;
                 if (invoiceId == -1)// إظهار رسالة الترقية
-                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpgrade"), animation: ToasterAnimation.FadeIn);
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpgrade"), animation: ToasterAnimation.FadeIn);
                 else if (invoiceId == 0) // an error occure
                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                 else
