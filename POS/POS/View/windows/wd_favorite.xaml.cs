@@ -76,7 +76,7 @@ namespace POS.View.windows
         int index = 0;
         private async void getCategories()
         {
-           categoryLst = await categoryModel.GetAllCategories();
+           categoryLst = await categoryModel.GetAllCategories(MainWindow.userID.Value);
 
             foreach (var c in categoryLst)
             {

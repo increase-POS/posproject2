@@ -65,7 +65,7 @@ namespace POS.Classes
 
         }
 
-        public async Task<string> savePos(Pos pos)
+        public async Task<int> savePos(Pos pos)
         {
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
@@ -93,9 +93,9 @@ namespace POS.Classes
                 {
                     var message = await response.Content.ReadAsStringAsync();
                     message = JsonConvert.DeserializeObject<string>(message);
-                    return message;
+                    return int.Parse( message);
                 }
-                return "";
+                return 0;
             }
         }
 

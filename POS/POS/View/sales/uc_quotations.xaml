@@ -477,7 +477,7 @@
                                             Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                             BorderBrush="#f8f8f8"
                                              PreviewKeyDown="space_PreviewKeyDown"
-                                               Height="40"   />
+                                               Height="40"  TextChanged="tb_discount_TextChanged"  />
 
 
                                 <Path Fill="#E81123" Stretch="Fill" Margin="5,5,25,5"
@@ -499,7 +499,7 @@
                                  materialDesign:HintAssist.Hint="type discount..." 
                                         Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                TextBlock.FontSize="12" 
-                                  Height="40"  
+                                  Height="40"  SelectionChanged="Cb_typeDiscount_SelectionChanged"
                                       Background="#f8f8f8" 
                                BorderBrush="#737373"       BorderThickness="0" 
                                 FontFamily="Segoe UI"   
@@ -608,7 +608,7 @@
                                     TextBlock.FontSize="12"   Background="#f8f8f8" 
                                     Grid.Column="1" Height="40"   Margin="5,5"
                                     BorderBrush="#737373" BorderThickness="0"
-                                           />
+                                       LostFocus="input_LostFocus"    />
                                 <Path Fill="#E81123" Stretch="Fill" Margin="5,5,45,5"
                                           Name="p_errorCustomer"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   

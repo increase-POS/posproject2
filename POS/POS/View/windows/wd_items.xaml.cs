@@ -137,7 +137,7 @@ namespace POS.View.windows
         /// <returns></returns>
         async Task<IEnumerable<Category>> RefrishCategories()
         {
-            categories = await categoryModel.GetAllCategories();
+            categories = await categoryModel.GetAllCategories(MainWindow.userID.Value);
             return categories;
         }
         async void RefrishCategoriesCard()

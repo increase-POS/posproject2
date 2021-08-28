@@ -375,15 +375,20 @@ namespace POS.View
                             pos.isActive = 1;
                             pos.note = tb_notes.Text;
 
-                            string s = await posModel.savePos(pos);
+                            int s = await posModel.savePos(pos);
 
-                            if (s.Equals("Pos Is Added Successfully"))
+                            if(s == -1)// إظهار رسالة الترقية
+                            {
+
+                            }
+                            else if(s == 0) // an error occure
+                                  Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                            else
                             {
                                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                                 Btn_clear_Click(null, null);
                             }
-                            else
-                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                            
 
                             await RefreshPosList();
                             Tb_search_TextChanged(null, null);
@@ -434,9 +439,9 @@ namespace POS.View
                             pos.updateUserId = MainWindow.userID.Value;
                             pos.note = tb_notes.Text;
 
-                            string s = await posModel.savePos(pos);
+                            int s = await posModel.savePos(pos);
 
-                            if (s.Equals("Pos Is Updated Successfully"))
+                            if (s > 0)
                                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
                             else
                                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
@@ -540,9 +545,9 @@ namespace POS.View
 
             pos.isActive = 1;
 
-            string s = await posModel.savePos(pos);
+            int s = await posModel.savePos(pos);
 
-            if (s.Equals("Pos Is Updated Successfully"))
+            if (s > 0)
                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
             else
                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);

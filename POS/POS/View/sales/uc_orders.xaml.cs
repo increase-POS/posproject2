@@ -92,6 +92,8 @@ namespace POS.View.sales
         static private int _SelectedCustomer = -1;
         static private int _SelectedCompany = -1;
         static private int _SelectedUser = -1;
+        static private int _SelectedDiscountType = -1;
+
         // for barcode
         DateTime _lastKeystroke = new DateTime(0);
         static private string _BarcodeStr = "";
@@ -147,6 +149,7 @@ namespace POS.View.sales
             txt_coupon.Text = MainWindow.resourcemanager.GetString("trCoupon");
             txt_customer.Text = MainWindow.resourcemanager.GetString("trCustomer");
             txt_delivery.Text = MainWindow.resourcemanager.GetString("trDelivery");
+            txt_discount.Text = MainWindow.resourcemanager.GetString("trDiscount");
 
             txt_waitConfirmUser.Text = MainWindow.resourcemanager.GetString("trWaitConfirmUser");
             txt_printInvoice.Text = MainWindow.resourcemanager.GetString("trPrint");
@@ -165,6 +168,8 @@ namespace POS.View.sales
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_note, MainWindow.resourcemanager.GetString("trNoteHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_company, MainWindow.resourcemanager.GetString("trCompanyHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_user, MainWindow.resourcemanager.GetString("trUserHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_discount, MainWindow.resourcemanager.GetString("trDiscountHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_typeDiscount, MainWindow.resourcemanager.GetString("trDiscountTypeHint"));
 
             btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
         }
@@ -195,6 +200,7 @@ namespace POS.View.sales
 
 
                 translate();
+                configureDiscountType();
                 setNotifications();
                 await RefrishItems();
                 await RefrishCustomers();
@@ -323,8 +329,21 @@ namespace POS.View.sales
                     md_docImage.Badge = docCount.ToString();
             }
         }
-      
+
         #endregion
+        private void configureDiscountType()
+        {
+            var dislist = new[] {
+            new { Text = "", Value = -1 },
+            new { Text = MainWindow.resourcemanager.GetString("trValueDiscount"), Value = 1 },
+            new { Text = MainWindow.resourcemanager.GetString("trPercentageDiscount"), Value = 2 },
+             };
+
+            cb_typeDiscount.DisplayMemberPath = "Text";
+            cb_typeDiscount.SelectedValuePath = "Value";
+            cb_typeDiscount.ItemsSource = dislist;
+            cb_typeDiscount.SelectedIndex = 0;
+        }
         async Task RefrishCustomers()
         {
             customers = await agentModel.GetAgentsActive("c");
@@ -689,6 +708,7 @@ namespace POS.View.sales
             _SequenceNum = 0;
             _DeliveryCost = 0;
             _SelectedCustomer = -1;
+            _SelectedDiscountType = 0;
             _InvoiceType = "ord";
             invoice = new Invoice();
             selectedCoupons.Clear();
@@ -706,7 +726,8 @@ namespace POS.View.sales
             cb_company.SelectedItem = "";
             cb_user.SelectedIndex = -1;
             cb_user.SelectedItem = "";
-
+            tb_discount.Clear();
+            cb_typeDiscount.SelectedIndex = 0;
             if (MainWindow.isInvTax == 1)
                 tb_taxValue.Text = MainWindow.tax.ToString();
             else
@@ -804,6 +825,10 @@ namespace POS.View.sales
                 invoice.shippingCompanyId = (int)cb_company.SelectedValue;
             if (cb_user.SelectedIndex != -1)
                 invoice.shipUserId = (int)cb_user.SelectedValue;
+            if (cb_typeDiscount.SelectedIndex != -1)
+                invoice.manualDiscountType = cb_typeDiscount.SelectedValue.ToString();
+            if (tb_discount.Text != "")
+                invoice.manualDiscountValue = decimal.Parse(tb_discount.Text);
             invoice.createUserId = MainWindow.userID;
             invoice.updateUserId = MainWindow.userID;
 
@@ -900,20 +925,54 @@ namespace POS.View.sales
                 }
             }
         }
+        private void input_LostFocus(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string name = sender.GetType().Name;
+                if (name == "ComboBox")
+                {
+                    if ((sender as ComboBox).Name == "cb_branch")
+                        SectionData.validateEmptyComboBox((ComboBox)sender, p_errorBranch, tt_errorBranch, "trEmptyBranchToolTip");
+                    if ((sender as ComboBox).Name == "cb_customer")
+                        SectionData.validateEmptyComboBox((ComboBox)sender, p_errorCustomer, tt_errorCustomer, "trEmptyCustomerToolTip");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
         private void refreshTotalValue()
         {
-            #region calculate discount value
+           
             _Discount = 0;
-            foreach (CouponInvoice coupon in selectedCoupons)
+            decimal manualDiscount = 0;
+            if (_Sum > 0)
             {
-                string discountType = coupon.discountType.ToString();
-                decimal discountValue = (decimal)coupon.discountValue;
-                if (discountType == "2")
-                    discountValue = SectionData.calcPercentage(_Sum, discountValue);
-                _Discount += discountValue;
+                #region calculate discount value
+                foreach (CouponInvoice coupon in selectedCoupons)
+                {
+                    string discountType = coupon.discountType.ToString();
+                    decimal discountValue = (decimal)coupon.discountValue;
+                    if (discountType == "2")
+                        discountValue = SectionData.calcPercentage(_Sum, discountValue);
+                    _Discount += discountValue;
+                }
+                tb_discountCoupon.Text = _Discount.ToString();
+                #endregion
+
+                #region manaula discount           
+                if (cb_typeDiscount.SelectedIndex != -1 && cb_typeDiscount.SelectedIndex != 0 && tb_discount.Text != "")
+                {
+                    int manualDisType = cb_typeDiscount.SelectedIndex;
+                    manualDiscount = decimal.Parse(tb_discount.Text);
+                    if (manualDisType == 2)
+                        manualDiscount = SectionData.calcPercentage(_Sum, manualDiscount);
+                }
+                #endregion
             }
-            tb_discountCoupon.Text = _Discount.ToString();
-            #endregion
             decimal taxValue = _Tax;
             if (MainWindow.isInvTax == 1)
             {
@@ -921,7 +980,7 @@ namespace POS.View.sales
             }
             else
                 tb_taxValue.Text = _Tax.ToString();
-            decimal total = _Sum - _Discount + taxValue + _DeliveryCost;
+            decimal total = _Sum - _Discount - manualDiscount + taxValue + _DeliveryCost;
 
             tb_sum.Text = _Sum.ToString();
 
@@ -999,7 +1058,7 @@ namespace POS.View.sales
                         }
                         else if (tb != null)
                         {
-                            if (tb.Name == "tb_note")// remove barcode from text box
+                            if (tb.Name == "tb_note" || tb.Name == "tb_discount")// remove barcode from text box
                             {
                                 string tbString = tb.Text;
                                 string newStr = "";
@@ -1134,6 +1193,11 @@ namespace POS.View.sales
             tb_discountCoupon.Text = invoice.discountValue.ToString();
             cb_company.SelectedValue = invoice.shippingCompanyId;
             cb_user.SelectedValue = invoice.shipUserId;
+            tb_discount.Text = invoice.manualDiscountValue.ToString();
+            if (invoice.manualDiscountType == "1")
+                cb_typeDiscount.SelectedIndex = 1;
+            else if (invoice.manualDiscountType == "2")
+                cb_typeDiscount.SelectedIndex = 2;
             tb_barcode.Clear();
             tb_barcode.Focus();
 
@@ -1947,6 +2011,48 @@ SectionData.isAdminPermision())
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
+
+        private void tb_discount_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                _Sender = sender;
+                refreshTotalValue();
+                e.Handled = true;
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
+
+        private void Cb_typeDiscount_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
+                if (elapsed.TotalMilliseconds > 100 && cb_typeDiscount.SelectedIndex != -1)
+                {
+                    _SelectedDiscountType = (int)cb_typeDiscount.SelectedValue;
+                    refreshTotalValue();
+                }
+                else
+                {
+                    cb_typeDiscount.SelectedValue = _SelectedDiscountType;
+                }
+
+            }
+            catch (Exception ex)
+            {
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }

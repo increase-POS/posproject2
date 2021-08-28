@@ -254,7 +254,7 @@ namespace POS.View
         }
         async void fillCategories()
         {
-            categories = await categoryModel.GetAllCategories();
+            categories = await categoryModel.GetAllCategories(MainWindow.userID.Value);
             cb_categorie.ItemsSource = categories.ToList();
             cb_categorie.SelectedValuePath = "categoryId";
             cb_categorie.DisplayMemberPath = "name";
@@ -386,7 +386,7 @@ namespace POS.View
         /// <returns></returns>
         async Task<IEnumerable<Category>> RefrishCategories()
         {
-            categories = await categoryModel.GetAllCategories();
+            categories = await categoryModel.GetAllCategories(MainWindow.userID.Value);
             return categories;
         }
 

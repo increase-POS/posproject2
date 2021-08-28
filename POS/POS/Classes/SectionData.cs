@@ -136,7 +136,7 @@ namespace POS.Classes
                 }
                 else if (_class.Equals("Category"))
                 {
-                    List<Category> categories = await categoryModel.GetAllCategories();
+                    List<Category> categories = await categoryModel.GetAllCategories(MainWindow.userID.Value);
 
                     //Category category = new Category();
                     //for (int i = 0; i < categories.Count; i++)

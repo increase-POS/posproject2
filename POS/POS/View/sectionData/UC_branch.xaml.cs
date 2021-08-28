@@ -469,14 +469,18 @@ namespace POS.View
                             branch.isActive = 1;
                             branch.parentId = Convert.ToInt32(cb_branch.SelectedValue);
 
-                            string s = await branchModel.saveBranch(branch);
-                            if (!s.Equals("-1"))
+                            int s = int.Parse( await branchModel.saveBranch(branch));
+                            if (s == -1)// إظهار رسالة الترقية
                             {
-                                AddFreeThone(int.Parse(s));
-                            }
-                            else
-                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
+                            }
+                            else if (s == 0) // an error occure
+                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                            else
+                            {
+                                AddFreeThone(s);
+                            }
+                           
                             await RefreshBranchesList();
                             tb_search_TextChanged(null, null);
                             fillComboBranchParent();

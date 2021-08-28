@@ -294,7 +294,7 @@ namespace POS.View.accounts
         Pos posModel = new Pos();
         private async void calcBalance(string _type, decimal ammount)
         {//balance for pos
-            string s = "";
+            int s = 0;
             //increase pos balance
             Pos pos = await posModel.getPosById(MainWindow.posID.Value);
             if (_type.Equals("p"))

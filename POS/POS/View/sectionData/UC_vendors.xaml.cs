@@ -369,19 +369,23 @@ namespace POS.View
                             agent.fax = faxStr;
                             agent.maxDeserve = maxDeserveValue;
 
-                            string s = await agentModel.saveAgent(agent);
+                            int s = int.Parse( await agentModel.saveAgent(agent));
 
-                            if (!s.Equals("0"))
+                            if (s == -1)// إظهار رسالة الترقية
+                            {
+
+                            }
+                            else if (s == 0) // an error occure
+                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                            else
                             {
                                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                                 Btn_clear_Click(null, null);
                             }
-                            else
-                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-
+                           
                             if (isImgPressed)
                             {
-                                int agentId = int.Parse(s);
+                                int agentId = s;
                                 string b = await agentModel.uploadImage(imgFileName, Md5Encription.MD5Hash("Inc-m" + agentId.ToString()), agentId);
                                 agent.image = b;
                                 isImgPressed = false;

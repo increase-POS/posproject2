@@ -472,7 +472,7 @@ namespace POS.View.accounts
 
             pos.balance += ammount;
 
-            string s = await posModel.savePos(pos);
+            int s = await posModel.savePos(pos);
 
         }
 

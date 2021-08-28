@@ -490,18 +490,22 @@ namespace POS.View
                             user.notes = tb_details.Text;
                             user.role = "";
 
-                            string s = await userModel.saveUser(user);
-                            if (!s.Equals("0"))
+                            int s =int.Parse( await userModel.saveUser(user));
+                            if (s == -1)// إظهار رسالة الترقية
+                            {
+
+                            }
+                            else if( s == 0) // an error occure
+                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                            else
                             {
                                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                                 Btn_clear_Click(null, null);
-                            }
-                            else
-                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                            }      
 
                             if (isImgPressed)
                             {
-                                int userId = int.Parse(s);
+                                int userId = s;
                                 string b = await userModel.uploadImage(imgFileName, Md5Encription.MD5Hash("Inc-m" + userId.ToString()), userId);
                                 user.image = b;
                                 isImgPressed = false;

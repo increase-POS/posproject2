@@ -666,7 +666,7 @@ namespace POS.View.accounts
 
         private async void calcBalance(decimal ammount, string recipient, int agentid)
         {//balance for pos
-            string s = "";
+            int s = 0;
             //increase pos balance
             Pos pos = await posModel.getPosById(MainWindow.posID.Value);
 

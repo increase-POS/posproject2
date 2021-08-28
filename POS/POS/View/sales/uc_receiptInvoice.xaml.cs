@@ -93,6 +93,7 @@ namespace POS.View
         private static DispatcherTimer timer;
         #region//to handle barcode characters
         static private int _SelectedCustomer = -1;
+        static private int _SelectedDiscountType = -1;
         static private string _SelectedPaymentType = "cash";
         static private int _SelectedCard = -1;
         // for barcode
@@ -156,6 +157,7 @@ namespace POS.View
             txt_coupon.Text = MainWindow.resourcemanager.GetString("trCoupon");
             txt_customer.Text = MainWindow.resourcemanager.GetString("trCustomer");
             txt_delivery.Text = MainWindow.resourcemanager.GetString("trDelivery");
+            txt_discount.Text = MainWindow.resourcemanager.GetString("trDiscount");
 
 
             txt_printInvoice.Text = MainWindow.resourcemanager.GetString("trPrint");
@@ -181,6 +183,8 @@ namespace POS.View
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_paymentProcessType, MainWindow.resourcemanager.GetString("trPaymentProcessTypeHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_card, MainWindow.resourcemanager.GetString("trCardHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_processNum, MainWindow.resourcemanager.GetString("trProcessNumHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_discount, MainWindow.resourcemanager.GetString("trDiscountHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_typeDiscount, MainWindow.resourcemanager.GetString("trDiscountTypeHint"));
 
             btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
             
@@ -877,8 +881,13 @@ namespace POS.View
                 // save invoice in DB
                 int invoiceId = int.Parse(await invoiceModel.saveInvoice(invoice));
                 invoice.invoiceId = invoiceId;
+                if (invoiceId == -1)// إظهار رسالة الترقية
+                {
 
-                if (invoiceId != 0)
+                }
+                else if (invoiceId == 0) // an error occure
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                else
                 {
                     // add invoice details
                     invoiceItems = new List<ItemTransfer>();
@@ -1020,8 +1029,7 @@ namespace POS.View
                     #endregion
                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                 }
-                else
-                    Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                
                 // }
             }
 
@@ -1152,6 +1160,7 @@ namespace POS.View
             _SequenceNum = 0;
             txt_invNumber.Text = "";
             _SelectedCustomer = -1;
+            _SelectedDiscountType = 0;
             _SelectedPaymentType = "cash";
             _SelectedCard = -1;
             _InvoiceType = "sd";
@@ -1390,6 +1399,8 @@ namespace POS.View
                 cb_typeDiscount.SelectedIndex = 1;
             else if (invoice.manualDiscountType == "2")
                 cb_typeDiscount.SelectedIndex = 2;
+            else
+                cb_typeDiscount.SelectedIndex = 0;
 
             tb_barcode.Clear();
             tb_barcode.Focus();
@@ -1784,11 +1795,12 @@ namespace POS.View
         }
         private void refreshTotalValue()
         {
-            #region calculate discount value 
+            
             _Discount = 0;
             decimal manualDiscount = 0;
             if (_Sum > 0)
             {
+                #region calculate discount value 
                 foreach (CouponInvoice coupon in selectedCoupons)
                 {
                     string discountType = coupon.discountType.ToString();
@@ -1891,7 +1903,7 @@ namespace POS.View
                         }
                         else if (tb != null)
                         {
-                            if (tb.Name == "tb_processNum" || tb.Name == "tb_note")// remove barcode from text box
+                            if (tb.Name == "tb_processNum" || tb.Name == "tb_note" || tb.Name == "tb_discount")// remove barcode from text box
                             {
                                 string tbString = tb.Text;
                                 string newStr = "";
@@ -3343,8 +3355,24 @@ namespace POS.View
 
         private void Cb_typeDiscount_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (cb_typeDiscount.SelectedIndex != -1)
-                refreshTotalValue();
+            try
+            { 
+                TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
+                if (elapsed.TotalMilliseconds > 100 && cb_typeDiscount.SelectedIndex != -1)
+                {
+                    _SelectedDiscountType = (int)cb_typeDiscount.SelectedValue;
+                    refreshTotalValue();
+                }
+                else
+                {
+                    cb_typeDiscount.SelectedValue = _SelectedDiscountType;
+                }
+               
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex,this, sender);
         }
+    }
     }
 }

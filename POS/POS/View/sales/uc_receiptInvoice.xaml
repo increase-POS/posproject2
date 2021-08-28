@@ -400,7 +400,7 @@
                             <ComboBox x:Name="cb_paymentProcessType"  Grid.Row="2"
                                   Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
                              materialDesign:HintAssist.Hint="Payment Process Type..."  
-                           TextBlock.FontSize="12"   Background="#f8f8f8"
+                           TextBlock.FontSize="12"   Background="#f8f8f8" LostFocus="input_LostFocus"
                                         Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                 Grid.Column="0" Height="40"   
                            BorderBrush="#737373" BorderThickness="0" SelectionChanged="Cb_paymentProcessType_SelectionChanged" >
@@ -425,7 +425,7 @@
                                   materialDesign:HintAssist.Hint="Card..."  
                                   TextBlock.FontSize="12"   Background="#f8f8f8"
                                    Height="40"  Margin="10,5,10,5" SelectionChanged="Cb_card_SelectionChanged"
-                                  BorderBrush="#737373" BorderThickness="0" >
+                                  BorderBrush="#737373" BorderThickness="0" LostFocus="input_LostFocus" >
                             </ComboBox>
                             <Path Fill="#E81123" x:Name="p_errorCard" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Row="0" Visibility="Collapsed"   

@@ -601,17 +601,20 @@ namespace POS.View
                         item.minUnitId = minUnitId;
                         item.maxUnitId = maxUnitId;
 
-                        string res = await itemModel.saveItem(item);
-
-                        if (!res.Equals("0"))
+                        int res =int.Parse( await itemModel.saveItem(item));
+                        if (res == -1)// إظهار رسالة الترقية
                         {
-                            item.itemId = int.Parse(res);
+
+                        }
+                        else if (res == 0) // an error occure
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                        else
+                        {
+                            item.itemId = res;
                             Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                         }
-                        else
-                            Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-
-                        int itemId = int.Parse(res);
+                       
+                        int itemId = res;
 
                         if (openFileDialog.FileName != "")
                             await itemModel.uploadImage(openFileDialog.FileName, Md5Encription.MD5Hash("Inc-m" + itemId.ToString()), itemId);
@@ -1662,7 +1665,7 @@ namespace POS.View
         #region fill
         async void fillCategories()
         {
-            categories = await categoryModel.GetAllCategories();
+            categories = await categoryModel.GetAllCategories(MainWindow.userID.Value);
             if (categories != null)
                 cb_categorie.ItemsSource = categories.ToList();
             cb_categorie.SelectedValuePath = "categoryId";
@@ -2154,7 +2157,7 @@ namespace POS.View
         /// <returns></returns>
         async Task<IEnumerable<Category>> RefrishCategories()
         {
-            categories = await categoryModel.GetAllCategories();
+            categories = await categoryModel.GetAllCategories(MainWindow.userID.Value);
             return categories;
         }
         async void RefrishCategoriesCard()

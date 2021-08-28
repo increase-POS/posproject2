@@ -600,7 +600,7 @@ namespace POS.View
         #region Refrish Y
         async Task<IEnumerable<Category>> RefrishCategories()
         {
-            categories = await categoryModel.GetAllCategories();
+            categories = await categoryModel.GetAllCategories(MainWindow.userID.Value);
             return categories;
         }
 

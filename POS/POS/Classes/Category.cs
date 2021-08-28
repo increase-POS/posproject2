@@ -70,7 +70,7 @@ namespace POS.Classes
                 return message;
             }
         }
-        public async Task<List<Category>> GetSubCategories(int categoryId)
+        public async Task<List<Category>> GetSubCategories(int categoryId, int userId)
         {
             List<Category> categories = null;
             // ... Use HttpClient.
@@ -83,7 +83,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Categories/GetSubCategories?categoryId=" + categoryId);
+                request.RequestUri = new Uri(Global.APIUri + "Categories/GetSubCategories?categoryId=" + categoryId +"&userId="+userId);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -169,7 +169,7 @@ namespace POS.Classes
         }
 
 
-        public async Task<List<Category>> GetAllCategories()
+        public async Task<List<Category>> GetAllCategories(int userId)
         {
             List<Category> categories = null;
             // ... Use HttpClient.
@@ -182,7 +182,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Categories/GetAllCategories");
+                request.RequestUri = new Uri(Global.APIUri + "Categories/GetAllCategories?userId="+userId);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
