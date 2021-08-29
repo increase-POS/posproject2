@@ -158,7 +158,7 @@ namespace POS.View.windows
             }
         }
         
-        private async void Btn_selectedAll_Click(object sender, RoutedEventArgs e)
+        private  void Btn_selectedAll_Click(object sender, RoutedEventArgs e)
         {//select all
             try
             {
@@ -231,7 +231,7 @@ namespace POS.View.windows
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
-        private async void Btn_unSelectedAll_Click(object sender, RoutedEventArgs e)
+        private  void Btn_unSelectedAll_Click(object sender, RoutedEventArgs e)
         {//unselect all
             try
             { 

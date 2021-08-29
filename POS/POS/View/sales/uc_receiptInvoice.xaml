@@ -549,7 +549,7 @@
                             <Grid Grid.Row="2"  >
                                 <DatePicker  x:Name="dp_desrvedDate"  Margin="5,5"
                                                Style="{StaticResource MaterialDesignFloatingHintDatePicker}" 
-                           BorderBrush="#737373"  BorderThickness="0" 
+                           BorderBrush="#737373"  BorderThickness="0" IsEnabled="False"
                                 TextBlock.Foreground="#4E4E4E" Text="{Binding test, Mode=OneWay}" Padding="10,0,5,0"  
                              materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                              materialDesign:HintAssist.Hint="Deserved Date..."  PreviewKeyUp="Dp_date_PreviewKeyUp"
@@ -763,7 +763,7 @@
                                   VerticalAlignment="Center" 
                                        HorizontalAlignment="Left" Margin="0,0,5,0"/>
                             <TextBlock Grid.Row="1"   x:Name="tb_discountCoupon" Grid.Column="1"  
-                       Foreground="#4E4E4E" Text="{Binding total, Mode=OneWay}"
+                       Foreground="#4E4E4E" Text="0"
                         HorizontalAlignment="Left" VerticalAlignment="Center"
                                   FontWeight="Regular"  FontSize="12"/>
                             <TextBlock Grid.Row="1"   x:Name="tb_discountCouponMoneyIcon" Grid.Column="1" 

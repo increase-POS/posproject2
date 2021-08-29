@@ -90,7 +90,7 @@ namespace POS.View
         // item unit object
         // service object
         Service service = new Service();
-        string selectedType = "";
+        //string selectedType = "";
 
         ImageBrush brush = new ImageBrush();
 
@@ -98,13 +98,13 @@ namespace POS.View
 
         List<int> categoryIds = new List<int>();
         List<string> categoryNames = new List<string>();
-        List<Property> properties;
-        List<PropertiesItems> propItems;
+        //List<Property> properties;
+        //List<PropertiesItems> propItems;
         List<Unit> units = new List<Unit>();
-        List<ItemsProp> itemsProp;
-        List<Serial> itemSerials;
+        //List<ItemsProp> itemsProp;
+        //List<Serial> itemSerials;
         List<ItemUnit> itemUnits;
-        List<Service> services;
+        //List<Service> services;
         public byte tglCategoryState = 1;
         public byte tglItemState;
         int? categoryParentId = 0;
@@ -140,11 +140,11 @@ namespace POS.View
                 translate();
                 #endregion
 
-                fillCategories();
+                await fillCategories();
 
                 generateBarcode();
 
-                fillBarcodeList();
+                await fillBarcodeList();
 
                 tb_code.Focus();
                 SectionData.clearValidate(tb_code, p_errorCode);
@@ -153,7 +153,7 @@ namespace POS.View
                 var uQuery = units.Where(u => u.name == "package").FirstOrDefault();
                 unitpackageId = uQuery.unitId;
 
-                RefrishCategoriesCard();
+                await RefrishCategoriesCard();
                 Txb_searchitems_TextChanged(null, null);
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -506,7 +506,7 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
-        private async Task getImg()
+        private async void getImg()
         {
             if (string.IsNullOrEmpty(item.image))
             {
@@ -545,11 +545,11 @@ namespace POS.View
             x.isActive == tglCategoryState && x.parentId == category.categoryId).Count() != 0)
             {
                 categoryParentId = category.categoryId;
-                RefrishCategoriesCard();
+                await RefrishCategoriesCard();
             }
             tb_barcode.Focus();
 
-            generateTrack(categoryId);
+            await generateTrack(categoryId);
             await RefrishItems();
             Txb_searchitems_TextChanged(null, null);
         }
@@ -965,9 +965,9 @@ namespace POS.View
                  Button b = (Button)sender;
                 if (!string.IsNullOrEmpty(b.Tag.ToString()))
                 {
-                    generateTrack(int.Parse(b.Tag.ToString()));
+                    await generateTrack(int.Parse(b.Tag.ToString()));
                     categoryParentId = int.Parse(b.Tag.ToString());
-                    RefrishCategoriesCard();
+                    await RefrishCategoriesCard();
                     category.categoryId = int.Parse(b.Tag.ToString());
                 }
                 tb_barcode.Focus();
@@ -990,7 +990,7 @@ namespace POS.View
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
                 categoryParentId = 0;
-                RefrishCategoriesCard();
+                await RefrishCategoriesCard();
                 grid_categoryControlPath.Children.Clear();
                 category.categoryId = 0;
                 await RefrishItems();
@@ -1379,7 +1379,7 @@ namespace POS.View
                             Window.GetWindow(this).Opacity = 1;
                             #endregion
                             if (w.isOk)
-                                activate();
+                                await activate();
                         }
                         else
                         {
@@ -1507,7 +1507,7 @@ namespace POS.View
             }
         }
 
-        private async void Btn_items_Click(object sender, RoutedEventArgs e)
+        private   void Btn_items_Click(object sender, RoutedEventArgs e)
         {
             try
             {

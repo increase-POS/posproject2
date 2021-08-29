@@ -74,7 +74,7 @@ namespace POS.View.windows
         {
 
         }
-        private async void Window_Loaded(object sender, RoutedEventArgs e)
+        private   void Window_Loaded(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -97,7 +97,7 @@ namespace POS.View.windows
 
                 translat();
                 #endregion
-                await refreshInventories();
+                  refreshInventories();
            
                 if (sender != null)
                     SectionData.EndAwait(grid_ucInventory);
@@ -121,7 +121,7 @@ namespace POS.View.windows
             btn_select.Content = MainWindow.resourcemanager.GetString("trSelect");
         }
 
-        private async Task refreshInventories()
+        private   void refreshInventories()
         {
             dg_Inventory.ItemsSource = inventories.ToList();
         }

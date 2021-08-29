@@ -72,7 +72,7 @@ namespace POS.View.windows
                 //translate();
                 #endregion
 
-                fillBranch();
+                await fillBranch();
 
                 if (sender != null)
                     SectionData.EndAwait(grid_changePassword);
@@ -119,7 +119,7 @@ namespace POS.View.windows
         }
 
         List<SettingCls> set = new List<SettingCls>();
-        private async void Btn_save_Click(object sender, RoutedEventArgs e)
+        private   void Btn_save_Click(object sender, RoutedEventArgs e)
         {//save
             try
             {

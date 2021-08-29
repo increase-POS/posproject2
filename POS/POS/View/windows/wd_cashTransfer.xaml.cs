@@ -40,7 +40,7 @@ namespace POS.View.windows
         IEnumerable<CashTransfer> cashes;
         IEnumerable<CashTransfer> cashesQuery; 
         string searchText = "";
-        private async void Window_Loaded(object sender, RoutedEventArgs e)
+        private  void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
             try
             {

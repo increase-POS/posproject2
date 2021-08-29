@@ -2305,4 +2305,37 @@
   <data name="trCanNotSendDraftInvoice" xml:space="preserve">
     <value>لا يمكن ارسال مسودة فاتورة</value>
   </data>
+  <data name="trAccuracy" xml:space="preserve">
+    <value>الأرقام بعد الفاصلة</value>
+  </data>
+  <data name="trErrorMaxInvToolTip" xml:space="preserve">
+    <value>لا يمكن استخدام الكوبون، المجموع أكبر من الحد الأعلى المسموح</value>
+  </data>
+  <data name="trErrorMinInvToolTip" xml:space="preserve">
+    <value>لا يمكن استخدام الكوبون، المجموع أقل من الحد الأدنى المسموح</value>
+  </data>
+  <data name="trPopUpgrade" xml:space="preserve">
+    <value>الرجاء ترقية التطبيق</value>
+  </data>
+  <data name="trImportExport" xml:space="preserve">
+    <value>التنقلات</value>
+  </data>
+  <data name="trItemsDestroy" xml:space="preserve">
+    <value>اتلاف</value>
+  </data>
+  <data name="trItemsStorage" xml:space="preserve">
+    <value>التخزين</value>
+  </data>
+  <data name="trLocations" xml:space="preserve">
+    <value>أماكن التخزين</value>
+  </data>
+  <data name="trPermissions" xml:space="preserve">
+    <value>الصلاحيات</value>
+  </data>
+  <data name="trPurchase" xml:space="preserve">
+    <value>المشتريات</value>
+  </data>
+  <data name="trReportsSettings" xml:space="preserve">
+    <value>إعدادات التقارير</value>
+  </data>
 </root>

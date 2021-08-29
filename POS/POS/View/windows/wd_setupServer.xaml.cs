@@ -34,27 +34,27 @@ namespace POS.View.windows
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-       
 
-        private async void Window_Loaded(object sender, RoutedEventArgs e)
+
+        private  void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
-                try
-                {
+            try
+            {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
                 #region translate
                 if (MainWindow.lang.Equals("en"))
-            {
-                MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
                     grid_main.FlowDirection = FlowDirection.LeftToRight;
-            }
-            else
-            {
-                MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                }
+                else
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
                     grid_main.FlowDirection = FlowDirection.RightToLeft;
-            }
-            translate();
+                }
+                translate();
                 #endregion
 
 
@@ -88,86 +88,86 @@ namespace POS.View.windows
         }
         private void Tb_validateEmptyLostFocus(object sender, RoutedEventArgs e)
         {
-                    try
-                    {
-                        string name = sender.GetType().Name;
-            validateEmpty(name, sender);
-                }
-                catch (Exception ex)
-                {
-                    SectionData.ExceptionMessage(ex, this, sender);
-                }
+            try
+            {
+                string name = sender.GetType().Name;
+                validateEmpty(name, sender);
             }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
         private void Tb_validateEmptyTextChange(object sender, TextChangedEventArgs e)
         {
-                        try
-                        {
-                            string name = sender.GetType().Name;
-            validateEmpty(name, sender);
-                }
-                catch (Exception ex)
-                {
-                    SectionData.ExceptionMessage(ex, this, sender);
-                }
+            try
+            {
+                string name = sender.GetType().Name;
+                validateEmpty(name, sender);
             }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
         private void validateEmpty(string name, object sender)
         {
-                            try
-                            {
-                                if (name == "TextBox")
+            try
             {
-                //if ((sender as TextBox).Name == "tb_name")
-                //    SectionData.validateEmptyTextBox((TextBox)sender, p_errorName, tt_errorName, "trEmptyNameToolTip");
-               
-            }
-                }
-                catch (Exception ex)
+                if (name == "TextBox")
                 {
-                    SectionData.ExceptionMessage(ex, this, sender);
+                    //if ((sender as TextBox).Name == "tb_name")
+                    //    SectionData.validateEmptyTextBox((TextBox)sender, p_errorName, tt_errorName, "trEmptyNameToolTip");
+
                 }
             }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
-                                try
-                                {   //only int
-                                    //Regex regex = new Regex("[^0-9]+");
-                                    //e.Handled = regex.IsMatch(e.Text);
+            try
+            {   //only int
+                //Regex regex = new Regex("[^0-9]+");
+                //e.Handled = regex.IsMatch(e.Text);
 
-                                    //decimal
-                                    var regex = new Regex(@"^[0-9]*(?:\.[0-9]*)?$");
-            if (regex.IsMatch(e.Text) && !(e.Text == "." && ((TextBox)sender).Text.Contains(e.Text)))
-                e.Handled = false;
+                //decimal
+                var regex = new Regex(@"^[0-9]*(?:\.[0-9]*)?$");
+                if (regex.IsMatch(e.Text) && !(e.Text == "." && ((TextBox)sender).Text.Contains(e.Text)))
+                    e.Handled = false;
 
-            else
-                e.Handled = true;
-                }
-                catch (Exception ex)
-                {
-                    SectionData.ExceptionMessage(ex, this, sender);
-                }
+                else
+                    e.Handled = true;
             }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
         private void Btn_colse_Click(object sender, RoutedEventArgs e)
         {
-                                    try
-                                    {
-                                        this.Close();
-                }
-                catch (Exception ex)
-                {
-                    SectionData.ExceptionMessage(ex, this, sender);
-                }
+            try
+            {
+                this.Close();
             }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
         private void HandleKeyPress(object sender, KeyEventArgs e)
         {
-                                        try
-                                        {
+            try
+            {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
                 if (e.Key == Key.Return)
-            {
-                Btn_save_Click(null, null);
-            }
+                {
+                    Btn_save_Click(null, null);
+                }
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -179,17 +179,17 @@ namespace POS.View.windows
             }
 
         }
-        private async void Btn_save_Click(object sender, RoutedEventArgs e)
+        private  void Btn_save_Click(object sender, RoutedEventArgs e)
         {//save
-                                            try
-                                            {
+            try
+            {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
                 Window.GetWindow(this).Opacity = 0.2;
-            wd_selectPos w = new wd_selectPos();
-            w.ShowDialog();
-            Window.GetWindow(this).Opacity = 1;
+                wd_selectPos w = new wd_selectPos();
+                w.ShowDialog();
+                Window.GetWindow(this).Opacity = 1;
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);

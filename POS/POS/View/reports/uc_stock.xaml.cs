@@ -38,11 +38,11 @@ namespace POS.View.reports
         List<ItemTransferInvoice> itemsTransfer;
         List<ItemTransferInvoice> itemsInternalTransfer;
 
-        IEnumerable<ItemTransferInvoice> agentsCount;
-        IEnumerable<ItemTransferInvoice> invTypeCount;
-        IEnumerable<ItemTransferInvoice> invCount;
+        //IEnumerable<ItemTransferInvoice> agentsCount;
+        //IEnumerable<ItemTransferInvoice> invTypeCount;
+        //IEnumerable<ItemTransferInvoice> invCount;
 
-        IEnumerable<InventoryClass> archiveCount;
+        //IEnumerable<InventoryClass> archiveCount;
 
         List<InventoryClass> inventory;
         List<InventoryClass> falls;

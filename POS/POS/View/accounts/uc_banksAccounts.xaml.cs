@@ -41,7 +41,7 @@ namespace POS.View.accounts
         IEnumerable<User> users;
 
         Branch branchModel = new Branch();
-        IEnumerable<Branch> branches;
+        //IEnumerable<Branch> branches;
 
         Bank bankModel = new Bank();
         IEnumerable<Bank> banksQuery;
@@ -86,7 +86,7 @@ namespace POS.View.accounts
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_bank, MainWindow.resourcemanager.GetString("trBankHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_note, MainWindow.resourcemanager.GetString("trNoteHint"));
 
-            if (cb_opperationType.SelectedValue == "d")
+            if (cb_opperationType.SelectedValue.ToString() == "d")
                 btn_add.Content = MainWindow.resourcemanager.GetString("trDeposit");
             else
                 btn_add.Content = MainWindow.resourcemanager.GetString("trPull");
@@ -95,16 +95,9 @@ namespace POS.View.accounts
             dg_bankAccounts.Columns[1].Header = MainWindow.resourcemanager.GetString("trBank");
             dg_bankAccounts.Columns[2].Header = MainWindow.resourcemanager.GetString("trDepositeNumTooltip");
             dg_bankAccounts.Columns[3].Header = MainWindow.resourcemanager.GetString("trCashTooltip");
-
-            //tt_code.Content = MainWindow.resourcemanager.GetString("trTransferNumberTooltip");
-            //tt_opperationType.Content = MainWindow.resourcemanager.GetString("trOpperationTypeToolTip");
-            //tt_user.Content = MainWindow.resourcemanager.GetString("trUser");
-            //tt_bank.Content = MainWindow.resourcemanager.GetString("trBank");
-            //tt_cash.Content = MainWindow.resourcemanager.GetString("trCashTooltip");
-            //tt_user.Content = MainWindow.resourcemanager.GetString("trUser");
-            //tt_DepREcNum.Content = MainWindow.resourcemanager.GetString("trDepositeNumTooltip");
+  
             tt_search.Content = MainWindow.resourcemanager.GetString("trSearch");
-            //tt_notes.Content = MainWindow.resourcemanager.GetString("trNote");
+            
             tt_confirmUser.Content = MainWindow.resourcemanager.GetString("trConfirmUserTooltip");
             tt_clear.Content = MainWindow.resourcemanager.GetString("trClear");
             tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
@@ -256,7 +249,7 @@ namespace POS.View.accounts
             }
         }
 
-        private async void Dg_bankAccounts_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private  void Dg_bankAccounts_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//selection
             try
             {
@@ -399,17 +392,7 @@ namespace POS.View.accounts
 
                             if (!s.Equals("0"))
                             {
-                                //#region notification Object
-                                //Notification not = new Notification()
-                                //{
-                                //    title = "trBankAlertTilte",
-                                //    ncontent = "trBankAlertContent",
-                                //    msgType = "alert",
-                                //    createUserId = MainWindow.userID.Value,
-                                //    updateUserId = MainWindow.userID.Value,
-                                //};
-                                //await not.Save(not, MainWindow.branchID.Value, "accountsAlerts_bankUserPermission", cb_opperationType.Text,(int)cb_user.SelectedValue);
-                                //#endregion
+                               
                                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                                 Btn_clear_Click(null, null);
 
@@ -444,7 +427,7 @@ namespace POS.View.accounts
 
                                     decimal ammount = cashtrans.cash.Value;
                                     if (cashtrans.transType.Equals("d")) ammount *= -1;
-                                    calcBalance(ammount);
+                                    await calcBalance(ammount);
                                 }
                                 else
                                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
@@ -781,11 +764,11 @@ namespace POS.View.accounts
 
         }
 
-        private void Cb_opperationType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private   void Cb_opperationType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try
             { 
-                if (cb_opperationType.SelectedValue == "d")
+                if (  cb_opperationType.SelectedValue.ToString() == "d")
                     btn_add.Content = MainWindow.resourcemanager.GetString("trDeposit");
                 else
                     btn_add.Content = MainWindow.resourcemanager.GetString("trPull");

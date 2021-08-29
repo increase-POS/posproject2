@@ -308,7 +308,7 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
-        private  void UserControl_Loaded(object sender, RoutedEventArgs e)
+        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {//load
             try
             {
@@ -336,9 +336,9 @@ namespace POS.View
                 translate();
                 Keyboard.Focus(tb_firstName);
                 //fill job combo
-                fillJobCombo();
-                fillCountries();
-                fillCity();
+                await fillJobCombo();
+                await fillCountries();
+                await fillCity();
                 this.Dispatcher.Invoke(() =>
                 {
                     Tb_search_TextChanged(null, null);
@@ -514,7 +514,7 @@ namespace POS.View
                             await RefreshUsersList();
                             Tb_search_TextChanged(null, null);
 
-                            fillJobCombo();
+                            await fillJobCombo();
 
                             SectionData.getMobile(user.mobile, cb_areaMobile, tb_mobile);
 
@@ -625,7 +625,7 @@ namespace POS.View
                                 isImgPressed = false;
                                 if (!b.Equals(""))
                                 {
-                                    await getImg();
+                                     getImg();
                                 }
                                 else
                                 {
@@ -638,7 +638,7 @@ namespace POS.View
 
                             SectionData.getPhone(user.phone, cb_areaPhone, cb_areaPhoneLocal, tb_phone);
 
-                            fillJobCombo();
+                            await fillJobCombo();
 
                         }
                     }
@@ -680,7 +680,7 @@ namespace POS.View
                             #endregion
 
                             if (w.isOk)
-                                activate();
+                                    await activate();
                         }
                         else
                         {
@@ -714,7 +714,7 @@ namespace POS.View
                         await RefreshUsersList();
                         Tb_search_TextChanged(null, null);
 
-                        fillJobCombo();
+                            await fillJobCombo();
                         //clear textBoxs
                         Btn_clear_Click(null, null);
                     }
@@ -1001,7 +1001,7 @@ namespace POS.View
             }
         }
 
-        private void Btn_refresh_Click(object sender, RoutedEventArgs e)
+        private async void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -1009,7 +1009,7 @@ namespace POS.View
                     SectionData.StartAwait(grid_main);
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
                 {
-                    RefreshUsersList();
+                    await RefreshUsersList();
                     Tb_search_TextChanged(null, null);
 
                 }
@@ -1026,7 +1026,7 @@ namespace POS.View
             }
         }
 
-        private async Task getImg()
+        private async void getImg()
         {
             
                 if (string.IsNullOrEmpty(user.image))
@@ -1312,7 +1312,7 @@ namespace POS.View
         }
         #endregion
         #region Get Id By Click  Y
-        private async void DG_users_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private   void DG_users_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//selection
             try
             {

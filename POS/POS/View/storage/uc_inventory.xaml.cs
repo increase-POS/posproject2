@@ -156,14 +156,14 @@ namespace POS.View.storage
             timer.Tick += timer_Tick;
             timer.Start();
         }
-        private void timer_Tick(object sendert, EventArgs et)
+        private async void timer_Tick(object sendert, EventArgs et)
         {
             try
             {
 
                 if (inventory.inventoryId != 0)
                 {
-                    refreshDocCount(inventory.inventoryId);
+                    await refreshDocCount(inventory.inventoryId);
                 }
             }
             catch (Exception ex)
@@ -218,7 +218,7 @@ namespace POS.View.storage
 
                     invItemsLocations.Add(iil);
                 }
-                inputEditable();
+                await inputEditable();
                 dg_items.ItemsSource = invItemsLocations.ToList();
             }
             else
@@ -263,7 +263,7 @@ namespace POS.View.storage
                 txt_inventoryDate.Text = inventory.createDate.ToString();
                 invItemsLocations = await invItemModel.GetAll(inventory.inventoryId);
             }
-            inputEditable();
+            await inputEditable();
             dg_items.ItemsSource = invItemsLocations.ToList();
         }
         private async Task inputEditable()
@@ -322,7 +322,7 @@ namespace POS.View.storage
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
-        private void clearInventory()
+        private async void clearInventory()
         {
             _InventoryType = "d";
             inventory = new Inventory();
@@ -331,7 +331,7 @@ namespace POS.View.storage
             md_docImage.Badge = "";
             txt_titleDataGrid.Text = MainWindow.resourcemanager.GetString("trInventoryDraft");
             dg_items.ItemsSource = null;
-            inputEditable();
+            await inputEditable();
             // await fillInventoryDetails();
         }
         private async Task addInventory(string invType)
@@ -403,7 +403,7 @@ namespace POS.View.storage
                 {
                     txt_titleDataGrid.Text = MainWindow.resourcemanager.GetString("trInventoryDraft");
                     _InventoryType = "d";
-                    refreshDocCount(inventory.inventoryId);
+                    await refreshDocCount(inventory.inventoryId);
                     await fillInventoryDetails();
                 }
                 if (sender != null)
@@ -437,7 +437,7 @@ namespace POS.View.storage
                 {
                     txt_titleDataGrid.Text = MainWindow.resourcemanager.GetString("trStocktaking");
                     _InventoryType = "n";
-                    refreshDocCount(inventory.inventoryId);
+                    await refreshDocCount(inventory.inventoryId);
                     await fillInventoryDetails();
                 }
                 if (sender != null)
@@ -569,7 +569,7 @@ namespace POS.View.storage
             }
         }
 
-        private void Btn_invoiceImage_Click(object sender, RoutedEventArgs e)
+        private async void Btn_invoiceImage_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -586,7 +586,7 @@ namespace POS.View.storage
                     w.tableId = inventory.inventoryId;
                     w.docNum = inventory.num;
                     w.ShowDialog();
-                    refreshDocCount(inventory.inventoryId);
+                    await refreshDocCount(inventory.inventoryId);
                     Window.GetWindow(this).Opacity = 1;
                 }
                 else

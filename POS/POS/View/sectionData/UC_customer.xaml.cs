@@ -410,8 +410,8 @@ namespace POS.View
                 if (citynum == null)
                     await RefreshCity();
 
-                fillCountries();
-                fillCity();
+                await fillCountries();
+                await fillCity();
 
                 Keyboard.Focus(tb_name);
                 if (sender != null)
@@ -516,7 +516,7 @@ namespace POS.View
             }
         }
 
-        private async Task getImg()
+        private async void getImg()
         {
            
                 if (string.IsNullOrEmpty(agent.image))
@@ -570,7 +570,7 @@ namespace POS.View
                             Window.GetWindow(this).Opacity = 1;
                             #endregion
                             if (w.isOk)
-                                activate();
+                              await  activate();
                         }
                         else
                         {

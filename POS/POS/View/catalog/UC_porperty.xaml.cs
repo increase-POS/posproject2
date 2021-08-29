@@ -737,7 +737,7 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
-        private void Btn_refresh_Click(object sender, RoutedEventArgs e)
+        private async void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -747,7 +747,7 @@ namespace POS.View
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
                 {
 
-                    RefreshPropertiesList();
+                    await RefreshPropertiesList();
                     Tb_search_TextChanged(null, null);
                 }
                 else

@@ -185,7 +185,7 @@ namespace POS.View
             tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
         }
 
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -206,8 +206,8 @@ namespace POS.View
                 }
                 translate();
                 #endregion
-                fillCountries();
-                fillCity();
+                await fillCountries();
+                await fillCity();
                 Keyboard.Focus(tb_name);
                 this.Dispatcher.Invoke(() =>
                 {
@@ -485,7 +485,7 @@ namespace POS.View
                             Window.GetWindow(this).Opacity = 1;
                             #endregion
                             if (w.isOk)
-                                activate();
+                                await activate();
                         }
                         else
                         {
@@ -828,7 +828,7 @@ namespace POS.View
             { SectionData.ExceptionMessage(ex, this, sender); }
         }
 
-        private void Btn_refresh_Click(object sender, RoutedEventArgs e)
+        private async void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -837,7 +837,7 @@ namespace POS.View
 
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
                 {
-                    RefreshBanksList();
+                    await RefreshBanksList();
                     Tb_search_TextChanged(null, null);
 
                 }

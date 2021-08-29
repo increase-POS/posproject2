@@ -210,7 +210,7 @@ namespace POS.View.Settings
                         string s = await groupModel.Save(group);
                         if (!s.Equals("-1"))
                         {
-                            addObjects(int.Parse(s));
+                           await addObjects(int.Parse(s));
                             group.groupId = int.Parse(s);
                         }
                         else
@@ -326,13 +326,13 @@ namespace POS.View.Settings
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
-        private void Btn_refresh_Click(object sender, RoutedEventArgs e)
+        private async void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                RefreshGroupObjectList();
+                await RefreshGroupObjectList();
                 Tb_search_TextChanged(null, null);
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -425,7 +425,7 @@ namespace POS.View.Settings
                                     Window.GetWindow(this).Opacity = 1;
                                     #endregion
                                     if (w.isOk)
-                                        activate();
+                                    await activate();
                                 }
                                 else
                                 {
@@ -766,7 +766,7 @@ t1.Start();
                 }
             }
 
-            private async void Btn_usersList_Click(object sender, RoutedEventArgs e)
+            private   void Btn_usersList_Click(object sender, RoutedEventArgs e)
             {
 
                 try

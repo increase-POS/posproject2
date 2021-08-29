@@ -69,7 +69,7 @@ namespace POS.View
         ItemLocation itemLocationModel = new ItemLocation();
 
         Branch branchModel = new Branch();
-        IEnumerable<Branch> branches;
+        //IEnumerable<Branch> branches;
 
         Agent agentModel = new Agent();
         IEnumerable<Agent> vendors;
@@ -236,10 +236,10 @@ namespace POS.View
                 catigoriesAndItemsView.ucPayInvoice = this;
                 await RefrishItems();
                 configureDiscountType();
-                SectionData.fillBranches(cb_branch, "bs");
+                await SectionData.fillBranches(cb_branch, "bs");
                 await RefrishVendors();
                 await fillBarcodeList();
-                setNotifications();
+                await setNotifications();
                 setTimer();
                 #region Style Date
                 SectionData.defaultDatePickerStyle(dp_desrvedDate);
@@ -348,16 +348,16 @@ namespace POS.View
             timer.Tick += timer_Tick;
             timer.Start();
         }
-        private void timer_Tick(object sendert, EventArgs et)
+        private async void timer_Tick(object sendert, EventArgs et)
         {
             try
             {
-                refreshOrdersNotification();
+                await refreshOrdersNotification();
             if (invoice.invoiceId != 0)
             {
-                refreshDocCount(invoice.invoiceId);
+                    await refreshDocCount(invoice.invoiceId);
                 if (_InvoiceType == "pw" || _InvoiceType == "p" || _InvoiceType == "pb" || _InvoiceType == "pbw")
-                    refreshPaymentsNotification(invoice.invoiceId);
+                        await refreshPaymentsNotification(invoice.invoiceId);
             }
             }
             catch (Exception ex)
@@ -367,10 +367,10 @@ namespace POS.View
         }
         #endregion
         #region notifications
-        private void setNotifications()
+        private async Task setNotifications()
         {
-            refreshDraftNotification();
-            refreshOrdersNotification();
+            await refreshDraftNotification();
+            await refreshOrdersNotification();
         }
         private async Task refreshDraftNotification()
         {
@@ -516,7 +516,7 @@ namespace POS.View
         #endregion
         #region Get Id By Click  Y
 
-        public async Task ChangeCategoryIdEvent(int categoryId)
+        public  void ChangeCategoryIdEvent(int categoryId)
         {
         }
 
@@ -539,7 +539,7 @@ namespace POS.View
                     if (index == -1)//item doesn't exist in bill
                     {
                         // create new row in bill details data grid
-                        await addRowToBill(item.name, itemId, defaultPurUnit.mainUnit, defaultPurUnit.itemUnitId, 1, 0, 0);
+                          addRowToBill(item.name, itemId, defaultPurUnit.mainUnit, defaultPurUnit.itemUnitId, 1, 0, 0);
                     }
                     else // item exist prevoiusly in list
                     {
@@ -553,7 +553,7 @@ namespace POS.View
                 }
                 else
                 {
-                    await addRowToBill(item.name, itemId, null, 0, 1, 0, 0);
+                      addRowToBill(item.name, itemId, null, 0, 1, 0, 0);
                     refrishBillDetails();
                 }
 
@@ -843,7 +843,7 @@ namespace POS.View
 
                                 await addInvoice("pw", "pi");
 
-                                refreshDraftNotification();
+                                await refreshDraftNotification();
                             }
 
                             if (invoice.invoiceId == 0)
@@ -892,7 +892,7 @@ namespace POS.View
                 if (billDetails.Count > 0 && valid)
                 {
                     await addInvoice(_InvoiceType, "pi");
-                    refreshDraftNotification();
+                    await refreshDraftNotification();
                     clearInvoice();
                 }
                 else if (billDetails.Count == 0)
@@ -968,7 +968,7 @@ namespace POS.View
                         _InvoiceType = invoice.invType;
 
                         await fillInvoiceInputs(invoice);
-                        refreshDocCount(invoice.invoiceId);
+                        await refreshDocCount(invoice.invoiceId);
                         md_payments.Badge = "";
                         if (_InvoiceType == "pd")// set title to bill
                         {
@@ -1027,7 +1027,7 @@ namespace POS.View
                         else
                             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trReturnedInvoice");
                         brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
-                        refreshDocCount(invoice.invoiceId);
+                        await refreshDocCount(invoice.invoiceId);
                         await fillInvoiceInputs(invoice);
 
                     }
@@ -1072,7 +1072,7 @@ namespace POS.View
                         txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaseOrder");
                         brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
                         await fillInvoiceInputs(invoice);
-                        refreshDocCount(invoice.invoiceId);
+                        await refreshDocCount(invoice.invoiceId);
                         md_payments.Badge = "";
 
                     }
@@ -1143,7 +1143,7 @@ namespace POS.View
 
                             await fillInvoiceInputs(invoice);
                             mainInvoiceItems = invoiceItems;
-                            refreshDocCount(invoice.invoiceId);
+                            await refreshDocCount(invoice.invoiceId);
                             md_payments.Badge = "";
                             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trReturnedInvoice");
                             brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D22A17"));
@@ -1268,7 +1268,7 @@ namespace POS.View
                 tb_taxValue.IsEnabled = false;
             }
         }
-        private void Btn_invoiceImage_Click(object sender, RoutedEventArgs e)
+        private async void Btn_invoiceImage_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -1285,7 +1285,7 @@ namespace POS.View
                     w.tableId = invoice.invoiceId;
                     w.docNum = invoice.invNumber;
                     w.ShowDialog();
-                    refreshDocCount(invoice.invoiceId);
+                    await refreshDocCount(invoice.invoiceId);
                     Window.GetWindow(this).Opacity = 1;
                 }
                 else
@@ -1644,7 +1644,7 @@ namespace POS.View
                                     int count = 1;
                                     decimal price = 0; //?????
                                     decimal total = count * price;
-                                    await addRowToBill(item.name, item.itemId, unit1.mainUnit, unit1.itemUnitId, count, price, total);
+                                      addRowToBill(item.name, item.itemId, unit1.mainUnit, unit1.itemUnitId, count, price, total);
                                 }
                                 else // item exist prevoiusly in list
                                 {
@@ -1695,7 +1695,7 @@ namespace POS.View
             }
         }
 
-        private async Task addRowToBill(string itemName, int itemId, string unitName, int itemUnitId, int count, decimal price, decimal total)
+        private void addRowToBill(string itemName, int itemId, string unitName, int itemUnitId, int count, decimal price, decimal total)
         {
             // increase sequence for each read
             _SequenceNum++;

@@ -18,8 +18,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using POS.View.windows;
-using Microsoft.Reporting.WinForms;
+ using Microsoft.Reporting.WinForms;
 using Microsoft.Win32;
 using System.IO;
 
@@ -96,7 +95,7 @@ namespace POS.View
         Branch branchModel = new Branch();
         Branch branch = new Branch();
 
-        IEnumerable<Location> location;
+        //IEnumerable<Location> location;
         Location locationModel = new Location();
         private void translate()
         {
@@ -136,7 +135,7 @@ namespace POS.View
             tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
         }
 
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -157,7 +156,7 @@ namespace POS.View
                 }
 
                 translate();
-                SectionData.fillBranches(cb_branch, "bs");
+                await SectionData.fillBranches(cb_branch, "bs");
                 //fillBranches();
                 cb_branch.SelectedIndex = 0;
                 Keyboard.Focus(tb_name);
@@ -341,7 +340,7 @@ namespace POS.View
                             Window.GetWindow(this).Opacity = 1;
                             #endregion
                             if (w.isOk)
-                                activate();
+                                await activate();
                         }
                         else
                         {
@@ -617,7 +616,7 @@ namespace POS.View
             }
         }
 
-        private void Btn_refresh_Click(object sender, RoutedEventArgs e)
+        private  async void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -626,7 +625,7 @@ namespace POS.View
 
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
                 {
-                    RefreshSectionsList();
+                    await RefreshSectionsList();
                     Tb_search_TextChanged(null, null);
                 }
                 else

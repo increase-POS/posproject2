@@ -35,7 +35,7 @@ namespace POS.View.windows
         IEnumerable<Classes.Object> objects;
         IEnumerable<Classes.Object> firstLevel;
         IEnumerable<Classes.Object> secondLevel;
-
+        List<Classes.Object> newlist = new List<Classes.Object>();
         BrushConverter bc = new BrushConverter();
         private void Btn_colse_Click(object sender, RoutedEventArgs e)
         {
@@ -66,6 +66,9 @@ namespace POS.View.windows
                 #endregion
 
                 objects = await _object.GetAll();
+                cb_secondLevel.IsEnabled = false;
+
+
                 fillFirstLevel();
 
                 if (sender != null)
@@ -79,28 +82,60 @@ namespace POS.View.windows
             }
         }
        
-        private async Task fillFirstLevel()
+        private  void fillFirstLevel()
         {
             #region fill FirstLevel
-            firstLevel = objects.Where(x => string.IsNullOrEmpty( x.parentObjectId.ToString()) && x.objectType == "basic" );
+            firstLevel = objects.Where(x => string.IsNullOrEmpty(x.parentObjectId.ToString()) && x.objectType == "basic");
+            newlist = new List<Classes.Object>();
+
+            foreach (var row in firstLevel)
+            {
+                Classes.Object newrow = new Classes.Object();
+                        newrow.objectId = row.objectId;
+                newrow.name = SectionData.translate(row.name);
+                newrow.parentObjectId = row.parentObjectId;
+                newlist.Add(newrow);
+            }
+            //  firstLevel = objects.Where(x => string.IsNullOrEmpty( x.parentObjectId.ToString()) && x.objectType == "basic" );
             cb_firstLevel.DisplayMemberPath = "name";
             cb_firstLevel.SelectedValuePath = "objectId";
-            cb_firstLevel.ItemsSource = firstLevel;
+            // cb_firstLevel.ItemsSource = firstLevel;
+            cb_firstLevel.ItemsSource = newlist.OrderBy(x => x.name);
+
             #endregion
 
 
         }
-        private async void Cb_firstLevel_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private  void Cb_firstLevel_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try
             {
                 ComboBox combo = sender as ComboBox;
-            #region fill secondLevel
-            secondLevel = objects.Where(x =>   x.parentObjectId == (int) cb_firstLevel.SelectedValue);
-            cb_secondLevel.DisplayMemberPath = "name";
-            cb_secondLevel.SelectedValuePath = "objectId";
-            cb_secondLevel.ItemsSource = secondLevel;
-                #endregion
+                secondLevel = objects.Where(x => x.parentObjectId == (int)cb_firstLevel.SelectedValue);
+                if (secondLevel.Count() > 0)
+                {
+                    cb_secondLevel.IsEnabled = true;
+                    #region fill secondLevel
+
+                    newlist = new List<Classes.Object>();
+                    foreach (var row in secondLevel)
+                    {
+                        Classes.Object newrow = new Classes.Object();
+                        newrow.objectId = row.objectId;
+                        newrow.name = SectionData.translate(row.name);
+                        newrow.parentObjectId = row.parentObjectId;
+                        newlist.Add(newrow);
+                    }
+                    //secondLevel = objects.Where(x => x.parentObjectId == (int)cb_firstLevel.SelectedValue);
+                    cb_secondLevel.DisplayMemberPath = "name";
+                    cb_secondLevel.SelectedValuePath = "objectId";
+                    //cb_secondLevel.ItemsSource = secondLevel;
+                    cb_secondLevel.ItemsSource = newlist.OrderBy(x => x.name);
+
+                    #endregion
+                }
+                else
+                    cb_secondLevel.IsEnabled = false;
             }
             catch (Exception ex)
             {
@@ -157,8 +192,10 @@ namespace POS.View.windows
 
         private void Btn_save_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show($"First: id-{cb_firstLevel.SelectedValue} name-{cb_firstLevel.Text} \n" +
-                            $"second: id-{cb_secondLevel.SelectedValue} name-{cb_secondLevel.Text}" );
+
+            MessageBox.Show($"First: Name-{objects.Where(x => x.objectId == (int)cb_firstLevel.SelectedValue).FirstOrDefault().name}\n"
+            + $"Second: Name-{objects.Where(x => x.objectId == (int)cb_secondLevel.SelectedValue).FirstOrDefault().name}");
+                           
         }
          
     }

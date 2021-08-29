@@ -445,7 +445,7 @@ namespace POS.View.catalog
                             Window.GetWindow(this).Opacity = 1;
                             #endregion
                             if (w.isOk)
-                                activate();
+                                await activate();
                         }
                         else
                         {

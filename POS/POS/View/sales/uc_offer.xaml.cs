@@ -20,7 +20,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using POS.View.windows;
 using Microsoft.Reporting.WinForms;
 using Microsoft.Win32;
 using System.IO;
@@ -828,7 +827,7 @@ namespace POS.View
                             Window.GetWindow(this).Opacity = 1;
                             #endregion
                             if (w.isOk)
-                                activate();
+                           await  activate();
                         }
                         else
                         {

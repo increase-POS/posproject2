@@ -211,13 +211,13 @@ namespace POS.View.accounts
                 cb_depositTo.ItemsSource = depositlist;
                 #endregion
 
-                fillVendors();
+                await fillVendors();
 
-                fillCustomers();
+                await fillCustomers();
 
-                fillUsers();
+                await fillUsers();
 
-                fillShippingCompanies();
+                await fillShippingCompanies();
 
                 #region fill process type
                 var typelist = new[] {
@@ -300,7 +300,7 @@ namespace POS.View.accounts
             }
         }
 
-        private async void Dg_paymentsAccounts_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private  void Dg_paymentsAccounts_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//selection
             try
             {
@@ -607,13 +607,13 @@ namespace POS.View.accounts
                         if ((!s.Equals("0")) || (!s1.Equals("")) || (s1.Equals("-1")))
                         {
                             if(cb_paymentProcessType.SelectedValue.ToString().Equals("cash"))
-                                calcBalance(cash.cash.Value, recipient, agentid);
+                              await  calcBalance(cash.cash.Value, recipient, agentid);
 
                             if ((cb_recipientU.IsVisible) && (cash.side == "u"))
-                                calcUserBalance(Convert.ToSingle(cash.cash.Value), cash.userId.Value);
+                                await calcUserBalance(Convert.ToSingle(cash.cash.Value), cash.userId.Value);
 
                             if (cb_recipientSh.IsVisible)
-                                calcShippingComBalance(cash.cash.Value, cash.shippingCompanyId.Value);
+                                await calcShippingComBalance(cash.cash.Value, cash.shippingCompanyId.Value);
 
                             Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                             Btn_clear_Click(null, null);
@@ -722,16 +722,16 @@ namespace POS.View.accounts
             string s = await shCompanyModel.Save(shCom);
         }
 
-        private async void Btn_update_Click(object sender, RoutedEventArgs e)
+        private  void Btn_update_Click(object sender, RoutedEventArgs e)
         {//update
           
         }
 
-        private async void Btn_delete_Click(object sender, RoutedEventArgs e)
+        private  void Btn_delete_Click(object sender, RoutedEventArgs e)
         {//delete
         }
 
-        private async void Btn_clear_Click(object sender, RoutedEventArgs e)
+        private  void Btn_clear_Click(object sender, RoutedEventArgs e)
         {//clear
             try
             {
@@ -1433,9 +1433,9 @@ namespace POS.View.accounts
                 Window.GetWindow(this).Opacity = 0.2;
                 wd_invoicesList w = new wd_invoicesList();
 
-                if (cb_depositTo.SelectedValue == "v")
+                if (cb_depositTo.SelectedValue.ToString() == "v")
                     w.agentId = Convert.ToInt32(cb_recipientV.SelectedValue);
-                else if (cb_depositTo.SelectedValue == "c")
+                else if (cb_depositTo.SelectedValue.ToString() == "c")
                     w.agentId = Convert.ToInt32(cb_recipientC.SelectedValue);
 
                 w.invType = "pay";

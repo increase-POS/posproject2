@@ -74,9 +74,9 @@ namespace POS.View.windows
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                fillCountries();
+                await fillCountries();
 
-                fillCity();
+                await fillCity();
 
                 List<SettingCls> settingsCls = await setModel.GetAll();
                 List<SetValues> settingsValues = await valueModel.GetAll();
@@ -209,7 +209,7 @@ namespace POS.View.windows
         {
             e.Handled = e.Key == Key.Space;
         }
-        private async void Cb_areaPhone_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private   void Cb_areaPhone_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try
             {

@@ -22,19 +22,19 @@ namespace POS.converters
             {
                 case "ShortDatePattern":
                     return date.ToString(dtfi.ShortDatePattern);
-                    break;
+                    //break;
                 case "LongDatePattern":
                     return date.ToString(dtfi.LongDatePattern);
-                    break;
+                    //break;
                 case "MonthDayPattern":
                     return date.ToString(dtfi.MonthDayPattern);
-                    break;
+                    //break;
                 case "YearMonthPattern":
                     return date.ToString(dtfi.YearMonthPattern);
-                    break;
+                    //break;
                 default:
                     return date.ToString(dtfi.ShortDatePattern);
-                    break;
+                    //break;
             }
         }
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

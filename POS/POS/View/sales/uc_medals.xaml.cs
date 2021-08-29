@@ -199,7 +199,7 @@ namespace POS.View.sales
 
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
                 {
-                    RefreshMedalsList();
+                    await RefreshMedalsList();
                     Tb_search_TextChanged(null, null);
                 }
                 else
@@ -532,7 +532,7 @@ namespace POS.View.sales
                             Window.GetWindow(this).Opacity = 1;
                             #endregion
                             if (w.isOk)
-                                activate();
+                                await activate();
                         }
                         else
                         {

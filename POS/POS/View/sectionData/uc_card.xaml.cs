@@ -348,7 +348,7 @@ namespace POS.View.sectionData
                             Window.GetWindow(this).Opacity = 1;
                             #endregion
                             if (w.isOk)
-                                activate();
+                                await activate();
                         }
                         else
                         {
@@ -592,7 +592,7 @@ namespace POS.View.sectionData
         }
 
 
-        private void Btn_refresh_Click(object sender, RoutedEventArgs e)
+        private async void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -601,7 +601,7 @@ namespace POS.View.sectionData
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
                 {
 
-                    RefreshCardsList();
+                    await RefreshCardsList();
                     Tb_search_TextChanged(null, null);
                 }
                 else

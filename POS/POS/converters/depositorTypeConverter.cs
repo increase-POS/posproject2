@@ -15,10 +15,14 @@ namespace POS.converters
             string s = value as string;
             switch(value)
             {
-                case "v": return MainWindow.resourcemanager.GetString("trVendor");   break;
-                case "c": return MainWindow.resourcemanager.GetString("trCustomer"); break;
-                case "u": return MainWindow.resourcemanager.GetString("trUser");     break;
-                default:  return MainWindow.resourcemanager.GetString("trAdministrativeDeposit"); break;
+                case "v": return MainWindow.resourcemanager.GetString("trVendor");
+                    //break;
+                case "c": return MainWindow.resourcemanager.GetString("trCustomer");
+                    //break;
+                case "u": return MainWindow.resourcemanager.GetString("trUser");
+                    //break;
+                default:  return MainWindow.resourcemanager.GetString("trAdministrativeDeposit");
+                    //break;
             }
         }
 

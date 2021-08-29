@@ -220,7 +220,7 @@ namespace POS.View.Settings
                 msg = await setvalueModel.Save(replangrow);
                 //  replangrow.valId=
                 await MainWindow.GetReportlang();
-                fillRepLang();
+                await fillRepLang();
                 if (int.Parse(msg) > 0)
                 {
                     MessageBox.Show("replangsaved");

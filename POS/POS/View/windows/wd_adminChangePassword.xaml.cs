@@ -44,7 +44,7 @@ namespace POS.View.windows
             this.Close();
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
             try
             {
@@ -65,9 +65,9 @@ namespace POS.View.windows
             }
 
             translate();
-            #endregion
+                #endregion
 
-                fillUsers();
+                await fillUsers();
 
                 if (sender != null)
                     SectionData.EndAwait(grid_changePassword);

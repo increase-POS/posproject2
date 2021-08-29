@@ -315,14 +315,14 @@ namespace POS.View.Settings
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
-        private async void Tgl_isActive_Checked(object sender, RoutedEventArgs e)
+        private   void Tgl_isActive_Checked(object sender, RoutedEventArgs e)
         {
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
                 if (setValuess is null)
-                    await RefreshSetValuessList();
+                      RefreshSetValuessList();
                 tgl_setValuesState = 1;
                 Tb_search_TextChanged(null, null);
                 if (sender != null)
@@ -336,14 +336,14 @@ namespace POS.View.Settings
             }
 
         }
-        private async void Tgl_isActive_Unchecked(object sender, RoutedEventArgs e)
+        private   void Tgl_isActive_Unchecked(object sender, RoutedEventArgs e)
         {
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
                 if (setValuess is null)
-                    await RefreshSetValuessList();
+                      RefreshSetValuessList();
                 tgl_setValuesState = 0;
                 Tb_search_TextChanged(null, null);
                 if (sender != null)
@@ -357,7 +357,7 @@ namespace POS.View.Settings
             }
 
         }
-        async Task<IEnumerable<SetValues>> RefreshSetValuessList()
+          IEnumerable<SetValues>  RefreshSetValuessList()
         {
             //setValuess = await setValuesModel.Get();
             return setValuess;
@@ -368,19 +368,19 @@ namespace POS.View.Settings
             //txt_count.Text = setValuessQuery.Count().ToString();
         }
 
-        private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
+        private   void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
         {//search
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                //if (setValuess is null)
-                //    await RefreshSetValuessList();
-                //searchText = tb_search.Text.ToLower();
-                //setValuessQuery = setValuess.Where(s =>
-                //s.z.ToLower().Contains(searchText)
-                //);
-                //RefreshSetValuesView();
+                 
+
+
+
+
+
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }

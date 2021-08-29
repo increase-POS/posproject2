@@ -256,10 +256,10 @@ namespace POS.View
 
                 translate();
 
-                fillComboBranchParent();
+                await fillComboBranchParent();
 
-                fillCountries();
-                fillCity();
+                await fillCountries();
+                await fillCity();
                 Keyboard.Focus(tb_code);
 
                 btn_stores.IsEnabled = false;
@@ -478,12 +478,12 @@ namespace POS.View
                                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                             else
                             {
-                                AddFreeThone(s);
+                                await AddFreeThone(s);
                             }
                            
                             await RefreshBranchesList();
                             tb_search_TextChanged(null, null);
-                            fillComboBranchParent();
+                            await fillComboBranchParent();
                         }
 
                     }
@@ -612,7 +612,7 @@ namespace POS.View
 
                             await RefreshBranchesList();
                             tb_search_TextChanged(null, null);
-                            fillComboBranchParent();
+                            await fillComboBranchParent();
 
                             cb_branch.SelectedValue = branch.parentId;
 
@@ -655,7 +655,7 @@ namespace POS.View
                             Window.GetWindow(this).Opacity = 1;
                             #endregion
                             if (w.isOk)
-                                activate();
+                                await activate();
                         }
                         else
                         {
@@ -689,7 +689,7 @@ namespace POS.View
 
                         await RefreshBranchesList();
                         tb_search_TextChanged(null, null);
-                        fillComboBranchParent();
+                        await fillComboBranchParent();
 
                     }
                     //clear textBoxs
@@ -923,7 +923,7 @@ namespace POS.View
             { SectionData.ExceptionMessage(ex, this, sender); }
         }
 
-        private void Btn_refresh_Click(object sender, RoutedEventArgs e)
+        private async void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -931,7 +931,7 @@ namespace POS.View
                     SectionData.StartAwait(grid_main);
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
                 {
-                    RefreshBranchesList();
+                    await RefreshBranchesList();
                     tb_search_TextChanged(null, null);
                 }
                 else

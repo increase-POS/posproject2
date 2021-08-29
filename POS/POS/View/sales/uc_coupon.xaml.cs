@@ -355,7 +355,7 @@ namespace POS.View
         }
        
 
-        private async Task<string> genBarCode(string code)
+        private  string genBarCode(string code)
         {
             string s = "cop-" + code;
             return s;
@@ -479,7 +479,7 @@ namespace POS.View
             }
         }
 
-        private async void Btn_clear_Click(object sender, RoutedEventArgs e)
+        private  void Btn_clear_Click(object sender, RoutedEventArgs e)
         {
             try
             {//clear
@@ -527,7 +527,7 @@ namespace POS.View
             }
         }
 
-        private void Btn_refresh_Click(object sender, RoutedEventArgs e)
+        private async void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
             try
             {//refresh
@@ -535,7 +535,7 @@ namespace POS.View
                     SectionData.StartAwait(grid_main);
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
                 {
-                    RefreshCouponsList();
+                   await RefreshCouponsList();
                     Tb_search_TextChanged(null, null);
                 }
                 else
@@ -741,7 +741,7 @@ namespace POS.View
                             Window.GetWindow(this).Opacity = 1;
                             #endregion
                             if (w.isOk)
-                                activate();
+                              await  activate();
                         }
                         else
                         {
@@ -1045,7 +1045,7 @@ namespace POS.View
             }
         }
 
-        private async void Tb_code_LostFocus(object sender, RoutedEventArgs e)
+        private  void Tb_code_LostFocus(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -1065,17 +1065,15 @@ namespace POS.View
             }
         }
 
-        private async void Tb_code_TextChanged(object sender, TextChangedEventArgs e)
+        private  void Tb_code_TextChanged(object sender, TextChangedEventArgs e)
         {
             try
             {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
+                //if (sender != null)
+                //    SectionData.StartAwait(grid_main);
                 if (tb_barcode.Text.Equals(""))
                 {
-                    //string name = sender.GetType().Name;
-                    //validateEmpty(name, sender);
-                    //SectionData.validateEmptyTextBox((TextBox)sender, p_errorCode, tt_errorCode, "trEmptyCodeToolTip");
+                   
                     p_errorCode.Visibility = Visibility.Visible;
                     tt_errorCode.Content = MainWindow.resourcemanager.GetString("trEmptyCodeToolTip");
                     tb_code.Background = (Brush)bc.ConvertFrom("#15FF0000");
@@ -1083,16 +1081,16 @@ namespace POS.View
                 tb_code.Background = (Brush)bc.ConvertFrom("#f8f8f8");
                 p_errorCode.Visibility = Visibility.Collapsed;
 
-                tb_barcode.Text = await genBarCode(tb_code.Text);
+                tb_barcode.Text = genBarCode(tb_code.Text);
                 drawBarcode(tb_barcode.Text);
 
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
+                //if (sender != null)
+                //    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
+                //if (sender != null)
+                //    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }

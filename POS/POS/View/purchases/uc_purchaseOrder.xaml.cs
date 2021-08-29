@@ -84,7 +84,7 @@ namespace POS.View.purchases
 
                         mainInvoiceItems = invoiceItems;
                         txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaceOrder");
-                        refreshDocCount(invoice.invoiceId);
+                        await refreshDocCount(invoice.invoiceId);
                     }
                 }
                 Window.GetWindow(this).Opacity = 1;
@@ -110,7 +110,7 @@ namespace POS.View.purchases
         ItemLocation itemLocationModel = new ItemLocation();
 
         Branch branchModel = new Branch();
-        IEnumerable<Branch> branches;
+        //IEnumerable<Branch> branches;
 
         Agent agentModel = new Agent();
         IEnumerable<Agent> vendors;
@@ -254,7 +254,7 @@ namespace POS.View.purchases
                 await RefrishItems();
                 await RefrishVendors();
                 await fillBarcodeList();
-                refreshDraftNotification();
+                await refreshDraftNotification();
                 setTimer();
                 tb_barcode.Focus();
                 #region datagridChange
@@ -353,7 +353,7 @@ namespace POS.View.purchases
             {
                 if (invoice.invoiceId != 0)
             {
-                refreshDocCount(invoice.invoiceId);
+                await refreshDocCount(invoice.invoiceId);
             }
             }
             catch (Exception ex)
@@ -466,7 +466,7 @@ namespace POS.View.purchases
         #endregion
         #region Get Id By Click  Y
 
-        public async Task ChangeCategoryIdEvent(int categoryId)
+        public void ChangeCategoryIdEvent(int categoryId)
         {
         }
         public async Task ChangeItemIdEvent(int itemId)
@@ -487,7 +487,7 @@ namespace POS.View.purchases
                     if (index == -1)//item doesn't exist in bill
                     {
                         // create new row in bill details data grid
-                        await addRowToBill(item.name, itemId, defaultPurUnit.mainUnit, defaultPurUnit.itemUnitId, 1, 0, 0);
+                          addRowToBill(item.name, itemId, defaultPurUnit.mainUnit, defaultPurUnit.itemUnitId, 1, 0, 0);
                     }
                     else // item exist prevoiusly in list
                     {
@@ -503,7 +503,7 @@ namespace POS.View.purchases
                 }
                 else
                 {
-                    await addRowToBill(item.name, itemId, null, 0, 1, 0, 0);
+                      addRowToBill(item.name, itemId, null, 0, 1, 0, 0);
                     refrishBillDetails();
                 }
             }
@@ -612,7 +612,7 @@ namespace POS.View.purchases
                     invoiceItems.Add(itemT);
                 }
                 await invoiceModel.saveInvoiceItems(invoiceItems, invoiceId);
-                refreshDraftNotification();
+                await refreshDraftNotification();
                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
             }
             else
@@ -781,7 +781,7 @@ namespace POS.View.purchases
 
                         mainInvoiceItems = invoiceItems;
                         txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaceOrderDraft");
-                        refreshDocCount(invoice.invoiceId);
+                        await refreshDocCount(invoice.invoiceId);
                     }
                 }
                 Window.GetWindow(this).Opacity = 1;
@@ -901,7 +901,7 @@ namespace POS.View.purchases
                 btn_save.IsEnabled = true;
             }
         }
-        private void Btn_invoiceImage_Click(object sender, RoutedEventArgs e)
+        private async void Btn_invoiceImage_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -920,7 +920,7 @@ namespace POS.View.purchases
                         w.tableId = invoice.invoiceId;
                         w.docNum = invoice.invNumber;
                         w.ShowDialog();
-                        refreshDocCount(invoice.invoiceId);
+                        await refreshDocCount(invoice.invoiceId);
                         Window.GetWindow(this).Opacity = 1;
                     }
                     else
@@ -1210,7 +1210,7 @@ namespace POS.View.purchases
                                     int count = 1;
                                     decimal price = 0; //?????
                                     decimal total = count * price;
-                                    await addRowToBill(item.name, item.itemId, unit1.mainUnit, unit1.itemUnitId, count, price, total);
+                                    addRowToBill(item.name, item.itemId, unit1.mainUnit, unit1.itemUnitId, count, price, total);
                                 }
                                 else // item exist prevoiusly in list
                                 {
@@ -1261,7 +1261,7 @@ namespace POS.View.purchases
             }
         }
 
-        private async Task addRowToBill(string itemName, int itemId, string unitName, int itemUnitId, int count, decimal price, decimal total)
+        private  void addRowToBill(string itemName, int itemId, string unitName, int itemUnitId, int count, decimal price, decimal total)
         {
             // increase sequence for each read
             _SequenceNum++;

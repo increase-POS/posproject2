@@ -125,7 +125,8 @@ namespace POS.Classes
                         System.IO.File.Delete(tmpPath);
                     }
                 }
-                catch (Exception ex) { return false; }
+                catch
+                { return false; }
             }
             return false;
         }

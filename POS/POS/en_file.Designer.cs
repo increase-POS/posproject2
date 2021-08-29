@@ -169,6 +169,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Accuracy of numbers.
+        /// </summary>
+        internal static string trAccuracy {
+            get {
+                return ResourceManager.GetString("trAccuracy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Activate.
         /// </summary>
         internal static string trActive {
@@ -2599,6 +2608,24 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Coupon cannot be used, the total is more than the maximum allowed.
+        /// </summary>
+        internal static string trErrorMaxInvToolTip {
+            get {
+                return ResourceManager.GetString("trErrorMaxInvToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Coupon cannot be used, total is less than the minimum allowed.
+        /// </summary>
+        internal static string trErrorMinInvToolTip {
+            get {
+                return ResourceManager.GetString("trErrorMinInvToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The new password does not match the confirmed password.
         /// </summary>
         internal static string trErrorNewPasswordNotEqualConfirmed {
@@ -3013,6 +3040,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Movements.
+        /// </summary>
+        internal static string trImportExport {
+            get {
+                return ResourceManager.GetString("trImportExport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Deactivate.
         /// </summary>
         internal static string trInActive {
@@ -3265,11 +3301,29 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Destructive.
+        /// </summary>
+        internal static string trItemsDestroy {
+            get {
+                return ResourceManager.GetString("trItemsDestroy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Item Shortage.
         /// </summary>
         internal static string trItemShortage {
             get {
                 return ResourceManager.GetString("trItemShortage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Storage.
+        /// </summary>
+        internal static string trItemsStorage {
+            get {
+                return ResourceManager.GetString("trItemsStorage", resourceCulture);
             }
         }
         
@@ -3387,6 +3441,15 @@ namespace POS {
         internal static string trLocationHint {
             get {
                 return ResourceManager.GetString("trLocationHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to locations.
+        /// </summary>
+        internal static string trLocations {
+            get {
+                return ResourceManager.GetString("trLocations", resourceCulture);
             }
         }
         
@@ -4211,6 +4274,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Permissions.
+        /// </summary>
+        internal static string trPermissions {
+            get {
+                return ResourceManager.GetString("trPermissions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Basics.
         /// </summary>
         internal static string trPermissionsBasics {
@@ -4400,6 +4472,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please upgrade the application.
+        /// </summary>
+        internal static string trPopUpgrade {
+            get {
+                return ResourceManager.GetString("trPopUpgrade", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to POS.
         /// </summary>
         internal static string trPOS {
@@ -4576,6 +4657,15 @@ namespace POS {
         internal static string trPurchaceOrderDraft {
             get {
                 return ResourceManager.GetString("trPurchaceOrderDraft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Purchases.
+        /// </summary>
+        internal static string trPurchase {
+            get {
+                return ResourceManager.GetString("trPurchase", resourceCulture);
             }
         }
         
@@ -4918,6 +5008,15 @@ namespace POS {
         internal static string trReports {
             get {
                 return ResourceManager.GetString("trReports", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reports Settings.
+        /// </summary>
+        internal static string trReportsSettings {
+            get {
+                return ResourceManager.GetString("trReportsSettings", resourceCulture);
             }
         }
         

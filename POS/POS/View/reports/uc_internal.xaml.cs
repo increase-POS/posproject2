@@ -112,17 +112,19 @@ namespace POS.View.reports
         {
                 try
                 {
-                    if (sender != null)
-                        SectionData.StartAwait(grid_main);
+                    //if (sender != null)
+                    //    SectionData.StartAwait(grid_main);
 
                     throw new NotImplementedException();
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
+
+
+                //if (sender != null)
+                //    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
+                //if (sender != null)
+                //    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }

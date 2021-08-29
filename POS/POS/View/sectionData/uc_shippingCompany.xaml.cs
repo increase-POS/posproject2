@@ -585,7 +585,7 @@ namespace POS.View.sectionData
                             #endregion
 
                             if (w.isOk)
-                                activate();
+                                await activate();
                         }
                         else
                         {
@@ -757,9 +757,9 @@ namespace POS.View.sectionData
                 cb_deliveryType.ItemsSource = typelist;
                 #endregion
 
-                fillCountries();
+                await fillCountries();
 
-                fillCity();
+                await fillCity();
 
                 await RefreshShComList();
                 Tb_search_TextChanged(null, null);

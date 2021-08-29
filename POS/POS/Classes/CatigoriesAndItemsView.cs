@@ -52,7 +52,6 @@ namespace POS.Classes
         {
             get => _idCatigories; set
             {
-
                 _idCatigories = value;
                 INotifyPropertyChangedIdCatigories();
             }
@@ -61,7 +60,6 @@ namespace POS.Classes
         {
             get => _idItem; set
             {
-
                 _idItem = value;
                 INotifyPropertyChangedIdCatigorieItems();
             }
@@ -70,7 +68,6 @@ namespace POS.Classes
         {
             get => _idPayInvoice; set
             {
-
                 _idPayInvoice = value;
                 INotifyPropertyChangedIdCatigorieItems();
             }
@@ -79,7 +76,6 @@ namespace POS.Classes
         {
             get => _idItemsImport; set
             {
-
                 _idItemsImport = value;
                 INotifyPropertyChangedIdCatigorieItems();
             }
@@ -88,7 +84,6 @@ namespace POS.Classes
         {
             get => _idItemsExport; set
             {
-
                 _idItemsExport = value;
                 INotifyPropertyChangedIdCatigorieItems();
             }
@@ -97,7 +92,6 @@ namespace POS.Classes
         {
             get => _idItemsDestroy; set
             {
-
                 _idItemsDestroy = value;
                 INotifyPropertyChangedIdCatigorieItems();
             }
@@ -106,7 +100,6 @@ namespace POS.Classes
         {
             get => _idReceiptOfPurchaseInvoice; set
             {
-
                 _idReceiptOfPurchaseInvoice = value;
                 INotifyPropertyChangedIdCatigorieItems();
             }
@@ -115,7 +108,6 @@ namespace POS.Classes
         {
             get => _idPackageOfItems; set
             {
-
                 _idPackageOfItems = value;
                 INotifyPropertyChangedIdCatigorieItems();
             }
@@ -124,7 +116,6 @@ namespace POS.Classes
         {
             get => _idUsers; set
             {
-
                 _idUsers = value;
                 INotifyPropertyChangedIdCatigorieItems();
             }
@@ -142,7 +133,6 @@ namespace POS.Classes
         {
             get => _idVendors; set
             {
-
                 _idVendors = value;
                 INotifyPropertyChangedIdCatigorieItems();
             }
@@ -151,21 +141,19 @@ namespace POS.Classes
         {
             get => _idwdItems; set
             {
-
                 _idwdItems = value;
                 INotifyPropertyChangedIdCatigorieItems();
             }
         }
-        private void INotifyPropertyChangedIdCatigories()
+        private async void INotifyPropertyChangedIdCatigories()
         {
             if (ucCategorie != null)
             {
                 ucCategorie.ChangeCategorieIdEvent(idCatigories);
-
             }
             else if (ucItem != null)
             {
-                ucItem.ChangeCategoryIdEvent(idCatigories);
+                await ucItem.ChangeCategoryIdEvent(idCatigories);
             }
             else  if (ucPayInvoice != null)
             {
@@ -194,27 +182,27 @@ namespace POS.Classes
             }
             else if (ucPackageOfItems != null)
             {
-                ucPackageOfItems.ChangeCategoryIdEvent(idCatigories);
+                await ucPackageOfItems.ChangeCategoryIdEvent(idCatigories);
 
             }
             else if (wdItems != null)
             {
-                wdItems.ChangeCategoryIdEvent(idCatigories);
+                await wdItems.ChangeCategoryIdEvent(idCatigories);
 
             }
 
 
         }
-        private void INotifyPropertyChangedIdCatigorieItems()
+        private async void INotifyPropertyChangedIdCatigorieItems()
         {
 
              if (ucItem != null)
             {
-                ucItem.ChangeItemIdEvent(idItem);
+                await ucItem.ChangeItemIdEvent(idItem);
             }
             else if (ucPayInvoice != null)
             {
-                ucPayInvoice.ChangeItemIdEvent(idItem);
+                await ucPayInvoice.ChangeItemIdEvent(idItem);
 
             }
             //else if (ucItemsImport != null)
@@ -224,7 +212,7 @@ namespace POS.Classes
             //}
             else if (ucItemsExport != null)
             {
-                ucItemsExport.ChangeItemIdEvent(idItem);
+                await ucItemsExport.ChangeItemIdEvent(idItem);
 
             }
             else if (ucreceiptOfPurchaseInvoice != null)
@@ -234,7 +222,7 @@ namespace POS.Classes
             }
             else if (ucPackageOfItems != null)
             {
-                ucPackageOfItems.ChangeItemIdEvent(idItem);
+                await ucPackageOfItems.ChangeItemIdEvent(idItem);
 
             }
             else if (ucUsers != null)
@@ -249,7 +237,7 @@ namespace POS.Classes
             }
             else if (ucVendors != null)
             {
-                ucVendors.ChangeItemIdEvent(idItem);
+                await ucVendors.ChangeItemIdEvent(idItem);
 
             }
             else if (wdItems != null)
@@ -262,7 +250,7 @@ namespace POS.Classes
         public int pastCatalogCard = -1;
          /// ////////////////////drag and drop///////////////////////////////////////
         List<Category> newCategories = new List<Category>();
-        List<Categoryuser> categoriesUser = new List<Categoryuser>();
+        List<updateCategoryuser> categoriesUser = new List<updateCategoryuser>();
         int _columnCount , index = 0 ;
         Category category = new Category();
         Category categoryModel = new Category();
@@ -307,8 +295,6 @@ namespace POS.Classes
                 _columnCount = columnCount;
                 FN_createCatalogCard(itemCardView, columnCount);
 
-
-
                 if (column != -1)
                     {
                     column++;
@@ -322,8 +308,6 @@ namespace POS.Classes
                     {
                      column++;
                     }
-               
-
               
             }
         }
@@ -352,46 +336,95 @@ namespace POS.Classes
             uc.AllowDrop = true;
             uc.MouseDown += this.ucMouseDown;
             uc.DragEnter += this.ucDragEnter;
+            uc.MouseUp += this.ucMouseUp;
+            //uc.TouchLeave += this.ucTouchLeave;
+            //uc.MouseMove += this.ucMouseMove;
             uc.Drop += this.ucDrop;
             ////////////////////////////////////////////////////
             return uc;
         }
-      
+
+        private void ucTouchLeave(object sender, TouchEventArgs e)
+        {
+            doubleClickCategory(sender);
+        }
+
+        private void ucMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            Point position = e.GetPosition(null);
+            if (position != _startPoint)
+            {
+                //get dragged id
+                index = newCategories.FindIndex(c => c.categoryId == (sender as UC_squareCard).ContentId);
+                DragDrop.DoDragDrop(sender as UC_squareCard, (sender as UC_squareCard).ContentId.ToString(), DragDropEffects.All);
+            }
+            else
+                doubleClickCategory(sender as UC_squareCard);
+
+        }
+
+        Point _startPoint;
+        bool IsDragging = false;
+        private void ucMouseMove(object sender, MouseEventArgs e)
+        {
+
+            // if (e.LeftButton == MouseButtonState.Pressed && !IsDragging)
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                Point position = e.GetPosition(null);
+                IsDragging = true;
+
+                //if (Math.Abs(position.X - _startPoint.X) > SystemParameters.MinimumHorizontalDragDistance ||
+                //        Math.Abs(position.Y - _startPoint.Y) > SystemParameters.MinimumVerticalDragDistance)
+                //{
+                //    StartDrag(e);
+
+                //}
+            }
+        }
+
+
         ////////////////darg and drop events/////////////////////
         private async void ucDrop(object sender, DragEventArgs e)
         {
-
             try
             {
                 //get dropped id
                 int curIndex = newCategories.FindIndex(c => c.categoryId == (sender as UC_squareCard).ContentId);
-            //get dropped category
-            category = await categoryModel.GetCategoryByID((sender as UC_squareCard).ContentId);
-            //get dragged category
-            Category dragedCategory = await categoryModel.GetCategoryByID(Convert.ToInt32(e.Data.GetData(DataFormats.Text , true)));
-            //set dropped category
-            newCategories[curIndex] = dragedCategory;
-            //set dragged category
-            newCategories[index] = category;
-            FN_refrishCatalogCard(newCategories , _columnCount);
-            int i = 0;
-            foreach(var c in newCategories)
-            {
-                i++;
-                Categoryuser catUser = new Categoryuser();
-                catUser.id = c.id.Value;
-                catUser.userId = MainWindow.userID.Value;
-                catUser.categoryId = c.categoryId;
-                catUser.sequence = i;
-                categoriesUser.Add(catUser);
-            }
-                //await categorUserModel.UpdateCatUserList(MainWindow.userID.Value, categoriesUser);
+                //get dropped category
+                category = await categoryModel.GetCategoryByID((sender as UC_squareCard).ContentId);
+                int droppedSequence = category.sequence.Value;
+                //get dragged category
+                Category dragedCategory = await categoryModel.GetCategoryByID(Convert.ToInt32(e.Data.GetData(DataFormats.Text, true)));
+                int draggedSequence = dragedCategory.sequence.Value;
+                //set dropped category
+                newCategories[curIndex] = dragedCategory;
+                //set dragged category
+                newCategories[index] = category;
+                //update sequences
 
+                newCategories[curIndex].sequence = droppedSequence;
+                newCategories[index].sequence = draggedSequence;
 
+                //update displaying list
+                FN_refrishCatalogCard(newCategories, _columnCount);
+
+                foreach (var c in newCategories)
+                {
+                    updateCategoryuser catUser = new updateCategoryuser();
+                    catUser.id = c.id.Value;
+                    catUser.userId = MainWindow.userID.Value;
+                    catUser.categoryId = c.categoryId;
+                    catUser.sequence = c.sequence;
+                    catUser.createUserId = MainWindow.userID.Value;
+                    catUser.updateUserId = MainWindow.userID.Value;
+                    categoriesUser.Add(catUser);
+                }
+                await categorUserModel.UpdateCatUserList(MainWindow.userID.Value, categoriesUser);
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                //SectionData.ExceptionMessage(ex, this, sender);
             }
         }
 
@@ -403,59 +436,105 @@ namespace POS.Classes
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                //SectionData.ExceptionMessage(ex, this, sender);
             }
         }
        
         private void ucMouseDown(object sender, MouseButtonEventArgs e)
-                {
-                    try
-                    {
-                        if (e.LeftButton == MouseButtonState.Pressed)
+        {
+            try
             {
-                //get dragged id
-                index = newCategories.FindIndex(c => c.categoryId == (sender as UC_squareCard).ContentId);
-                DragDrop.DoDragDrop(sender as UC_squareCard, (sender as UC_squareCard).ContentId.ToString(), DragDropEffects.All);
-              
+                _startPoint = e.GetPosition(null);
+                //if ((e.LeftButton == MouseButtonState.Pressed)&& (e.ClickCount > 0))
+                //{
+                //    //mousePressed = DateTime.Now;
+                //    //DateTime _lastKeystroke = new DateTime(0);
+                //    //TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
+                //    //MessageBox.Show(elapsed.TotalMilliseconds.ToString());
+                //    //if (!elapsed.TotalMilliseconds.ToString().Equals(63765843722372.3) )
+                //    //if(IsDragging)
+                //    //{
+                //        //get dragged id
+                //        index = newCategories.FindIndex(c => c.categoryId == (sender as UC_squareCard).ContentId);
+                //        DragDrop.DoDragDrop(sender as UC_squareCard, (sender as UC_squareCard).ContentId.ToString(), DragDropEffects.All);
+                //      //  MessageBox.Show("drag");
+                //    //}
+                //    //else
+                //    //{
+                //        doubleClickCategory(sender as UC_squareCard);
+                //      //  MessageBox.Show("click");
+                //    //}
+                //}
             }
+            catch (Exception ex)
+            {
+                //SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
+        ////////////////////////////////////////////////////////////
+        void doubleClickCategory(object sender)
+        {
+            try
+            {
+                UC_squareCard uc = (UC_squareCard)sender;
+                uc = gridCatigories.Children.OfType<UC_squareCard>().Where(x => x.Name.ToString() == "categorie" + uc.categoryCardView.category.categoryId).FirstOrDefault();
+
+                gridCatigories.Children.Remove(uc);
+
+                FN_createCatalogCard(uc.categoryCardView, uc.columnCount, "#178DD2");
+
+
+                if (pastCatalogCard != -1 && pastCatalogCard != uc.categoryCardView.category.categoryId)
+                {
+                    var pastUc = new UC_squareCard() { ContentId = pastCatalogCard };
+                    pastUc = gridCatigories.Children.OfType<UC_squareCard>().Where(x => x.Name.ToString() == "categorie" + pastUc.ContentId).FirstOrDefault();
+                    if (pastUc != null)
+                    {
+                        gridCatigories.Children.Remove(pastUc);
+                        FN_createCatalogCard(pastUc.categoryCardView, pastUc.columnCount,
+                         "#DFDFDF");
+                    }
+                }
+
+                pastCatalogCard = uc.categoryCardView.category.categoryId;
+                idCatigories = uc.categoryCardView.category.categoryId;
             }
             catch (Exception ex)
             {
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
-        ////////////////////////////////////////////////////////////
         void catalogCard_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-                    {
-                        try
-                        {
-                            UC_squareCard uc = (UC_squareCard)sender;
-            uc = gridCatigories.Children.OfType<UC_squareCard>().Where(x => x.Name.ToString() == "categorie" + uc.categoryCardView.category.categoryId).FirstOrDefault();
+        {
+            //try
+            //{
+            //    UC_squareCard uc = (UC_squareCard)sender;
+            //uc = gridCatigories.Children.OfType<UC_squareCard>().Where(x => x.Name.ToString() == "categorie" + uc.categoryCardView.category.categoryId).FirstOrDefault();
 
-            gridCatigories.Children.Remove(uc);
+            //gridCatigories.Children.Remove(uc);
             
-            FN_createCatalogCard( uc.categoryCardView, uc.columnCount,   "#178DD2");
+            //FN_createCatalogCard( uc.categoryCardView, uc.columnCount,   "#178DD2");
 
 
-            if (pastCatalogCard != -1 && pastCatalogCard != uc.categoryCardView.category.categoryId)
-            {
-                var pastUc = new UC_squareCard() { ContentId = pastCatalogCard };
-                pastUc = gridCatigories.Children.OfType<UC_squareCard>().Where(x => x.Name.ToString() == "categorie" + pastUc.ContentId).FirstOrDefault();
-                if (pastUc != null)
-                {
-                    gridCatigories.Children.Remove(pastUc);
-                    FN_createCatalogCard( pastUc.categoryCardView, pastUc.columnCount,
-                     "#DFDFDF");
-                }
-            }
+            //if (pastCatalogCard != -1 && pastCatalogCard != uc.categoryCardView.category.categoryId)
+            //{
+            //    var pastUc = new UC_squareCard() { ContentId = pastCatalogCard };
+            //    pastUc = gridCatigories.Children.OfType<UC_squareCard>().Where(x => x.Name.ToString() == "categorie" + pastUc.ContentId).FirstOrDefault();
+            //    if (pastUc != null)
+            //    {
+            //        gridCatigories.Children.Remove(pastUc);
+            //        FN_createCatalogCard( pastUc.categoryCardView, pastUc.columnCount,
+            //         "#DFDFDF");
+            //    }
+            //}
             
-            pastCatalogCard = uc.categoryCardView.category.categoryId;
-            idCatigories = uc.categoryCardView.category.categoryId;
-            }
-            catch (Exception ex)
-            {
-                SectionData.ExceptionMessage(ex, this, sender);
-            }
+            //pastCatalogCard = uc.categoryCardView.category.categoryId;
+            //idCatigories = uc.categoryCardView.category.categoryId;
+            //}
+            //catch (Exception ex)
+            //{
+            //    SectionData.ExceptionMessage(ex, this, sender);
+            //}
         }
 
         #endregion

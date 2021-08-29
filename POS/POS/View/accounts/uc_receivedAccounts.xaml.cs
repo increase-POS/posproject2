@@ -130,13 +130,13 @@ namespace POS.View.accounts
                 cb_depositFrom.ItemsSource = depositlist;
                 #endregion
 
-                fillVendors();
+                await fillVendors();
 
-                fillCustomers();
+                await fillCustomers();
 
-                fillUsers();
+                await fillUsers();
 
-                fillShippingCompanies();
+                await fillShippingCompanies();
 
                 #region fill process type
                 var typelist = new[] {
@@ -545,7 +545,7 @@ namespace POS.View.accounts
                     if ((!s.Equals("0")) || (!s1.Equals("")) || (s1.Equals("-1")))
                     {
                         if (cb_paymentProcessType.SelectedValue.ToString().Equals("cash"))
-                            calcBalance(cash.cash.Value, depositor, agentid);
+                          await  calcBalance(cash.cash.Value, depositor, agentid);
 
                         Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                         Btn_clear_Click(null, null);
@@ -651,7 +651,7 @@ namespace POS.View.accounts
 
         }
 
-        private async void Btn_clear_Click(object sender, RoutedEventArgs e)
+        private  void Btn_clear_Click(object sender, RoutedEventArgs e)
         {//clear
             try
             {
@@ -1219,13 +1219,13 @@ namespace POS.View.accounts
 
                 w.agentId = 0; w.userId = 0; w.shippingCompanyId = 0;
 
-                if (cb_depositFrom.SelectedValue == "v")
+                if (cb_depositFrom.SelectedValue.ToString() == "v")
                     w.agentId = Convert.ToInt32(cb_depositorV.SelectedValue);
-                else if (cb_depositFrom.SelectedValue == "c")
+                else if (cb_depositFrom.SelectedValue.ToString() == "c")
                     w.agentId = Convert.ToInt32(cb_depositorC.SelectedValue);
-                else if (cb_depositFrom.SelectedValue == "u")
+                else if (cb_depositFrom.SelectedValue.ToString() == "u")
                     w.userId = Convert.ToInt32(cb_depositorU.SelectedValue);
-                else if (cb_depositFrom.SelectedValue == "sh")
+                else if (cb_depositFrom.SelectedValue.ToString() == "sh")
                     w.shippingCompanyId = Convert.ToInt32(cb_depositorSh.SelectedValue);
 
                 w.invType = "feed";

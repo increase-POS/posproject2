@@ -15,7 +15,7 @@ namespace POS.converters
             string s = value as string;
             if (s.Equals("p")) return MainWindow.resourcemanager.GetString("trPull");
             else return MainWindow.resourcemanager.GetString("trDeposit");
-            return "";
+            //return "";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

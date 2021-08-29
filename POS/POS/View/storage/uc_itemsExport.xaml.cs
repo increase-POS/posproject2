@@ -84,13 +84,13 @@ namespace POS.View.storage
         Category categoryModel = new Category();
         Category category = new Category();
 
-        IEnumerable<Category> categories;
-        IEnumerable<Category> categoriesQuery;
-        int? categoryParentId = 0;
+        //IEnumerable<Category> categories;
+        //IEnumerable<Category> categoriesQuery;
+        //int? categoryParentId = 0;
         Item itemModel = new Item();
         Item item = new Item();
         IEnumerable<Item> items;
-        IEnumerable<Item> itemsQuery;
+        //IEnumerable<Item> itemsQuery;
         CatigoriesAndItemsView catigoriesAndItemsView = new CatigoriesAndItemsView();
         public byte tglCategoryState = 1;
         public byte tglItemState = 1;
@@ -184,10 +184,10 @@ namespace POS.View.storage
 
                 configureProcessType();
                 pos = await pos.getPosById(MainWindow.posID.Value);
-                SectionData.fillBranches(cb_branch, "bs");
+                await SectionData.fillBranches(cb_branch, "bs");
                 //await RefrishBranches();
                 await RefrishItems();
-                setNotifications();
+                await setNotifications();
                 setTimer();
                 #region datagridChange
                 CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(dg_billDetails.Items);
@@ -211,11 +211,11 @@ namespace POS.View.storage
             timer.Tick += timer_Tick;
             timer.Start();
         }
-        async void timer_Tick(object sendert, EventArgs et)
+        async   void timer_Tick(object sendert, EventArgs et)
         {
             try
             {
-                setNotifications();
+                await setNotifications();
             }
             catch (Exception ex)
             {
@@ -224,10 +224,10 @@ namespace POS.View.storage
         }
         #endregion
         #region notifications
-        private void setNotifications()
+        private async Task setNotifications()
         {
-            refreshDraftNotification();
-            refreshOrderWaitNotification();
+            await refreshDraftNotification();
+            await refreshOrderWaitNotification();
         }
         private async Task refreshDraftNotification()
         {
@@ -852,7 +852,7 @@ namespace POS.View.storage
                     SectionData.StartAwait(grid_main);
 
                 await saveDraft();
-                refreshDraftNotification();
+                await refreshDraftNotification();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -1346,7 +1346,7 @@ namespace POS.View.storage
                                 await save();
                                 break;
                         }
-                        setNotifications();
+                        await setNotifications();
 
                     }
                 }

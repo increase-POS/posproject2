@@ -69,11 +69,11 @@ namespace POS.View.accounts
         IEnumerable<Agent> customers;
         IEnumerable<User> users;
         IEnumerable<Card> cards;
-        IEnumerable<CashTransfer> cashesQuery;
-        IEnumerable<CashTransfer> cashesQueryExcel;
+        //IEnumerable<CashTransfer> cashesQuery;
+        //IEnumerable<CashTransfer> cashesQueryExcel;
         IEnumerable<Invoice> invoiceQuery;
         IEnumerable<Invoice> invoiceQueryExcel;
-        IEnumerable<CashTransfer> cashes;
+        //IEnumerable<CashTransfer> cashes;
         IEnumerable<Invoice> invoices;
         IEnumerable<Branch> branches;
         int agentId, userId;
@@ -423,7 +423,7 @@ namespace POS.View.accounts
         {//delete
 
         }
-        private async void Btn_clear_Click(object sender, RoutedEventArgs e)
+        private  void Btn_clear_Click(object sender, RoutedEventArgs e)
         {//clear
             try
             {
@@ -843,7 +843,7 @@ namespace POS.View.accounts
             cb_salesMan.SelectedValuePath = "userId";
             cb_salesMan.SelectedIndex = -1;
         }
-        private async void Btn_printInvoice_Click(object sender, RoutedEventArgs e)
+        private   void Btn_printInvoice_Click(object sender, RoutedEventArgs e)
         {
             if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one"))
             {
@@ -857,7 +857,7 @@ namespace POS.View.accounts
 
         }
 
-        private async void Cb_salesMan_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private   void Cb_salesMan_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//select salesman
             try
             {
@@ -879,7 +879,7 @@ namespace POS.View.accounts
             }
         }
 
-        private async void Cb_customer_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private  void Cb_customer_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//select agent
             try
             {
@@ -901,7 +901,7 @@ namespace POS.View.accounts
             }
         }
 
-        private async void Cb_state_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private  void Cb_state_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//select state
             try
             {
@@ -1043,7 +1043,7 @@ namespace POS.View.accounts
                         if (!s.Equals(""))
                         {
                             if (cb_paymentProcessType.SelectedValue.ToString().Equals("cash"))
-                                calcBalance(decimal.Parse(tb_cash.Text));
+                              await  calcBalance(decimal.Parse(tb_cash.Text));
 
                             Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                             Btn_clear_Click(null, null);

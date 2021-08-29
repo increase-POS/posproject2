@@ -138,7 +138,7 @@ namespace POS.View.windows
             isSmall = null;
             SectionData.clearValidate(tb_fromQuantity, p_errorFromQuantity);
         }
-        private void Tb_validateEmptyTextChange(object sender, TextChangedEventArgs e)
+        private async void Tb_validateEmptyTextChange(object sender, TextChangedEventArgs e)
         {
             try
             {
@@ -148,7 +148,7 @@ namespace POS.View.windows
                 if ((sender as TextBox).Name == "tb_fromQuantity")
                     SectionData.InputJustNumber(ref txb);
                 checkLocationQuantity();
-                setToquantityMessage();
+                await setToquantityMessage();
             }
             catch (Exception ex)
             {
@@ -339,7 +339,7 @@ namespace POS.View.windows
 
                 translate();
 
-                fillItemCombo();
+                await fillItemCombo();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -428,7 +428,7 @@ namespace POS.View.windows
                     cb_sectionLocation.SelectedValuePath = "itemsLocId";
                     cb_sectionLocation.DisplayMemberPath = "location";
 
-                    setToquantityMessage();
+                    await setToquantityMessage();
                 }
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -441,14 +441,14 @@ namespace POS.View.windows
             }
         }
 
-        private void Cb_toUnit_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private  async void Cb_toUnit_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                setToquantityMessage();
+                await setToquantityMessage();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }

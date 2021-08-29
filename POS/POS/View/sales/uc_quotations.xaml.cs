@@ -61,7 +61,7 @@ namespace POS.View.sales
         IEnumerable<Item> items;
 
         Card cardModel = new Card();
-        IEnumerable<Card> cards;
+        //IEnumerable<Card> cards;
         // IEnumerable<Item> itemsQuery;
 
         Branch branchModel = new Branch();
@@ -161,7 +161,7 @@ namespace POS.View.sales
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_customer, MainWindow.resourcemanager.GetString("trCustomerHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_note, MainWindow.resourcemanager.GetString("trNoteHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_discount, MainWindow.resourcemanager.GetString("trDiscountHint"));
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_coupon, MainWindow.resourcemanager.GetString("trCoponHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_coupon, MainWindow.resourcemanager.GetString("trCoponHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_typeDiscount, MainWindow.resourcemanager.GetString("trDiscountTypeHint"));
 
             btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
@@ -195,7 +195,7 @@ namespace POS.View.sales
 
                 translate();
                 configureDiscountType();
-                refreshDraftNotification();
+                await refreshDraftNotification();
                 await RefrishItems();
                 await RefrishCustomers();
                 await fillBarcodeList();
@@ -206,11 +206,8 @@ namespace POS.View.sales
                 #region Style Date
                 //SectionData.defaultDatePickerStyle(dp_desrvedDate);
                 #endregion
-                if (MainWindow.isInvTax == 1) // tax is on tatal invoice
-                {
-                    tb_taxValue.Text = MainWindow.tax.ToString();
-                    tb_taxValue.Text = MainWindow.tax.ToString();
-                }
+               
+                tb_taxValue.Text = MainWindow.tax.ToString();
                 tb_barcode.Focus();
 
                 #region datagridChange
@@ -235,12 +232,12 @@ namespace POS.View.sales
             timer.Tick += timer_Tick;
             timer.Start();
         }
-        private void timer_Tick(object sendert, EventArgs et)
+        private async void timer_Tick(object sendert, EventArgs et)
         {
             try
             {
                 if (invoice.invoiceId != 0)
-                    refreshDocCount(invoice.invoiceId);
+                    await refreshDocCount(invoice.invoiceId);
             }
             catch (Exception ex)
             {
@@ -321,7 +318,11 @@ namespace POS.View.sales
         }
         async Task fillCouponsList()
         {
-            coupons = await couponModel.GetCouponsAsync();
+            coupons = await couponModel.GetEffictiveCoupons();
+
+            cb_coupon.DisplayMemberPath = "name";
+            cb_coupon.SelectedValuePath = "cId";
+            cb_coupon.ItemsSource = coupons;
         }
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
@@ -384,33 +385,7 @@ namespace POS.View.sales
         }
         #endregion
         #region coupon
-        private async void Tb_coupon_KeyDown(object sender, KeyEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-                if (e.Key == Key.Return)
-                {
-                    string s = _BarcodeStr;
-                    couponModel = coupons.ToList().Find(c => c.code == tb_coupon.Text || c.barcode == tb_coupon.Text);
-                    if (couponModel != null)
-                    {
-                        s = couponModel.barcode;
-                        await dealWithBarcode(s);
-                    }
-                    tb_coupon.Clear();
-                }
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
-            }
-        }
+         
         private async Task dealWithBarcode(string barcode)
         {
             int codeindex = barcode.IndexOf("-");
@@ -442,12 +417,12 @@ namespace POS.View.sales
                     break;
                 case "cop":// this barcode for coupon
                     {
-                        await fillCouponsList();
+                        //await fillCouponsList();
                         couponModel = coupons.ToList().Find(c => c.barcode == barcode);
                         var exist = selectedCoupons.Find(c => c.couponId == couponModel.cId);
                         if (couponModel != null && exist == null)
                         {
-                            if (couponModel.remainQ > 0 && couponModel.endDate >= DateTime.Now && couponModel.startDate <= DateTime.Now)
+                            if (couponModel.remainQ > 0 && couponModel.endDate >= DateTime.Now && couponModel.startDate <= DateTime.Now && _Sum >= couponModel.invMin && _Sum <= couponModel.invMax)
                             {
                                 CouponInvoice ci = new CouponInvoice();
                                 ci.couponId = couponModel.cId;
@@ -464,13 +439,16 @@ namespace POS.View.sales
                                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorCouponExpire"), animation: ToasterAnimation.FadeIn);
                             else if (couponModel.startDate > DateTime.Now)
                                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorCouponNotActive"), animation: ToasterAnimation.FadeIn);
-
+                            else if (_Sum < couponModel.invMin)
+                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorMinInvToolTip"), animation: ToasterAnimation.FadeIn);
+                            else if (_Sum > couponModel.invMax)
+                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorMaxInvToolTip"), animation: ToasterAnimation.FadeIn);
                         }
                         else
                         {
                             Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorCouponExist"), animation: ToasterAnimation.FadeIn);
                         }
-                        tb_coupon.Clear();
+                        cb_coupon.SelectedIndex = -1;
                     }
                     break;
                 case "cus":// this barcode for customer
@@ -503,7 +481,7 @@ namespace POS.View.sales
                                         price = (decimal)unit1.price;
                                     decimal total = count * price;
                                     decimal tax = (decimal)(count * item.taxes);
-                                    await addRowToBill(item.name, item.itemId, unit1.mainUnit, unit1.itemUnitId, count, price, total, tax);
+                                      addRowToBill(item.name, item.itemId, unit1.mainUnit, unit1.itemUnitId, count, price, total, tax);
                                 }
                                 else // item exist prevoiusly in list
                                 {
@@ -542,7 +520,7 @@ namespace POS.View.sales
                 _Discount = 0;
                 selectedCoupons.Clear();
                 lst_coupons.Items.Clear();
-                tb_coupon.Clear();
+                cb_coupon.SelectedIndex = -1;
                 refreshTotalValue();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -569,7 +547,7 @@ namespace POS.View.sales
         #endregion
 
         #endregion
-        private async Task<bool> validateInvoiceValues()
+        private   bool  validateInvoiceValues()
         {
             bool valid = true;
             SectionData.validateEmptyComboBox(cb_customer, p_errorCustomer, tt_errorCustomer, "trEmptyCustomerToolTip");
@@ -632,15 +610,15 @@ namespace POS.View.sales
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
-        private void clearInvoice()
+        private async void clearInvoice()
         {
             _Sum = 0;
-            if (MainWindow.isInvTax == 1) // tax is on tatal invoice
-            {
-                tb_taxValue.Text = MainWindow.tax.ToString();
-                _Tax = (decimal)MainWindow.tax;
-            }
-            else _Tax = 0;
+            //if (MainWindow.isInvTax == 1) // tax is on tatal invoice
+            //{
+            //    tb_taxValue.Text = MainWindow.tax.ToString();
+            //    _Tax = (decimal)MainWindow.tax;
+            //}
+            //else _Tax = 0;
             txt_invNumber.Text = "";
             _Discount = 0;
             _SequenceNum = 0;
@@ -673,6 +651,7 @@ namespace POS.View.sales
             refrishBillDetails();
             tb_barcode.Focus();
             inputEditable();
+            await fillCouponsList();
         }
         private void inputEditable()
         {
@@ -687,7 +666,7 @@ namespace POS.View.sales
                     tb_barcode.IsEnabled = true;
                     tb_discountCoupon.IsEnabled = true;
                     btn_save.IsEnabled = true;
-                    tb_coupon.IsEnabled = true;
+                    cb_coupon.IsEnabled = true;
                     btn_clearCoupon.IsEnabled = true;
                     break;
                 case "q": //quotation invoice
@@ -699,7 +678,7 @@ namespace POS.View.sales
                     tb_barcode.IsEnabled = false;
                     tb_discountCoupon.IsEnabled = false;
                     btn_save.IsEnabled = false;
-                    tb_coupon.IsEnabled = false;
+                    cb_coupon.IsEnabled = false;
                     btn_clearCoupon.IsEnabled = false;
                     break;
             }
@@ -770,7 +749,7 @@ namespace POS.View.sales
                     invoiceItems.Add(itemT);
                 }
                 await invoiceModel.saveInvoiceItems(invoiceItems, invoiceId);
-                refreshDraftNotification();
+                await refreshDraftNotification();
             }
             clearInvoice();
         }
@@ -794,11 +773,11 @@ namespace POS.View.sales
                     if (item.taxes != null)
                         itemTax = (decimal)item.taxes;
                     // create new row in bill details data grid
-                    await addRowToBill(item.name, itemId, defaultsaleUnit.mainUnit, defaultsaleUnit.itemUnitId, 1, (decimal)defaultsaleUnit.price, (decimal)defaultsaleUnit.price, itemTax);
+                      addRowToBill(item.name, itemId, defaultsaleUnit.mainUnit, defaultsaleUnit.itemUnitId, 1, (decimal)defaultsaleUnit.price, (decimal)defaultsaleUnit.price, itemTax);
                 }
                 else
                 {
-                    await addRowToBill(item.name, itemId, null, 0, 1, 0, 0, (decimal)item.taxes);
+                      addRowToBill(item.name, itemId, null, 0, 1, 0, 0, (decimal)item.taxes);
                 }
                 refreshTotalValue();
                 refrishBillDetails();
@@ -833,13 +812,9 @@ namespace POS.View.sales
             }
                 decimal taxValue = _Tax;
             decimal total = _Sum - _Discount - manualDiscount;
-            if (MainWindow.isInvTax == 1)
-            {
+            
                 taxValue = SectionData.calcPercentage(total, (decimal)MainWindow.tax);
-            }
-            else
-                tb_taxValue.Text = _Tax.ToString();
-
+            
             total += taxValue;
             tb_sum.Text = _Sum.ToString();
 
@@ -970,7 +945,7 @@ namespace POS.View.sales
             }
         }
 
-        private async Task addRowToBill(string itemName, int itemId, string unitName, int itemUnitId, int count, decimal price, decimal total, decimal tax)
+        private   void addRowToBill(string itemName, int itemId, string unitName, int itemUnitId, int count, decimal price, decimal total, decimal tax)
         {
             // increase sequence for each read
             _SequenceNum++;
@@ -1014,7 +989,7 @@ namespace POS.View.sales
                         //this.DataContext = invoice;
 
                         _InvoiceType = invoice.invType;
-                        refreshDocCount(invoice.invoiceId);
+                        await refreshDocCount(invoice.invoiceId);
                         // set title to bill
                         txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trQuotationsDraft");
 
@@ -1140,7 +1115,7 @@ namespace POS.View.sales
                        // this.DataContext = invoice;
 
                         _InvoiceType = invoice.invType;
-                        refreshDocCount(invoice.invoiceId);
+                        await refreshDocCount(invoice.invoiceId);
                         // set title to bill
                         txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trQuotations");
 
@@ -1303,7 +1278,7 @@ namespace POS.View.sales
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
-        private async void Dg_billDetails_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        private   void Dg_billDetails_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
             try
             {
@@ -1338,15 +1313,7 @@ namespace POS.View.sales
                         newCount = row.Count;
 
                     oldCount = row.Count;
-
-                    //int availableAmount = await itemLocationModel.getAmountInBranch(row.itemUnitId, MainWindow.branchID.Value);
-                    //if (availableAmount < newCount)
-                    //{
-                    //    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountNotAvailableToolTip"), animation: ToasterAnimation.FadeIn);
-                    //    newCount = availableAmount;
-                    //    tb = dg_billDetails.Columns[4].GetCellContent(dg_billDetails.Items[index]) as TextBlock;
-                    //    tb.Text = newCount.ToString();
-                    //}
+                     
 
                     if (columnName == MainWindow.resourcemanager.GetString("trPrice"))
                         newPrice = decimal.Parse(t.Text);
@@ -1456,7 +1423,7 @@ namespace POS.View.sales
                 if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
                     //check mandatory inputs
-                    bool valid = await validateInvoiceValues();
+                    bool valid =   validateInvoiceValues();
 
                     if (billDetails.Count > 0 && valid)
                     {
@@ -1653,7 +1620,7 @@ namespace POS.View.sales
             }
         }
 
-        private void Btn_invoiceImage_Click(object sender, RoutedEventArgs e)
+        private async void Btn_invoiceImage_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -1670,7 +1637,7 @@ namespace POS.View.sales
                     w.tableId = invoice.invoiceId;
                     w.docNum = invoice.invNumber;
                     w.ShowDialog();
-                    refreshDocCount(invoice.invoiceId);
+                    await refreshDocCount(invoice.invoiceId);
                     Window.GetWindow(this).Opacity = 1;
                 }
                 else
@@ -1724,6 +1691,36 @@ namespace POS.View.sales
             }
             catch (Exception ex)
             {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
+
+        private async void Cb_coupon_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                string s = _BarcodeStr;
+                if (cb_coupon.SelectedIndex != -1)
+                {
+                    couponModel = coupons.ToList().Find(c => c.cId == (int)cb_coupon.SelectedValue);
+                    if (couponModel != null)
+                    {
+                        s = couponModel.barcode;
+                        await dealWithBarcode(s);
+                    }
+                    cb_coupon.SelectedIndex = -1;
+                    cb_coupon.SelectedItem = "";
+                }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }

@@ -52,11 +52,11 @@ namespace POS.View.windows
 
                 translate();
 
-                fillLanguages();
+                await fillLanguages();
 
-                fillRegions();
+                await fillRegions();
 
-                fillCurrencies();
+                await fillCurrencies();
 
                 fillDateFormats();
 
@@ -240,11 +240,11 @@ namespace POS.View.windows
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                saveLanguage();
-                saveRegion();
+                 saveLanguage();
+                await saveRegion();
                 //saveCurrency();
-                saveTax();
-                saveDateform();
+                await saveTax();
+                await saveDateform();
 
                 //move to next pabe
                 wd_companyInfo comInfo = new wd_companyInfo();
@@ -357,7 +357,7 @@ namespace POS.View.windows
             }
         }
 
-        private async Task saveLanguage()
+        private  void saveLanguage()
         {
             if (!cb_language.Text.Equals(""))
             {

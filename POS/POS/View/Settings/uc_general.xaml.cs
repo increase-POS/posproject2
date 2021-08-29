@@ -116,7 +116,8 @@ namespace POS.View.Settings
 
                 translate();
                 #endregion
-                fillRegions();
+                await fillRegions();
+
                 #region get default region
                 await getDefaultRegion();
                 if (region != null)
@@ -127,13 +128,17 @@ namespace POS.View.Settings
                     cb_region.Text = region.name;
                 }
                 #endregion
-                fillLanguages();
+
+                await fillLanguages();
+
                 #region get default language
                 await getDefaultLanguage();
                 if (usLanguage != null)
                     cb_language.SelectedValue = usLanguage.valId;
                 #endregion
-                fillCurrencies();
+
+                await fillCurrencies();
+
                 #region get default currency
                 if (region != null)
                 {
@@ -145,16 +150,19 @@ namespace POS.View.Settings
                     tb_currency.Text = region.currency;
                 }
                 #endregion
+
                 #region get default tax
                 await getDefaultTax();
                 if (tax != null)
                     tb_tax.Text = tax.value;
                 #endregion
+
                 #region get default cost
                 //await getDefaultCost();
                 //if (cost != null)
                 //    tb_storageCost.Text = cost.value;
                 #endregion
+
                 #region fill process type
                 DateTimeFormatInfo dtfi = DateTimeFormatInfo.CurrentInfo;
                 //var typelist = new[] {
@@ -177,6 +185,7 @@ namespace POS.View.Settings
                 //cb_dateForm.SelectedIndex = 0;
 
                 #endregion
+
                 #region get default date form
                 await getDefaultDateForm();
                 if (dateForm != null)
@@ -184,6 +193,9 @@ namespace POS.View.Settings
                 else
                     cb_dateForm.SelectedIndex = -1;
                 #endregion
+
+                fillAccuracy();
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -193,6 +205,11 @@ namespace POS.View.Settings
                     SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
+        }
+
+        private void fillAccuracy()
+        {
+            
         }
 
         public static async Task<SetValues> getDefaultCost()
@@ -290,6 +307,7 @@ namespace POS.View.Settings
             txt_currency.Text = MainWindow.resourcemanager.GetString("trCurrency");
             txt_tax.Text = MainWindow.resourcemanager.GetString("trTax");
             txt_dateForm.Text = MainWindow.resourcemanager.GetString("trDateForm");
+            txt_accuracy.Text = MainWindow.resourcemanager.GetString("trAccuracy");
             //txt_notification.Text = MainWindow.resourcemanager.GetString("trNotification");
             //txt_storageCost.Text = MainWindow.resourcemanager.GetString("trStorageCost");
             //txt_notifhint.Text = MainWindow.resourcemanager.GetString("trSettingHint");
@@ -313,6 +331,7 @@ namespace POS.View.Settings
             tt_currency.Content = MainWindow.resourcemanager.GetString("trCurrency");
             tt_tax.Content = MainWindow.resourcemanager.GetString("trTax");
             tt_dateForm.Content = MainWindow.resourcemanager.GetString("trDateForm");
+            tt_accuracy.Content = MainWindow.resourcemanager.GetString("trAccuracy");
             //tt_storageCost.Content = MainWindow.resourcemanager.GetString("trStorageCost");
         }
 
@@ -497,7 +516,7 @@ namespace POS.View.Settings
             }
         }
 
-        private async void Btn_saveCurrency_Click(object sender, RoutedEventArgs e)
+        private   void Btn_saveCurrency_Click(object sender, RoutedEventArgs e)
         {//save currency
             try
             {

@@ -128,7 +128,7 @@ namespace POS.View.windows
         }
 
 
-        private async void HandleKeyPress(object sender, KeyEventArgs e)
+        private   void HandleKeyPress(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Return)
             {

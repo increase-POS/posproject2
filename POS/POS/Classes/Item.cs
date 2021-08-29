@@ -725,7 +725,8 @@ namespace POS.Classes
                     }
                     return true;
                 }
-                catch (Exception ex) { return false; }
+                catch
+                { return false; }
             }
             return false;
         }

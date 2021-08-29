@@ -27,7 +27,7 @@ namespace POS.View.windows
             InitializeComponent();
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
             try
             {
@@ -52,7 +52,7 @@ namespace POS.View.windows
                 translate();
                 #endregion
 
-                getCategories();
+                await getCategories();
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);

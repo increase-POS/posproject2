@@ -44,7 +44,7 @@ namespace POS.View.windows
 
         User userModel = new User();
         User user = new User();
-        IEnumerable<User> usersQuery;
+        //IEnumerable<User> usersQuery;
         IEnumerable<User> users;
 
         UsersLogs userLogsModel = new UsersLogs();
@@ -61,7 +61,7 @@ namespace POS.View.windows
             { }
         }
 
-        private async void btnClose_Click(object sender, RoutedEventArgs e)
+        private   void btnClose_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -74,7 +74,7 @@ namespace POS.View.windows
         }
         UserSetValues usLanguage = new UserSetValues();
         UserSetValues usMenu = new UserSetValues();
-        private async void Window_Loaded(object sender, RoutedEventArgs e)
+        private   void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
             try
             {
@@ -188,18 +188,19 @@ namespace POS.View.windows
             txt_logIn.Text = resourcemanager.GetString("trLogIn");
             txt_close.Text = resourcemanager.GetString("trClose");
         }
-        bool logInProcessing = true;
+        bool logInProcessing = false;
        
         private async void btnLogIn_Click(object sender, RoutedEventArgs e)
         {//login
             try
             {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
+                if (!logInProcessing)
+                {
+                    logInProcessing = true;
+                    if (sender != null)
+                        SectionData.StartAwait(grid_main);
 
-                //if (logInProcessing)
-                //{
-                //    logInProcessing = false;
+                
                     //awaitSaveBtn(true);
                     clearValidate(txtUserName, p_errorUserName);
                     clearPasswordValidate(txtPassword, p_errorPassword);
@@ -283,10 +284,11 @@ namespace POS.View.windows
                     else
                         showTextBoxValidate(txtUserName, p_errorUserName, tt_errorUserName, "trUserNotFound");
                     //awaitSaveBtn(false);
-                    //logInProcessing = true;
-                //}
+                    
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
+                logInProcessing = false;
+            }
             }
             catch (Exception ex)
             {
@@ -300,26 +302,26 @@ namespace POS.View.windows
         static UserSetValues uSetValueModel = new UserSetValues();
         static SettingCls set = new SettingCls();
         static List<SetValues> pos = new List<SetValues>();
-        int settingsPosId = 0;
+        //int settingsPosId = 0;
 
         private void HandleKeyPress(object sender, KeyEventArgs e)
         {
             try
             {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
+                //if (sender != null)
+                //    SectionData.StartAwait(grid_main);
 
                 if (e.Key == Key.Return)
                 {
-                    btnLogIn_Click(null, null);
+                    btnLogIn_Click(btnLogIn, null);
                 }
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
+                //if (sender != null)
+                //    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
+                //if (sender != null)
+                //    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }

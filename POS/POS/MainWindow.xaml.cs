@@ -42,8 +42,8 @@ namespace POS
         public static ResourceManager resourcemanagerreport;
         bool menuState = false;
         //ToolTip="{Binding Properties.Settings.Default.Lang}"
-        public static string firstPath = "accounts";
-        public static string secondPath = "bonds";
+        public static string firstPath = "";
+        public static string secondPath = "";
         public static string lang;
         public static string Reportlang = "en";
         public static string companyName;
@@ -138,23 +138,7 @@ namespace POS
             sale_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.salname));
             paperSize = posSetting.paperSize1;
             docPapersize = posSetting.docPapersize;
-            /*
-            if (posSetting is null || posSetting.posSettingId <= 0)
-            {
-
-                rep_printer_name = "";
-                sale_printer_name = "";
-            }
-            else
-            {
-             
-              
-
-                //   rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.repname));
-                // sale_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.salname));
-
-            }
-            */
+            
         }
         public static async Task getprintSitting()
         {
@@ -179,7 +163,7 @@ namespace POS
 
         }
 
-        async Task windowFlowDirection()
+         void windowFlowDirection()
         {
             #region translate
             if (lang.Equals("en"))
@@ -473,9 +457,9 @@ namespace POS
                 SectionData.ExceptionMessage(ex, this, sendert);
             }
         }
-        private void setNotifications()
+        private async void setNotifications()
         {
-            refreshNotificationCount();
+            await refreshNotificationCount();
         }
         private async Task refreshNotificationCount()
         {
@@ -577,14 +561,14 @@ namespace POS
                 T.Visibility = Visibility.Hidden;
             else T.Visibility = Visibility.Visible;
         }
-        private void BTN_logOut_Click(object sender, RoutedEventArgs e)
+        private async void BTN_logOut_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_mainWindow);
 
-                close();
+                await close();
 
                 Application.Current.Shutdown();
                 System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
@@ -608,13 +592,13 @@ namespace POS
             idletimer.Stop();
             threadtimer.Stop();
         }
-        private void BTN_Close_Click(object sender, RoutedEventArgs e)
+        private async void BTN_Close_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_mainWindow);
-                close();
+                await close();
                 Application.Current.Shutdown();
 
                 if (sender != null)
@@ -698,7 +682,7 @@ namespace POS
         }
 
         //فتح
-        private async void BTN_Menu_Click(object sender, RoutedEventArgs e)
+        private   void BTN_Menu_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -840,6 +824,7 @@ namespace POS
             }
 
         }
+        
         public void initializationMainTrack(string tag, int level)
         {
             if (level == 0)

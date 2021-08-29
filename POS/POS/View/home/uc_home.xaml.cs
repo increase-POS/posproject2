@@ -119,5 +119,10 @@ namespace POS.View
                 timer.Stop();
             }
         }
+        private void UserControl_TouchLeave(object sender, TouchEventArgs e)
+        {
+            MessageBox.Show("hey i'm here in TouchLeave");
+
+        }
     }
 }

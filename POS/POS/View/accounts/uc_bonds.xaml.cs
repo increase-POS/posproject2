@@ -41,8 +41,8 @@ namespace POS.View.accounts
 
         IEnumerable<Agent> agents;
         IEnumerable<User> users;
-        IEnumerable<CashTransfer> cashes;
-        IEnumerable<CashTransfer> cashQuery;
+        //IEnumerable<CashTransfer> cashes;
+        //IEnumerable<CashTransfer> cashQuery;
         IEnumerable<Bonds> bondsQuery;
         IEnumerable<Bonds> bondsQueryExcel;
         string searchText = "";
@@ -263,7 +263,7 @@ namespace POS.View.accounts
                             if (!s.Equals("0"))
                             {
                                 if (cb_paymentProcessType.SelectedValue.ToString().Equals("cash"))
-                                    calcBalance(bond.type, cash.cash.Value);
+                                    await calcBalance(bond.type, cash.cash.Value);
 
                                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
 
@@ -383,14 +383,14 @@ namespace POS.View.accounts
             }
         }
 
-        private void Btn_refresh_Click(object sender, RoutedEventArgs e)
+        private  async void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {//refresh
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_ucBonds);
 
-                RefreshBondsList();
+                await RefreshBondsList();
                 Tb_search_TextChanged(null, null);
 
                 if (sender != null)
@@ -606,13 +606,13 @@ namespace POS.View.accounts
 
             }
             translate();
-            #endregion
+                #endregion
 
-                fillVendors();
+                await fillVendors();
 
-                fillCustomers();
+                await fillCustomers();
 
-                fillUsers();
+                await fillUsers();
 
                 cb_depositorV.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_depositorV, p_errordepositor);
                 cb_depositorC.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_depositorC, p_errordepositor);

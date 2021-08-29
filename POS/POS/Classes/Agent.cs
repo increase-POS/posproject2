@@ -374,7 +374,8 @@ namespace POS.Classes
                         System.IO.File.Delete(tmpPath);
                     }
                 }
-                catch (Exception ex) { return ""; }
+                catch
+                { return ""; }
             }
             return "";
         }

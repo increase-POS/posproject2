@@ -414,13 +414,13 @@ namespace POS.View
                                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                             else
                             {
-                                AddFreeThone(s);
+                                await AddFreeThone(s);
                             }
                            
 
                             await RefreshStoresList();
                             Tb_search_TextChanged(null, null);
-                            fillComboBranchParent();
+                            await fillComboBranchParent();
                         }
                     }
                 }
@@ -543,7 +543,7 @@ namespace POS.View
 
                             await RefreshStoresList();
                             Tb_search_TextChanged(null, null);
-                            fillComboBranchParent();
+                            await fillComboBranchParent();
                             cb_branch.SelectedValue = store.parentId;
 
                             SectionData.getMobile(store.mobile, cb_area, tb_mobile);
@@ -588,7 +588,7 @@ namespace POS.View
                                 Window.GetWindow(this).Opacity = 1;
                                 #endregion
                                 if (w.isOk)
-                                    activate();
+                                    await activate();
                             }
                             else
                             {
@@ -620,7 +620,7 @@ namespace POS.View
 
                             await RefreshStoresList();
                             Tb_search_TextChanged(null, null);
-                            fillComboBranchParent();
+                            await fillComboBranchParent();
                         }
 
                         else
@@ -677,10 +677,10 @@ namespace POS.View
 
                 translate();
                 //fill combo
-                fillComboBranchParent();
+                await fillComboBranchParent();
 
-                fillCountries();
-                fillCity();
+                await fillCountries();
+                await fillCity();
 
                 Keyboard.Focus(tb_code);
 
@@ -912,7 +912,7 @@ namespace POS.View
             }
         }
 
-        private void Btn_refresh_Click(object sender, RoutedEventArgs e)
+        private async void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -920,7 +920,7 @@ namespace POS.View
                     SectionData.StartAwait(grid_main);
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
                 {
-                    RefreshStoresList();
+                    await RefreshStoresList();
                     Tb_search_TextChanged(null, null);
                 }
                 else

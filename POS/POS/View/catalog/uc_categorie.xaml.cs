@@ -152,7 +152,7 @@ namespace POS.View
             tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
 
         }
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -179,7 +179,7 @@ namespace POS.View
 
                 Keyboard.Focus(tb_categoryCode);
 
-                fillCategories();
+              await  fillCategories();
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -365,7 +365,7 @@ namespace POS.View
 
                             await RefrishCategories();
                             Txb_searchcategories_TextChanged(null, null);
-                            fillCategories();
+                          await  fillCategories();
                         }
                     }
                 }
@@ -529,7 +529,7 @@ namespace POS.View
                             Window.GetWindow(this).Opacity = 1;
                             #endregion
                             if (w.isOk)
-                                activate();
+                             await   activate();
 
                         }
                         else
@@ -622,7 +622,7 @@ namespace POS.View
         #endregion
         #region Get Id By Click  Y
         int datagridSelectedItemId;
-        private async void dg_categories_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async  void dg_categories_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
             try
@@ -691,7 +691,7 @@ namespace POS.View
                     Txb_searchcategories_TextChanged(null, null);
                 }
                 //grid_categoryControlPath.Children.Clear();
-                generateTrack(category.categoryId);
+              await  generateTrack(category.categoryId);
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -728,7 +728,7 @@ namespace POS.View
                 Txb_searchcategories_TextChanged(null, null);
             }
 
-            generateTrack(category.categoryId);
+          await  generateTrack(category.categoryId);
 
             //await Img.getImg(category.image , "category");
             getImg();
@@ -1202,14 +1202,14 @@ namespace POS.View
                 }
             }
         }
-        private void getCategoryIdFromPath(object sender, RoutedEventArgs e)
+        private async void getCategoryIdFromPath(object sender, RoutedEventArgs e)
         {
             try
             {
                 Button b = (Button)sender;
 
                 if (!string.IsNullOrEmpty(b.Tag.ToString()))
-                    generateTrack(int.Parse(b.Tag.ToString()));
+                await  generateTrack(int.Parse(b.Tag.ToString()));
 
                 if (categories.Where(x => (x.categoryCode.Contains(txtCategorySearch) ||
                  x.name.Contains(txtCategorySearch) ||
@@ -1272,7 +1272,7 @@ namespace POS.View
             }
         }
 
-        private async Task getImg()
+        private async void getImg()
         {
 
             if (string.IsNullOrEmpty(category.image))
@@ -1298,7 +1298,7 @@ namespace POS.View
 
         }
 
-        private void Btn_refresh_Click(object sender, RoutedEventArgs e)
+        private async void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -1307,7 +1307,7 @@ namespace POS.View
 
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
                 {
-                    RefrishCategories();
+                  await  RefrishCategories();
                     Txb_searchcategories_TextChanged(null, null);
                 }
                 else

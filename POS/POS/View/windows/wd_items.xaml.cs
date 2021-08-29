@@ -100,7 +100,7 @@ namespace POS.View.windows
 
                 await RefrishItems();
                 await RefrishCategories();
-                RefrishCategoriesCard();
+                await RefrishCategoriesCard();
                 Txb_searchitems_TextChanged(null, null);
                
                 if (sender != null)
@@ -251,10 +251,10 @@ namespace POS.View.windows
             x.isActive == tglCategoryState && x.parentId == category.categoryId).Count() != 0)
             {
                 categoryParentId = category.categoryId;
-                RefrishCategoriesCard();
+                await RefrishCategoriesCard();
             }
 
-            generateTrack(categoryId);
+            await generateTrack(categoryId);
             await RefrishItems();
             Txb_searchitems_TextChanged(null, null);
         }
@@ -624,9 +624,9 @@ namespace POS.View.windows
 
                 if (!string.IsNullOrEmpty(b.Tag.ToString()))
                 {
-                    generateTrack(int.Parse(b.Tag.ToString()));
+                    await generateTrack(int.Parse(b.Tag.ToString()));
                     categoryParentId = int.Parse(b.Tag.ToString());
-                    RefrishCategoriesCard();
+                    await RefrishCategoriesCard();
 
 
                     category.categoryId = int.Parse(b.Tag.ToString());
@@ -653,7 +653,7 @@ namespace POS.View.windows
                 if (sender != null)
                     SectionData.StartAwait(grid_ucItems);
                 categoryParentId = 0;
-                RefrishCategoriesCard();
+                await RefrishCategoriesCard();
                 grid_categoryControlPath.Children.Clear();
                 category.categoryId = 0;
                 await RefrishItems();

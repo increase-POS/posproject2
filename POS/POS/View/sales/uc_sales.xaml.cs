@@ -311,7 +311,7 @@ namespace POS.View
             try
             {
                 int cId = await SectionData.getCloseValueId();
-                SectionData.saveMenuState(cId);
+                await SectionData.saveMenuState(cId);
             }
             catch (Exception ex)
             {
@@ -324,7 +324,7 @@ namespace POS.View
             try
             {
                 int oId = await SectionData.getOpenValueId();
-                SectionData.saveMenuState(oId);
+                await SectionData.saveMenuState(oId);
             }
             catch (Exception ex)
             {

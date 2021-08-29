@@ -140,7 +140,7 @@ namespace POS.View.windows
                 #endregion
 
                 //code
-                Getprintparameter();
+                await Getprintparameter();
 
 
                 if (sender != null)

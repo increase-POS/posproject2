@@ -15,9 +15,12 @@ namespace POS.converters
             string s = value as string;
             switch (value)
             {
-                case "tr": return MainWindow.resourcemanager.GetString("trDelivered"); break;
-                case "rc": return MainWindow.resourcemanager.GetString("trInDelivery"); break;
-                default: return ""; break;
+                case "tr": return MainWindow.resourcemanager.GetString("trDelivered");
+                    //break;
+                case "rc": return MainWindow.resourcemanager.GetString("trInDelivery");
+                    //break;
+                default: return "";
+                    //break;
             }
         }
 

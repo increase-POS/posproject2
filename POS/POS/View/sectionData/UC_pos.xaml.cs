@@ -265,7 +265,7 @@ namespace POS.View
 
         }
 
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -287,7 +287,7 @@ namespace POS.View
 
                 translate();
                 #endregion
-                fillBranches();
+                await fillBranches();
 
                 Keyboard.Focus(tb_code);
 
@@ -487,7 +487,7 @@ namespace POS.View
                                 Window.GetWindow(this).Opacity = 1;
                                 #endregion
                                 if (w.isOk)
-                                    activate();
+                                    await activate();
                             }
                             else
                             {
@@ -643,7 +643,7 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
-        private void Btn_refresh_Click(object sender, RoutedEventArgs e)
+        private async void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {//refresh
             try
             {
@@ -652,7 +652,7 @@ namespace POS.View
 
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
                 {
-                    RefreshPosList();
+                    await RefreshPosList();
                     Tb_search_TextChanged(null, null);
                 }
                 else

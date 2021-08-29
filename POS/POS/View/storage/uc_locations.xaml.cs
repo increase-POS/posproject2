@@ -19,8 +19,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using POS.View.windows;
-using Microsoft.Reporting.WinForms;
+ using Microsoft.Reporting.WinForms;
 using Microsoft.Win32;
 using System.IO;
 
@@ -339,7 +338,7 @@ namespace POS.View
                             Window.GetWindow(this).Opacity = 1;
                             #endregion
                             if (w.isOk)
-                                activate();
+                                await activate();
                         }
                         else
                         {
@@ -595,7 +594,7 @@ namespace POS.View
             }
         }
 
-        private void Btn_refresh_Click(object sender, RoutedEventArgs e)
+        private async void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -604,7 +603,7 @@ namespace POS.View
 
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
                 {
-                    RefreshLocationsList();
+                    await RefreshLocationsList();
                     Tb_search_TextChanged(null, null);
 
                 }

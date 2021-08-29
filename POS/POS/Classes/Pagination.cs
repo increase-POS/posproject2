@@ -11,8 +11,8 @@ namespace POS.Classes
 {
     public class Pagination
     {
-        int[] countCategories;
-        int[] countItemss;
+        //int[] countCategories;
+        //int[] countItemss;
         void pageNumberActive(Button btn, int indexContent)
         {
             btn.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));

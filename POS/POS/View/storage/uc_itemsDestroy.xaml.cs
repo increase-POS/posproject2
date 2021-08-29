@@ -57,7 +57,7 @@ namespace POS.View.storage
         }
         Category categoryModel = new Category();
         Category category = new Category();
-        IEnumerable<Category> categories;
+        //IEnumerable<Category> categories;
         InventoryItemLocation invItemLocModel = new InventoryItemLocation();
         InventoryItemLocation invItemLoc = new InventoryItemLocation();
         ItemLocation itemLocationModel = new ItemLocation();
@@ -66,7 +66,7 @@ namespace POS.View.storage
         User userModel = new User();
         List<User> users;
 
-        int? categoryParentId = 0;
+        //int? categoryParentId = 0;
         private string _ItemType = "";
         public byte tglCategoryState = 1;
         public byte tglItemState = 1;
@@ -95,7 +95,7 @@ namespace POS.View.storage
 
                 translate();
                 await refreshDestroyDetails();
-                fillItemCombo();
+                await fillItemCombo();
                 await fillUsers();
                 Tb_search_TextChanged(null, null);
                 if (sender != null)

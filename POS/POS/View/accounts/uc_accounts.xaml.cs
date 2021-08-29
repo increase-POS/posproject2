@@ -46,7 +46,7 @@ namespace POS.View.accounts
             }
         }
 
-        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
+        private  void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             #region menu state
             string menuState = MainWindow.menuIsOpen;
@@ -299,7 +299,7 @@ namespace POS.View.accounts
             try
             {
                 int cId = await SectionData.getCloseValueId();
-            SectionData.saveMenuState(cId);
+                await SectionData.saveMenuState(cId);
             }
             catch (Exception ex)
             {
@@ -312,7 +312,7 @@ namespace POS.View.accounts
                 try
                 {
                     int oId = await SectionData.getOpenValueId();
-            SectionData.saveMenuState(oId);
+                await SectionData.saveMenuState(oId);
             }
             catch (Exception ex)
             {

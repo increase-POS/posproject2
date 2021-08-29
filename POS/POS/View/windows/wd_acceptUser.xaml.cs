@@ -95,14 +95,14 @@ namespace POS.View.windows
         public int userID = 0;
         User userModel = new User();
 
-        private void Btn_confirmation_Click(object sender, RoutedEventArgs e)
+        private async void Btn_confirmation_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_acceptUser);
 
-                chkUser();
+                await chkUser();
 
                 if (sender != null)
                     SectionData.EndAwait(grid_acceptUser);

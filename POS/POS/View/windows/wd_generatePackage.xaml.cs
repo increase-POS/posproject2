@@ -225,7 +225,7 @@ namespace POS.View.windows
         {
             this.Close();
         }
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -243,10 +243,10 @@ namespace POS.View.windows
             }
 
             translate();
-            #endregion
+                #endregion
 
-                fillItemCombo();
-                fillLocationCombo();
+                await fillItemCombo();
+                await fillLocationCombo();
 
                 if (sender != null)
                     SectionData.EndAwait(grid_generatePackage);

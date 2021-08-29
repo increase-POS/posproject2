@@ -2326,4 +2326,37 @@ Please add Email in setting</value>
   <data name="trCanNotSendDraftInvoice" xml:space="preserve">
     <value>Can not send draft invoice</value>
   </data>
+  <data name="trAccuracy" xml:space="preserve">
+    <value>Accuracy of numbers</value>
+  </data>
+  <data name="trErrorMaxInvToolTip" xml:space="preserve">
+    <value>Coupon cannot be used, the total is more than the maximum allowed</value>
+  </data>
+  <data name="trErrorMinInvToolTip" xml:space="preserve">
+    <value>Coupon cannot be used, total is less than the minimum allowed</value>
+  </data>
+  <data name="trPopUpgrade" xml:space="preserve">
+    <value>Please upgrade the application</value>
+  </data>
+  <data name="trImportExport" xml:space="preserve">
+    <value>Movements</value>
+  </data>
+  <data name="trItemsDestroy" xml:space="preserve">
+    <value>Destructive</value>
+  </data>
+  <data name="trItemsStorage" xml:space="preserve">
+    <value>Storage</value>
+  </data>
+  <data name="trLocations" xml:space="preserve">
+    <value>locations</value>
+  </data>
+  <data name="trPermissions" xml:space="preserve">
+    <value>Permissions</value>
+  </data>
+  <data name="trPurchase" xml:space="preserve">
+    <value>Purchases</value>
+  </data>
+  <data name="trReportsSettings" xml:space="preserve">
+    <value>Reports Settings</value>
+  </data>
 </root>

@@ -15,9 +15,12 @@ namespace POS.converters
             string s = value as string;
             switch (value)
             {
-                case "local": return MainWindow.resourcemanager.GetString("trLocaly");   break;
-                case "com":   return MainWindow.resourcemanager.GetString("trShippingCompany"); break;
-                default: return MainWindow.resourcemanager.GetString("");                break;
+                case "local": return MainWindow.resourcemanager.GetString("trLocaly");
+                    //break;
+                case "com":   return MainWindow.resourcemanager.GetString("trShippingCompany");
+                    //break;
+                default: return MainWindow.resourcemanager.GetString("");
+                    //break;
             }
         }
 

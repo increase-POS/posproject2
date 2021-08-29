@@ -183,7 +183,7 @@ namespace POS.View.storage
             }
         }
 
-        private async void Tgl_IsActive_Unchecked(object sender, RoutedEventArgs e)
+        private   void Tgl_IsActive_Unchecked(object sender, RoutedEventArgs e)
         {
             try
             {

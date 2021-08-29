@@ -476,7 +476,7 @@ namespace POS.View.Settings
                             #endregion
 
                             if (w.isOk)
-                                activate();
+                                await activate();
                         }
                         else
                         {
@@ -618,7 +618,7 @@ namespace POS.View.Settings
 
                 translat();
 
-                fillBranches();
+                await fillBranches();
                 FillSideCombo();
                 await RefreshSysEmailList();
                 Tb_search_TextChanged(null, null);

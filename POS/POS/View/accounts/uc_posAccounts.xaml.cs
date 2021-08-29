@@ -40,7 +40,6 @@ namespace POS.View.accounts
         CashTransfer cashModel = new CashTransfer();
         IEnumerable<CashTransfer> cashesQuery;
         IEnumerable<CashTransfer> cashes;
-        IEnumerable<CashTransfer> cashesSearch;
         string searchText = "";
         CashTransfer cashtrans2 = new CashTransfer();
         CashTransfer cashtrans3 = new CashTransfer();
@@ -666,7 +665,7 @@ namespace POS.View.accounts
                     else//chk which record is selected
                     { if (cashtrans2.isConfirm == 0) confirm = false; else confirm = true; }
 
-                    if (!confirm) confirmOpr();
+                    if (!confirm) await confirmOpr();
                     else
                     {
                         Pos pos = await posModel.getPosById(cashtrans2.posId.Value);
@@ -678,7 +677,7 @@ namespace POS.View.accounts
                             s = await cashModel.MovePosCash(cashtrans2.cashTransId, MainWindow.userID.Value);
 
                             if (s.Equals("transdone"))//tras done so confirm
-                                confirmOpr();
+                                await confirmOpr();
                             else//error then do not confirm
                                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
@@ -929,7 +928,7 @@ namespace POS.View.accounts
             }
         }
 
-        private async void Cb_pos1_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private  void Cb_pos1_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//pos1selection
             try
             {
@@ -959,7 +958,7 @@ namespace POS.View.accounts
 
         }
 
-        private async void Cb_fromBranch_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private  void Cb_fromBranch_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//fill pos1
             try
             {

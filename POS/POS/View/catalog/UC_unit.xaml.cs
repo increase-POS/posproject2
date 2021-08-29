@@ -240,7 +240,7 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex,this,sender);
             }
         }
-        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
+        private  void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
 
             try
@@ -495,7 +495,7 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
-        private void Btn_refresh_Click(object sender, RoutedEventArgs e)
+        private async void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -503,7 +503,7 @@ namespace POS.View
                     SectionData.StartAwait(grid_main);
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
                 {
-                    RefreshUnitsList();
+                    await RefreshUnitsList();
                     Tb_search_TextChanged(null, null);
                 }
                 else
