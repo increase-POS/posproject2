@@ -134,8 +134,23 @@ namespace POS
         public static async Task getPrintersNames()
         {
             posSetting = await posSetting.GetByposId((int)MainWindow.posID);
-            rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.repname));
-            sale_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.salname));
+            if (posSetting.repname is null || posSetting.repname=="")
+            {
+                rep_printer_name = "";
+            }
+            else
+            {
+rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.repname));
+            }
+            if (posSetting.salname is null || posSetting.repname == "")
+            {
+                posSetting.salname = "";
+            }
+            else
+            {
+    sale_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.salname));
+            }
+        
             paperSize = posSetting.paperSize1;
             docPapersize = posSetting.docPapersize;
             
