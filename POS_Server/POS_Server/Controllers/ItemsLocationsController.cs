@@ -1138,8 +1138,9 @@ namespace POS_Server.Controllers
             using (incposdbEntities entity = new incposdbEntities())
             {
                 var unit = entity.itemsUnits.Where(x => x.itemUnitId == itemUnitId).Select(x => new { x.subUnitId, x.unitId, x.unitValue, x.itemId }).FirstOrDefault();
-                int smallUnitId = entity.itemsUnits.Where(x => x.unitId == unit.subUnitId && x.itemId == unit.itemId).Select(x => x.itemUnitId).Single();
-                if (smallUnitId == 0)
+                
+                var smallUnit = entity.itemsUnits.Where(x => x.unitId == unit.subUnitId && x.itemId == unit.itemId).Select(x =>new { x.itemUnitId }).FirstOrDefault();
+                if (smallUnit == null || smallUnit.itemUnitId == itemUnitId)
                 {
                     return 0;
                 }
@@ -1150,7 +1151,7 @@ namespace POS_Server.Controllers
                                       join s in entity.sections on b.branchId equals s.branchId
                                       join l in entity.locations on s.sectionId equals l.sectionId
                                       join il in entity.itemsLocations on l.locationId equals il.locationId
-                                      where il.itemUnitId == smallUnitId && il.quantity > 0
+                                      where il.itemUnitId == smallUnit.itemUnitId && il.quantity > 0
                                       select new
                                       {
                                           il.itemsLocId,
@@ -1165,10 +1166,10 @@ namespace POS_Server.Controllers
                     }
                     if (unit.unitValue != 0)
                         amount = amount / (int)unit.unitValue;
-                    if (itemUnitId == smallUnitId)
-                        return amount;
+                    //if (itemUnitId == smallUnit.itemUnitId)
+                    //    return amount;
                     else
-                        amount += getSmallItemUnitAmount(smallUnitId, branchId) / (int)unit.unitValue;
+                        amount += getSmallItemUnitAmount(smallUnit.itemUnitId, branchId) / (int)unit.unitValue;
 
                     return amount;
                 }

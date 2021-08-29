@@ -37,8 +37,8 @@ namespace POS_Server.Controllers
                                 select new
                                 {
                                     S.sizeId,
-                                    S.paperSize1
-
+                                    S.paperSize1,
+                                    S.printfor,
 
                                 }).ToList();
 
@@ -79,6 +79,7 @@ namespace POS_Server.Controllers
                    {
                        S.sizeId,
                        S.paperSize1,
+                       S.printfor,
                    })
                    .FirstOrDefault();
 
@@ -135,7 +136,7 @@ namespace POS_Server.Controllers
 
                          
                             tmpObject.paperSize1 = newObject.paperSize1;
-
+                            tmpObject.printfor  = newObject.printfor;
 
                             entity.SaveChanges();
 

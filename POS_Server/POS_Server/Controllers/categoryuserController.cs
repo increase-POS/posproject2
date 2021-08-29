@@ -141,7 +141,7 @@ namespace POS_Server.Controllers
 
         public int UpdateCatByUsrId(string newlist)
         {
-            int userId = 0;
+            int usrId = 0;
             var re = Request;
             var headers = re.Headers;
             int res = 0;
@@ -152,7 +152,7 @@ namespace POS_Server.Controllers
             }
             if (headers.Contains("usrId"))
             {
-                userId = Convert.ToInt32(headers.GetValues("userId").First());
+                usrId = Convert.ToInt32(headers.GetValues("usrId").First());
             }
             Validation validation = new Validation();
             bool valid = validation.CheckApiKey(token);
@@ -163,7 +163,7 @@ namespace POS_Server.Controllers
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    var oldList = entity.categoryuser.Where(p => p.userId == userId);
+                    var oldList = entity.categoryuser.Where(p => p.userId == usrId);
                     if (oldList.Count() > 0)
                     {
                         entity.categoryuser.RemoveRange(oldList);
@@ -172,7 +172,7 @@ namespace POS_Server.Controllers
                     {
                         foreach (categoryuser newcatRow in newCatlist)
                         {
-                            newcatRow.userId = userId;
+                            newcatRow.userId = usrId;
                             if (newcatRow.createDate == null)
                             {
                                 newcatRow.createDate = DateTime.Now;
@@ -208,13 +208,14 @@ namespace POS_Server.Controllers
 
 
 
+
         #region
         [HttpPost]
         [Route("UpdateCatUserList")]
 
-        public int UpdateCatUserList(string newlist,int userId)
+        public string UpdateCatUserList(string newlist)
         {
-            
+            int userId = 0;
             var re = Request;
             var headers = re.Headers;
             int res = 0;
@@ -223,7 +224,10 @@ namespace POS_Server.Controllers
             {
                 token = headers.GetValues("APIKey").First();
             }
-         
+            if (headers.Contains("userId"))
+            {
+                userId = Convert.ToInt32(headers.GetValues("userId").First());
+            }
             Validation validation = new Validation();
             bool valid = validation.CheckApiKey(token);
             newlist = newlist.Replace("\\", string.Empty);
@@ -233,34 +237,40 @@ namespace POS_Server.Controllers
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                
+
                     if (newCatlist.Count() > 0)
                     {
-                        
+                        categoryuser oldrow = new categoryuser();
+
                         foreach (categoryuser newcatRow in newCatlist)
                         {
+                            oldrow = entity.categoryuser.ToList()
+                                .Where(X => X.id == newcatRow.id).FirstOrDefault();
                             //if(newcatRow.id>0)
-                            newcatRow.userId = userId;
-                            if (newcatRow.createDate == null)
+                            oldrow.userId = userId;
+                            oldrow.categoryId = newcatRow.categoryId;
+                            oldrow.sequence = newcatRow.sequence;
+
+                            if (oldrow.createDate == null)
                             {
-                                newcatRow.createDate = DateTime.Now;
-                                newcatRow.updateDate = DateTime.Now;
-                                newcatRow.updateUserId = newcatRow.createUserId;
+                                oldrow.createDate = DateTime.Now;
+                                oldrow.updateDate = DateTime.Now;
+                                oldrow.updateUserId = newcatRow.createUserId;
                             }
                             else
                             {
-                                newcatRow.updateDate = DateTime.Now;
-                               
+                                oldrow.updateDate = DateTime.Now;
+
                             }
 
-                            entity.categoryuser.AddOrUpdate(newcatRow);
+                            entity.categoryuser.AddOrUpdate(oldrow);
                             res = entity.SaveChanges();
                         }
-                    
-                    }
-                 
 
-                    return res;
+                    }
+
+
+                    return res.ToString();
 
 
                 }
@@ -268,11 +278,12 @@ namespace POS_Server.Controllers
             }
             else
             {
-                return -1;
+                return "-1";
             }
 
         }
         #endregion
+
 
         // GET api/<controller>  Get  By ID 
         [HttpGet]

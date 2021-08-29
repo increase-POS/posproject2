@@ -951,6 +951,40 @@ namespace POS_Server.Controllers
     }
 
 
+        public List<branches> BrListByBranchandUser(int mainBranchId, int userId)
+        {
+            List<BranchModel> Listb = new List<BranchModel>();
+            List<BranchModel> Listu = new List<BranchModel>();
+            List<branches> List = new List<branches>();
+            Listb = BranchesByBranch(mainBranchId);
+            Listu = BranchesByUser(userId);
 
-}
+            List = Listb.Union(Listu).ToList().GroupBy(X => X.branchId).Select(X => new branches
+            {
+                branchId = X.FirstOrDefault().branchId,
+
+                code = X.FirstOrDefault().code,
+                name = X.FirstOrDefault().name,
+                address = X.FirstOrDefault().address,
+                email = X.FirstOrDefault().email,
+                phone = X.FirstOrDefault().phone,
+                mobile = X.FirstOrDefault().mobile,
+                createDate = X.FirstOrDefault().createDate,
+                updateDate = X.FirstOrDefault().updateDate,
+                createUserId = X.FirstOrDefault().createUserId,
+                updateUserId = X.FirstOrDefault().updateUserId,
+                notes = X.FirstOrDefault().notes,
+                parentId = X.FirstOrDefault().parentId,
+                isActive = X.FirstOrDefault().isActive,
+                type = X.FirstOrDefault().type,
+
+            }).ToList();
+
+            return List;
+
+
+        }
+
+
+    }
 }

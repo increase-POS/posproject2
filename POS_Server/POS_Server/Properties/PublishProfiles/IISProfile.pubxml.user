@@ -8,7 +8,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <TimeStampOfAssociatedLegacyPublishXmlFile />
     <EncryptedPassword />
     <_PublishTargetUrl>http://localhost:44/</_PublishTargetUrl>
-    <History>True|2021-08-28T12:30:24.1410368Z;True|2021-08-28T15:01:13.9084117+03:00;True|2021-08-28T14:39:35.0222729+03:00;True|2021-08-28T12:11:56.6963680+03:00;False|2021-08-28T12:08:16.3997587+03:00;True|2021-08-28T11:16:33.8621625+03:00;True|2021-08-28T00:52:25.3531001+03:00;False|2021-08-28T00:47:58.0724868+03:00;True|2021-08-27T17:49:38.9906211+03:00;True|2021-08-25T15:01:54.9515139+03:00;True|2021-08-25T11:31:07.0643901+03:00;True|2021-08-24T16:25:42.4998463+03:00;True|2021-08-24T15:45:14.4502935+03:00;True|2021-08-24T12:10:58.9826667+03:00;True|2021-08-24T01:39:35.8795951+03:00;True|2021-08-23T16:07:05.4730825+03:00;True|2021-08-23T13:53:28.8226084+03:00;True|2021-08-22T11:55:37.1124163+03:00;True|2021-08-22T01:22:56.3088654+03:00;True|2021-08-19T02:36:24.2592537+03:00;</History>
+    <History>True|2021-08-29T16:15:57.2250512Z;False|2021-08-29T19:11:08.0101519+03:00;True|2021-08-29T16:08:40.2825695+03:00;True|2021-08-29T15:13:33.6544806+03:00;True|2021-08-29T14:30:51.4022974+03:00;True|2021-08-29T01:35:39.1943732+03:00;True|2021-08-29T01:25:57.6284359+03:00;True|2021-08-29T00:26:50.8258126+03:00;True|2021-08-28T15:30:24.1410368+03:00;True|2021-08-28T15:01:13.9084117+03:00;True|2021-08-28T14:39:35.0222729+03:00;True|2021-08-28T12:11:56.6963680+03:00;False|2021-08-28T12:08:16.3997587+03:00;True|2021-08-28T11:16:33.8621625+03:00;True|2021-08-28T00:52:25.3531001+03:00;False|2021-08-28T00:47:58.0724868+03:00;True|2021-08-27T17:49:38.9906211+03:00;True|2021-08-25T15:01:54.9515139+03:00;True|2021-08-25T11:31:07.0643901+03:00;True|2021-08-24T16:25:42.4998463+03:00;True|2021-08-24T15:45:14.4502935+03:00;True|2021-08-24T12:10:58.9826667+03:00;True|2021-08-24T01:39:35.8795951+03:00;True|2021-08-23T16:07:05.4730825+03:00;True|2021-08-23T13:53:28.8226084+03:00;True|2021-08-22T11:55:37.1124163+03:00;True|2021-08-22T01:22:56.3088654+03:00;True|2021-08-19T02:36:24.2592537+03:00;</History>
   </PropertyGroup>
   <ItemGroup>
     <File Include="Areas/HelpPage/HelpPage.css">
@@ -111,13 +111,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/07/2021 14:45:16</publishTime>
     </File>
     <File Include="bin/POS_Server.dll">
-      <publishTime>08/28/2021 15:30:23</publishTime>
+      <publishTime>08/29/2021 19:15:54</publishTime>
     </File>
     <File Include="bin/POS_Server.pdb">
-      <publishTime>08/28/2021 15:30:23</publishTime>
+      <publishTime>08/29/2021 19:15:54</publishTime>
     </File>
     <File Include="bin/POS_Server.xml">
-      <publishTime>08/28/2021 15:30:22</publishTime>
+      <publishTime>08/29/2021 19:15:53</publishTime>
     </File>
     <File Include="bin/roslyn/csc.exe">
       <publishTime>05/07/2021 14:45:16</publishTime>
@@ -408,7 +408,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/07/2021 14:45:13</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>08/22/2021 11:55:36</publishTime>
+      <publishTime>08/29/2021 15:13:33</publishTime>
     </File>
   </ItemGroup>
 </Project>

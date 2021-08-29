@@ -20,7 +20,7 @@ namespace POS_Server.Controllers
             var re = Request;
             var headers = re.Headers;
             string token = "";
-           
+
 
             if (headers.Contains("APIKey"))
             {
@@ -34,14 +34,14 @@ namespace POS_Server.Controllers
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var List = (from S in entity.posSetting
-                               join psal in entity.printers on S.saleInvPrinterId equals psal.printerId into jsale
-                               join prep in entity.printers on S.reportPrinterId equals prep.printerId into jrep
-                               join paper in entity.paperSize on S.saleInvPapersizeId equals paper.sizeId into jpaper
-                            
+                                join psal in entity.printers on S.saleInvPrinterId equals psal.printerId into jsale
+                                join prep in entity.printers on S.reportPrinterId equals prep.printerId into jrep
+                                join paper in entity.paperSize on S.saleInvPapersizeId equals paper.sizeId into jpaper
+                                join dpaper in entity.paperSize on S.docPapersizeId equals dpaper.sizeId into jdcpaper
                                 from jjsale in jsale.DefaultIfEmpty()
                                 from jjrep in jrep.DefaultIfEmpty()
                                 from jjpaper in jpaper.DefaultIfEmpty()
-                            
+                                from jdocpaper in jdcpaper.DefaultIfEmpty()
                                 select new PosSettingModel()
                                 {
                                     posSettingId = S.posSettingId,
@@ -51,7 +51,7 @@ namespace POS_Server.Controllers
                                     reportPrinterId = S.reportPrinterId,
                                     saleInvPapersizeId = S.saleInvPapersizeId,
                                     posSerial = S.posSerial,
-                                 
+
                                     repprinterId = jjrep.printerId,
                                     repname = jjrep.name,
                                     repprintFor = jjrep.printFor,
@@ -59,8 +59,9 @@ namespace POS_Server.Controllers
                                     salname = jjsale.name,
                                     salprintFor = jjsale.printFor,
                                     sizeId = jjpaper.sizeId,
-                                    paperSize1 = jjpaper.paperSize1,                                                                  
-
+                                    paperSize1 = jjpaper.paperSize1,
+                                    docPapersize = jdocpaper.paperSize1,
+                                    docPapersizeId = S.docPapersizeId,
                                 }).ToList();
                     /*
    public int posSettingId { get; set; }
@@ -84,7 +85,7 @@ namespace POS_Server.Controllers
 
                     */
 
-                  
+
 
                     if (List == null)
                         return NotFound();
@@ -116,35 +117,37 @@ namespace POS_Server.Controllers
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var row = (from S in entity.posSetting
-                                join psal in entity.printers on S.saleInvPrinterId equals psal.printerId into jsale
-                                join prep in entity.printers on S.reportPrinterId equals prep.printerId into jrep
-                                join paper in entity.paperSize on S.saleInvPapersizeId equals paper.sizeId into jpaper
+                               join psal in entity.printers on S.saleInvPrinterId equals psal.printerId into jsale
+                               join prep in entity.printers on S.reportPrinterId equals prep.printerId into jrep
+                               join paper in entity.paperSize on S.saleInvPapersizeId equals paper.sizeId into jpaper
+                               join dpaper in entity.paperSize on S.docPapersizeId equals dpaper.sizeId into jdcpaper
+                               from jdocpaper in jdcpaper.DefaultIfEmpty()
 
-                                from jjsale in jsale.DefaultIfEmpty()
-                                from jjrep in jrep.DefaultIfEmpty()
-                                from jjpaper in jpaper.DefaultIfEmpty()
-                                where S.posSettingId==posSettingId
-                                select new PosSettingModel()
-                                {
-                                    posSettingId = S.posSettingId,
+                               from jjsale in jsale.DefaultIfEmpty()
+                               from jjrep in jrep.DefaultIfEmpty()
+                               from jjpaper in jpaper.DefaultIfEmpty()
+                               where S.posSettingId == posSettingId
+                               select new PosSettingModel()
+                               {
+                                   posSettingId = S.posSettingId,
 
-                                    posId = S.posId,
-                                    saleInvPrinterId = S.saleInvPrinterId,
-                                    reportPrinterId = S.reportPrinterId,
-                                    saleInvPapersizeId = S.saleInvPapersizeId,
-                                    posSerial = S.posSerial,
-                                    repprinterId = jjrep.printerId,
-                                    repname = jjrep.name,
-                                    repprintFor = jjrep.printFor,
-                                    salprinterId = jjsale.printerId,
-                                    salname = jjsale.name,
-                                    salprintFor = jjsale.printFor,
-                                    sizeId = jjpaper.sizeId,
-                                    paperSize1 = jjpaper.paperSize1,
+                                   posId = S.posId,
+                                   saleInvPrinterId = S.saleInvPrinterId,
+                                   reportPrinterId = S.reportPrinterId,
+                                   saleInvPapersizeId = S.saleInvPapersizeId,
+                                   posSerial = S.posSerial,
+                                   repprinterId = jjrep.printerId,
+                                   repname = jjrep.name,
+                                   repprintFor = jjrep.printFor,
+                                   salprinterId = jjsale.printerId,
+                                   salname = jjsale.name,
+                                   salprintFor = jjsale.printFor,
+                                   sizeId = jjpaper.sizeId,
+                                   paperSize1 = jjpaper.paperSize1,
 
-
-
-                                }).FirstOrDefault();
+                                   docPapersize = jdocpaper.paperSize1,
+                                   docPapersizeId = S.docPapersizeId,
+                               }).FirstOrDefault();
 
                     if (row == null)
                         return NotFound();
@@ -181,7 +184,8 @@ namespace POS_Server.Controllers
                                join psal in entity.printers on S.saleInvPrinterId equals psal.printerId into jsale
                                join prep in entity.printers on S.reportPrinterId equals prep.printerId into jrep
                                join paper in entity.paperSize on S.saleInvPapersizeId equals paper.sizeId into jpaper
-
+                               join dpaper in entity.paperSize on S.docPapersizeId equals dpaper.sizeId into jdcpaper
+                               from jdocpaper in jdcpaper.DefaultIfEmpty()
                                from jjsale in jsale.DefaultIfEmpty()
                                from jjrep in jrep.DefaultIfEmpty()
                                from jjpaper in jpaper.DefaultIfEmpty()
@@ -203,8 +207,8 @@ namespace POS_Server.Controllers
                                    salprintFor = jjsale.printFor,
                                    sizeId = jjpaper.sizeId,
                                    paperSize1 = jjpaper.paperSize1,
-
-
+                                   docPapersize = jdocpaper.paperSize1,
+                                   docPapersizeId=S.docPapersizeId,
 
                                }).FirstOrDefault();
 
@@ -242,7 +246,7 @@ namespace POS_Server.Controllers
                 if (newObject.posId == 0 || newObject.posId == null)
                 {
                     Nullable<int> id = null;
-                    newObject.posId = id; 
+                    newObject.posId = id;
                 }
                 if (newObject.reportPrinterId == 0 || newObject.reportPrinterId == null)
                 {
@@ -267,7 +271,7 @@ namespace POS_Server.Controllers
                         var locationEntity = entity.Set<posSetting>();
                         if (newObject.posSettingId == 0)
                         {
-                           
+
 
 
                             locationEntity.Add(newObject);
@@ -278,19 +282,19 @@ namespace POS_Server.Controllers
                         {
                             var tmpObject = entity.posSetting.Where(p => p.posSettingId == newObject.posSettingId).FirstOrDefault();
 
-                         
-                          
+
                             tmpObject.posSettingId = newObject.posSettingId;
 
-                                    tmpObject.posId = newObject.posId;
-                                   tmpObject. saleInvPrinterId = newObject.saleInvPrinterId;
-                                    tmpObject.reportPrinterId =newObject.reportPrinterId;
-                                    tmpObject.saleInvPapersizeId = newObject.saleInvPapersizeId;
-                                  //  tmpObject.posSerial = newObject.posSerial;
-                                 
-                                  
+                            tmpObject.posId = newObject.posId;
+                            tmpObject.saleInvPrinterId = newObject.saleInvPrinterId;
+                            tmpObject.reportPrinterId = newObject.reportPrinterId;
+                            tmpObject.saleInvPapersizeId = newObject.saleInvPapersizeId;
+                            tmpObject.docPapersizeId = newObject.docPapersizeId;
+                            //  tmpObject.posSerial = newObject.posSerial;      public Nullable<int> docPapersizeId { get; set; }
 
-                       
+
+
+
                             entity.SaveChanges();
 
                             message = tmpObject.posSettingId.ToString();
@@ -323,25 +327,25 @@ namespace POS_Server.Controllers
             bool valid = validation.CheckApiKey(token);
             if (valid)
             {
-               
-                    try
-                    {
-                        using (incposdbEntities entity = new incposdbEntities())
-                        {
-                            posSetting objectDelete = entity.posSetting.Find(posSettingId);
 
-                            entity.posSetting.Remove(objectDelete);
-                            message = entity.SaveChanges();
-
-                            return message.ToString();
-                        }
-                    }
-                    catch
+                try
+                {
+                    using (incposdbEntities entity = new incposdbEntities())
                     {
-                        return "-1";
+                        posSetting objectDelete = entity.posSetting.Find(posSettingId);
+
+                        entity.posSetting.Remove(objectDelete);
+                        message = entity.SaveChanges();
+
+                        return message.ToString();
                     }
-               
-             
+                }
+                catch
+                {
+                    return "-1";
+                }
+
+
             }
             else
                 return "-3";
