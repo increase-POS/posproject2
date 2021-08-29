@@ -56,7 +56,7 @@ namespace POS.View.reports
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this );
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -68,20 +68,20 @@ namespace POS.View.reports
 
                 list = await statisticModel.GetPosTrans();
 
-            fromBranches = statisticModel.getFromCombo(list);
-            toBranches = statisticModel.getToCombo(list);
+                fromBranches = statisticModel.getFromCombo(list);
+                toBranches = statisticModel.getToCombo(list);
 
-            fromPos = statisticModel.getFromPosCombo(list);
-            toPos = statisticModel.getToPosCombo(list);
+                fromPos = statisticModel.getFromPosCombo(list);
+                toPos = statisticModel.getToPosCombo(list);
 
-            accCombo = statisticModel.getAccounantCombo(list, "p");
+                accCombo = statisticModel.getAccounantCombo(list, "p");
 
-            fillComboBranches();
-            fillComboFromPos();
-            fillComboToPos();
-            fillAccCombo();
+                fillComboBranches();
+                fillComboFromPos();
+                fillComboToPos();
+                fillAccCombo();
 
-            fillEvents();
+                fillEvents();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -166,12 +166,12 @@ namespace POS.View.reports
 
         private void Cb_formBranch_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-                try
-                {
-                    if (sender != null)
-                        SectionData.StartAwait(grid_main);
-                    fillComboFromPos();
-            fillEvents();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                fillComboFromPos();
+                fillEvents();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -185,13 +185,13 @@ namespace POS.View.reports
 
         private void Chk_allFromBranch_Checked(object sender, RoutedEventArgs e)
         {
-                    try
-                    {
-                        if (sender != null)
-                            SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
-                        cb_formBranch.IsEnabled = false;
-            cb_formBranch.SelectedItem = null;
+                cb_formBranch.IsEnabled = false;
+                cb_formBranch.SelectedItem = null;
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -205,11 +205,11 @@ namespace POS.View.reports
 
         private void Chk_allFromBranch_Unchecked(object sender, RoutedEventArgs e)
         {
-                        try
-                        {
-                            if (sender != null)
-                                SectionData.StartAwait(grid_main);
-                            cb_formBranch.IsEnabled = true;
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                cb_formBranch.IsEnabled = true;
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -223,12 +223,12 @@ namespace POS.View.reports
 
         private void Chk_allToBranch_Checked(object sender, RoutedEventArgs e)
         {
-                            try
-                            {
-                                if (sender != null)
-                                    SectionData.StartAwait(grid_main);
-                                cb_toBranch.IsEnabled = false;
-            cb_toBranch.SelectedItem = null;
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                cb_toBranch.IsEnabled = false;
+                cb_toBranch.SelectedItem = null;
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -242,12 +242,12 @@ namespace POS.View.reports
 
         private void Chk_allToBranch_Unchecked(object sender, RoutedEventArgs e)
         {
-                                try
-                                {
-                                    if (sender != null)
-                                        SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
-                                    cb_toBranch.IsEnabled = true;
+                cb_toBranch.IsEnabled = true;
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -261,11 +261,11 @@ namespace POS.View.reports
 
         private void Cb_formPos_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-                                    try
-                                    {
-                                        if (sender != null)
-                                            SectionData.StartAwait(grid_main);
-                                        fillEvents();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                fillEvents();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -279,12 +279,12 @@ namespace POS.View.reports
 
         private void Chk_allFromPos_Checked(object sender, RoutedEventArgs e)
         {
-                                        try
-                                        {
-                                            if (sender != null)
-                                                SectionData.StartAwait(grid_main);
-                                            cb_formPos.IsEnabled = false;
-            cb_formPos.SelectedItem = null;
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                cb_formPos.IsEnabled = false;
+                cb_formPos.SelectedItem = null;
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -298,12 +298,12 @@ namespace POS.View.reports
 
         private void Chk_allFromPos_Unchecked(object sender, RoutedEventArgs e)
         {
-                                            try
-                                            {
-                                                if (sender != null)
-                                                    SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
-                                                cb_formPos.IsEnabled = true;
+                cb_formPos.IsEnabled = true;
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -317,12 +317,12 @@ namespace POS.View.reports
 
         private void Chk_allToPos_Checked(object sender, RoutedEventArgs e)
         {
-                                                try
-                                                {
-                                                    if (sender != null)
-                                                        SectionData.StartAwait(grid_main);
-                                                    cb_toPos.IsEnabled = false;
-            cb_toPos.SelectedItem = null;
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                cb_toPos.IsEnabled = false;
+                cb_toPos.SelectedItem = null;
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -336,12 +336,12 @@ namespace POS.View.reports
 
         private void Chk_allToPos_Unchecked(object sender, RoutedEventArgs e)
         {
-                                                    try
-                                                    {
-                                                        if (sender != null)
-                                                            SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
-                                                        cb_toPos.IsEnabled = true;
+                cb_toPos.IsEnabled = true;
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -355,12 +355,12 @@ namespace POS.View.reports
 
         private void Cb_toBranch_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-                                                        try
-                                                        {
-                                                            if (sender != null)
-                                                                SectionData.StartAwait(grid_main);
-                                                            fillComboToPos();
-            fillEvents();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                fillComboToPos();
+                fillEvents();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -374,11 +374,11 @@ namespace POS.View.reports
 
         private void Cb_toPos_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-                                                            try
-                                                            {
-                                                                if (sender != null)
-                                                                    SectionData.StartAwait(grid_main);
-                                                                fillEvents();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                fillEvents();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -392,11 +392,11 @@ namespace POS.View.reports
 
         private void Dp_EndDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-                                                                try
-                                                                {
-                                                                    if (sender != null)
-                                                                        SectionData.StartAwait(grid_main);
-                                                                    fillEvents();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                fillEvents();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -410,11 +410,11 @@ namespace POS.View.reports
 
         private void Dp_StartDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-                                                                    try
-                                                                    {
-                                                                        if (sender != null)
-                                                                            SectionData.StartAwait(grid_main);
-                                                                        fillEvents();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                fillEvents();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -428,12 +428,12 @@ namespace POS.View.reports
 
         private void Cb_Accountant_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-                                                                        try
-                                                                        {
-                                                                            if (sender != null)
-                                                                                SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
-                                                                            fillEvents();
+                fillEvents();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -447,13 +447,13 @@ namespace POS.View.reports
 
         private void Chk_allAccountant_Checked(object sender, RoutedEventArgs e)
         {
-                                                                            try
-                                                                            {
-                                                                                if (sender != null)
-                                                                                    SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
-                                                                                cb_Accountant.IsEnabled = false;
-            cb_Accountant.SelectedItem = null;
+                cb_Accountant.IsEnabled = false;
+                cb_Accountant.SelectedItem = null;
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -467,11 +467,11 @@ namespace POS.View.reports
 
         private void Chk_allAccountant_Unchecked(object sender, RoutedEventArgs e)
         {
-                                                                                try
-                                                                                {
-                                                                                    if (sender != null)
-                                                                                        SectionData.StartAwait(grid_main);
-                                                                                    cb_Accountant.IsEnabled = true;
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                cb_Accountant.IsEnabled = true;
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -485,11 +485,11 @@ namespace POS.View.reports
 
         private void Chk_twoWay_Checked(object sender, RoutedEventArgs e)
         {
-                                                                                    try
-                                                                                    {
-                                                                                        if (sender != null)
-                                                                                            SectionData.StartAwait(grid_main);
-                                                                                        fillEvents();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                fillEvents();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -503,12 +503,12 @@ namespace POS.View.reports
 
         private void Chk_twoWay_Unchecked(object sender, RoutedEventArgs e)
         {
-                                                                                        try
-                                                                                        {
-                                                                                            if (sender != null)
-                                                                                                SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
-                                                                                            fillEvents();
+                fillEvents();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -706,25 +706,25 @@ namespace POS.View.reports
 
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
-                                                                                            try
-                                                                                            {
-                                                                                                if (sender != null)
-                                                                                                    SectionData.StartAwait(grid_main);
-                                                                                                cb_formBranch.SelectedItem = null;
-            cb_toBranch.SelectedItem = null;
-            cb_formPos.SelectedItem = null;
-            cb_toPos.SelectedItem = null;
-            cb_Accountant.SelectedItem = null;
-            chk_allFromBranch.IsChecked = false;
-            chk_allToBranch.IsChecked = false;
-            chk_allFromPos.IsChecked = false;
-            chk_allToPos.IsChecked = false;
-            chk_allAccountant.IsChecked = false;
-            chk_twoWay.IsChecked = false;
-            dp_StartDate.SelectedDate = null;
-            dp_EndDate.SelectedDate = null;
-            txt_search.Text = "";
-            fillEvents();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                cb_formBranch.SelectedItem = null;
+                cb_toBranch.SelectedItem = null;
+                cb_formPos.SelectedItem = null;
+                cb_toPos.SelectedItem = null;
+                cb_Accountant.SelectedItem = null;
+                chk_allFromBranch.IsChecked = false;
+                chk_allToBranch.IsChecked = false;
+                chk_allFromPos.IsChecked = false;
+                chk_allToPos.IsChecked = false;
+                chk_allAccountant.IsChecked = false;
+                chk_twoWay.IsChecked = false;
+                dp_StartDate.SelectedDate = null;
+                dp_EndDate.SelectedDate = null;
+                txt_search.Text = "";
+                fillEvents();
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -739,19 +739,19 @@ namespace POS.View.reports
 
         private void Txt_search_TextChanged(object sender, TextChangedEventArgs e)
         {
-                                                                                                try
-                                                                                                {
-                                                                                                    if (sender != null)
-                                                                                                        SectionData.StartAwait(grid_main);
-                                                                                                    dgPayments.ItemsSource = fillList(list, cb_formBranch, cb_toBranch, cb_formPos, cb_toPos, cb_Accountant, dp_StartDate, dp_EndDate, chk_twoWay)
-                .Where(obj => (
-                obj.transNum.Contains(txt_search.Text) ||
-                obj.frombranchName.Contains(txt_search.Text) ||
-                obj.tobranchName.Contains(txt_search.Text) ||
-                obj.fromposName.Contains(txt_search.Text) ||
-                obj.toposName.Contains(txt_search.Text) ||
-                obj.updateUserAcc.Contains(txt_search.Text)
-                ));
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                dgPayments.ItemsSource = fillList(list, cb_formBranch, cb_toBranch, cb_formPos, cb_toPos, cb_Accountant, dp_StartDate, dp_EndDate, chk_twoWay)
+.Where(obj => (
+obj.transNum.Contains(txt_search.Text) ||
+obj.frombranchName.Contains(txt_search.Text) ||
+obj.tobranchName.Contains(txt_search.Text) ||
+obj.fromposName.Contains(txt_search.Text) ||
+obj.toposName.Contains(txt_search.Text) ||
+obj.updateUserAcc.Contains(txt_search.Text)
+));
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -767,12 +767,12 @@ namespace POS.View.reports
         SaveFileDialog saveFileDialog = new SaveFileDialog();
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {
-                                                                                                    try
-                                                                                                    {
-                                                                                                        if (sender != null)
-                                                                                                            SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
-                                                                                                        List<ReportParameter> paramarr = new List<ReportParameter>();
+                List<ReportParameter> paramarr = new List<ReportParameter>();
 
                 string addpath = "";
                 bool isArabic = ReportCls.checkLang();
@@ -817,12 +817,12 @@ namespace POS.View.reports
 
         private void Btn_print_Click(object sender, RoutedEventArgs e)
         {
-                                                                                                        try
-                                                                                                        {
-                                                                                                            if (sender != null)
-                                                                                                                SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
-                                                                                                            List<ReportParameter> paramarr = new List<ReportParameter>();
+                List<ReportParameter> paramarr = new List<ReportParameter>();
 
                 string addpath = "";
                 bool isArabic = ReportCls.checkLang();
@@ -859,49 +859,49 @@ namespace POS.View.reports
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {
-                                                                                                            try
-                                                                                                            {
-                                                                                                                if (sender != null)
-                                                                                                                    SectionData.StartAwait(grid_main);
-
-                                                                                                                Thread t1 = new Thread(() =>
+            try
             {
-                List<ReportParameter> paramarr = new List<ReportParameter>();
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
-                string addpath = "";
-                bool isArabic = ReportCls.checkLang();
-                if (isArabic)
-                {
-                    addpath = @"\Reports\StatisticReport\Accounts\Pos\Ar\ArPos.rdlc";
-                }
-                else
-                {
-                    addpath = @"\Reports\StatisticReport\Accounts\Pos\En\Pos.rdlc";
-                }
-                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+                Thread t1 = new Thread(() =>
+{
+    List<ReportParameter> paramarr = new List<ReportParameter>();
 
-                ReportCls.checkLang();
+    string addpath = "";
+    bool isArabic = ReportCls.checkLang();
+    if (isArabic)
+    {
+        addpath = @"\Reports\StatisticReport\Accounts\Pos\Ar\ArPos.rdlc";
+    }
+    else
+    {
+        addpath = @"\Reports\StatisticReport\Accounts\Pos\En\Pos.rdlc";
+    }
+    string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
-                clsReports.cashTransferSts(temp, rep, reppath);
-                clsReports.setReportLanguage(paramarr);
-                clsReports.Header(paramarr);
+    ReportCls.checkLang();
 
-                rep.SetParameters(paramarr);
+    clsReports.cashTransferSts(temp, rep, reppath);
+    clsReports.setReportLanguage(paramarr);
+    clsReports.Header(paramarr);
 
-                rep.Refresh();
-                this.Dispatcher.Invoke(() =>
-                {
-                    saveFileDialog.Filter = "EXCEL|*.xls;";
-                    if (saveFileDialog.ShowDialog() == true)
-                    {
-                        string filepath = saveFileDialog.FileName;
-                        LocalReportExtensions.ExportToExcel(rep, filepath);
-                    }
-                });
+    rep.SetParameters(paramarr);
+
+    rep.Refresh();
+    this.Dispatcher.Invoke(() =>
+    {
+        saveFileDialog.Filter = "EXCEL|*.xls;";
+        if (saveFileDialog.ShowDialog() == true)
+        {
+            string filepath = saveFileDialog.FileName;
+            LocalReportExtensions.ExportToExcel(rep, filepath);
+        }
+    });
 
 
-            });
-            t1.Start();
+});
+                t1.Start();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -915,55 +915,53 @@ namespace POS.View.reports
 
         private void Btn_preview_Click(object sender, RoutedEventArgs e)
         {
-                                                                                                                try
-                                                                                                                {
-                                                                                                                    if (sender != null)
-                                                                                                                        SectionData.StartAwait(grid_main);
-                                                                                                                    Window.GetWindow(this).Opacity = 0.2;
-            string pdfpath = "";
-
-            List<ReportParameter> paramarr = new List<ReportParameter>();
-
-
-            //
-            pdfpath = @"\Thumb\report\temp.pdf";
-            pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
-
-            string addpath = "";
-            bool isArabic = ReportCls.checkLang();
-            if (isArabic)
+            try
             {
-                addpath = @"\Reports\StatisticReport\Accounts\Pos\Ar\ArPos.rdlc";
-            }
-            else
-            {
-                addpath = @"\Reports\StatisticReport\Accounts\Pos\En\Pos.rdlc";
-            }
-            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                Window.GetWindow(this).Opacity = 0.2;
+                string pdfpath = "";
 
-         
+                List<ReportParameter> paramarr = new List<ReportParameter>();
 
-            ReportCls.checkLang();
+                pdfpath = @"\Thumb\report\temp.pdf";
+                pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
 
-            clsReports.cashTransferSts(temp, rep, reppath);
-            clsReports.setReportLanguage(paramarr);
-            clsReports.Header(paramarr);
-
-            rep.SetParameters(paramarr);
-
-            rep.Refresh();
-
-            LocalReportExtensions.ExportToPDF(rep, pdfpath);
-            wd_previewPdf w = new wd_previewPdf();
-            w.pdfPath = pdfpath;
-            if (!string.IsNullOrEmpty(w.pdfPath))
-            {
-                w.ShowDialog();
-                w.wb_pdfWebViewer.Dispose();
+                string addpath = "";
+                bool isArabic = ReportCls.checkLang();
+                if (isArabic)
+                {
+                    addpath = @"\Reports\StatisticReport\Accounts\Pos\Ar\ArPos.rdlc";
+                }
+                else
+                {
+                    addpath = @"\Reports\StatisticReport\Accounts\Pos\En\Pos.rdlc";
+                }
+                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
 
-            }
-            Window.GetWindow(this).Opacity = 1;
+
+                ReportCls.checkLang();
+
+                clsReports.cashTransferSts(temp, rep, reppath);
+                clsReports.setReportLanguage(paramarr);
+                clsReports.Header(paramarr);
+
+                rep.SetParameters(paramarr);
+
+                rep.Refresh();
+
+                LocalReportExtensions.ExportToPDF(rep, pdfpath);
+                wd_previewPdf w = new wd_previewPdf();
+                w.pdfPath = pdfpath;
+                if (!string.IsNullOrEmpty(w.pdfPath))
+                {
+                    w.ShowDialog();
+                    w.wb_pdfWebViewer.Dispose();
+
+
+                }
+                Window.GetWindow(this).Opacity = 1;
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -973,6 +971,11 @@ namespace POS.View.reports
                     SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
+        }
+
+        private void Btn_payments_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

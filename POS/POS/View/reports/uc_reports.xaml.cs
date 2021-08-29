@@ -52,7 +52,7 @@ namespace POS.View.reports
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this );
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -66,28 +66,28 @@ namespace POS.View.reports
 
                 #region menu state
                 string menuState = MainWindow.menuIsOpen;
-            if (menuState.Equals("open"))
-                ex.IsExpanded = true;
-            else
-                ex.IsExpanded = false;
-            #endregion
+                if (menuState.Equals("open"))
+                    ex.IsExpanded = true;
+                else
+                    ex.IsExpanded = false;
+                #endregion
 
-            #region translate
-            if (MainWindow.lang.Equals("en"))
-            {
-                MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
-                grid_ucReports.FlowDirection = FlowDirection.LeftToRight;
-            }
-            else
-            {
-                MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
-                grid_ucReports.FlowDirection = FlowDirection.RightToLeft;
-            }
+                #region translate
+                if (MainWindow.lang.Equals("en"))
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                    grid_ucReports.FlowDirection = FlowDirection.LeftToRight;
+                }
+                else
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                    grid_ucReports.FlowDirection = FlowDirection.RightToLeft;
+                }
 
-            translate();
-            #endregion
+                translate();
+                #endregion
 
-            btn_salesReports_Click(null, null);
+                btn_salesReports_Click(null, null);
                 //permission();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -130,7 +130,7 @@ namespace POS.View.reports
 
         }
 
-      public  void refreashBachgroundClick(Button btn)
+        public void refreashBachgroundClick(Button btn)
         {
             refreashBackground();
             btn.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
@@ -141,9 +141,10 @@ namespace POS.View.reports
         {
             try
             {
+                uc_saleReportGeneral uc = new uc_saleReportGeneral();
                 refreashBachgroundClick(btn_salesReports);
-            grid_main.Children.Clear();
-            grid_main.Children.Add(uc_saleReport.Instance);
+                grid_main.Children.Clear();
+                grid_main.Children.Add(uc);
             }
             catch (Exception ex)
             {
@@ -153,86 +154,87 @@ namespace POS.View.reports
 
         private void btn_purchaseReport_Click(object sender, RoutedEventArgs e)
         {
-                try
-                {
-                    refreashBachgroundClick(btn_purchaseReports);
-            grid_main.Children.Clear();
-            grid_main.Children.Add(uc_purchaseReport.Instance);
-                }
-                catch (Exception ex)
-                {
-                    SectionData.ExceptionMessage(ex, this, sender);
-                }
+            try
+            {
+                uc_purchaseReportGeneral uc = new uc_purchaseReportGeneral();
+                refreashBachgroundClick(btn_purchaseReports);
+                grid_main.Children.Clear();
+                grid_main.Children.Add(uc);
             }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
 
         private void btn_storageReports_Click(object sender, RoutedEventArgs e)
         {
-                    try
-                    {
-                        uc_storage uc = new uc_storage();
-            refreashBachgroundClick(btn_storageReports);
-            grid_main.Children.Clear();
-            grid_main.Children.Add(uc);
-                    }
-                    catch (Exception ex)
-                    {
-                        SectionData.ExceptionMessage(ex, this, sender);
-                    }
-                }
+            try
+            {
+                uc_storage uc = new uc_storage();
+                refreashBachgroundClick(btn_storageReports);
+                grid_main.Children.Clear();
+                grid_main.Children.Add(uc);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
 
         private void btn_accountsReports_Click(object sender, RoutedEventArgs e)
         {
-                        try
-                        {
-                            uc_accountant uc = new uc_accountant();
-            refreashBachgroundClick(btn_accountsReports);
-            grid_main.Children.Clear();
-            grid_main.Children.Add(uc);
-                        }
-                        catch (Exception ex)
-                        {
-                            SectionData.ExceptionMessage(ex, this, sender);
-                        }
-                    }
+            try
+            {
+                uc_accountant uc = new uc_accountant();
+                refreashBachgroundClick(btn_accountsReports);
+                grid_main.Children.Clear();
+                grid_main.Children.Add(uc);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
 
         private void btn_usersReports_Click(object sender, RoutedEventArgs e)
         {
-                            try
-                            {
-                                refreashBachgroundClick(btn_usersReports);
-            grid_main.Children.Clear();
-            grid_main.Children.Add(uc_usersReport.Instance);
-                            }
-                            catch (Exception ex)
-                            {
-                                SectionData.ExceptionMessage(ex, this, sender);
-                            }
-                        }
+            try
+            {
+                refreashBachgroundClick(btn_usersReports);
+                grid_main.Children.Clear();
+                grid_main.Children.Add(uc_usersReport.Instance);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
 
         private async void Ex_Collapsed(object sender, RoutedEventArgs e)
         {
-                                try
-                                {
-                                    int cId = await SectionData.getCloseValueId();
-                await SectionData.saveMenuState(cId);
-                                }
-                                catch (Exception ex)
-                                {
-                                    SectionData.ExceptionMessage(ex, this, sender);
-                                }
-                            }
+            try
+            {
+                int cId = await SectionData.getCloseValueId();
+                SectionData.saveMenuState(cId);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
 
         private async void Ex_Expanded(object sender, RoutedEventArgs e)
         {
-                                    try
-                                    {
-                                        int oId = await SectionData.getOpenValueId();
-                await SectionData.saveMenuState(oId);
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        SectionData.ExceptionMessage(ex, this, sender);
-                                    }
-                                }
+            try
+            {
+                int oId = await SectionData.getOpenValueId();
+                SectionData.saveMenuState(oId);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
     }
 }

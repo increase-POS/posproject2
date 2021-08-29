@@ -95,7 +95,7 @@ namespace POS
         public static string paperSize;
         public static string rep_print_count;
         public static string docPapersize;
-     public static string rep_copy_count;
+    
         static public PosSetting posSetting = new PosSetting();
    
 
@@ -119,7 +119,7 @@ namespace POS
 
             pur_copy_count = printList.Where(X => X.name == "pur_copy_count").FirstOrDefault().value;
 
-            rep_copy_count = printList.Where(X => X.name == "rep_copy_count").FirstOrDefault().value;
+            rep_print_count = printList.Where(X => X.name == "rep_copy_count").FirstOrDefault().value;
 
 
 

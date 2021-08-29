@@ -204,6 +204,7 @@
     <Compile Include="Classes\PropertiesItems.cs" />
     <Compile Include="Classes\Property.cs" />
     <Compile Include="Classes\ReportCls.cs" />
+    <Compile Include="Classes\ReportsHelp.cs" />
     <Compile Include="Classes\rptSectionData.cs" />
     <Compile Include="Classes\Section.cs" />
     <Compile Include="Classes\SectionCls.cs" />
@@ -318,8 +319,17 @@
     <Compile Include="View\reports\uc_posReports.xaml.cs">
       <DependentUpon>uc_posReports.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\reports\uc_purchaseItem.xaml.cs">
+      <DependentUpon>uc_purchaseItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\reports\uc_purchaseOrders.xaml.cs">
+      <DependentUpon>uc_purchaseOrders.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\reports\uc_purchaseReport.xaml.cs">
       <DependentUpon>uc_purchaseReport.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\reports\uc_purchaseReportGeneral.xaml.cs">
+      <DependentUpon>uc_purchaseReportGeneral.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\reports\uc_recipientReport.xaml.cs">
       <DependentUpon>uc_recipientReport.xaml</DependentUpon>
@@ -327,8 +337,23 @@
     <Compile Include="View\reports\uc_reports.xaml.cs">
       <DependentUpon>uc_reports.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\reports\uc_saleItems.xaml.cs">
+      <DependentUpon>uc_saleItems.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\reports\uc_saleOrders.xaml.cs">
+      <DependentUpon>uc_saleOrders.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\reports\uc_salePromotion.xaml.cs">
+      <DependentUpon>uc_salePromotion.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\reports\uc_saleQuotation.xaml.cs">
+      <DependentUpon>uc_saleQuotation.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\reports\uc_saleReport.xaml.cs">
       <DependentUpon>uc_saleReport.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\reports\uc_saleReportGeneral.xaml.cs">
+      <DependentUpon>uc_saleReportGeneral.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\reports\uc_stock.xaml.cs">
       <DependentUpon>uc_stock.xaml</DependentUpon>
@@ -702,7 +727,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="View\reports\uc_purchaseItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\reports\uc_purchaseOrders.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="View\reports\uc_purchaseReport.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\reports\uc_purchaseReportGeneral.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -714,7 +751,27 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="View\reports\uc_saleItems.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\reports\uc_saleOrders.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\reports\uc_salePromotion.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\reports\uc_saleQuotation.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="View\reports\uc_saleReport.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\reports\uc_saleReportGeneral.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

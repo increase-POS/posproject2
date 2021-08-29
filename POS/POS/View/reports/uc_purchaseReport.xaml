@@ -208,7 +208,7 @@
                                 </Path>
                             </Button>
                         </Border>
-                        <Border x:Name="bdr_items" Grid.Column="4" Background="#4E4E4E" BorderThickness="0"  Height="40" Width="60" VerticalAlignment="Bottom" CornerRadius="7,7,0,0" BorderBrush="Transparent" Margin="0,5,0,-1">
+                        <Border x:Name="bdr_items" Visibility="Collapsed" Grid.Column="4" Background="#4E4E4E" BorderThickness="0"  Height="40" Width="60" VerticalAlignment="Bottom" CornerRadius="7,7,0,0" BorderBrush="Transparent" Margin="0,5,0,-1">
                             <Button x:Name="btn_items"  Background="Transparent"  
                                     materialDesign:RippleAssist.Feedback="Transparent" Click="btn_items_Click"
                                     BorderBrush="Transparent" Height="auto" Width="60">

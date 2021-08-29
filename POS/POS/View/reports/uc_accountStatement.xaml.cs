@@ -1268,5 +1268,10 @@ namespace POS.View.reports
         {
 
         }
+
+        private void Btn_print_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

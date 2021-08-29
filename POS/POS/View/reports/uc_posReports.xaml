@@ -62,7 +62,7 @@
                                     Background="Transparent"  
                                     materialDesign:RippleAssist.Feedback="Transparent"
                                     BorderBrush="Transparent"
-                                    Height="auto" 
+                                    Height="auto" Click="Btn_payments_Click" 
                                     >
                                 <Button.Triggers>
                                     <EventTrigger x:Name="trig" RoutedEvent="Button.Click">
