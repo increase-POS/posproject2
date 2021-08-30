@@ -44,8 +44,6 @@ namespace POS
         //ToolTip="{Binding Properties.Settings.Default.Lang}"
         public static string firstPath = "";
         public static string secondPath = "";
-        public static string first = "";
-        public static string second = "";
         public static string lang;
         public static string Reportlang = "en";
         public static string companyName;
@@ -59,7 +57,7 @@ namespace POS
         internal static int? userID;
         internal static User userLogin;
         internal static int? userLogInID;
-        internal static int? posID = 2;
+        internal static int? posID = 10;
         internal static int? branchID;
         bool isHome = false;
         internal static int? isInvTax;
@@ -235,19 +233,6 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
 
 
 
-                #endregion
-
-                #region get user path
-                UserSetValues uSetValueModel = new UserSetValues();
-                List<UserSetValues> lst = await uSetValueModel.GetAll();
-
-                SetValues setValueModel = new SetValues();
-
-                List<SetValues> setVLst = await setValueModel.GetBySetName("user_path");
-                int firstId = setVLst[0].valId;
-                int secondId = setVLst[1].valId;
-                firstPath = lst.Where(u =>  u.valId == firstId  && u.userId == userID).FirstOrDefault().note;
-                secondPath = lst.Where(u => u.valId == secondId && u.userId == userID).FirstOrDefault().note;
                 #endregion
 
                 #region get default System info

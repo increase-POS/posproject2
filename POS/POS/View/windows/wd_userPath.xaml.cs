@@ -311,8 +311,8 @@ namespace POS.View.windows
                         Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
                         MainWindow.firstPath = first;
                         MainWindow.secondPath = second;
-                        MainWindow.first = res1;
-                        MainWindow.second = res2;
+                       // MainWindow.first = res1;
+//MainWindow.second = res2;
                         //MessageBox.Show(res1+"-"+res2);
                         await Task.Delay(1500);
                         this.Close();
