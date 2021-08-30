@@ -57,7 +57,7 @@ namespace POS
         internal static int? userID;
         internal static User userLogin;
         internal static int? userLogInID;
-        internal static int? posID = 10;
+        internal static int? posID = 2;
         internal static int? branchID;
         bool isHome = false;
         internal static int? isInvTax;
