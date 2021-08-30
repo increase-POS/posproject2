@@ -15,7 +15,7 @@ namespace POS.Classes
 {
     public class CashTransferSts
     {
-      
+
         public Nullable<decimal> agentBalance { get; set; }
 
         public Nullable<byte> agentBType { get; set; }
@@ -142,7 +142,7 @@ namespace POS.Classes
         {
             get => description1 = (transType == "p" && processType != "inv") ? description1 = "ايصال دفع"
                 : description1 = (transType == "d" && processType != "inv") ? description1 = "ايصال قبض"
-                : invId > 0&&processType == "inv" ? description1 = "فاتورة رقم" + invNumber
+                : invId > 0 && processType == "inv" ? description1 = "فاتورة رقم" + invNumber
                 : ""
                 ; set => description1 = value;
         }
@@ -2015,7 +2015,7 @@ namespace POS.Classes
             }
         }
         // فواتير اليوميةالخاصة بمستخدم
-        public async Task<List<ItemTransferInvoice>> GetUserdailyinvoice(int userId)
+        public async Task<List<ItemTransferInvoice>> GetUserdailyinvoice()
         {
             List<ItemTransferInvoice> list = null;
             // ... Use HttpClient.
@@ -2028,7 +2028,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetUserdailyinvoice?userId=" + userId);
+                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetUserdailyinvoice");
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -2072,6 +2072,49 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
                 request.RequestUri = new Uri(Global.APIUri + "Statistics/GetDailyStatement?mainBranchId=" + mainBranchId + "&userId=" + userId);
+                request.Headers.Add("APIKey", Global.APIKey);
+                request.Method = HttpMethod.Get;
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonString = await response.Content.ReadAsStringAsync();
+                    jsonString = jsonString.Replace("\\", string.Empty);
+                    jsonString = jsonString.Trim('"');
+                    // fix date format
+                    JsonSerializerSettings settings = new JsonSerializerSettings
+                    {
+                        Converters = new List<JsonConverter> { new BadDateFixingConverter() },
+                        DateParseHandling = DateParseHandling.None
+                    };
+                    list = JsonConvert.DeserializeObject<List<CashTransferSts>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    return list;
+                }
+                else //web api sent error response 
+                {
+                    list = new List<CashTransferSts>();
+                }
+                return list;
+            }
+
+        }
+
+        // يومية الصندوق الخاصة بالمستخدم
+        public async Task<List<CashTransferSts>> GetUserDailyStatement(int userId)
+        {
+            List<CashTransferSts> list = null;
+            // ... Use HttpClient.
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            using (var client = new HttpClient())
+            {
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                client.BaseAddress = new Uri(Global.APIUri);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+                HttpRequestMessage request = new HttpRequestMessage();
+                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetUserDailyStatement?userId=" + userId);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));

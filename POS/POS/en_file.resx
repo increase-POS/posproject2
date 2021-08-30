@@ -2359,4 +2359,19 @@ Please add Email in setting</value>
   <data name="trReportsSettings" xml:space="preserve">
     <value>Reports Settings</value>
   </data>
+  <data name="trFirstPath" xml:space="preserve">
+    <value>The main path cann't be empty</value>
+  </data>
+  <data name="trSecondPath" xml:space="preserve">
+    <value>The secondary path cann't be empty</value>
+  </data>
+  <data name="trFirstLevel" xml:space="preserve">
+    <value>Main path</value>
+  </data>
+  <data name="trSecondLevel" xml:space="preserve">
+    <value>Secondary path</value>
+  </data>
+  <data name="trUserPath" xml:space="preserve">
+    <value>User Path</value>
+  </data>
 </root>

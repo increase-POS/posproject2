@@ -251,6 +251,10 @@ namespace POS.View.windows
             await MainWindow.Getprintparameter();
             if(int.Parse(msg)>0)
             MessageBox.Show("saved");
+            else
+            {
+                MessageBox.Show("notsaved");
+            }
         }
     }
 }

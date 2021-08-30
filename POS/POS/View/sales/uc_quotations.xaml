@@ -599,7 +599,6 @@
                                 </Button>
 
                             </Grid>
-
                             <Grid  Grid.Row="1" >
                                 <ComboBox x:Name="cb_customer"  Grid.Row="1"
                                   Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
@@ -633,29 +632,7 @@
                              VerticalAlignment="Center" Width="17.5" Height="17.5"/>
                                 </Button>
                             </Grid>
-
-
-
-
-                            <!--<Grid Grid.Row="2"  >
-                                <DatePicker  x:Name="dp_desrvedDate"  Margin="5,5"
-                                               Style="{StaticResource MaterialDesignFloatingHintDatePicker}" 
-                           BorderBrush="#737373"  BorderThickness="0" 
-                                TextBlock.Foreground="#4E4E4E" Text="{Binding test, Mode=OneWay}" Padding="10,0,5,0"  
-                             materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                             materialDesign:HintAssist.Hint="Deserved Date..." KeyDown="Dp_desrvedDate_KeyDown"
-                           Foreground="#4E4E4E"  TextBlock.FontSize="12"  Background="#f8f8f8"  Height="40"    />
-                                <Path x:Name="p_errorDesrvedDate" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
-                              HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
-                         VerticalAlignment="Center" Width="15"  Height="15"
-                              Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 
-                                  L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
-                                    <Path.ToolTip>
-                                        <ToolTip x:Name="tt_errorDesrvedDate" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
-                                    </Path.ToolTip>
-                                </Path>
-                            </Grid>-->
-                            <Grid Grid.Row="3" >
+                            <Grid Grid.Row="2" >
                                 <TextBox  MaxHeight="70" x:Name="tb_note"  Text="{Binding notes, Mode=OneWay}"
                                             Style="{StaticResource MaterialDesignFloatingHintTextBox}" Height="40"
                                              Grid.Row="2" Padding="10,0,5,0"  
@@ -673,6 +650,16 @@
                                     </Path.ToolTip>
                                 </Path>
                             </Grid>
+                            <StackPanel Orientation="Horizontal" Grid.Row="3"  Margin="5,0,0,0">
+                                <TextBlock  x:Name="txt_isApproved"
+                               Margin="5,5,15,5" Text="Approved" Foreground="#6e6e6e"
+                            HorizontalAlignment="Left" VerticalAlignment="Center"
+                                  FontSize="12"/>
+                                <ToggleButton Grid.Column="1"  x:Name="tgl_ActiveOffer"   IsChecked="True"
+                                 VerticalAlignment="Center" Padding="10,15,5,5"
+                                              Margin="0" Height="13" Width="28" />
+                            </StackPanel>
+
                         </Grid>
                     </StackPanel>
                 </Border>

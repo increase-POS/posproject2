@@ -2338,4 +2338,19 @@
   <data name="trReportsSettings" xml:space="preserve">
     <value>إعدادات التقارير</value>
   </data>
+  <data name="trFirstPath" xml:space="preserve">
+    <value>المسار الأساسي لا يمكن أن يكون فارغ</value>
+  </data>
+  <data name="trSecondPath" xml:space="preserve">
+    <value>المسار الثانوي لا يمكن أن يكون فارغ</value>
+  </data>
+  <data name="trFirstLevel" xml:space="preserve">
+    <value>المسار الرئيسي</value>
+  </data>
+  <data name="trSecondLevel" xml:space="preserve">
+    <value>المسار الثانوي</value>
+  </data>
+  <data name="trUserPath" xml:space="preserve">
+    <value>مسار المستخدم</value>
+  </data>
 </root>

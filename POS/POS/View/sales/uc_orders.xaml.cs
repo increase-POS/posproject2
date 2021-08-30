@@ -802,7 +802,8 @@ namespace POS.View.sales
             {
                 invoice.invNumber = await invoice.generateInvNumber("or");
             }
-
+            else if (invType == "ord" && invoice.invoiceId == 0)
+                invoice.invNumber = await invoice.generateInvNumber("ord");
             // save invoice in DB
             int invoiceId = int.Parse(await invoiceModel.saveInvoice(invoice));
 

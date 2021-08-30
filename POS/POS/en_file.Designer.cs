@@ -2842,11 +2842,29 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Main path.
+        /// </summary>
+        internal static string trFirstLevel {
+            get {
+                return ResourceManager.GetString("trFirstLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to First Name....
         /// </summary>
         internal static string trFirstNameHint {
             get {
                 return ResourceManager.GetString("trFirstNameHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The main path cann&apos;t be empty.
+        /// </summary>
+        internal static string trFirstPath {
+            get {
+                return ResourceManager.GetString("trFirstPath", resourceCulture);
             }
         }
         
@@ -5300,6 +5318,24 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Secondary path.
+        /// </summary>
+        internal static string trSecondLevel {
+            get {
+                return ResourceManager.GetString("trSecondLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The secondary path cann&apos;t be empty.
+        /// </summary>
+        internal static string trSecondPath {
+            get {
+                return ResourceManager.GetString("trSecondPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Section.
         /// </summary>
         internal static string trSection {
@@ -6430,6 +6466,15 @@ namespace POS {
         internal static string trUserNotFound {
             get {
                 return ResourceManager.GetString("trUserNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User Path.
+        /// </summary>
+        internal static string trUserPath {
+            get {
+                return ResourceManager.GetString("trUserPath", resourceCulture);
             }
         }
         

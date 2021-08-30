@@ -641,10 +641,13 @@ namespace POS.View
                 invoice.branchCreatorId = MainWindow.branchID.Value;
                 invoice.posId = MainWindow.posID.Value;
             }
-            if (invoice.invType == "po")
+            else if (invoice.invType == "po")
             {
                 invoice.invNumber = await invoice.generateInvNumber("pi");
             }
+            else if (invType == "pd" && invoice.invoiceId == 0)
+                invoice.invNumber = await invoice.generateInvNumber("pd");
+
             if (invoice.branchCreatorId == 0 || invoice.branchCreatorId == null)
             {
                 invoice.branchCreatorId = MainWindow.branchID.Value;

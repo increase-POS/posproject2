@@ -718,7 +718,7 @@ namespace POS.View
                 if (cb_paymentProcessType.SelectedIndex == 1 && (companyModel == null || companyModel.deliveryType != "com"))
                 {
                     int agentId = (int)cb_customer.SelectedValue;
-                    Agent customer = customers.ToList().Find(b => b.agentId == agentId);
+                    Agent customer = customers.ToList().Find(b => b.agentId == agentId && b.isLimited == true);
                     if (customer != null)
                     {
                         float customerBalance = customer.balance;
@@ -734,8 +734,12 @@ namespace POS.View
                         {
                             valid = false;
                             Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorMaxDeservedExceeded"), animation: ToasterAnimation.FadeIn);
-
                         }
+                    }
+                    else
+                    {
+                        valid = false;
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorMaxDeservedExceeded"), animation: ToasterAnimation.FadeIn);
                     }
                 }
             }
@@ -832,11 +836,22 @@ namespace POS.View
             {
                 invoice.invoiceMainId = invoice.invoiceId;
                 invoice.invoiceId = 0;
-                if(invType == "sb" || invType == "sbd")
+                if(invType == "sb" )
                 invoice.invNumber = await invoice.generateInvNumber("sb");
-                else if(_InvoiceType == "or" || _InvoiceType == "q")
+                else if(invType == "sbd")
+                    invoice.invNumber = await invoice.generateInvNumber("sbd");
+                else if (_InvoiceType == "or" || _InvoiceType == "q")
                     invoice.invNumber = await invoice.generateInvNumber("si");
             }
+            // build invoice NUM 
+            else if ((invoice.invNumber == null && invType == "s") || (invoice.invType == "sd" && invType == "s"))
+            {
+                invoice.invNumber = await invoice.generateInvNumber("si");
+            }
+            else if(invoice.invType == "sbd" && invType == "sb") // convert invoicce from draft bounce to bounce
+                invoice.invNumber = await invoice.generateInvNumber("sb");
+            else if (invType == "sd" && invoice.invoiceId == 0)
+                invoice.invNumber = await invoice.generateInvNumber("sd");
             if (invoice.branchCreatorId == 0 || invoice.branchCreatorId == null)
             {
                 invoice.branchCreatorId = MainWindow.branchID.Value;
@@ -878,11 +893,7 @@ namespace POS.View
                 invoice.createUserId = MainWindow.userID;
                 invoice.updateUserId = MainWindow.userID;
 
-                // build invoice NUM 
-                if (invoice.invNumber == null && invType == "s") 
-                {
-                    invoice.invNumber = await invoice.generateInvNumber("si");
-                }
+                
 
                 invoice.invType = invType;
 
@@ -1080,18 +1091,21 @@ namespace POS.View
                         if (valid)
                         {
 
-                            if (_InvoiceType == "sbd") //sbd means sale bounse draft
-                                await addInvoice("sb"); // sb means sale bounce
-                            else if (_InvoiceType == "or")
-                            {
-                                await saveOrder("s");
-                            await refreshOrdersWaitNotification();
-                            }
-                            else//s  sale invoice
-                            {
-                                await saveSaleInvoice("s");
+                        if (_InvoiceType == "sbd") //sbd means sale bounse draft
+                        {
+                            await addInvoice("sb"); // sb means sale bounce
                             await refreshDraftNotification();
-                            }
+                        }
+                        else if (_InvoiceType == "or")
+                        {
+                            await saveOrder("s");
+                            await refreshOrdersWaitNotification();
+                        }
+                        else//s  sale invoice
+                        {
+                            await saveSaleInvoice("s");
+                            await refreshDraftNotification();
+                        }
                         await clearInvoice();
                         }
                         //awaitSaveBtn(false);
@@ -1752,6 +1766,7 @@ namespace POS.View
                 if (elapsed.TotalMilliseconds > 100 && cb_customer.SelectedIndex != -1)
                 {
                     _SelectedCustomer = (int)cb_customer.SelectedValue;
+
                 }
                 else
                 {

@@ -148,7 +148,6 @@ namespace POS.View.sales
             txt_coupon.Text = MainWindow.resourcemanager.GetString("trCoupon");
             txt_customer.Text = MainWindow.resourcemanager.GetString("trCustomer");
             txt_discount.Text = MainWindow.resourcemanager.GetString("trDiscount");
-
             txt_printInvoice.Text = MainWindow.resourcemanager.GetString("trPrint");
             txt_preview.Text = MainWindow.resourcemanager.GetString("trPreview");
             txt_invoiceImages.Text = MainWindow.resourcemanager.GetString("trImages");
@@ -598,7 +597,6 @@ namespace POS.View.sales
                 else if (billDetails.Count == 0)
                 {
                     clearInvoice();
-                    _InvoiceType = "qd";
                 }
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -668,6 +666,7 @@ namespace POS.View.sales
                     btn_save.IsEnabled = true;
                     cb_coupon.IsEnabled = true;
                     btn_clearCoupon.IsEnabled = true;
+                    tgl_ActiveOffer.IsEnabled = true;
                     break;
                 case "q": //quotation invoice
                     dg_billDetails.Columns[0].Visibility = Visibility.Collapsed; //make delete column unvisible
@@ -680,6 +679,7 @@ namespace POS.View.sales
                     btn_save.IsEnabled = false;
                     cb_coupon.IsEnabled = false;
                     btn_clearCoupon.IsEnabled = false;
+                    tgl_ActiveOffer.IsEnabled = false;
                     break;
             }
         }
@@ -719,7 +719,15 @@ namespace POS.View.sales
             {
                 invoice.invNumber = await invoice.generateInvNumber("qt");
             }
+            else if (invType == "qd" && invoice.invoiceId == 0)
+                invoice.invNumber = await invoice.generateInvNumber("qtd");
 
+            byte isApproved = 0;
+            if (tgl_ActiveOffer.IsChecked == true)
+                isApproved = 1;
+            else
+                isApproved = 0;
+            invoice.isApproved = isApproved;
             // save invoice in DB
             int invoiceId = int.Parse(await invoiceModel.saveInvoice(invoice));
 
@@ -1027,6 +1035,12 @@ namespace POS.View.sales
                 cb_typeDiscount.SelectedIndex = 1;
             else if (invoice.manualDiscountType == "2")
                 cb_typeDiscount.SelectedIndex = 2;
+
+            if (invoice.isApproved == 1)
+                tgl_ActiveOffer.IsChecked = true;
+            else
+                tgl_ActiveOffer.IsChecked = false;
+
             tb_barcode.Clear();
             tb_barcode.Focus();
 
@@ -1093,8 +1107,8 @@ namespace POS.View.sales
         }
         private async void Btn_quotations_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
+            //try
+            //{
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
@@ -1125,13 +1139,13 @@ namespace POS.View.sales
                 Window.GetWindow(this).Opacity =1;
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_main);
+            //    SectionData.ExceptionMessage(ex, this, sender);
+            //}
         }
         private async void Cbm_unitItemDetails_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -1427,7 +1441,13 @@ namespace POS.View.sales
 
                     if (billDetails.Count > 0 && valid)
                     {
-                        await addInvoice("q");//quontation invoice
+                        string type = "";
+                        if (tgl_ActiveOffer.IsChecked == true)
+                            type = "q";
+                        else
+                            type = "qd";
+                        //await addInvoice("q");//quontation invoice
+                        await addInvoice(type);//quontation invoice
 
                         if (invoice.invoiceId == 0)
                             clearInvoice();
@@ -1724,5 +1744,6 @@ namespace POS.View.sales
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
+
     }
 }

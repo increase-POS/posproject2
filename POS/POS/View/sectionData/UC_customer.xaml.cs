@@ -203,7 +203,8 @@ namespace POS.View
                 tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
                 tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
                 //tt_search.Content = MainWindow.resourcemanager.GetString("trSearch");
-           
+                txt_isCredit.Text = MainWindow.resourcemanager.GetString("trCredit");
+
         }
 
         private void Btn_clear_Click(object sender, RoutedEventArgs e)

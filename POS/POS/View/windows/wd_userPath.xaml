@@ -58,7 +58,8 @@
                              materialDesign:HintAssist.Hint="First Level..."  
                            TextBlock.FontSize="12"   Background="#f8f8f8"
                                         Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                Grid.Column="0" Height="40" SelectionChanged="Cb_firstLevel_SelectionChanged"  
+                Grid.Column="0" Height="40" SelectionChanged="Cb_firstLevel_SelectionChanged" 
+                           LostFocus="Tb_validateEmptyLostFocus" 
                            BorderBrush="#737373" BorderThickness="0"   >
 
                 </ComboBox>
@@ -76,6 +77,7 @@
                              materialDesign:HintAssist.Hint="Second Level..."  
                            TextBlock.FontSize="12"   Background="#f8f8f8"
                                         Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                           LostFocus="Tb_validateEmptyLostFocus" 
                 Grid.Column="0" Height="40"   
                            BorderBrush="#737373" BorderThickness="0"   >
 

@@ -312,6 +312,10 @@ namespace POS.View.windows
             {
   MessageBox.Show("saved");
             }
+            else
+            {
+                MessageBox.Show("Notsaved");
+            }
  
 
 

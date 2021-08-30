@@ -159,20 +159,32 @@ namespace POS.View.windows
 
 
             string msg;
-
             sale_copy_countrow.value = (string)tb_saleCopyCount.Text;
             pur_copy_countrow.value = (string)tb_purCopyCount.Text;
             rep_copy_countrow.value = (string)tb_repPrintCount.Text;
-            msg = await setvalueModel.Save(sale_copy_countrow);
-            msg = await setvalueModel.Save(pur_copy_countrow);
-            msg = await setvalueModel.Save(rep_copy_countrow);
-
-            await refreshWindow();
-            await MainWindow.Getprintparameter();
-            if (int.Parse(msg) > 0)
+            if (int.Parse(sale_copy_countrow.value) <=0 || int.Parse(pur_copy_countrow.value) <= 0|| int.Parse(rep_copy_countrow.value)<=0)
             {
-                MessageBox.Show("saved");
+                MessageBox.Show("must be more than 0");
             }
+            else
+            {
+            
+                msg = await setvalueModel.Save(sale_copy_countrow);
+                msg = await setvalueModel.Save(pur_copy_countrow);
+                msg = await setvalueModel.Save(rep_copy_countrow);
+
+                await refreshWindow();
+                await MainWindow.Getprintparameter();
+                if (int.Parse(msg) > 0)
+                {
+                    MessageBox.Show("saved");
+                }
+                else
+                {
+                    MessageBox.Show("Notsaved");
+                }
+            }
+          
 
         }
 

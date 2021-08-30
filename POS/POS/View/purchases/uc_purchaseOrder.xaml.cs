@@ -573,8 +573,8 @@ namespace POS.View.purchases
         {
             if (invType == "po")
                 invoice.invNumber = await invoice.generateInvNumber(invType);
-            else
-                invoice.invNumber = "";
+            else if (invType == "pod" && invoice.invoiceId == 0)
+                invoice.invNumber = await invoice.generateInvNumber("pod");
 
             invoice.branchCreatorId = MainWindow.branchID.Value;
             invoice.posId = MainWindow.posID.Value;
@@ -756,8 +756,8 @@ namespace POS.View.purchases
         #endregion
         private async void Btn_draft_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
+            //try
+            //{
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
                 Window.GetWindow(this).Opacity = 0.2;
@@ -787,13 +787,13 @@ namespace POS.View.purchases
                 Window.GetWindow(this).Opacity = 1;
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_main);
+            //    SectionData.ExceptionMessage(ex, this, sender);
+            //}
         }
         private async void Btn_invoices_Click(object sender, RoutedEventArgs e)
         {

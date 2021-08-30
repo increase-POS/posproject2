@@ -2815,11 +2815,29 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to المسار الرئيسي.
+        /// </summary>
+        internal static string trFirstLevel {
+            get {
+                return ResourceManager.GetString("trFirstLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to الاسم الأول....
         /// </summary>
         internal static string trFirstNameHint {
             get {
                 return ResourceManager.GetString("trFirstNameHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to المسار الأساسي لا يمكن أن يكون فارغ.
+        /// </summary>
+        internal static string trFirstPath {
+            get {
+                return ResourceManager.GetString("trFirstPath", resourceCulture);
             }
         }
         
@@ -5246,6 +5264,24 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to المسار الثانوي.
+        /// </summary>
+        internal static string trSecondLevel {
+            get {
+                return ResourceManager.GetString("trSecondLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to المسار الثانوي لا يمكن أن يكون فارغ.
+        /// </summary>
+        internal static string trSecondPath {
+            get {
+                return ResourceManager.GetString("trSecondPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to القسم.
         /// </summary>
         internal static string trSection {
@@ -6367,6 +6403,15 @@ namespace POS {
         internal static string trUserNotFound {
             get {
                 return ResourceManager.GetString("trUserNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to مسار المستخدم.
+        /// </summary>
+        internal static string trUserPath {
+            get {
+                return ResourceManager.GetString("trUserPath", resourceCulture);
             }
         }
         

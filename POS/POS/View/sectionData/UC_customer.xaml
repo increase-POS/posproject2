@@ -799,8 +799,8 @@
                                 <Separator Background="#999999"  Margin="5"  VerticalAlignment="Center" />
                             </DockPanel>
                             <StackPanel Grid.Row="8" Orientation="Horizontal" Margin="10,5,10,5">
-                                <TextBlock   x:Name="txt_isOpenUpperLimit"
-                                   Margin="0,0,5,0" Text="Open" Foreground="#6e6e6e"
+                                <TextBlock   x:Name="txt_isCredit"
+                                   Margin="0,0,5,0" Text="Credit" Foreground="#6e6e6e"
                                    HorizontalAlignment="Left" VerticalAlignment="Center"
                                    FontSize="12"/>
                                 <ToggleButton DockPanel.Dock="Right"  x:Name="tgl_isOpenUpperLimit"  
