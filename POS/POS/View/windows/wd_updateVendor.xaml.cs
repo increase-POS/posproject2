@@ -487,7 +487,7 @@ namespace POS.View.windows
                             agent.image = b;
                             isImgPressed = false;
                             if (b.Equals(""))
-                                MessageBox.Show("حدث خطأ في تحميل الصورة");
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trThereWasAnErrorLoadingTheImage"), animation: ToasterAnimation.FadeIn);
                         }
 
                     }

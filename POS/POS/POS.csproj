@@ -370,6 +370,9 @@
     <Compile Include="View\reports\uc_usersReport.xaml.cs">
       <DependentUpon>uc_usersReport.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\reports\us_dailySalesStatistic.xaml.cs">
+      <DependentUpon>us_dailySalesStatistic.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\sales\uc_medals.xaml.cs">
       <DependentUpon>uc_medals.xaml</DependentUpon>
     </Compile>
@@ -411,6 +414,9 @@
     </Compile>
     <Compile Include="View\Settings\uc_settings.xaml.cs">
       <DependentUpon>uc_settings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Settings\us_emailGeneral.xaml.cs">
+      <DependentUpon>us_emailGeneral.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\storage\uc_inventory.xaml.cs">
       <DependentUpon>uc_inventory.xaml</DependentUpon>
@@ -795,6 +801,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="View\reports\us_dailySalesStatistic.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\sales\uc_medals.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -850,6 +860,10 @@
     <Page Include="View\Settings\uc_settings.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Settings\us_emailGeneral.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\storage\uc_inventory.xaml">
       <SubType>Designer</SubType>

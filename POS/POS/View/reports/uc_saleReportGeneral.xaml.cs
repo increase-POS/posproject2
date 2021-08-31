@@ -100,5 +100,19 @@ namespace POS.View.reports
                 SectionData.ExceptionMessage(ex, this, sender);
             }
         }
+
+        private void Btn_dailySales_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                us_dailySalesStatistic uc = new us_dailySalesStatistic();
+                sc_main.Visibility = Visibility.Collapsed;
+                main.Children.Add(uc);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        } 
     }
 }

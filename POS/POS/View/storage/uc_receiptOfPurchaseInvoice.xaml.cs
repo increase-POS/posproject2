@@ -272,12 +272,10 @@ namespace POS.View.storage
                     {
                         case Key.P:
                             //handle D key
-                            //MessageBox.Show("You want Print");
                             //btn_printInvoice_Click(null, null);
                             break;
                         case Key.S:
                             //handle X key
-                            //MessageBox.Show("You want Save");
                             Btn_save_Click(null, null);
                             break;
                     }
@@ -608,6 +606,8 @@ namespace POS.View.storage
         {
             try
             {
+                TextBox textBox = sender as TextBox;
+                SectionData.InputJustNumber(ref textBox);
                 e.Handled = e.Key == Key.Space;
             }
             catch (Exception ex)

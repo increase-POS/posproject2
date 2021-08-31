@@ -538,6 +538,8 @@ namespace POS.View.purchases
         {
             try
             {
+                TextBox textBox = sender as TextBox;
+                SectionData.InputJustNumber(ref textBox);
                 e.Handled = e.Key == Key.Space;
             }
             catch (Exception ex)
@@ -1061,13 +1063,11 @@ namespace POS.View.purchases
                     {
                         case Key.P:
                             //handle D key
-                            //MessageBox.Show("You want Print");
-                            btn_printInvoice_Click(null, null);
+                             btn_printInvoice_Click(null, null);
                             break;
                         case Key.S:
                             //handle X key
-                            //MessageBox.Show("You want Save");
-                            Btn_save_Click(null, null);
+                             Btn_save_Click(null, null);
                             break;
                     }
                 }
@@ -1513,7 +1513,7 @@ namespace POS.View.purchases
                 || invoice.invType == "sbd" || invoice.invType == "pbd"
                 || invoice.invType == "ord" || invoice.invType == "imd" || invoice.invType == "exd")
                     {
-                        MessageBox.Show("can not print Draft Invoice");
+               Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPrintDraftInvoice"), animation: ToasterAnimation.FadeIn);
                     }
                     else
                     {
@@ -1596,7 +1596,7 @@ namespace POS.View.purchases
                                  || invoice.invType == "sbd" || invoice.invType == "pbd"
                                  || invoice.invType == "ord" || invoice.invType == "imd" || invoice.invType == "exd")
                     {
-                        MessageBox.Show(MainWindow.resourcemanager.GetString("trPrintDraftInvoice"));
+               Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPrintDraftInvoice"), animation: ToasterAnimation.FadeIn);
                     }
                     else
                     {
@@ -1820,7 +1820,7 @@ namespace POS.View.purchases
                     }
                     else
                     {
-                        MessageBox.Show(MainWindow.resourcemanager.GetString("trSaveInvoiceToPreview"));
+               Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trSaveInvoiceToPreview"), animation: ToasterAnimation.FadeIn);
                     }
 
                 }
@@ -1879,9 +1879,7 @@ namespace POS.View.purchases
                                     string msg = mailtosend.Sendmail();
                                     if (msg == "Failure sending mail.")
                                     {
-                                        // msg = "No Internet connection";
-                                        //  MessageBox.Show("");
-                                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoInternetConnection"), animation: ToasterAnimation.FadeIn);
+                                          Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoInternetConnection"), animation: ToasterAnimation.FadeIn);
                                     }
                                     else if (msg == "mailsent")
                                         Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trMailSent"), animation: ToasterAnimation.FadeIn);

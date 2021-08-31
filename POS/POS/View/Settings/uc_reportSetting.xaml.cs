@@ -1,4 +1,5 @@
-﻿using POS.Classes;
+﻿using netoaster;
+using POS.Classes;
 using POS.View.windows;
 using System;
 using System.Collections.Generic;
@@ -223,11 +224,11 @@ namespace POS.View.Settings
                 await fillRepLang();
                 if (int.Parse(msg) > 0)
                 {
-                    MessageBox.Show("replangsaved");
+                                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
                 }
                 else
                 {
-                    MessageBox.Show("replangNotsaved");
+                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                 }
             }
         }

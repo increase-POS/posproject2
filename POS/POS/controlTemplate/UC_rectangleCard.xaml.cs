@@ -125,7 +125,7 @@ namespace POS.controlTemplate
                 gridPrice.Children.Add(rectanglePrice);
                 ////////////////////////////////
                 var priceText = new TextBlock();
-                priceText.Text = cardViewitem.item.price.ToString();
+                priceText.Text = cardViewitem.item.priceTax.ToString();
                 priceText.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
                 priceText.FontWeight = FontWeights.Bold;
                 priceText.VerticalAlignment = VerticalAlignment.Center;

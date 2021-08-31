@@ -357,8 +357,9 @@ namespace POS.View
                                 }
                                 else
                                 {
-                                    MessageBox.Show("حدث خطأ في تحميل الصورة");
+                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trThereWasAnErrorLoadingTheImage"), animation: ToasterAnimation.FadeIn);
                                 }
+                                
                             }
                             ////////categoryParentId = parentCategorieSelctedValue;???????????????????
                             ///
@@ -440,7 +441,7 @@ namespace POS.View
                                     else
                                     {
                                         SectionData.clearImg(img_category);
-                                        MessageBox.Show("حدث خطأ في تحميل الصورة");
+                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trThereWasAnErrorLoadingTheImage"), animation: ToasterAnimation.FadeIn);
                                     }
                                 }
 

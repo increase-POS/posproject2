@@ -625,7 +625,7 @@
                                     </Path.ToolTip>
                                 </Path>
                                 <Button   Padding="0" Width="20" ToolTip="تعديل بيانات المورد"
-                                    Background="{x:Null}" BorderBrush="{x:Null}" HorizontalAlignment="Right" x:Name="btn_updateCustomer"  
+                                    Background="{x:Null}" BorderBrush="{x:Null}" HorizontalAlignment="Right" x:Name="btn_updateCustomer"   Click="Btn_updateCustomer_Click"
                                     Margin="0,0,25,0" IsEnabled="True">
                                     <materialDesign:PackIcon Foreground="#4E4E4E" Kind="FileDocumentEdit"  
                                   HorizontalAlignment="Center" Grid.Column="0"   
@@ -655,9 +655,9 @@
                                Margin="5,5,15,5" Text="Approved" Foreground="#6e6e6e"
                             HorizontalAlignment="Left" VerticalAlignment="Center"
                                   FontSize="12"/>
-                                <ToggleButton Grid.Column="1"  x:Name="tgl_ActiveOffer"   IsChecked="True"
+                                <ToggleButton Grid.Column="1"  x:Name="tgl_ActiveOffer"   IsChecked="False"
                                  VerticalAlignment="Center" Padding="10,15,5,5"
-                                              Margin="0" Height="13" Width="28" />
+                                              Margin="0" Height="13" Width="28" Checked="Tgl_ActiveOffer_Checked" />
                             </StackPanel>
 
                         </Grid>

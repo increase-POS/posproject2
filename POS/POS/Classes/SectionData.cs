@@ -37,20 +37,7 @@ namespace POS.Classes
         public static BrushConverter bc = new BrushConverter();
 
         public static ImageBrush brush = new ImageBrush();
-        /*
-        public static void popUpResponse(string title, string content)
-        {
-            PopupNotifier popup = new PopupNotifier();
-            popup.TitleText = title;
-            popup.ContentText = content;
-            //popup.ContentPadding = new Padding(0);
-            //popup.BodyColor = System.Drawing.Color.FromArgb(0, 0, 0);
-            //popup.BorderColor = System.Drawing.Color.FromArgb(0, 0, 0);
-            //popup.ContentColor = System.Drawing.Color.FromArgb(255, 255, 255);
-            //popup.ContentFont = new System.Drawing.Font("Tahoma", 8F);
-            popup.Popup();// show  
-        }
-        */
+         
         public async static Task<long> genRandomCode(string type)
         {
             Random rnd = new Random();

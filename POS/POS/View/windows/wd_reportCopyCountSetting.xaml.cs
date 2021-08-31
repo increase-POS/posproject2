@@ -1,4 +1,5 @@
-﻿using POS.Classes;
+﻿using netoaster;
+using POS.Classes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -164,7 +165,7 @@ namespace POS.View.windows
             rep_copy_countrow.value = (string)tb_repPrintCount.Text;
             if (int.Parse(sale_copy_countrow.value) <=0 || int.Parse(pur_copy_countrow.value) <= 0|| int.Parse(rep_copy_countrow.value)<=0)
             {
-                MessageBox.Show("must be more than 0");
+                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trMustBeMoreThanZero"), animation: ToasterAnimation.FadeIn);
             }
             else
             {
@@ -177,11 +178,11 @@ namespace POS.View.windows
                 await MainWindow.Getprintparameter();
                 if (int.Parse(msg) > 0)
                 {
-                    MessageBox.Show("saved");
+                                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
                 }
                 else
                 {
-                    MessageBox.Show("Notsaved");
+                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                 }
             }
           

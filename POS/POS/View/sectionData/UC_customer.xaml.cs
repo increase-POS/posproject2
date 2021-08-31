@@ -320,6 +320,7 @@ namespace POS.View
                             agent.type = "c";
                             agent.accType = "";
                             agent.balance = 0;
+                            agent.isLimited =(bool) tgl_hasCredit.IsChecked;
 
                             agent.createUserId = MainWindow.userID;
                             agent.updateUserId = MainWindow.userID;
@@ -353,7 +354,7 @@ namespace POS.View
                                 }
                                 else
                                 {
-                                    MessageBox.Show("حدث خطأ في تحميل الصورة");
+                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trThereWasAnErrorLoadingTheImage"), animation: ToasterAnimation.FadeIn);
                                 }
                             }
 
@@ -476,6 +477,7 @@ namespace POS.View
                             agent.notes = tb_notes.Text;
                             agent.fax = faxStr;
                             agent.maxDeserve = maxDeserveValue;
+                            agent.isLimited = (bool)tgl_hasCredit.IsChecked;
 
                             string s = await agentModel.saveAgent(agent);
 
@@ -1623,6 +1625,16 @@ namespace POS.View
 
             }
             Window.GetWindow(this).Opacity = 1;
+        }
+
+        private void Tgl_isOpenUpperLimit_Checked(object sender, RoutedEventArgs e)
+        {
+            tb_upperLimit.IsEnabled = true;
+        }
+
+        private void Tgl_isOpenUpperLimit_Unchecked(object sender, RoutedEventArgs e)
+        {
+            tb_upperLimit.IsEnabled = false;
         }
     }
 }

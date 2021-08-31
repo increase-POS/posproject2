@@ -200,6 +200,8 @@ namespace POS.View.windows
 
         private void space_PreviewKeyDown(object sender, KeyEventArgs e)
         {
+            TextBox textBox = sender as TextBox;
+            SectionData.InputJustNumber(ref textBox);
             e.Handled = e.Key == Key.Space;
         }
 

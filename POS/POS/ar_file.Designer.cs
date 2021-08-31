@@ -295,6 +295,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to هل تريد تأكيد عرض السعر؟.
+        /// </summary>
+        internal static string trApproveQuotationNotification {
+            get {
+                return ResourceManager.GetString("trApproveQuotationNotification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to العربية.
         /// </summary>
         internal static string trArabic {
@@ -3760,6 +3769,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to العدد يجب أن يكون أكبر من الصفر.
+        /// </summary>
+        internal static string trMustBeMoreThanZero {
+            get {
+                return ResourceManager.GetString("trMustBeMoreThanZero", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to الاسم.
         /// </summary>
         internal static string trName {
@@ -5228,6 +5246,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to هل تريد حفظ عرض السعر في المسودات؟.
+        /// </summary>
+        internal static string trSaveQuotationNotification {
+            get {
+                return ResourceManager.GetString("trSaveQuotationNotification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to مسح.
         /// </summary>
         internal static string trScan {
@@ -6016,6 +6043,15 @@ namespace POS {
         internal static string trThereIsNoOrderToSen {
             get {
                 return ResourceManager.GetString("trThereIsNoOrderToSen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to حدث خطأ أثناء تحميل الصورة.
+        /// </summary>
+        internal static string trThereWasAnErrorLoadingTheImage {
+            get {
+                return ResourceManager.GetString("trThereWasAnErrorLoadingTheImage", resourceCulture);
             }
         }
         

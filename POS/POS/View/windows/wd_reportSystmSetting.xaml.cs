@@ -1,4 +1,5 @@
-﻿using POS.Classes;
+﻿using netoaster;
+using POS.Classes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -250,11 +251,9 @@ namespace POS.View.windows
             await Getprintparameter();
             await MainWindow.Getprintparameter();
             if(int.Parse(msg)>0)
-            MessageBox.Show("saved");
+                                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
             else
-            {
-                MessageBox.Show("notsaved");
-            }
+                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
         }
     }
 }

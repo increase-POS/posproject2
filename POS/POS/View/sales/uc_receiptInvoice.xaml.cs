@@ -611,7 +611,11 @@ namespace POS.View
                 var defaultsaleUnit = itemUnits.ToList().Find(c => c.defaultSale == 1);
                 if (defaultsaleUnit != null)
                 {
-                    await addItemToBill(itemId, defaultsaleUnit.itemUnitId, defaultsaleUnit.mainUnit, (decimal)defaultsaleUnit.price, false);
+                    decimal itemTax = 0;
+                    if (item.taxes != null)
+                        itemTax = (decimal)item.taxes;
+                    decimal price = (decimal)defaultsaleUnit.price + SectionData.calcPercentage((decimal)defaultsaleUnit.price, itemTax);
+                    await addItemToBill(itemId, defaultsaleUnit.itemUnitId, defaultsaleUnit.mainUnit, price, false);
                      
                 }
                 else
@@ -649,6 +653,8 @@ namespace POS.View
         {
             try
             {
+                TextBox textBox = sender as TextBox;
+                SectionData.InputJustNumber(ref textBox);
                 e.Handled = e.Key == Key.Space;
             }
             catch (Exception ex)
@@ -1795,6 +1801,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
                 _Sender = sender;
                 refreshTotalValue();
                 e.Handled = true;
@@ -2173,7 +2180,13 @@ namespace POS.View
                     int oldCount = 0;
                     long newCount = 0;
                     decimal oldPrice = 0;
-                    decimal newPrice = (decimal)unit.price;
+                    decimal itemTax = 0;
+                    if (item.taxes != null)
+                        itemTax = (decimal)item.taxes;
+                    decimal price = (decimal)unit.price + SectionData.calcPercentage((decimal)unit.price, itemTax);
+
+                   // decimal newPrice = (decimal)unit.price;
+                    decimal newPrice = price;
 
                     //"tb_amont"
                     tb = dg_billDetails.Columns[4].GetCellContent(dg_billDetails.Items[dg_billDetails.SelectedIndex]) as TextBlock;
@@ -2200,10 +2213,6 @@ namespace POS.View
                     // new total for changed item
                     total = newCount * newPrice;
                     _Sum += total;
-
-                    decimal itemTax = 0;
-                    if (item.taxes != null)
-                        itemTax = (decimal)item.taxes;
                     // old tax for changed item
                     decimal tax = (decimal)itemTax * oldCount;
                     _Tax -= tax;

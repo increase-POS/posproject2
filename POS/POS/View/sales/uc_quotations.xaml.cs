@@ -537,12 +537,10 @@ namespace POS.View.sales
         #region Get Id By Click  Y
         public void ChangeCategorieIdEvent(int categoryId)
         {
-            MessageBox.Show("you  double click on Category Card");
-        }
+         }
         public void testChangeCategorieItemsIdEvent()
         {
-            MessageBox.Show("you  double click on Items Card");
-        }
+         }
         #endregion
 
         #endregion
@@ -635,10 +633,8 @@ namespace POS.View.sales
             tb_sum.Text = "0";
             tb_discount.Clear();
             cb_typeDiscount.SelectedIndex = 0;
-            if (MainWindow.isInvTax == 1)
-                tb_taxValue.Text = MainWindow.tax.ToString();
-            else
-                tb_taxValue.Text = "0";
+            tb_taxValue.Text = MainWindow.tax.ToString();
+            tgl_ActiveOffer.IsChecked = false;
             lst_coupons.Items.Clear();
             tb_discountCoupon.Text = "0";
             md_docImage.Badge = "";
@@ -780,8 +776,9 @@ namespace POS.View.sales
                     decimal itemTax = 0;
                     if (item.taxes != null)
                         itemTax = (decimal)item.taxes;
+                    decimal price = (decimal)defaultsaleUnit.price + SectionData.calcPercentage((decimal)defaultsaleUnit.price, itemTax);
                     // create new row in bill details data grid
-                      addRowToBill(item.name, itemId, defaultsaleUnit.mainUnit, defaultsaleUnit.itemUnitId, 1, (decimal)defaultsaleUnit.price, (decimal)defaultsaleUnit.price, itemTax);
+                    addRowToBill(item.name, itemId, defaultsaleUnit.mainUnit, defaultsaleUnit.itemUnitId, 1, price, (decimal)defaultsaleUnit.price, itemTax);
                 }
                 else
                 {
@@ -1168,7 +1165,12 @@ namespace POS.View.sales
                     int oldCount = 0;
                     long newCount = 0;
                     decimal oldPrice = 0;
-                    decimal newPrice = (decimal)unit.price;
+                    decimal itemTax = 0;
+                    if (item.taxes != null)
+                        itemTax = (decimal)item.taxes;
+                    decimal price = (decimal)unit.price + SectionData.calcPercentage((decimal)unit.price, itemTax);
+                    //decimal newPrice = (decimal)unit.price;
+                    decimal newPrice = price;
 
                     //"tb_amont"
                     tb = dg_billDetails.Columns[4].GetCellContent(dg_billDetails.Items[dg_billDetails.SelectedIndex]) as TextBlock;
@@ -1196,9 +1198,7 @@ namespace POS.View.sales
                     total = newCount * newPrice;
                     _Sum += total;
 
-                    decimal itemTax = 0;
-                    if (item.taxes != null)
-                        itemTax = (decimal)item.taxes;
+                   
                     // old tax for changed item
                     decimal tax = (decimal)itemTax * oldCount;
                     _Tax -= tax;
@@ -1471,6 +1471,8 @@ namespace POS.View.sales
         {
             try
             {
+                TextBox textBox = sender as TextBox;
+                SectionData.InputJustNumber(ref textBox);
                 e.Handled = e.Key == Key.Space;
             }
             catch (Exception ex)
@@ -1679,6 +1681,7 @@ namespace POS.View.sales
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
                 _Sender = sender;
                 refreshTotalValue();
                 e.Handled = true;
@@ -1745,5 +1748,54 @@ namespace POS.View.sales
             }
         }
 
+        private void Tgl_ActiveOffer_Checked(object sender, RoutedEventArgs e)
+        {
+
+            #region Accept
+            if (cb_customer.SelectedIndex != -1)
+            {
+                MainWindow.mainWindow.Opacity = 0.2;
+                wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                w.contentText = MainWindow.resourcemanager.GetString("trApproveQuotationNotification");
+
+                w.ShowDialog();
+                if (!w.isOk)
+                    tgl_ActiveOffer.IsChecked = false;
+                MainWindow.mainWindow.Opacity = 1;
+               
+            }
+            #endregion
+            else
+            {
+                tgl_ActiveOffer.IsChecked = false;
+                SectionData.validateEmptyComboBox(cb_customer,p_errorCustomer,tt_errorCustomer, "trEmptyCustomerToolTip");
+            }
+        }
+
+        private void Btn_updateCustomer_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                if (cb_customer.SelectedIndex != -1)
+                {
+                    Window.GetWindow(this).Opacity = 0.2;
+                    wd_updateVendor w = new wd_updateVendor();
+                    //// pass agent id to update windows
+                    w.agent.agentId = (int)cb_customer.SelectedValue;
+                    w.ShowDialog();
+                    Window.GetWindow(this).Opacity = 1;
+                }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
+        }
     }
 }

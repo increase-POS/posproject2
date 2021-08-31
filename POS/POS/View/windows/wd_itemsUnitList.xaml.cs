@@ -222,7 +222,7 @@ namespace POS.View.windows
 
                     p.parentIUId = itemUnitId;
                     p.childIUId = itemUnit.itemUnitId;
-                    p.quantity = 0;
+                    p.quantity = 1;
                     p.isActive = 1;
                     p.notes = itemUnit.itemName;
                     p.createUserId = MainWindow.userID;
@@ -263,8 +263,8 @@ namespace POS.View.windows
 
                     dg_allItems.Items.Refresh();
                     // for solve problem
-                    this.dg_selectedItems.CancelEdit();
-                    this.dg_selectedItems.CancelEdit();
+                    //this.dg_selectedItems.CancelEdit();
+                    //this.dg_selectedItems.CancelEdit();
                     ////////////
                     dg_selectedItems.Items.Refresh();
                 }
@@ -345,7 +345,7 @@ namespace POS.View.windows
         {
             //// Have to do this in the unusual case where the border of the cell gets selected.
             //// and causes a crash 'EditItem is not allowed'
-            e.Cancel = true;
+            //e.Cancel = true;
         }
     }
 }

@@ -527,7 +527,8 @@ namespace POS.View
         {
             try
             {
-
+                TextBox textBox = sender as TextBox;
+                SectionData.InputJustNumber(ref textBox);
                 e.Handled = e.Key == Key.Space;
             }
             catch (Exception ex)
@@ -737,10 +738,7 @@ namespace POS.View
                     if (w.isActive)
                     {
                         await locationModel.saveLocationsSection(w.selectedLocations, section.sectionId, MainWindow.userLogin.userId);
-                        //foreach (var location in w.selectedLocations)
-                        //{
-                        //    MessageBox.Show(location.name + "\t");
-                        //}
+                     
                     }
                     Window.GetWindow(this).Opacity = 1;
                 }

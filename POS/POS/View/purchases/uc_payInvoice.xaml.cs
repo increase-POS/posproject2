@@ -588,6 +588,8 @@ namespace POS.View
         {
             try
             {
+                TextBox textBox = sender as TextBox;
+                SectionData.InputJustNumber(ref textBox);
                 e.Handled = e.Key == Key.Space;
 
             }
@@ -1938,18 +1940,13 @@ namespace POS.View
                || invoice.invType == "sbd" || invoice.invType == "pbd"
                || invoice.invType == "ord" || invoice.invType == "imd" || invoice.invType == "exd")
                 {
-                    MessageBox.Show(MainWindow.resourcemanager.GetString("trPrintDraftInvoice"));
+               Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPrintDraftInvoice"), animation: ToasterAnimation.FadeIn);
                 }
                 else
                 {
-                    //  ReportCls rr = new ReportCls();
-                    // MessageBox.Show(rr.GetLogoImagePath());
 
                     List<ReportParameter> paramarr = new List<ReportParameter>();
 
-
-
-                    //
 
                     string reppath = reportclass.GetpayInvoiceRdlcpath(invoice);
                     if (invoice.invoiceId > 0)
@@ -2020,8 +2017,7 @@ namespace POS.View
                              || invoice.invType == "sbd" || invoice.invType == "pbd"
                              || invoice.invType == "ord" || invoice.invType == "imd" || invoice.invType == "exd")
                 {
-                    MessageBox.Show(MainWindow.resourcemanager.GetString("trPrintDraftInvoice"));
-
+               Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPrintDraftInvoice"), animation: ToasterAnimation.FadeIn);
                 }
                 else
                 {
@@ -2178,7 +2174,7 @@ namespace POS.View
                 }
                 else
                 {
-                    MessageBox.Show(MainWindow.resourcemanager.GetString("trSaveInvoiceToPreview"));
+               Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trSaveInvoiceToPreview"), animation: ToasterAnimation.FadeIn);
 
                 }
                 if (sender != null)

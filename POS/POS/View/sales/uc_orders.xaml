@@ -723,7 +723,7 @@
                                     </Path.ToolTip>
                                 </Path>
                                 <Button   Padding="0" Width="20" ToolTip="تعديل بيانات المورد"
-                                    Background="{x:Null}" BorderBrush="{x:Null}" HorizontalAlignment="Right" x:Name="btn_updateCustomer" 
+                                    Background="{x:Null}" BorderBrush="{x:Null}" HorizontalAlignment="Right" x:Name="btn_updateCustomer"  Click="Btn_updateCustomer_Click"
                                     Margin="0,0,25,0" IsEnabled="True">
                                     <materialDesign:PackIcon Foreground="#4E4E4E" Kind="FileDocumentEdit"  
                                   HorizontalAlignment="Center" Grid.Column="0"   

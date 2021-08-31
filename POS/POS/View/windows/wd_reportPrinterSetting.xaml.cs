@@ -16,6 +16,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
 using System.Drawing.Printing;
+using netoaster;
+
 namespace POS.View.windows
 {
     /// <summary>
@@ -310,13 +312,13 @@ namespace POS.View.windows
             await MainWindow.getPrintersNames();
             if (int.Parse(msg) > 0)
             {
-  MessageBox.Show("saved");
+                                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
             }
             else
             {
-                MessageBox.Show("Notsaved");
+                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
             }
- 
+
 
 
         }

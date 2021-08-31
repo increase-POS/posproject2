@@ -798,15 +798,15 @@
                                 <TextBlock  Text="More Information" Foreground="#737373"  FontSize="10" VerticalAlignment="Center" x:Name="txt_moreInformation" Margin="5"/>
                                 <Separator Background="#999999"  Margin="5"  VerticalAlignment="Center" />
                             </DockPanel>
-                            <StackPanel Grid.Row="8" Orientation="Horizontal" Margin="10,5,10,5">
+                            <DockPanel Grid.Row="8"  Margin="10,5,10,5">
                                 <TextBlock   x:Name="txt_isCredit"
                                    Margin="0,0,5,0" Text="Credit" Foreground="#6e6e6e"
                                    HorizontalAlignment="Left" VerticalAlignment="Center"
                                    FontSize="12"/>
-                                <ToggleButton DockPanel.Dock="Right"  x:Name="tgl_isOpenUpperLimit"  
-                                      Checked="Tgl_customerIsActive_Checked" 
-                                      Unchecked="Tgl_customerIsActive_Unchecked"
-                                        VerticalAlignment="Center" Padding="10,15,5,5"  IsChecked="True" 
+                                <ToggleButton   x:Name="tgl_hasCredit"  IsChecked="{Binding isLimited, Mode=OneWay}"
+                                      Checked="Tgl_isOpenUpperLimit_Checked" 
+                                      Unchecked="Tgl_isOpenUpperLimit_Unchecked"
+                                        VerticalAlignment="Center" Padding="10,15,5,5"  
                                       Margin="0" Height="13" Width="28"  TabIndex="15" />
                               
                                 <TextBox x:Name="tb_upperLimit" Grid.Row="8" Text="{Binding maxDeserve, Mode=OneWay}" Padding="10,0,5,0"  
@@ -814,10 +814,10 @@
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="The upper limit of the entitlement..."    
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                  BorderBrush="AliceBlue" MaxLength="100" PreviewTextInput="NumberValidationTextBox"
-                      TabIndex="12"
+                      TabIndex="12" 
                     materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                  Height="40"   Margin="5,5,0,5" Grid.ColumnSpan="2" PreviewKeyDown="tb_upperLimit_PreviewKeyDown" />
-                            </StackPanel>
+                  Height="40"   Margin="5,5,0,5"  PreviewKeyDown="tb_upperLimit_PreviewKeyDown" />
+                            </DockPanel>
                             
 
 

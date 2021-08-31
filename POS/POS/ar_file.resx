@@ -2353,4 +2353,16 @@
   <data name="trUserPath" xml:space="preserve">
     <value>مسار المستخدم</value>
   </data>
+  <data name="trApproveQuotationNotification" xml:space="preserve">
+    <value>هل تريد تأكيد عرض السعر؟</value>
+  </data>
+  <data name="trSaveQuotationNotification" xml:space="preserve">
+    <value>هل تريد حفظ عرض السعر في المسودات؟</value>
+  </data>
+  <data name="trThereWasAnErrorLoadingTheImage" xml:space="preserve">
+    <value>حدث خطأ أثناء تحميل الصورة</value>
+  </data>
+  <data name="trMustBeMoreThanZero" xml:space="preserve">
+    <value>العدد يجب أن يكون أكبر من الصفر</value>
+  </data>
 </root>

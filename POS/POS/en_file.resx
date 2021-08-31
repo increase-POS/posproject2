@@ -2374,4 +2374,13 @@ Please add Email in setting</value>
   <data name="trUserPath" xml:space="preserve">
     <value>User Path</value>
   </data>
+  <data name="trApproveQuotationNotification" xml:space="preserve">
+    <value>Do you want to approve the quotation?</value>
+  </data>
+  <data name="trThereWasAnErrorLoadingTheImage" xml:space="preserve">
+    <value>There was an error loading the image</value>
+  </data>
+  <data name="trMustBeMoreThanZero" xml:space="preserve">
+    <value>The count must be more than zero</value>
+  </data>
 </root>

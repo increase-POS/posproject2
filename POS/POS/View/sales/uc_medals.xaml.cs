@@ -417,7 +417,6 @@ namespace POS.View.sales
                         medal.isActive = 0;
 
                         string s = await medalModel.Save(medal);
-                        //MessageBox.Show(s);
                         if (!s.Equals("0"))
                         {
                             Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
@@ -548,14 +547,12 @@ namespace POS.View.sales
                             #endregion
                             if (w.isOk)
                             {
-                                //MessageBox.Show(medal.canDelete.ToString());
-                                string popupContent = "";
+                                 string popupContent = "";
                                 if (medal.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
                                 if ((!medal.canDelete) && (medal.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
 
                                 string b = await medalModel.deleteMedal(medal.medalId, MainWindow.userID.Value, medal.canDelete);
-                                // MessageBox.Show(b.ToString());
-                                if (b.Equals("medal is Deleted Successfully"))
+                                 if (b.Equals("medal is Deleted Successfully"))
                                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
 
                                 else

@@ -241,7 +241,6 @@ namespace POS.View.windows
                 int x = allUsers.Count;
                 for (int i = 0; i < x; i++)
                 {
-                    //MessageBox.Show(i.ToString());
                     lst_allUsers.SelectedIndex = 0;
                     Btn_selectedUser_Click(null, null);
                 }

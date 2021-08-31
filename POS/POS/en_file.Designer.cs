@@ -304,6 +304,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Do you want to approve the quotation?.
+        /// </summary>
+        internal static string trApproveQuotationNotification {
+            get {
+                return ResourceManager.GetString("trApproveQuotationNotification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Arabic.
         /// </summary>
         internal static string trArabic {
@@ -3787,6 +3796,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The count must be more than zero.
+        /// </summary>
+        internal static string trMustBeMoreThanZero {
+            get {
+                return ResourceManager.GetString("trMustBeMoreThanZero", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Name.
         /// </summary>
         internal static string trName {
@@ -6070,6 +6088,15 @@ namespace POS {
         internal static string trThereIsNoOrderToSen {
             get {
                 return ResourceManager.GetString("trThereIsNoOrderToSen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There was an error loading the image.
+        /// </summary>
+        internal static string trThereWasAnErrorLoadingTheImage {
+            get {
+                return ResourceManager.GetString("trThereWasAnErrorLoadingTheImage", resourceCulture);
             }
         }
         

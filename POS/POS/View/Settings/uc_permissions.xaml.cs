@@ -581,8 +581,10 @@ namespace POS.View.Settings
             void handleSpace_PreviewKeyDown(object sender, KeyEventArgs e)
             {
                 try
-                {
-                    e.Handled = e.Key == Key.Space;
+            {
+                TextBox textBox = sender as TextBox;
+                SectionData.InputJustNumber(ref textBox);
+                e.Handled = e.Key == Key.Space;
                 }
                 catch (Exception ex)
                 {

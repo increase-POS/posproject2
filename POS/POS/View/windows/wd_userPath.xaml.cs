@@ -33,7 +33,7 @@ namespace POS.View.windows
             { SectionData.ExceptionMessage(ex, this); }
         }
         Classes.Object _object = new Classes.Object();
-        IEnumerable<Classes.Object> objects;
+        IEnumerable<Classes.Object> objects = new List<Classes.Object>();
         IEnumerable<Classes.Object> firstLevel;
         IEnumerable<Classes.Object> secondLevel;
         List<Classes.Object> newlist = new List<Classes.Object>();
@@ -46,7 +46,14 @@ namespace POS.View.windows
         int firstId = 0, secondId = 0;
         private void Btn_colse_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            try
+            {
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this, sender);
+            }
         }
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
@@ -71,9 +78,8 @@ namespace POS.View.windows
 
                 translate();
                 #endregion
-
-                objects = await _object.GetAll();
-                cb_secondLevel.IsEnabled = false;
+                await RefreshObjects();
+                cb_secondLevel.IsEnabled = false; 
 
                 fillFirstLevel();
 
@@ -88,6 +94,25 @@ namespace POS.View.windows
                     SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
+        }
+        async Task RefreshObjects()
+        {
+            var objectsLst = await _object.GetAll();
+            if (!SectionData.isAdminPermision())
+            {
+                var list = new List<Classes.Object>();
+                foreach (var obj in objectsLst)
+                {
+                    if (MainWindow.groupObject.HasPermission(obj.name, MainWindow.groupObjects))
+                    {
+                        list.Add(obj);
+                    }
+                }
+                objects = list;
+            }
+            else
+                objects = objectsLst;
+
         }
 
         private async Task getUserPath()
@@ -127,7 +152,6 @@ namespace POS.View.windows
             }
             catch { cb_firstLevel.SelectedIndex = -1; }
            
-            //MessageBox.Show(firstUserSetValue.note+ "-"+ secondUserSetValue.note);
             #endregion
 
         }
@@ -313,7 +337,6 @@ namespace POS.View.windows
                         MainWindow.secondPath = second;
                        // MainWindow.first = res1;
 //MainWindow.second = res2;
-                        //MessageBox.Show(res1+"-"+res2);
                         await Task.Delay(1500);
                         this.Close();
                     }
@@ -330,7 +353,6 @@ namespace POS.View.windows
                     SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this, sender);
             }
-            //MessageBox.Show($"First: {objects.Where(x => x.objectId == (int)cb_firstLevel.SelectedValue).FirstOrDefault().name}\n"
             //+ $"Second: {objects.Where(x => x.objectId == (int)cb_secondLevel.SelectedValue).FirstOrDefault().name}");
 
         }

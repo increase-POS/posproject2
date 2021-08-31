@@ -233,7 +233,6 @@ namespace POS.View.windows
                 int itemIndex = orderList.ToList().FindIndex(i => i.itemUnitId == row.itemUnitId);
                 if (cb != null)
                 {                  
-                    //MessageBox.Show(cb.IsChecked.ToString());
                     if (cb.IsChecked == true)
                     {                        
                         TextBlock tb = dg_itemsStorage.Columns[2].GetCellContent(dg_itemsStorage.Items[index]) as TextBlock;

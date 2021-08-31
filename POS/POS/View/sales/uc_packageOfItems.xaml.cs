@@ -1138,8 +1138,8 @@ namespace POS.View
                         SectionData.validateEmptyTextBox((TextBox)sender, p_errorCode, tt_errorCode, "trEmptyCodeToolTip");
                     else if ((sender as TextBox).Name == "tb_name")
                         SectionData.validateEmptyTextBox((TextBox)sender, p_errorName, tt_errorName, "trEmptyNameToolTip");
-                    else if ((sender as TextBox).Name == "tb_taxes")
-                        SectionData.validateEmptyTextBox((TextBox)sender, p_errorTaxes, tt_errorTaxes, "trEmptyTax");
+                    //else if ((sender as TextBox).Name == "tb_taxes")
+                    //    SectionData.validateEmptyTextBox((TextBox)sender, p_errorTaxes, tt_errorTaxes, "trEmptyTax");
                     else if ((sender as TextBox).Name == "tb_price")
                         SectionData.validateEmptyTextBox((TextBox)sender, p_errorPrice, tt_errorPrice, "trEmptyPrice");
                 }
@@ -1190,7 +1190,7 @@ namespace POS.View
         }
         int unitpackageId = 0;
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
-        {
+        {//add
             try
             {
                 if (sender != null)
@@ -1211,7 +1211,8 @@ namespace POS.View
                         price = decimal.Parse(tb_price.Text);
 
                     if ((!tb_code.Text.Equals("")) && (!tb_name.Text.Equals("")) && (!cb_categorie.Text.Equals("")) &&
-                        (!tb_taxes.Text.Equals("")) && (!tb_price.Text.Equals("")) &&
+                        //(!tb_taxes.Text.Equals("")) && 
+                        (!tb_price.Text.Equals("")) &&
                         codeAvailable)
                     {
                         //item record
@@ -1273,7 +1274,7 @@ namespace POS.View
             }
         }
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
-        {
+        {//update
             try
             {
                 if (sender != null)
@@ -1294,7 +1295,8 @@ namespace POS.View
                         price = decimal.Parse(tb_price.Text);
 
                     if ((!tb_code.Text.Equals("")) && (!tb_name.Text.Equals("")) && (!cb_categorie.Text.Equals("")) &&
-                        (!tb_taxes.Text.Equals("")) && (!tb_price.Text.Equals("")) &&
+                        //(!tb_taxes.Text.Equals("")) && 
+                        (!tb_price.Text.Equals("")) &&
                         codeAvailable)
                     {
                         item.code = tb_code.Text;
@@ -1477,7 +1479,7 @@ namespace POS.View
             //chk empty category
             SectionData.validateEmptyComboBox(cb_categorie, p_errorCategorie, tt_errorCategorie, "trErrorEmptyCategoryToolTip");
             //chk empty tax
-            SectionData.validateEmptyTextBox(tb_taxes, p_errorTaxes, tt_errorTaxes, "trEmptyTax");
+            //SectionData.validateEmptyTextBox(tb_taxes, p_errorTaxes, tt_errorTaxes, "trEmptyTax");
             //chk empty price
             SectionData.validateEmptyTextBox(tb_price, p_errorPrice, tt_errorPrice, "trEmptyPrice");
         }

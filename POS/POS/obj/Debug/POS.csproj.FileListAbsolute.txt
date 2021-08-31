@@ -2959,3 +2959,7 @@ E:\GitHub\posproject2\POS\POS\obj\Debug\View\reports\uc_saleOrders.baml
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\reports\uc_salePromotion.baml
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\reports\uc_saleQuotation.baml
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\reports\uc_saleReportGeneral.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\reports\us_dailySalesStatistic.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\reports\us_dailySalesStatistic.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\Settings\us_emailGeneral.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\Settings\us_emailGeneral.baml

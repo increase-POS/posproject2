@@ -564,7 +564,6 @@ namespace POS.View.windows
                         setVName.isDefault = 1;
                         setVName.settingId = nameId;
                         string sName = await valueModel.Save(setVName);
-                        //MessageBox.Show("name : " + sName);
                         if (!sName.Equals("0"))
                             MainWindow.companyName = tb_name.Text;
                     }
@@ -576,7 +575,6 @@ namespace POS.View.windows
                         setVAddress.isDefault = 1;
                         setVAddress.settingId = addressId;
                         string sAddress = await valueModel.Save(setVAddress);
-                        //MessageBox.Show("address : " + sAddress);
                         if (!sAddress.Equals("0"))
                             MainWindow.Address = tb_address.Text;
                     }
@@ -588,7 +586,6 @@ namespace POS.View.windows
                         setVEmail.settingId = emailId;
                         setVEmail.isDefault = 1;
                         string sEmail = await valueModel.Save(setVEmail);
-                        //MessageBox.Show("email : " + sEmail);
                         if (!sEmail.Equals("0"))
                             MainWindow.Email = tb_email.Text;
                     }
@@ -600,7 +597,6 @@ namespace POS.View.windows
                         setVMobile.isDefault = 1;
                         setVMobile.settingId = mobileId;
                         string sMobile = await valueModel.Save(setVMobile);
-                        //MessageBox.Show("mobile : " + sMobile);
                         if (!sMobile.Equals("0"))
                             MainWindow.Mobile = cb_areaMobile.Text + tb_mobile.Text;
                     }
@@ -612,7 +608,6 @@ namespace POS.View.windows
                         setVPhone.isDefault = 1;
                         setVPhone.settingId = phoneId;
                         string sPhone = await valueModel.Save(setVPhone);
-                        //MessageBox.Show("phone : " + sPhone);
                         if (!sPhone.Equals(""))
                             MainWindow.Phone = cb_areaPhone.Text + cb_areaPhoneLocal.Text + tb_phone.Text;
                     }
@@ -624,7 +619,6 @@ namespace POS.View.windows
                         setVFax.isDefault = 1;
                         setVFax.settingId = faxId;
                         string sFax = await valueModel.Save(setVFax);
-                        //MessageBox.Show("fax : " + sFax);
                         if (!sFax.Equals(""))
                             MainWindow.Fax = cb_areaFax.Text + cb_areaFaxLocal.Text + tb_fax.Text;
 
@@ -641,7 +635,6 @@ namespace POS.View.windows
                         setVLogo.isDefault = 1;
                         setVLogo.settingId = logoId;
                         sLogo = await valueModel.Save(setVLogo);
-                        //MessageBox.Show("logo : " + sLogo);
                         if (!sLogo.Equals(""))
                         {
                             MainWindow.logoImage = setVLogo.value;

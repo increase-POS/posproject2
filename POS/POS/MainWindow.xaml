@@ -11,7 +11,6 @@
      WindowStartupLocation="CenterScreen"  WindowStyle="None"
     WindowState="Maximized"  Loaded="Window_Loaded" Closing="Window_Closing">
     <Window.Resources>
-
         <Storyboard x:Key="Storyboard1">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)" Storyboard.TargetName="rectangle">
                 <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
@@ -686,7 +685,7 @@
             <Grid  Grid.Row="2" Grid.Column="0"   Grid.ColumnSpan="2"
               Background="#178DD2"  />
         </Grid>
-        <Border x:Name="bdrMain" Visibility="Collapsed" VerticalAlignment="Top" Height="auto" Width="auto" Margin="0,70,150,70" HorizontalAlignment="Right" >
+        <Border x:Name="bdrMain" Visibility="Collapsed" VerticalAlignment="Top" Height="auto" Width="auto" Margin="0,70,125,70" HorizontalAlignment="Right" >
             <Grid>
                 <Border x:Name="bdr_shadow" Background="White" CornerRadius="10"  Height="450" Width="250">
 

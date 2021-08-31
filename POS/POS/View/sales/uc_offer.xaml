@@ -139,7 +139,7 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn Width="*"  Header="Value" Binding="{Binding Path=name}">
+                        <DataGridTextColumn Width="*"  Header="Value" Binding="{Binding Path=discountValue}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Style.Triggers>
@@ -150,7 +150,7 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn Width="*"  Header="Start date" Binding="{Binding Path=name,Converter={StaticResource dateFrameConverter}}">
+                        <DataGridTextColumn Width="*"  Header="Start date" Binding="{Binding Path=startDate,Converter={StaticResource dateFrameConverter}}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Style.Triggers>
@@ -161,7 +161,7 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn Width="*"  Header="End date" Binding="{Binding Path=name,Converter={StaticResource dateFrameConverter}}">
+                        <DataGridTextColumn Width="*"  Header="End date" Binding="{Binding Path=endDate,Converter={StaticResource dateFrameConverter}}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Style.Triggers>
@@ -436,13 +436,13 @@
                                              TextChanged="Tb_validateEmptyTextChange" 
                                              LostFocus="Tb_validateEmptyLostFocus"
                                              PreviewKeyDown="Tb_PreventSpaces">
-                            <TextBox.ToolTip>
+                            <!--<TextBox.ToolTip>
                                 <ToolTip x:Name="tt_code" Content="Code"
                                                           Placement="left" 
                                                           HorizontalOffset="35"
                                                           PlacementRectangle="50,0,0,0"
                                                           VerticalOffset="20"/>
-                            </TextBox.ToolTip>
+                            </TextBox.ToolTip>-->
                         </TextBox>
 
                         <Path Fill="#E81123" Grid.Row="1" Stretch="Fill" Margin="5,5,15,5" x:Name="p_errorCode"
@@ -463,13 +463,13 @@
                                              Height="40"  Margin="10,5,10,5"
                                              TextChanged="Tb_validateEmptyTextChange" 
                                              LostFocus="Tb_validateEmptyLostFocus">
-                            <TextBox.ToolTip>
+                            <!--<TextBox.ToolTip>
                                 <ToolTip x:Name="tt_name" Content="Name"
                                                           Placement="left" 
                                                           HorizontalOffset="35"
                                                           PlacementRectangle="50,0,0,0"
                                                           VerticalOffset="20"/>
-                            </TextBox.ToolTip>
+                            </TextBox.ToolTip>-->
                         </TextBox>
 
                         <Path Fill="#E81123" Grid.Row="2" Stretch="Fill" Margin="5,5,15,5" x:Name="p_errorName"
@@ -521,13 +521,13 @@
                                               FontFamily="Segoe UI"   
                               
                                               LostFocus="Tb_validateEmptyLostFocus">
-                                <ComboBox.ToolTip>
+                                <!--<ComboBox.ToolTip>
                                     <ToolTip x:Name="tt_discountType" Content="Discount Type"
                                                           Placement="left" 
                                                           HorizontalOffset="35"
                                                           PlacementRectangle="50,0,0,0"
                                                           VerticalOffset="20"/>
-                                </ComboBox.ToolTip>
+                                </ComboBox.ToolTip>-->
                             </ComboBox>
 
                             <Path x:Name="p_errorDiscountType"  
@@ -557,13 +557,13 @@
                                                       PreviewKeyDown="Tb_PreventSpaces" 
                                                       PreviewTextInput="Tb_discountValue_PreviewTextInput" 
                                                        LostFocus="Tb_validateEmptyLostFocus">
-                                        <TextBox.ToolTip>
+                                        <!--<TextBox.ToolTip>
                                             <ToolTip x:Name="tt_discountValue" Content="Discount Value"
                                                           Placement="left" 
                                                           HorizontalOffset="35"
                                                           PlacementRectangle="50,0,0,0"
                                                           VerticalOffset="20"/>
-                                        </TextBox.ToolTip>
+                                        </TextBox.ToolTip>-->
                                     </TextBox>
 
                                     <Path x:Name="p_errorDiscountValue"
@@ -609,13 +609,13 @@
                                         <Setter Property="IsReadOnly" Value="True"/>
                                     </Style>
                                 </DatePicker.Resources>
-                                <DatePicker.ToolTip>
+                                <!--<DatePicker.ToolTip>
                                     <ToolTip x:Name="tt_startDate" Content="Start Date"
                                                           Placement="left" 
                                                           HorizontalOffset="35"
                                                           PlacementRectangle="50,0,0,0"
                                                           VerticalOffset="20"/>
-                                </DatePicker.ToolTip>
+                                </DatePicker.ToolTip>-->
                             </DatePicker>
                             <Path x:Name="p_errorStartDate" Grid.Column="0"
                                             Fill="#E81123" Stretch="Fill" Margin="5,5,20,5"
@@ -643,13 +643,13 @@
                                         <Setter Property="IsReadOnly" Value="false"/>
                                     </Style>
                                 </DatePicker.Resources>
-                                <DatePicker.ToolTip>
+                                <!--<DatePicker.ToolTip>
                                     <ToolTip x:Name="tt_endDate" Content="End Date"
                                                           Placement="left" 
                                                           HorizontalOffset="35"
                                                           PlacementRectangle="50,0,0,0"
                                                           VerticalOffset="20"/>
-                                </DatePicker.ToolTip>
+                                </DatePicker.ToolTip>-->
                             </DatePicker>
                             <Path x:Name="p_errorEndDate" 
                                                   Fill="#E81123" Stretch="Fill" Margin="5,5,30,5"
@@ -710,7 +710,7 @@
                                                                         materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                                                         materialDesign:HintAssist.Hint="End time..."  
                                                                         Foreground="#4E4E4E"  TextBlock.FontSize="12"  Background="#f8f8f8"
-                                                                    
+                                                                        
                                                                         Grid.Column="1"  Height="40"  Margin="5,5,10,5" 
                                                                         LostFocus="Tb_validateEmptyLostFocus">
                                 <materialDesign:TimePicker.ToolTip>
@@ -740,13 +740,13 @@
                                  BorderBrush="#f8f8f8"
                             
                             Grid.Column="1"  Height="70"    Margin="10,5,10,5"  TextWrapping="Wrap">
-                            <TextBox.ToolTip>
+                            <!--<TextBox.ToolTip>
                                 <ToolTip x:Name="tt_notes" Content="Notes"
                                                          Placement="left" 
                                                          HorizontalOffset="35"
                                                          PlacementRectangle="50,0,0,0"
                                                          VerticalOffset="20"/>
-                            </TextBox.ToolTip>
+                            </TextBox.ToolTip>-->
                         </TextBox>
                         <Path Fill="#E81123" Grid.Row="8" Stretch="Fill" Margin="5,5,15,5"
                                   HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   

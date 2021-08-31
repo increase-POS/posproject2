@@ -145,7 +145,6 @@ namespace POS.View.Settings
                     //cb_currency.SelectedValue = region.name;
                     //int index = cb_currency.Items.IndexOf(region.currency.Trim());
                     //cb_currency.SelectedIndex = 0;
-                    //MessageBox.Show(region.currency);
                     //cb_currency.Text = region.currency;
                     tb_currency.Text = region.currency;
                 }

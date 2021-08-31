@@ -506,12 +506,10 @@ namespace POS.View.windows
                 {
                     case Key.P:
                         //handle D key
-                        //MessageBox.Show("You want Print");
                         Btn_print_Click(null, null);
                         break;
                     case Key.S:
                         //handle X key
-                        //MessageBox.Show("You want Save");
                         Btn_save_Click(null, null);
                         break;
                 }
