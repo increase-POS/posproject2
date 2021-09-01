@@ -156,7 +156,7 @@ namespace POS.View.windows
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void translate()
@@ -187,7 +187,7 @@ namespace POS.View.windows
                     SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex,this,sender); }
+            { SectionData.ExceptionMessage(ex, this); }
         }
    
         private void tb_mobile_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -252,7 +252,7 @@ namespace POS.View.windows
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -291,7 +291,7 @@ namespace POS.View.windows
             }
             catch(Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void Img_customer_Click(object sender, RoutedEventArgs e)
@@ -316,7 +316,7 @@ namespace POS.View.windows
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void Tb_email_PreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -384,7 +384,7 @@ namespace POS.View.windows
                 validateEmpty(name, sender);
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex,this,sender); }
+            { SectionData.ExceptionMessage(ex, this); }
         }
 
         private void Tb_validateEmptyTextChange(object sender, TextChangedEventArgs e)
@@ -395,7 +395,7 @@ namespace POS.View.windows
                 validateEmpty(name, sender);
             }
             catch(Exception ex)
-            { SectionData.ExceptionMessage(ex,this,sender); }
+            { SectionData.ExceptionMessage(ex, this); }
         }
 
         private void validateEmpty(string name, object sender)
@@ -433,7 +433,7 @@ namespace POS.View.windows
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
@@ -450,7 +450,7 @@ namespace POS.View.windows
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -477,7 +477,7 @@ namespace POS.View.windows
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private bool validateEmail(TextBox tb, System.Windows.Shapes.Path p_error, ToolTip tt_error)
@@ -660,7 +660,7 @@ namespace POS.View.windows
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 

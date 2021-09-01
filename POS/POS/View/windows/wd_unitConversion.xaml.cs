@@ -58,7 +58,7 @@ namespace POS.View.windows
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private async Task fillParentItemCombo()
@@ -152,7 +152,7 @@ namespace POS.View.windows
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -165,7 +165,7 @@ namespace POS.View.windows
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void validateEmpty(string name, object sender)
@@ -187,7 +187,7 @@ namespace POS.View.windows
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -201,7 +201,7 @@ namespace POS.View.windows
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -223,7 +223,7 @@ namespace POS.View.windows
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private async Task<bool> validateInputs()
@@ -302,7 +302,7 @@ namespace POS.View.windows
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void Btn_colse_Click(object sender, RoutedEventArgs e)
@@ -318,7 +318,7 @@ namespace POS.View.windows
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private async void Window_Loaded(object sender, RoutedEventArgs e)
@@ -347,7 +347,7 @@ namespace POS.View.windows
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void translate()
@@ -406,7 +406,7 @@ namespace POS.View.windows
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -437,7 +437,7 @@ namespace POS.View.windows
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -456,7 +456,7 @@ namespace POS.View.windows
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void checkLocationQuantity()
@@ -490,7 +490,7 @@ namespace POS.View.windows
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
     }

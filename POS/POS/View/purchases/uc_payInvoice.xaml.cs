@@ -120,7 +120,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void translate()
@@ -203,7 +203,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         public async void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -234,13 +234,13 @@ namespace POS.View
 
                 translate();
                 catigoriesAndItemsView.ucPayInvoice = this;
+                setTimer();
                 await RefrishItems();
                 configureDiscountType();
                 await SectionData.fillBranches(cb_branch, "bs");
                 await RefrishVendors();
                 await fillBarcodeList();
                 await setNotifications();
-                setTimer();
                 #region Style Date
                 SectionData.defaultDatePickerStyle(dp_desrvedDate);
                 SectionData.defaultDatePickerStyle(dp_invoiceDate);
@@ -257,7 +257,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void configureDiscountType()
@@ -336,7 +336,7 @@ namespace POS.View
             {
 				if (sender != null)
 				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this, sender);
+				SectionData.ExceptionMessage(ex,this);
         }
     }
         #endregion
@@ -362,7 +362,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                 SectionData.ExceptionMessage(ex, this, sendert);
+                 SectionData.ExceptionMessage(ex, this);
             }
         }
         #endregion
@@ -482,7 +482,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         #region Categor and Item
@@ -581,7 +581,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void space_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -595,7 +595,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -626,7 +626,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         #endregion
@@ -746,7 +746,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void validateInvoiceValues()
@@ -868,7 +868,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -909,7 +909,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void clearInvoice()
@@ -998,7 +998,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private async void Btn_invoices_Click(object sender, RoutedEventArgs e)
@@ -1045,7 +1045,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private async void Btn_purchaseOrder_Click(object sender, RoutedEventArgs e)
@@ -1090,7 +1090,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         public async Task fillInvoiceInputs(Invoice invoice)
@@ -1165,7 +1165,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -1302,7 +1302,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -1340,7 +1340,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
  
@@ -1362,7 +1362,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void Cb_vendor_KeyUp(object sender, KeyEventArgs e)
@@ -1374,7 +1374,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void Cb_vendor_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -1394,7 +1394,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void Tb_textBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -1406,7 +1406,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void Cb_typeDiscount_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -1428,7 +1428,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void tb_discount_TextChanged(object sender, TextChangedEventArgs e)
@@ -1448,7 +1448,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void refreshTotalValue()
@@ -1579,7 +1579,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private async Task dealWithBarcode(string barcode)
@@ -1696,7 +1696,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -1734,7 +1734,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void Cbm_unitItemDetails_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -1749,7 +1749,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -1790,7 +1790,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -1877,7 +1877,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -1898,7 +1898,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void moveControlToBarcode(object sender, KeyEventArgs e)
@@ -1922,7 +1922,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -2003,7 +2003,7 @@ namespace POS.View
             {
 				if (sender != null)
 				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this, sender);
+				SectionData.ExceptionMessage(ex,this);
         }
     }
         private async void btn_printInvoice_Click(object sender, RoutedEventArgs e)
@@ -2073,7 +2073,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
 
         }
@@ -2184,7 +2184,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -2220,7 +2220,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -2239,7 +2239,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -2253,7 +2253,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -2288,7 +2288,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 

@@ -99,7 +99,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -115,7 +115,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -145,7 +145,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         public bool stopPermission;
@@ -199,7 +199,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -215,7 +215,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -231,7 +231,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -247,7 +247,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -263,7 +263,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -279,7 +279,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -295,7 +295,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private async void Ex_Expanded(object sender, RoutedEventArgs e)
@@ -307,7 +307,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -320,7 +320,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 

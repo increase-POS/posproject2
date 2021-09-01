@@ -127,7 +127,7 @@ namespace POS.View.Settings
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
 
         }
@@ -141,7 +141,7 @@ namespace POS.View.Settings
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -203,7 +203,7 @@ namespace POS.View.Settings
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
 
         }
@@ -264,7 +264,7 @@ namespace POS.View.Settings
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
 
         }
@@ -283,7 +283,7 @@ namespace POS.View.Settings
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void validationTextbox_TextChanged(object sender, TextChangedEventArgs e)
@@ -301,7 +301,7 @@ namespace POS.View.Settings
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         void handleSpace_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -314,7 +314,7 @@ namespace POS.View.Settings
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private   void Tgl_isActive_Checked(object sender, RoutedEventArgs e)
@@ -334,7 +334,7 @@ namespace POS.View.Settings
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
 
         }
@@ -355,7 +355,7 @@ namespace POS.View.Settings
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
 
         }
@@ -390,7 +390,7 @@ namespace POS.View.Settings
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
 
         }
@@ -411,7 +411,7 @@ namespace POS.View.Settings
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
 
         }

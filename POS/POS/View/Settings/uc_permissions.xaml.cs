@@ -150,7 +150,7 @@ namespace POS.View.Settings
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -163,7 +163,7 @@ namespace POS.View.Settings
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
@@ -179,7 +179,7 @@ namespace POS.View.Settings
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         bool validate(Group group = null)
@@ -233,7 +233,7 @@ namespace POS.View.Settings
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -323,7 +323,7 @@ namespace POS.View.Settings
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private async void Btn_refresh_Click(object sender, RoutedEventArgs e)
@@ -341,7 +341,7 @@ namespace POS.View.Settings
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         async Task<IEnumerable<GroupObject>> RefreshGroupObjectList()
@@ -398,7 +398,7 @@ namespace POS.View.Settings
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -473,7 +473,7 @@ namespace POS.View.Settings
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -547,7 +547,7 @@ namespace POS.View.Settings
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
             private void validationControl_LostFocus(object sender, RoutedEventArgs e)
@@ -561,7 +561,7 @@ namespace POS.View.Settings
                 }
                 catch (Exception ex)
                 {
-                    SectionData.ExceptionMessage(ex, this, sender);
+                    SectionData.ExceptionMessage(ex, this);
                 }
             }
             private void validationTextbox_TextChanged(object sender, TextChangedEventArgs e)
@@ -575,7 +575,7 @@ namespace POS.View.Settings
                 }
                 catch (Exception ex)
                 {
-                    SectionData.ExceptionMessage(ex, this, sender);
+                    SectionData.ExceptionMessage(ex, this);
                 }
             }
             void handleSpace_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -588,7 +588,7 @@ namespace POS.View.Settings
                 }
                 catch (Exception ex)
                 {
-                    SectionData.ExceptionMessage(ex, this, sender);
+                    SectionData.ExceptionMessage(ex, this);
                 }
             }
             private async void Tgl_isActive_Checked(object sender, RoutedEventArgs e)
@@ -608,7 +608,7 @@ namespace POS.View.Settings
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
             private async void Tgl_isActive_Unchecked(object sender, RoutedEventArgs e)
@@ -628,7 +628,7 @@ namespace POS.View.Settings
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
             async Task<IEnumerable<Group>> RefreshGroupList()
@@ -665,7 +665,7 @@ namespace POS.View.Settings
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -692,7 +692,7 @@ namespace POS.View.Settings
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
             private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
@@ -714,7 +714,7 @@ t1.Start();
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
             void FN_ExportToExcel()
@@ -753,7 +753,7 @@ t1.Start();
                 }
                 catch (Exception ex)
                 {
-                    SectionData.ExceptionMessage(ex, this, sender);
+                    SectionData.ExceptionMessage(ex, this);
                 }
             }
             private void Tb_textBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -764,7 +764,7 @@ t1.Start();
                 }
                 catch (Exception ex)
                 {
-                    SectionData.ExceptionMessage(ex, this, sender);
+                    SectionData.ExceptionMessage(ex, this);
                 }
             }
 
@@ -797,7 +797,7 @@ t1.Start();
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -833,7 +833,7 @@ t1.Start();
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -872,7 +872,7 @@ t1.Start();
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -1120,7 +1120,7 @@ t1.Start();
                 }
                 catch (Exception ex)
                 {
-                    SectionData.ExceptionMessage(ex, this, sender);
+                    SectionData.ExceptionMessage(ex, this);
                 }
             }
             private void btn_catalog_Click(object sender, RoutedEventArgs e)
@@ -1139,7 +1139,7 @@ t1.Start();
                 }
                 catch (Exception ex)
                 {
-                    SectionData.ExceptionMessage(ex, this, sender);
+                    SectionData.ExceptionMessage(ex, this);
                 }
             }
             private void btn_store_Click(object sender, RoutedEventArgs e)
@@ -1156,7 +1156,7 @@ t1.Start();
                 }
                 catch (Exception ex)
                 {
-                    SectionData.ExceptionMessage(ex, this, sender);
+                    SectionData.ExceptionMessage(ex, this);
                 }
             }
             private void btn_sale_Click(object sender, RoutedEventArgs e)
@@ -1173,7 +1173,7 @@ t1.Start();
                 }
                 catch (Exception ex)
                 {
-                    SectionData.ExceptionMessage(ex, this, sender);
+                    SectionData.ExceptionMessage(ex, this);
                 }
             }
             private void btn_purchase_Click(object sender, RoutedEventArgs e)
@@ -1190,7 +1190,7 @@ t1.Start();
                 }
                 catch (Exception ex)
                 {
-                    SectionData.ExceptionMessage(ex, this, sender);
+                    SectionData.ExceptionMessage(ex, this);
                 }
             }
             private void btn_account_Click(object sender, RoutedEventArgs e)
@@ -1207,7 +1207,7 @@ t1.Start();
                 }
                 catch (Exception ex)
                 {
-                    SectionData.ExceptionMessage(ex, this, sender);
+                    SectionData.ExceptionMessage(ex, this);
                 }
             }
             private void btn_charts_Click(object sender, RoutedEventArgs e)
@@ -1224,7 +1224,7 @@ t1.Start();
                 }
                 catch (Exception ex)
                 {
-                    SectionData.ExceptionMessage(ex, this, sender);
+                    SectionData.ExceptionMessage(ex, this);
                 }
             }
             private void btn_data_Click(object sender, RoutedEventArgs e)
@@ -1241,7 +1241,7 @@ t1.Start();
                 }
                 catch (Exception ex)
                 {
-                    SectionData.ExceptionMessage(ex, this, sender);
+                    SectionData.ExceptionMessage(ex, this);
                 }
             }
             private void btn_settings_Click(object sender, RoutedEventArgs e)
@@ -1258,7 +1258,7 @@ t1.Start();
                 }
                 catch (Exception ex)
                 {
-                    SectionData.ExceptionMessage(ex, this, sender);
+                    SectionData.ExceptionMessage(ex, this);
                 }
             }
         private void Btn_alerts_Click(object sender, RoutedEventArgs e)
@@ -1275,7 +1275,7 @@ t1.Start();
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         public void paint()
@@ -1326,7 +1326,7 @@ t1.Start();
                 }
                 catch (Exception ex)
                 {
-                    SectionData.ExceptionMessage(ex, this, sender);
+                    SectionData.ExceptionMessage(ex, this);
                 }
             }
 

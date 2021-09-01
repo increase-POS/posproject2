@@ -1,0 +1,140 @@
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate stub for LiveCharts.AxisOrientation: type is a value type.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate stub for LiveCharts.AxisPosition: type is a value type.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate stub for LiveCharts.AxisWindows: type is sealed.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate stub for LiveCharts.BarLabelPosition: type is a value type.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate stub for LiveCharts.ChartFunctions: type is sealed.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate stub for LiveCharts.ConfigWrapper: type is not visible to exported or assembly(LiveCharts.0.9.7.0.Fakes).
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate stub for LiveCharts.Configurations.Mappers: type is sealed.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate stub for LiveCharts.FinancialDelegate: type is sealed.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate stub for LiveCharts.DateAxisWindows: type is sealed.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate stub for LiveCharts.Defaults.AxisLimits: type is sealed.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate stub for LiveCharts.Dtos.CoreColor: type is a value type.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate stub for LiveCharts.Dtos.CoreGradientStop: type is a value type.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate stub for LiveCharts.Dtos.CoreLimit: type is a value type.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate stub for LiveCharts.Dtos.CorePoint: type is a value type.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate stub for LiveCharts.Dtos.CoreSize: type is a value type.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate stub for LiveCharts.Dtos.LabelEvaluation: type is a value type.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate stub for LiveCharts.Dtos.StackedSum: type is a value type.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate stub for LiveCharts.Dtos.TooltipDataViewModel: type is a value type.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate stub for LiveCharts.Events.DataClickHandler: type is sealed.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate stub for LiveCharts.Events.DataHoverHandler: type is sealed.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate stub for LiveCharts.Events.UpdaterTickHandler: type is sealed.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate stub for LiveCharts.Events.RangeChangedHandler: type is sealed.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate stub for LiveCharts.Events.PreviewRangeChangedHandler: type is sealed.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate stub for LiveCharts.Helpers.Extentions: type is sealed.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate stub for LiveCharts.Helpers.NoisyCollectionCollectionChanged`1: type is sealed.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate stub for LiveCharts.Helpers.PeriodUnits: type is a value type.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate stub for LiveCharts.IObservableChartPoint: type is obsolete.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate stub for LiveCharts.LegendLocation: type is a value type.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate stub for LiveCharts.PanningOptions: type is a value type.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate stub for LiveCharts.PieLabelPosition: type is a value type.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate stub for LiveCharts.ScrollMode: type is a value type.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate stub for LiveCharts.SeparationState: type is a value type.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate stub for LiveCharts.SeriesOrientation: type is a value type.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate stub for LiveCharts.StackMode: type is a value type.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate stub for LiveCharts.TooltipSelectionMode: type is a value type.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate stub for LiveCharts.UpdaterState: type is a value type.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate stub for LiveCharts.ZoomingOptions: type is a value type.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.AxisOrientation: type is an enum.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.AxisPosition: type is an enum.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.IAxisWindow: type is an interface.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.BarLabelPosition: type is an enum.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.ChartFunctions+<>c__DisplayClass12: type is not supported because of internal limitations.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.ChartFunctions+<>c__DisplayClass14: type is not supported because of internal limitations.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.ConfigWrapper: type is not visible to exported or assembly(LiveCharts.0.9.7.0.Fakes).
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Charts.ChartCore+<>c__DisplayClass3: type is not supported because of internal limitations.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Charts.ChartCore+<>c__DisplayClass6: type is not supported because of internal limitations.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Charts.ChartCore+<>c__DisplayClassf: type is not supported because of internal limitations.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Charts.CartesianChartCore+<>c__DisplayClass18: type is not supported because of internal limitations.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Charts.CartesianChartCore+<>c__DisplayClass1b: type is not supported because of internal limitations.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Helpers.INoisyCollection: type is an interface.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.IChartValues: type is an interface.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.ChartValues`1+<>c__DisplayClass28: type is not supported because of internal limitations.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.ChartValues`1+<GetPoints>d__12: type is not supported because of internal limitations.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Configurations.IPointEvaluator`1: type is an interface.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Configurations.CartesianMapper`1+<>c__DisplayClass1: type is not supported because of internal limitations.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Configurations.CartesianMapper`1+<>c__DisplayClass4: type is not supported because of internal limitations.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Configurations.CartesianMapper`1+<>c__DisplayClass7: type is not supported because of internal limitations.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Configurations.CartesianMapper`1+<>c__DisplayClassa: type is not supported because of internal limitations.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Configurations.FinancialMapper`1+<>c__DisplayClass1: type is not supported because of internal limitations.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Configurations.FinancialMapper`1+<>c__DisplayClass10: type is not supported because of internal limitations.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Configurations.FinancialMapper`1+<>c__DisplayClass4: type is not supported because of internal limitations.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Configurations.FinancialMapper`1+<>c__DisplayClass7: type is not supported because of internal limitations.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Configurations.FinancialMapper`1+<>c__DisplayClassa: type is not supported because of internal limitations.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Configurations.FinancialMapper`1+<>c__DisplayClassd: type is not supported because of internal limitations.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Configurations.GanttMapper`1+<>c__DisplayClass1: type is not supported because of internal limitations.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Configurations.GanttMapper`1+<>c__DisplayClass10: type is not supported because of internal limitations.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Configurations.GanttMapper`1+<>c__DisplayClass4: type is not supported because of internal limitations.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Configurations.GanttMapper`1+<>c__DisplayClass7: type is not supported because of internal limitations.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Configurations.GanttMapper`1+<>c__DisplayClassa: type is not supported because of internal limitations.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Configurations.GanttMapper`1+<>c__DisplayClassd: type is not supported because of internal limitations.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Configurations.PieMapper`1+<>c__DisplayClass1: type is not supported because of internal limitations.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Configurations.PieMapper`1+<>c__DisplayClass4: type is not supported because of internal limitations.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Configurations.PieMapper`1+<>c__DisplayClass7: type is not supported because of internal limitations.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Configurations.PolarMapper`1+<>c__DisplayClass1: type is not supported because of internal limitations.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Configurations.PolarMapper`1+<>c__DisplayClass4: type is not supported because of internal limitations.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Configurations.PolarMapper`1+<>c__DisplayClass7: type is not supported because of internal limitations.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Configurations.PolarMapper`1+<>c__DisplayClassa: type is not supported because of internal limitations.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Configurations.WeightedMapper`1+<>c__DisplayClass1: type is not supported because of internal limitations.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Configurations.WeightedMapper`1+<>c__DisplayClass4: type is not supported because of internal limitations.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Configurations.WeightedMapper`1+<>c__DisplayClass7: type is not supported because of internal limitations.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Configurations.WeightedMapper`1+<>c__DisplayClassa: type is not supported because of internal limitations.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Configurations.WeightedMapper`1+<>c__DisplayClassd: type is not supported because of internal limitations.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Definitions.Charts.IAxisView: type is an interface.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Definitions.Charts.IWindowAxisView: type is an interface.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.FinancialDelegate: type is a delegate.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.DateAxisWindows+<GetDateAxisWindows>d__0: type is not supported because of internal limitations.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Defaults.AxisLimits: type is not visible to exported or assembly(LiveCharts.0.9.7.0.Fakes).
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Definitions.Charts.IAxisSectionView: type is an interface.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Definitions.Charts.IChartView: type is an interface.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Definitions.Charts.ICartesianChart: type is an interface.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Definitions.Charts.ICartesianVisualElement: type is an interface.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Definitions.Charts.IDateAxisView: type is an interface.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Definitions.Charts.ILogarithmicAxisView: type is an interface.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Definitions.Charts.IPieChart: type is an interface.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Definitions.Charts.ISeparatorElementView: type is an interface.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Definitions.Charts.ISeparatorView: type is an interface.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Definitions.Points.IChartPointView: type is an interface.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Definitions.Points.IBezierPointView: type is an interface.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Definitions.Points.IHeatPointView: type is an interface.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Definitions.Points.IOhlcPointView: type is an interface.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Definitions.Points.IPieSlicePointView: type is an interface.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Definitions.Points.IRectanglePointView: type is an interface.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Definitions.Points.IScatterPointView: type is an interface.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Definitions.Points.IStepPointView: type is an interface.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Definitions.Series.ICartesianSeries: type is an interface.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Definitions.Series.ISeriesView: type is an interface.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Definitions.Series.IColumnSeriesView: type is an interface.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Definitions.Series.IFinancialSeriesView: type is an interface.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Definitions.Series.IHeatSeriesView: type is an interface.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Definitions.Series.ILineSeriesView: type is an interface.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Definitions.Series.IPieSeries: type is an interface.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Definitions.Series.IPieSeriesView: type is an interface.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Definitions.Series.IAreaPoint: type is an interface.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Definitions.Series.IRowSeriesView: type is an interface.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Definitions.Series.IScatterSeriesView: type is an interface.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Definitions.Series.IStackModelableSeriesView: type is an interface.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Definitions.Series.IStackedAreaSeriesView: type is an interface.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Definitions.Series.IStackedColumnSeriesView: type is an interface.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Definitions.Series.IStackedRowSeriesView: type is an interface.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Definitions.Series.IVerticalStackedAreaSeriesView: type is an interface.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Dtos.StackedSum: type is not visible to exported or assembly(LiveCharts.0.9.7.0.Fakes).
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Events.DataClickHandler: type is a delegate.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Events.DataHoverHandler: type is a delegate.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Events.UpdaterTickHandler: type is a delegate.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Events.RangeChangedHandler: type is a delegate.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Events.PreviewRangeChangedHandler: type is a delegate.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Helpers.Extentions+<SplitEachNaN>d__0: type is not supported because of internal limitations.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Helpers.NoisyCollectionCollectionChanged`1: type is a delegate.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.Helpers.PeriodUnits: type is an enum.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.IObservableChartPoint: type is an interface.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.LegendLocation: type is an enum.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.PanningOptions: type is an enum.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.PieLabelPosition: type is an enum.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.ScrollMode: type is an enum.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.SeparationState: type is an enum.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.SeriesOrientation: type is an enum.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.StackMode: type is an enum.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.TooltipSelectionMode: type is an enum.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.UpdaterState: type is an enum.
+E:\GitHub\posproject2\POS\POS\Fakes\LiveCharts.fakes : warning : Cannot generate shim for LiveCharts.ZoomingOptions: type is an enum.

@@ -688,30 +688,10 @@ namespace POS.Classes
             }
         }
         
-        static async public void ExceptionMessage(Exception ex ,object window, object sender = null)
+        static async public void ExceptionMessage(Exception ex ,object window)
         {
             try
             {
-                string _window , _sender = "";
-
-            _window = window.GetType().Name;
-
-            if (sender != null)
-                if (sender.GetType().Name == "TextBox")
-                    _sender = (sender as TextBox).Name;
-                else if (sender.GetType().Name == "ComboBox")
-                    _sender = (sender as ComboBox).Name;
-                else if (sender.GetType().Name == "DatePicker")
-                    _sender = (sender as DatePicker).Name;
-                else if (sender.GetType().Name == "TimePicker")
-                    _sender = (sender as TimePicker).Name;
-                else if (sender.GetType().Name == "DataGrid")
-                    _sender = (sender as DataGrid).Name;
-                else if (sender.GetType().Name == "ToggleButton")
-                    _sender = (sender as ToggleButton).Name;
-                else
-                    _sender = sender.GetType().Name;
-
 
             //Message
             if (ex.HResult == -2146233088)
@@ -719,19 +699,18 @@ namespace POS.Classes
             else
                 Toaster.ShowError(window as Window, message: ex.HResult + " || " + ex.Message, animation: ToasterAnimation.FadeIn);
 
-
-
                 ErrorClass errorClass = new ErrorClass();
                 errorClass.num = ex.HResult.ToString();
                 errorClass.msg = ex.Message;
-                errorClass.windowName = _window;
-                errorClass.sender = _sender;
+                errorClass.stackTrace = ex.StackTrace;
+                errorClass.targetSite = ex.TargetSite.ToString();
                 errorClass.posId = MainWindow.posID;
                 errorClass.branchId = MainWindow.branchID;
                 errorClass.createUserId = MainWindow.userLogin.userId;
                 await errorClass.Save(errorClass);
+
             }
-            catch  
+            catch
             {
 
             }
@@ -798,12 +777,10 @@ namespace POS.Classes
 
             else return "-1";
         }
-
         static UserSetValues usMenuIsOpen = new UserSetValues();
         static UserSetValues usValueModel = new UserSetValues();
         static SetValues valueMedel = new SetValues();
         static List<SetValues> menuValues = new List<SetValues>();
-
         static public async Task<int> getOpenValueId()
         {
             menuValues = await valueMedel.GetAll();
@@ -841,8 +818,6 @@ namespace POS.Classes
 
             }
         }
-
-
         public static string translate(string str)
         {
             string _str = "";

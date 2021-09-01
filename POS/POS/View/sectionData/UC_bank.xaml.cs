@@ -220,7 +220,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -231,7 +231,7 @@ namespace POS.View
                 SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
             }
             catch (Exception ex)
-            { SectionData.ExceptionMessage(ex, this, sender); }
+            { SectionData.ExceptionMessage(ex, this); }
         }
 
         private void Tb_name_LostFocus(object sender, RoutedEventArgs e)
@@ -241,7 +241,7 @@ namespace POS.View
                 SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
             }
             catch (Exception ex)
-            { SectionData.ExceptionMessage(ex, this, sender); }
+            { SectionData.ExceptionMessage(ex, this); }
         }
 
         private void Tb_accNum_TextChanged(object sender, TextChangedEventArgs e)
@@ -251,7 +251,7 @@ namespace POS.View
                 SectionData.validateEmptyTextBox(tb_accNumber, p_errorAccNum, tt_errorAccNum, "trEmptyAccNumToolTip");
             }
             catch (Exception ex)
-            { SectionData.ExceptionMessage(ex, this, sender); }
+            { SectionData.ExceptionMessage(ex, this); }
         }
 
 
@@ -262,7 +262,7 @@ namespace POS.View
                 SectionData.validateEmptyTextBox(tb_accNumber, p_errorAccNum, tt_errorAccNum, "trEmptyAccNumToolTip");
             }
             catch (Exception ex)
-            { SectionData.ExceptionMessage(ex, this, sender); }
+            { SectionData.ExceptionMessage(ex, this); }
         }
 
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
@@ -307,7 +307,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -384,7 +384,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -461,7 +461,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -530,7 +530,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -616,7 +616,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -627,7 +627,7 @@ namespace POS.View
                 SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
             }
             catch (Exception ex)
-            { SectionData.ExceptionMessage(ex, this, sender); }
+            { SectionData.ExceptionMessage(ex, this); }
         }
 
         private void tb_mobile_TextChanged(object sender, TextChangedEventArgs e)
@@ -637,7 +637,7 @@ namespace POS.View
                 SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
             }
             catch (Exception ex)
-            { SectionData.ExceptionMessage(ex, this, sender); }
+            { SectionData.ExceptionMessage(ex, this); }
         }
 
         private void tb_phone_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -652,7 +652,7 @@ namespace POS.View
                 SectionData.validateEmptyTextBox(tb_phone, p_errorPhone, tt_errorPhone, "trEmptyPhoneToolTip");
             }
             catch (Exception ex)
-            { SectionData.ExceptionMessage(ex, this, sender); }
+            { SectionData.ExceptionMessage(ex, this); }
         }
 
         private void Tb_phone_LostFocus(object sender, RoutedEventArgs e)
@@ -662,7 +662,7 @@ namespace POS.View
                 SectionData.validateEmptyTextBox(tb_phone, p_errorPhone, tt_errorPhone, "trEmptyPhoneToolTip");
             }
             catch (Exception ex)
-            { SectionData.ExceptionMessage(ex, this, sender); }
+            { SectionData.ExceptionMessage(ex, this); }
         }
 
         private void Tb_mobile_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -718,7 +718,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -739,7 +739,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -785,7 +785,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -825,7 +825,7 @@ namespace POS.View
                 }
             }
             catch (Exception ex)
-            { SectionData.ExceptionMessage(ex, this, sender); }
+            { SectionData.ExceptionMessage(ex, this); }
         }
 
         private async void Btn_refresh_Click(object sender, RoutedEventArgs e)
@@ -850,7 +850,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -927,7 +927,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -979,7 +979,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -1023,7 +1023,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -1051,7 +1051,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 

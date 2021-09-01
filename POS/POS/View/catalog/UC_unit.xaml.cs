@@ -138,7 +138,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         List<int> ids = new List<int>();
@@ -180,7 +180,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void Tb_name_TextChanged(object sender, TextChangedEventArgs e)
@@ -202,7 +202,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void translate()
@@ -237,7 +237,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private  void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -268,7 +268,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void validateEmptyValues()
@@ -330,7 +330,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
@@ -394,7 +394,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private async Task activate()
@@ -457,7 +457,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         void refreshUnitsGrid()
@@ -492,7 +492,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private async void Btn_refresh_Click(object sender, RoutedEventArgs e)
@@ -515,7 +515,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private async void Tgl_isActive_Checked(object sender, RoutedEventArgs e)
@@ -536,7 +536,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private async void Tgl_isActive_Unchecked(object sender, RoutedEventArgs e)
@@ -557,7 +557,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
@@ -614,7 +614,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         void FN_ExportToExcel()

@@ -73,7 +73,6 @@
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-
             <Grid  Grid.Row="0" Grid.ColumnSpan="2" Background="#000000"  >
                 <Grid.ColumnDefinitions>
 
@@ -285,7 +284,6 @@
 
             </Grid>
             <Grid  Background="#E8E8E8" x:Name="grid_main" Grid.Row="1" Grid.Column="1"/>
-
             <Grid x:Name="grid" Width="75" HorizontalAlignment="Left" Grid.Row="1" Grid.Column="0"  
               Background="#178DD2" RenderTransformOrigin="0.5,0.5" >
                 <Grid.RenderTransform>

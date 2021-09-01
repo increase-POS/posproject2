@@ -203,7 +203,7 @@ namespace POS.View.accounts
             catch(Exception ex)
             {
                 SectionData.EndAwait(grid_ucBankAccounts);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -224,7 +224,7 @@ namespace POS.View.accounts
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_ucBankAccounts);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -245,7 +245,7 @@ namespace POS.View.accounts
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_ucBankAccounts);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -305,7 +305,7 @@ namespace POS.View.accounts
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_ucBankAccounts);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -340,7 +340,7 @@ namespace POS.View.accounts
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_ucBankAccounts);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -446,7 +446,7 @@ namespace POS.View.accounts
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_ucBankAccounts);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -509,7 +509,7 @@ namespace POS.View.accounts
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_ucBankAccounts);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -568,7 +568,7 @@ namespace POS.View.accounts
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_ucBankAccounts);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -618,7 +618,7 @@ namespace POS.View.accounts
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_ucBankAccounts);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -639,7 +639,7 @@ namespace POS.View.accounts
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_ucBankAccounts);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -695,7 +695,7 @@ namespace POS.View.accounts
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -708,7 +708,7 @@ namespace POS.View.accounts
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -726,7 +726,7 @@ namespace POS.View.accounts
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
 
         }
@@ -741,7 +741,7 @@ namespace POS.View.accounts
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -775,7 +775,7 @@ namespace POS.View.accounts
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -797,7 +797,7 @@ namespace POS.View.accounts
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -812,7 +812,7 @@ namespace POS.View.accounts
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -865,7 +865,7 @@ namespace POS.View.accounts
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_ucBankAccounts);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -904,7 +904,7 @@ namespace POS.View.accounts
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_ucBankAccounts);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 

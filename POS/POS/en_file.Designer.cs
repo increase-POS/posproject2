@@ -1690,6 +1690,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Accuracy of numbers cann&apos;t be empty.
+        /// </summary>
+        internal static string trEmptyAccuracy {
+            get {
+                return ResourceManager.GetString("trEmptyAccuracy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Address cann&apos;t be null.
         /// </summary>
         internal static string trEmptyAddress {

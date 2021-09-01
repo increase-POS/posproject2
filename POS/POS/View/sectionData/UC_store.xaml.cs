@@ -223,7 +223,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
 
         }
@@ -240,7 +240,7 @@ namespace POS.View
                 SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
             }
             catch (Exception ex)
-            { SectionData.ExceptionMessage(ex, this, sender); }
+            { SectionData.ExceptionMessage(ex, this); }
         }
         private void Tb_name_LostFocus(object sender, RoutedEventArgs e)
         {
@@ -249,7 +249,7 @@ namespace POS.View
                 SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
             }
             catch (Exception ex)
-            { SectionData.ExceptionMessage(ex, this, sender); }
+            { SectionData.ExceptionMessage(ex, this); }
         }
         private void Tb_email_LostFocus(object sender, RoutedEventArgs e)
         {
@@ -258,7 +258,7 @@ namespace POS.View
                 SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
             }
             catch (Exception ex)
-            { SectionData.ExceptionMessage(ex, this, sender); }
+            { SectionData.ExceptionMessage(ex, this); }
         }
 
         private void translate()
@@ -347,7 +347,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -433,7 +433,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         async Task AddFreeThone(int branchId)
@@ -562,7 +562,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -639,7 +639,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private async Task activate()
@@ -697,7 +697,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         async Task fillComboBranchParent()
@@ -735,7 +735,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -773,7 +773,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -794,7 +794,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -805,7 +805,7 @@ namespace POS.View
                 SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
             }
             catch (Exception ex)
-            { SectionData.ExceptionMessage(ex, this, sender); }
+            { SectionData.ExceptionMessage(ex, this); }
         }
 
         private void tb_mobile_LostFocus(object sender, RoutedEventArgs e)
@@ -815,7 +815,7 @@ namespace POS.View
                 SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
             }
             catch (Exception ex)
-            { SectionData.ExceptionMessage(ex, this, sender); }
+            { SectionData.ExceptionMessage(ex, this); }
         }
 
 
@@ -842,7 +842,7 @@ namespace POS.View
                 SectionData.validateEmptyTextBox(tb_code, p_errorCode, tt_errorCode, "trEmptyCodeToolTip");
             }
             catch (Exception ex)
-            { SectionData.ExceptionMessage(ex, this, sender); }
+            { SectionData.ExceptionMessage(ex, this); }
         }
 
         private void tb_code_TextChanged(object sender, TextChangedEventArgs e)
@@ -852,7 +852,7 @@ namespace POS.View
                 SectionData.validateEmptyTextBox(tb_code, p_errorCode, tt_errorCode, "trEmptyCodeToolTip");
             }
             catch (Exception ex)
-            { SectionData.ExceptionMessage(ex, this, sender); }
+            { SectionData.ExceptionMessage(ex, this); }
 
         }
 
@@ -863,7 +863,7 @@ namespace POS.View
                 SectionData.validateEmptyComboBox(cb_branch, p_errorBranch, tt_errorBranch, "trEmptyBranchToolTip");
             }
             catch (Exception ex)
-            { SectionData.ExceptionMessage(ex, this, sender); }
+            { SectionData.ExceptionMessage(ex, this); }
         }
 
         private async void Cb_areaPhone_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -908,7 +908,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -932,7 +932,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
@@ -989,7 +989,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -1067,7 +1067,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -1111,7 +1111,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void btn_pieChart_Click(object sender, RoutedEventArgs e)
@@ -1136,7 +1136,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void Tb_code_PreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -1190,7 +1190,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 

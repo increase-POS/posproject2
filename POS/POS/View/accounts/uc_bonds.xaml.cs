@@ -187,7 +187,7 @@ namespace POS.View.accounts
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_ucBonds);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -287,7 +287,7 @@ namespace POS.View.accounts
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_ucBonds);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -348,7 +348,7 @@ namespace POS.View.accounts
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_ucBonds);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -379,7 +379,7 @@ namespace POS.View.accounts
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_ucBonds);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -400,7 +400,7 @@ namespace POS.View.accounts
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_ucBonds);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void Tb_validateEmptyTextChange(object sender, TextChangedEventArgs e)
@@ -412,7 +412,7 @@ namespace POS.View.accounts
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -425,7 +425,7 @@ namespace POS.View.accounts
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
@@ -461,7 +461,7 @@ namespace POS.View.accounts
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void validateEmpty(string name, object sender)
@@ -531,7 +531,7 @@ namespace POS.View.accounts
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_ucBonds);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -580,7 +580,7 @@ namespace POS.View.accounts
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -661,7 +661,7 @@ namespace POS.View.accounts
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_ucBonds);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -684,7 +684,7 @@ namespace POS.View.accounts
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_ucBonds);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -708,7 +708,7 @@ namespace POS.View.accounts
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_ucBonds);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -803,7 +803,7 @@ namespace POS.View.accounts
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_ucBonds);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -882,7 +882,7 @@ namespace POS.View.accounts
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_ucBonds);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -968,7 +968,7 @@ namespace POS.View.accounts
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_ucBonds);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 

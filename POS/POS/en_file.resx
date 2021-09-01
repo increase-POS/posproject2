@@ -2383,4 +2383,7 @@ Please add Email in setting</value>
   <data name="trMustBeMoreThanZero" xml:space="preserve">
     <value>The count must be more than zero</value>
   </data>
+  <data name="trEmptyAccuracy" xml:space="preserve">
+    <value>Accuracy of numbers cann't be empty</value>
+  </data>
 </root>

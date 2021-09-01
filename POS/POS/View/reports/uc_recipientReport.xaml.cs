@@ -80,7 +80,7 @@ namespace POS.View.reports
             {
 				if (sender != null)
 				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+				SectionData.ExceptionMessage(ex, this);
             } }
         
         private void fillVendorCombo(IEnumerable<VendorCombo> list, ComboBox cb)
@@ -187,7 +187,7 @@ namespace POS.View.reports
             {
 				if (sender != null)
 				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+				SectionData.ExceptionMessage(ex, this);
             } }
 
         private void Cb_vendorPayType_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -205,7 +205,7 @@ namespace POS.View.reports
             {
 				if (sender != null)
 				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+				SectionData.ExceptionMessage(ex, this);
             }}
 
         private void Cb_vendorAccountant_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -223,7 +223,7 @@ namespace POS.View.reports
             {
 				if (sender != null)
 				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+				SectionData.ExceptionMessage(ex, this);
             } }
 
         private void Dp_vendorStartDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
@@ -241,7 +241,7 @@ namespace POS.View.reports
             {
 				if (sender != null)
 				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+				SectionData.ExceptionMessage(ex, this);
             } }
 
         private void Dp_vendorEndDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
@@ -259,7 +259,7 @@ namespace POS.View.reports
             {
 				if (sender != null)
 				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+				SectionData.ExceptionMessage(ex, this);
             } }
 
         private void Chk_allVendors_Checked(object sender, RoutedEventArgs e)
@@ -278,7 +278,7 @@ namespace POS.View.reports
             {
 				if (sender != null)
 				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+				SectionData.ExceptionMessage(ex, this);
             }  }
 
         private void Chk_allVendors_Unchecked(object sender, RoutedEventArgs e)
@@ -296,7 +296,7 @@ namespace POS.View.reports
             {
 				if (sender != null)
 				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+				SectionData.ExceptionMessage(ex, this);
             } }
 
         private void Chk_allVendorsPaymentType_Checked(object sender, RoutedEventArgs e)
@@ -315,7 +315,7 @@ namespace POS.View.reports
             {
 				if (sender != null)
 				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+				SectionData.ExceptionMessage(ex, this);
             }}
 
         private void Chk_allVendorsPaymentType_Unchecked(object sender, RoutedEventArgs e)
@@ -333,7 +333,7 @@ namespace POS.View.reports
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -353,7 +353,7 @@ namespace POS.View.reports
             {
 				if (sender != null)
 				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+				SectionData.ExceptionMessage(ex, this);
             } }
 
         private void Chk_allVendorsAccountant_Unchecked(object sender, RoutedEventArgs e)
@@ -371,7 +371,7 @@ namespace POS.View.reports
             {
 				if (sender != null)
 				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+				SectionData.ExceptionMessage(ex, this);
             } }
         /*Customer*/
         /*********************************************************************************/
@@ -390,7 +390,7 @@ namespace POS.View.reports
             {
 				if (sender != null)
 				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+				SectionData.ExceptionMessage(ex, this);
             } }
 
         private void Cb_customerPayType_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -408,7 +408,7 @@ namespace POS.View.reports
             {
 				if (sender != null)
 				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+				SectionData.ExceptionMessage(ex, this);
             }}
 
         private void Cb_customer_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -426,7 +426,7 @@ namespace POS.View.reports
             {
 				if (sender != null)
 				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+				SectionData.ExceptionMessage(ex, this);
             } }
 
         private void Dp_customerStartDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
@@ -444,7 +444,7 @@ namespace POS.View.reports
             {
 				if (sender != null)
 				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+				SectionData.ExceptionMessage(ex, this);
             } }
 
         private void Dp_customerEndDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
@@ -462,7 +462,7 @@ namespace POS.View.reports
             {
 				if (sender != null)
 				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+				SectionData.ExceptionMessage(ex, this);
             } }
 
         private void Chk_allCustomers_Checked(object sender, RoutedEventArgs e)
@@ -481,7 +481,7 @@ namespace POS.View.reports
             {
 				if (sender != null)
 				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+				SectionData.ExceptionMessage(ex, this);
             } }
 
         private void Chk_allCustomers_Unchecked(object sender, RoutedEventArgs e)
@@ -499,7 +499,7 @@ namespace POS.View.reports
             {
 				if (sender != null)
 				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+				SectionData.ExceptionMessage(ex, this);
             } }
 
         private void Chk_allCustomersPaymentType_Checked(object sender, RoutedEventArgs e)
@@ -518,7 +518,7 @@ namespace POS.View.reports
             {
 				if (sender != null)
 				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+				SectionData.ExceptionMessage(ex, this);
             } }
 
         private void Chk_allCustomersPaymentType_Unchecked(object sender, RoutedEventArgs e)
@@ -536,7 +536,7 @@ namespace POS.View.reports
             {
 				if (sender != null)
 				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+				SectionData.ExceptionMessage(ex, this);
             } }
 
         private void Chk_allCustomersAccountant_Checked(object sender, RoutedEventArgs e)
@@ -555,7 +555,7 @@ namespace POS.View.reports
             {
 				if (sender != null)
 				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+				SectionData.ExceptionMessage(ex, this);
             } }
 
         private void Chk_allCustomersAccountant_Unchecked(object sender, RoutedEventArgs e)
@@ -573,7 +573,7 @@ namespace POS.View.reports
             {
 				if (sender != null)
 				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+				SectionData.ExceptionMessage(ex, this);
             }}
 
         /*User*/
@@ -593,7 +593,7 @@ namespace POS.View.reports
             {
 				if (sender != null)
 				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+				SectionData.ExceptionMessage(ex, this);
             } }
 
         private void Cb_userPayType_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -611,7 +611,7 @@ namespace POS.View.reports
             {
 				if (sender != null)
 				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+				SectionData.ExceptionMessage(ex, this);
             } }
 
         private void Cb_userAccountant_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -629,7 +629,7 @@ namespace POS.View.reports
             {
 				if (sender != null)
 				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+				SectionData.ExceptionMessage(ex, this);
             }}
 
         private void Dp_userEndDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
@@ -647,7 +647,7 @@ namespace POS.View.reports
             {
 				if (sender != null)
 				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+				SectionData.ExceptionMessage(ex, this);
             } }
 
         private void Dp_userStartDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
@@ -665,7 +665,7 @@ namespace POS.View.reports
             {
 				if (sender != null)
 				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+				SectionData.ExceptionMessage(ex, this);
             }}
 
         private void Chk_allUsers_Checked(object sender, RoutedEventArgs e)
@@ -684,7 +684,7 @@ namespace POS.View.reports
             {
 				if (sender != null)
 				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+				SectionData.ExceptionMessage(ex, this);
             } }
 
         private void Chk_allUsers_Unchecked(object sender, RoutedEventArgs e)
@@ -702,7 +702,7 @@ namespace POS.View.reports
             {
 				if (sender != null)
 				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+				SectionData.ExceptionMessage(ex, this);
             } }
 
         private void Chk_allUsersPaymentType_Checked(object sender, RoutedEventArgs e)
@@ -721,7 +721,7 @@ namespace POS.View.reports
             {
 				if (sender != null)
 				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+				SectionData.ExceptionMessage(ex, this);
             }}
 
         private void Chk_allUsersPaymentType_Unchecked(object sender, RoutedEventArgs e)
@@ -739,7 +739,7 @@ namespace POS.View.reports
             {
 				if (sender != null)
 				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+				SectionData.ExceptionMessage(ex, this);
             }}
 
         private void Chk_allUsersAccountant_Checked(object sender, RoutedEventArgs e)
@@ -758,7 +758,7 @@ namespace POS.View.reports
             {
 				if (sender != null)
 				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+				SectionData.ExceptionMessage(ex, this);
             } }
 
         private void Chk_allUsersAccountant_Unchecked(object sender, RoutedEventArgs e)
@@ -776,7 +776,7 @@ namespace POS.View.reports
             {
 				if (sender != null)
 				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+				SectionData.ExceptionMessage(ex, this);
             }  }
         /*Shipping*/
         /*********************************************************************************/
@@ -795,7 +795,7 @@ namespace POS.View.reports
             {
 				if (sender != null)
 				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+				SectionData.ExceptionMessage(ex, this);
             } }
 
         private void Cb_shippingPayType_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -813,7 +813,7 @@ namespace POS.View.reports
             {
 				if (sender != null)
 				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+				SectionData.ExceptionMessage(ex, this);
             } }
 
         private void Cb_shippingAccountant_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -831,7 +831,7 @@ namespace POS.View.reports
             {
 				if (sender != null)
 				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+				SectionData.ExceptionMessage(ex, this);
             } }
 
         private void Dp_shippingStartDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
@@ -849,7 +849,7 @@ namespace POS.View.reports
             {
 				if (sender != null)
 				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+				SectionData.ExceptionMessage(ex, this);
             } }
 
         private void Dp_shippingEndDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
@@ -867,7 +867,7 @@ namespace POS.View.reports
             {
 				if (sender != null)
 				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+				SectionData.ExceptionMessage(ex, this);
             } }
 
         private void Chk_allShippings_Checked(object sender, RoutedEventArgs e)
@@ -886,7 +886,7 @@ namespace POS.View.reports
             {
 				if (sender != null)
 				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+				SectionData.ExceptionMessage(ex, this);
             } }
 
         private void Chk_allShippings_Unchecked(object sender, RoutedEventArgs e)
@@ -904,7 +904,7 @@ namespace POS.View.reports
             {
 				if (sender != null)
 				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+				SectionData.ExceptionMessage(ex, this);
             } }
 
         private void Chk_allShippingsPaymentType_Checked(object sender, RoutedEventArgs e)
@@ -923,7 +923,7 @@ namespace POS.View.reports
             {
 				if (sender != null)
 				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+				SectionData.ExceptionMessage(ex, this);
             } }
 
         private void Chk_allShippingsPaymentType_Unchecked(object sender, RoutedEventArgs e)
@@ -941,7 +941,7 @@ namespace POS.View.reports
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -961,7 +961,7 @@ namespace POS.View.reports
             {
 				if (sender != null)
 				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+				SectionData.ExceptionMessage(ex, this);
             } }
 
         private void Chk_allShippingsAccountant_Unchecked(object sender, RoutedEventArgs e)
@@ -979,7 +979,7 @@ namespace POS.View.reports
             {
 				if (sender != null)
 				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+				SectionData.ExceptionMessage(ex, this);
             }}
         /*********************************************************************/
 
@@ -1118,7 +1118,7 @@ namespace POS.View.reports
             {
 				if (sender != null)
 				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+				SectionData.ExceptionMessage(ex, this);
             }}
 
         private void Btn_customer_Click(object sender, RoutedEventArgs e)
@@ -1149,7 +1149,7 @@ namespace POS.View.reports
             {
 				if (sender != null)
 				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+				SectionData.ExceptionMessage(ex, this);
             } }
 
         private void Btn_user_Click(object sender, RoutedEventArgs e)
@@ -1180,7 +1180,7 @@ namespace POS.View.reports
             {
 				if (sender != null)
 				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+				SectionData.ExceptionMessage(ex, this);
             }  }
 
         private void Btn_shipping_Click(object sender, RoutedEventArgs e)
@@ -1211,7 +1211,7 @@ namespace POS.View.reports
             {
 				if (sender != null)
 				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+				SectionData.ExceptionMessage(ex, this);
             } }
 
         /*Fill Events*/
@@ -1633,7 +1633,7 @@ namespace POS.View.reports
             {
 				if (sender != null)
 				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+				SectionData.ExceptionMessage(ex, this);
             }}
 
         private void Txt_search_TextChanged(object sender, TextChangedEventArgs e)
@@ -1693,7 +1693,7 @@ namespace POS.View.reports
             {
 				if (sender != null)
 				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+				SectionData.ExceptionMessage(ex, this);
             } }
         ReportCls reportclass = new ReportCls();
         LocalReport rep = new LocalReport();
@@ -1775,7 +1775,7 @@ namespace POS.View.reports
             {
 				if (sender != null)
 				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+				SectionData.ExceptionMessage(ex, this);
             } }
 
         private void Btn_print_Click(object sender, RoutedEventArgs e)
@@ -1847,7 +1847,7 @@ namespace POS.View.reports
             {
 				if (sender != null)
 				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+				SectionData.ExceptionMessage(ex, this);
             } }
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
@@ -1932,7 +1932,7 @@ namespace POS.View.reports
             {
 				if (sender != null)
 				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+				SectionData.ExceptionMessage(ex, this);
             } }
 
         private void Btn_preview_Click(object sender, RoutedEventArgs e)
@@ -2024,7 +2024,7 @@ namespace POS.View.reports
             {
 				if (sender != null)
 				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this,sender);
+				SectionData.ExceptionMessage(ex, this);
             }}
     }
 }

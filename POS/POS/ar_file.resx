@@ -1879,17 +1879,11 @@
   <data name="trShortage" xml:space="preserve">
     <value>نقص</value>
   </data>
-  <data name="String1" xml:space="preserve">
-    <value />
-  </data>
   <data name="trCredit" xml:space="preserve">
     <value>رصيد</value>
   </data>
   <data name="trDepositor" xml:space="preserve">
     <value>المودع</value>
-  </data>
-  <data name="String2" xml:space="preserve">
-    <value />
   </data>
   <data name="trPurchaceOrder" xml:space="preserve">
     <value>طلبية شراء</value>
@@ -2364,5 +2358,8 @@
   </data>
   <data name="trMustBeMoreThanZero" xml:space="preserve">
     <value>العدد يجب أن يكون أكبر من الصفر</value>
+  </data>
+  <data name="trEmptyAccuracy" xml:space="preserve">
+    <value>عدد الأرقام بعد الفاصلة لا يمكن أن يكون فارغ</value>
   </data>
 </root>

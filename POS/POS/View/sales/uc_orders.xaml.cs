@@ -200,6 +200,7 @@ namespace POS.View.sales
 
                 translate();
                 configureDiscountType();
+                setTimer();
                 await setNotifications();
                 await RefrishItems();
                 await RefrishCustomers();
@@ -212,7 +213,6 @@ namespace POS.View.sales
 
                 pos = await posModel.getPosById(MainWindow.posID.Value);
                 branch = await branchModel.getBranchById((int)pos.branchId);
-                setTimer();
 
                 tb_barcode.Focus();
                 tb_taxValue.Text = MainWindow.tax.ToString();
@@ -227,7 +227,7 @@ namespace POS.View.sales
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         #region timer to refresh notifications
@@ -250,7 +250,7 @@ namespace POS.View.sales
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sendert);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         #endregion
@@ -384,7 +384,7 @@ namespace POS.View.sales
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         #region Button In DataGrid
@@ -432,7 +432,7 @@ namespace POS.View.sales
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         #endregion
@@ -582,7 +582,7 @@ namespace POS.View.sales
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         #endregion
@@ -662,7 +662,7 @@ namespace POS.View.sales
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private async void clearInvoice()
@@ -908,7 +908,7 @@ namespace POS.View.sales
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void refreshTotalValue()
@@ -1049,7 +1049,7 @@ namespace POS.View.sales
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private async void Tb_barcode_KeyDown(object sender, KeyEventArgs e)
@@ -1074,7 +1074,7 @@ namespace POS.View.sales
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -1141,7 +1141,7 @@ namespace POS.View.sales
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -1228,7 +1228,7 @@ namespace POS.View.sales
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private async void Btn_orders_Click(object sender, RoutedEventArgs e)
@@ -1278,7 +1278,7 @@ SectionData.isAdminPermision())
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -1328,7 +1328,7 @@ SectionData.isAdminPermision())
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -1412,7 +1412,7 @@ SectionData.isAdminPermision())
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void Cbm_unitItemDetails_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -1435,7 +1435,7 @@ SectionData.isAdminPermision())
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void DataGrid_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -1473,7 +1473,7 @@ SectionData.isAdminPermision())
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private   void Dg_billDetails_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
@@ -1558,7 +1558,7 @@ SectionData.isAdminPermision())
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void Btn_invoiceImages_Click(object sender, RoutedEventArgs e)
@@ -1596,7 +1596,7 @@ SectionData.isAdminPermision())
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -1664,7 +1664,7 @@ SectionData.isAdminPermision())
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         
@@ -1691,7 +1691,7 @@ SectionData.isAdminPermision())
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         
@@ -1706,7 +1706,7 @@ SectionData.isAdminPermision())
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
        
@@ -1721,7 +1721,7 @@ SectionData.isAdminPermision())
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private async void Btn_items_Click(object sender, RoutedEventArgs e)
@@ -1758,7 +1758,7 @@ SectionData.isAdminPermision())
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         
@@ -1793,7 +1793,7 @@ SectionData.isAdminPermision())
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -1836,7 +1836,7 @@ SectionData.isAdminPermision())
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -1852,7 +1852,7 @@ SectionData.isAdminPermision())
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -1881,7 +1881,7 @@ SectionData.isAdminPermision())
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -1912,7 +1912,7 @@ SectionData.isAdminPermision())
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -1938,7 +1938,7 @@ SectionData.isAdminPermision())
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -1972,7 +1972,7 @@ SectionData.isAdminPermision())
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -1993,7 +1993,7 @@ SectionData.isAdminPermision())
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -2015,7 +2015,7 @@ SectionData.isAdminPermision())
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -2045,7 +2045,7 @@ SectionData.isAdminPermision())
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -2071,7 +2071,7 @@ SectionData.isAdminPermision())
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
     }

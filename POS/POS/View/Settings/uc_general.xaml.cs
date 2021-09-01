@@ -34,13 +34,14 @@ namespace POS.View.Settings
         static SettingCls set = new SettingCls();
         static SetValues language = new SetValues();
         static SetValues tax = new SetValues();
+        static SetValues accuracy = new SetValues();
         static SetValues dateForm = new SetValues();
         static SetValues cost = new SetValues();
         static public UserSetValues usLanguage = new UserSetValues();
         static UserSetValues usValue = new UserSetValues();
         static CountryCode region = new CountryCode();
         static List<SetValues> languages = new List<SetValues>();
-        static int taxId = 0, costId = 0, dateFormId;
+        static int taxId = 0, costId = 0, dateFormId, accuracyId;
         string usersSettingsPermission = "general_usersSettings";
         string companySettingsPermission = "general_companySettings";
         private static uc_general _instance;
@@ -90,7 +91,7 @@ namespace POS.View.Settings
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this );
             }
         }
 
@@ -116,6 +117,7 @@ namespace POS.View.Settings
 
                 translate();
                 #endregion
+
                 await fillRegions();
 
                 #region get default region
@@ -162,14 +164,8 @@ namespace POS.View.Settings
                 //    tb_storageCost.Text = cost.value;
                 #endregion
 
-                #region fill process type
+                #region fill dateform
                 DateTimeFormatInfo dtfi = DateTimeFormatInfo.CurrentInfo;
-                //var typelist = new[] {
-                //new { Text =  dtfi.ShortDatePattern.ToString(), Value = "ShortDatePattern" },
-                //new { Text = dtfi.LongDatePattern.ToString() , Value = "LongDatePattern" },
-                //new { Text =  dtfi.MonthDayPattern.ToString(), Value = "MonthDayPattern" },
-                //new { Text =  dtfi.YearMonthPattern.ToString(), Value = "YearMonthPattern" },
-                // };
                 var date = DateTime.Now;
                 var typelist = new[] {
             new { Text = date.ToString(dtfi.ShortDatePattern), Value = "ShortDatePattern" },
@@ -195,6 +191,14 @@ namespace POS.View.Settings
 
                 fillAccuracy();
 
+                #region get default accracy
+                await getDefaultAccuracy();
+                if (accuracy != null)
+                {
+                    cb_accuracy.SelectedValue = accuracy.value;
+                }
+                #endregion
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -202,13 +206,31 @@ namespace POS.View.Settings
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
+        }
+
+        public static async Task<SetValues> getDefaultAccuracy()
+        {
+            List<SettingCls> settingsCls = await setModel.GetAll();
+            List<SetValues> settingsValues = await valueModel.GetAll();
+            set = settingsCls.Where(s => s.name == "accuracy").FirstOrDefault<SettingCls>();
+            accuracyId = set.settingId;
+            accuracy = settingsValues.Where(i => i.settingId == accuracyId).FirstOrDefault();
+            return accuracy;
         }
 
         private void fillAccuracy()
         {
-            
+            var list = new[] {
+                new { Text = "0"       , Value = "0" },
+                new { Text = "0.0"     , Value = "1" },
+                new { Text = "0.00"    , Value = "2" },
+                new { Text = "0.000"   , Value = "3" },
+                 };
+            cb_accuracy.DisplayMemberPath = "Text";
+            cb_accuracy.SelectedValuePath = "Value";
+            cb_accuracy.ItemsSource = list;
         }
 
         public static async Task<SetValues> getDefaultCost()
@@ -374,7 +396,7 @@ namespace POS.View.Settings
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this );
             }
         }
 
@@ -466,7 +488,7 @@ namespace POS.View.Settings
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this );
             }
         }
         private async void Btn_saveTax_Click(object sender, RoutedEventArgs e)
@@ -478,9 +500,6 @@ namespace POS.View.Settings
 
                 if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
-
-
-
                     SectionData.validateEmptyTextBox(tb_tax, p_errorTax, tt_errorTax, "trEmptyTax");
                     if (!tb_tax.Text.Equals(""))
                     {
@@ -511,7 +530,7 @@ namespace POS.View.Settings
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this );
             }
         }
 
@@ -534,7 +553,7 @@ namespace POS.View.Settings
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -548,7 +567,7 @@ namespace POS.View.Settings
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this );
             }
         }
 
@@ -560,7 +579,7 @@ namespace POS.View.Settings
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this );
             }
         }
 
@@ -576,7 +595,7 @@ namespace POS.View.Settings
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this );
             }
         }
 
@@ -589,7 +608,7 @@ namespace POS.View.Settings
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this );
             }
         }
 
@@ -602,7 +621,7 @@ namespace POS.View.Settings
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this );
             }
         }
 
@@ -629,7 +648,7 @@ namespace POS.View.Settings
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this );
             }
         }
         User userModel = new User();
@@ -674,7 +693,7 @@ namespace POS.View.Settings
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this );
             }
         }
 
@@ -702,7 +721,7 @@ namespace POS.View.Settings
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this );
             }
         }
 
@@ -722,7 +741,88 @@ namespace POS.View.Settings
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this );
+            }
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            //decimal num = decimal.Parse(tb_tax.Text);
+            //string s = num.ToString();
+
+            //switch (cb_accuracy.SelectedValue.ToString())
+            //{
+            //    case "0":
+            //        //num = (double)Math.Round(num, 1);
+            //        //s = String.Format("{0}", num);
+            //        s = string.Format("{0:F0}", num);
+            //        break;
+            //    case "1":
+            //        //num = (double)Math.Round(num, 2);
+            //        //s = String.Format("{0:0.#}", num);
+            //        s = string.Format("{0:F1}", num);
+            //        break;
+            //    case "2":
+            //        //num = (double)Math.Round(num, 3);
+            //        //s = String.Format("{0:0.##}", num);
+            //        s = string.Format("{0:F2}", num);
+            //        break;
+            //    case "3":
+            //        //num = (double)Math.Round(num, 4);
+            //        s = string.Format("{0:F3}", num);
+            //        //s = String.Format("{0:0.###}", num);
+            //        break;
+            //    default:
+            //        //num = (double)Math.Round(num, 5);
+            //        //s = String.Format("{0:0.#}", num);
+            //        s = string.Format("{0:F1}", num);
+            //        break;
+            //}
+
+            //MessageBox.Show(s);
+        }
+
+        private async void Btn_saveAccuracy_Click(object sender, RoutedEventArgs e)
+        {//save accuracy
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+                {
+                    SectionData.validateEmptyComboBox(cb_accuracy, p_errorAccuracy, tt_errorAccuracy, "trEmptyAccuracy");
+                    if (!cb_accuracy.Text.Equals(""))
+                    {
+                        if (accuracy == null)
+                            accuracy = new SetValues();
+                        accuracy.value = cb_accuracy.SelectedValue.ToString();
+                        accuracy.isSystem = 1;
+                        accuracy.settingId = accuracyId;
+                        string s = await valueModel.Save(accuracy);
+                        
+                        if (!s.Equals("-1"))
+                        {
+                            //update accuracy in main window
+                            MainWindow.accuracy = accuracy.value;
+
+                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
+                        }
+                        else
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    }
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this );
             }
         }
 
@@ -742,7 +842,7 @@ namespace POS.View.Settings
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this );
             }
         }
 
@@ -776,7 +876,7 @@ namespace POS.View.Settings
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this );
             }
         }
     }

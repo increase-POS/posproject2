@@ -362,6 +362,9 @@ namespace netoaster
 
         private static Matrix GetTransform(Visual visual)
         {
+            try
+            {
+
             var presentationSource = PresentationSource.FromVisual(visual);
             if (presentationSource.CompositionTarget != null)
             {
@@ -369,6 +372,11 @@ namespace netoaster
             }
 
             return new Matrix();
+            }
+            catch
+            {
+                return new Matrix();
+            }
         }
     }
 }

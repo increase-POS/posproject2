@@ -95,7 +95,7 @@ namespace POS.View.purchases
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         string createPermission = "purchaseOrder_create";
@@ -157,7 +157,7 @@ namespace POS.View.purchases
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void translate()
@@ -223,7 +223,7 @@ namespace POS.View.purchases
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         public async void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -250,12 +250,12 @@ namespace POS.View.purchases
                 }
 
                 translate();
+                setTimer();
                 //catigoriesAndItemsView.ucPayInvoice = this;
                 await RefrishItems();
                 await RefrishVendors();
                 await fillBarcodeList();
                 await refreshDraftNotification();
-                setTimer();
                 tb_barcode.Focus();
                 #region datagridChange
                 CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(dg_billDetails.Items);
@@ -268,7 +268,7 @@ namespace POS.View.purchases
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -334,7 +334,7 @@ namespace POS.View.purchases
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         #endregion
@@ -358,7 +358,7 @@ namespace POS.View.purchases
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sendert);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         #endregion
@@ -434,7 +434,7 @@ namespace POS.View.purchases
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         #region Categor and Item
@@ -531,7 +531,7 @@ namespace POS.View.purchases
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void space_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -544,7 +544,7 @@ namespace POS.View.purchases
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -565,7 +565,7 @@ namespace POS.View.purchases
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         #endregion
@@ -689,7 +689,7 @@ namespace POS.View.purchases
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private bool validateItemUnits()
@@ -729,7 +729,7 @@ namespace POS.View.purchases
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void clearInvoice()
@@ -794,7 +794,7 @@ namespace POS.View.purchases
             //{
             //    if (sender != null)
             //        SectionData.EndAwait(grid_main);
-            //    SectionData.ExceptionMessage(ex, this, sender);
+            //    SectionData.ExceptionMessage(ex, this);
             //}
         }
         private async void Btn_invoices_Click(object sender, RoutedEventArgs e)
@@ -837,7 +837,7 @@ namespace POS.View.purchases
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         public async Task fillInvoiceInputs(Invoice invoice)
@@ -941,7 +941,7 @@ namespace POS.View.purchases
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -979,7 +979,7 @@ namespace POS.View.purchases
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -993,7 +993,7 @@ namespace POS.View.purchases
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void Cb_vendor_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -1012,7 +1012,7 @@ namespace POS.View.purchases
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void Tb_textBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -1023,7 +1023,7 @@ namespace POS.View.purchases
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -1140,7 +1140,7 @@ namespace POS.View.purchases
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private async Task dealWithBarcode(string barcode)
@@ -1257,7 +1257,7 @@ namespace POS.View.purchases
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -1295,7 +1295,7 @@ namespace POS.View.purchases
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void Cbm_unitItemDetails_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -1309,7 +1309,7 @@ namespace POS.View.purchases
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -1343,7 +1343,7 @@ namespace POS.View.purchases
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -1409,7 +1409,7 @@ namespace POS.View.purchases
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -1435,7 +1435,7 @@ namespace POS.View.purchases
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -1579,7 +1579,7 @@ namespace POS.View.purchases
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private async void btn_printInvoice_Click(object sender, RoutedEventArgs e)
@@ -1655,7 +1655,7 @@ namespace POS.View.purchases
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -1690,7 +1690,7 @@ namespace POS.View.purchases
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -1709,7 +1709,7 @@ namespace POS.View.purchases
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -1722,7 +1722,7 @@ namespace POS.View.purchases
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -1833,7 +1833,7 @@ namespace POS.View.purchases
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -1901,7 +1901,7 @@ namespace POS.View.purchases
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
     }

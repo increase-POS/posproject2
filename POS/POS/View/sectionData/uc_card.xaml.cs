@@ -162,7 +162,7 @@ namespace POS.View.sectionData
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -172,7 +172,7 @@ namespace POS.View.sectionData
             {
                 SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
             }
-            catch (Exception ex) { SectionData.ExceptionMessage(ex,this,sender); }
+            catch (Exception ex) { SectionData.ExceptionMessage(ex, this); }
         }
 
         private void Tb_name_LostFocus(object sender, RoutedEventArgs e)
@@ -181,7 +181,7 @@ namespace POS.View.sectionData
             {
                 SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
             }
-            catch (Exception ex) { SectionData.ExceptionMessage(ex,this,sender); }
+            catch (Exception ex) { SectionData.ExceptionMessage(ex, this); }
         }
 
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
@@ -210,7 +210,7 @@ namespace POS.View.sectionData
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -269,7 +269,7 @@ namespace POS.View.sectionData
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -324,7 +324,7 @@ namespace POS.View.sectionData
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -392,7 +392,7 @@ namespace POS.View.sectionData
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -468,7 +468,7 @@ namespace POS.View.sectionData
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -522,7 +522,7 @@ namespace POS.View.sectionData
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -543,7 +543,7 @@ namespace POS.View.sectionData
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -587,7 +587,7 @@ namespace POS.View.sectionData
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -613,7 +613,7 @@ namespace POS.View.sectionData
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -656,7 +656,7 @@ namespace POS.View.sectionData
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -706,7 +706,7 @@ namespace POS.View.sectionData
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -747,7 +747,7 @@ namespace POS.View.sectionData
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -773,7 +773,7 @@ namespace POS.View.sectionData
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -820,5 +820,7 @@ namespace POS.View.sectionData
             }
             Window.GetWindow(this).Opacity = 1;
         }
+
+       
     }
 }

@@ -31,7 +31,7 @@ namespace POS
         }
 		 catch (Exception ex)
             {
-				SectionData.ExceptionMessage(ex,this, sender);
+				SectionData.ExceptionMessage(ex,this);
         }
     }
        

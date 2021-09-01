@@ -121,7 +121,7 @@ namespace POS.View.reports
             {
 				if (sender != null)
 				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this, sender);
+				SectionData.ExceptionMessage(ex,this);
         }
     }
 
@@ -239,7 +239,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
         #endregion
@@ -278,7 +278,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -309,7 +309,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -352,7 +352,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
         #endregion
@@ -536,7 +536,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -559,7 +559,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -579,7 +579,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -602,7 +602,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -628,7 +628,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -651,7 +651,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -674,7 +674,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -694,7 +694,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -713,7 +713,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -735,7 +735,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -757,7 +757,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -777,7 +777,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -797,7 +797,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
         #endregion
@@ -827,7 +827,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -850,7 +850,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -870,7 +870,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -893,7 +893,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -917,7 +917,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -939,7 +939,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -963,7 +963,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -983,7 +983,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -1002,7 +1002,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -1024,7 +1024,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -1046,7 +1046,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -1066,7 +1066,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -1086,7 +1086,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
         #endregion
@@ -1132,7 +1132,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -1171,7 +1171,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -1207,7 +1207,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -1230,7 +1230,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -1254,7 +1254,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -1276,7 +1276,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -1299,7 +1299,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -1319,7 +1319,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -1338,7 +1338,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
         #endregion
@@ -1371,7 +1371,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -1403,7 +1403,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -1452,7 +1452,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -1483,7 +1483,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -1961,7 +1961,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -1986,7 +1986,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -2011,7 +2011,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -2031,7 +2031,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -2051,7 +2051,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -2071,7 +2071,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -2091,7 +2091,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -2111,7 +2111,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -2131,7 +2131,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -2154,7 +2154,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -2177,7 +2177,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -2200,7 +2200,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -2220,7 +2220,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -2240,7 +2240,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -2259,7 +2259,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
         #endregion
@@ -2285,7 +2285,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -2308,7 +2308,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -2328,7 +2328,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -2351,7 +2351,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -2374,7 +2374,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -2394,7 +2394,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -2417,7 +2417,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -2440,7 +2440,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -2459,7 +2459,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -2479,7 +2479,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -2499,7 +2499,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -2519,7 +2519,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -2539,7 +2539,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -2559,7 +2559,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -2579,7 +2579,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -2617,7 +2617,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -2641,7 +2641,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -2664,7 +2664,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -2695,7 +2695,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -2726,7 +2726,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -2760,7 +2760,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -2783,7 +2783,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -2806,7 +2806,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -2838,7 +2838,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -2858,7 +2858,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -2877,7 +2877,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -3324,7 +3324,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -3359,7 +3359,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -3382,7 +3382,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -3404,7 +3404,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -3425,7 +3425,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -3445,7 +3445,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -3467,7 +3467,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -3488,7 +3488,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -3508,7 +3508,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -3528,7 +3528,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -3549,7 +3549,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -3570,7 +3570,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -3592,7 +3592,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -3612,7 +3612,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -3632,7 +3632,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -3652,7 +3652,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -3681,7 +3681,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -3703,7 +3703,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -3725,7 +3725,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -3745,7 +3745,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -3764,7 +3764,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -3783,7 +3783,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -3802,7 +3802,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -3823,7 +3823,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -3843,7 +3843,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -3862,7 +3862,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -3882,7 +3882,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -3901,7 +3901,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -3921,7 +3921,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -3941,7 +3941,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -3979,7 +3979,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
         private void Btn_stocktaking_Click(object sender, RoutedEventArgs e)
@@ -4016,7 +4016,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
         private void Btn_destroied_Click(object sender, RoutedEventArgs e)
@@ -4049,7 +4049,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
         private void fillComboInternalItemsItems()
@@ -4165,7 +4165,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -4184,7 +4184,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
         private void fillInternalRowChart()
@@ -4478,7 +4478,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
         private void Btn_stocktakeShortfalse_Click(object sender, RoutedEventArgs e)
@@ -4512,7 +4512,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
         public void paintStockTakingChilds()
@@ -4593,7 +4593,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -4612,7 +4612,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -4631,7 +4631,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -4649,7 +4649,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -4668,7 +4668,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -4686,7 +4686,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -4704,7 +4704,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -4722,7 +4722,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -4774,7 +4774,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -4792,7 +4792,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -4810,7 +4810,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -4828,7 +4828,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -4846,7 +4846,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -4865,7 +4865,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -4883,7 +4883,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -4902,7 +4902,7 @@ namespace POS.View.reports
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -5153,7 +5153,7 @@ new StackedColumnSeries
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -5171,7 +5171,7 @@ new StackedColumnSeries
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -5190,7 +5190,7 @@ new StackedColumnSeries
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -5208,7 +5208,7 @@ new StackedColumnSeries
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -5227,7 +5227,7 @@ new StackedColumnSeries
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -5245,7 +5245,7 @@ new StackedColumnSeries
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -5263,7 +5263,7 @@ new StackedColumnSeries
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 
@@ -5282,7 +5282,7 @@ new StackedColumnSeries
         {
             if (sender != null)
                 SectionData.EndAwait(grid_main);
-            SectionData.ExceptionMessage(ex, this, sender);
+            SectionData.ExceptionMessage(ex, this);
         }
     }
 

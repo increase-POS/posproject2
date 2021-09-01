@@ -42,7 +42,7 @@ namespace POS.View.windows
                 }
                 catch (Exception ex)
                 {
-                    SectionData.ExceptionMessage(ex, this, sender);
+                    SectionData.ExceptionMessage(ex, this);
                 }
             }
         private void HandleKeyPress(object sender, KeyEventArgs e)
@@ -56,7 +56,7 @@ namespace POS.View.windows
                     }
                     catch (Exception ex)
                     {
-                        SectionData.ExceptionMessage(ex, this, sender);
+                        SectionData.ExceptionMessage(ex, this);
                     }
                 }
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -67,7 +67,7 @@ namespace POS.View.windows
                         }
                         catch (Exception ex)
                         {
-                            SectionData.ExceptionMessage(ex, this, sender);
+                            SectionData.ExceptionMessage(ex, this);
                         }
                     }
 
@@ -79,7 +79,7 @@ namespace POS.View.windows
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -91,7 +91,7 @@ namespace POS.View.windows
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -103,7 +103,7 @@ namespace POS.View.windows
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -115,7 +115,7 @@ namespace POS.View.windows
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -134,7 +134,7 @@ namespace POS.View.windows
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 

@@ -70,24 +70,6 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        internal static string String1 {
-            get {
-                return ResourceManager.GetString("String1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        internal static string String2 {
-            get {
-                return ResourceManager.GetString("String2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to رصيد.
         /// </summary>
         internal static string tr_Balance {
@@ -1677,6 +1659,15 @@ namespace POS {
         internal static string trEmptyAccNumToolTip {
             get {
                 return ResourceManager.GetString("trEmptyAccNumToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to عدد الأرقام بعد الفاصلة لا يمكن أن يكون فارغ.
+        /// </summary>
+        internal static string trEmptyAccuracy {
+            get {
+                return ResourceManager.GetString("trEmptyAccuracy", resourceCulture);
             }
         }
         

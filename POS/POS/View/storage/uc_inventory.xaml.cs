@@ -91,7 +91,7 @@ namespace POS.View.storage
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -111,9 +111,9 @@ namespace POS.View.storage
                     MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
                     grid_main.FlowDirection = FlowDirection.RightToLeft;
                 }
+                setTimer();
 
                 translate();
-                setTimer();
                 //await fillInventoryDetails();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -122,7 +122,7 @@ namespace POS.View.storage
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void translate()
@@ -168,7 +168,7 @@ namespace POS.View.storage
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sendert);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         #endregion
@@ -319,7 +319,7 @@ namespace POS.View.storage
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private async void clearInventory()
@@ -383,7 +383,7 @@ namespace POS.View.storage
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private async void Btn_draft_Click(object sender, RoutedEventArgs e)
@@ -413,7 +413,7 @@ namespace POS.View.storage
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private async void Btn_Inventory_Click(object sender, RoutedEventArgs e)
@@ -447,7 +447,7 @@ namespace POS.View.storage
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
@@ -474,7 +474,7 @@ namespace POS.View.storage
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private async void Btn_archive_Click(object sender, RoutedEventArgs e)
@@ -495,7 +495,7 @@ namespace POS.View.storage
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -519,7 +519,7 @@ namespace POS.View.storage
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void Btn_printInvoice_Click(object sender, RoutedEventArgs e)
@@ -542,7 +542,7 @@ namespace POS.View.storage
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void Btn_preview_Click(object sender, RoutedEventArgs e)
@@ -565,7 +565,7 @@ namespace POS.View.storage
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -598,7 +598,7 @@ namespace POS.View.storage
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 

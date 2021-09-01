@@ -151,7 +151,7 @@ namespace POS.View.windows
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -172,7 +172,7 @@ namespace POS.View.windows
                 }
             }
             catch (Exception ex)
-            { SectionData.ExceptionMessage(ex, this, sender); }
+            { SectionData.ExceptionMessage(ex, this); }
         }
 
         List<SettingCls> set = new List<SettingCls>();
@@ -186,7 +186,7 @@ namespace POS.View.windows
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -198,7 +198,7 @@ namespace POS.View.windows
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 

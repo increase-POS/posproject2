@@ -85,7 +85,7 @@ namespace POS.View.windows
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -115,7 +115,7 @@ namespace POS.View.windows
                 }
                 catch (Exception ex)
                 {
-                    SectionData.ExceptionMessage(ex, this, sender);
+                    SectionData.ExceptionMessage(ex, this);
                 }
             }
 
@@ -127,7 +127,7 @@ namespace POS.View.windows
                 }
                 catch (Exception ex)
                 {
-                    SectionData.ExceptionMessage(ex, this, sender);
+                    SectionData.ExceptionMessage(ex, this);
                 }
             }
         private void Img_upload_Click(object sender, RoutedEventArgs e)
@@ -152,7 +152,7 @@ namespace POS.View.windows
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void validateDocValues()
@@ -199,7 +199,7 @@ namespace POS.View.windows
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -238,7 +238,7 @@ namespace POS.View.windows
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void clear()
@@ -259,7 +259,7 @@ namespace POS.View.windows
                 }
                 catch (Exception ex)
                 {
-                    SectionData.ExceptionMessage(ex, this, sender);
+                    SectionData.ExceptionMessage(ex, this);
                 }
             }
 
@@ -333,7 +333,7 @@ namespace POS.View.windows
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void Btn_scan_Click(object sender, RoutedEventArgs e)
@@ -436,7 +436,7 @@ namespace POS.View.windows
                 }
                 catch (Exception ex)
                 {
-                    SectionData.ExceptionMessage(ex, this, sender);
+                    SectionData.ExceptionMessage(ex, this);
                 }
             }
 
@@ -478,7 +478,7 @@ namespace POS.View.windows
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -521,7 +521,7 @@ namespace POS.View.windows
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -533,7 +533,7 @@ namespace POS.View.windows
                 }
                 catch (Exception ex)
                 {
-                    SectionData.ExceptionMessage(ex, this, sender);
+                    SectionData.ExceptionMessage(ex, this);
                 }
             }
 

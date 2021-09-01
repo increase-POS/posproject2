@@ -65,6 +65,7 @@ namespace POS
         internal static int? isInvTax;
         internal static decimal? tax;
         internal static string dateFormat;
+        internal static string accuracy;
         internal static decimal? StorageCost;
         public static int Idletime = 5;
         public static int threadtime = 5;
@@ -122,8 +123,6 @@ namespace POS
             pur_copy_count = printList.Where(X => X.name == "pur_copy_count").FirstOrDefault().value;
 
             rep_print_count = printList.Where(X => X.name == "rep_copy_count").FirstOrDefault().value;
-
-
 
         }
         public static async Task GetReportlang()
@@ -264,23 +263,31 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
 
                 #region get default System info
 
+                //get tax
+                try { tax = decimal.Parse(await getDefaultTax()); } catch { tax = 0; }
+                //get dateform
+                try { dateFormat = await getDefaultDateForm(); }    catch { dateFormat = "ShortDatePattern"; }
 
-                tax = decimal.Parse(await getDefaultTax());
+                //get region and currency
+                try
+                {
+                    CountryCode c = await getDefaultRegion();
+                    Region = c;
+                    Currency = c.currency;
+                }
+                catch
+                {
+                    //CountryCode countryModel = new CountryCode();
+                    //Region = await countryModel.getCountryById(1);
+                    //Currency = Region.currency;
+                }
+                
+                //get storage cost
+                try { StorageCost = decimal.Parse(await getDefaultStorageCost()); } catch { StorageCost = 0; }
 
-            try
-            {
-                dateFormat = await getDefaultDateForm();
-            }
-            catch
-            {
-
-            }
-                CountryCode c = await getDefaultRegion();
-                Region = c;
-                Currency = c.currency;
-
-                StorageCost = decimal.Parse(await getDefaultStorageCost());
-
+                //get accuracy
+                try { accuracy = await getDefaultAccuracy(); } catch { accuracy = "1"; }
+                
                 List<SettingCls> settingsCls = await setModel.GetAll();
                 List<SetValues> settingsValues = await valueModel.GetAll();
 
@@ -390,8 +397,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
                 //setTimer();
                 #endregion
 
-
-              await  getprintSitting();
+                await  getprintSitting();
 
                 permission();
                 //BTN_Home_Click(null, null);
@@ -405,7 +411,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_mainWindow);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this );
             }
 
         }
@@ -496,7 +502,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sendert);
+                SectionData.ExceptionMessage(ex, this );
             }
         }
         private async void setNotifications()
@@ -536,7 +542,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this );
             }
 
         }
@@ -557,7 +563,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sendert);
+                SectionData.ExceptionMessage(ex, this );
             }
 
         }
@@ -574,7 +580,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this );
             }
         }
         private void TabTipAutomationOnTest(Exception exception)
@@ -622,7 +628,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_mainWindow);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this );
             }
         }
         async Task close()
@@ -650,7 +656,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_mainWindow);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this );
             }
         }
         private void BTN_Minimize_Click(object sender, RoutedEventArgs e)
@@ -661,7 +667,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this );
             }
         }
         void colorTextRefreash(TextBlock txt)
@@ -760,7 +766,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this );
             }
         }
         void fn_pathOpenCollapsed()
@@ -800,7 +806,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this );
             }
 
         }
@@ -822,7 +828,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
         }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this );
         }
 
     }
@@ -862,7 +868,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this );
             }
 
         }
@@ -1031,7 +1037,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this );
             }
         }
 
@@ -1039,14 +1045,13 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
         {
             try
             {
-
                 e.Cancel = true;
                 this.Visibility = Visibility.Hidden;
 
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this );
             }
         }
 
@@ -1070,14 +1075,14 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this );
             }
         }
-
+        SetValues v = new SetValues(); 
 
         async Task<string> getDefaultStorageCost()
         {
-            SetValues v = await uc_general.getDefaultCost();
+            v = await uc_general.getDefaultCost();
             if (v != null)
                 return v.value;
             else
@@ -1098,7 +1103,15 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
 
         async Task<string> getDefaultTax()
         {
-            SetValues v = await uc_general.getDefaultTax();
+            v = await uc_general.getDefaultTax();
+            if (v != null)
+                return v.value;
+            else
+                return "";
+        }
+        async Task<string> getDefaultAccuracy()
+        {
+            v = await uc_general.getDefaultAccuracy();
             if (v != null)
                 return v.value;
             else
@@ -1107,7 +1120,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
 
         async Task<string> getDefaultDateForm()
         {
-            SetValues v = await uc_general.getDefaultDateForm();
+            v = await uc_general.getDefaultDateForm();
             if (v != null)
                 return v.value;
             else
@@ -1219,7 +1232,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this );
             }
         }
 
@@ -1234,7 +1247,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this );
             }
         }
 
@@ -1248,7 +1261,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this );
             }
         }
 
@@ -1265,7 +1278,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this );
             }
         }
 
@@ -1280,7 +1293,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this );
             }
         }
 
@@ -1311,7 +1324,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this );
             }
         }
 
@@ -1330,7 +1343,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this );
             }
         }
 
@@ -1349,7 +1362,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this );
             }
         }
 
@@ -1368,7 +1381,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this );
             }
         }
 
@@ -1387,7 +1400,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this );
             }
         }
 
@@ -1406,7 +1419,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this );
             }
         }
     }

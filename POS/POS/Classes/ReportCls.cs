@@ -8,6 +8,7 @@ using System.IO;
 using Microsoft.Reporting.WinForms;
 using System.Resources;
 using System.Reflection;
+using System.Globalization;
 
 namespace POS.Classes
 {
@@ -42,7 +43,27 @@ namespace POS.Classes
             {
                 DateTime ts = DateTime.Parse(date.ToString());
                 // @"hh\:mm\:ss"
-                sdate = ts.ToString(@"d/M/yyyy");
+                //sdate = ts.ToString(@"d/M/yyyy");
+                DateTimeFormatInfo dtfi = DateTimeFormatInfo.CurrentInfo;
+
+                switch (MainWindow.dateFormat)
+                {
+                    case "ShortDatePattern":
+                        sdate = date.Value.ToString(dtfi.ShortDatePattern);
+                    break;
+                    case "LongDatePattern":
+                        sdate = date.Value.ToString(dtfi.LongDatePattern);
+                    break;
+                    case "MonthDayPattern":
+                        sdate = date.Value.ToString(dtfi.MonthDayPattern);
+                    break;
+                    case "YearMonthPattern":
+                        sdate = date.Value.ToString(dtfi.YearMonthPattern);
+                    break;
+                    default:
+                        sdate = date.Value.ToString(dtfi.ShortDatePattern);
+                        break;
+                }
             }
 
             return sdate;
@@ -60,7 +81,26 @@ namespace POS.Classes
                 decimal dc = decimal.Parse(dec.ToString());
 
 
-                sdc = dc.ToString("0.00");
+                //sdc = dc.ToString("0.00");
+                switch (MainWindow.accuracy)
+                {
+                    case "0":
+                        sdc = string.Format("{0:F0}", dc);
+                        break;
+                    case "1":
+                        sdc = string.Format("{0:F1}", dc);
+                        break;
+                    case "2":
+                        sdc = string.Format("{0:F2}", dc);
+                        break;
+                    case "3":
+                        sdc = string.Format("{0:F3}", dc);
+                        break;
+                    default:
+                        sdc = string.Format("{0:F1}", dc);
+                        break;
+                }
+
             }
 
 

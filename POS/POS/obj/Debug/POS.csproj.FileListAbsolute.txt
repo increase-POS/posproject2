@@ -874,7 +874,6 @@ E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_invoice.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_invoice.baml
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\accounts\uc_paymentsAccounts.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\accounts\uc_paymentsAccounts.baml
-E:\GitHub\posproject2\POS\POS\obj\Debug\POS.csprojAssemblyReference.cache
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\accounts\uc_receivedAccounts.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\accounts\uc_receivedAccounts.baml
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\accounts\uc_banksAccounts.g.cs
@@ -2963,3 +2962,8 @@ E:\GitHub\posproject2\POS\POS\obj\Debug\View\reports\us_dailySalesStatistic.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\reports\us_dailySalesStatistic.baml
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\Settings\us_emailGeneral.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\Settings\us_emailGeneral.baml
+E:\GitHub\posproject2\POS\POS\bin\Debug\LiveCharts.0.9.7.0.Fakes.fakesconfig
+E:\GitHub\posproject2\POS\POS\bin\Debug\Microsoft.QualityTools.Testing.Fakes.dll
+E:\GitHub\posproject2\POS\POS\obj\Debug\POS.csprojFakesResolveAssemblyReference.cache
+E:\GitHub\posproject2\POS\POS\bin\Debug\LiveCharts.0.9.7.0.Fakes.dll
+E:\GitHub\posproject2\POS\POS\bin\Debug\LiveCharts.0.9.7.0.Fakes.xml

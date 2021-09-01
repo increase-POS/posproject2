@@ -194,12 +194,12 @@ namespace POS.View.sales
 
                 translate();
                 configureDiscountType();
+                setTimer();
                 await refreshDraftNotification();
                 await RefrishItems();
                 await RefrishCustomers();
                 await fillBarcodeList();
                 await fillCouponsList();
-                setTimer();
                 pos = await posModel.getPosById(MainWindow.posID.Value);
                 branch = await branchModel.getBranchById((int)pos.branchId);
                 #region Style Date
@@ -220,7 +220,7 @@ namespace POS.View.sales
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         #region timer to refresh notifications
@@ -240,7 +240,7 @@ namespace POS.View.sales
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sendert);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         #endregion
@@ -332,7 +332,7 @@ namespace POS.View.sales
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         #region Button In DataGrid
@@ -379,7 +379,7 @@ namespace POS.View.sales
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         #endregion
@@ -528,7 +528,7 @@ namespace POS.View.sales
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         #endregion
@@ -603,7 +603,7 @@ namespace POS.View.sales
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private async void clearInvoice()
@@ -921,7 +921,7 @@ namespace POS.View.sales
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private async void Tb_barcode_KeyDown(object sender, KeyEventArgs e)
@@ -946,7 +946,7 @@ namespace POS.View.sales
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -1010,7 +1010,7 @@ namespace POS.View.sales
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private async Task fillInvoiceInputs(Invoice invoice)
@@ -1099,7 +1099,7 @@ namespace POS.View.sales
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private async void Btn_quotations_Click(object sender, RoutedEventArgs e)
@@ -1141,7 +1141,7 @@ namespace POS.View.sales
             //{
             //    if (sender != null)
             //        SectionData.EndAwait(grid_main);
-            //    SectionData.ExceptionMessage(ex, this, sender);
+            //    SectionData.ExceptionMessage(ex, this);
             //}
         }
         private async void Cbm_unitItemDetails_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -1226,7 +1226,7 @@ namespace POS.View.sales
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void Cbm_unitItemDetails_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -1250,7 +1250,7 @@ namespace POS.View.sales
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void DataGrid_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -1289,7 +1289,7 @@ namespace POS.View.sales
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private   void Dg_billDetails_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
@@ -1374,7 +1374,7 @@ namespace POS.View.sales
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void Btn_invoiceImages_Click(object sender, RoutedEventArgs e)
@@ -1410,7 +1410,7 @@ namespace POS.View.sales
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private async Task<Boolean> checkItemsAmounts()
@@ -1462,7 +1462,7 @@ namespace POS.View.sales
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -1477,7 +1477,7 @@ namespace POS.View.sales
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private async void Btn_items_Click(object sender, RoutedEventArgs e)
@@ -1513,7 +1513,7 @@ namespace POS.View.sales
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -1525,7 +1525,7 @@ namespace POS.View.sales
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this,sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
@@ -1561,7 +1561,7 @@ namespace POS.View.sales
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -1587,7 +1587,7 @@ namespace POS.View.sales
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
@@ -1612,7 +1612,7 @@ namespace POS.View.sales
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -1638,7 +1638,7 @@ namespace POS.View.sales
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -1671,7 +1671,7 @@ namespace POS.View.sales
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -1692,7 +1692,7 @@ namespace POS.View.sales
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -1714,7 +1714,7 @@ namespace POS.View.sales
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -1744,7 +1744,7 @@ namespace POS.View.sales
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -1794,7 +1794,7 @@ namespace POS.View.sales
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this, sender);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
     }
