@@ -1104,8 +1104,8 @@ namespace POS.View.sales
         }
         private async void Btn_quotations_Click(object sender, RoutedEventArgs e)
         {
-            //try
-            //{
+            try
+            {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
@@ -1136,13 +1136,13 @@ namespace POS.View.sales
                 Window.GetWindow(this).Opacity =1;
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //    SectionData.ExceptionMessage(ex, this);
-            //}
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
         private async void Cbm_unitItemDetails_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

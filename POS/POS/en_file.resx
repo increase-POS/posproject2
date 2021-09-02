@@ -546,9 +546,6 @@
   <data name="trPopAdd" xml:space="preserve">
     <value>Added success</value>
   </data>
-  <data name="String1" xml:space="preserve">
-    <value />
-  </data>
   <data name="trPopAddValidate" xml:space="preserve">
     <value>It is not possible to add without the code and name and mobile number</value>
   </data>
@@ -931,10 +928,10 @@
     <value>Bank...</value>
   </data>
   <data name="trCashHint" xml:space="preserve">
-    <value>Ammount...</value>
+    <value>Amount...</value>
   </data>
   <data name="trCashTooltip" xml:space="preserve">
-    <value>Ammount</value>
+    <value>Amount</value>
   </data>
   <data name="trDeposit" xml:space="preserve">
     <value>Deposit</value>
@@ -988,7 +985,7 @@
     <value>Document Type...</value>
   </data>
   <data name="trEmptyCashToolTip" xml:space="preserve">
-    <value>Ammount can not be empty</value>
+    <value>Amount can not be empty</value>
   </data>
   <data name="trEmptyDepositNumberToolTip" xml:space="preserve">
     <value>Deposit/pull number can not be empty</value>
@@ -1755,9 +1752,6 @@
   <data name="trPurchaseOrdersBill" xml:space="preserve">
     <value>Purchase Orders</value>
   </data>
-  <data name="String2" xml:space="preserve">
-    <value />
-  </data>
   <data name="trProcessNumHint" xml:space="preserve">
     <value>Process Number...</value>
   </data>
@@ -1816,7 +1810,7 @@
     <value>Subscriptions</value>
   </data>
   <data name="trZeroAmmount" xml:space="preserve">
-    <value>Ammount cann't be zero</value>
+    <value>Amount cann't be zero</value>
   </data>
   <data name="trInvoiceDate" xml:space="preserve">
     <value>Invoice Date</value>
@@ -1908,9 +1902,6 @@ Please add Email in setting</value>
   </data>
   <data name="trDepositor" xml:space="preserve">
     <value>Depositor</value>
-  </data>
-  <data name="String3" xml:space="preserve">
-    <value />
   </data>
   <data name="trPurchaceOrder" xml:space="preserve">
     <value>Purchace Order</value>

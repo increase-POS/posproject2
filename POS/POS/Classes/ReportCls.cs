@@ -41,7 +41,7 @@ namespace POS.Classes
             string sdate = "";
             if (date != null)
             {
-                DateTime ts = DateTime.Parse(date.ToString());
+                //DateTime ts = DateTime.Parse(date.ToString());
                 // @"hh\:mm\:ss"
                 //sdate = ts.ToString(@"d/M/yyyy");
                 DateTimeFormatInfo dtfi = DateTimeFormatInfo.CurrentInfo;
@@ -69,6 +69,7 @@ namespace POS.Classes
             return sdate;
         }
 
+
         public string DecTostring(decimal? dec)
         {
             string sdc = "0";
@@ -79,7 +80,6 @@ namespace POS.Classes
             else
             {
                 decimal dc = decimal.Parse(dec.ToString());
-
 
                 //sdc = dc.ToString("0.00");
                 switch (MainWindow.accuracy)
@@ -216,15 +216,17 @@ namespace POS.Classes
             string company_phone = MainWindow.Phone;
             string company_fax = MainWindow.Fax;
             string company_email = MainWindow.Email;
-         //   string company_logo_img = GetLogoImagePath();
-            string amount = cashtrans.cash.ToString();
+            //   string company_logo_img = GetLogoImagePath();
+            //string amount = cashtrans.cash.ToString();
+            string amount = DecTostring(cashtrans.cash);
             string voucher_num = cashtrans.transNum.ToString();
             string type = "";
             string isCash = "0";
             string trans_num_txt = "";
 
             string check_num = cashtrans.docNum;
-            string date = cashtrans.createDate.ToString();
+            //string date = cashtrans.createDate.ToString();
+            string date = DateToString(cashtrans.createDate);
             string from = "";
             string amount_in_words = "";
             string purpose = "";
@@ -586,7 +588,9 @@ namespace POS.Classes
             paramarr.Add(new ReportParameter("totalNet", DecTostring(invoice.totalNet) == null ? "-" : DecTostring(invoice.totalNet)));
             paramarr.Add(new ReportParameter("paid", DecTostring(invoice.paid) == null ? "-" : DecTostring(invoice.paid)));
             paramarr.Add(new ReportParameter("deserved", DecTostring(invoice.deserved) == null ? "-" : DecTostring(invoice.deserved)));
-            paramarr.Add(new ReportParameter("deservedDate", invoice.deservedDate.ToString() == null ? "-" : invoice.deservedDate.ToString()));
+            //paramarr.Add(new ReportParameter("deservedDate", invoice.deservedDate.ToString() == null ? "-" : invoice.deservedDate.ToString()));
+            paramarr.Add(new ReportParameter("deservedDate", invoice.deservedDate.ToString() == null ? "-" : DateToString(invoice.deservedDate)));
+
             paramarr.Add(new ReportParameter("tax", DecTostring(taxval)));
             string invNum = invoice.invNumber == null ? "-" : invoice.invNumber.ToString();
             paramarr.Add(new ReportParameter("barcodeimage", "file:\\" + BarcodeToImage(invNum, "invnum")));
@@ -689,9 +693,9 @@ namespace POS.Classes
             paramarr.Add(new ReportParameter("totalNet", DecTostring(invoice.totalNet) == null ? "-" : DecTostring(invoice.totalNet)));
             paramarr.Add(new ReportParameter("paid", DecTostring(invoice.paid) == null ? "-" : DecTostring(invoice.paid)));
             paramarr.Add(new ReportParameter("deserved", DecTostring(invoice.deserved) == null ? "-" : DecTostring(invoice.deserved)));
-            paramarr.Add(new ReportParameter("deservedDate", invoice.deservedDate.ToString() == null ? "-" : invoice.deservedDate.ToString()));
-            
-          
+            //paramarr.Add(new ReportParameter("deservedDate", invoice.deservedDate.ToString() == null ? "-" : invoice.deservedDate.ToString()));
+            paramarr.Add(new ReportParameter("deservedDate", invoice.deservedDate.ToString() == null ? "-" :DateToString(invoice.deservedDate)));
+
 
             paramarr.Add(new ReportParameter("tax", DecTostring(taxval)));
             string invNum = invoice.invNumber == null ? "-" : invoice.invNumber.ToString();

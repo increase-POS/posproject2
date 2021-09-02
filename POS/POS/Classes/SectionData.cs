@@ -2,6 +2,7 @@
 using netoaster;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -959,8 +960,76 @@ namespace POS.Classes
             return _str;
             
         }
-         
+
+        public static string DateToString(DateTime? date)
+        {
+            string sdate = "";
+            if (date != null)
+            {
+                DateTimeFormatInfo dtfi = DateTimeFormatInfo.CurrentInfo;
+
+                switch (MainWindow.dateFormat)
+                {
+                    case "ShortDatePattern":
+                        sdate = date.Value.ToString(dtfi.ShortDatePattern);
+                        break;
+                    case "LongDatePattern":
+                        sdate = date.Value.ToString(dtfi.LongDatePattern);
+                        break;
+                    case "MonthDayPattern":
+                        sdate = date.Value.ToString(dtfi.MonthDayPattern);
+                        break;
+                    case "YearMonthPattern":
+                        sdate = date.Value.ToString(dtfi.YearMonthPattern);
+                        break;
+                    default:
+                        sdate = date.Value.ToString(dtfi.ShortDatePattern);
+                        break;
+                }
+            }
+
+            return sdate;
+        }
+
+
+        public static string DecTostring(decimal? dec)
+        {
+            string sdc = "0";
+            if (dec == null)
+            {
+
+            }
+            else
+            {
+                decimal dc = decimal.Parse(dec.ToString());
+
+                switch (MainWindow.accuracy)
+                {
+                    case "0":
+                        sdc = string.Format("{0:F0}", dc);
+                        break;
+                    case "1":
+                        sdc = string.Format("{0:F1}", dc);
+                        break;
+                    case "2":
+                        sdc = string.Format("{0:F2}", dc);
+                        break;
+                    case "3":
+                        sdc = string.Format("{0:F3}", dc);
+                        break;
+                    default:
+                        sdc = string.Format("{0:F1}", dc);
+                        break;
+                }
+
+            }
+
+
+            return sdc;
+        }
+
+
     }
 
-    
+
 }

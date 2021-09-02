@@ -370,7 +370,8 @@ namespace POS.View.purchases
             int draftCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
 
             int previouseCount = 0;
-            if (md_draft.Badge != null) previouseCount = int.Parse(md_draft.Badge.ToString());
+            if (md_draft.Badge != null)
+                previouseCount = int.Parse(md_draft.Badge.ToString());
 
             if (draftCount != previouseCount)
             {
@@ -390,7 +391,8 @@ namespace POS.View.purchases
             int docCount = await doc.GetDocCount("Invoices", invoiceId);
 
             int previouseCount = 0;
-            if (md_docImage.Badge != null) previouseCount = int.Parse(md_docImage.Badge.ToString());
+            if (md_docImage.Badge != null)
+                previouseCount = int.Parse(md_docImage.Badge.ToString());
 
             if (docCount != previouseCount)
             {
@@ -758,8 +760,8 @@ namespace POS.View.purchases
         #endregion
         private async void Btn_draft_Click(object sender, RoutedEventArgs e)
         {
-            //try
-            //{
+            try
+            {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
                 Window.GetWindow(this).Opacity = 0.2;
@@ -789,13 +791,13 @@ namespace POS.View.purchases
                 Window.GetWindow(this).Opacity = 1;
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //    SectionData.ExceptionMessage(ex, this);
-            //}
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
         private async void Btn_invoices_Click(object sender, RoutedEventArgs e)
         {
@@ -875,7 +877,9 @@ namespace POS.View.purchases
                 });
             }
 
-            tb_count.Text = _Count.ToString();
+            //tb_count.Text = _Count.ToString();
+            tb_total.Text = _Count.ToString();
+
             tb_barcode.Focus();
 
             refrishBillDetails();

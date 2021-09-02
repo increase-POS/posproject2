@@ -25,7 +25,7 @@
             <converters:transTypeConverter x:Key="transTypeConverter"/>
             <converters:unitItemsListConverter x:Key="unitItemsListConverter"/>
             <converters:enabledCouponConverter x:Key="enabledCouponConverter"/>
-
+            <converters:accuracyConverter x:Key="accuracyConverter"/>
             <!--#region Fonts-->
             <FontFamily x:Key="BarcodeFont" >IDAHC39M Code 39 Barcode, /POS;component/fonts/#IDAHC39M Code 39 Barcode, Arial</FontFamily>
 

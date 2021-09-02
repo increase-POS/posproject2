@@ -70,33 +70,6 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        internal static string String1 {
-            get {
-                return ResourceManager.GetString("String1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        internal static string String2 {
-            get {
-                return ResourceManager.GetString("String2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        internal static string String3 {
-            get {
-                return ResourceManager.GetString("String3", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Balance.
         /// </summary>
         internal static string tr_Balance {
@@ -655,7 +628,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ammount....
+        ///   Looks up a localized string similar to Amount....
         /// </summary>
         internal static string trCashHint {
             get {
@@ -682,7 +655,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ammount.
+        ///   Looks up a localized string similar to Amount.
         /// </summary>
         internal static string trCashTooltip {
             get {
@@ -1762,7 +1735,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ammount can not be empty.
+        ///   Looks up a localized string similar to Amount can not be empty.
         /// </summary>
         internal static string trEmptyCashToolTip {
             get {
@@ -6848,7 +6821,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ammount cann&apos;t be zero.
+        ///   Looks up a localized string similar to Amount cann&apos;t be zero.
         /// </summary>
         internal static string trZeroAmmount {
             get {

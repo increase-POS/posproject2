@@ -45,8 +45,6 @@ namespace POS.Classes
             try
             {
 
-
-
                 MailMessage mail = new MailMessage();
 
                 SmtpClient Smtpserver = new SmtpClient(smtpclient);
@@ -270,12 +268,14 @@ namespace POS.Classes
             {
                 invbody = invbody.Replace("[[invoicecode]]", invoice.invNumber);
                 invbody = invbody.Replace("[[invoicedate]]", repm.DateToString(invoice.invDate));
-                invbody = invbody.Replace("[[invoicetotal]]", invoice.total.ToString());
-                invbody = invbody.Replace("[[invoicediscount]]", invoice.discountValue.ToString());
-                invbody = invbody.Replace("[[invoicetax]]", invoice.tax.ToString());
-                invbody = invbody.Replace("[[totalnet]]", invoice.totalNet.ToString());
-
-
+                //invbody = invbody.Replace("[[invoicetotal]]", invoice.total.ToString());
+                invbody = invbody.Replace("[[invoicetotal]]", repm.DecTostring(invoice.total));
+                //invbody = invbody.Replace("[[invoicediscount]]", invoice.discountValue.ToString());
+                invbody = invbody.Replace("[[invoicediscount]]", repm.DecTostring(invoice.discountValue));
+                //invbody = invbody.Replace("[[invoicetax]]", invoice.tax.ToString());
+                invbody = invbody.Replace("[[invoicetax]]", repm.DecTostring(invoice.tax));
+                //invbody = invbody.Replace("[[totalnet]]", invoice.totalNet.ToString());
+                invbody = invbody.Replace("[[totalnet]]", repm.DecTostring(invoice.totalNet));
             }
 
             //  invoiceItems.
@@ -385,10 +385,7 @@ namespace POS.Classes
 
             mailtosend.htmlView = htmlView;
 
-
             return mailtosend;
-
-
 
 
         }
@@ -509,12 +506,14 @@ namespace POS.Classes
             {
                 invbody = invbody.Replace("[[invoicecode]]", invoice.invNumber);
                 invbody = invbody.Replace("[[invoicedate]]", repm.DateToString(invoice.invDate));
-                invbody = invbody.Replace("[[invoicetotal]]", invoice.total.ToString());
-                invbody = invbody.Replace("[[invoicediscount]]", invoice.discountValue.ToString());
-                invbody = invbody.Replace("[[invoicetax]]", invoice.tax.ToString());
-                invbody = invbody.Replace("[[totalnet]]", invoice.totalNet.ToString());
-
-
+                //invbody = invbody.Replace("[[invoicetotal]]", invoice.total.ToString());
+                invbody = invbody.Replace("[[invoicetotal]]", repm.DecTostring(invoice.total));
+                //invbody = invbody.Replace("[[invoicediscount]]", invoice.discountValue.ToString());
+                invbody = invbody.Replace("[[invoicediscount]]", repm.DecTostring(invoice.discountValue));
+                //invbody = invbody.Replace("[[invoicetax]]", invoice.tax.ToString());
+                invbody = invbody.Replace("[[invoicetax]]", repm.DecTostring(invoice.tax));
+                //invbody = invbody.Replace("[[totalnet]]", invoice.totalNet.ToString());
+                invbody = invbody.Replace("[[totalnet]]", repm.DecTostring(invoice.totalNet));
             }
 
             //  invoiceItems.
@@ -756,7 +755,8 @@ namespace POS.Classes
             invfooter = invfooter.Replace("[[returnpolicyurl]]", link2url);
             invfooter = invfooter.Replace("[[aboutusurl]]", link3url);
 
-            invfooter = invfooter.Replace("[[year]]", DateTime.Now.Year.ToString());
+            //invfooter = invfooter.Replace("[[year]]", DateTime.Now.Year.ToString());
+            invfooter = invfooter.Replace("[[year]]", repm.DecTostring(DateTime.Now.Year));
 
 
 
