@@ -401,5 +401,98 @@ printDoc.PrinterSettings.PrinterName = printerName;
             double inches = hundrethsOfInch / 100.0;
             return inches.ToString(CultureInfo.InvariantCulture) + "in";
         }
+
+        // custom Print
+        public static void customPrintToPrinter(this LocalReport report, string printerName, short copy)
+        {
+            m_pageSettings = new PageSettings();
+            ReportPageSettings reportPageSettings = report.GetDefaultPageSettings();
+
+            m_pageSettings.PaperSize = reportPageSettings.PaperSize ;
+            m_pageSettings.Margins = reportPageSettings.Margins;
+
+            customExportbyPrinter(printerName, report, copy);
+        }
+
+        public static void customExportbyPrinter(string printerName, LocalReport report, short copy, bool print = true)
+        {
+
+        //  PaperSize paperSize = m_pageSettings.PaperSize;
+           PaperSize paperSize = new PaperSize("Paper Roll", 7500, 1000);
+            Margins margins = m_pageSettings.Margins;
+
+            // The device info string defines the page range to print as well as the size of the page.
+            // A start and end page of 0 means generate all pages.
+            string deviceInfo = string.Format(
+                CultureInfo.InvariantCulture,
+                "<DeviceInfo>" +
+                    "<OutputFormat>EMF</OutputFormat>" +
+                
+                "<PageWidth>{5}</PageWidth>" +
+                "<PageHeight>{4}</PageHeight>" +
+
+                "<MarginTop>{0}</MarginTop>" +
+                "<MarginLeft>{1}</MarginLeft>" +
+                "<MarginRight>{2}</MarginRight>" +
+                "<MarginBottom>{3}</MarginBottom>" +
+
+                "</DeviceInfo>"
+                ,
+                ToInches(margins.Top),
+                ToInches(margins.Left),
+                ToInches(margins.Right),
+                ToInches(margins.Bottom),
+              paperSize.Height,
+                paperSize.Width
+               );
+            /*
+                ToInches(margins.Top),
+                ToInches(margins.Left),
+                ToInches(margins.Right),
+                ToInches(margins.Bottom),
+                ToInches(paperSize.Height),
+                ToInches(paperSize.Width)
+             * */
+            Warning[] warnings;
+            m_streams = new List<Stream>();
+            report.Render("Image", deviceInfo, CreateStream,
+               out warnings);
+            foreach (Stream stream in m_streams)
+                stream.Position = 0;
+
+            if (print)
+            {
+                customPrintbyPrinter(printerName, copy);
+            }
+        }
+
+        public static void customPrintbyPrinter(string printerName, short copy)
+        {
+            if (m_streams == null || m_streams.Count == 0)
+                throw new Exception("Error: no stream to print.");
+            PrintDocument printDoc = new PrintDocument();
+            printDoc.PrinterSettings.Copies = copy;
+            if (!printDoc.PrinterSettings.IsValid)
+            {
+                throw new Exception("Error: cannot find the default printer.");
+            }
+            else
+            {
+                if (printerName is null || printerName == "")
+                {
+
+                }
+                else
+                {
+                    printDoc.PrinterSettings.PrinterName = printerName;
+                }
+
+                printDoc.PrintPage += new PrintPageEventHandler(PrintPage);
+
+                m_currentPageIndex = 0;
+                printDoc.Print();
+            }
+        }
+
     }
 }

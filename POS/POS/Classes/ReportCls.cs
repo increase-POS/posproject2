@@ -524,6 +524,9 @@ namespace POS.Classes
                    else
                 {
                     addpath = @"\Reports\Sale\Ar\ArInvPurReport.rdlc";
+                    //   addpath = @"\Reports\Sale\Ar\LargeSaleReport.rdlc";
+                    //   addpath = @"\Reports\Sale\Ar\MediumSaleReport.rdlc";
+                    //   addpath = @"\Reports\Sale\Ar\SmallSaleReport.rdlc";
                 }
 
             }
@@ -539,7 +542,10 @@ namespace POS.Classes
                 }
                 else
                 {
-                    addpath = @"\Reports\Sale\En\InvPurReport.rdlc";
+                 addpath = @"\Reports\Sale\En\InvPurReport.rdlc";
+                   //    addpath = @"\Reports\Sale\En\LargeSaleReport.rdlc";
+                    //   addpath = @"\Reports\Sale\En\MediumSaleReport.rdlc";
+                 //  addpath = @"\Reports\Sale\En\SmallSaleReport.rdlc";
                 }
 
             }
@@ -676,8 +682,8 @@ namespace POS.Classes
             // decimal totalnet = totalafterdis + taxval;
             //  percentValue(decimal ? value, decimal ? percent);
 
-
-            paramarr.Add(new ReportParameter("invNumber", invoice.invNumber == null ? "-" : invoice.invNumber.ToString()));//paramarr[6]
+            paramarr.Add(new ReportParameter("Notes", (invoice.notes == null || invoice.notes =="") ? "-" : invoice.notes.Trim()));
+            paramarr.Add(new ReportParameter("invNumber", (invoice.invNumber == null|| invoice.invNumber == "" ) ? "-" : invoice.invNumber.ToString()));//paramarr[6]
             paramarr.Add(new ReportParameter("invoiceId", invoice.invoiceId.ToString()));
 
             paramarr.Add(new ReportParameter("invDate", DateToString(invoice.invDate) == null ? "-" : DateToString(invoice.invDate)));

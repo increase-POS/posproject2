@@ -2968,3 +2968,9 @@ E:\GitHub\posproject2\POS\POS\obj\Debug\POS.csprojFakesResolveAssemblyReference.
 E:\GitHub\posproject2\POS\POS\bin\Debug\LiveCharts.0.9.7.0.Fakes.dll
 E:\GitHub\posproject2\POS\POS\bin\Debug\LiveCharts.0.9.7.0.Fakes.xml
 E:\GitHub\posproject2\POS\POS\obj\Debug\POS.csprojAssemblyReference.cache
+D:\myproj\posproject2\POS\POS\bin\Debug\LiveCharts.0.9.7.0.Fakes.dll
+D:\myproj\posproject2\POS\POS\bin\Debug\LiveCharts.0.9.7.0.Fakes.xml
+D:\myproj\posproject2\POS\POS\obj\Debug\View\reports\us_dailySalesStatistic.g.cs
+D:\myproj\posproject2\POS\POS\obj\Debug\View\Settings\us_emailGeneral.g.cs
+D:\myproj\posproject2\POS\POS\obj\Debug\View\reports\us_dailySalesStatistic.baml
+D:\myproj\posproject2\POS\POS\obj\Debug\View\Settings\us_emailGeneral.baml
