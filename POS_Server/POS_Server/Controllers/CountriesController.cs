@@ -191,6 +191,50 @@ namespace POS_Server.Controllers
             return message;
         }
 
+        [HttpGet]
+        [Route("GetByID")]
+        public IHttpActionResult GetByID()
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            int cId = 0;
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            if (headers.Contains("Id"))
+            {
+                cId = Convert.ToInt32(headers.GetValues("Id").First());
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid)
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var list = entity.countriesCodes
+                   .Where(c => c.countryId == cId)
+                   .Select(c => new {
+                       c.countryId,
+                       c.code,
+                       c.currency,
+                       c.name,
+                       c.isDefault
+                   })
+                   .FirstOrDefault();
+
+                    if (list == null)
+                        return NotFound();
+                    else
+                        return Ok(list);
+                }
+            }
+            else
+                return NotFound();
+        }
+
 
 
     }

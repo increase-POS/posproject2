@@ -40,8 +40,8 @@ namespace POS_Server.Controllers
 
                                     num = S.num,
                                     msg = S.msg,
-                                    windowName = S.windowName,
-                                    sender = S.sender,
+                                   stackTrace = S.stackTrace,
+                                    targetSite = S.targetSite,
                                     posId = S.posId,
                                     branchId = S.branchId,
                                     createDate = S.createDate,
@@ -91,8 +91,8 @@ namespace POS_Server.Controllers
 
                        S.num,
                        S.msg,
-                       S.windowName,
-                       S.sender,
+                       S.stackTrace,
+                       S.targetSite,
                        S.posId,
                        S.branchId,
                        S.createDate,
@@ -172,8 +172,8 @@ namespace POS_Server.Controllers
 
                             tmpObject.num = newObject.num;
                             tmpObject.msg = newObject.msg;
-                            tmpObject.windowName = newObject.windowName;
-                            tmpObject.sender = newObject.sender;
+                            tmpObject.stackTrace = newObject.stackTrace;
+                            tmpObject.targetSite = newObject.targetSite;
                             tmpObject.posId = newObject.posId;
                             tmpObject.branchId = newObject.branchId;
 

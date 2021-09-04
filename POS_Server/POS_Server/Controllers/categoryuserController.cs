@@ -185,15 +185,12 @@ namespace POS_Server.Controllers
                             }
 
 
-
-
                         }
                         entity.categoryuser.AddRange(newCatlist);
                     }
                     res = entity.SaveChanges();
 
                     return res;
-
 
                 }
 
