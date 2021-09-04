@@ -321,14 +321,16 @@ namespace POS_Server.Controllers
                                 tmpUser = userEntity.Add(newObject);
                                 // get all categories
                                 var categories = entity.categories.Where(x => x.isActive == 1).Select(x => x.categoryId).ToList();
+                                int sequence = 0;
                                 for (int i = 0; i < categories.Count; i++)
                                 {
+                                    sequence++;
                                     int categoryId = categories[i];
                                     categoryuser cu = new categoryuser()
                                     {
                                         categoryId = categoryId,
                                         userId = tmpUser.userId,
-                                        sequence = 0,
+                                        sequence = sequence,
                                         createDate = DateTime.Now,
                                         updateDate = DateTime.Now,
                                         createUserId = newObject.createUserId,

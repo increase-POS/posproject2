@@ -70,7 +70,8 @@ namespace POS_Server.Controllers
                        createDate = p.createDate,
                        updateDate = p.updateDate,
                      maxDeserve = p.maxDeserve,
-                       fax = p.fax, })
+                       fax = p.fax,
+                   isLimited = p.isLimited,})
                    .ToList();
                     if (agentsList.Count > 0)
                     {
@@ -138,7 +139,8 @@ namespace POS_Server.Controllers
                        p.maxDeserve,
                        p.fax,
                        p.isActive,
-                       p.createDate })
+                       p.createDate,
+                   p.isLimited,})
                    .ToList();
 
                     if (agentsList == null)
@@ -178,7 +180,7 @@ namespace POS_Server.Controllers
 
                     var agent = entity.agents
                    .Where(p => p.agentId == agentID)
-                   .Select(p => new { p.agentId, p.name, p.accType, p.address, p.balance,p.balanceType, p.code, p.company, p.createDate, p.createUserId,  p.email,  p.mobile, p.notes, p.phone, p.type, p.image, p.maxDeserve, p.fax,p.isActive,p.updateDate,p.updateUserId })
+                   .Select(p => new { p.agentId, p.name, p.accType, p.address, p.balance,p.balanceType, p.code, p.company, p.createDate, p.createUserId,  p.email,  p.mobile, p.notes, p.phone, p.type, p.image, p.maxDeserve, p.fax,p.isActive,p.updateDate,p.updateUserId ,p.isLimited})
                    .FirstOrDefault();
                    
                     if (agent == null)
@@ -231,7 +233,8 @@ namespace POS_Server.Controllers
                        p.maxDeserve,
                        p.fax,
                        p.isActive,
-                       p.createDate
+                       p.createDate,
+                       p.isLimited,
                    })
                    .ToList();
 
@@ -326,6 +329,7 @@ namespace POS_Server.Controllers
                             agent.isActive = agentObj.isActive;
                             agent.balance = agentObj.balance;
                             agent.balanceType = agentObj.balanceType;
+                            agent.isLimited = agentObj.isLimited;
                         }
                         entity.SaveChanges();
                         return Ok(agent.agentId);

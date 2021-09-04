@@ -737,16 +737,16 @@ namespace POS_Server.Controllers
                     //List<string> lstStr = new List<string>();
                     // lstStr.AddRange(myStrings);
                     // bool hasMatch = invTypeL.Any(lstStr.Contains);
-                    bool hasMatch = new string[] { "pd", "pbd", "sd", "sbd", "qd", "ord", "or" }.Any(s => invTypeL.Contains(s));
-                    if (hasMatch)
-                    {
-                        int sequence = 0;
-                        for (int i = 0; i < invoicesList.Count; i++)
-                        {
-                            sequence++;
-                            invoicesList[i].invNumber = sequence.ToString();
-                        }
-                    }
+                    //bool hasMatch = new string[] { "pd", "pbd", "sd", "sbd", "qd", "ord", "or" }.Any(s => invTypeL.Contains(s));
+                    //if (hasMatch)
+                    //{
+                    //    int sequence = 0;
+                    //    for (int i = 0; i < invoicesList.Count; i++)
+                    //    {
+                    //        sequence++;
+                    //        invoicesList[i].invNumber = sequence.ToString();
+                    //    }
+                    //}
                     if (invoicesList != null)
                     {
                         for (int i = 0; i < invoicesList.Count; i++)

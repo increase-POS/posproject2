@@ -23,6 +23,7 @@
     <EntitySetMapping Name="agents">
       <EntityTypeMapping TypeName="incposdbModel.agents">
         <MappingFragment StoreEntitySet="agents">
+          <ScalarProperty Name="isLimited" ColumnName="isLimited" />
           <ScalarProperty Name="agentId" ColumnName="agentId" />
           <ScalarProperty Name="pointId" ColumnName="pointId" />
           <ScalarProperty Name="name" ColumnName="name" />
@@ -292,11 +293,11 @@
     <EntitySetMapping Name="error">
       <EntityTypeMapping TypeName="incposdbModel.error">
         <MappingFragment StoreEntitySet="error">
+          <ScalarProperty Name="targetSite" ColumnName="targetSite" />
+          <ScalarProperty Name="stackTrace" ColumnName="stackTrace" />
           <ScalarProperty Name="errorId" ColumnName="errorId" />
           <ScalarProperty Name="num" ColumnName="num" />
           <ScalarProperty Name="msg" ColumnName="msg" />
-          <ScalarProperty Name="windowName" ColumnName="windowName" />
-          <ScalarProperty Name="sender" ColumnName="sender" />
           <ScalarProperty Name="posId" ColumnName="posId" />
           <ScalarProperty Name="branchId" ColumnName="branchId" />
           <ScalarProperty Name="createDate" ColumnName="createDate" />

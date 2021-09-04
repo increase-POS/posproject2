@@ -255,6 +255,7 @@
     <Compile Include="Controllers\couponsController.cs" />
     <Compile Include="Controllers\couponsInvoices.cs" />
     <Compile Include="Controllers\DocImageController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\GroupController.cs" />
     <Compile Include="Controllers\GroupObjectController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -382,6 +383,7 @@
     <Compile Include="Models\CategoryModel.cs" />
     <Compile Include="Models\CardModel.cs" />
     <Compile Include="Models\CouponModel.cs" />
+    <Compile Include="Models\ErrorModel.cs" />
     <Compile Include="Models\GroupModel.cs" />
     <Compile Include="Models\GroupObjectModel.cs" />
     <Compile Include="Models\InventoryItemLocationModel.cs" />

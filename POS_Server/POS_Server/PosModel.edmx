@@ -48,7 +48,8 @@
           <Property Name="notes" Type="ntext" />
           <Property Name="isActive" Type="tinyint" />
           <Property Name="fax" Type="nvarchar" MaxLength="100" />
-          <Property Name="maxDeserve" Type="decimal" Precision="20" Scale="2" />
+          <Property Name="maxDeserve" Type="decimal" Precision="20" Scale="3" />
+          <Property Name="isLimited" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="banks">
           <Key>
@@ -73,7 +74,7 @@
           </Key>
           <Property Name="bondId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="number" Type="nvarchar" MaxLength="200" />
-          <Property Name="amount" Type="decimal" Precision="20" Scale="2" />
+          <Property Name="amount" Type="decimal" Precision="20" Scale="3" />
           <Property Name="deserveDate" Type="datetime2" Precision="7" />
           <Property Name="type" Type="nvarchar" MaxLength="50" />
           <Property Name="isRecieved" Type="tinyint" />
@@ -158,7 +159,7 @@
           <Property Name="transNum" Type="nvarchar" MaxLength="50" />
           <Property Name="createDate" Type="datetime2" Precision="7" />
           <Property Name="updateDate" Type="datetime2" Precision="7" />
-          <Property Name="cash" Type="decimal" Precision="20" Scale="2" />
+          <Property Name="cash" Type="decimal" Precision="20" Scale="3" />
           <Property Name="updateUserId" Type="int" />
           <Property Name="createUserId" Type="int" />
           <Property Name="notes" Type="ntext" />
@@ -185,7 +186,7 @@
           <Property Name="details" Type="ntext" />
           <Property Name="image" Type="ntext" />
           <Property Name="isActive" Type="smallint" />
-          <Property Name="taxes" Type="decimal" Precision="20" Scale="2" />
+          <Property Name="taxes" Type="decimal" Precision="20" Scale="3" />
           <Property Name="parentId" Type="int" />
           <Property Name="createDate" Type="datetime2" Precision="7" />
           <Property Name="updateDate" Type="datetime2" Precision="7" />
@@ -233,14 +234,14 @@
           <Property Name="code" Type="nvarchar" MaxLength="100" />
           <Property Name="isActive" Type="tinyint" />
           <Property Name="discountType" Type="tinyint" />
-          <Property Name="discountValue" Type="decimal" Precision="20" Scale="2" />
+          <Property Name="discountValue" Type="decimal" Precision="20" Scale="3" />
           <Property Name="startDate" Type="datetime2" Precision="7" />
           <Property Name="endDate" Type="datetime2" Precision="7" />
           <Property Name="notes" Type="ntext" />
           <Property Name="quantity" Type="int" />
           <Property Name="remainQ" Type="int" />
-          <Property Name="invMin" Type="decimal" Precision="20" Scale="2" />
-          <Property Name="invMax" Type="decimal" Precision="20" Scale="2" />
+          <Property Name="invMin" Type="decimal" Precision="20" Scale="3" />
+          <Property Name="invMax" Type="decimal" Precision="20" Scale="3" />
           <Property Name="createDate" Type="datetime2" Precision="7" />
           <Property Name="updateDate" Type="datetime2" Precision="7" />
           <Property Name="createUserId" Type="int" />
@@ -258,7 +259,7 @@
           <Property Name="updateDate" Type="datetime2" Precision="7" />
           <Property Name="createUserId" Type="int" />
           <Property Name="updateUserId" Type="int" />
-          <Property Name="discountValue" Type="decimal" Precision="20" Scale="2" />
+          <Property Name="discountValue" Type="decimal" Precision="20" Scale="3" />
           <Property Name="discountType" Type="tinyint" />
         </EntityType>
         <EntityType Name="docImages">
@@ -284,8 +285,8 @@
           <Property Name="errorId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="num" Type="nvarchar" MaxLength="200" />
           <Property Name="msg" Type="ntext" />
-          <Property Name="windowName" Type="ntext" />
-          <Property Name="sender" Type="ntext" />
+          <Property Name="stackTrace" Type="ntext" />
+          <Property Name="targetSite" Type="ntext" />
           <Property Name="posId" Type="int" />
           <Property Name="branchId" Type="int" />
           <Property Name="createDate" Type="datetime2" Precision="7" />
@@ -385,11 +386,11 @@
           <Property Name="createUserId" Type="int" />
           <Property Name="invType" Type="nvarchar" MaxLength="50" />
           <Property Name="discountType" Type="nvarchar" MaxLength="10" />
-          <Property Name="discountValue" Type="decimal" Precision="20" Scale="4" />
-          <Property Name="total" Type="decimal" Precision="20" Scale="2" />
-          <Property Name="totalNet" Type="decimal" Precision="20" Scale="2" />
-          <Property Name="paid" Type="decimal" Precision="20" Scale="2" />
-          <Property Name="deserved" Type="decimal" Precision="20" Scale="2" />
+          <Property Name="discountValue" Type="decimal" Precision="20" Scale="3" />
+          <Property Name="total" Type="decimal" Precision="20" Scale="3" />
+          <Property Name="totalNet" Type="decimal" Precision="20" Scale="3" />
+          <Property Name="paid" Type="decimal" Precision="20" Scale="3" />
+          <Property Name="deserved" Type="decimal" Precision="20" Scale="3" />
           <Property Name="deservedDate" Type="date" />
           <Property Name="invDate" Type="datetime2" Precision="7" />
           <Property Name="updateDate" Type="datetime2" Precision="7" />
@@ -402,7 +403,7 @@
           <Property Name="vendorInvDate" Type="datetime2" Precision="7" />
           <Property Name="branchId" Type="int" />
           <Property Name="posId" Type="int" />
-          <Property Name="tax" Type="decimal" Precision="20" Scale="2" />
+          <Property Name="tax" Type="decimal" Precision="20" Scale="3" />
           <Property Name="taxtype" Type="int" />
           <Property Name="name" Type="nvarchar" MaxLength="200" />
           <Property Name="isApproved" Type="tinyint" />
@@ -438,7 +439,7 @@
           <Property Name="details" Type="ntext" />
           <Property Name="type" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="image" Type="ntext" />
-          <Property Name="taxes" Type="decimal" Precision="20" Scale="2" />
+          <Property Name="taxes" Type="decimal" Precision="20" Scale="3" />
           <Property Name="isActive" Type="tinyint" />
           <Property Name="min" Type="int" />
           <Property Name="max" Type="int" />
@@ -474,7 +475,7 @@
           <Property Name="itemMatId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="itemId" Type="int" />
           <Property Name="materialId" Type="int" />
-          <Property Name="quantity" Type="decimal" Precision="20" Scale="2" />
+          <Property Name="quantity" Type="decimal" Precision="20" Scale="3" />
           <Property Name="unitId" Type="int" />
           <Property Name="price" Type="decimal" Precision="20" Scale="2" />
         </EntityType>
@@ -517,7 +518,7 @@
           <Property Name="createUserId" Type="int" />
           <Property Name="updateUserId" Type="int" />
           <Property Name="notes" Type="ntext" />
-          <Property Name="price" Type="decimal" Precision="20" Scale="2" />
+          <Property Name="price" Type="decimal" Precision="20" Scale="3" />
           <Property Name="itemUnitId" Type="int" />
           <Property Name="itemSerial" Type="nvarchar" MaxLength="200" Nullable="false" />
           <Property Name="inventoryItemLocId" Type="int" />
@@ -532,14 +533,14 @@
           <Property Name="unitValue" Type="int" />
           <Property Name="defaultSale" Type="smallint" />
           <Property Name="defaultPurchase" Type="smallint" />
-          <Property Name="price" Type="decimal" Precision="20" Scale="2" />
+          <Property Name="price" Type="decimal" Precision="20" Scale="3" />
           <Property Name="barcode" Type="nvarchar" MaxLength="200" />
           <Property Name="createDate" Type="datetime2" Precision="7" />
           <Property Name="updateDate" Type="datetime2" Precision="7" />
           <Property Name="createUserId" Type="int" />
           <Property Name="updateUserId" Type="int" />
           <Property Name="subUnitId" Type="int" />
-          <Property Name="purchasePrice" Type="decimal" Precision="20" Scale="2" />
+          <Property Name="purchasePrice" Type="decimal" Precision="20" Scale="3" />
           <Property Name="storageCostId" Type="int" />
           <Property Name="isActive" Type="tinyint" />
         </EntityType>
@@ -551,7 +552,7 @@
           <Property Name="itemTransId" Type="int" />
           <Property Name="offerId" Type="int" />
           <Property Name="discountType" Type="nvarchar" MaxLength="100" />
-          <Property Name="discountValue" Type="decimal" Precision="20" Scale="2" />
+          <Property Name="discountValue" Type="decimal" Precision="20" Scale="3" />
           <Property Name="notes" Type="ntext" />
           <Property Name="createDate" Type="datetime2" Precision="7" />
           <Property Name="updateDate" Type="datetime2" Precision="7" />
@@ -612,9 +613,9 @@
           </Key>
           <Property Name="membershipId" Type="int" Nullable="false" />
           <Property Name="name" Type="nvarchar" MaxLength="100" />
-          <Property Name="deliveryDiscount" Type="decimal" Precision="20" Scale="2" />
+          <Property Name="deliveryDiscount" Type="decimal" Precision="20" Scale="3" />
           <Property Name="deliveryDiscountType" Type="nvarchar" MaxLength="100" />
-          <Property Name="invoiceDiscount" Type="decimal" Precision="20" Scale="2" />
+          <Property Name="invoiceDiscount" Type="decimal" Precision="20" Scale="3" />
           <Property Name="invoiceDiscountType" Type="nvarchar" MaxLength="100" />
           <Property Name="notes" Type="ntext" />
           <Property Name="createDate" Type="datetime2" Precision="7" />
@@ -677,7 +678,7 @@
           <Property Name="code" Type="nvarchar" MaxLength="100" />
           <Property Name="isActive" Type="tinyint" />
           <Property Name="discountType" Type="nvarchar" MaxLength="100" />
-          <Property Name="discountValue" Type="decimal" Precision="20" Scale="2" />
+          <Property Name="discountValue" Type="decimal" Precision="20" Scale="3" />
           <Property Name="startDate" Type="datetime2" Precision="7" />
           <Property Name="endDate" Type="datetime2" Precision="7" />
           <Property Name="createDate" Type="datetime2" Precision="7" />
@@ -714,11 +715,11 @@
             <PropertyRef Name="pointId" />
           </Key>
           <Property Name="pointId" Type="int" Nullable="false" />
-          <Property Name="Cash" Type="decimal" Precision="20" Scale="2" />
+          <Property Name="Cash" Type="decimal" Precision="20" Scale="3" />
           <Property Name="CashPoints" Type="int" />
           <Property Name="invoiceCount" Type="int" />
           <Property Name="invoiceCountPoints" Type="int" />
-          <Property Name="CashArchive" Type="decimal" Precision="20" Scale="2" />
+          <Property Name="CashArchive" Type="decimal" Precision="20" Scale="3" />
           <Property Name="CashPointsArchive" Type="int" />
           <Property Name="invoiceCountArchive" Type="int" />
           <Property Name="invoiceCountPoinstArchive" Type="int" />
@@ -737,7 +738,7 @@
           <Property Name="posId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="code" Type="nvarchar" MaxLength="100" />
           <Property Name="name" Type="nvarchar" MaxLength="100" />
-          <Property Name="balance" Type="decimal" Precision="20" Scale="2" />
+          <Property Name="balance" Type="decimal" Precision="20" Scale="3" />
           <Property Name="branchId" Type="int" />
           <Property Name="createDate" Type="datetime2" Precision="7" />
           <Property Name="updateDate" Type="datetime2" Precision="7" />
@@ -745,7 +746,7 @@
           <Property Name="updateUserId" Type="int" />
           <Property Name="isActive" Type="tinyint" />
           <Property Name="note" Type="ntext" />
-          <Property Name="balanceAll" Type="decimal" Precision="20" Scale="2" />
+          <Property Name="balanceAll" Type="decimal" Precision="20" Scale="3" />
         </EntityType>
         <EntityType Name="posSetting">
           <Key>
@@ -870,7 +871,7 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           </Key>
           <Property Name="costId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="name" Type="nvarchar" MaxLength="200" />
-          <Property Name="costVal" Type="decimal" Precision="20" Scale="2" />
+          <Property Name="costVal" Type="decimal" Precision="20" Scale="3" />
           <Property Name="itemId" Type="int" />
           <Property Name="createDate" Type="datetime2" Precision="7" />
           <Property Name="updateDate" Type="datetime2" Precision="7" />
@@ -902,8 +903,8 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           </Key>
           <Property Name="shippingCompanyId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="name" Type="nchar" MaxLength="10" />
-          <Property Name="RealDeliveryCost" Type="decimal" Precision="20" Scale="2" />
-          <Property Name="deliveryCost" Type="decimal" Precision="20" Scale="2" />
+          <Property Name="RealDeliveryCost" Type="decimal" Precision="20" Scale="3" />
+          <Property Name="deliveryCost" Type="decimal" Precision="20" Scale="3" />
           <Property Name="deliveryType" Type="nvarchar" MaxLength="100" />
           <Property Name="notes" Type="ntext" />
           <Property Name="createDate" Type="datetime2" Precision="7" />
@@ -925,7 +926,7 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           </Key>
           <Property Name="storageCostId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="name" Type="nvarchar" MaxLength="200" />
-          <Property Name="cost" Type="decimal" Precision="20" Scale="2" Nullable="false" />
+          <Property Name="cost" Type="decimal" Precision="20" Scale="3" Nullable="false" />
           <Property Name="note" Type="ntext" />
           <Property Name="isActive" Type="tinyint" />
           <Property Name="createUserId" Type="int" />
@@ -940,7 +941,7 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <Property Name="subscriptionFeesId" Type="int" Nullable="false" />
           <Property Name="membershipId" Type="int" />
           <Property Name="monthsCount" Type="int" />
-          <Property Name="Amount" Type="decimal" Precision="20" Scale="2" />
+          <Property Name="Amount" Type="decimal" Precision="20" Scale="3" />
           <Property Name="notes" Type="ntext" />
           <Property Name="createDate" Type="datetime2" Precision="7" />
           <Property Name="updateDate" Type="datetime2" Precision="7" />
@@ -1020,7 +1021,7 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <Property Name="role" Type="nvarchar" MaxLength="50" />
           <Property Name="image" Type="ntext" />
           <Property Name="groupId" Type="int" />
-          <Property Name="balance" Type="decimal" Precision="20" Scale="2" />
+          <Property Name="balance" Type="decimal" Precision="20" Scale="3" />
           <Property Name="balanceType" Type="tinyint" />
         </EntityType>
         <EntityType Name="userSetValues">
@@ -4206,7 +4207,7 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="isActive" Type="Byte" />
           <Property Name="fax" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="maxDeserve" Type="Decimal" Precision="20" Scale="2" />
+          <Property Name="maxDeserve" Type="Decimal" Precision="20" Scale="3" />
           <NavigationProperty Name="agentMemberships" Relationship="Self.FK_agentMemberships_agents" FromRole="agents" ToRole="agentMemberships" />
           <NavigationProperty Name="Points" Relationship="Self.FK_agents_Points" FromRole="agents" ToRole="Points" />
           <NavigationProperty Name="users" Relationship="Self.FK_agents_users" FromRole="agents" ToRole="users" />
@@ -4215,6 +4216,7 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <NavigationProperty Name="invoices" Relationship="Self.FK_invoices_agents" FromRole="agents" ToRole="invoices" />
           <NavigationProperty Name="medalAgent" Relationship="Self.FK_medalAgent_agents" FromRole="agents" ToRole="medalAgent" />
           <NavigationProperty Name="Points1" Relationship="Self.FK_Points_agents" FromRole="agents" ToRole="Points" />
+          <Property Name="isLimited" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="banks">
           <Key>
@@ -4240,7 +4242,7 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           </Key>
           <Property Name="bondId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="number" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="amount" Type="Decimal" Precision="20" Scale="2" />
+          <Property Name="amount" Type="Decimal" Precision="20" Scale="3" />
           <Property Name="deserveDate" Type="DateTime" Precision="7" />
           <Property Name="type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="isRecieved" Type="Byte" />
@@ -4351,7 +4353,7 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <Property Name="transNum" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="createDate" Type="DateTime" Precision="7" />
           <Property Name="updateDate" Type="DateTime" Precision="7" />
-          <Property Name="cash" Type="Decimal" Precision="20" Scale="2" />
+          <Property Name="cash" Type="Decimal" Precision="20" Scale="3" />
           <Property Name="updateUserId" Type="Int32" />
           <Property Name="createUserId" Type="Int32" />
           <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
@@ -4394,7 +4396,7 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <Property Name="details" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="image" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="isActive" Type="Int16" />
-          <Property Name="taxes" Type="Decimal" Precision="20" Scale="2" />
+          <Property Name="taxes" Type="Decimal" Precision="20" Scale="3" />
           <Property Name="parentId" Type="Int32" />
           <Property Name="createDate" Type="DateTime" Precision="7" />
           <Property Name="updateDate" Type="DateTime" Precision="7" />
@@ -4452,14 +4454,14 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <Property Name="code" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="isActive" Type="Byte" />
           <Property Name="discountType" Type="Byte" />
-          <Property Name="discountValue" Type="Decimal" Precision="20" Scale="2" />
+          <Property Name="discountValue" Type="Decimal" Precision="20" Scale="3" />
           <Property Name="startDate" Type="DateTime" Precision="7" />
           <Property Name="endDate" Type="DateTime" Precision="7" />
           <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="quantity" Type="Int32" />
           <Property Name="remainQ" Type="Int32" />
-          <Property Name="invMin" Type="Decimal" Precision="20" Scale="2" />
-          <Property Name="invMax" Type="Decimal" Precision="20" Scale="2" />
+          <Property Name="invMin" Type="Decimal" Precision="20" Scale="3" />
+          <Property Name="invMax" Type="Decimal" Precision="20" Scale="3" />
           <Property Name="createDate" Type="DateTime" Precision="7" />
           <Property Name="updateDate" Type="DateTime" Precision="7" />
           <Property Name="createUserId" Type="Int32" />
@@ -4480,7 +4482,7 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <Property Name="updateDate" Type="DateTime" Precision="7" />
           <Property Name="createUserId" Type="Int32" />
           <Property Name="updateUserId" Type="Int32" />
-          <Property Name="discountValue" Type="Decimal" Precision="20" Scale="2" />
+          <Property Name="discountValue" Type="Decimal" Precision="20" Scale="3" />
           <Property Name="discountType" Type="Byte" />
           <NavigationProperty Name="coupons" Relationship="Self.FK_couponsInvoices_coupons" FromRole="couponsInvoices" ToRole="coupons" />
           <NavigationProperty Name="invoices" Relationship="Self.FK_couponsInvoices_invoices" FromRole="couponsInvoices" ToRole="invoices" />
@@ -4512,8 +4514,6 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <Property Name="errorId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="num" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="msg" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="windowName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="sender" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="posId" Type="Int32" />
           <Property Name="branchId" Type="Int32" />
           <Property Name="createDate" Type="DateTime" Precision="7" />
@@ -4521,6 +4521,8 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <NavigationProperty Name="branches" Relationship="Self.FK_error_branches" FromRole="error" ToRole="branches" />
           <NavigationProperty Name="pos" Relationship="Self.FK_error_pos" FromRole="error" ToRole="pos" />
           <NavigationProperty Name="users" Relationship="Self.FK_error_users" FromRole="error" ToRole="users" />
+          <Property Name="stackTrace" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="targetSite" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Expenses">
           <Key>
@@ -4635,11 +4637,11 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <Property Name="createUserId" Type="Int32" />
           <Property Name="invType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="discountType" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="discountValue" Type="Decimal" Precision="20" Scale="4" />
-          <Property Name="total" Type="Decimal" Precision="20" Scale="2" />
-          <Property Name="totalNet" Type="Decimal" Precision="20" Scale="2" />
-          <Property Name="paid" Type="Decimal" Precision="20" Scale="2" />
-          <Property Name="deserved" Type="Decimal" Precision="20" Scale="2" />
+          <Property Name="discountValue" Type="Decimal" Precision="20" Scale="3" />
+          <Property Name="total" Type="Decimal" Precision="20" Scale="3" />
+          <Property Name="totalNet" Type="Decimal" Precision="20" Scale="3" />
+          <Property Name="paid" Type="Decimal" Precision="20" Scale="3" />
+          <Property Name="deserved" Type="Decimal" Precision="20" Scale="3" />
           <Property Name="deservedDate" Type="DateTime" Precision="0" />
           <Property Name="invDate" Type="DateTime" Precision="7" />
           <Property Name="updateDate" Type="DateTime" Precision="7" />
@@ -4652,7 +4654,7 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <Property Name="vendorInvDate" Type="DateTime" Precision="7" />
           <Property Name="branchId" Type="Int32" />
           <Property Name="posId" Type="Int32" />
-          <Property Name="tax" Type="Decimal" Precision="20" Scale="2" />
+          <Property Name="tax" Type="Decimal" Precision="20" Scale="3" />
           <Property Name="taxtype" Type="Int32" />
           <Property Name="name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="isApproved" Type="Byte" />
@@ -4708,7 +4710,7 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <Property Name="details" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="image" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="taxes" Type="Decimal" Precision="20" Scale="2" />
+          <Property Name="taxes" Type="Decimal" Precision="20" Scale="3" />
           <Property Name="isActive" Type="Byte" />
           <Property Name="min" Type="Int32" />
           <Property Name="max" Type="Int32" />
@@ -4764,7 +4766,7 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <Property Name="itemMatId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="itemId" Type="Int32" />
           <Property Name="materialId" Type="Int32" />
-          <Property Name="quantity" Type="Decimal" Precision="20" Scale="2" />
+          <Property Name="quantity" Type="Decimal" Precision="20" Scale="3" />
           <Property Name="unitId" Type="Int32" />
           <Property Name="price" Type="Decimal" Precision="20" Scale="2" />
           <NavigationProperty Name="items" Relationship="Self.FK_itemsMaterials_items" FromRole="itemsMaterials" ToRole="items" />
@@ -4818,7 +4820,7 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <Property Name="createUserId" Type="Int32" />
           <Property Name="updateUserId" Type="Int32" />
           <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="price" Type="Decimal" Precision="20" Scale="2" />
+          <Property Name="price" Type="Decimal" Precision="20" Scale="3" />
           <Property Name="itemUnitId" Type="Int32" />
           <Property Name="itemSerial" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="inventoryItemLocId" Type="Int32" />
@@ -4839,14 +4841,14 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <Property Name="unitValue" Type="Int32" />
           <Property Name="defaultSale" Type="Int16" />
           <Property Name="defaultPurchase" Type="Int16" />
-          <Property Name="price" Type="Decimal" Precision="20" Scale="2" />
+          <Property Name="price" Type="Decimal" Precision="20" Scale="3" />
           <Property Name="barcode" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="createDate" Type="DateTime" Precision="7" />
           <Property Name="updateDate" Type="DateTime" Precision="7" />
           <Property Name="createUserId" Type="Int32" />
           <Property Name="updateUserId" Type="Int32" />
           <Property Name="subUnitId" Type="Int32" />
-          <Property Name="purchasePrice" Type="Decimal" Precision="20" Scale="2" />
+          <Property Name="purchasePrice" Type="Decimal" Precision="20" Scale="3" />
           <Property Name="storageCostId" Type="Int32" />
           <Property Name="isActive" Type="Byte" />
           <NavigationProperty Name="items" Relationship="Self.FK_itemsUnits_items" FromRole="itemsUnits" ToRole="items" />
@@ -4868,7 +4870,7 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <Property Name="itemTransId" Type="Int32" />
           <Property Name="offerId" Type="Int32" />
           <Property Name="discountType" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="discountValue" Type="Decimal" Precision="20" Scale="2" />
+          <Property Name="discountValue" Type="Decimal" Precision="20" Scale="3" />
           <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="createDate" Type="DateTime" Precision="7" />
           <Property Name="updateDate" Type="DateTime" Precision="7" />
@@ -4947,9 +4949,9 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           </Key>
           <Property Name="membershipId" Type="Int32" Nullable="false" />
           <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="deliveryDiscount" Type="Decimal" Precision="20" Scale="2" />
+          <Property Name="deliveryDiscount" Type="Decimal" Precision="20" Scale="3" />
           <Property Name="deliveryDiscountType" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="invoiceDiscount" Type="Decimal" Precision="20" Scale="2" />
+          <Property Name="invoiceDiscount" Type="Decimal" Precision="20" Scale="3" />
           <Property Name="invoiceDiscountType" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="createDate" Type="DateTime" Precision="7" />
@@ -5029,7 +5031,7 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <Property Name="code" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="isActive" Type="Byte" />
           <Property Name="discountType" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="discountValue" Type="Decimal" Precision="20" Scale="2" />
+          <Property Name="discountValue" Type="Decimal" Precision="20" Scale="3" />
           <Property Name="startDate" Type="DateTime" Precision="7" />
           <Property Name="endDate" Type="DateTime" Precision="7" />
           <Property Name="createDate" Type="DateTime" Precision="7" />
@@ -5064,11 +5066,11 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
             <PropertyRef Name="pointId" />
           </Key>
           <Property Name="pointId" Type="Int32" Nullable="false" />
-          <Property Name="Cash" Type="Decimal" Precision="20" Scale="2" />
+          <Property Name="Cash" Type="Decimal" Precision="20" Scale="3" />
           <Property Name="CashPoints" Type="Int32" />
           <Property Name="invoiceCount" Type="Int32" />
           <Property Name="invoiceCountPoints" Type="Int32" />
-          <Property Name="CashArchive" Type="Decimal" Precision="20" Scale="2" />
+          <Property Name="CashArchive" Type="Decimal" Precision="20" Scale="3" />
           <Property Name="CashPointsArchive" Type="Int32" />
           <Property Name="invoiceCountArchive" Type="Int32" />
           <Property Name="invoiceCountPoinstArchive" Type="Int32" />
@@ -5091,7 +5093,7 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <Property Name="posId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="code" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="balance" Type="Decimal" Precision="20" Scale="2" />
+          <Property Name="balance" Type="Decimal" Precision="20" Scale="3" />
           <Property Name="branchId" Type="Int32" />
           <Property Name="createDate" Type="DateTime" Precision="7" />
           <Property Name="updateDate" Type="DateTime" Precision="7" />
@@ -5099,7 +5101,7 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <Property Name="updateUserId" Type="Int32" />
           <Property Name="isActive" Type="Byte" />
           <Property Name="note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="balanceAll" Type="Decimal" Precision="20" Scale="2" />
+          <Property Name="balanceAll" Type="Decimal" Precision="20" Scale="3" />
           <NavigationProperty Name="branches" Relationship="Self.FK_pos_branches" FromRole="pos" ToRole="branches" />
           <NavigationProperty Name="cashTransfer" Relationship="Self.FK_cashTransfer_pos" FromRole="pos" ToRole="cashTransfer" />
           <NavigationProperty Name="cashTransfer1" Relationship="Self.FK_cashTransfer_pos1" FromRole="pos" ToRole="cashTransfer" />
@@ -5201,7 +5203,7 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           </Key>
           <Property Name="costId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="costVal" Type="Decimal" Precision="20" Scale="2" />
+          <Property Name="costVal" Type="Decimal" Precision="20" Scale="3" />
           <Property Name="itemId" Type="Int32" />
           <Property Name="createDate" Type="DateTime" Precision="7" />
           <Property Name="updateDate" Type="DateTime" Precision="7" />
@@ -5239,8 +5241,8 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           </Key>
           <Property Name="shippingCompanyId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="name" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-          <Property Name="RealDeliveryCost" Type="Decimal" Precision="20" Scale="2" />
-          <Property Name="deliveryCost" Type="Decimal" Precision="20" Scale="2" />
+          <Property Name="RealDeliveryCost" Type="Decimal" Precision="20" Scale="3" />
+          <Property Name="deliveryCost" Type="Decimal" Precision="20" Scale="3" />
           <Property Name="deliveryType" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="createDate" Type="DateTime" Precision="7" />
@@ -5264,7 +5266,7 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           </Key>
           <Property Name="storageCostId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="cost" Type="Decimal" Precision="20" Scale="2" Nullable="false" />
+          <Property Name="cost" Type="Decimal" Precision="20" Scale="3" Nullable="false" />
           <Property Name="note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="isActive" Type="Byte" />
           <Property Name="createUserId" Type="Int32" />
@@ -5280,7 +5282,7 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <Property Name="subscriptionFeesId" Type="Int32" Nullable="false" />
           <Property Name="membershipId" Type="Int32" />
           <Property Name="monthsCount" Type="Int32" />
-          <Property Name="Amount" Type="Decimal" Precision="20" Scale="2" />
+          <Property Name="Amount" Type="Decimal" Precision="20" Scale="3" />
           <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="createDate" Type="DateTime" Precision="7" />
           <Property Name="updateDate" Type="DateTime" Precision="7" />
@@ -5361,7 +5363,7 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <Property Name="role" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="image" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="groupId" Type="Int32" />
-          <Property Name="balance" Type="Decimal" Precision="20" Scale="2" />
+          <Property Name="balance" Type="Decimal" Precision="20" Scale="3" />
           <Property Name="balanceType" Type="Byte" />
           <NavigationProperty Name="agentMemberships" Relationship="Self.FK_agentMemberships_users1" FromRole="users" ToRole="agentMemberships" />
           <NavigationProperty Name="agentMemberships1" Relationship="Self.FK_agentMemberships_users2" FromRole="users" ToRole="agentMemberships" />
@@ -8691,6 +8693,7 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <EntitySetMapping Name="agents">
             <EntityTypeMapping TypeName="incposdbModel.agents">
               <MappingFragment StoreEntitySet="agents">
+                <ScalarProperty Name="isLimited" ColumnName="isLimited" />
                 <ScalarProperty Name="agentId" ColumnName="agentId" />
                 <ScalarProperty Name="pointId" ColumnName="pointId" />
                 <ScalarProperty Name="name" ColumnName="name" />
@@ -8960,11 +8963,11 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <EntitySetMapping Name="error">
             <EntityTypeMapping TypeName="incposdbModel.error">
               <MappingFragment StoreEntitySet="error">
+                <ScalarProperty Name="targetSite" ColumnName="targetSite" />
+                <ScalarProperty Name="stackTrace" ColumnName="stackTrace" />
                 <ScalarProperty Name="errorId" ColumnName="errorId" />
                 <ScalarProperty Name="num" ColumnName="num" />
                 <ScalarProperty Name="msg" ColumnName="msg" />
-                <ScalarProperty Name="windowName" ColumnName="windowName" />
-                <ScalarProperty Name="sender" ColumnName="sender" />
                 <ScalarProperty Name="posId" ColumnName="posId" />
                 <ScalarProperty Name="branchId" ColumnName="branchId" />
                 <ScalarProperty Name="createDate" ColumnName="createDate" />
