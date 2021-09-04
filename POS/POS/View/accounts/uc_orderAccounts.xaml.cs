@@ -130,6 +130,8 @@ namespace POS.View.accounts
 
                 btn_image.IsEnabled = false;
 
+                btn_save.IsEnabled = false;
+
                 #region fill process type
                 var typelist = new[] {
                 new { Text = MainWindow.resourcemanager.GetString("trCredit")    , Value = "balance" },
@@ -324,6 +326,7 @@ namespace POS.View.accounts
                             btn_save.IsEnabled = false;
                         else
                             btn_save.IsEnabled = true;
+
                         tb_cash.IsEnabled = true;
 
                         btn_image.IsEnabled = true;
@@ -331,7 +334,7 @@ namespace POS.View.accounts
                         tb_invoiceNum.Text = invoice.invNumber;
                         agentId = invoice.agentId.Value;
                         userId = invoice.shipUserId.Value;
-
+                        tb_cash.Text = SectionData.DecTostring(cashtrans.cash);
                         if (cb_paymentProcessType.SelectedIndex == 0)
                         {
                             tb_cash.Text = invoice.deserved.ToString();
@@ -342,6 +345,11 @@ namespace POS.View.accounts
                             tb_cash.IsEnabled = true;
                             tb_cash.Clear();
                         }
+                    }
+                    else
+                    {
+                        btn_save.IsEnabled = false;
+                        btn_image.IsEnabled = false;
                     }
                 }
                 if (sender != null)
@@ -425,8 +433,8 @@ namespace POS.View.accounts
         }
         private  void Btn_clear_Click(object sender, RoutedEventArgs e)
         {//clear
-            try
-            {
+            //try
+            //{
                 if (sender != null)
                     SectionData.StartAwait(grid_ucOrderAccounts);
                 //////////////////////
@@ -475,18 +483,18 @@ namespace POS.View.accounts
                 SectionData.clearValidate(tb_docNum, p_errorDocNum);
                 SectionData.clearValidate(tb_docNum, p_errorDocNum);
                 SectionData.clearValidate(tb_docNumCheque, p_errorDocNumCheque);
-                if (sender != null)
-                    SectionData.EndAwait(grid_ucOrderAccounts);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_ucOrderAccounts);
-                SectionData.ExceptionMessage(ex, this);
-            }
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_ucOrderAccounts);
+            //}
+            //catch (Exception ex)
+            //{
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_ucOrderAccounts);
+            //    SectionData.ExceptionMessage(ex, this);
+            //}
         }
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
-        {//export
+        {//excel
             try
             {
                 if (sender != null)
@@ -507,7 +515,10 @@ namespace POS.View.accounts
                         string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                         ReportCls.checkLang();
-
+                        foreach (var r in invoiceQuery)
+                        {
+                            r.deserved = decimal.Parse(SectionData.DecTostring(r.deserved));
+                        }
                         clsReports.orderReport(invoiceQuery, rep, reppath);
                         clsReports.setReportLanguage(paramarr);
                         clsReports.Header(paramarr);
@@ -929,10 +940,10 @@ namespace POS.View.accounts
 
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {//save
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_ucOrderAccounts);
+            //try
+            //{
+            //    if (sender != null)
+            //        SectionData.StartAwait(grid_ucOrderAccounts);
 
                 if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one"))
                 {
@@ -1040,34 +1051,37 @@ namespace POS.View.accounts
 
                         string s = await cashModel.payOrderInvoice(invoice.invoiceId, invoice.invStatusId, cash.cash.Value, processType, cash);
 
-                        if (!s.Equals(""))
-                        {
-                            if (cb_paymentProcessType.SelectedValue.ToString().Equals("cash"))
-                              await  calcBalance(decimal.Parse(tb_cash.Text));
+                    if (!s.Equals(""))
+                    {
+                        if (cb_paymentProcessType.SelectedValue.ToString().Equals("cash"))
+                            await calcBalance(decimal.Parse(tb_cash.Text));
 
-                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
-                            Btn_clear_Click(null, null);
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                        Btn_clear_Click(null, null);
 
-                            await RefreshInvoiceList();
-                            Tb_search_TextChanged(null, null);
-                        }
-                        else
-                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                        await RefreshInvoiceList();
+                        Tb_search_TextChanged(null, null);
+                    }
+                    else
+                    {
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                        MessageBox.Show("warning");
+                    }
                     }
                     #endregion
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
 
-                if (sender != null)
-                    SectionData.EndAwait(grid_ucOrderAccounts);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_ucOrderAccounts);
-                SectionData.ExceptionMessage(ex, this);
-            }
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_ucOrderAccounts);
+            //}
+            //catch (Exception ex)
+            //{
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_ucOrderAccounts);
+            //    SectionData.ExceptionMessage(ex, this);
+            //}
         }
 
         ReportCls reportclass = new ReportCls();
@@ -1157,7 +1171,7 @@ namespace POS.View.accounts
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
-        {
+        {//pdf
             try
             {
                 if (sender != null)
@@ -1174,7 +1188,10 @@ namespace POS.View.accounts
                 string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                 ReportCls.checkLang();
-
+                foreach (var r in invoiceQuery)
+                {
+                    r.deserved = decimal.Parse(SectionData.DecTostring(r.deserved));
+                }
                 clsReports.orderReport(invoiceQuery, rep, reppath);
                 clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);

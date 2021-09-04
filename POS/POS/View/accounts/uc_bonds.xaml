@@ -145,20 +145,15 @@
                         </Style>
                     </DataGrid.Resources>
                     <DataGrid.Columns>
-                        <!--Binding="{Binding Path=.,Converter={StaticResource depositorNameConverter }}"-->
-                        <!--<DataGridTextColumn Width="*"  Header="Number" Binding="{Binding Path=number}"/>
-                        <DataGridTextColumn Width="*"  Header="Deposit From"   Binding="{Binding Path=agentId}"/>
-                        <DataGridTextColumn Width="*"  Header="Depositor"     Binding="{Binding Path=agentName}"/>
-                        <DataGridTextColumn Width="*"  Header="Amount" Binding="{Binding Path=Amount}"/>
-                        <DataGridTextColumn Width="*"  Header="Deserve Date" Binding="{Binding Path=deserveDate}"/>-->
-
                         <DataGridTextColumn Width="*"  Header="Number" Binding="{Binding Path=number}"/>
                         <!--<DataGridTextColumn Width="*"  Header="Deposit From"    Binding="{Binding side,Converter={StaticResource depositorTypeConverter }}"  Visibility="Collapsed" />-->
                         <DataGridTextColumn Width="*"  Header="Depositor"       Binding="{Binding Path=.,Converter={StaticResource depositorBondeConverter }}" />
                         <!--<DataGridTextColumn Width="*"  Header="Depositor"       Binding="{Binding Path=ctside}" />-->
                         <DataGridTextColumn Width="*"   Header="Process Type"   Binding="{Binding Path =type,Converter={StaticResource transTypeConverter }}"/>
-                        <DataGridTextColumn Width="*"  Header="Cash"            Binding="{Binding Path=amount}"/>
-                        <DataGridTextColumn Width="*"  Header="Deserve Date"    Binding="{Binding Path=deserveDate}"/>
+                        <!--<DataGridTextColumn Width="*"  Header="Cash"            Binding="{Binding Path=amount}"/>-->
+                        <DataGridTextColumn Width="*"  Header="Cash"            Binding="{Binding Path =amount,Converter={StaticResource accuracyConverter }}"/>
+                        <!--<DataGridTextColumn Width="*"  Header="Deserve Date"    Binding="{Binding Path=deserveDate}"/>-->
+                        <DataGridTextColumn Width="*"  Header="Deserve Date"    Binding="{Binding Path=deserveDate,Converter={StaticResource dateFrameConverter }}"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </Border>
@@ -509,6 +504,8 @@
                             </Path.ToolTip>
                         </Path>
 
+                        
+                        <!--Text ="{Binding Path=deserveDate,Converter={StaticResource dateFrameConverter }}"-->
 
                         <DatePicker Grid.Row="4" x:Name="dp_deservecDate"
                                           BorderBrush="#737373"  BorderThickness="0" 

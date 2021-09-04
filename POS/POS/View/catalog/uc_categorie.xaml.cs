@@ -202,6 +202,7 @@ namespace POS.View
                 {
                     cb_parentCategorie.Background = (Brush)bc.ConvertFrom("#f8f8f8");
                     p_errorParentCategory.Visibility = Visibility.Collapsed;
+
                 }
             }
             catch (Exception ex)
@@ -649,6 +650,8 @@ namespace POS.View
                     this.DataContext = category;
                     cb_parentCategorie.SelectedValue = category.parentId;
 
+                    tb_taxes.Text = SectionData.DecTostring(category.taxes);
+
                     getImg();
 
                     #region delete
@@ -720,6 +723,7 @@ namespace POS.View
             category = categories.ToList().Find(c => c.categoryId == categoryId);
             this.DataContext = category;
             cb_parentCategorie.SelectedValue = category.parentId;
+            tb_taxes.Text = SectionData.DecTostring(category.taxes);
             if (categories.Where(x => (x.categoryCode.Contains(txtCategorySearch) ||
              x.name.Contains(txtCategorySearch) ||
              x.details.Contains(txtCategorySearch)
@@ -1085,7 +1089,7 @@ namespace POS.View
         #endregion
         #region Excel
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
-        {
+        {//excel
             try
             {
                 if (sender != null)
@@ -1106,7 +1110,10 @@ namespace POS.View
                         string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                         ReportCls.checkLang();
-
+                        foreach (var r in categoriesQuery)
+                        {
+                            r.taxes = decimal.Parse(SectionData.DecTostring(r.taxes));
+                        }
                         clsReports.categoryReport(categoriesQuery, rep, reppath);
                         clsReports.setReportLanguage(paramarr);
                         clsReports.Header(paramarr);
@@ -1423,7 +1430,7 @@ namespace POS.View
         LocalReport rep = new LocalReport();
         SaveFileDialog saveFileDialog = new SaveFileDialog();
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
-        {
+        {//pdf
             List<ReportParameter> paramarr = new List<ReportParameter>();
 
             string addpath;
@@ -1436,7 +1443,10 @@ namespace POS.View
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
             ReportCls.checkLang();
-
+            foreach (var r in categoriesQuery)
+            {
+                r.taxes = decimal.Parse(SectionData.DecTostring(r.taxes));
+            }
             clsReports.categoryReport(categoriesQuery, rep, reppath);
             clsReports.setReportLanguage(paramarr);
             clsReports.Header(paramarr);

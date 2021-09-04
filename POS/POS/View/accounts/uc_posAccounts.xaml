@@ -156,7 +156,8 @@
                         <DataGridTextColumn Width="*"  Header="From pos"        Binding="{Binding Path=posName}"/>
                         <DataGridTextColumn Width="*"  Header="To pos"          Binding="{Binding Path=pos2Name}"/>
                         <DataGridTextColumn Width="*"  Header="type"            Binding="{Binding transType,Converter={StaticResource transTypeConverter }}"/>
-                        <DataGridTextColumn Width="*"  Header="Cash"            Binding="{Binding Path=cash}"/>
+                        <!--<DataGridTextColumn Width="*"  Header="Cash"        Binding="{Binding Path=cash}"/>-->
+                        <DataGridTextColumn Width="*"  Header="Cash"            Binding="{Binding Path =cash,Converter={StaticResource accuracyConverter }}"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </Border>

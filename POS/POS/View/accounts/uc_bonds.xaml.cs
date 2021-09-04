@@ -4,7 +4,9 @@ using netoaster;
 using POS.Classes;
 using POS.View.windows;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -103,6 +105,10 @@ namespace POS.View.accounts
                         btn_image.IsEnabled = true;
 
                         tb_number.Text = bond.number;
+
+                        tb_amount.Text = SectionData.DecTostring(bond.amount);
+
+                        dp_deservecDate.Text = SectionData.DateToString(bond.deserveDate);
 
                         if (bond.isRecieved == 1)
                         {
@@ -481,7 +487,7 @@ namespace POS.View.accounts
 
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
-        {//export
+        {//excel
             try
             {
                 if (sender != null)
@@ -501,6 +507,11 @@ namespace POS.View.accounts
                         else addpath = @"\Reports\Account\EN\BondAccReport.rdlc";
                         string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
                         ReportCls.checkLang();
+                        foreach (var r in bondsQuery)
+                        {
+                            r.amount = decimal.Parse(SectionData.DecTostring(r.amount));
+                            r.deserveDate = Convert.ToDateTime(SectionData.DateToString(r.deserveDate));
+                        }
                         clsReports.bondsReport(bondsQuery, rep, reppath);
                         clsReports.setReportLanguage(paramarr);
                         clsReports.Header(paramarr);
@@ -637,8 +648,25 @@ namespace POS.View.accounts
                 cb_card.SelectedIndex = -1;
                 #endregion
 
-                dp_endSearchDate.SelectedDate = DateTime.Now;
+                //DateTimeFormatInfo dtfi = DateTimeFormatInfo.CurrentInfo;
+                //CultureInfo ldtPckrcultureInfo = new CultureInfo("en-US");
+                //DateTimeFormatInfo dateInfo = new DateTimeFormatInfo();
+                //dateInfo.MonthDayPattern = dtfi.MonthDayPattern;
+                //ldtPckrcultureInfo.DateTimeFormat = dateInfo;
+                //dp_startSearchDate.Culture = ldtPckrcultureInfo;
+
+                //dp_startSearchDate.SelectedDate =DateTime.Parse(SectionData.DateToString(DateTime.Now));
+                //dp_endSearchDate.SelectedDate = DateTime.Now;
+                //dp_startSearchDate.Text = SectionData.DateToString(DateTime.Now);
+
+                SectionData.defaultDatePickerStyle(dp_deservecDate);
+
+                //dp_startSearchDate.SelectedDateFormat = DatePickerFormat.Long;// = Xceed.Wpf.Toolkit.DateTimeFormat.Custom;
+                //dp_startSearchDate.Text = DateTime.Now.Date.ToString("MM-DD-YYYY");
+                //dp_startSearchDate.SelectedDate = DateTime.Now.ToString("dd/MM/yyyy");
+
                 dp_startSearchDate.SelectedDate = DateTime.Now;
+                dp_endSearchDate.SelectedDate = DateTime.Now;
 
                 sDate = dp_startSearchDate.SelectedDate.Value;
                 eDate = dp_endSearchDate.SelectedDate.Value;
@@ -651,7 +679,6 @@ namespace POS.View.accounts
 
                 await RefreshBondsList();
                 Tb_search_TextChanged(null, null);
-
 
 
                 if (sender != null)
@@ -933,7 +960,7 @@ namespace POS.View.accounts
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
-        {
+        {//pdf
             try
             {
                 if (sender != null)
@@ -949,7 +976,14 @@ namespace POS.View.accounts
                 else addpath = @"\Reports\Account\EN\BondAccReport.rdlc";
                 string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
                 ReportCls.checkLang();
+                //List<Bonds> items = new List<Bonds>((dg_bonds.ItemsSource as IEnumerable<Bonds>).OfType<Bonds>());\
+                foreach(var r in bondsQuery)
+                {
+                    r.amount = decimal.Parse(SectionData.DecTostring(r.amount));
+                    r.deserveDate = Convert.ToDateTime(SectionData.DateToString(r.deserveDate));
+                }
                 clsReports.bondsReport(bondsQuery, rep, reppath);
+
                 clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);
                 rep.SetParameters(paramarr);

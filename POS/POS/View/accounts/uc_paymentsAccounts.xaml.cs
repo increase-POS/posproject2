@@ -331,6 +331,8 @@ namespace POS.View.accounts
                     {
                         btn_image.IsEnabled = true;
 
+                        tb_cash.Text = SectionData.DecTostring(cashtrans.cash);
+
                         cb_depositTo.SelectedValue = cashtrans.side;
                         ///////////////////////////
                         btn_add.IsEnabled = false;
@@ -819,7 +821,7 @@ namespace POS.View.accounts
             txt_count.Text = cashesQuery.Count().ToString();
         }
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
-        {//export
+        {//excel
             try
             {
                 if (sender != null)
@@ -841,7 +843,10 @@ namespace POS.View.accounts
                         string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                         ReportCls.checkLang();
-
+                        foreach (var r in cashesQuery)
+                        {
+                            r.cash = decimal.Parse(SectionData.DecTostring(r.cash));
+                        }
                         clsReports.bankAccReport(cashesQuery, rep, reppath);
                         clsReports.setReportLanguage(paramarr);
                         clsReports.Header(paramarr);
@@ -1583,7 +1588,7 @@ namespace POS.View.accounts
         }
 
         private void Btn_pdf1_Click(object sender, RoutedEventArgs e)
-        {
+        {//pdf
             try
             {
                 if (sender != null)
@@ -1601,7 +1606,10 @@ namespace POS.View.accounts
                 string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                 ReportCls.checkLang();
-
+                foreach (var r in cashesQuery)
+                {
+                    r.cash = decimal.Parse(SectionData.DecTostring(r.cash));
+                }
                 clsReports.bankAccReport(cashesQuery, rep, reppath);
                 clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);

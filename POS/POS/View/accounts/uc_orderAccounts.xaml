@@ -214,7 +214,8 @@
                         <DataGridTextColumn Width="*"   Header="Invoice Number" Binding="{Binding Path=invNumber}"/>
                         <DataGridTextColumn Width="*"   Header="sales man" Binding="{Binding Path=shipUserName}"/>
                         <DataGridTextColumn Width="*"   Header="customer" Binding="{Binding Path=agentName}"/>
-                        <DataGridTextColumn Width="*"  Header="Cash" Binding="{Binding Path=deserved}"/>
+                        <!--<DataGridTextColumn Width="*"  Header="Cash" Binding="{Binding Path=deserved}"/>-->
+                        <DataGridTextColumn Width="*"  Header="Cash"  Binding="{Binding Path =deserved,Converter={StaticResource accuracyConverter }}"/>
                         <!--<DataGridTextColumn Width="*"  Header="Status" Binding="{Binding Path=status}"/>-->
                         <DataGridTextColumn Width="*"  Header="Status" Binding="{Binding status,Converter={StaticResource invoiceStatusConverter }}"/>
                     </DataGrid.Columns>

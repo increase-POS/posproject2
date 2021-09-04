@@ -129,7 +129,8 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn Width="*"  Header="Cost"  Binding="{Binding Path=cost}">
+                        <!--Binding="{Binding Path=cost}"-->
+                        <DataGridTextColumn Width="*"  Header="Cost" Binding="{Binding Path =cost,Converter={StaticResource accuracyConverter }}" >
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Style.Triggers>

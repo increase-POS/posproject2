@@ -274,10 +274,10 @@ namespace POS.View.accounts
         }
         private void Dg_receivedAccounts_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//selection
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_ucReceivedAccounts);
+            //try
+            //{
+            //    if (sender != null)
+            //        SectionData.StartAwait(grid_ucReceivedAccounts);
                 SectionData.clearComboBoxValidate(cb_depositFrom, p_errorDepositFrom);
                 SectionData.clearComboBoxValidate(cb_depositorV, p_errordepositor);
                 SectionData.clearComboBoxValidate(cb_depositorC, p_errordepositor);
@@ -317,7 +317,9 @@ namespace POS.View.accounts
                         //////////////////////////
                         tb_transNum.Text = cashtrans.transNum;
 
-                        cb_depositFrom.SelectedValue = cashtrans.side;
+                        tb_cash.Text = SectionData.DecTostring(cashtrans.cash);
+
+                        cb_depositFrom.SelectedValue = "m";
 
                         switch (cb_depositFrom.SelectedValue.ToString())
                         {
@@ -342,15 +344,15 @@ namespace POS.View.accounts
                         cb_card.SelectedValue = cashtrans.cardId;
                     }
                 }
-                if (sender != null)
-                    SectionData.EndAwait(grid_ucReceivedAccounts);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_ucReceivedAccounts);
-                SectionData.ExceptionMessage(ex, this);
-            }
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_ucReceivedAccounts);
+            //}
+            //catch (Exception ex)
+            //{
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_ucReceivedAccounts);
+            //    SectionData.ExceptionMessage(ex, this);
+            //}
         }
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
         {//search
@@ -365,12 +367,12 @@ namespace POS.View.accounts
             {
                 searchText = tb_search.Text.ToLower();
                 cashesQuery = cashes.Where(s => (s.transNum.ToLower().Contains(searchText)
-                || s.cash.ToString().ToLower().Contains(searchText)
+                //|| s.cash.ToString().ToLower().Contains(searchText)
                 )
-                && (s.side == "v" || s.side == "c" || s.side == "u" ||  s.side == "m" || s.side == "sh")
+                //&& (s.side == "v" || s.side == "c" || s.side == "u" ||  s.side == "m" || s.side == "sh")
                 && s.transType == "d" 
-                && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
-                && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
+                //&& s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
+                //&& s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
                 );
 
             });
@@ -735,7 +737,7 @@ namespace POS.View.accounts
         }
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
-        {//export
+        {//excel
             try
             {
                 if (sender != null)
@@ -756,7 +758,10 @@ namespace POS.View.accounts
                         string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                         ReportCls.checkLang();
-
+                        foreach (var r in cashesQuery)
+                        {
+                            r.cash = decimal.Parse(SectionData.DecTostring(r.cash));
+                        }
                         clsReports.bankAccReport(cashesQuery, rep, reppath);
                         clsReports.setReportLanguage(paramarr);
                         clsReports.Header(paramarr);
@@ -1055,10 +1060,10 @@ namespace POS.View.accounts
 
         private void Cb_depositFrom_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//deposit selection
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_ucReceivedAccounts);
+            //try
+            //{
+            //    if (sender != null)
+            //        SectionData.StartAwait(grid_ucReceivedAccounts);
 
                 btn_invoices.IsEnabled = false;
                 switch (cb_depositFrom.SelectedIndex)
@@ -1112,15 +1117,15 @@ namespace POS.View.accounts
                         break;
                 }
 
-                if (sender != null)
-                    SectionData.EndAwait(grid_ucReceivedAccounts);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_ucReceivedAccounts);
-                SectionData.ExceptionMessage(ex, this);
-            }
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_ucReceivedAccounts);
+            //}
+            //catch (Exception ex)
+            //{
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_ucReceivedAccounts);
+            //    SectionData.ExceptionMessage(ex, this);
+            //}
         }
 
         private async Task fillVendors()
@@ -1436,7 +1441,7 @@ namespace POS.View.accounts
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
-        {
+        {//pdf
             try
             {
                 if (sender != null)
@@ -1454,7 +1459,10 @@ namespace POS.View.accounts
                 string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                 ReportCls.checkLang();
-
+                foreach (var r in cashesQuery)
+                {
+                    r.cash = decimal.Parse(SectionData.DecTostring(r.cash));
+                }
                 clsReports.bankAccReport(cashesQuery, rep, reppath);
                 clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);

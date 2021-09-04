@@ -1865,7 +1865,8 @@ namespace POS.View
                     else tbtn_isDefaultSales.IsChecked = false;
 
                     tb_count.Text = itemUnit.unitValue.ToString();
-                    tb_price.Text = itemUnit.price.ToString();
+                    //tb_price.Text = itemUnit.price.ToString();
+                    tb_price.Text = SectionData.DecTostring(itemUnit.price);
                     tb_barcode.Text = itemUnit.barcode;
 
                     drawBarcode(itemUnit.barcode.Substring(1));
@@ -2022,7 +2023,9 @@ namespace POS.View
                             case "p": cb_itemType.SelectedIndex = 4; break;
                         }
                     }
-                    tb_taxes.Text = parentItem.taxes.ToString();
+                    //tb_taxes.Text = parentItem.taxes.ToString();
+                    tb_taxes.Text = SectionData.DecTostring(parentItem.taxes);
+
                     tb_min.Text = parentItem.min.ToString();
                     tb_max.Text = parentItem.max.ToString();
 
@@ -2079,7 +2082,8 @@ namespace POS.View
                 {
                     int catId = (int)cb_categorie.SelectedValue;
                     cat = await categoryModel.GetCategoryByID(catId);
-                    tb_taxes.Text = cat.taxes.ToString();
+                    //tb_taxes.Text = cat.taxes.ToString();
+                    tb_taxes.Text = SectionData.DecTostring(cat.taxes);
                 }
                 tb_barcode.Focus();
                 if (sender != null)
@@ -2253,6 +2257,7 @@ namespace POS.View
                     tb_code.Text = item.code;
                     tb_name.Text = item.name;
                     tb_details.Text = item.details;
+
                     if (item.parentId != null && item.parentId != 0)
                     {
                         cb_parentItem.SelectedValue = (int)item.parentId;
@@ -2282,7 +2287,9 @@ namespace POS.View
                     else
                         cb_itemType.SelectedValue = -1;
 
-                    tb_taxes.Text = item.taxes.ToString();
+                    //tb_taxes.Text = item.taxes.ToString();
+                    tb_taxes.Text = SectionData.DecTostring(item.taxes);
+
                     tb_min.Text = item.min.ToString();
                     tb_max.Text = item.max.ToString();
 
@@ -2392,6 +2399,7 @@ namespace POS.View
                 tb_code.Text = item.code;
                 tb_name.Text = item.name;
                 tb_details.Text = item.details;
+                
                 if (item.parentId != null && item.parentId != 0)
                 {
                     cb_parentItem.SelectedValue = (int)item.parentId;
@@ -2425,7 +2433,8 @@ namespace POS.View
                 else
                     cb_itemType.SelectedValue = -1;
 
-                tb_taxes.Text = item.taxes.ToString();
+                //tb_taxes.Text = item.taxes.ToString();
+                tb_taxes.Text = SectionData.DecTostring(item.taxes);
                 tb_min.Text = item.min.ToString();
                 tb_max.Text = item.max.ToString();
 
@@ -2884,7 +2893,7 @@ namespace POS.View
         #endregion
         #region Excel
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
-        {
+        {//excel
             try
             {
                 if (sender != null)
@@ -2906,7 +2915,10 @@ namespace POS.View
                         string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                         ReportCls.checkLang();
-
+                        foreach (var r in itemsQuery)
+                        {
+                            r.taxes = decimal.Parse(SectionData.DecTostring(r.taxes));
+                        }
                         clsReports.itemReport(itemsQuery, rep, reppath);
                         clsReports.setReportLanguage(paramarr);
                         clsReports.Header(paramarr);
@@ -3181,8 +3193,12 @@ namespace POS.View
         LocalReport rep = new LocalReport();
         SaveFileDialog saveFileDialog = new SaveFileDialog();
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
-        {
-            List<ReportParameter> paramarr = new List<ReportParameter>();
+        {//pdf
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                List<ReportParameter> paramarr = new List<ReportParameter>();
 
             string addpath;
             bool isArabic = ReportCls.checkLang();
@@ -3194,7 +3210,10 @@ namespace POS.View
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
             ReportCls.checkLang();
-
+            foreach (var r in itemsQuery)
+            {
+                r.taxes = decimal.Parse(SectionData.DecTostring(r.taxes));
+            }
             clsReports.itemReport(itemsQuery, rep, reppath);
             clsReports.setReportLanguage(paramarr);
             clsReports.Header(paramarr);
@@ -3209,6 +3228,15 @@ namespace POS.View
             {
                 string filepath = saveFileDialog.FileName;
                 LocalReportExtensions.ExportToPDF(rep, filepath);
+            }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 

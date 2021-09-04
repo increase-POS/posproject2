@@ -218,7 +218,10 @@ namespace POS.View.catalog
                         string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                         ReportCls.checkLang();
-
+                        foreach (var r in storageCostQuery)
+                        {
+                            r.cost = decimal.Parse(SectionData.DecTostring(r.cost));
+                        }
                         clsReports.storageCostReport(storageCostQuery, rep, reppath);
                         clsReports.setReportLanguage(paramarr);
                         clsReports.Header(paramarr);
@@ -528,6 +531,8 @@ namespace POS.View.catalog
 
                     if (storageCost != null)
                     {
+                        tb_cost.Text = SectionData.DecTostring(storageCost.cost);
+
                         #region delete
                         if (storageCost.canDelete)
                         {
@@ -722,8 +727,13 @@ namespace POS.View.catalog
         LocalReport rep = new LocalReport();
         SaveFileDialog saveFileDialog = new SaveFileDialog();
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
-        {
-            List<ReportParameter> paramarr = new List<ReportParameter>();
+        {//pdf
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                List<ReportParameter> paramarr = new List<ReportParameter>();
 
             string addpath;
             bool isArabic = ReportCls.checkLang();
@@ -735,8 +745,11 @@ namespace POS.View.catalog
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
             ReportCls.checkLang();
-
-            clsReports.storageCostReport(storageCostQuery, rep, reppath);
+                foreach (var r in storageCostQuery)
+                {
+                    r.cost = decimal.Parse(SectionData.DecTostring(r.cost));
+                }
+                clsReports.storageCostReport(storageCostQuery, rep, reppath);
             clsReports.setReportLanguage(paramarr);
             clsReports.Header(paramarr);
 
@@ -750,6 +763,15 @@ namespace POS.View.catalog
             {
                 string filepath = saveFileDialog.FileName;
                 LocalReportExtensions.ExportToPDF(rep, filepath);
+            }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 

@@ -85,12 +85,14 @@ namespace POS.View.accounts
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_user, MainWindow.resourcemanager.GetString("trUserHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_bank, MainWindow.resourcemanager.GetString("trBankHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_note, MainWindow.resourcemanager.GetString("trNoteHint"));
-
-            if (cb_opperationType.SelectedValue.ToString() == "d")
-                btn_add.Content = MainWindow.resourcemanager.GetString("trDeposit");
-            else
-                btn_add.Content = MainWindow.resourcemanager.GetString("trPull");
-
+            try
+            {
+                if (cb_opperationType.SelectedValue.ToString() == "d")
+                    btn_add.Content = MainWindow.resourcemanager.GetString("trDeposit");
+                else if (cb_opperationType.SelectedValue.ToString() == "p")
+                    btn_add.Content = MainWindow.resourcemanager.GetString("trPull");
+            }
+            catch { btn_add.Content = MainWindow.resourcemanager.GetString("trSave"); }
             dg_bankAccounts.Columns[0].Header = MainWindow.resourcemanager.GetString("trTransferNumberTooltip");
             dg_bankAccounts.Columns[1].Header = MainWindow.resourcemanager.GetString("trBank");
             dg_bankAccounts.Columns[2].Header = MainWindow.resourcemanager.GetString("trDepositeNumTooltip");
@@ -120,7 +122,6 @@ namespace POS.View.accounts
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {//load
-
             try
             {
                 if (sender != null)
@@ -200,7 +201,7 @@ namespace POS.View.accounts
                 if (sender != null)
                     SectionData.EndAwait(grid_ucBankAccounts);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 SectionData.EndAwait(grid_ucBankAccounts);
                 SectionData.ExceptionMessage(ex, this);
@@ -268,6 +269,8 @@ namespace POS.View.accounts
                 if (cashtrans != null)
                 {
                     btn_image.IsEnabled = true;
+
+                    tb_cash.Text = SectionData.DecTostring(cashtrans.cash);
 
                     cb_opperationType.SelectedValue = cashtrans.transType;
                     cb_user.SelectedValue = cashtrans.userId;
@@ -380,12 +383,17 @@ namespace POS.View.accounts
 
                             cash.transType = cb_opperationType.SelectedValue.ToString();
                             cash.userId = Convert.ToInt32(cb_user.SelectedValue);
+                        try
+                        {
                             cash.transNum = await cashModel.generateCashNumber(cb_opperationType.SelectedValue.ToString() + "bn");
+                        }
+                        catch { }
                             cash.cash = decimal.Parse(tb_cash.Text);
                             cash.createUserId = MainWindow.userID.Value;
                             cash.notes = tb_note.Text;
                             cash.posId = MainWindow.posID.Value;
                             cash.side = "bn";
+                            cash.isConfirm = 0;
                             cash.bankId = Convert.ToInt32(cb_bank.SelectedValue);
 
                             string s = await cashModel.Save(cash);
@@ -405,10 +413,10 @@ namespace POS.View.accounts
                     }
                     else
                     {
-                        if (btn_add.IsEnabled)
+                        if (cashtrans.isConfirm == 0)
                         {
-                            //chk empty deposite number
-                            SectionData.validateEmptyTextBox(tb_depositNumber, p_errorDepositNumber, tt_errorDepositNumber, "trEmptyDepositNumberToolTip");
+                        //chk empty deposite number
+                        SectionData.validateEmptyTextBox(tb_depositNumber, p_errorDepositNumber, tt_errorDepositNumber, "trEmptyDepositNumberToolTip");
                             if (!tb_depositNumber.Text.Equals(""))
                             {
                                 cashtrans.isConfirm = 1;
@@ -478,7 +486,9 @@ namespace POS.View.accounts
                     SectionData.StartAwait(grid_ucBankAccounts);
 
                 cashtrans.cashTransId = 0;
-                tb_transNum.Text = await SectionData.generateNumber(Convert.ToChar(cb_opperationType.SelectedValue), "bn");
+                try
+                { tb_transNum.Text = await SectionData.generateNumber(Convert.ToChar(cb_opperationType.SelectedValue), "bn"); }
+                catch { }
                 btn_add.IsEnabled = true;
                 cb_opperationType.IsEnabled = true;
                 cb_user.IsEnabled = true;
@@ -514,7 +524,7 @@ namespace POS.View.accounts
         }
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
-        {//export
+        {//excel
             try
             {
                 if (sender != null)
@@ -536,7 +546,10 @@ namespace POS.View.accounts
                         string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                         ReportCls.checkLang();
-
+                        foreach (var r in cashesQuery)
+                        {
+                            r.cash = decimal.Parse(SectionData.DecTostring(r.cash));
+                        }
                         clsReports.bankAccReport(cashesQuery, rep, reppath);
                         clsReports.setReportLanguage(paramarr);
                         clsReports.Header(paramarr);
@@ -767,15 +780,18 @@ namespace POS.View.accounts
         private   void Cb_opperationType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try
-            { 
-                if (  cb_opperationType.SelectedValue.ToString() == "d")
+            {
+                if (cb_opperationType.SelectedValue.ToString() == "d")
                     btn_add.Content = MainWindow.resourcemanager.GetString("trDeposit");
-                else
+                else if(cb_opperationType.SelectedValue.ToString() == "p")
                     btn_add.Content = MainWindow.resourcemanager.GetString("trPull");
+                else
+                    btn_add.Content = MainWindow.resourcemanager.GetString("trSave");
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this);
+                //    SectionData.ExceptionMessage(ex, this);
+                btn_add.Content = MainWindow.resourcemanager.GetString("trSave");
             }
         }
 
@@ -839,7 +855,10 @@ namespace POS.View.accounts
                 string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                 ReportCls.checkLang();
-
+                foreach (var r in cashesQuery)
+                {
+                    r.cash = decimal.Parse(SectionData.DecTostring(r.cash));
+                }
                 clsReports.bankAccReport(cashesQuery, rep, reppath);
                 clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);

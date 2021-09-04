@@ -263,8 +263,10 @@ namespace POS.View.accounts
 
                     if (cashtrans != null)
                     {
+                        tb_cash.Text = SectionData.DecTostring(cashtrans.cash);
+
                         //creator pos is login pos
-                        if(cashtrans.posIdCreator == MainWindow.posID.Value)
+                        if (cashtrans.posIdCreator == MainWindow.posID.Value)
                         {
                             btn_update.IsEnabled = true;
                             btn_delete.IsEnabled = true;
@@ -764,7 +766,10 @@ namespace POS.View.accounts
                         string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                         ReportCls.checkLang();
-
+                        foreach (var r in cashesQuery)
+                        {
+                            r.cash = decimal.Parse(SectionData.DecTostring(r.cash));
+                        }
                         clsReports.bankAccReport(cashesQuery, rep, reppath);
                         clsReports.setReportLanguage(paramarr);
                         clsReports.Header(paramarr);
@@ -1031,7 +1036,7 @@ namespace POS.View.accounts
         LocalReport rep = new LocalReport();
         SaveFileDialog saveFileDialog = new SaveFileDialog();
         private void Button_Click(object sender, RoutedEventArgs e)
-        {
+        {//pdf
             try
             {
                 if (sender != null)
@@ -1050,7 +1055,10 @@ namespace POS.View.accounts
                     string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                     ReportCls.checkLang();
-
+                    foreach (var r in cashesQuery)
+                    {
+                        r.cash = decimal.Parse(SectionData.DecTostring(r.cash));
+                    }
                     clsReports.bankAccReport(cashesQuery, rep, reppath);
                     clsReports.setReportLanguage(paramarr);
                     clsReports.Header(paramarr);
