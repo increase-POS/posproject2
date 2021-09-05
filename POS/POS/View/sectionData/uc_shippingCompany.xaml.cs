@@ -269,7 +269,11 @@ namespace POS.View.sectionData
                         string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                         ReportCls.checkLang();
-
+                        foreach (var r in shComQuery)
+                        {
+                            r.RealDeliveryCost = decimal.Parse(SectionData.DecTostring(r.RealDeliveryCost));
+                            r.deliveryCost = decimal.Parse(SectionData.DecTostring(r.deliveryCost));
+                        }
                         clsReports.shippingReport(shComQuery, rep, reppath);
                         clsReports.setReportLanguage(paramarr);
                         clsReports.Header(paramarr);
@@ -678,6 +682,9 @@ namespace POS.View.sectionData
                     {
                         cb_deliveryType.SelectedValue = shCompany.deliveryType;
 
+                        tb_realDeliveryCost.Text = SectionData.DecTostring(shCompany.RealDeliveryCost);
+                        tb_deliveryCost.Text = SectionData.DecTostring(shCompany.deliveryCost);
+
                         SectionData.getMobile(shCompany.mobile, cb_areaMobile, tb_mobile);
 
                         SectionData.getPhone(shCompany.phone, cb_areaPhone, cb_areaPhoneLocal, tb_phone);
@@ -860,7 +867,7 @@ namespace POS.View.sectionData
         LocalReport rep = new LocalReport();
         SaveFileDialog saveFileDialog = new SaveFileDialog();
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
-        {
+        {//pdf
             try
             {
                 if (sender != null)
@@ -880,7 +887,11 @@ namespace POS.View.sectionData
                     string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                     ReportCls.checkLang();
-
+                    foreach (var r in shComQuery)
+                    {
+                        r.RealDeliveryCost = decimal.Parse(SectionData.DecTostring(r.RealDeliveryCost));
+                        r.deliveryCost = decimal.Parse(SectionData.DecTostring(r.deliveryCost));
+                    }
                     clsReports.shippingReport(shComQuery, rep, reppath);
                     clsReports.setReportLanguage(paramarr);
                     clsReports.Header(paramarr);
@@ -911,7 +922,7 @@ namespace POS.View.sectionData
         }
 
         private void Btn_print_Click(object sender, RoutedEventArgs e)
-        {
+        {//print
             try
             {
                 if (sender != null)
@@ -931,7 +942,11 @@ namespace POS.View.sectionData
                     string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                     ReportCls.checkLang();
-
+                    foreach (var r in shComQuery)
+                    {
+                        r.RealDeliveryCost = decimal.Parse(SectionData.DecTostring(r.RealDeliveryCost));
+                        r.deliveryCost = decimal.Parse(SectionData.DecTostring(r.deliveryCost));
+                    }
                     clsReports.shippingReport(shComQuery, rep, reppath);
                     clsReports.setReportLanguage(paramarr);
                     clsReports.Header(paramarr);

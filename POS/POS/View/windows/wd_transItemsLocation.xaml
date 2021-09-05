@@ -128,7 +128,8 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn Width="*"  Header="Start Date"  Binding="{Binding Path=startDate,StringFormat=d}" IsReadOnly="True">
+                        <!--Binding="{Binding Path=startDate,StringFormat=d}"-->
+                        <DataGridTextColumn Width="*"  Header="Start Date" IsReadOnly="True" Binding="{Binding Path = startDate,Converter={StaticResource dateFrameConverter }}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Style.Triggers>
@@ -139,7 +140,8 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn Width="*"  Header="End Date"  Binding="{Binding Path=endDate,StringFormat=d}" IsReadOnly="True">
+                        <!--Binding="{Binding Path=endDate,StringFormat=d}"-->
+                        <DataGridTextColumn Width="*"  Header="End Date" IsReadOnly="True" Binding="{Binding Path = endDate,Converter={StaticResource dateFrameConverter }}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Style.Triggers>

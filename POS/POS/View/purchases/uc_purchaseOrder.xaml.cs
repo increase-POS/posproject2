@@ -1040,7 +1040,9 @@ namespace POS.View.purchases
             if (total != 0)
                 taxValue = SectionData.calcPercentage(total, taxInputVal);
 
-            tb_sum.Text = _Sum.ToString();
+            //tb_sum.Text = _Sum.ToString();
+            tb_sum.Text = SectionData.DecTostring(_Sum);
+
         }
 
 
@@ -1050,7 +1052,9 @@ namespace POS.View.purchases
             dg_billDetails.ItemsSource = null;
             dg_billDetails.ItemsSource = billDetails;
             tb_total.Text = _Count.ToString();
-            tb_sum.Text = _Sum.ToString();
+            //tb_sum.Text = _Sum.ToString();
+            tb_sum.Text = SectionData.DecTostring(_Sum);
+
         }
 
 
@@ -1731,7 +1735,7 @@ namespace POS.View.purchases
         }
 
         private async void Btn_preview_Click(object sender, RoutedEventArgs e)
-        {
+        {//preview
             try
             {
                 if (sender != null)
@@ -1788,7 +1792,10 @@ namespace POS.View.purchases
                             invoice.uuserLast = employ.lastname;
 
                             ReportCls.checkLang();
-
+                            //foreach (var r in invoiceItems)
+                            //{
+                            //    r.price = decimal.Parse(SectionData.DecTostring(r.price));
+                            //}
                             clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
                             clsReports.setReportLanguage(paramarr);
                             clsReports.Header(paramarr);

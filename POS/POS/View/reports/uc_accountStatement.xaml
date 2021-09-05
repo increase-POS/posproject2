@@ -596,11 +596,10 @@
                     <DataGrid.Columns>
                         <DataGridTextColumn x:Name="col_num" Width="*" Header="Num" Binding="{Binding transNum}"/>
                         <DataGridTextColumn x:Name="col_date" Width="*" Header="Date" Binding="{Binding updateDate,Converter={StaticResource dateFrameConverter}}"/>
-
                         <DataGridTextColumn x:Name="col_proccesType" Width="*" Header="Description" Binding="{Binding Description1}"/>
-
                         <DataGridTextColumn  Width="*" Header="Payment" Binding="{Binding Description}"/>
-                        <DataGridTextColumn x:Name="col_amount" Width="*" Header="Amount" Binding="{Binding cash}"/>
+                        <!--Binding="{Binding cash}"-->
+                        <DataGridTextColumn x:Name="col_amount" Width="*" Header="Amount" Binding="{Binding cash,Converter={StaticResource accuracyConverter}}"/>
 
 
 

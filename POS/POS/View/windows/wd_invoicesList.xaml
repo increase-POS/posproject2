@@ -126,7 +126,8 @@
                               MouseDoubleClick="Lst_allInvoices_MouseDoubleClick" >
                         <DataGrid.Columns>
                             <DataGridTextColumn  Width="*" IsReadOnly="True"  Header="Invoice Number" Binding="{Binding Path=invNumber}"/>
-                            <DataGridTextColumn  Width="*" IsReadOnly="True"  Header="Total" Binding="{Binding Path=deserved}"/>
+                            <!--Binding="{Binding Path=deserved}"-->
+                            <DataGridTextColumn  Width="*" IsReadOnly="True"  Header="Total" Binding="{Binding Path =deserved,Converter={StaticResource accuracyConverter }}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Border>
@@ -217,7 +218,8 @@
                                MouseDoubleClick="Lst_selectedInvoices_MouseDoubleClick">
                         <DataGrid.Columns>
                             <DataGridTextColumn  Width="*" IsReadOnly="True"  Header="Invoice Number" Binding="{Binding Path=invNumber}"/>
-                            <DataGridTextColumn  Width="*" IsReadOnly="True"  Header="Total" Binding="{Binding Path=deserved}"/>
+                            <!--Binding="{Binding Path=deserved}"-->
+                            <DataGridTextColumn  Width="*" IsReadOnly="True"  Header="Total" Binding="{Binding Path =deserved,Converter={StaticResource accuracyConverter }}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Border>

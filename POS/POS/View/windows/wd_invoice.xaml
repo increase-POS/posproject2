@@ -129,7 +129,8 @@
                     <DataGrid.Columns>
                         <DataGridTextColumn Width="*"   Header="Bill Number" Binding="{Binding Path=invNumber}"/>
                         <DataGridTextColumn Width="*"  Header="items count" Binding="{Binding Path=itemsCount}"/>
-                        <DataGridTextColumn Width="*"  Header="Total" Binding="{Binding Path=totalNet}"/>
+                        <!--Binding="{Binding Path=totalNet}"-->
+                        <DataGridTextColumn Width="*"  Header="Total" Binding="{Binding Path =totalNet,Converter={StaticResource accuracyConverter }}"/>
                         <DataGridTextColumn Width="*"  Header="" Binding="{Binding invType,Converter={StaticResource invoiceTypeConverter}}"/>
                     </DataGrid.Columns>
                     <DataGrid.RowStyle>

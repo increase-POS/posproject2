@@ -963,6 +963,7 @@ namespace POS.View
                     SectionData.getPhone(agent.phone, cb_areaPhone, cb_areaPhoneLocal, tb_phone);
                     SectionData.getPhone(agent.fax, cb_areaFax, cb_areaFaxLocal, tb_fax);
                     tb_code.Text = agent.code;
+                    tb_upperLimit.Text = SectionData.DecTostring(agent.maxDeserve);
                     #region delete
                     if (agent.canDelete)
                     {

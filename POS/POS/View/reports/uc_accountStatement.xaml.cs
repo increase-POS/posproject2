@@ -1265,12 +1265,12 @@ namespace POS.View.reports
         }
 
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
-        {
+        {//pdf
 
         }
 
         private void Btn_print_Click(object sender, RoutedEventArgs e)
-        {
+        {//print
 
         }
     }

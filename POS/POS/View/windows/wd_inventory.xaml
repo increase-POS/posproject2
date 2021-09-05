@@ -105,7 +105,8 @@
                     </DataGrid.Resources>
                     <DataGrid.Columns>
                         <DataGridTextColumn Width="*"   Header="Inventory Number" Binding="{Binding Path=num}"/>
-                        <DataGridTextColumn Width="*"  Header="Create Date" Binding="{Binding Path=createDate,StringFormat=d}"/>
+                        <!--Binding="{Binding Path=createDate,StringFormat=d}"-->
+                        <DataGridTextColumn Width="*"  Header="Create Date" Binding="{Binding Path =createDate,Converter={StaticResource dateFrameConverter }}"/>
                     </DataGrid.Columns>
                 </DataGrid>
 

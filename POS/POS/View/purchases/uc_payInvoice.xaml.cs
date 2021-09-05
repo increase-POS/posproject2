@@ -1102,10 +1102,12 @@ namespace POS.View
             dp_desrvedDate.Text = invoice.deservedDate.ToString();
             tb_invoiceNumber.Text = invoice.vendorInvNum;
             dp_invoiceDate.Text = invoice.vendorInvDate.ToString();
-            tb_total.Text = Math.Round((double)invoice.totalNet, 2).ToString();
+            //tb_total.Text = Math.Round((double)invoice.totalNet, 2).ToString();
+            tb_total.Text = SectionData.DecTostring(invoice.totalNet);
             tb_taxValue.Text = invoice.tax.ToString();
             tb_note.Text = invoice.notes;
-            tb_sum.Text = invoice.total.ToString();
+            //tb_sum.Text = invoice.total.ToString();
+            tb_sum.Text = SectionData.DecTostring(invoice.total);
             tb_discount.Text = invoice.discountValue.ToString();
 
             if (invoice.discountType == "1")
@@ -1470,9 +1472,12 @@ namespace POS.View
             if (total != 0)
                 taxValue = SectionData.calcPercentage(total, taxInputVal);
 
-            tb_sum.Text = _Sum.ToString();
+            //tb_sum.Text = _Sum.ToString();
+            tb_sum.Text = SectionData.DecTostring(_Sum);
             total = total + taxValue;
-            tb_total.Text = Math.Round(total, 2).ToString();
+            //tb_total.Text = Math.Round(total, 2).ToString();
+            tb_total.Text = SectionData.DecTostring(total);
+
         }
 
 
@@ -1483,7 +1488,9 @@ namespace POS.View
             dg_billDetails.ItemsSource = null;
             dg_billDetails.ItemsSource = billDetails;
 
-            tb_sum.Text = _Sum.ToString();
+            //tb_sum.Text = _Sum.ToString();
+            tb_sum.Text = SectionData.DecTostring(_Sum);
+
         }
 
 
@@ -1929,7 +1936,7 @@ namespace POS.View
 
         //print
         private async void Btn_pdf_Click(object sender, RoutedEventArgs e)
-        {
+        {//pdf
 
             try
             {
@@ -1975,7 +1982,10 @@ namespace POS.View
 
 
                         ReportCls.checkLang();
-
+                        foreach (var r in invoiceItems)
+                        {
+                            r.price = decimal.Parse(SectionData.DecTostring(r.price));
+                        }
                         clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
                         clsReports.setReportLanguage(paramarr);
                         clsReports.Header(paramarr);
@@ -2007,7 +2017,7 @@ namespace POS.View
         }
     }
         private async void btn_printInvoice_Click(object sender, RoutedEventArgs e)
-        {
+        {//print
             try
             {
                 if (sender != null)
@@ -2052,7 +2062,10 @@ namespace POS.View
 
 
                         ReportCls.checkLang();
-
+                        foreach (var r in invoiceItems)
+                        {
+                            r.price = decimal.Parse(SectionData.DecTostring(r.price));
+                        }
                         clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
                         clsReports.setReportLanguage(paramarr);
                         clsReports.Header(paramarr);
@@ -2080,18 +2093,15 @@ namespace POS.View
         //
 
         private async void Btn_preview_Click(object sender, RoutedEventArgs e)
-        {
-
+        {//preview
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-
                 if (invoice.invoiceId > 0)
                 {
                     Window.GetWindow(this).Opacity = 0.2;
-
 
                     List<ReportParameter> paramarr = new List<ReportParameter>();
                     string pdfpath;
@@ -2136,7 +2146,11 @@ namespace POS.View
                         invoice.uuserLast = employ.lastname;
 
                         ReportCls.checkLang();
-
+                        foreach (var r in invoiceItems)
+                        {
+                            r.price = decimal.Parse(SectionData.DecTostring(r.price));
+                            //r.deserveDate = Convert.ToDateTime(SectionData.DateToString(r.deserveDate));
+                        }
                         clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
                         clsReports.setReportLanguage(paramarr);
                         clsReports.Header(paramarr);

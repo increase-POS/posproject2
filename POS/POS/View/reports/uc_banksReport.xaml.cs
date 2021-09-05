@@ -1007,7 +1007,7 @@ namespace POS.View.reports
         LocalReport rep = new LocalReport();
         SaveFileDialog saveFileDialog = new SaveFileDialog();
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
-        {
+        {//pdf
             try
             {
                 if (sender != null)
@@ -1044,7 +1044,11 @@ namespace POS.View.reports
                 string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                 ReportCls.checkLang();
-
+                foreach (var r in temp)
+                {
+                    r.updateDate = DateTime.Parse(SectionData.DateToString(r.updateDate));
+                    r.cash = decimal.Parse(SectionData.DecTostring(r.cash));
+                }
                 clsReports.cashTransferSts(temp, rep, reppath);
                 clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);
@@ -1074,7 +1078,7 @@ namespace POS.View.reports
         }
 
         private void Btn_print_Click(object sender, RoutedEventArgs e)
-        {
+        {//print
             try
             {
                 if (sender != null)
@@ -1111,7 +1115,11 @@ namespace POS.View.reports
                 string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                 ReportCls.checkLang();
-
+                foreach (var r in temp)
+                {
+                    r.updateDate = DateTime.Parse(SectionData.DateToString(r.updateDate));
+                    r.cash = decimal.Parse(SectionData.DecTostring(r.cash));
+                }
                 clsReports.cashTransferSts(temp, rep, reppath);
                 clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);
@@ -1133,64 +1141,68 @@ namespace POS.View.reports
         }
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
-        {
+        {//excel
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
                 Thread t1 = new Thread(() =>
-{
-List<ReportParameter> paramarr = new List<ReportParameter>();
+                {
+                List<ReportParameter> paramarr = new List<ReportParameter>();
 
-string addpath = "";
-bool isArabic = ReportCls.checkLang();
-if (isArabic)
-{
-if (selectedTab == 0)
-{
-addpath = @"\Reports\StatisticReport\Accounts\Bank\Ar\ArDeposite.rdlc";
-}
-else if (selectedTab == 1)
-{
-addpath = @"\Reports\StatisticReport\Accounts\Bank\Ar\ArPull.rdlc";
-}
+                string addpath = "";
+                bool isArabic = ReportCls.checkLang();
+                if (isArabic)
+                {
+                if (selectedTab == 0)
+                {
+                addpath = @"\Reports\StatisticReport\Accounts\Bank\Ar\ArDeposite.rdlc";
+                }
+                else if (selectedTab == 1)
+                {
+                addpath = @"\Reports\StatisticReport\Accounts\Bank\Ar\ArPull.rdlc";
+                }
 
-}
-else
-{
-if (selectedTab == 0)
-{
-addpath = @"\Reports\StatisticReport\Accounts\Bank\En\Deposite.rdlc";
-}
-else if (selectedTab == 1)
-{
-addpath = @"\Reports\StatisticReport\Accounts\Bank\En\Pull.rdlc";
-}
+                }
+                else
+                {
+                if (selectedTab == 0)
+                {
+                addpath = @"\Reports\StatisticReport\Accounts\Bank\En\Deposite.rdlc";
+                }
+                else if (selectedTab == 1)
+                {
+                addpath = @"\Reports\StatisticReport\Accounts\Bank\En\Pull.rdlc";
+                }
 
-}
-string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+                }
+                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
-ReportCls.checkLang();
+                ReportCls.checkLang();
+                    foreach (var r in temp)
+                    {
+                        r.updateDate = DateTime.Parse(SectionData.DateToString(r.updateDate));
+                        r.cash = decimal.Parse(SectionData.DecTostring(r.cash));
+                    }
+                    clsReports.cashTransferSts(temp, rep, reppath);
+                clsReports.setReportLanguage(paramarr);
+                clsReports.Header(paramarr);
 
-clsReports.cashTransferSts(temp, rep, reppath);
-clsReports.setReportLanguage(paramarr);
-clsReports.Header(paramarr);
+                rep.SetParameters(paramarr);
 
-rep.SetParameters(paramarr);
-
-rep.Refresh();
-this.Dispatcher.Invoke(() =>
-{
-saveFileDialog.Filter = "EXCEL|*.xls;";
-if (saveFileDialog.ShowDialog() == true)
-{
-string filepath = saveFileDialog.FileName;
-LocalReportExtensions.ExportToExcel(rep, filepath);
-}
-});
+                rep.Refresh();
+                this.Dispatcher.Invoke(() =>
+                {
+                saveFileDialog.Filter = "EXCEL|*.xls;";
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                string filepath = saveFileDialog.FileName;
+                LocalReportExtensions.ExportToExcel(rep, filepath);
+                }
+                });
 
 
-});
+                });
                 t1.Start();
 
                 if (sender != null)
@@ -1205,7 +1217,7 @@ LocalReportExtensions.ExportToExcel(rep, filepath);
         }
 
         private void Btn_preview_Click(object sender, RoutedEventArgs e)
-        {
+        {//preview
             try
             {
                 if (sender != null)
@@ -1249,7 +1261,11 @@ LocalReportExtensions.ExportToExcel(rep, filepath);
                 string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                 ReportCls.checkLang();
-
+                foreach (var r in temp)
+                {
+                    r.updateDate = DateTime.Parse(SectionData.DateToString(r.updateDate));
+                    r.cash = decimal.Parse(SectionData.DecTostring(r.cash));
+                }
                 clsReports.cashTransferSts(temp, rep, reppath);
                 clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);

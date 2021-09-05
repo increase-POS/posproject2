@@ -713,8 +713,8 @@ Data="M110.2,2.4H17.8c-2.4,0-4.3,1.9-4.3,4.3v114.6c0,2.4,1.9,4.3,4.3,4.3c1.1,0,2
                         <DataGridTextColumn x:Name="col_Max" Width="*" Header="Max" Binding="{Binding MaxAll}"/>
                         <DataGridTextColumn x:Name="col_MinCollect" Width="*" Header="Min" Binding="{Binding minUnitName}" Visibility="Hidden"/>
                         <DataGridTextColumn x:Name="col_MaxCollect" Width="*" Header="Max" Binding="{Binding maxUnitName}" Visibility="Hidden"/>
-                        <DataGridTextColumn x:Name="col_stockCost" Width="*" Header="Stock Cost" Binding="{Binding storageCostValue}"/>
-
+                        <!--<DataGridTextColumn x:Name="col_stockCost" Width="*" Header="Stock Cost" Binding="{Binding storageCostValue}"/>-->
+                        <DataGridTextColumn x:Name="col_stockCost" Width="*" Header="Stock Cost" Binding="{Binding storageCostValue , Converter={StaticResource accuracyConverter}}"/>
 
                         <DataGridTextColumn x:Name="col_agentTypeAgent" Visibility="Hidden" Width="*" Header="Agent Type-Name" Binding="{Binding AgentTypeAgent}"/>
                         <DataGridTextColumn x:Name="col_invTypeNumber" Visibility="Hidden" Width="*" Header="Invoice Type-Number" Binding="{Binding InvTypeNumber}"/>

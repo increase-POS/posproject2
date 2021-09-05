@@ -456,7 +456,8 @@
                         <DataGridTextColumn x:Name="col_Max" Width="*" Header="Max" Binding="{Binding MaxAll}"/>
                         <DataGridTextColumn x:Name="col_MinCollect" Width="*" Header="Min" Binding="{Binding minUnitName}" Visibility="Hidden"/>
                         <DataGridTextColumn x:Name="col_MaxCollect" Width="*" Header="Max" Binding="{Binding maxUnitName}" Visibility="Hidden"/>
-                        <DataGridTextColumn x:Name="col_stockCost" Width="*" Header="Stock Cost" Binding="{Binding storageCostValue}"/>
+                        <!--<DataGridTextColumn x:Name="col_stockCost" Width="*" Header="Stock Cost" Binding="{Binding storageCostValue}"/>-->
+                        <DataGridTextColumn x:Name="col_stockCost" Width="*" Header="Stock Cost" Binding="{Binding storageCostValue , Converter={StaticResource accuracyConverter}}"/>
 
 
                         <DataGridTextColumn x:Name="col_agentTypeAgent" Visibility="Hidden" Width="*" Header="Agent Type-Name" Binding="{Binding AgentTypeAgent}"/>

@@ -766,7 +766,7 @@ obj.updateUserAcc.Contains(txt_search.Text)
         LocalReport rep = new LocalReport();
         SaveFileDialog saveFileDialog = new SaveFileDialog();
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
-        {
+        {//pdf
             try
             {
                 if (sender != null)
@@ -787,7 +787,11 @@ obj.updateUserAcc.Contains(txt_search.Text)
                 string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                 ReportCls.checkLang();
-
+                foreach (var r in temp)
+                {
+                    r.updateDate = DateTime.Parse(SectionData.DateToString(r.updateDate));
+                    r.cash = decimal.Parse(SectionData.DecTostring(r.cash));
+                }
                 clsReports.cashTransferSts(temp, rep, reppath);
                 clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);
@@ -816,7 +820,7 @@ obj.updateUserAcc.Contains(txt_search.Text)
         }
 
         private void Btn_print_Click(object sender, RoutedEventArgs e)
-        {
+        {//print
             try
             {
                 if (sender != null)
@@ -837,7 +841,11 @@ obj.updateUserAcc.Contains(txt_search.Text)
                 string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                 ReportCls.checkLang();
-
+                foreach (var r in temp)
+                {
+                    r.updateDate = DateTime.Parse(SectionData.DateToString(r.updateDate));
+                    r.cash = decimal.Parse(SectionData.DecTostring(r.cash));
+                }
                 clsReports.cashTransferSts(temp, rep, reppath);
                 clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);
@@ -858,49 +866,53 @@ obj.updateUserAcc.Contains(txt_search.Text)
         }
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
-        {
+        {//excel
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
                 Thread t1 = new Thread(() =>
-{
-    List<ReportParameter> paramarr = new List<ReportParameter>();
+            {
+                List<ReportParameter> paramarr = new List<ReportParameter>();
 
-    string addpath = "";
-    bool isArabic = ReportCls.checkLang();
-    if (isArabic)
-    {
-        addpath = @"\Reports\StatisticReport\Accounts\Pos\Ar\ArPos.rdlc";
-    }
-    else
-    {
-        addpath = @"\Reports\StatisticReport\Accounts\Pos\En\Pos.rdlc";
-    }
-    string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+                string addpath = "";
+                bool isArabic = ReportCls.checkLang();
+                if (isArabic)
+                {
+                    addpath = @"\Reports\StatisticReport\Accounts\Pos\Ar\ArPos.rdlc";
+                }
+                else
+                {
+                    addpath = @"\Reports\StatisticReport\Accounts\Pos\En\Pos.rdlc";
+                }
+                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
-    ReportCls.checkLang();
+                ReportCls.checkLang();
+                foreach (var r in temp)
+                {
+                    r.updateDate = DateTime.Parse(SectionData.DateToString(r.updateDate));
+                    r.cash = decimal.Parse(SectionData.DecTostring(r.cash));
+                }
+                clsReports.cashTransferSts(temp, rep, reppath);
+                clsReports.setReportLanguage(paramarr);
+                clsReports.Header(paramarr);
 
-    clsReports.cashTransferSts(temp, rep, reppath);
-    clsReports.setReportLanguage(paramarr);
-    clsReports.Header(paramarr);
+                rep.SetParameters(paramarr);
 
-    rep.SetParameters(paramarr);
-
-    rep.Refresh();
-    this.Dispatcher.Invoke(() =>
-    {
-        saveFileDialog.Filter = "EXCEL|*.xls;";
-        if (saveFileDialog.ShowDialog() == true)
-        {
-            string filepath = saveFileDialog.FileName;
-            LocalReportExtensions.ExportToExcel(rep, filepath);
-        }
-    });
+                rep.Refresh();
+                this.Dispatcher.Invoke(() =>
+                {
+                    saveFileDialog.Filter = "EXCEL|*.xls;";
+                    if (saveFileDialog.ShowDialog() == true)
+                    {
+                        string filepath = saveFileDialog.FileName;
+                        LocalReportExtensions.ExportToExcel(rep, filepath);
+                    }
+                });
 
 
-});
+            });
                 t1.Start();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -914,7 +926,7 @@ obj.updateUserAcc.Contains(txt_search.Text)
         }
 
         private void Btn_preview_Click(object sender, RoutedEventArgs e)
-        {
+        {//preview
             try
             {
                 if (sender != null)
@@ -942,7 +954,11 @@ obj.updateUserAcc.Contains(txt_search.Text)
 
 
                 ReportCls.checkLang();
-
+                foreach (var r in temp)
+                {
+                    r.updateDate = DateTime.Parse(SectionData.DateToString(r.updateDate));
+                    r.cash = decimal.Parse(SectionData.DecTostring(r.cash));
+                }
                 clsReports.cashTransferSts(temp, rep, reppath);
                 clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);

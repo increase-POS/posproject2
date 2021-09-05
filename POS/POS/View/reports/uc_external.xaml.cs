@@ -2115,7 +2115,7 @@ namespace POS.View.reports
         LocalReport rep = new LocalReport();
         SaveFileDialog saveFileDialog = new SaveFileDialog();
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
-        {
+        {//pdf
             try
             {
                 if (sender != null)
@@ -2160,7 +2160,15 @@ namespace POS.View.reports
                 string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                 ReportCls.checkLang();
-
+                foreach (var r in temp)
+                {
+                    //r.startDate = DateTime.Parse(SectionData.DateToString(r.startDate));
+                    //r.endDate = DateTime.Parse(SectionData.DateToString(r.endDate));
+                    //r.inventoryDate = DateTime.Parse(SectionData.DateToString(r.inventoryDate));
+                    //r.IupdateDate = DateTime.Parse(SectionData.DateToString(r.IupdateDate));
+                    //r.storageCostValue = decimal.Parse(SectionData.DecTostring(r.storageCostValue));
+                    r.updateDate = DateTime.Parse(SectionData.DateToString(r.updateDate));
+                }
                 clsReports.itemTransferInvoice(temp, rep, reppath);
                 clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);

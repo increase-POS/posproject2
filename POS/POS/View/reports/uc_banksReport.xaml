@@ -507,10 +507,9 @@
                         <DataGridTextColumn x:Name="col_Bank" Width="*" Header="Bank" Binding="{Binding bankName}"/>
                         <DataGridTextColumn x:Name="col_updateUserAcc" Width="*" Header="Accountant" Binding="{Binding updateUserAcc}"/>
                         <DataGridTextColumn x:Name="col_user" Width="*" Header="User" Binding="{Binding userAcc}"/>
-
                         <DataGridTextColumn x:Name="col_updateDate" Width="*" Header="Date" Binding="{Binding updateDate,Converter={StaticResource dateFrameConverter}}"/>
-                        <DataGridTextColumn x:Name="col_cash" Width="*" Header="Amount" Binding="{Binding cash}"/>
-
+                        <!--<DataGridTextColumn x:Name="col_cash" Width="*" Header="Amount" Binding="{Binding cash}"/>-->
+                        <DataGridTextColumn x:Name="col_cash" Width="*" Header="Amount" Binding="{Binding cash,Converter={StaticResource accuracyConverter}}"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </Border>
