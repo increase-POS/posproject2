@@ -245,7 +245,7 @@ namespace POS.View.accounts
                 btn_image.IsEnabled = false;
 
                 await RefreshCashesList();
-                Tb_search_TextChanged(null, null);
+                await Search();
 
                 if (sender != null)
                     SectionData.EndAwait(grid_ucPaymentsAccounts);
@@ -266,7 +266,7 @@ namespace POS.View.accounts
                     SectionData.StartAwait(grid_ucPaymentsAccounts);
 
                 await RefreshCashesList();
-                Tb_search_TextChanged(null, null);
+                await Search();
 
                 if (sender != null)
                     SectionData.EndAwait(grid_ucPaymentsAccounts);
@@ -287,7 +287,7 @@ namespace POS.View.accounts
                     SectionData.StartAwait(grid_ucPaymentsAccounts);
 
                 await RefreshCashesList();
-                Tb_search_TextChanged(null, null);
+                await Search();
 
                 if (sender != null)
                     SectionData.EndAwait(grid_ucPaymentsAccounts);
@@ -411,34 +411,14 @@ namespace POS.View.accounts
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
+   
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
         {//search
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_ucPaymentsAccounts);
-
-                if (cashes is null)
-                await RefreshCashesList();
-
-                this.Dispatcher.Invoke(() =>
-                {
-                    searchText = tb_search.Text.ToLower();
-                    cashesQuery = cashes.Where(s => (s.transNum.ToLower().Contains(searchText)
-                    || s.cash.ToString().ToLower().Contains(searchText)
-                    )
-                    && (s.side == "v" || s.side == "c" || s.side == "u" || s.side == "s" || s.side == "e" || s.side == "m" || s.side == "sh")
-                    && s.transType == "p" 
-                    && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
-                    && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
-                    );
-
-                });
-
-                cashesQueryExcel = cashesQuery;
-                RefreshCashView();
-
+                await Search();
                 if (sender != null)
                     SectionData.EndAwait(grid_ucPaymentsAccounts);
             }
@@ -621,7 +601,7 @@ namespace POS.View.accounts
                             Btn_clear_Click(null, null);
 
                             await RefreshCashesList();
-                            Tb_search_TextChanged(null, null);
+                            await Search();
                         }
                         else
                             Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
@@ -820,6 +800,27 @@ namespace POS.View.accounts
             cashes = cashes.Where(x => x.processType != "balance");
             txt_count.Text = cashesQuery.Count().ToString();
         }
+        async Task Search()
+        {
+
+            if (cashes is null)
+                await RefreshCashesList();
+
+
+            searchText = tb_search.Text.ToLower();
+            cashesQuery = cashes.Where(s => (s.transNum.ToLower().Contains(searchText)
+            || s.cash.ToString().ToLower().Contains(searchText)
+            )
+            && (s.side == "v" || s.side == "c" || s.side == "u" || s.side == "s" || s.side == "e" || s.side == "m" || s.side == "sh")
+            && s.transType == "p"
+            && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
+            && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
+            );
+
+
+            cashesQueryExcel = cashesQuery.ToList();
+            RefreshCashView();
+        }
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {//excel
             try
@@ -843,11 +844,11 @@ namespace POS.View.accounts
                         string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                         ReportCls.checkLang();
-                        foreach (var r in cashesQuery)
+                        foreach (var r in cashesQueryExcel)
                         {
                             r.cash = decimal.Parse(SectionData.DecTostring(r.cash));
                         }
-                        clsReports.bankAccReport(cashesQuery, rep, reppath);
+                        clsReports.bankAccReport(cashesQueryExcel, rep, reppath);
                         clsReports.setReportLanguage(paramarr);
                         clsReports.Header(paramarr);
 
@@ -944,7 +945,7 @@ namespace POS.View.accounts
                     SectionData.StartAwait(grid_ucPaymentsAccounts);
 
                 await RefreshCashesList();
-               Tb_search_TextChanged(null, null);
+                await Search();
 
                 if (sender != null)
                     SectionData.EndAwait(grid_ucPaymentsAccounts);
