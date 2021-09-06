@@ -94,7 +94,6 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
         #region Numeric
 
         private int _numValue = 0;
@@ -172,6 +171,7 @@ namespace POS.View
             }
         }
         #endregion
+
         private async void Tgl_isActive_Checked(object sender, RoutedEventArgs e)
         {
             try
@@ -192,7 +192,6 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
         private async void Tgl_isActive_Unchecked(object sender, RoutedEventArgs e)
         {
             try
@@ -213,7 +212,6 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
         private void translate()
         {
             txt_active.Text = MainWindow.resourcemanager.GetString("trActive");
@@ -272,7 +270,6 @@ namespace POS.View
             btn_items.Content = MainWindow.resourcemanager.GetString("trItems");
 
         }
-
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {//load
             try
@@ -388,48 +385,6 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
-
-
-        private async void Btn_items_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {//items
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-                if (MainWindow.groupObject.HasPermissionAction(itemsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
-                {
-                    SectionData.clearValidate(tb_code, p_errorCode);
-
-                    itemUnits = await itemUnitsModel.Getall();
-
-
-                    Window.GetWindow(this).Opacity = 0.2;
-
-                    wd_itemsOfferList w = new wd_itemsOfferList();
-
-                    w.offerId = offer.offerId;
-                    w.ShowDialog();
-                    if (w.isActive)
-                    {
-
-                    }
-
-                    Window.GetWindow(this).Opacity = 1;
-                }
-                else
-                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
         private async void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -453,91 +408,6 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
-
-        private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-                //export to excel
-                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
-                {
-                    Thread t1 = new Thread(() =>
-                    {
-                        List<ReportParameter> paramarr = new List<ReportParameter>();
-
-                        string addpath;
-                        bool isArabic = ReportCls.checkLang();
-                        if (isArabic)
-                        {
-                            addpath = @"\Reports\Sale\Ar\CouponReport.rdlc";
-                        }
-                        else addpath = @"\Reports\Sale\EN\CouponReport.rdlc";
-                        string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-                        ReportCls.checkLang();
-
-                        clsReports.couponReport(offersQuery, rep, reppath);
-                        clsReports.setReportLanguage(paramarr);
-                        clsReports.Header(paramarr);
-
-                        rep.SetParameters(paramarr);
-
-                        rep.Refresh();
-                        this.Dispatcher.Invoke(() =>
-                        {
-                            saveFileDialog.Filter = "EXCEL|*.xls;";
-                            if (saveFileDialog.ShowDialog() == true)
-                            {
-                                string filepath = saveFileDialog.FileName;
-                                LocalReportExtensions.ExportToExcel(rep, filepath);
-                            }
-                        });
-
-
-                    });
-                    t1.Start();
-
-                }
-                else
-                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
-        void FN_ExportToExcel()
-        {
-            var QueryExcel = offersQuery.AsEnumerable().Select(x => new
-            {
-                Name = x.name,
-                Code = x.code,
-                DisCountType = x.discountType,
-                DisCountValue = x.discountValue,
-                StartDate = x.startDate,
-                EndDate = x.endDate,
-                Notes = x.notes
-            });
-            var DTForExcel = QueryExcel.ToDataTable();
-            DTForExcel.Columns[0].Caption = MainWindow.resourcemanager.GetString("trName");
-            DTForExcel.Columns[1].Caption = MainWindow.resourcemanager.GetString("trCode");
-            DTForExcel.Columns[2].Caption = MainWindow.resourcemanager.GetString("trDiscountType");
-            DTForExcel.Columns[3].Caption = MainWindow.resourcemanager.GetString("trDiscountValue");
-            DTForExcel.Columns[4].Caption = MainWindow.resourcemanager.GetString("trSartDate");
-            DTForExcel.Columns[5].Caption = MainWindow.resourcemanager.GetString("trEndDate");
-            DTForExcel.Columns[6].Caption = MainWindow.resourcemanager.GetString("trNote");
-
-            ExportToExcel.Export(DTForExcel);
-        }
-
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
         {
             try
@@ -545,7 +415,7 @@ namespace POS.View
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
                 //search
-                 if (offers is null)
+                if (offers is null)
                     await RefreshOffersList();
                 searchText = tb_search.Text.ToLower();
                 offersQuery = offers.Where(s => (s.code.ToLower().Contains(searchText) ||
@@ -562,7 +432,6 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
         async Task<IEnumerable<Offer>> RefreshOffersList()
         {
             offers = await offerModel.GetOffersAsync();
@@ -573,7 +442,6 @@ namespace POS.View
             dg_offer.ItemsSource = offersQuery;
             txt_count.Text = offersQuery.Count().ToString();
         }
-
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -615,8 +483,6 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
-
         private void Tb_discountValue_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             try
@@ -629,7 +495,6 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
         private void Tb_code_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             try
@@ -644,7 +509,6 @@ namespace POS.View
             }
 
         }
-
         private void Tb_PreventSpaces(object sender, KeyEventArgs e)
         {
             try
@@ -656,7 +520,6 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
         private void Tb_validateEmptyTextChange(object sender, TextChangedEventArgs e)
         {
             try
@@ -669,7 +532,6 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
         private void Tb_validateEmptyLostFocus(object sender, RoutedEventArgs e)
         {
             try
@@ -682,7 +544,6 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
         private void validateEmpty(string name, object sender)
         {
             try
@@ -727,7 +588,6 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
         private void Dg_offer_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try
@@ -807,7 +667,6 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -876,7 +735,6 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
         private async Task activate()
         {//activate
             offer.isActive = 1;
@@ -892,7 +750,6 @@ namespace POS.View
             Tb_search_TextChanged(null, null);
 
         }
-
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//add
             try
@@ -1006,7 +863,6 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
         {//update
             try
@@ -1116,6 +972,129 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+
+
+
+
+        private async void Btn_items_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {//items
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                if (MainWindow.groupObject.HasPermissionAction(itemsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+                {
+                    SectionData.clearValidate(tb_code, p_errorCode);
+
+                    itemUnits = await itemUnitsModel.Getall();
+
+
+                    Window.GetWindow(this).Opacity = 0.2;
+
+                    wd_itemsOfferList w = new wd_itemsOfferList();
+
+                    w.offerId = offer.offerId;
+                    w.ShowDialog();
+                    if (w.isActive)
+                    {
+
+                    }
+
+                    Window.GetWindow(this).Opacity = 1;
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+        private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                //export to excel
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
+                {
+                    Thread t1 = new Thread(() =>
+                    {
+                        List<ReportParameter> paramarr = new List<ReportParameter>();
+
+                        string addpath;
+                        bool isArabic = ReportCls.checkLang();
+                        if (isArabic)
+                        {
+                            addpath = @"\Reports\Sale\Ar\OfferReport.rdlc";
+                        }
+                        else addpath = @"\Reports\Sale\EN\OfferReport.rdlc";
+                        string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+                        ReportCls.checkLang();
+
+                        clsReports.couponReport(offersQuery, rep, reppath);
+                        clsReports.setReportLanguage(paramarr);
+                        clsReports.Header(paramarr);
+
+                        rep.SetParameters(paramarr);
+
+                        rep.Refresh();
+                        this.Dispatcher.Invoke(() =>
+                        {
+                            saveFileDialog.Filter = "EXCEL|*.xls;";
+                            if (saveFileDialog.ShowDialog() == true)
+                            {
+                                string filepath = saveFileDialog.FileName;
+                                LocalReportExtensions.ExportToExcel(rep, filepath);
+                            }
+                        });
+
+
+                    });
+                    t1.Start();
+
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+        void FN_ExportToExcel()
+        {
+            var QueryExcel = offersQuery.AsEnumerable().Select(x => new
+            {
+                Name = x.name,
+                Code = x.code,
+                DisCountType = x.discountType,
+                DisCountValue = x.discountValue,
+                StartDate = x.startDate,
+                EndDate = x.endDate,
+                Notes = x.notes
+            });
+            var DTForExcel = QueryExcel.ToDataTable();
+            DTForExcel.Columns[0].Caption = MainWindow.resourcemanager.GetString("trName");
+            DTForExcel.Columns[1].Caption = MainWindow.resourcemanager.GetString("trCode");
+            DTForExcel.Columns[2].Caption = MainWindow.resourcemanager.GetString("trDiscountType");
+            DTForExcel.Columns[3].Caption = MainWindow.resourcemanager.GetString("trDiscountValue");
+            DTForExcel.Columns[4].Caption = MainWindow.resourcemanager.GetString("trSartDate");
+            DTForExcel.Columns[5].Caption = MainWindow.resourcemanager.GetString("trEndDate");
+            DTForExcel.Columns[6].Caption = MainWindow.resourcemanager.GetString("trNote");
+
+            ExportToExcel.Export(DTForExcel);
+        }
         ReportCls reportclass = new ReportCls();
         LocalReport rep = new LocalReport();
         SaveFileDialog saveFileDialog = new SaveFileDialog();
@@ -1169,7 +1148,6 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
         private void Btn_print_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -1212,7 +1190,6 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
         private void Btn_pieChart_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -1235,7 +1212,6 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
         private void Btn_preview_Click(object sender, RoutedEventArgs e)
         {
             Window.GetWindow(this).Opacity = 0.2;

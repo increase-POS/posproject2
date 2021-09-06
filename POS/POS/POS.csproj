@@ -1205,6 +1205,7 @@
     <EmbeddedResource Include="Reports\Sale\En\InvPurOrderReport.rdlc" />
     <EmbeddedResource Include="Reports\Sale\En\InvPurQtReport.rdlc" />
     <EmbeddedResource Include="Reports\Sale\En\InvPurReport.rdlc" />
+    <EmbeddedResource Include="Reports\Sale\En\LargeSaleReport - Copy.rdlc" />
     <EmbeddedResource Include="Reports\Sale\En\LargeSaleReport.rdlc" />
     <EmbeddedResource Include="Reports\Sale\En\MediumSaleReport.rdlc" />
     <EmbeddedResource Include="Reports\Sale\En\OfferReport.rdlc" />
