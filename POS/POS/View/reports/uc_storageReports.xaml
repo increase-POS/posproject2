@@ -1810,7 +1810,8 @@ Data="M93.34,7.49a3.11,3.11,0,0,1,2,.38,3.06,3.06,0,0,1,1.82,2.78l.2,28.16,0,0,0
                         <DataGridTextColumn x:Name="col_Max" Width="*" Header="Max" Binding="{Binding MaxAll}"/>
                         <DataGridTextColumn x:Name="col_MinCollect" Width="*" Header="Min" Binding="{Binding minUnitName}" Visibility="Hidden"/>
                         <DataGridTextColumn x:Name="col_MaxCollect" Width="*" Header="Max" Binding="{Binding maxUnitName}" Visibility="Hidden"/>
-                        <DataGridTextColumn x:Name="col_stockCost" Width="*" Header="Stock Cost" Binding="{Binding storageCostValue}"/>
+                        <!--<DataGridTextColumn x:Name="col_stockCost" Width="*" Header="Stock Cost" Binding="{Binding storageCostValue}"/>-->
+                        <DataGridTextColumn x:Name="col_stockCost" Width="*" Header="Stock Cost" Binding="{Binding storageCostValue,Converter={StaticResource accuracyConverter}}"/>
 
 
                         <DataGridTextColumn x:Name="col_agentTypeAgent" Visibility="Hidden" Width="*" Header="Agent Type-Name" Binding="{Binding AgentTypeAgent}"/>
@@ -1819,7 +1820,9 @@ Data="M93.34,7.49a3.11,3.11,0,0,1,2,.38,3.06,3.06,0,0,1,1.82,2.78l.2,28.16,0,0,0
                         <DataGridTextColumn x:Name="col_stockTakeNum" Visibility="Hidden" Width="*" Header="Number" Binding="{Binding inventoryNum}"/>
                         <DataGridTextColumn x:Name="col_stockTakingCoastType" Visibility="Hidden" Width="*" Header="Type" Binding="{Binding inventoryType}"/>
                         <DataGridTextColumn x:Name="col_stockTakingDate" Visibility="Hidden" Width="*" Header="Date" Binding="{Binding inventoryDate,Converter={StaticResource dateFrameConverter }}"/>
-                        <DataGridTextColumn x:Name="col_diffPercentage" Visibility="Hidden" Width="*" Header="diffrence Percentage" Binding="{Binding diffPercentage,StringFormat=F2}"/>
+                        <!--<DataGridTextColumn x:Name="col_diffPercentage" Visibility="Hidden" Width="*" Header="diffrence Percentage" Binding="{Binding diffPercentage,StringFormat=F2}"/>-->
+                        <DataGridTextColumn x:Name="col_diffPercentage" Visibility="Hidden" Width="*" Header="diffrence Percentage" Binding="{Binding diffPercentage,Converter={StaticResource accuracyConverter}}"/>
+
                         <DataGridTextColumn x:Name="col_itemCountAr" Visibility="Hidden" Width="*" Header="Items Count" Binding="{Binding itemCount}"/>
                         <DataGridTextColumn x:Name="col_DestroyedCount" Visibility="Hidden" Width="*" Header="Destroyed Count" Binding="{Binding DestroyedCount}"/>
 

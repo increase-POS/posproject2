@@ -3247,6 +3247,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to is required.
+        /// </summary>
+        internal static string trIsRequired {
+            get {
+                return ResourceManager.GetString("trIsRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Is Smallest.
         /// </summary>
         internal static string trIsSmallest {

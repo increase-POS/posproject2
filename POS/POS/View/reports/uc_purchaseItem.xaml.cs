@@ -730,17 +730,17 @@ namespace POS.View.reports
         }
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
-        {
+        {//excel
 
         }
 
         private void Btn_print_Click(object sender, RoutedEventArgs e)
-        {
+        {//print
 
         }
 
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
-        {
+        {//pdf
 
         }
 

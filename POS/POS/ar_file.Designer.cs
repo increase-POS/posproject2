@@ -3229,6 +3229,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to هذا الحقل إجباري.
+        /// </summary>
+        internal static string trIsRequired {
+            get {
+                return ResourceManager.GetString("trIsRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to هي الوحدة الأصغر.
         /// </summary>
         internal static string trIsSmallest {

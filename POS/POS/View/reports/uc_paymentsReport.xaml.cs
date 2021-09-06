@@ -50,10 +50,10 @@ namespace POS.View.reports
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
          try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
-					    payments = await statisticModel.GetPayments();
+		{
+			if (sender != null)
+			SectionData.StartAwait(grid_main);
+			payments = await statisticModel.GetPayments();
 
             vendorCombo = statisticModel.getVendorCombo(payments, "v");
             customerCombo = statisticModel.getVendorCombo(payments, "c");
@@ -162,14 +162,15 @@ namespace POS.View.reports
 
         public uc_paymentsReport()
         {
-		try
-				{
-            InitializeComponent();
-         }
-		 catch (Exception ex)
+		    try
+			{
+                InitializeComponent();
+             }
+		     catch (Exception ex)
             {
-				SectionData.ExceptionMessage(ex,this );
-            }  }
+			    SectionData.ExceptionMessage(ex,this );
+            }
+        }
 
         private static uc_paymentsReport _instance;
         public static uc_paymentsReport Instance
@@ -2611,9 +2612,9 @@ namespace POS.View.reports
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {//pdf
            try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
+			{
+				if (sender != null)
+				SectionData.StartAwait(grid_main);
 					 
                 List<ReportParameter> paramarr = new List<ReportParameter>();
 
@@ -2684,11 +2685,13 @@ namespace POS.View.reports
                 string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                 ReportCls.checkLang();
+
                 foreach (var r in temp)
                 {
                     r.updateDate = DateTime.Parse(SectionData.DateToString(r.updateDate));
                     r.cash = decimal.Parse(SectionData.DecTostring(r.cash));
                 }
+
                 clsReports.cashTransferSts(temp, rep, reppath);
                 clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);

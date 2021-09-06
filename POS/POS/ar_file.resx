@@ -2362,4 +2362,7 @@
   <data name="trEmptyAccuracy" xml:space="preserve">
     <value>عدد الأرقام بعد الفاصلة لا يمكن أن يكون فارغ</value>
   </data>
+  <data name="trIsRequired" xml:space="preserve">
+    <value>هذا الحقل إجباري</value>
+  </data>
 </root>

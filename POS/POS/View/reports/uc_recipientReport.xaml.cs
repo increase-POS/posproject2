@@ -1699,7 +1699,7 @@ namespace POS.View.reports
         LocalReport rep = new LocalReport();
         SaveFileDialog saveFileDialog = new SaveFileDialog();
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
-        {
+        {//pdf
            try
 					{
 						if (sender != null)
@@ -1750,7 +1750,11 @@ namespace POS.View.reports
                 string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                 ReportCls.checkLang();
-
+                foreach (var r in temp)
+                {
+                    r.updateDate = DateTime.Parse(SectionData.DateToString(r.updateDate));
+                    r.cash = decimal.Parse(SectionData.DecTostring(r.cash));
+                }
                 clsReports.cashTransferSts(temp, rep, reppath);
                 clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);
@@ -1779,7 +1783,7 @@ namespace POS.View.reports
             } }
 
         private void Btn_print_Click(object sender, RoutedEventArgs e)
-        {
+        {//print
             try
 					{
 						if (sender != null)
@@ -1830,7 +1834,11 @@ namespace POS.View.reports
                 string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                 ReportCls.checkLang();
-
+                foreach (var r in temp)
+                {
+                    r.updateDate = DateTime.Parse(SectionData.DateToString(r.updateDate));
+                    r.cash = decimal.Parse(SectionData.DecTostring(r.cash));
+                }
                 clsReports.cashTransferSts(temp, rep, reppath);
                 clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);
@@ -1851,12 +1859,12 @@ namespace POS.View.reports
             } }
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
-        {
+        {//excel
            try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
-					   Thread t1 = new Thread(() =>
+		    {
+			    if (sender != null)
+			    SectionData.StartAwait(grid_main);
+			    Thread t1 = new Thread(() =>
             {
                 List<ReportParameter> paramarr = new List<ReportParameter>();
 
@@ -1903,7 +1911,11 @@ namespace POS.View.reports
                 string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                 ReportCls.checkLang();
-
+                foreach (var r in temp)
+                {
+                    r.updateDate = DateTime.Parse(SectionData.DateToString(r.updateDate));
+                    r.cash = decimal.Parse(SectionData.DecTostring(r.cash));
+                }
                 clsReports.cashTransferSts(temp, rep, reppath);
                 clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);
@@ -1936,12 +1948,12 @@ namespace POS.View.reports
             } }
 
         private void Btn_preview_Click(object sender, RoutedEventArgs e)
-        {
+        {//preview
           try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
-					    Window.GetWindow(this).Opacity = 0.2;
+			{
+				if (sender != null)
+				SectionData.StartAwait(grid_main);
+				Window.GetWindow(this).Opacity = 0.2;
             string pdfpath = "";
 
             List<ReportParameter> paramarr = new List<ReportParameter>();
@@ -1994,8 +2006,12 @@ namespace POS.View.reports
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
             ReportCls.checkLang();
-
-            clsReports.cashTransferSts(temp, rep, reppath);
+                foreach (var r in temp)
+                {
+                    r.updateDate = DateTime.Parse(SectionData.DateToString(r.updateDate));
+                    r.cash = decimal.Parse(SectionData.DecTostring(r.cash));
+                }
+                clsReports.cashTransferSts(temp, rep, reppath);
 
          
             clsReports.setReportLanguage(paramarr);

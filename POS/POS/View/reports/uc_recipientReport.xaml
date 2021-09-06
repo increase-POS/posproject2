@@ -877,7 +877,9 @@
 
                         <DataGridTextColumn x:Name="col_company" Width="*" Header="Company" Binding="{Binding agentCompany}"/>
                         <DataGridTextColumn x:Name="col_updateDate" Width="*" Header="Date" Binding="{Binding updateDate,Converter={StaticResource dateFrameConverter }}"/>
-                        <DataGridTextColumn x:Name="col_cash" Width="*" Header="Amount" Binding="{Binding cash}"/>
+                        <!--<DataGridTextColumn x:Name="col_cash" Width="*" Header="Amount" Binding="{Binding cash}"/>-->
+                        <DataGridTextColumn x:Name="col_cash" Width="*" Header="Amount" Binding="{Binding cash , Converter={StaticResource accuracyConverter}}"/>
+
 
                     </DataGrid.Columns>
                 </DataGrid>
