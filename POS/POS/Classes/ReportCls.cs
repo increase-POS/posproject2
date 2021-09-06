@@ -506,7 +506,16 @@ namespace POS.Classes
             string reppath = PathUp(Directory.GetCurrentDirectory(), 2, addpath);
             return reppath;
         }
+        public int GetpageHeight(int itemcount, int repheight)
+        {
+           // int repheight = 457;
+            int tableheight = 33 * itemcount;// 33 is cell height
+           
+      
+            int totalheight = repheight + tableheight;
+            return totalheight;
 
+        }
         public string GetreceiptInvoiceRdlcpath(Invoice invoice)
         {
             string addpath;
@@ -523,7 +532,34 @@ namespace POS.Classes
                 }
                    else
                 {
-                    addpath = @"\Reports\Sale\Ar\ArInvPurReport.rdlc";
+                     if (MainWindow.salePaperSize == "10cm")
+                    {
+                        addpath = @"\Reports\Sale\Ar\LargeSaleReport.rdlc";
+                        View.uc_receiptInvoice.width = 400;//400 =10cm
+                        View.uc_receiptInvoice.height = GetpageHeight(View.uc_receiptInvoice.itemscount, 500);
+
+                    }
+                    else if(MainWindow.salePaperSize == "8cm")
+                    {
+                        addpath = @"\Reports\Sale\Ar\MediumSaleReport.rdlc";
+                        View.uc_receiptInvoice.width = 315;//315 =8cm
+                        View.uc_receiptInvoice.height = GetpageHeight(View.uc_receiptInvoice.itemscount, 500);
+
+
+                    }
+                    else if (MainWindow.salePaperSize == "5.7cm")
+                    {
+                        addpath = @"\Reports\Sale\Ar\SmallSaleReport.rdlc";
+                        View.uc_receiptInvoice.width = 224;//224 =5.7cm
+                        View.uc_receiptInvoice.height = GetpageHeight(View.uc_receiptInvoice.itemscount, 460);
+
+                    }
+                    else //MainWindow.salePaperSize == "A4"
+                    {
+
+                        addpath = @"\Reports\Sale\Ar\ArInvPurReport.rdlc";
+                    }
+
                     //   addpath = @"\Reports\Sale\Ar\LargeSaleReport.rdlc";
                     //   addpath = @"\Reports\Sale\Ar\MediumSaleReport.rdlc";
                     //   addpath = @"\Reports\Sale\Ar\SmallSaleReport.rdlc";
@@ -542,10 +578,36 @@ namespace POS.Classes
                 }
                 else
                 {
-                 addpath = @"\Reports\Sale\En\InvPurReport.rdlc";
-                   //    addpath = @"\Reports\Sale\En\LargeSaleReport.rdlc";
+                    if (MainWindow.salePaperSize == "10cm")
+                    {
+                        addpath = @"\Reports\Sale\En\LargeSaleReport.rdlc";
+                        View.uc_receiptInvoice.width = 400;//400 =10cm
+                        View.uc_receiptInvoice.height = GetpageHeight(View.uc_receiptInvoice.itemscount, 500);
+
+                    }
+                    else if (MainWindow.salePaperSize == "8cm")
+                    {
+                        addpath = @"\Reports\Sale\En\MediumSaleReport.rdlc";
+                        View.uc_receiptInvoice.width = 315;//315 =8cm
+                        View.uc_receiptInvoice.height = GetpageHeight(View.uc_receiptInvoice.itemscount, 500);
+
+                    }
+                    else if (MainWindow.salePaperSize == "5.7cm")
+                    {
+                        addpath = @"\Reports\Sale\En\SmallSaleReport.rdlc";
+                        View.uc_receiptInvoice.width = 224;//224 =5.7cm
+                        View.uc_receiptInvoice.height = GetpageHeight(View.uc_receiptInvoice.itemscount, 460);
+
+                    }
+                    else //MainWindow.salePaperSize == "A4"
+                    {
+
+                        addpath = @"\Reports\Sale\En\InvPurReport.rdlc";
+                    }
+                    //  addpath = @"\Reports\Sale\En\InvPurReport.rdlc";
+                    //    addpath = @"\Reports\Sale\En\LargeSaleReport.rdlc";
                     //   addpath = @"\Reports\Sale\En\MediumSaleReport.rdlc";
-                 //  addpath = @"\Reports\Sale\En\SmallSaleReport.rdlc";
+                   // addpath = @"\Reports\Sale\En\SmallSaleReport.rdlc";
                 }
 
             }
@@ -686,7 +748,7 @@ namespace POS.Classes
             paramarr.Add(new ReportParameter("invNumber", (invoice.invNumber == null|| invoice.invNumber == "" ) ? "-" : invoice.invNumber.ToString()));//paramarr[6]
             paramarr.Add(new ReportParameter("invoiceId", invoice.invoiceId.ToString()));
 
-            paramarr.Add(new ReportParameter("invDate", DateToString(invoice.invDate) == null ? "-" : DateToString(invoice.invDate)));
+            paramarr.Add(new ReportParameter("invDate", DateToString(invoice.updateDate) == null ? "-" : DateToString(invoice.invDate)));
             paramarr.Add(new ReportParameter("invTime", TimeToString(invoice.invTime)));
             paramarr.Add(new ReportParameter("vendorInvNum", invoice.agentCode == "-" ? "-" : invoice.agentCode.ToString()));
             paramarr.Add(new ReportParameter("agentName", agentName.Trim()));

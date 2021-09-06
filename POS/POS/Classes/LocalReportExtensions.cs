@@ -403,7 +403,7 @@ printDoc.PrinterSettings.PrinterName = printerName;
         }
 
         // custom Print
-        public static void customPrintToPrinter(this LocalReport report, string printerName, short copy)
+        public static void customPrintToPrinter(this LocalReport report, string printerName, short copy,int width,int height)
         {
             m_pageSettings = new PageSettings();
             ReportPageSettings reportPageSettings = report.GetDefaultPageSettings();
@@ -411,40 +411,40 @@ printDoc.PrinterSettings.PrinterName = printerName;
             m_pageSettings.PaperSize = reportPageSettings.PaperSize ;
             m_pageSettings.Margins = reportPageSettings.Margins;
 
-            customExportbyPrinter(printerName, report, copy);
+            customExportbyPrinter(printerName, report, copy, width, height);
         }
 
-        public static void customExportbyPrinter(string printerName, LocalReport report, short copy, bool print = true)
+        public static void customExportbyPrinter(string printerName, LocalReport report, short copy, int width, int height, bool print = true)
         {
 
-        //  PaperSize paperSize = m_pageSettings.PaperSize;
-           PaperSize paperSize = new PaperSize("Paper Roll", 7500, 1000);
+         PaperSize paperSize = m_pageSettings.PaperSize;
+     
             Margins margins = m_pageSettings.Margins;
 
             // The device info string defines the page range to print as well as the size of the page.
             // A start and end page of 0 means generate all pages.
             string deviceInfo = string.Format(
-                CultureInfo.InvariantCulture,
-                "<DeviceInfo>" +
-                    "<OutputFormat>EMF</OutputFormat>" +
-                
-                "<PageWidth>{5}</PageWidth>" +
-                "<PageHeight>{4}</PageHeight>" +
+                  CultureInfo.InvariantCulture,
+                  "<DeviceInfo>" +
+                      "<OutputFormat>EMF</OutputFormat>" +
+                 
+                  "<PageWidth>{5}</PageWidth>" +
+                  "<PageHeight>{4}</PageHeight>" +
 
-                "<MarginTop>{0}</MarginTop>" +
-                "<MarginLeft>{1}</MarginLeft>" +
-                "<MarginRight>{2}</MarginRight>" +
-                "<MarginBottom>{3}</MarginBottom>" +
+                  "<MarginTop>{0}</MarginTop>" +
+                  "<MarginLeft>{1}</MarginLeft>" +
+                  "<MarginRight>{2}</MarginRight>" +
+                  "<MarginBottom>{3}</MarginBottom>" +
 
-                "</DeviceInfo>"
-                ,
-                ToInches(margins.Top),
-                ToInches(margins.Left),
-                ToInches(margins.Right),
-                ToInches(margins.Bottom),
-              paperSize.Height,
-                paperSize.Width
-               );
+                  "</DeviceInfo>"
+                  ,
+                  ToInches(margins.Top),
+                  ToInches(margins.Left),
+                  ToInches(margins.Right),
+                  ToInches(margins.Bottom),
+                  ToInches(height),
+                  ToInches(width+1)
+                  );
             /*
                 ToInches(margins.Top),
                 ToInches(margins.Left),
@@ -462,15 +462,18 @@ printDoc.PrinterSettings.PrinterName = printerName;
 
             if (print)
             {
-                customPrintbyPrinter(printerName, copy);
+                customPrintbyPrinter(printerName, copy, width,  height);
             }
         }
 
-        public static void customPrintbyPrinter(string printerName, short copy)
+        public static void customPrintbyPrinter(string printerName, short copy, int width, int height)
         {
             if (m_streams == null || m_streams.Count == 0)
                 throw new Exception("Error: no stream to print.");
             PrintDocument printDoc = new PrintDocument();
+            PaperSize oldpapersize = printDoc.DefaultPageSettings.PaperSize;
+            printDoc.DefaultPageSettings.PaperSize= new PaperSize("Custom", width, height);
+            
             printDoc.PrinterSettings.Copies = copy;
             if (!printDoc.PrinterSettings.IsValid)
             {
@@ -491,7 +494,9 @@ printDoc.PrinterSettings.PrinterName = printerName;
 
                 m_currentPageIndex = 0;
                 printDoc.Print();
+
             }
+            printDoc.DefaultPageSettings.PaperSize = oldpapersize;
         }
 
     }

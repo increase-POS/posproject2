@@ -1650,7 +1650,8 @@ namespace POS.View.purchases
 
 
 
-                            LocalReportExtensions.PrintToPrinter(rep);
+                            LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.rep_printer_name, short.Parse(MainWindow.pur_copy_count));
+
                         }
                     }
                 }

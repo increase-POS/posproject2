@@ -24,19 +24,19 @@
         <div class="inv-total">
           <div style="width: 70%; float: right; text-align: left; padding: 10px;"></div>
           <div style="width: 30%;float: right; text-align: left;">
-            <p style="font-family:'Open Sans',sans-serif; font-size: 18px; font-weight: bold; color: #47484b;">[[trinvoicetotal]]<span style="font-size: 14px; font-weight: normal; color: #47484b;">[[invoicetotal]]</span></p>
+            <p style="font-family:'Open Sans',sans-serif; font-size: 18px; font-weight: bold; color: #47484b;">[[trinvoicetotal]]<span style="font-size: 14px; font-weight: normal; color: #47484b;">[[invoicetotal]] [[currency]]</span></p>
           </div>
         </div>
         <div class="inv-Discount">
           <div style="width: 70%; float: right; text-align: left; padding: 10px;"></div>
           <div style="width: 30%; float: left; text-align: left;">
-            <p style="font-family:'Open Sans',sans-serif; font-size: 18px; font-weight: bold; color: #47484b;">[[trinvoicediscount]]<span style="font-size: 14px; font-weight: normal; color: #47484b;">[[invoicediscount]]</span></p>
+            <p style="font-family:'Open Sans',sans-serif; font-size: 18px; font-weight: bold; color: #47484b;">[[trinvoicediscount]]<span style="font-size: 14px; font-weight: normal; color: #47484b;">[[invoicediscount]]  [[currency]]</span></p>
           </div>
         </div>
         <div class="inv-tax">
           <div style="width: 70%; float: right; text-align: left; padding: 10px;"></div>
           <div style="width: 30%; float: left; text-align: left;">
-            <p style="font-family:'Open Sans',sans-serif; font-size: 18px; font-weight: bold; color: #47484b;">[[trinvoicetax]]<span style="font-size: 14px; font-weight: normal; color: #47484b;">[[invoicetax]]</span></p>
+            <p style="font-family:'Open Sans',sans-serif; font-size: 18px; font-weight: bold; color: #47484b;">[[trinvoicetax]]<span style="font-size: 14px; font-weight: normal; color: #47484b;">[[invoicetax]] </span></p>
           </div>
         </div>
       </div>
@@ -46,7 +46,7 @@
       <div class="d-container" style="border-top: 1px solid #7d7d7d; text-align: center; font-family:'Open Sans',sans-serif; font-size: 14px; font-weight: bold; color: #47484b;">
         <div style="width: 70%; float: left; text-align: left; padding: 10px;"></div>
         <div style="width: 30%; float: left; text-align: left;">
-          <p style="font-family:'Open Sans',sans-serif; font-size: 22px; font-weight: bold; color: #47484b;">[[trtotalnet]]<span style="font-size: 18px; font-weight: normal; color: #47484b;">[[totalnet]]</span></p>
+          <p style="font-family:'Open Sans',sans-serif; font-size: 22px; font-weight: bold; color: #47484b;">[[trtotalnet]]  [[currency]]<span style="font-size: 18px; font-weight: normal; color: #47484b;">[[totalnet]]</span></p>
         </div>
       </div>
     </div>

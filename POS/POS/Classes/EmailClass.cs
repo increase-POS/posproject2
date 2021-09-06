@@ -407,7 +407,8 @@ namespace POS.Classes
             mailtosend.password = Encoding.UTF8.GetString(Convert.FromBase64String(email.password));
             mailtosend.isSSl = (bool)email.isSSL;
             mailtosend.AddTolist(toAgent.email);
-            mailtosend.subject = "sales" + DateTime.Now.ToString();
+
+          
 
 
 
@@ -421,7 +422,7 @@ namespace POS.Classes
                 invheader = repm.ReadFile(@"EmailTemplates\ordertemplate\ar\invheader.tmp");
                 invfooter = repm.ReadFile(@"EmailTemplates\ordertemplate\ar\invfooter.tmp");
 
-                if (invoice.invType == "s")
+                if (invoice.invType == "s"|| invoice.invType == "pw")
                 {
                     invbody = repm.ReadFile(@"EmailTemplates\saletemplate\ar\invbody.tmp");
                     invitemtable = repm.ReadFile(@"EmailTemplates\saletemplate\ar\invitemtable.tmp");
@@ -448,7 +449,7 @@ namespace POS.Classes
 
                 invheader = repm.ReadFile(@"EmailTemplates\ordertemplate\en\invheader.tmp");
                 invfooter = repm.ReadFile(@"EmailTemplates\ordertemplate\en\invfooter.tmp");
-                if (invoice.invType == "s")
+                if (invoice.invType == "s" || invoice.invType == "pw")
                 {
 
                     invbody = repm.ReadFile(@"EmailTemplates\saletemplate\en\invbody.tmp");
@@ -493,6 +494,7 @@ namespace POS.Classes
             // string title = "Purchase Order";
             string title = setvlist.Where(x => x.notes == "title").FirstOrDefault() is null ? ""
                 : setvlist.Where(x => x.notes == "title").FirstOrDefault().value.ToString();
+            mailtosend.subject = title.Trim();
             invheader = invheader.Replace("[[title]]", title.Trim());
 
             invbody = invbody.Replace("[[thankstitle]]", title);
