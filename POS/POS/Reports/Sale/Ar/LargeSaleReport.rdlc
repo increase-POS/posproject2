@@ -1470,7 +1470,7 @@
             </Border>
           </Style>
         </PageHeader>
-        <PageHeight>20cm</PageHeight>
+        <PageHeight>25cm</PageHeight>
         <PageWidth>10cm</PageWidth>
         <LeftMargin>0cm</LeftMargin>
         <RightMargin>0cm</RightMargin>
