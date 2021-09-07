@@ -320,8 +320,8 @@
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
                                 <DataGridTextColumn  Header="Amount"  Width="*"  Binding="{Binding Path=Count}"/>
-                                <DataGridTextColumn  Header="Price"  Width="*"  Binding="{Binding Path=Price}"/>
-                                <DataGridTextColumn IsReadOnly="True"  Width="*"  Header="Total" Binding="{Binding Path=Total}"/>
+                                <DataGridTextColumn  Header="Price"  Width="*"  Binding="{Binding Path=Price ,Converter={StaticResource accuracyConverter}}"/>
+                                <DataGridTextColumn IsReadOnly="True"  Width="*"  Header="Total" Binding="{Binding Path=Total , Converter={StaticResource accuracyConverter}}"/>
                             </DataGrid.Columns>
                         </DataGrid>
                         <Separator Margin="5,0" Grid.Row="2"  Background="#DFDFDF" VerticalAlignment="Center" Width="auto" />

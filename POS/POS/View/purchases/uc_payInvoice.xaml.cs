@@ -2513,6 +2513,9 @@ namespace POS.View
             }
         }
 
+        private void Btn_emailMessage_Click(object sender, RoutedEventArgs e)
+        {//email
 
+        }
     }
 }

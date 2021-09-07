@@ -282,7 +282,9 @@ namespace POS.View
                 SectionData.defaultDatePickerStyle(dp_desrvedDate);
                 #endregion
 
-                tb_taxValue.Text = MainWindow.tax.ToString();
+                //tb_taxValue.Text = MainWindow.tax.ToString();
+                tb_taxValue.Text = SectionData.DecTostring(MainWindow.tax);
+
                 tb_barcode.Focus();
                 #region datagridChange
                 CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(dg_billDetails.Items);
@@ -312,8 +314,8 @@ namespace POS.View
         {
             try
             {
-                if (sendert != null)
-                    SectionData.StartAwait(grid_main);
+                //if (sendert != null)
+                //    SectionData.StartAwait(grid_main);
                 await refreshOrdersWaitNotification();
                 await refreshQuotationNotification();
                 if (invoice.invoiceId != 0)
@@ -322,13 +324,13 @@ namespace POS.View
                     if (_InvoiceType == "s" || _InvoiceType == "sb")
                         await refreshPaymentsNotification(invoice.invoiceId);
                 }
-                if (sendert != null)
-                    SectionData.EndAwait(grid_main);
+                //if (sendert != null)
+                //    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
                 if (sendert != null)
-                    SectionData.EndAwait(grid_main);
+                    //SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this);
             }
         }
@@ -1117,7 +1119,7 @@ namespace POS.View
                             await saveSaleInvoice("s");
                             await refreshDraftNotification();
                         }
-
+                        //thread  + purchases
                         if (invoice.invType == "s")
                         {
                             if (MainWindow.print_on_save_sale == "1")
@@ -1417,25 +1419,36 @@ namespace POS.View
             if (invoice.tax != null)
             {
                 _Tax = (decimal)invoice.tax;
-                tb_taxValue.Text = invoice.tax.ToString();
-                tb_discountCoupon.Text = invoice.discountValue.ToString();
+                //tb_taxValue.Text = invoice.tax.ToString();
+                tb_taxValue.Text = SectionData.DecTostring(MainWindow.tax);
+
+                //tb_discountCoupon.Text = invoice.discountValue.ToString();
+                tb_discountCoupon.Text = SectionData.DecTostring(invoice.discountValue);
+
             }
             if (_InvoiceType == "sbd" || _InvoiceType == "sd")
             {
                 _Tax = 0;
-                tb_taxValue.Text = _Tax.ToString();
+                //tb_taxValue.Text = _Tax.ToString();
+                tb_taxValue.Text = SectionData.DecTostring(_Tax);
+
                 tb_discountCoupon.Text = "0";
             }
             cb_customer.SelectedValue = invoice.agentId;
             dp_desrvedDate.Text = invoice.deservedDate.ToString();
             if (invoice.totalNet != null)
-                tb_total.Text = Math.Round((double)invoice.totalNet, 2).ToString();
+                //tb_total.Text = Math.Round((double)invoice.totalNet, 2).ToString();
+                tb_total.Text = SectionData.DecTostring((decimal)invoice.totalNet);
 
             cb_company.SelectedValue = invoice.shippingCompanyId;
             cb_user.SelectedValue = invoice.shipUserId;
             tb_note.Text = invoice.notes;
-            tb_sum.Text = invoice.total.ToString();
-            tb_discount.Text = invoice.manualDiscountValue.ToString();
+            //tb_sum.Text = invoice.total.ToString();
+            tb_sum.Text = SectionData.DecTostring(invoice.total);
+
+            //tb_discount.Text = invoice.manualDiscountValue.ToString();
+            tb_discount.Text = SectionData.DecTostring(invoice.manualDiscountValue);
+
             if (invoice.manualDiscountType == "1")
                 cb_typeDiscount.SelectedIndex = 1;
             else if (invoice.manualDiscountType == "2")
@@ -1850,7 +1863,9 @@ namespace POS.View
                         discountValue = SectionData.calcPercentage(_Sum, discountValue);
                     _Discount += discountValue;
                 }
-                tb_discountCoupon.Text = _Discount.ToString();
+                //tb_discountCoupon.Text = _Discount.ToString();
+                tb_discountCoupon.Text = SectionData.DecTostring(_Discount);
+
                 #endregion
                 #region manaula discount           
                 if (cb_typeDiscount.SelectedIndex != -1 && cb_typeDiscount.SelectedIndex != 0 && tb_discount.Text != "")
@@ -1871,8 +1886,11 @@ namespace POS.View
             //else
             //    tb_taxValue.Text = _Tax.ToString();
             total += taxValue;
-            tb_sum.Text = _Sum.ToString();
-            tb_total.Text = Math.Round(total, 2).ToString();
+            //tb_sum.Text = _Sum.ToString();
+            tb_sum.Text = SectionData.DecTostring(_Sum);
+
+            //tb_total.Text = Math.Round(total, 2).ToString();
+            tb_total.Text = SectionData.DecTostring(total);
         }
         #region billdetails
 
@@ -1889,9 +1907,13 @@ namespace POS.View
             else
                 dg_billDetails.ItemsSource = billDetails;
 
-            tb_sum.Text = _Sum.ToString();
+            //tb_sum.Text = _Sum.ToString();
+            tb_sum.Text = SectionData.DecTostring(_Sum);
+
             if (MainWindow.isInvTax == 0)
-                tb_taxValue.Text = _Tax.ToString();
+                //tb_taxValue.Text = _Tax.ToString();
+                tb_taxValue.Text = SectionData.DecTostring(_Tax);
+
         }
 
 
@@ -2583,8 +2605,7 @@ namespace POS.View
             return pdfpath;
         }
         private async void Btn_pdf_Click(object sender, RoutedEventArgs e)
-        {
-
+        {//pdf
             try
             {
                 if (sender != null)
@@ -2637,7 +2658,10 @@ namespace POS.View
                         {
                             invoice.branchName = branch.name;
                         }
-
+                        foreach(var i in invoiceItems)
+                        {
+                            i.price = decimal.Parse(SectionData.DecTostring(i.price));
+                        }
                         clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
                         clsReports.setReportLanguage(paramarr);
                         clsReports.Header(paramarr);
@@ -2731,6 +2755,10 @@ namespace POS.View
 
                     }
                     */
+                    foreach(var i in invoiceItems)
+                    {
+                        i.price = decimal.Parse(SectionData.DecTostring(i.price));
+                    }
                     clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
                     // clsReports.purchaseInvoiceReport(newl, rep, reppath);
                     clsReports.setReportLanguage(paramarr);
@@ -2766,7 +2794,7 @@ namespace POS.View
             }
         }
         private async void Btn_printInvoice_Click(object sender, RoutedEventArgs e)
-        {
+        {//print
             try
             {
                 if (sender != null)
@@ -2788,7 +2816,7 @@ namespace POS.View
         }
 
         private async void Btn_preview_Click(object sender, RoutedEventArgs e)
-        {
+        {//preview
             try
             {
                 if (sender != null)
@@ -2841,7 +2869,10 @@ namespace POS.View
 
                         invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
                         ReportCls.checkLang();
-
+                        foreach (var i in invoiceItems)
+                        {
+                            i.price = decimal.Parse(SectionData.DecTostring(i.price));
+                        }
                         clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
                         clsReports.setReportLanguage(paramarr);
                         clsReports.Header(paramarr);
@@ -2999,7 +3030,7 @@ namespace POS.View
             //
         }
         private async void Btn_emailMessage_Click(object sender, RoutedEventArgs e)
-        {
+        {//email
             try
             {
                 if (sender != null)

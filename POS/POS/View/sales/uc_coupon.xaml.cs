@@ -554,7 +554,7 @@ namespace POS.View
         }
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
-        {
+        {//excel
             try
             {
                 if (sender != null)
@@ -575,7 +575,16 @@ namespace POS.View
                         string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                         ReportCls.checkLang();
+                        foreach (var c in couponsQuery)
+                        {
+                            c.discountValue = decimal.Parse(SectionData.DecTostring(c.discountValue));
+                            c.invMin = decimal.Parse(SectionData.DecTostring(c.invMin));
+                            c.invMax = decimal.Parse(SectionData.DecTostring(c.invMax));
 
+                            c.startDate = DateTime.Parse(SectionData.DateToString(c.startDate));
+                            c.endDate = DateTime.Parse(SectionData.DateToString(c.endDate));
+
+                        }
                         clsReports.couponReport(couponsQuery, rep, reppath);
                         clsReports.setReportLanguage(paramarr);
                         clsReports.Header(paramarr);
@@ -644,9 +653,9 @@ namespace POS.View
 
 
         private void Dg_coupon_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
+        {//selection
             try
-            {//selection
+            {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
@@ -666,10 +675,15 @@ namespace POS.View
                 if (dg_coupon.SelectedIndex != -1)
                 {
                     coupon = dg_coupon.SelectedItem as Coupon;
+
                     this.DataContext = coupon;
 
                     if (coupon != null)
                     {
+                        tb_discountValue.Text = SectionData.DecTostring(coupon.discountValue);
+                        tb_MinInvoiceValue.Text = SectionData.DecTostring(coupon.invMin);
+                        tb_MaxInvoiceValue.Text = SectionData.DecTostring(coupon.invMax);
+
                         tgl_ActiveCoupon.IsChecked = Convert.ToBoolean(coupon.isActive);
                         cb_typeDiscount.SelectedValue = coupon.discountType;
                         tb_discountValue.Text = (Convert.ToInt32(coupon.discountValue)).ToString();
@@ -677,6 +691,7 @@ namespace POS.View
                         img_barcode.Visibility = Visibility.Visible;
                         tb_barcode.Text = coupon.barcode;
                         drawBarcode(coupon.barcode);
+
                         #region delete
                         if (coupon.canDelete)
                         {
@@ -923,9 +938,9 @@ namespace POS.View
         }
 
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
-        {
+        {//search
             try
-            {//search
+            {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
@@ -1173,7 +1188,7 @@ namespace POS.View
         LocalReport rep = new LocalReport();
         SaveFileDialog saveFileDialog = new SaveFileDialog();
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
-        {
+        {//pdf
             try
             {
                 if (sender != null)
@@ -1192,7 +1207,16 @@ namespace POS.View
                     string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                     ReportCls.checkLang();
+                    foreach(var c in couponsQuery)
+                    {
+                        c.discountValue = decimal.Parse(SectionData.DecTostring(c.discountValue));
+                        c.invMin = decimal.Parse(SectionData.DecTostring(c.invMin));
+                        c.invMax = decimal.Parse(SectionData.DecTostring(c.invMax));
 
+                        c.startDate = DateTime.Parse(SectionData.DateToString(c.startDate));
+                        c.endDate = DateTime.Parse(SectionData.DateToString(c.endDate));
+
+                    }
                     clsReports.couponReport(couponsQuery, rep, reppath);
                     clsReports.setReportLanguage(paramarr);
                     clsReports.Header(paramarr);
@@ -1223,7 +1247,7 @@ namespace POS.View
         }
 
         private void Btn_print_Click(object sender, RoutedEventArgs e)
-        {
+        {//print
             try
             {
                 if (sender != null)
@@ -1242,7 +1266,16 @@ namespace POS.View
                     string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                     ReportCls.checkLang();
+                    foreach (var c in couponsQuery)
+                    {
+                        c.discountValue = decimal.Parse(SectionData.DecTostring(c.discountValue));
+                        c.invMin = decimal.Parse(SectionData.DecTostring(c.invMin));
+                        c.invMax = decimal.Parse(SectionData.DecTostring(c.invMax));
 
+                        c.startDate = DateTime.Parse(SectionData.DateToString(c.startDate));
+                        c.endDate = DateTime.Parse(SectionData.DateToString(c.endDate));
+
+                    }
                     clsReports.couponReport(couponsQuery, rep, reppath);
                     clsReports.setReportLanguage(paramarr);
                     clsReports.Header(paramarr);
@@ -1265,7 +1298,7 @@ namespace POS.View
         }
 
         private void Btn_pieChart_Click(object sender, RoutedEventArgs e)
-        {
+        {//pieChart
             try
             {
                 if (sender != null)
@@ -1290,7 +1323,7 @@ namespace POS.View
         }
 
         private void Btn_preview_Click(object sender, RoutedEventArgs e)
-        {
+        {//preview
             Window.GetWindow(this).Opacity = 0.2;
             string pdfpath = "";
 
@@ -1311,7 +1344,16 @@ namespace POS.View
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
             ReportCls.checkLang();
+            foreach (var c in couponsQuery)
+            {
+                c.discountValue = decimal.Parse(SectionData.DecTostring(c.discountValue));
+                c.invMin = decimal.Parse(SectionData.DecTostring(c.invMin));
+                c.invMax = decimal.Parse(SectionData.DecTostring(c.invMax));
 
+                c.createDate = DateTime.Parse(SectionData.DateToString(c.createDate));
+                c.updateDate = DateTime.Parse(SectionData.DateToString(c.updateDate));
+
+            }
             clsReports.couponReport(couponsQuery, rep, reppath);
             clsReports.setReportLanguage(paramarr);
             clsReports.Header(paramarr);
