@@ -636,12 +636,12 @@ namespace POS.Classes
             string agentName = (invoice.agentCompany != null || invoice.agentCompany != "") ? invoice.agentCompany.Trim()
                 : ((invoice.agentName != null || invoice.agentName != "") ? invoice.agentName.Trim() : "-");
 
-            decimal taxval = calcpercentval("2", invoice.tax, totalafterdis);
-           // decimal totalnet = totalafterdis + taxval;
+            //    decimal taxval = calcpercentval("2", invoice.tax, totalafterdis);
+            // decimal totalnet = totalafterdis + taxval;
 
             //  rep.DataSources.Add(new ReportDataSource("DataSetBank", banksQuery));
 
-
+            //discountType
             paramarr.Add(new ReportParameter("invNumber", invoice.invNumber == null ? "-" : invoice.invNumber.ToString()));//paramarr[6]
             paramarr.Add(new ReportParameter("invoiceId", invoice.invoiceId.ToString()));
 
@@ -652,14 +652,18 @@ namespace POS.Classes
             paramarr.Add(new ReportParameter("vendorInvNum", invoice.agentCode == "-" ? "-" : invoice.agentCode.ToString()));
             paramarr.Add(new ReportParameter("agentName", agentName));
             paramarr.Add(new ReportParameter("total", DecTostring(invoice.total) == null ? "-" : DecTostring(invoice.total)));
-            paramarr.Add(new ReportParameter("discountValue", DecTostring(disval) == null ? "-" : DecTostring(disval)));
+
+          //  paramarr.Add(new ReportParameter("discountValue", DecTostring(disval) == null ? "-" : DecTostring(disval)));
+            paramarr.Add(new ReportParameter("discountValue", invoice.discountValue == null ? "0" : DecTostring(invoice.discountValue)));
+            paramarr.Add(new ReportParameter("discountType", invoice.discountType == null ? "1" :invoice.discountType.ToString()));
+
             paramarr.Add(new ReportParameter("totalNet", DecTostring(invoice.totalNet) == null ? "-" : DecTostring(invoice.totalNet)));
             paramarr.Add(new ReportParameter("paid", DecTostring(invoice.paid) == null ? "-" : DecTostring(invoice.paid)));
             paramarr.Add(new ReportParameter("deserved", DecTostring(invoice.deserved) == null ? "-" : DecTostring(invoice.deserved)));
             //paramarr.Add(new ReportParameter("deservedDate", invoice.deservedDate.ToString() == null ? "-" : invoice.deservedDate.ToString()));
             paramarr.Add(new ReportParameter("deservedDate", invoice.deservedDate.ToString() == null ? "-" : DateToString(invoice.deservedDate)));
 
-            paramarr.Add(new ReportParameter("tax", DecTostring(taxval)));
+            paramarr.Add(new ReportParameter("tax", DecTostring(invoice.tax) == null ? "0" : DecTostring(invoice.tax)));
             string invNum = invoice.invNumber == null ? "-" : invoice.invNumber.ToString();
             paramarr.Add(new ReportParameter("barcodeimage", "file:\\" + BarcodeToImage(invNum, "invnum")));
             paramarr.Add(new ReportParameter("Currency", MainWindow.Currency));
@@ -739,8 +743,9 @@ namespace POS.Classes
                 totalafterdis = 0;
             }
 
+           // discountType
+          //  decimal taxval = calcpercentval("2", invoice.tax, totalafterdis);
 
-            decimal taxval = calcpercentval("2", invoice.tax, totalafterdis);
             // decimal totalnet = totalafterdis + taxval;
             //  percentValue(decimal ? value, decimal ? percent);
 
@@ -754,9 +759,11 @@ namespace POS.Classes
             paramarr.Add(new ReportParameter("agentName", agentName.Trim()));
             paramarr.Add(new ReportParameter("total", DecTostring(invoice.total) == null ? "-" : DecTostring(invoice.total)));
 
-        
 
-            paramarr.Add(new ReportParameter("discountValue", DecTostring(disval) == null ? "-" : DecTostring(disval)));
+
+            //  paramarr.Add(new ReportParameter("discountValue", DecTostring(disval) == null ? "-" : DecTostring(disval)));
+            paramarr.Add(new ReportParameter("discountValue", invoice.discountValue == null ? "0" : DecTostring(invoice.discountValue)));
+            paramarr.Add(new ReportParameter("discountType", invoice.discountType == null ? "1" : invoice.discountType.ToString()));
 
             paramarr.Add(new ReportParameter("totalNet", DecTostring(invoice.totalNet) == null ? "-" : DecTostring(invoice.totalNet)));
             paramarr.Add(new ReportParameter("paid", DecTostring(invoice.paid) == null ? "-" : DecTostring(invoice.paid)));
@@ -765,7 +772,7 @@ namespace POS.Classes
             paramarr.Add(new ReportParameter("deservedDate", invoice.deservedDate.ToString() == null ? "-" :DateToString(invoice.deservedDate)));
 
 
-            paramarr.Add(new ReportParameter("tax", DecTostring(taxval)));
+            paramarr.Add(new ReportParameter("tax", DecTostring(invoice.tax)==null ? "0" : DecTostring(invoice.tax)));
             string invNum = invoice.invNumber == null ? "-" : invoice.invNumber.ToString();
             paramarr.Add(new ReportParameter("barcodeimage", "file:\\" + BarcodeToImage(invNum, "invnum")));
             paramarr.Add(new ReportParameter("Currency", MainWindow.Currency));
