@@ -196,6 +196,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to admin.
+        /// </summary>
+        internal static string trAdmin {
+            get {
+                return ResourceManager.GetString("trAdmin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Administrative deposit.
         /// </summary>
         internal static string trAdministrativeDeposit {
@@ -1641,6 +1650,15 @@ namespace POS {
         internal static string trEmailTemplates {
             get {
                 return ResourceManager.GetString("trEmailTemplates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Employee.
+        /// </summary>
+        internal static string trEmployee {
+            get {
+                return ResourceManager.GetString("trEmployee", resourceCulture);
             }
         }
         

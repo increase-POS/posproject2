@@ -2973,4 +2973,3 @@ D:\myproj\posproject2\POS\POS\obj\Debug\View\reports\us_dailySalesStatistic.g.cs
 D:\myproj\posproject2\POS\POS\obj\Debug\View\Settings\us_emailGeneral.g.cs
 D:\myproj\posproject2\POS\POS\obj\Debug\View\reports\us_dailySalesStatistic.baml
 D:\myproj\posproject2\POS\POS\obj\Debug\View\Settings\us_emailGeneral.baml
-E:\GitHub\posproject2\POS\POS\obj\Debug\POS.csprojAssemblyReference.cache

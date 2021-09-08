@@ -2365,4 +2365,10 @@
   <data name="trIsRequired" xml:space="preserve">
     <value>هذا الحقل إجباري</value>
   </data>
+  <data name="trAdmin" xml:space="preserve">
+    <value>مدير</value>
+  </data>
+  <data name="trEmployee" xml:space="preserve">
+    <value>موظف</value>
+  </data>
 </root>

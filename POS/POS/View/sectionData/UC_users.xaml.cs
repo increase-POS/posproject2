@@ -64,7 +64,6 @@ namespace POS.View
         int index = 0;
 
         string imgFileName = "pic/no-image-icon-125x125.png";
-
         bool isImgPressed = false;
         SaveFileDialog saveFileDialog = new SaveFileDialog();
         ReportCls reportclass = new ReportCls();
@@ -180,7 +179,6 @@ namespace POS.View
                 else b = false;
             return b;
         }
-
         private bool chkPasswordLength(string password)
         {
            bool b = false;
@@ -436,10 +434,10 @@ namespace POS.View
                     bool passLength = false;
                     passLength = chkPasswordLength(pb_password.Password);
                     string phoneStr = "";
-                    if (!tb_phone.Text.Equals("")) phoneStr = cb_areaPhone.Text + "-" + cb_areaPhoneLocal.Text + "-" + tb_phone.Text;
+                    if (!tb_phone.Text.Equals(""))
+                        phoneStr = cb_areaPhone.Text + "-" + cb_areaPhoneLocal.Text + "-" + tb_phone.Text;
 
                     bool emailError = false;
-
                     if (!tb_email.Text.Equals(""))
                         if (!SectionData.IsValid(tb_email.Text))
                             emailError = true;
@@ -506,7 +504,8 @@ namespace POS.View
                             if (isImgPressed)
                             {
                                 int userId = s;
-                                string b = await userModel.uploadImage(imgFileName, Md5Encription.MD5Hash("Inc-m" + userId.ToString()), userId);
+                                string b = await userModel.uploadImage(imgFileName,
+                                    Md5Encription.MD5Hash("Inc-m" + userId.ToString()), userId);
                                 user.image = b;
                                 isImgPressed = false;
                             }
@@ -515,11 +514,8 @@ namespace POS.View
                             Tb_search_TextChanged(null, null);
 
                             await fillJobCombo();
-
                             SectionData.getMobile(user.mobile, cb_areaMobile, tb_mobile);
-
                             SectionData.getPhone(user.phone, cb_areaPhone, cb_areaPhoneLocal, tb_phone);
-
                         }
                     }
                 }
@@ -1351,7 +1347,6 @@ namespace POS.View
                     }
 
                     SectionData.getMobile(user.mobile, cb_areaMobile, tb_mobile);
-
                     SectionData.getPhone(user.phone, cb_areaPhone, cb_areaPhoneLocal, tb_phone);
 
                     getImg();
