@@ -522,6 +522,7 @@ namespace POS.Classes
             bool isArabic =checkLang();
             if (isArabic)
             {
+
                 if (invoice.invType == "q"|| invoice.invType == "qd")
                 {
                     addpath = @"\Reports\Sale\Ar\ArInvPurQtReport.rdlc";
@@ -532,6 +533,7 @@ namespace POS.Classes
                 }
                    else
                 {
+
                      if (MainWindow.salePaperSize == "10cm")
                     {
                         addpath = @"\Reports\Sale\Ar\LargeSaleReport.rdlc";
@@ -608,6 +610,111 @@ namespace POS.Classes
                     //    addpath = @"\Reports\Sale\En\LargeSaleReport.rdlc";
                     //   addpath = @"\Reports\Sale\En\MediumSaleReport.rdlc";
                    // addpath = @"\Reports\Sale\En\SmallSaleReport.rdlc";
+                }
+
+            }
+
+
+            //
+
+            string reppath = PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+            return reppath;
+        }
+
+        public string GetreceiptInvoiceRdlcpath(Invoice invoice,int isPreview)
+        {
+            string addpath;
+            bool isArabic = checkLang();
+            if (isArabic)
+            {
+
+                if ( (invoice.invType == "q" || invoice.invType == "qd") )
+                {
+                    addpath = @"\Reports\Sale\Ar\ArInvPurQtReport.rdlc";
+                }
+                else if (invoice.invType == "or" || invoice.invType == "ord" )
+                {
+                    addpath = @"\Reports\Sale\Ar\ArInvPurOrderReport.rdlc";
+                }
+                else
+                {
+
+                    if (MainWindow.salePaperSize == "10cm" && isPreview == 1)
+                    {
+                        addpath = @"\Reports\Sale\Ar\LargeSaleReport.rdlc";
+                        View.uc_receiptInvoice.width = 400;//400 =10cm
+                        View.uc_receiptInvoice.height = GetpageHeight(View.uc_receiptInvoice.itemscount, 500);
+
+                    }
+                    else if (MainWindow.salePaperSize == "8cm" && isPreview == 1)
+                    {
+                        addpath = @"\Reports\Sale\Ar\MediumSaleReport.rdlc";
+                        View.uc_receiptInvoice.width = 315;//315 =8cm
+                        View.uc_receiptInvoice.height = GetpageHeight(View.uc_receiptInvoice.itemscount, 500);
+
+
+                    }
+                    else if (MainWindow.salePaperSize == "5.7cm" && isPreview == 1)
+                    {
+                        addpath = @"\Reports\Sale\Ar\SmallSaleReport.rdlc";
+                        View.uc_receiptInvoice.width = 224;//224 =5.7cm
+                        View.uc_receiptInvoice.height = GetpageHeight(View.uc_receiptInvoice.itemscount, 460);
+
+                    }
+                    else //MainWindow.salePaperSize == "A4"
+                    {
+
+                        addpath = @"\Reports\Sale\Ar\ArInvPurReport.rdlc";
+                    }
+
+                    //   addpath = @"\Reports\Sale\Ar\LargeSaleReport.rdlc";
+                    //   addpath = @"\Reports\Sale\Ar\MediumSaleReport.rdlc";
+                    //   addpath = @"\Reports\Sale\Ar\SmallSaleReport.rdlc";
+                }
+
+            }
+            else
+            {
+                if (invoice.invType == "q" || invoice.invType == "qd")
+                {
+                    addpath = @"\Reports\Sale\En\InvPurQtReport.rdlc";
+                }
+                else if (invoice.invType == "or" || invoice.invType == "ord")
+                {
+                    addpath = @"\Reports\Sale\En\InvPurOrderReport.rdlc";
+                }
+                else
+                {
+                    if (MainWindow.salePaperSize == "10cm")
+                    {
+                        addpath = @"\Reports\Sale\En\LargeSaleReport.rdlc";
+                        View.uc_receiptInvoice.width = 400;//400 =10cm
+                        View.uc_receiptInvoice.height = GetpageHeight(View.uc_receiptInvoice.itemscount, 500);
+
+                    }
+                    else if (MainWindow.salePaperSize == "8cm")
+                    {
+                        addpath = @"\Reports\Sale\En\MediumSaleReport.rdlc";
+                        View.uc_receiptInvoice.width = 315;//315 =8cm
+                        View.uc_receiptInvoice.height = GetpageHeight(View.uc_receiptInvoice.itemscount, 500);
+
+                    }
+                    else if (MainWindow.salePaperSize == "5.7cm")
+                    {
+                        addpath = @"\Reports\Sale\En\SmallSaleReport.rdlc";
+                        View.uc_receiptInvoice.width = 224;//224 =5.7cm
+                        View.uc_receiptInvoice.height = GetpageHeight(View.uc_receiptInvoice.itemscount, 460);
+
+                    }
+                    else //MainWindow.salePaperSize == "A4"
+                    {
+
+                        addpath = @"\Reports\Sale\En\InvPurReport.rdlc";
+                    }
+                    //  addpath = @"\Reports\Sale\En\InvPurReport.rdlc";
+                    //    addpath = @"\Reports\Sale\En\LargeSaleReport.rdlc";
+                    //   addpath = @"\Reports\Sale\En\MediumSaleReport.rdlc";
+                    // addpath = @"\Reports\Sale\En\SmallSaleReport.rdlc";
                 }
 
             }

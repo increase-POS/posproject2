@@ -2580,7 +2580,7 @@ namespace POS.View
                         prInvoice.agentName = "-";
                         prInvoice.agentCompany = "-";
                     }
-                    string reppath = reportclass.GetreceiptInvoiceRdlcpath(prInvoice);
+                    string reppath = reportclass.GetreceiptInvoiceRdlcpath(prInvoice, 0);
                     ReportCls.checkLang();
                     Branch branch = new Branch();
                     branch = await branchModel.getBranchById((int)prInvoice.branchCreatorId);
@@ -2650,7 +2650,7 @@ namespace POS.View
                             invoice.agentName = "-";
                             invoice.agentCompany = "-";
                         }
-                        string reppath = reportclass.GetreceiptInvoiceRdlcpath(invoice);
+                        string reppath = reportclass.GetreceiptInvoiceRdlcpath(invoice, 0);
                         ReportCls.checkLang();
                         Branch branch = new Branch();
                         branch = await branchModel.getBranchById((int)invoice.branchCreatorId);
@@ -2832,10 +2832,13 @@ namespace POS.View
                     pdfpath = @"\Thumb\report\temp.pdf";
                     pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
 
-                    string reppath = reportclass.GetreceiptInvoiceRdlcpath(invoice);
+                   
                     if (invoice.invoiceId > 0)
                     {
 
+                        invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
+                        itemscount = invoiceItems.Count();
+                        string reppath = reportclass.GetreceiptInvoiceRdlcpath(invoice);
 
                         User employ = new User();
                         employ = await userModel.getUserById((int)invoice.updateUserId);
@@ -2881,7 +2884,15 @@ namespace POS.View
                         rep.SetParameters(paramarr);
                         rep.Refresh();
 
-                        LocalReportExtensions.ExportToPDF(rep, pdfpath);
+                        if (invoice.invType == "s")
+                        {
+                            LocalReportExtensions.customExportToPDF(rep, pdfpath, width, height);
+                        }
+                        else
+                        {
+                            LocalReportExtensions.ExportToPDF(rep, pdfpath);
+
+                        }
 
 
 

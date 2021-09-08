@@ -754,6 +754,9 @@
             <Height>0.55755cm</Height>
             <Width>3.04917cm</Width>
             <ZIndex>5</ZIndex>
+            <Visibility>
+              <Hidden>=Parameters!discountType.Value = 2</Hidden>
+            </Visibility>
             <Style>
               <Border>
                 <Style>None</Style>

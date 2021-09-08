@@ -499,5 +499,48 @@ printDoc.PrinterSettings.PrinterName = printerName;
             printDoc.DefaultPageSettings.PaperSize = oldpapersize;
         }
 
+        public static void customExportToPDF(LocalReport report, String FullPath, int width, int height)
+        {/*
+           /*
+            Warning[] warnings;
+            string[] streamIds;
+            string mimeType = string.Empty;
+            string encoding = string.Empty;
+            string extension = string.Empty;
+
+            var bytes = report.Render("PDF", null, out mimeType, out encoding, out extension, out streamIds, out warnings);
+
+            string fullpath = Path.Combine(DirPath, Filename);
+            using (FileStream stream = new FileStream(fullpath.ToString(), FileMode.Create))
+            {
+                stream.Write(bytes, 0, bytes.Length);
+                stream.Close();
+            }
+           
+            */
+
+
+            string deviceInfo = string.Format(
+                  CultureInfo.InvariantCulture,
+                  "<DeviceInfo>" +
+                      "<OutputFormat>EMF</OutputFormat>" +
+                      "<PageWidth>{1}</PageWidth>" +
+                      "<PageHeight>{0}</PageHeight>" +
+                       "<EmbedFonts>None</EmbedFonts>"+
+                  "</DeviceInfo>",
+
+                  ToInches(height+100),
+                  ToInches(width));
+            byte[] Bytes = report.Render(format: "PDF", deviceInfo: deviceInfo);
+            // File.SetAttributes(savePath, FileAttributes.Normal);
+
+            using (FileStream stream = new FileStream(FullPath, FileMode.Create))
+            {
+                stream.Write(Bytes, 0, Bytes.Length);
+            }
+
+
+
+        }
     }
 }

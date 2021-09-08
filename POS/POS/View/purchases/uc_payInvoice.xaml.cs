@@ -2000,6 +2000,7 @@ namespace POS.View
                 /////////////////////////////////////
                 Thread t1 = new Thread(() =>
                 {
+
                     pdfPurInvoice();
                 });
                 t1.Start();
@@ -2172,6 +2173,7 @@ namespace POS.View
         }
         public async void printPurInvoice()
         {
+
             if (prInvoiceId > 0)
             {
                 prInvoice = new Invoice();
@@ -2318,7 +2320,7 @@ namespace POS.View
                                                 mailtosend.AddAttachTolist(pdfpath);
                                             }));
                                             string msg = "";
-                                              //msg = mailtosend.Sendmail();// temp comment
+                                             msg = mailtosend.Sendmail();// temp comment
                                             if (msg == "Failure sending mail.")
                                             {
                                                 // msg = "No Internet connection";
@@ -2433,13 +2435,16 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-
-                //await printPurInvoice();
+                prInvoiceId = invoice.invoiceId;
+            // printPurInvoice();
                 /////////////////////////////////////////////////
-                Thread t1 = new Thread(() =>
-                {
-                    pdfPurInvoice();
-                });
+                
+                               Thread t1 = new Thread(() =>
+                               {
+                                   //      pdfPurInvoice();
+                                   printPurInvoice();
+
+                               });
                 t1.Start();
                 ////////////////////////////////////////////////
                 if (sender != null)
@@ -2585,12 +2590,14 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+                prInvoiceId = invoice.invoiceId;
+                sendPurEmail();
                 /////////////////////////////////////
-                Thread t1 = new Thread(() =>
-                {
-                    sendPurEmail();
-                });
-                t1.Start();
+                //Thread t1 = new Thread(() =>
+                //{
+                //    sendPurEmail();
+                //});
+                //t1.Start();
                 //////////////////////////////////////
 
                 if (sender != null)
