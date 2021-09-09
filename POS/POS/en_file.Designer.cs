@@ -2257,15 +2257,6 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Account Name is already exist.
-        /// </summary>
-        internal static string trErrorDuplicateAccountName {
-            get {
-                return ResourceManager.GetString("trErrorDuplicateAccountName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Barcode is already exist.
         /// </summary>
         internal static string trErrorDuplicateBarcodeToolTip {
@@ -3928,15 +3919,6 @@ namespace POS {
         internal static string trNoNotifications {
             get {
                 return ResourceManager.GetString("trNoNotifications", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Normal.
-        /// </summary>
-        internal static string trNormal {
-            get {
-                return ResourceManager.GetString("trNormal", resourceCulture);
             }
         }
         
@@ -6718,15 +6700,6 @@ namespace POS {
         internal static string trViewItems {
             get {
                 return ResourceManager.GetString("trViewItems", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Vip.
-        /// </summary>
-        internal static string trVip {
-            get {
-                return ResourceManager.GetString("trVip", resourceCulture);
             }
         }
         

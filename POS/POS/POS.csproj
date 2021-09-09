@@ -1198,8 +1198,10 @@
     <EmbeddedResource Include="Reports\Sale\Ar\ArInvPurOrderReport.rdlc" />
     <EmbeddedResource Include="Reports\Sale\Ar\ArInvPurQtReport.rdlc" />
     <EmbeddedResource Include="Reports\Sale\Ar\ArInvPurReport.rdlc" />
+    <EmbeddedResource Include="Reports\Sale\Ar\CouponReport.rdlc" />
     <EmbeddedResource Include="Reports\Sale\Ar\LargeSaleReport.rdlc" />
     <EmbeddedResource Include="Reports\Sale\Ar\MediumSaleReport.rdlc" />
+    <EmbeddedResource Include="Reports\Sale\Ar\OfferReport.rdlc" />
     <EmbeddedResource Include="Reports\Sale\Ar\SmallSaleReport.rdlc" />
     <EmbeddedResource Include="Reports\Sale\En\CouponReport.rdlc" />
     <EmbeddedResource Include="Reports\Sale\En\InvPurOrderReport.rdlc" />

@@ -117,6 +117,7 @@ namespace POS.View.sales
         ReportCls reportclass = new ReportCls();
         LocalReport rep = new LocalReport();
         SaveFileDialog saveFileDialog = new SaveFileDialog();
+        Invoice prInvoice = new Invoice();
         #region bill
         public class BillDetails
         {
@@ -2051,10 +2052,8 @@ SectionData.isAdminPermision())
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-        Invoice prInvoice = new Invoice();
-        public static int itemscount;
-        public static int width;
-        public static int height;
+       
+       
         public async Task printInvoice()
         {
 
@@ -2076,8 +2075,8 @@ SectionData.isAdminPermision())
                 if (prInvoice.invoiceId > 0)
                 {
                     invoiceItems = await invoiceModel.GetInvoicesItems(prInvoice.invoiceId);
-                    itemscount = invoiceItems.Count();
-                    string reppath = reportclass.GetreceiptInvoiceRdlcpath(prInvoice);
+                   
+                    string reppath = reportclass.GetreceiptInvoiceRdlcpath(prInvoice,0);
 
                     User employ = new User();
                     employ = await userModel.getUserById((int)prInvoice.updateUserId);
@@ -2124,16 +2123,10 @@ SectionData.isAdminPermision())
                     rep.Refresh();
                     this.Dispatcher.Invoke(() =>
                     {
-                        if (MainWindow.salePaperSize == "A4")
-                        {
-                            LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.sale_printer_name, short.Parse(MainWindow.sale_copy_count));
+                        
+                            LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.rep_printer_name, short.Parse(MainWindow.rep_print_count));
 
-                        }
-                        else
-                        {
-                            LocalReportExtensions.customPrintToPrinter(rep, MainWindow.sale_printer_name, short.Parse(MainWindow.sale_copy_count), width, height);
-
-                        }
+                      
                     });
                 }
                 else

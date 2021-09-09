@@ -2386,13 +2386,4 @@ Please add Email in setting</value>
   <data name="trEmployee" xml:space="preserve">
     <value>Employee</value>
   </data>
-  <data name="trErrorDuplicateAccountName" xml:space="preserve">
-    <value>Account Name is already exist</value>
-  </data>
-  <data name="trNormal" xml:space="preserve">
-    <value>Normal</value>
-  </data>
-  <data name="trVip" xml:space="preserve">
-    <value>Vip</value>
-  </data>
 </root>

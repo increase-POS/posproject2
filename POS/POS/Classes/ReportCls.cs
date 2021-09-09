@@ -36,6 +36,7 @@ namespace POS.Classes
             string stime = ts.ToString(@"hh\:mm");
             return stime;
         }
+
         public string DateToString(DateTime? date)
         {
             string sdate = "";
@@ -50,18 +51,50 @@ namespace POS.Classes
                 {
                     case "ShortDatePattern":
                         sdate = date.Value.ToString(dtfi.ShortDatePattern);
-                    break;
+                        break;
                     case "LongDatePattern":
                         sdate = date.Value.ToString(dtfi.LongDatePattern);
-                    break;
+                        break;
                     case "MonthDayPattern":
                         sdate = date.Value.ToString(dtfi.MonthDayPattern);
-                    break;
+                        break;
                     case "YearMonthPattern":
                         sdate = date.Value.ToString(dtfi.YearMonthPattern);
-                    break;
+                        break;
                     default:
                         sdate = date.Value.ToString(dtfi.ShortDatePattern);
+                        break;
+                }
+            }
+
+            return sdate;
+        }
+        public static string DateToStringPatern(DateTime? date)
+        {
+            string sdate = "";
+            if (date != null)
+            {
+                //DateTime ts = DateTime.Parse(date.ToString());
+                // @"hh\:mm\:ss"
+                //sdate = ts.ToString(@"d/M/yyyy");
+                DateTimeFormatInfo dtfi = DateTimeFormatInfo.CurrentInfo;
+
+                switch (MainWindow.dateFormat)
+                {
+                    case "ShortDatePattern":
+                        sdate = date.Value.ToString(@"dd/MM/yyyy");
+                    break;
+                    case "LongDatePattern":
+                        sdate = date.Value.ToString(@"dddd, MMMM d, yyyy");
+                    break;
+                    case "MonthDayPattern":
+                        sdate = date.Value.ToString(@"MMMM dd");
+                    break;
+                    case "YearMonthPattern":
+                        sdate = date.Value.ToString(@"MMMM yyyy");
+                    break;
+                    default:
+                        sdate = date.Value.ToString(@"dd/MM/yyyy");
                         break;
                 }
             }
@@ -850,12 +883,12 @@ namespace POS.Classes
                 totalafterdis = 0;
             }
 
-           // discountType
-          //  decimal taxval = calcpercentval("2", invoice.tax, totalafterdis);
+            // discountType
+            //  decimal taxval = calcpercentval("2", invoice.tax, totalafterdis);
 
             // decimal totalnet = totalafterdis + taxval;
             //  percentValue(decimal ? value, decimal ? percent);
-
+          
             paramarr.Add(new ReportParameter("Notes", (invoice.notes == null || invoice.notes =="") ? "-" : invoice.notes.Trim()));
             paramarr.Add(new ReportParameter("invNumber", (invoice.invNumber == null|| invoice.invNumber == "" ) ? "-" : invoice.invNumber.ToString()));//paramarr[6]
             paramarr.Add(new ReportParameter("invoiceId", invoice.invoiceId.ToString()));
