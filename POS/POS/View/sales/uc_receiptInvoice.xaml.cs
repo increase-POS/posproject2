@@ -27,6 +27,7 @@ using Microsoft.Reporting.WinForms;
 using Microsoft.Win32;
 using System.Globalization;
 using System.Windows.Threading;
+using System.Threading;
 
 namespace POS.View
 {
@@ -1122,13 +1123,24 @@ namespace POS.View
                         //thread  + purchases
                         if (invoice.invType == "s")
                         {
+
                             if (MainWindow.print_on_save_sale == "1")
                             {
-                                await printInvoice();
+                                // printInvoice();
+                                Thread t1 = new Thread(() =>
+                                {
+                                    printInvoice();
+                                });
+                                t1.Start();
                             }
                             if (MainWindow.email_on_save_sale == "1")
                             {
-                                await sendsaleEmail();
+                                //sendsaleEmail();
+                                Thread t1 = new Thread(() =>
+                                {
+                                    sendsaleEmail();
+                                });
+                                t1.Start();
                             }
 
 
@@ -1423,32 +1435,45 @@ namespace POS.View
                 tb_taxValue.Text = SectionData.DecTostring(MainWindow.tax);
 
                 //tb_discountCoupon.Text = invoice.discountValue.ToString();
-                tb_discountCoupon.Text = SectionData.DecTostring(invoice.discountValue);
-
+                if (invoice.discountValue != 0)
+                    tb_discountCoupon.Text = SectionData.DecTostring(invoice.discountValue);
+                else
+                    tb_discountCoupon.Text = "0";
             }
             if (_InvoiceType == "sbd" || _InvoiceType == "sd")
             {
                 _Tax = 0;
                 //tb_taxValue.Text = _Tax.ToString();
-                tb_taxValue.Text = SectionData.DecTostring(_Tax);
+                if (_Tax != 0)
+                    tb_taxValue.Text = SectionData.DecTostring(_Tax);
+                else
+                    tb_taxValue.Text = "0";
 
-                tb_discountCoupon.Text = "0";
+                                    tb_discountCoupon.Text = "0";
             }
             cb_customer.SelectedValue = invoice.agentId;
             dp_desrvedDate.Text = invoice.deservedDate.ToString();
             if (invoice.totalNet != null)
+            {
                 //tb_total.Text = Math.Round((double)invoice.totalNet, 2).ToString();
-                tb_total.Text = SectionData.DecTostring((decimal)invoice.totalNet);
-
+                if ((decimal)invoice.totalNet != 0)
+                    tb_total.Text = SectionData.DecTostring((decimal)invoice.totalNet);
+                else
+                    tb_total.Text = "0";
+            }
             cb_company.SelectedValue = invoice.shippingCompanyId;
             cb_user.SelectedValue = invoice.shipUserId;
             tb_note.Text = invoice.notes;
             //tb_sum.Text = invoice.total.ToString();
-            tb_sum.Text = SectionData.DecTostring(invoice.total);
+            if (invoice.total != 0)
+                tb_sum.Text = SectionData.DecTostring(invoice.total);
+            else tb_sum.Text = "0";
 
             //tb_discount.Text = invoice.manualDiscountValue.ToString();
-            tb_discount.Text = SectionData.DecTostring(invoice.manualDiscountValue);
-
+            if (invoice.manualDiscountValue != 0)
+                tb_discount.Text = SectionData.DecTostring(invoice.manualDiscountValue);
+            else
+                tb_discount.Text = "0";
             if (invoice.manualDiscountType == "1")
                 cb_typeDiscount.SelectedIndex = 1;
             else if (invoice.manualDiscountType == "2")
@@ -1864,10 +1889,12 @@ namespace POS.View
                     _Discount += discountValue;
                 }
                 //tb_discountCoupon.Text = _Discount.ToString();
-                tb_discountCoupon.Text = SectionData.DecTostring(_Discount);
-
+                if (_Discount != 0)
+                    tb_discountCoupon.Text = SectionData.DecTostring(_Discount);
+                else
+                    tb_discountCoupon.Text = "0";
                 #endregion
-                #region manaula discount           
+                    #region manaula discount           
                 if (cb_typeDiscount.SelectedIndex != -1 && cb_typeDiscount.SelectedIndex != 0 && tb_discount.Text != "")
                 {
                     int manualDisType = cb_typeDiscount.SelectedIndex;
@@ -1887,10 +1914,15 @@ namespace POS.View
             //    tb_taxValue.Text = _Tax.ToString();
             total += taxValue;
             //tb_sum.Text = _Sum.ToString();
-            tb_sum.Text = SectionData.DecTostring(_Sum);
-
+            if (_Sum != 0)
+                tb_sum.Text = SectionData.DecTostring(_Sum);
+            else
+                tb_sum.Text = "0";
             //tb_total.Text = Math.Round(total, 2).ToString();
-            tb_total.Text = SectionData.DecTostring(total);
+            if (total != 0)
+                tb_total.Text = SectionData.DecTostring(total);
+            else
+                tb_total.Text = "0";
         }
         #region billdetails
 
@@ -1908,12 +1940,18 @@ namespace POS.View
                 dg_billDetails.ItemsSource = billDetails;
 
             //tb_sum.Text = _Sum.ToString();
-            tb_sum.Text = SectionData.DecTostring(_Sum);
-
+            if (_Sum != 0)
+                tb_sum.Text = SectionData.DecTostring(_Sum);
+            else
+                tb_sum.Text = "0";
             if (MainWindow.isInvTax == 0)
+            {
                 //tb_taxValue.Text = _Tax.ToString();
-                tb_taxValue.Text = SectionData.DecTostring(_Tax);
-
+                if (_Tax != 0)
+                    tb_taxValue.Text = SectionData.DecTostring(_Tax);
+                else
+                    tb_taxValue.Text = "0";
+            }
         }
 
 
@@ -2533,7 +2571,8 @@ namespace POS.View
             }
         }
         //
-        public async Task<string> SaveSalepdf()
+        //public async Task<string> SaveSalepdf()
+        public async void SaveSalepdf()
         {
             List<ReportParameter> paramarr = new List<ReportParameter>();
             string pdfpath = "";
@@ -2602,86 +2641,24 @@ namespace POS.View
                 }
 
             }
-            return pdfpath;
+            //return pdfpath;
+            emailpdfpath = pdfpath;
         }
+        string emailpdfpath = "";
         private async void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {//pdf
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                if (invoice.invType == "pd" || invoice.invType == "sd" || invoice.invType == "qd"
-                             || invoice.invType == "sbd" || invoice.invType == "pbd"
-                             || invoice.invType == "ord" || invoice.invType == "imd" || invoice.invType == "exd")
+                
+                /////////////////////////////////////
+                Thread t1 = new Thread(() =>
                 {
-                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPrintDraftInvoice"), animation: ToasterAnimation.FadeIn);
-                }
-                else
-                {
-
-                    List<ReportParameter> paramarr = new List<ReportParameter>();
-
-
-                    if (invoice.invoiceId > 0)
-                    {
-                        invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
-
-                        User employ = new User();
-                        employ = await userModel.getUserById((int)invoice.updateUserId);
-                        invoice.uuserName = employ.name;
-                        invoice.uuserLast = employ.lastname;
-                        //  agentinv = customers.Where(X => X.agentId == invoice.agentId).FirstOrDefault();
-
-                        //  invoice.agentCode = agentinv.code;
-                        if (invoice.agentId != null)
-                        {
-                            Agent agentinv = new Agent();
-                            agentinv = customers.Where(X => X.agentId == invoice.agentId).FirstOrDefault();
-
-
-                            invoice.agentCode = agentinv.code;
-                            //new lines
-                            invoice.agentName = agentinv.name;
-                            invoice.agentCompany = agentinv.company;
-                        }
-                        else
-                        {
-                            invoice.agentCode = "-";
-                            invoice.agentName = "-";
-                            invoice.agentCompany = "-";
-                        }
-                        string reppath = reportclass.GetreceiptInvoiceRdlcpath(invoice, 0);
-                        ReportCls.checkLang();
-                        Branch branch = new Branch();
-                        branch = await branchModel.getBranchById((int)invoice.branchCreatorId);
-                        if (branch.branchId > 0)
-                        {
-                            invoice.branchName = branch.name;
-                        }
-                        foreach(var i in invoiceItems)
-                        {
-                            i.price = decimal.Parse(SectionData.DecTostring(i.price));
-                        }
-                        clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
-                        clsReports.setReportLanguage(paramarr);
-                        clsReports.Header(paramarr);
-                        paramarr = reportclass.fillSaleInvReport(invoice, paramarr);
-
-                        rep.SetParameters(paramarr);
-                        rep.Refresh();
-
-                        saveFileDialog.Filter = "PDF|*.pdf;";
-
-                        if (saveFileDialog.ShowDialog() == true)
-                        {
-
-                            string filepath = saveFileDialog.FileName;
-                            LocalReportExtensions.ExportToPDF(rep, filepath);
-                        }
-                    }
-
-                }
-
+                    pdfPurInvoice();
+                });
+                t1.Start();
+                //////////////////////////////////////
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -2693,7 +2670,86 @@ namespace POS.View
             }
         }
 
-        public async Task printInvoice()
+        public async void pdfPurInvoice()
+        {
+            if (invoice.invType == "pd" || invoice.invType == "sd" || invoice.invType == "qd"
+                         || invoice.invType == "sbd" || invoice.invType == "pbd"
+                         || invoice.invType == "ord" || invoice.invType == "imd" || invoice.invType == "exd")
+            {
+                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPrintDraftInvoice"), animation: ToasterAnimation.FadeIn);
+            }
+            else
+            {
+
+                List<ReportParameter> paramarr = new List<ReportParameter>();
+
+
+                if (invoice.invoiceId > 0)
+                {
+                    invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
+
+                    User employ = new User();
+                    employ = await userModel.getUserById((int)invoice.updateUserId);
+                    invoice.uuserName = employ.name;
+                    invoice.uuserLast = employ.lastname;
+                    //  agentinv = customers.Where(X => X.agentId == invoice.agentId).FirstOrDefault();
+
+                    //  invoice.agentCode = agentinv.code;
+                    if (invoice.agentId != null)
+                    {
+                        Agent agentinv = new Agent();
+                        agentinv = customers.Where(X => X.agentId == invoice.agentId).FirstOrDefault();
+
+
+                        invoice.agentCode = agentinv.code;
+                        //new lines
+                        invoice.agentName = agentinv.name;
+                        invoice.agentCompany = agentinv.company;
+                    }
+                    else
+                    {
+                        invoice.agentCode = "-";
+                        invoice.agentName = "-";
+                        invoice.agentCompany = "-";
+                    }
+                    string reppath = reportclass.GetreceiptInvoiceRdlcpath(invoice, 0);
+                    ReportCls.checkLang();
+                    Branch branch = new Branch();
+                    branch = await branchModel.getBranchById((int)invoice.branchCreatorId);
+                    if (branch.branchId > 0)
+                    {
+                        invoice.branchName = branch.name;
+                    }
+                    foreach (var i in invoiceItems)
+                    {
+                        i.price = decimal.Parse(SectionData.DecTostring(i.price));
+                    }
+                    clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
+                    clsReports.setReportLanguage(paramarr);
+                    clsReports.Header(paramarr);
+                    paramarr = reportclass.fillSaleInvReport(invoice, paramarr);
+
+                    rep.SetParameters(paramarr);
+                    rep.Refresh();
+
+                    saveFileDialog.Filter = "PDF|*.pdf;";
+                    this.Dispatcher.Invoke(() =>
+                    {
+                    if (saveFileDialog.ShowDialog() == true)
+                    {
+
+                        string filepath = saveFileDialog.FileName;
+                       
+                            LocalReportExtensions.ExportToPDF(rep, filepath);
+                    }
+                    });
+
+                }
+
+            }
+        }
+
+        public async void printInvoice()
         {
 
             prInvoice = new Invoice();
@@ -2775,16 +2831,19 @@ namespace POS.View
                       int totalheight = repheight + tableheight;
                       */
                     // LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.rep_printer_name, short.Parse(MainWindow.rep_print_count));
-                    if (MainWindow.salePaperSize == "A4")
+                    this.Dispatcher.Invoke(() =>
                     {
-                        LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.sale_printer_name, short.Parse(MainWindow.sale_copy_count));
+                        if (MainWindow.salePaperSize == "A4")
+                        {
+                            LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.sale_printer_name, short.Parse(MainWindow.sale_copy_count));
 
-                    }
-                    else
-                    {
-                        LocalReportExtensions.customPrintToPrinter(rep, MainWindow.sale_printer_name, short.Parse(MainWindow.sale_copy_count), width, height);
+                        }
+                        else
+                        {
+                            LocalReportExtensions.customPrintToPrinter(rep, MainWindow.sale_printer_name, short.Parse(MainWindow.sale_copy_count), width, height);
 
-                    }
+                        }
+                    });
                 }
                 else
                 {
@@ -2799,8 +2858,14 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                await printInvoice();
-
+                 
+                ////////////////
+                Thread t1 = new Thread(() =>
+                {
+                    printInvoice();
+                });
+                t1.Start();
+                /////////////////
 
 
                 if (sender != null)
@@ -2936,7 +3001,7 @@ namespace POS.View
             }
         }
 
-        public async Task sendsaleEmail()
+        public async void sendsaleEmail()
         {
             //
             if (invoice.invoiceId > 0)
@@ -3006,11 +3071,16 @@ namespace POS.View
                                         {
                                             setvlist = await setvmodel.GetBySetName("sale_email_temp");
                                         }
-                                        mailtosend = mailtosend.fillSaleTempData(prInvoice, invoiceItems, email, toAgent, setvlist);
-                                        string pdfpath = await SaveSalepdf();
+                                        this.Dispatcher.Invoke(() =>
+                                        {
+                                            mailtosend = mailtosend.fillSaleTempData(prInvoice, invoiceItems, email, toAgent, setvlist);
+                                            //string pdfpath = await SaveSalepdf();
+                                            SaveSalepdf();
+                                            string pdfpath = emailpdfpath;
                                         mailtosend.AddAttachTolist(pdfpath);
                                         string msg = "";
-                                        msg = mailtosend.Sendmail();// temp comment
+                                        
+                                            msg = mailtosend.Sendmail();// temp comment
                                         if (msg == "Failure sending mail.")
                                         {
                                             // msg = "No Internet connection";
@@ -3021,6 +3091,7 @@ namespace POS.View
                                             Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trMailSent"), animation: ToasterAnimation.FadeIn);
                                         else
                                             Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trMailNotSent"), animation: ToasterAnimation.FadeIn);
+                                        });
 
 
                                     }
@@ -3050,9 +3121,13 @@ namespace POS.View
                 if (MainWindow.groupObject.HasPermissionAction(sendEmailPermission, MainWindow.groupObjects, "one"))
                 {
 
-                    await sendsaleEmail();
+                    //await sendsaleEmail();
                     ////
-
+                    Thread t1 = new Thread(() =>
+                    {
+                        sendsaleEmail();
+                    });
+                    t1.Start();
                     ////
                 }
 

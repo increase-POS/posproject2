@@ -1195,43 +1195,13 @@ namespace POS.View
                     SectionData.StartAwait(grid_main);
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
                 {
-                    List<ReportParameter> paramarr = new List<ReportParameter>();
-
-                    string addpath;
-                    bool isArabic = ReportCls.checkLang();
-                    if (isArabic)
+                    /////////////////////////////////////
+                    Thread t1 = new Thread(() =>
                     {
-                        addpath = @"\Reports\Sale\Ar\CouponReport.rdlc";
-                    }
-                    else addpath = @"\Reports\Sale\EN\CouponReport.rdlc";
-                    string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-                    ReportCls.checkLang();
-                    foreach(var c in couponsQuery)
-                    {
-                        c.discountValue = decimal.Parse(SectionData.DecTostring(c.discountValue));
-                        c.invMin = decimal.Parse(SectionData.DecTostring(c.invMin));
-                        c.invMax = decimal.Parse(SectionData.DecTostring(c.invMax));
-
-                        c.startDate = DateTime.Parse(SectionData.DateToString(c.startDate));
-                        c.endDate = DateTime.Parse(SectionData.DateToString(c.endDate));
-
-                    }
-                    clsReports.couponReport(couponsQuery, rep, reppath);
-                    clsReports.setReportLanguage(paramarr);
-                    clsReports.Header(paramarr);
-
-                    rep.SetParameters(paramarr);
-
-                    rep.Refresh();
-
-                    saveFileDialog.Filter = "PDF|*.pdf;";
-
-                    if (saveFileDialog.ShowDialog() == true)
-                    {
-                        string filepath = saveFileDialog.FileName;
-                        LocalReportExtensions.ExportToPDF(rep, filepath);
-                    }
+                        pdfPurCoupon();
+                    });
+                    t1.Start();
+                    //////////////////////////////////////
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -1246,8 +1216,116 @@ namespace POS.View
             }
         }
 
+        public async void pdfPurCoupon()
+        {
+            List < ReportParameter > paramarr = new List<ReportParameter>();
+
+            string addpath;
+            bool isArabic = ReportCls.checkLang();
+            if (isArabic)
+            {
+                addpath = @"\Reports\Sale\Ar\CouponReport.rdlc";
+            }
+            else addpath = @"\Reports\Sale\EN\CouponReport.rdlc";
+            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+            ReportCls.checkLang();
+            foreach (var c in couponsQuery)
+            {
+                c.discountValue = decimal.Parse(SectionData.DecTostring(c.discountValue));
+                c.invMin = decimal.Parse(SectionData.DecTostring(c.invMin));
+                c.invMax = decimal.Parse(SectionData.DecTostring(c.invMax));
+
+                c.startDate = DateTime.Parse(SectionData.DateToString(c.startDate));
+                c.endDate = DateTime.Parse(SectionData.DateToString(c.endDate));
+
+            }
+            clsReports.couponReport(couponsQuery, rep, reppath);
+            clsReports.setReportLanguage(paramarr);
+            clsReports.Header(paramarr);
+
+            rep.SetParameters(paramarr);
+
+            rep.Refresh();
+            this.Dispatcher.Invoke(() =>
+            {
+                saveFileDialog.Filter = "PDF|*.pdf;";
+
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    string filepath = saveFileDialog.FileName;
+                    LocalReportExtensions.ExportToPDF(rep, filepath);
+                }
+            });
+        }
+
         private void Btn_print_Click(object sender, RoutedEventArgs e)
         {//print
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
+                {
+                    /////////////////////////////////////
+                    Thread t1 = new Thread(() =>
+                    {
+                        printPurCoupon();
+                    });
+                    t1.Start();
+                    //////////////////////////////////////
+                   
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+
+        public async void printPurCoupon()
+        {
+            List<ReportParameter> paramarr = new List<ReportParameter>();
+
+            string addpath;
+            bool isArabic = ReportCls.checkLang();
+            if (isArabic)
+            {
+                addpath = @"\Reports\Sale\Ar\CouponReport.rdlc";
+            }
+            else addpath = @"\Reports\Sale\EN\CouponReport.rdlc";
+            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+            ReportCls.checkLang();
+            foreach (var c in couponsQuery)
+            {
+                c.discountValue = decimal.Parse(SectionData.DecTostring(c.discountValue));
+                c.invMin = decimal.Parse(SectionData.DecTostring(c.invMin));
+                c.invMax = decimal.Parse(SectionData.DecTostring(c.invMax));
+
+                c.startDate = DateTime.Parse(SectionData.DateToString(c.startDate));
+                c.endDate = DateTime.Parse(SectionData.DateToString(c.endDate));
+
+            }
+            clsReports.couponReport(couponsQuery, rep, reppath);
+            clsReports.setReportLanguage(paramarr);
+            clsReports.Header(paramarr);
+
+            rep.SetParameters(paramarr);
+            rep.Refresh();
+            this.Dispatcher.Invoke(() =>
+            {
+                LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.rep_printer_name, short.Parse(MainWindow.rep_print_count));
+            });
+        }
+        private void Btn_pieChart_Click(object sender, RoutedEventArgs e)
+        {//pieChart
             try
             {
                 if (sender != null)
@@ -1282,32 +1360,10 @@ namespace POS.View
 
                     rep.SetParameters(paramarr);
                     rep.Refresh();
-                    LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.rep_printer_name, short.Parse(MainWindow.rep_print_count));
-                }
-                else
-                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
-        private void Btn_pieChart_Click(object sender, RoutedEventArgs e)
-        {//pieChart
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
-                {
-
-
-
+                    this.Dispatcher.Invoke(() =>
+                    {
+                        LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.rep_printer_name, short.Parse(MainWindow.rep_print_count));
+                    });
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);

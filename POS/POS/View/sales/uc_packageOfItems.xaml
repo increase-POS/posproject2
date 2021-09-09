@@ -119,7 +119,7 @@
 
                                 <TextBox x:Name="txb_searchitems"  TextChanged="Txb_searchitems_TextChanged"
                         Padding="10,0,5,0" BorderBrush="{x:Null}"
-                                           Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                           materialDesign:HintAssist.Hint="Enter Here To Start Search ...."  
                  Foreground="#4e4e4e" TextBlock.FontSize="14"
                     Height="40">

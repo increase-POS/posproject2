@@ -13,6 +13,7 @@ using System.Reflection;
 using System.Resources;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -225,6 +226,7 @@ namespace POS.View.sales
                 CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(dg_billDetails.Items);
                 ((INotifyCollectionChanged)myCollectionView).CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
                 #endregion
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -935,7 +937,10 @@ namespace POS.View.sales
                     _Discount += discountValue;
                 }
                 //tb_discountCoupon.Text = _Discount.ToString();
-                tb_discountCoupon.Text = SectionData.DecTostring(_Discount);
+                if (_Discount != 0)
+                    tb_discountCoupon.Text = SectionData.DecTostring(_Discount);
+                else
+                    tb_discountCoupon.Text = "0";
 
                 #endregion
 
@@ -959,12 +964,17 @@ namespace POS.View.sales
             decimal total = _Sum - _Discount - manualDiscount + taxValue + _DeliveryCost;
 
             // tb_sum.Text = _Sum.ToString();
-            tb_sum.Text = SectionData.DecTostring(_Sum);
-
+            if (_Sum != 0)
+                tb_sum.Text = SectionData.DecTostring(_Sum);
+            else
+                tb_sum.Text = "0";
 
 
             //tb_total.Text = Math.Round(total, 2).ToString();
-            tb_total.Text = SectionData.DecTostring(total);
+            if (total != 0)
+                tb_total.Text = SectionData.DecTostring(total);
+            else
+                tb_total.Text = "0";
         }
         #endregion
         #region billdetails
@@ -983,11 +993,19 @@ namespace POS.View.sales
                 dg_billDetails.ItemsSource = billDetails;
 
             //tb_sum.Text = _Sum.ToString();
-            tb_sum.Text = _Sum.ToString();
+            if (_Sum != 0)
+                tb_sum.Text = SectionData.DecTostring(_Sum);
+            else
+                tb_sum.Text = "0";
 
             if (MainWindow.isInvTax == 0)
+            {
                 //tb_taxValue.Text = _Tax.ToString();
-                tb_taxValue.Text = SectionData.DecTostring(_Tax);
+                if (_Tax != 0)
+                    tb_taxValue.Text = SectionData.DecTostring(_Tax);
+                else
+                    tb_taxValue.Text = "0";
+            }
 
         }
 
@@ -1168,21 +1186,37 @@ namespace POS.View.sales
                 _Tax = (decimal)invoice.tax;
             cb_customer.SelectedValue = invoice.agentId;
             if (invoice.totalNet != null)
+            {
                 //tb_total.Text = Math.Round((double)invoice.totalNet, 2).ToString();
-                tb_total.Text = SectionData.DecTostring((decimal)invoice.totalNet);
+                if ((decimal)invoice.totalNet != 0)
+                    tb_total.Text = SectionData.DecTostring((decimal)invoice.totalNet);
+                else
+                    tb_total.Text = "0";
+            }
             //tb_taxValue.Text = invoice.tax.ToString();
-            tb_taxValue.Text = SectionData.DecTostring(invoice.tax);
-
+            if (invoice.tax != 0)
+                tb_taxValue.Text = SectionData.DecTostring(invoice.tax);
+            else
+                tb_taxValue.Text = "0";
             tb_note.Text = invoice.notes;
             //tb_sum.Text = invoice.total.ToString();
-            tb_sum.Text = SectionData.DecTostring(invoice.total);
+            if (invoice.total != 0)
+                tb_sum.Text = SectionData.DecTostring(invoice.total);
+            else
+                tb_sum.Text = "0";
             //tb_discountCoupon.Text = invoice.discountValue.ToString();
-            tb_discountCoupon.Text = SectionData.DecTostring(_Discount);
+            if (_Discount != 0)
+                tb_discountCoupon.Text = SectionData.DecTostring(_Discount);
+            else
+                tb_discountCoupon.Text = "0";
 
             cb_company.SelectedValue = invoice.shippingCompanyId;
             cb_user.SelectedValue = invoice.shipUserId;
             //tb_discount.Text = invoice.manualDiscountValue.ToString();
-            tb_discount.Text = SectionData.DecTostring(invoice.manualDiscountValue);
+            if (invoice.manualDiscountValue != 0)
+                tb_discount.Text = SectionData.DecTostring(invoice.manualDiscountValue);
+            else
+                tb_discount.Text = "0";
             if (invoice.manualDiscountType == "1")
                 cb_typeDiscount.SelectedIndex = 1;
             else if (invoice.manualDiscountType == "2")
@@ -1238,97 +1272,16 @@ namespace POS.View.sales
         
         private async void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {//pdf
-         //try
-         //{
-         //    if (sender != null)
-         //        SectionData.StartAwait(grid_main);
-
-
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //    SectionData.ExceptionMessage(ex, this);
-            //}
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                if (invoice.invType == "pd" || invoice.invType == "sd" || invoice.invType == "qd"
-                             || invoice.invType == "sbd" || invoice.invType == "pbd"
-                             || invoice.invType == "ord" || invoice.invType == "imd" || invoice.invType == "exd")
+                
+                Thread t1 = new Thread(() =>
                 {
-                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPrintDraftInvoice"), animation: ToasterAnimation.FadeIn);
-                }
-                else
-                {
-
-                    List<ReportParameter> paramarr = new List<ReportParameter>();
-
-
-                    if (invoice.invoiceId > 0)
-                    {
-                        invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
-
-                        User employ = new User();
-                        employ = await userModel.getUserById((int)invoice.updateUserId);
-                        invoice.uuserName = employ.name;
-                        invoice.uuserLast = employ.lastname;
-                        //  agentinv = customers.Where(X => X.agentId == invoice.agentId).FirstOrDefault();
-
-                        //  invoice.agentCode = agentinv.code;
-                        if (invoice.agentId != null)
-                        {
-                            Agent agentinv = new Agent();
-                            agentinv = customers.Where(X => X.agentId == invoice.agentId).FirstOrDefault();
-
-
-                            invoice.agentCode = agentinv.code;
-                            //new lines
-                            invoice.agentName = agentinv.name;
-                            invoice.agentCompany = agentinv.company;
-                        }
-                        else
-                        {
-                            invoice.agentCode = "-";
-                            invoice.agentName = "-";
-                            invoice.agentCompany = "-";
-                        }
-                        string reppath = reportclass.GetreceiptInvoiceRdlcpath(invoice);
-                        ReportCls.checkLang();
-                        Branch branch = new Branch();
-                        branch = await branchModel.getBranchById((int)invoice.branchCreatorId);
-                        if (branch.branchId > 0)
-                        {
-                            invoice.branchName = branch.name;
-                        }
-                        foreach (var i in invoiceItems)
-                        {
-                            i.price = decimal.Parse(SectionData.DecTostring(i.price));
-                        }
-                        clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
-                        clsReports.setReportLanguage(paramarr);
-                        clsReports.Header(paramarr);
-                        paramarr = reportclass.fillSaleInvReport(invoice, paramarr);
-
-                        rep.SetParameters(paramarr);
-                        rep.Refresh();
-
-                        saveFileDialog.Filter = "PDF|*.pdf;";
-
-                        if (saveFileDialog.ShowDialog() == true)
-                        {
-
-                            string filepath = saveFileDialog.FileName;
-                            LocalReportExtensions.ExportToPDF(rep, filepath);
-                        }
-                    }
-
-                }
-
+                    pdfPurInvoice();
+                });
+                t1.Start();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -1339,6 +1292,83 @@ namespace POS.View.sales
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+
+        public async void pdfPurInvoice()
+        {
+            if (invoice.invType == "pd" || invoice.invType == "sd" || invoice.invType == "qd"
+                         || invoice.invType == "sbd" || invoice.invType == "pbd"
+                         || invoice.invType == "ord" || invoice.invType == "imd" || invoice.invType == "exd")
+            {
+                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPrintDraftInvoice"), animation: ToasterAnimation.FadeIn);
+            }
+            else
+            {
+
+                List<ReportParameter> paramarr = new List<ReportParameter>();
+
+                if (invoice.invoiceId > 0)
+                {
+                    invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
+
+                    User employ = new User();
+                    employ = await userModel.getUserById((int)invoice.updateUserId);
+                    invoice.uuserName = employ.name;
+                    invoice.uuserLast = employ.lastname;
+                    //  agentinv = customers.Where(X => X.agentId == invoice.agentId).FirstOrDefault();
+
+                    //  invoice.agentCode = agentinv.code;
+                    if (invoice.agentId != null)
+                    {
+                        Agent agentinv = new Agent();
+                        agentinv = customers.Where(X => X.agentId == invoice.agentId).FirstOrDefault();
+
+
+                        invoice.agentCode = agentinv.code;
+                        //new lines
+                        invoice.agentName = agentinv.name;
+                        invoice.agentCompany = agentinv.company;
+                    }
+                    else
+                    {
+                        invoice.agentCode = "-";
+                        invoice.agentName = "-";
+                        invoice.agentCompany = "-";
+                    }
+                    string reppath = reportclass.GetreceiptInvoiceRdlcpath(invoice);
+                    ReportCls.checkLang();
+                    Branch branch = new Branch();
+                    branch = await branchModel.getBranchById((int)invoice.branchCreatorId);
+                    if (branch.branchId > 0)
+                    {
+                        invoice.branchName = branch.name;
+                    }
+                    foreach (var i in invoiceItems)
+                    {
+                        i.price = decimal.Parse(SectionData.DecTostring(i.price));
+                    }
+                    clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
+                    clsReports.setReportLanguage(paramarr);
+                    clsReports.Header(paramarr);
+                    paramarr = reportclass.fillSaleInvReport(invoice, paramarr);
+
+                    rep.SetParameters(paramarr);
+                    rep.Refresh();
+                    this.Dispatcher.Invoke(() =>
+                    {
+                        saveFileDialog.Filter = "PDF|*.pdf;";
+
+                        if (saveFileDialog.ShowDialog() == true)
+                        {
+
+                            string filepath = saveFileDialog.FileName;
+                            LocalReportExtensions.ExportToPDF(rep, filepath);
+                        }
+                    });
+                }
+
+            }
+        }
+
         private async void Btn_orders_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -1724,7 +1754,7 @@ SectionData.isAdminPermision())
         //    return available;
         //}
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
-        {
+        {//save
             try
             {
                 if (sender != null)
@@ -1999,34 +2029,17 @@ SectionData.isAdminPermision())
 
         private async void Btn_printInvoice_Click(object sender, RoutedEventArgs e)
         {//print
-            //try
-            //{
-            //    if (sender != null)
-            //        SectionData.StartAwait(grid_main);
-
-            //    if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
-            //    {
-
-
-
-            //    }
-            //    else
-            //        Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //    SectionData.ExceptionMessage(ex, this);
-            //}
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                await printInvoice();
+
+                //await printInvoice();
+                Thread t1 = new Thread(() =>
+                {
+                    printInvoice();
+                });
+                t1.Start();
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -2109,17 +2122,19 @@ SectionData.isAdminPermision())
 
                     rep.SetParameters(paramarr);
                     rep.Refresh();
-                 
-                    if (MainWindow.salePaperSize == "A4")
+                    this.Dispatcher.Invoke(() =>
                     {
-                        LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.sale_printer_name, short.Parse(MainWindow.sale_copy_count));
+                        if (MainWindow.salePaperSize == "A4")
+                        {
+                            LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.sale_printer_name, short.Parse(MainWindow.sale_copy_count));
 
-                    }
-                    else
-                    {
-                        LocalReportExtensions.customPrintToPrinter(rep, MainWindow.sale_printer_name, short.Parse(MainWindow.sale_copy_count), width, height);
+                        }
+                        else
+                        {
+                            LocalReportExtensions.customPrintToPrinter(rep, MainWindow.sale_printer_name, short.Parse(MainWindow.sale_copy_count), width, height);
 
-                    }
+                        }
+                    });
                 }
                 else
                 {
@@ -2130,29 +2145,6 @@ SectionData.isAdminPermision())
         }
         private async void Btn_preview_Click(object sender, RoutedEventArgs e)
         {//preview
-         //try
-         //{
-         //    if (sender != null)
-         //        SectionData.StartAwait(grid_main);
-
-            //    if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
-            //    {
-            //        /////////////
-
-            //            ////////////
-
-            //        }
-            //    else
-            //        Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //    SectionData.ExceptionMessage(ex, this);
-            //}
             try
             {
                 if (sender != null)

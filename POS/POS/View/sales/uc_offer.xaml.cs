@@ -1045,7 +1045,7 @@ namespace POS.View
                             c.startDate = DateTime.Parse(SectionData.DateToString(c.startDate));
                             c.endDate = DateTime.Parse(SectionData.DateToString(c.endDate));
                         }
-                        clsReports.couponReport(offersQuery, rep, reppath);
+                        clsReports.offerReport(offersQuery, rep, reppath);
                         clsReports.setReportLanguage(paramarr);
                         clsReports.Header(paramarr);
 
@@ -1114,40 +1114,13 @@ namespace POS.View
 
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
                 {
-                    List<ReportParameter> paramarr = new List<ReportParameter>();
-
-                    string addpath;
-                    bool isArabic = ReportCls.checkLang();
-                    if (isArabic)
+                    /////////////////////////////////////
+                    Thread t1 = new Thread(() =>
                     {
-                        addpath = @"\Reports\Sale\Ar\CouponReport.rdlc";
-                    }
-                    else addpath = @"\Reports\Sale\EN\CouponReport.rdlc";
-                    string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-                    ReportCls.checkLang();
-                    foreach (var c in offersQuery)
-                    {
-                        c.discountValue = decimal.Parse(SectionData.DecTostring(c.discountValue));
-
-                        c.startDate = DateTime.Parse(SectionData.DateToString(c.startDate));
-                        c.endDate = DateTime.Parse(SectionData.DateToString(c.endDate));
-                    }
-                    clsReports.couponReport(offersQuery, rep, reppath);
-                    clsReports.setReportLanguage(paramarr);
-                    clsReports.Header(paramarr);
-
-                    rep.SetParameters(paramarr);
-
-                    rep.Refresh();
-
-                    saveFileDialog.Filter = "PDF|*.pdf;";
-
-                    if (saveFileDialog.ShowDialog() == true)
-                    {
-                        string filepath = saveFileDialog.FileName;
-                        LocalReportExtensions.ExportToPDF(rep, filepath);
-                    }
+                        pdfPurInvoice();
+                    });
+                    t1.Start();
+                    //////////////////////////////////////
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -1161,6 +1134,47 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+
+        public async void pdfPurInvoice()
+        {
+            List<ReportParameter> paramarr = new List<ReportParameter>();
+
+            string addpath;
+            bool isArabic = ReportCls.checkLang();
+            if (isArabic)
+            {
+                addpath = @"\Reports\Sale\Ar\CouponReport.rdlc";
+            }
+            else addpath = @"\Reports\Sale\EN\CouponReport.rdlc";
+            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+            ReportCls.checkLang();
+            foreach (var c in offersQuery)
+            {
+                c.discountValue = decimal.Parse(SectionData.DecTostring(c.discountValue));
+
+                c.startDate = DateTime.Parse(SectionData.DateToString(c.startDate));
+                c.endDate = DateTime.Parse(SectionData.DateToString(c.endDate));
+            }
+            clsReports.offerReport(offersQuery, rep, reppath);
+            clsReports.setReportLanguage(paramarr);
+            clsReports.Header(paramarr);
+
+            rep.SetParameters(paramarr);
+
+            rep.Refresh();
+            this.Dispatcher.Invoke(() =>
+            {
+                saveFileDialog.Filter = "PDF|*.pdf;";
+
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    string filepath = saveFileDialog.FileName;
+                    LocalReportExtensions.ExportToPDF(rep, filepath);
+                }
+            });
+        }
+
         private void Btn_print_Click(object sender, RoutedEventArgs e)
         {//print
             try
@@ -1170,32 +1184,12 @@ namespace POS.View
 
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
                 {
-                    List<ReportParameter> paramarr = new List<ReportParameter>();
-
-                    string addpath;
-                    bool isArabic = ReportCls.checkLang();
-                    if (isArabic)
+                   
+                    Thread t1 = new Thread(() =>
                     {
-                        addpath = @"\Reports\Sale\En\OfferReport.rdlc";
-                    }
-                    else addpath = @"\Reports\Sale\EN\OfferReport.rdlc";
-                    string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-                    ReportCls.checkLang();
-                    foreach (var c in offersQuery)
-                    {
-                        c.discountValue = decimal.Parse(SectionData.DecTostring(c.discountValue));
-
-                        c.startDate = DateTime.Parse(SectionData.DateToString(c.startDate));
-                        c.endDate = DateTime.Parse(SectionData.DateToString(c.endDate));
-                    }
-                    clsReports.couponReport(offersQuery, rep, reppath);
-                    clsReports.setReportLanguage(paramarr);
-                    clsReports.Header(paramarr);
-
-                    rep.SetParameters(paramarr);
-                    rep.Refresh();
-                    LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.rep_printer_name, short.Parse(MainWindow.rep_print_count));
+                        printPurInvoice();
+                    });
+                    t1.Start();
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -1209,6 +1203,40 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+
+        public async void printPurInvoice()
+        {
+            List<ReportParameter> paramarr = new List<ReportParameter>();
+
+            string addpath;
+            bool isArabic = ReportCls.checkLang();
+            if (isArabic)
+            {
+                addpath = @"\Reports\Sale\En\OfferReport.rdlc";
+            }
+            else addpath = @"\Reports\Sale\EN\OfferReport.rdlc";
+            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+            ReportCls.checkLang();
+            foreach (var c in offersQuery)
+            {
+                c.discountValue = decimal.Parse(SectionData.DecTostring(c.discountValue));
+
+                c.startDate = DateTime.Parse(SectionData.DateToString(c.startDate));
+                c.endDate = DateTime.Parse(SectionData.DateToString(c.endDate));
+            }
+            clsReports.offerReport(offersQuery, rep, reppath);
+            clsReports.setReportLanguage(paramarr);
+            clsReports.Header(paramarr);
+
+            rep.SetParameters(paramarr);
+            rep.Refresh();
+            this.Dispatcher.Invoke(() =>
+            {
+                LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.rep_printer_name, short.Parse(MainWindow.rep_print_count));
+            });
+        }
+
         private void Btn_pieChart_Click(object sender, RoutedEventArgs e)
         {//pie
             try
@@ -1260,7 +1288,7 @@ namespace POS.View
                 c.startDate = DateTime.Parse(SectionData.DateToString(c.startDate));
                 c.endDate = DateTime.Parse(SectionData.DateToString(c.endDate));
             }
-            clsReports.couponReport(offersQuery, rep, reppath);
+            clsReports.offerReport(offersQuery, rep, reppath);
             clsReports.setReportLanguage(paramarr);
             clsReports.Header(paramarr);
 

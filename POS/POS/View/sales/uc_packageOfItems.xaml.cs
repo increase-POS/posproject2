@@ -464,12 +464,12 @@ namespace POS.View
         #region Get Id By Click  Y
         int itemUnitId = 0;
         private async void dg_items_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
+        { //selection
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                //selection
+               
                 if (dg_items.SelectedIndex != -1)
                 {
                     item = dg_items.SelectedItem as Item;
@@ -485,7 +485,7 @@ namespace POS.View
                     if (uQuery != null)
                     {
                         itemUnitId = uQuery.itemUnitId;
-                        //tb_taxes.Text = SectionData.DecTostring(uQuery.);
+                        tb_taxes.Text = SectionData.DecTostring(item.taxes);
                         //tb_price.Text = uQuery.price.ToString();
                         tb_price.Text = SectionData.DecTostring(uQuery.price);
                         tb_barcode.Text = uQuery.barcode;
