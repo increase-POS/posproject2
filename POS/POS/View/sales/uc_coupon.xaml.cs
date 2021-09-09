@@ -575,17 +575,8 @@ namespace POS.View
                         string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                         ReportCls.checkLang();
-                        foreach (var c in couponsQuery)
-                        {
-                            c.discountValue = decimal.Parse(SectionData.DecTostring(c.discountValue));
-                            c.invMin = decimal.Parse(SectionData.DecTostring(c.invMin));
-                            c.invMax = decimal.Parse(SectionData.DecTostring(c.invMax));
-
-                            c.startDate = DateTime.Parse(SectionData.DateToString(c.startDate));
-                            c.endDate = DateTime.Parse(SectionData.DateToString(c.endDate));
-
-                        }
-                        clsReports.couponReport(couponsQuery, rep, reppath);
+                       
+                        clsReports.couponReport(couponsQuery, rep, reppath, paramarr);
                         clsReports.setReportLanguage(paramarr);
                         clsReports.Header(paramarr);
 
@@ -1230,17 +1221,8 @@ namespace POS.View
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
             ReportCls.checkLang();
-            foreach (var c in couponsQuery)
-            {
-                c.discountValue = decimal.Parse(SectionData.DecTostring(c.discountValue));
-                c.invMin = decimal.Parse(SectionData.DecTostring(c.invMin));
-                c.invMax = decimal.Parse(SectionData.DecTostring(c.invMax));
-
-                c.startDate = DateTime.Parse(SectionData.DateToString(c.startDate));
-                c.endDate = DateTime.Parse(SectionData.DateToString(c.endDate));
-
-            }
-            clsReports.couponReport(couponsQuery, rep, reppath);
+        
+            clsReports.couponReport(couponsQuery, rep, reppath,paramarr);
             clsReports.setReportLanguage(paramarr);
             clsReports.Header(paramarr);
 
@@ -1303,17 +1285,8 @@ namespace POS.View
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
             ReportCls.checkLang();
-            foreach (var c in couponsQuery)
-            {
-                c.discountValue = decimal.Parse(SectionData.DecTostring(c.discountValue));
-                c.invMin = decimal.Parse(SectionData.DecTostring(c.invMin));
-                c.invMax = decimal.Parse(SectionData.DecTostring(c.invMax));
 
-                c.startDate = DateTime.Parse(SectionData.DateToString(c.startDate));
-                c.endDate = DateTime.Parse(SectionData.DateToString(c.endDate));
-
-            }
-            clsReports.couponReport(couponsQuery, rep, reppath);
+            clsReports.couponReport(couponsQuery, rep, reppath, paramarr);
             clsReports.setReportLanguage(paramarr);
             clsReports.Header(paramarr);
 
@@ -1344,17 +1317,8 @@ namespace POS.View
                     string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                     ReportCls.checkLang();
-                    foreach (var c in couponsQuery)
-                    {
-                        c.discountValue = decimal.Parse(SectionData.DecTostring(c.discountValue));
-                        c.invMin = decimal.Parse(SectionData.DecTostring(c.invMin));
-                        c.invMax = decimal.Parse(SectionData.DecTostring(c.invMax));
-
-                        c.startDate = DateTime.Parse(SectionData.DateToString(c.startDate));
-                        c.endDate = DateTime.Parse(SectionData.DateToString(c.endDate));
-
-                    }
-                    clsReports.couponReport(couponsQuery, rep, reppath);
+                   
+                    clsReports.couponReport(couponsQuery, rep, reppath, paramarr);
                     clsReports.setReportLanguage(paramarr);
                     clsReports.Header(paramarr);
 
@@ -1400,17 +1364,8 @@ namespace POS.View
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
             ReportCls.checkLang();
-            foreach (var c in couponsQuery)
-            {
-                c.discountValue = decimal.Parse(SectionData.DecTostring(c.discountValue));
-                c.invMin = decimal.Parse(SectionData.DecTostring(c.invMin));
-                c.invMax = decimal.Parse(SectionData.DecTostring(c.invMax));
 
-                c.createDate = DateTime.Parse(SectionData.DateToString(c.createDate));
-                c.updateDate = DateTime.Parse(SectionData.DateToString(c.updateDate));
-
-            }
-            clsReports.couponReport(couponsQuery, rep, reppath);
+            clsReports.couponReport(couponsQuery, rep, reppath, paramarr);
             clsReports.setReportLanguage(paramarr);
             clsReports.Header(paramarr);
 

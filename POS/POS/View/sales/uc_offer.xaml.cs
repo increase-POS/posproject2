@@ -1038,14 +1038,8 @@ namespace POS.View
                         string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                         ReportCls.checkLang();
-                        foreach (var c in offersQuery)
-                        {
-                            c.discountValue = decimal.Parse(SectionData.DecTostring(c.discountValue));
-
-                            c.startDate = DateTime.Parse(SectionData.DateToString(c.startDate));
-                            c.endDate = DateTime.Parse(SectionData.DateToString(c.endDate));
-                        }
-                        clsReports.offerReport(offersQuery, rep, reppath);
+                       
+                        clsReports.offerReport(offersQuery, rep, reppath, paramarr);
                         clsReports.setReportLanguage(paramarr);
                         clsReports.Header(paramarr);
 
@@ -1135,7 +1129,7 @@ namespace POS.View
             }
         }
 
-        public async void pdfPurInvoice()
+        public  void pdfPurInvoice()
         {
             List<ReportParameter> paramarr = new List<ReportParameter>();
 
@@ -1143,20 +1137,14 @@ namespace POS.View
             bool isArabic = ReportCls.checkLang();
             if (isArabic)
             {
-                addpath = @"\Reports\Sale\Ar\CouponReport.rdlc";
+                addpath = @"\Reports\Sale\Ar\OfferReport.rdlc";
             }
-            else addpath = @"\Reports\Sale\EN\CouponReport.rdlc";
+            else addpath = @"\Reports\Sale\EN\OfferReport.rdlc";
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
             ReportCls.checkLang();
-            foreach (var c in offersQuery)
-            {
-                c.discountValue = decimal.Parse(SectionData.DecTostring(c.discountValue));
-
-                c.startDate = DateTime.Parse(SectionData.DateToString(c.startDate));
-                c.endDate = DateTime.Parse(SectionData.DateToString(c.endDate));
-            }
-            clsReports.offerReport(offersQuery, rep, reppath);
+            
+            clsReports.offerReport(offersQuery, rep, reppath, paramarr);
             clsReports.setReportLanguage(paramarr);
             clsReports.Header(paramarr);
 
@@ -1204,7 +1192,7 @@ namespace POS.View
             }
         }
 
-        public async void printPurInvoice()
+        public  void printPurInvoice()
         {
             List<ReportParameter> paramarr = new List<ReportParameter>();
 
@@ -1212,20 +1200,14 @@ namespace POS.View
             bool isArabic = ReportCls.checkLang();
             if (isArabic)
             {
-                addpath = @"\Reports\Sale\En\OfferReport.rdlc";
+                addpath = @"\Reports\Sale\Ar\OfferReport.rdlc";
             }
             else addpath = @"\Reports\Sale\EN\OfferReport.rdlc";
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
             ReportCls.checkLang();
-            foreach (var c in offersQuery)
-            {
-                c.discountValue = decimal.Parse(SectionData.DecTostring(c.discountValue));
-
-                c.startDate = DateTime.Parse(SectionData.DateToString(c.startDate));
-                c.endDate = DateTime.Parse(SectionData.DateToString(c.endDate));
-            }
-            clsReports.offerReport(offersQuery, rep, reppath);
+          
+            clsReports.offerReport(offersQuery, rep, reppath,paramarr);
             clsReports.setReportLanguage(paramarr);
             clsReports.Header(paramarr);
 
@@ -1275,20 +1257,14 @@ namespace POS.View
             bool isArabic = ReportCls.checkLang();
             if (isArabic)
             {
-                addpath = @"\Reports\Sale\Ar\CouponReport.rdlc";
+                addpath = @"\Reports\Sale\Ar\OfferReport.rdlc";
             }
-            else addpath = @"\Reports\Sale\EN\CouponReport.rdlc";
+            else addpath = @"\Reports\Sale\EN\OfferReport.rdlc";
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
             ReportCls.checkLang();
-            foreach (var c in offersQuery)
-            {
-                c.discountValue = decimal.Parse(SectionData.DecTostring(c.discountValue));
 
-                c.startDate = DateTime.Parse(SectionData.DateToString(c.startDate));
-                c.endDate = DateTime.Parse(SectionData.DateToString(c.endDate));
-            }
-            clsReports.offerReport(offersQuery, rep, reppath);
+            clsReports.offerReport(offersQuery, rep, reppath, paramarr);
             clsReports.setReportLanguage(paramarr);
             clsReports.Header(paramarr);
 

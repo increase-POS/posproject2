@@ -96,37 +96,38 @@ namespace POS.Classes
             rep.DataSources.Add(new ReportDataSource("DataSetBank", banksQuery));
         }
 
-        public static void couponReport(IEnumerable<Coupon> CouponQuery, LocalReport rep, string reppath)
+        public static void couponReport(IEnumerable<Coupon> CouponQuery, LocalReport rep, string reppath, List<ReportParameter> paramarr)
         {
             rep.ReportPath = reppath;
             rep.EnableExternalImages = true;
             rep.DataSources.Clear();
-            foreach(var c in CouponQuery)
+            foreach (var c in CouponQuery)
             {
-                c.startDate = DateTime.Parse(SectionData.DateToString(c.startDate));
-                c.endDate = DateTime.Parse(SectionData.DateToString(c.endDate));
-                //c.createDate = DateTime.Parse(SectionData.DateToString(c.createDate));
-                //c.updateDate = DateTime.Parse(SectionData.DateToString(c.updateDate));
-
                 c.discountValue = decimal.Parse(SectionData.DecTostring(c.discountValue));
+                c.invMin = decimal.Parse(SectionData.DecTostring(c.invMin));
+                c.invMax = decimal.Parse(SectionData.DecTostring(c.invMax));
+
+
+
             }
+           
             rep.DataSources.Add(new ReportDataSource("DataSetCoupon", CouponQuery));
+            paramarr.Add(new ReportParameter("dateForm", MainWindow.dateFormat));
         }
-        public static void offerReport(IEnumerable<Offer> OfferQuery, LocalReport rep, string reppath)
+        public static void offerReport(IEnumerable<Offer> OfferQuery, LocalReport rep, string reppath, List<ReportParameter> paramarr)
         {
             rep.ReportPath = reppath;
             rep.EnableExternalImages = true;
             rep.DataSources.Clear();
             foreach(var o in OfferQuery)
             {
-                o.startDate = DateTime.Parse(SectionData.DateToString(o.startDate));
-                o.endDate = DateTime.Parse(SectionData.DateToString(o.endDate));
-                //o.createDate = DateTime.Parse(SectionData.DateToString(o.createDate));
-                //o.updateDate = DateTime.Parse(SectionData.DateToString(o.updateDate));
-
+            
                 o.discountValue = decimal.Parse(SectionData.DecTostring(o.discountValue));
             }
+
             rep.DataSources.Add(new ReportDataSource("DataSetOffer", OfferQuery));
+            paramarr.Add(new ReportParameter("dateForm", MainWindow.dateFormat));
+
         }
         public static void cardReport(IEnumerable<Card> cardsQuery, LocalReport rep, string reppath)
         {
