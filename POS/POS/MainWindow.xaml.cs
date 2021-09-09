@@ -95,7 +95,7 @@ namespace POS
         public static string email_on_save_pur;
         public static string rep_printer_name;
         public static string sale_printer_name;
-        public static string paperSize;
+        public static string salePaperSize;
         public static string rep_print_count;
         public static string docPapersize;
     
@@ -151,8 +151,8 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             {
     sale_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.salname));
             }
-        
-            paperSize = posSetting.paperSize1;
+
+            salePaperSize = posSetting.saleSizeValue;
             docPapersize = posSetting.docPapersize;
             
         }

@@ -407,7 +407,8 @@ namespace POS.Classes
             mailtosend.password = Encoding.UTF8.GetString(Convert.FromBase64String(email.password));
             mailtosend.isSSl = (bool)email.isSSL;
             mailtosend.AddTolist(toAgent.email);
-            mailtosend.subject = "sales" + DateTime.Now.ToString();
+
+
 
 
 
@@ -421,7 +422,7 @@ namespace POS.Classes
                 invheader = repm.ReadFile(@"EmailTemplates\ordertemplate\ar\invheader.tmp");
                 invfooter = repm.ReadFile(@"EmailTemplates\ordertemplate\ar\invfooter.tmp");
 
-                if (invoice.invType == "s")
+                if (invoice.invType == "s" || invoice.invType == "pw")
                 {
                     invbody = repm.ReadFile(@"EmailTemplates\saletemplate\ar\invbody.tmp");
                     invitemtable = repm.ReadFile(@"EmailTemplates\saletemplate\ar\invitemtable.tmp");
@@ -448,7 +449,7 @@ namespace POS.Classes
 
                 invheader = repm.ReadFile(@"EmailTemplates\ordertemplate\en\invheader.tmp");
                 invfooter = repm.ReadFile(@"EmailTemplates\ordertemplate\en\invfooter.tmp");
-                if (invoice.invType == "s")
+                if (invoice.invType == "s" || invoice.invType == "pw")
                 {
 
                     invbody = repm.ReadFile(@"EmailTemplates\saletemplate\en\invbody.tmp");
@@ -493,6 +494,7 @@ namespace POS.Classes
             // string title = "Purchase Order";
             string title = setvlist.Where(x => x.notes == "title").FirstOrDefault() is null ? ""
                 : setvlist.Where(x => x.notes == "title").FirstOrDefault().value.ToString();
+            mailtosend.subject = title.Trim();
             invheader = invheader.Replace("[[title]]", title.Trim());
 
             invbody = invbody.Replace("[[thankstitle]]", title);
@@ -509,7 +511,31 @@ namespace POS.Classes
                 //invbody = invbody.Replace("[[invoicetotal]]", invoice.total.ToString());
                 invbody = invbody.Replace("[[invoicetotal]]", repm.DecTostring(invoice.total));
                 //invbody = invbody.Replace("[[invoicediscount]]", invoice.discountValue.ToString());
-                invbody = invbody.Replace("[[invoicediscount]]", repm.DecTostring(invoice.discountValue));
+                if (invoice.discountType == "2")
+                {
+                    if (isArabic)
+                    {
+                        invbody = invbody.Replace("[[invoicediscount]]", "% "+ repm.DecTostring(invoice.discountValue) );
+                    }
+                    else
+                    {
+                        invbody = invbody.Replace("[[invoicediscount]]", repm.DecTostring(invoice.discountValue) + " %");
+                    }
+                
+                }
+                else
+                {
+                    if (isArabic)
+                    {
+                        invbody = invbody.Replace("[[invoicediscount]]", MainWindow.Currency+" "+ repm.DecTostring(invoice.discountValue) );
+                    }
+                    else
+                    {
+                        invbody = invbody.Replace("[[invoicediscount]]", repm.DecTostring(invoice.discountValue) + " " + MainWindow.Currency);
+                    }
+                   
+                }
+
                 //invbody = invbody.Replace("[[invoicetax]]", invoice.tax.ToString());
                 invbody = invbody.Replace("[[invoicetax]]", repm.DecTostring(invoice.tax));
                 //invbody = invbody.Replace("[[totalnet]]", invoice.totalNet.ToString());
@@ -527,15 +553,17 @@ namespace POS.Classes
 
             invbody = invbody.Replace("[[trinvoicecode]]", MainWindow.resourcemanagerreport.GetString("trInvoiceNumber").Trim() + ": ");
             invbody = invbody.Replace("[[trinvoicedate]]", MainWindow.resourcemanagerreport.GetString("trDate").Trim() + ": ");
-            invbody = invbody.Replace("[[trinvoicetotal]]", MainWindow.resourcemanagerreport.GetString("trSum").Trim() + ": ");
+
+            // invbody = invbody.Replace("[[trinvoicetotal]]", MainWindow.resourcemanagerreport.GetString("trSum").Trim() + ": ");
+
+            invbody = invbody.Replace("[[trinvoicetotal]]", MainWindow.resourcemanagerreport.GetString("trSum").Trim());
             invbody = invbody.Replace("[[currency]]", MainWindow.Currency);
             //
 
-            invbody = invbody.Replace("[[trinvoicediscount]]", MainWindow.resourcemanagerreport.GetString("trDiscount").Trim() + ": ");
+            invbody = invbody.Replace("[[trinvoicediscount]]", MainWindow.resourcemanagerreport.GetString("trDiscount").Trim());
+            invbody = invbody.Replace("[[trinvoicetax]]", MainWindow.resourcemanagerreport.GetString("trTax").Trim());
+            invbody = invbody.Replace("[[trtotalnet]]", MainWindow.resourcemanagerreport.GetString("trTotal").Trim());
 
-            invbody = invbody.Replace("[[trinvoicetax]]", MainWindow.resourcemanagerreport.GetString("trTax").Trim() + ": ");
-
-            invbody = invbody.Replace("[[trtotalnet]]", MainWindow.resourcemanagerreport.GetString("trTotal").Trim() + ": ");
 
             // string invoicenote = "Thank you for your cooperation. We have also enclosed our procurement specifications and conditions for your review <br/> Sincerely";
             string invoicenote = setvlist.Where(x => x.notes == "text2").FirstOrDefault() is null ? ""
@@ -566,13 +594,14 @@ namespace POS.Classes
             invfooter = invfooter.Replace("[[year]]", DateTime.Now.Year.ToString());
 
 
-
+         
             //  invitemtable
             // foreach
             string datarows = "";
             foreach (ItemTransfer row in invoiceItems)
             {
                 string rowhtml = invitemrow;
+                row.price = decimal.Parse(SectionData.DecTostring(row.price));
                 rowhtml = rowhtml.Replace("[[col1]]", row.itemName.Trim());
                 rowhtml = rowhtml.Replace("[[col2]]", row.unitName.Trim());
                 rowhtml = rowhtml.Replace("[[col3]]", row.price.ToString());

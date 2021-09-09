@@ -196,6 +196,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to مدير.
+        /// </summary>
+        internal static string trAdmin {
+            get {
+                return ResourceManager.GetString("trAdmin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to إيداعات إدارية.
         /// </summary>
         internal static string trAdministrativeDeposit {
@@ -1641,6 +1650,15 @@ namespace POS {
         internal static string trEmailTemplates {
             get {
                 return ResourceManager.GetString("trEmailTemplates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to موظف.
+        /// </summary>
+        internal static string trEmployee {
+            get {
+                return ResourceManager.GetString("trEmployee", resourceCulture);
             }
         }
         
@@ -3225,6 +3243,15 @@ namespace POS {
         internal static string trIsDefaultSales {
             get {
                 return ResourceManager.GetString("trIsDefaultSales", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to هذا الحقل إجباري.
+        /// </summary>
+        internal static string trIsRequired {
+            get {
+                return ResourceManager.GetString("trIsRequired", resourceCulture);
             }
         }
         

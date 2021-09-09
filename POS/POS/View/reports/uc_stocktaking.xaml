@@ -421,18 +421,17 @@
                         <DataGridTextColumn x:Name="col_MaxCollect" Width="*" Header="Max" Binding="{Binding maxUnitName}" Visibility="Hidden"/>
                         <DataGridTextColumn x:Name="col_stockCost" Width="*" Header="Stock Cost" Binding="{Binding storageCostValue}"/>
 
-
                         <DataGridTextColumn x:Name="col_agentTypeAgent" Visibility="Hidden" Width="*" Header="Agent Type-Name" Binding="{Binding AgentTypeAgent}"/>
                         <DataGridTextColumn x:Name="col_invTypeNumber" Visibility="Hidden" Width="*" Header="Invoice Type-Number" Binding="{Binding InvTypeNumber}"/>
 
                         <DataGridTextColumn x:Name="col_stockTakeNum" Visibility="Hidden" Width="*" Header="Number" Binding="{Binding inventoryNum}"/>
                         <DataGridTextColumn x:Name="col_stockTakingCoastType" Visibility="Hidden" Width="*" Header="Type" Binding="{Binding inventoryType}"/>
                         <DataGridTextColumn x:Name="col_stockTakingDate" Visibility="Hidden" Width="*" Header="Date" Binding="{Binding inventoryDate,Converter={StaticResource dateFrameConverter }}"/>
-                        <DataGridTextColumn x:Name="col_diffPercentage" Visibility="Hidden" Width="*" Header="diffrence Percentage" Binding="{Binding diffPercentage,StringFormat=F2}"/>
+                        <!--<DataGridTextColumn x:Name="col_diffPercentage" Visibility="Hidden" Width="*" Header="diffrence Percentage" Binding="{Binding diffPercentage,StringFormat=F2}"/>-->
+                        <DataGridTextColumn x:Name="col_diffPercentage" Visibility="Hidden" Width="*" Header="diffrence Percentage" Binding="{Binding diffPercentage,Converter={StaticResource accuracyConverter}}"/>
+
                         <DataGridTextColumn x:Name="col_itemCountAr" Visibility="Hidden" Width="*" Header="Items Count" Binding="{Binding itemCount}"/>
                         <DataGridTextColumn x:Name="col_DestroyedCount" Visibility="Hidden" Width="*" Header="Destroyed Count" Binding="{Binding DestroyedCount}"/>
-
-
 
                         <DataGridTextColumn x:Name="col_destroiedNumber" Visibility="Hidden" Width="*" Header="Number" Binding="{Binding invNumber}"/>
                         <DataGridTextColumn x:Name="col_destroiedDate" Visibility="Hidden" Width="*" Header="Date" Binding="{Binding IupdateDate,Converter={StaticResource dateFrameConverter }}"/>

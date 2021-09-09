@@ -605,15 +605,22 @@
                         <DataGridTextColumn x:Name="col_item" Width="*" Header="Item" Binding="{Binding ITitemUnitName1}" Visibility="Hidden"/>
                         <DataGridTextColumn x:Name="col_count" Width="*" Header="Items Quantity" Binding="{Binding count}" Visibility="Visible"/>
 
-                        <DataGridTextColumn x:Name="col_discount" Width="*" Header="Discount Value" Visibility="Hidden" Binding="{Binding discountValue,StringFormat=F2}"/>
+                        <!--<DataGridTextColumn x:Name="col_discount" Width="*" Header="Discount Value" Visibility="Hidden" Binding="{Binding discountValue,StringFormat=F2}"/>-->
+                        <DataGridTextColumn x:Name="col_discount" Width="*" Header="Discount Value" Visibility="Hidden" Binding="{Binding discountValue,Converter={StaticResource accuracyConverter}}"/>
+
                         <DataGridTextColumn x:Name="col_itQuantity" Width="*" Header="Quantity" Binding="{Binding ITquantity}" Visibility="Hidden"/>
-                        <DataGridTextColumn x:Name="col_price" Width="*" Header="Price" Binding="{Binding ITprice}" Visibility="Hidden"/>
-                        <DataGridTextColumn x:Name="col_tax" Width="*" Header="Tax" Binding="{Binding tax}" Visibility="Hidden"/>
-                        <DataGridTextColumn x:Name="col_subTotal" Width="*" Header="Total" Binding="{Binding subTotal}" Visibility="Hidden"/>
+                        <!--<DataGridTextColumn x:Name="col_price" Width="*" Header="Price" Binding="{Binding ITprice}" Visibility="Hidden"/>-->
+                        <DataGridTextColumn x:Name="col_price" Width="*" Header="Price" Binding="{Binding ITprice ,Converter={StaticResource accuracyConverter}}" Visibility="Hidden"/>
 
-                        <DataGridTextColumn x:Name="col_totalNet" Width="*" Header="Total" Binding="{Binding totalNet}" Visibility="Visible"/>
+                        <!--<DataGridTextColumn x:Name="col_tax" Width="*" Header="Tax" Binding="{Binding tax}" Visibility="Hidden"/>-->
+                        <DataGridTextColumn x:Name="col_tax" Width="*" Header="Tax" Binding="{Binding tax ,Converter={StaticResource accuracyConverter}}" Visibility="Hidden"/>
+
+                        <!--<DataGridTextColumn x:Name="col_subTotal" Width="*" Header="Total" Binding="{Binding subTotal}" Visibility="Hidden"/>-->
+                        <DataGridTextColumn x:Name="col_subTotal" Width="*" Header="Total" Binding="{Binding subTotal ,Converter={StaticResource accuracyConverter}}" Visibility="Hidden"/>
 
 
+                        <!--<DataGridTextColumn x:Name="col_totalNet" Width="*" Header="Total" Binding="{Binding totalNet}" Visibility="Visible"/>-->
+                        <DataGridTextColumn x:Name="col_totalNet" Width="*" Header="Total" Binding="{Binding totalNet ,Converter={StaticResource accuracyConverter}}" Visibility="Visible"/>
 
 
                     </DataGrid.Columns>

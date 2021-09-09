@@ -181,6 +181,10 @@ namespace POS.Classes
         }
         public static void purchaseInvoiceReport(List<ItemTransfer> invoiceItems, LocalReport rep, string reppath)
         {
+            foreach (var i in invoiceItems)
+            {
+                i.price = decimal.Parse(SectionData.DecTostring(i.price));
+            }
             rep.ReportPath = reppath;
             rep.EnableExternalImages = true;
             rep.DataSources.Clear();

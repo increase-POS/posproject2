@@ -2377,4 +2377,13 @@ Please add Email in setting</value>
   <data name="trEmptyAccuracy" xml:space="preserve">
     <value>Accuracy of numbers cann't be empty</value>
   </data>
+  <data name="trIsRequired" xml:space="preserve">
+    <value>is required</value>
+  </data>
+  <data name="trAdmin" xml:space="preserve">
+    <value>admin</value>
+  </data>
+  <data name="trEmployee" xml:space="preserve">
+    <value>Employee</value>
+  </data>
 </root>

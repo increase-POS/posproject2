@@ -157,6 +157,7 @@
             <Visibility>
               <Hidden>=Parameters!watermark.Value="0"</Hidden>
             </Visibility>
+            <RepeatWith>Tablix1</RepeatWith>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -532,7 +533,6 @@
                                   <Style>
                                     <FontFamily>Montserrat</FontFamily>
                                     <FontWeight>Bold</FontWeight>
-                                    <Format>0.00;(0.00)</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -599,7 +599,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Round(Fields!price.Value*Fields!quantity.Value,2)</Value>
+                                  <Value>=Fields!price.Value*Fields!quantity.Value</Value>
                                   <Style>
                                     <FontFamily>Montserrat</FontFamily>
                                     <FontWeight>Bold</FontWeight>
@@ -768,6 +768,9 @@
             <Height>0.67938cm</Height>
             <Width>2.01492cm</Width>
             <ZIndex>4</ZIndex>
+            <Visibility>
+              <Hidden>=Parameters!tax.Value = 0</Hidden>
+            </Visibility>
             <Style>
               <Border>
                 <Style>Solid</Style>
@@ -792,14 +795,7 @@
                     </Style>
                   </TextRun>
                   <TextRun>
-                    <Value xml:space="preserve"> </Value>
-                    <Style>
-                      <FontFamily>Montserrat</FontFamily>
-                      <FontWeight>Bold</FontWeight>
-                    </Style>
-                  </TextRun>
-                  <TextRun>
-                    <Value>=Parameters!Currency.Value</Value>
+                    <Value> %</Value>
                     <Style>
                       <FontFamily>Montserrat</FontFamily>
                       <FontWeight>Bold</FontWeight>
@@ -815,6 +811,9 @@
             <Height>0.67938cm</Height>
             <Width>5.12707cm</Width>
             <ZIndex>5</ZIndex>
+            <Visibility>
+              <Hidden>=Parameters!tax.Value = 0</Hidden>
+            </Visibility>
             <Style>
               <Border>
                 <Style>Solid</Style>
@@ -1093,6 +1092,9 @@
             <Height>0.67938cm</Height>
             <Width>5.12707cm</Width>
             <ZIndex>12</ZIndex>
+            <Visibility>
+              <Hidden>=Parameters!discountType.Value = 2</Hidden>
+            </Visibility>
             <Style>
               <Border>
                 <Style>Solid</Style>
@@ -1554,6 +1556,49 @@
             <Style>
               <Border>
                 <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Textbox Name="Textbox29">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>=Parameters!discountValue.Value</Value>
+                    <Style>
+                      <FontFamily>Montserrat</FontFamily>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                  <TextRun>
+                    <Value> %</Value>
+                    <Style>
+                      <FontFamily>Montserrat</FontFamily>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>Textbox1</rd:DefaultName>
+            <Top>6.30112cm</Top>
+            <Left>14.00314cm</Left>
+            <Height>0.67938cm</Height>
+            <Width>5.12707cm</Width>
+            <ZIndex>25</ZIndex>
+            <Visibility>
+              <Hidden>=Parameters!discountType.Value &lt;&gt; 2</Hidden>
+            </Visibility>
+            <Style>
+              <Border>
+                <Style>Solid</Style>
               </Border>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2105,6 +2150,12 @@
       <AllowBlank>true</AllowBlank>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
+    <ReportParameter Name="discountType">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
   </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
@@ -2245,6 +2296,11 @@
           <ColumnIndex>2</ColumnIndex>
           <RowIndex>6</RowIndex>
           <ParameterName>userName</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>3</ColumnIndex>
+          <RowIndex>6</RowIndex>
+          <ParameterName>discountType</ParameterName>
         </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>

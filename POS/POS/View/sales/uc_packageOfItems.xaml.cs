@@ -485,7 +485,9 @@ namespace POS.View
                     if (uQuery != null)
                     {
                         itemUnitId = uQuery.itemUnitId;
-                        tb_price.Text = uQuery.price.ToString();
+                        //tb_taxes.Text = SectionData.DecTostring(uQuery.);
+                        //tb_price.Text = uQuery.price.ToString();
+                        tb_price.Text = SectionData.DecTostring(uQuery.price);
                         tb_barcode.Text = uQuery.barcode;
                     }
                     else
@@ -568,7 +570,8 @@ namespace POS.View
                 if (uQuery != null)
                 {
                     itemUnitId = uQuery.itemUnitId;
-                    tb_price.Text = uQuery.price.ToString();
+                    //tb_price.Text = uQuery.price.ToString();
+                    tb_price.Text =SectionData.DecTostring(uQuery.price);
                     tb_barcode.Text = uQuery.barcode;
                 }
                 else
@@ -1548,7 +1551,7 @@ namespace POS.View
         }
 
         private async void Btn_pdf_Click(object sender, RoutedEventArgs e)
-        {
+        {//pdf
             try
             {
 
@@ -1573,7 +1576,7 @@ namespace POS.View
         }
 
         private void Btn_print_Click(object sender, RoutedEventArgs e)
-        {
+        {//print
             try
             {
                 if (sender != null)

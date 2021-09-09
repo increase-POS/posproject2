@@ -250,21 +250,28 @@ namespace POS.View.reports
         }
         private static void fillDates(DatePicker startDate, DatePicker endDate, TimePicker startTime, TimePicker endTime)
         {
-            if (startDate.SelectedDate != null && startTime.SelectedTime != null)
+            try
             {
-                string x = startDate.SelectedDate.Value.Date.ToShortDateString();
-                string y = startTime.SelectedTime.Value.ToShortTimeString();
-                string resultStartTime = x + " " + y;
-                startTime.SelectedTime = DateTime.Parse(resultStartTime);
-                startDate.SelectedDate = DateTime.Parse(resultStartTime);
+                if (startDate.SelectedDate != null && startTime.SelectedTime != null)
+                {
+                    string x = startDate.SelectedDate.Value.Date.ToShortDateString();
+                    string y = startTime.SelectedTime.Value.ToShortTimeString();
+                    string resultStartTime = x + " " + y;
+                    startTime.SelectedTime = DateTime.Parse(resultStartTime);
+                    startDate.SelectedDate = DateTime.Parse(resultStartTime);
+                }
+                if (endDate.SelectedDate != null && endTime.SelectedTime != null)
+                {
+                    string x = endDate.SelectedDate.Value.Date.ToShortDateString();
+                    string y = endTime.SelectedTime.Value.ToShortTimeString();
+                    string resultEndTime = x + " " + y;
+                    endTime.SelectedTime = DateTime.Parse(resultEndTime);
+                    endDate.SelectedDate = DateTime.Parse(resultEndTime);
+                }
             }
-            if (endDate.SelectedDate != null && endTime.SelectedTime != null)
+            catch(Exception ex)
             {
-                string x = endDate.SelectedDate.Value.Date.ToShortDateString();
-                string y = endTime.SelectedTime.Value.ToShortTimeString();
-                string resultEndTime = x + " " + y;
-                endTime.SelectedTime = DateTime.Parse(resultEndTime);
-                endDate.SelectedDate = DateTime.Parse(resultEndTime);
+                //SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -3580,7 +3587,7 @@ fillColumnChart(cb_Items, selectedItemId);
 
         }
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
-        {
+        {//pdf
             try
             {
                 if (sender != null)
@@ -3644,6 +3651,19 @@ fillColumnChart(cb_Items, selectedItemId);
 
                 ReportCls.checkLang();
                 //  getpuritemcount
+                foreach (var r in query)
+                {
+                    r.CopdiscountValue = decimal.Parse(SectionData.DecTostring(r.CopdiscountValue));
+                    r.couponTotalValue = decimal.Parse(SectionData.DecTostring(r.couponTotalValue));//
+                    r.discountValue = decimal.Parse(SectionData.DecTostring(r.discountValue));
+                    r.OdiscountValue = decimal.Parse(SectionData.DecTostring(r.OdiscountValue));
+                    r.offerTotalValue = decimal.Parse(SectionData.DecTostring(r.offerTotalValue));
+                    r.ITprice = decimal.Parse(SectionData.DecTostring(r.ITprice));
+                    r.tax = decimal.Parse(SectionData.DecTostring(r.tax));
+                    r.subTotal = decimal.Parse(SectionData.DecTostring(r.subTotal));
+                    r.totalNet = decimal.Parse(SectionData.DecTostring(r.totalNet));
+
+                }
                 clsReports.PurStsReport(query, rep, reppath);
                 clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);
@@ -3675,7 +3695,7 @@ fillColumnChart(cb_Items, selectedItemId);
         }
 
         private void Btn_print_Click(object sender, RoutedEventArgs e)
-        {
+        {//print
 
             try
             {
@@ -3740,6 +3760,19 @@ fillColumnChart(cb_Items, selectedItemId);
 
                 ReportCls.checkLang();
                 //  getpuritemcount
+                foreach (var r in query)
+                {
+                    r.CopdiscountValue = decimal.Parse(SectionData.DecTostring(r.CopdiscountValue));
+                    r.couponTotalValue = decimal.Parse(SectionData.DecTostring(r.couponTotalValue));//
+                    r.discountValue = decimal.Parse(SectionData.DecTostring(r.discountValue));
+                    r.OdiscountValue = decimal.Parse(SectionData.DecTostring(r.OdiscountValue));
+                    r.offerTotalValue = decimal.Parse(SectionData.DecTostring(r.offerTotalValue));
+                    r.ITprice = decimal.Parse(SectionData.DecTostring(r.ITprice));
+                    r.tax = decimal.Parse(SectionData.DecTostring(r.tax));
+                    r.subTotal = decimal.Parse(SectionData.DecTostring(r.subTotal));
+                    r.totalNet = decimal.Parse(SectionData.DecTostring(r.totalNet));
+
+                }
                 clsReports.PurStsReport(query, rep, reppath);
                 clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);
@@ -3858,7 +3891,7 @@ fillColumnChart(cb_Items, selectedItemId);
         }
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
-        {
+        {//excel
             try
             {
                 if (sender != null)
@@ -3921,8 +3954,21 @@ fillColumnChart(cb_Items, selectedItemId);
                   string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                   ReportCls.checkLang();
-                //  getpuritemcount
-                clsReports.PurStsReport(query, rep, reppath);
+                  //  getpuritemcount
+                  foreach (var r in query)
+                  {
+                      r.CopdiscountValue = decimal.Parse(SectionData.DecTostring(r.CopdiscountValue));
+                      r.couponTotalValue = decimal.Parse(SectionData.DecTostring(r.couponTotalValue));//
+                      r.discountValue = decimal.Parse(SectionData.DecTostring(r.discountValue));
+                      r.OdiscountValue = decimal.Parse(SectionData.DecTostring(r.OdiscountValue));
+                      r.offerTotalValue = decimal.Parse(SectionData.DecTostring(r.offerTotalValue));
+                      r.ITprice = decimal.Parse(SectionData.DecTostring(r.ITprice));
+                      r.tax = decimal.Parse(SectionData.DecTostring(r.tax));
+                      r.subTotal = decimal.Parse(SectionData.DecTostring(r.subTotal));
+                      r.totalNet = decimal.Parse(SectionData.DecTostring(r.totalNet));
+
+                  }
+                  clsReports.PurStsReport(query, rep, reppath);
                   clsReports.setReportLanguage(paramarr);
                   clsReports.Header(paramarr);
 
@@ -3954,7 +4000,7 @@ fillColumnChart(cb_Items, selectedItemId);
         }
 
         private void Btn_preview_Click(object sender, RoutedEventArgs e)
-        {
+        {//preview
             try
             {
                 if (sender != null)
@@ -4022,6 +4068,19 @@ fillColumnChart(cb_Items, selectedItemId);
 
                 ReportCls.checkLang();
                 //  getpuritemcount
+                foreach (var r in query)
+                {
+                    r.CopdiscountValue = decimal.Parse(SectionData.DecTostring(r.CopdiscountValue));
+                    r.couponTotalValue = decimal.Parse(SectionData.DecTostring(r.couponTotalValue));//
+                    r.discountValue = decimal.Parse(SectionData.DecTostring(r.discountValue));
+                    r.OdiscountValue = decimal.Parse(SectionData.DecTostring(r.OdiscountValue));
+                    r.offerTotalValue = decimal.Parse(SectionData.DecTostring(r.offerTotalValue));
+                    r.ITprice = decimal.Parse(SectionData.DecTostring(r.ITprice));
+                    r.tax = decimal.Parse(SectionData.DecTostring(r.tax));
+                    r.subTotal = decimal.Parse(SectionData.DecTostring(r.subTotal));
+                    r.totalNet = decimal.Parse(SectionData.DecTostring(r.totalNet));
+
+                }
                 clsReports.PurStsReport(query, rep, reppath);
 
 

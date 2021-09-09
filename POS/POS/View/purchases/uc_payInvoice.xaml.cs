@@ -27,6 +27,7 @@ using Microsoft.Reporting.WinForms;
 using Microsoft.Win32;
 using System.Globalization;
 using System.Windows.Threading;
+using System.Threading;
 
 namespace POS.View
 {
@@ -111,6 +112,9 @@ namespace POS.View
         ReportCls reportclass = new ReportCls();
         LocalReport rep = new LocalReport();
         SaveFileDialog saveFileDialog = new SaveFileDialog();
+        int prInvoiceId;
+        Invoice prInvoice = new Invoice();
+
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
             try
@@ -165,8 +169,6 @@ namespace POS.View
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_invoiceNumber, MainWindow.resourcemanager.GetString("trInvoiceNumberHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_invoiceDate, MainWindow.resourcemanager.GetString("trInvoiceDateHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_note, MainWindow.resourcemanager.GetString("trNoteHint"));
-
-
 
             btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
         }
@@ -692,6 +694,7 @@ namespace POS.View
 
                 // save invoice in DB
                 int invoiceId = int.Parse(await invoiceModel.saveInvoice(invoice));
+                prInvoiceId = invoiceId;
                 invoice.invoiceId = invoiceId;
                 if (invoiceId != 0)
                 {
@@ -781,7 +784,7 @@ namespace POS.View
 
         }
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
-        {
+        {//save
             try
             {
                 if (sender != null)
@@ -853,6 +856,31 @@ namespace POS.View
 
                             if (invoice.invoiceId == 0)
                                 clearInvoice();
+                            //
+                            prInvoice = await invoiceModel.GetById(prInvoiceId);
+                            ///////////////////////////////////////
+                            
+                                if (prInvoice.invType == "pw")
+                                {
+                                    if (MainWindow.print_on_save_pur == "1")
+                                    {
+                                        Thread t1 = new Thread(() =>
+                                        {
+                                            printPurInvoice();
+                                        });
+                                        t1.Start();
+                                    }
+                                    if (MainWindow.email_on_save_pur == "1")
+                                    {
+                                        Thread t1 = new Thread(() =>
+                                        {
+                                            sendPurEmail();
+                                        });
+                                        t1.Start();
+                                    }
+                                }
+                           
+                            /////////////////////////////////////////
                         }
                         awaitSaveBtn(false);
                         logInProcessing = true;
@@ -936,7 +964,12 @@ namespace POS.View
             billDetails.Clear();
             tb_total.Text = "0";
             tb_sum.Text = "0";
-            tb_taxValue.Text = MainWindow.tax.ToString();
+            //tb_taxValue.Text = MainWindow.tax.ToString();
+            if (MainWindow.tax != 0)
+                tb_taxValue.Text = SectionData.DecTostring(MainWindow.tax);
+            else
+                tb_taxValue.Text = "0";
+
             md_docImage.Badge = "";
             md_payments.Badge = "";
 
@@ -1103,13 +1136,24 @@ namespace POS.View
             tb_invoiceNumber.Text = invoice.vendorInvNum;
             dp_invoiceDate.Text = invoice.vendorInvDate.ToString();
             //tb_total.Text = Math.Round((double)invoice.totalNet, 2).ToString();
-            tb_total.Text = SectionData.DecTostring(invoice.totalNet);
-            tb_taxValue.Text = invoice.tax.ToString();
+            if (invoice.totalNet != 0)
+                tb_total.Text = SectionData.DecTostring(invoice.totalNet);
+            else tb_total.Text = "0";
+            //tb_taxValue.Text = invoice.tax.ToString();
+            if ((invoice.tax != 0) && (invoice.tax != null))
+                tb_taxValue.Text = SectionData.DecTostring(invoice.tax);
+            else
+                tb_taxValue.Text = "0";
             tb_note.Text = invoice.notes;
             //tb_sum.Text = invoice.total.ToString();
-            tb_sum.Text = SectionData.DecTostring(invoice.total);
-            tb_discount.Text = invoice.discountValue.ToString();
-
+            if (invoice.total != 0)
+                tb_sum.Text = SectionData.DecTostring(invoice.total);
+            else tb_sum.Text = "0";
+            //tb_discount.Text = invoice.discountValue.ToString();
+            if ((invoice.discountValue != 0) && (invoice.discountValue != null))
+                tb_discount.Text = SectionData.DecTostring(invoice.discountValue);
+            else
+                tb_discount.Text = "0";
             if (invoice.discountType == "1")
                 cb_typeDiscount.SelectedIndex = 1;
             else if (invoice.discountType == "2")
@@ -1191,7 +1235,8 @@ namespace POS.View
                     Unit = itemT.itemUnitId.ToString(),
                     itemUnitId = (int)itemT.itemUnitId,
                     Count = (int)itemT.quantity,
-                    Price = (decimal)itemT.price,
+                    //Price = (decimal)itemT.price,
+                    Price = decimal.Parse(SectionData.DecTostring((decimal)itemT.price)),
                     Total = total,
                 });
             }
@@ -1473,10 +1518,15 @@ namespace POS.View
                 taxValue = SectionData.calcPercentage(total, taxInputVal);
 
             //tb_sum.Text = _Sum.ToString();
-            tb_sum.Text = SectionData.DecTostring(_Sum);
+            if (_Sum != 0)
+                tb_sum.Text = SectionData.DecTostring(_Sum);
+            else
+                tb_sum.Text = "0";
             total = total + taxValue;
             //tb_total.Text = Math.Round(total, 2).ToString();
-            tb_total.Text = SectionData.DecTostring(total);
+            if (total != 0)
+                tb_total.Text = SectionData.DecTostring(total);
+            else tb_total.Text = "0";
 
         }
 
@@ -1489,7 +1539,10 @@ namespace POS.View
             dg_billDetails.ItemsSource = billDetails;
 
             //tb_sum.Text = _Sum.ToString();
-            tb_sum.Text = SectionData.DecTostring(_Sum);
+            if (_Sum != 0)
+                tb_sum.Text = SectionData.DecTostring(_Sum);
+            else
+                tb_sum.Text = "0";
 
         }
 
@@ -1820,7 +1873,9 @@ namespace POS.View
                     if (columnName == MainWindow.resourcemanager.GetString("trQuantity"))
                         t.Text = billDetails[index].Count.ToString();
                     else if (columnName == MainWindow.resourcemanager.GetString("trPrice"))
-                        t.Text = billDetails[index].Price.ToString();
+                        // t.Text = billDetails[index].Price.ToString();
+                        t.Text = SectionData.DecTostring(billDetails[index].Price);
+
                 }
                 else
                 {
@@ -1867,7 +1922,8 @@ namespace POS.View
 
                     //refresh total cell
                     TextBlock tb = dg_billDetails.Columns[6].GetCellContent(dg_billDetails.Items[index]) as TextBlock;
-                    tb.Text = total.ToString();
+                    //tb.Text = total.ToString();
+                    tb.Text =SectionData.DecTostring(total);
 
                     //  refresh sum and total text box
                     refreshTotalValue();
@@ -1937,63 +1993,83 @@ namespace POS.View
         //print
         private async void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {//pdf
-
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-
-                if (invoice.invType == "pd" || invoice.invType == "sd" || invoice.invType == "qd"
-               || invoice.invType == "sbd" || invoice.invType == "pbd"
-               || invoice.invType == "ord" || invoice.invType == "imd" || invoice.invType == "exd")
-                {
-               Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPrintDraftInvoice"), animation: ToasterAnimation.FadeIn);
-                }
-                else
+                /////////////////////////////////////
+                Thread t1 = new Thread(() =>
                 {
 
-                    List<ReportParameter> paramarr = new List<ReportParameter>();
+                    pdfPurInvoice();
+                });
+                t1.Start();
+                //////////////////////////////////////
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+
+        public async void pdfPurInvoice()
+        {
+            if (invoice.invType == "pd" || invoice.invType == "sd" || invoice.invType == "qd"
+              || invoice.invType == "sbd" || invoice.invType == "pbd"
+              || invoice.invType == "ord" || invoice.invType == "imd" || invoice.invType == "exd")
+            {
+                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPrintDraftInvoice"), animation: ToasterAnimation.FadeIn);
+            }
+            else
+            {
+
+                List<ReportParameter> paramarr = new List<ReportParameter>();
+
+                string reppath = reportclass.GetpayInvoiceRdlcpath(invoice);
+                if (invoice.invoiceId > 0)
+                {
+                    invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
+                    Agent agentinv = new Agent();
+                    agentinv = vendors.Where(X => X.agentId == invoice.agentId).FirstOrDefault();
+
+                    invoice.agentCode = agentinv.code;
+                    //new lines
+                    invoice.agentName = agentinv.name;
+                    invoice.agentCompany = agentinv.company;
+
+                    User employ = new User();
+                    employ = await employ.getUserById((int)invoice.updateUserId);
+                    invoice.uuserName = employ.name;
+                    invoice.uuserLast = employ.lastname;
 
 
-                    string reppath = reportclass.GetpayInvoiceRdlcpath(invoice);
-                    if (invoice.invoiceId > 0)
+                    Branch branch = new Branch();
+                    branch = await branchModel.getBranchById((int)invoice.branchCreatorId);
+                    if (branch.branchId > 0)
                     {
-                        invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
-                        Agent agentinv = new Agent();
-                        agentinv = vendors.Where(X => X.agentId == invoice.agentId).FirstOrDefault();
-
-                        invoice.agentCode = agentinv.code;
-                        //new lines
-                        invoice.agentName = agentinv.name;
-                        invoice.agentCompany = agentinv.company;
-
-                        User employ = new User();
-                        employ = await employ.getUserById((int)invoice.updateUserId);
-                        invoice.uuserName = employ.name;
-                        invoice.uuserLast = employ.lastname;
+                        invoice.branchName = branch.name;
+                    }
 
 
-                        Branch branch = new Branch();
-                        branch = await branchModel.getBranchById((int)invoice.branchCreatorId);
-                        if (branch.branchId > 0)
-                        {
-                            invoice.branchName = branch.name;
-                        }
+                    ReportCls.checkLang();
+                    foreach (var i in invoiceItems)
+                    {
+                        i.price = decimal.Parse(SectionData.DecTostring(i.price));
+                    }
+                    clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
+                    clsReports.setReportLanguage(paramarr);
+                    clsReports.Header(paramarr);
+                    paramarr = reportclass.fillPurInvReport(invoice, paramarr);
 
-
-                        ReportCls.checkLang();
-                        foreach (var r in invoiceItems)
-                        {
-                            r.price = decimal.Parse(SectionData.DecTostring(r.price));
-                        }
-                        clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
-                        clsReports.setReportLanguage(paramarr);
-                        clsReports.Header(paramarr);
-                        paramarr = reportclass.fillPurInvReport(invoice, paramarr);
-
-                        rep.SetParameters(paramarr);
-                        rep.Refresh();
-
+                    rep.SetParameters(paramarr);
+                    rep.Refresh();
+                    this.Dispatcher.Invoke(() =>
+                    {
                         saveFileDialog.Filter = "PDF|*.pdf;";
 
                         if (saveFileDialog.ShowDialog() == true)
@@ -2002,83 +2078,375 @@ namespace POS.View
                             string filepath = saveFileDialog.FileName;
                             LocalReportExtensions.ExportToPDF(rep, filepath);
                         }
-                    }
-
+                    });
                 }
 
-              if (sender != null)
-                SectionData.EndAwait(grid_main);
+            }
         }
-            catch (Exception ex)
+        public async void previewPurInvoice()
+        {
+            if (invoice.invoiceId > 0)
             {
-				if (sender != null)
-				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex,this);
-        }
-    }
-        private async void btn_printInvoice_Click(object sender, RoutedEventArgs e)
-        {//print
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
+                
+                 Window.GetWindow(this).Opacity = 0.2;
 
-                if (invoice.invType == "pd" || invoice.invType == "sd" || invoice.invType == "qd"
-                             || invoice.invType == "sbd" || invoice.invType == "pbd"
-                             || invoice.invType == "ord" || invoice.invType == "imd" || invoice.invType == "exd")
+                List<ReportParameter> paramarr = new List<ReportParameter>();
+                string pdfpath;
+
+                //
+                pdfpath = @"\Thumb\report\temp.pdf";
+                pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
+                string reppath = reportclass.GetpayInvoiceRdlcpath(invoice);
+                if (invoice.invoiceId > 0)
                 {
-               Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPrintDraftInvoice"), animation: ToasterAnimation.FadeIn);
-                }
-                else
-                {
-                    ReportCls rr = new ReportCls();
-
-                    List<ReportParameter> paramarr = new List<ReportParameter>();
-
-                    string reppath = reportclass.GetpayInvoiceRdlcpath(invoice);
-                    if (invoice.invoiceId > 0)
+                    invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
+                    if (invoice.agentId != null)
                     {
-                        invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
                         Agent agentinv = new Agent();
                         agentinv = vendors.Where(X => X.agentId == invoice.agentId).FirstOrDefault();
-
-                        User employ = new User();
-                        employ = await employ.getUserById((int)invoice.updateUserId);
-                        invoice.uuserName = employ.name;
-                        invoice.uuserLast = employ.lastname;
 
                         invoice.agentCode = agentinv.code;
                         //new lines
                         invoice.agentName = agentinv.name;
                         invoice.agentCompany = agentinv.company;
+                    }
+                    else
+                    {
 
-                        invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
+                        invoice.agentCode = "-";
+                        //new lines
+                        invoice.agentName = "-";
+                        invoice.agentCompany = "-";
+                    }
+
+                    invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
+                    Branch branch = new Branch();
+                    branch = await branchModel.getBranchById((int)invoice.branchCreatorId);
+                    if (branch.branchId > 0)
+                    {
+                        invoice.branchName = branch.name;
+                    }
+
+                    User employ = new User();
+                    employ = await employ.getUserById((int)invoice.updateUserId);
+                    invoice.uuserName = employ.name;
+                    invoice.uuserLast = employ.lastname;
+
+                    ReportCls.checkLang();
+                    foreach (var r in invoiceItems)
+                    {
+                        r.price = decimal.Parse(SectionData.DecTostring(r.price));
+                        //r.deserveDate = Convert.ToDateTime(SectionData.DateToString(r.deserveDate));
+                    }
+                    clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
+                    clsReports.setReportLanguage(paramarr);
+                    clsReports.Header(paramarr);
+                    paramarr = reportclass.fillPurInvReport(invoice, paramarr);
+
+                    rep.SetParameters(paramarr);
+                    rep.Refresh();
+                   
+                    LocalReportExtensions.ExportToPDF(rep, pdfpath);
+                }
+               
+                    wd_previewPdf w = new wd_previewPdf();
+                    w.pdfPath = pdfpath;
+                    if (!string.IsNullOrEmpty(w.pdfPath))
+                    {
+                       
+                        w.ShowDialog();
+
+                        w.wb_pdfWebViewer.Dispose();
+
+                    }
+                    else
+                            Toaster.ShowError(Window.GetWindow(this), message: "", animation: ToasterAnimation.FadeIn);
+               
+                    Window.GetWindow(this).Opacity = 1;
+            }
+            else
+            {
+                Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trSaveInvoiceToPreview"), animation: ToasterAnimation.FadeIn);
+
+            }
+
+        }
+        public async void printPurInvoice()
+        {
+
+            if (prInvoiceId > 0)
+            {
+                prInvoice = new Invoice();
+                prInvoice = await invoiceModel.GetById(prInvoiceId);
+                //
+                if (prInvoice.invType == "pd" || prInvoice.invType == "sd" || prInvoice.invType == "qd"
+                             || prInvoice.invType == "sbd" || prInvoice.invType == "pbd"
+                             || prInvoice.invType == "ord" || prInvoice.invType == "imd" || prInvoice.invType == "exd")
+                {
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPrintDraftInvoice"), animation: ToasterAnimation.FadeIn);
+                }
+                else
+                {
+                    List<ReportParameter> paramarr = new List<ReportParameter>();
+
+                    string reppath = reportclass.GetpayInvoiceRdlcpath(prInvoice);
+                    if (prInvoice.invoiceId > 0)
+                    {
+                        invoiceItems = await invoiceModel.GetInvoicesItems(prInvoice.invoiceId);
+                        Agent agentinv = new Agent();
+                        agentinv = vendors.Where(X => X.agentId == prInvoice.agentId).FirstOrDefault();
+
+                        User employ = new User();
+                        employ = await employ.getUserById((int)prInvoice.updateUserId);
+                        prInvoice.uuserName = employ.name;
+                        prInvoice.uuserLast = employ.lastname;
+
+                        prInvoice.agentCode = agentinv.code;
+                        //new lines
+                        prInvoice.agentName = agentinv.name;
+                        prInvoice.agentCompany = agentinv.company;
+
+                        invoiceItems = await invoiceModel.GetInvoicesItems(prInvoice.invoiceId);
                         Branch branch = new Branch();
-                        branch = await branchModel.getBranchById((int)invoice.branchCreatorId);
+                        branch = await branchModel.getBranchById((int)prInvoice.branchCreatorId);
                         if (branch.branchId > 0)
                         {
-                            invoice.branchName = branch.name;
+                            prInvoice.branchName = branch.name;
                         }
 
-
                         ReportCls.checkLang();
-                        foreach (var r in invoiceItems)
+                        foreach (var i in invoiceItems)
                         {
-                            r.price = decimal.Parse(SectionData.DecTostring(r.price));
+                            i.price = decimal.Parse(SectionData.DecTostring(i.price));
                         }
                         clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
                         clsReports.setReportLanguage(paramarr);
                         clsReports.Header(paramarr);
-                        paramarr = reportclass.fillPurInvReport(invoice, paramarr);
+                        paramarr = reportclass.fillPurInvReport(prInvoice, paramarr);
 
                         rep.SetParameters(paramarr);
                         rep.Refresh();
-
-
-
-                        LocalReportExtensions.PrintToPrinter(rep);
+                        this.Dispatcher.Invoke(() =>
+                        {
+                            LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.rep_printer_name, short.Parse(MainWindow.pur_copy_count));
+                        });
                     }
                 }
+
+                //
+            }
+
+        }
+
+        public async void sendPurEmail()
+        {
+            //
+            if (prInvoiceId > 0)
+            {
+                prInvoice = new Invoice();
+                prInvoice = await invoiceModel.GetById(prInvoiceId);
+
+                if (prInvoice.invType == "pd" || prInvoice.invType == "sd" || prInvoice.invType == "qd"
+                || prInvoice.invType == "sbd" || prInvoice.invType == "pbd"
+                || prInvoice.invType == "ord" || prInvoice.invType == "imd" || prInvoice.invType == "exd")
+                {
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trCanNotSendDraftInvoice"), animation: ToasterAnimation.FadeIn);
+                }
+                else
+                {
+                    if (prInvoice.invType == "pw")
+                    {
+                        invoiceItems = await invoiceModel.GetInvoicesItems(prInvoice.invoiceId);
+                        SysEmails email = new SysEmails();
+                        EmailClass mailtosend = new EmailClass();
+                        email = await email.GetByBranchIdandSide((int)MainWindow.branchID, "mg");
+                        Agent toAgent = new Agent();
+
+
+                        toAgent = vendors.Where(X => X.agentId == prInvoice.agentId).FirstOrDefault();
+
+                        invoice.agentCode = toAgent.code;
+                        //new lines
+                        invoice.agentName = toAgent.name;
+                        invoice.agentCompany = toAgent.company;
+                        if (toAgent == null)
+                        {
+                            //edit warning message to customer
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trTheVendorHasNoEmail"), animation: ToasterAnimation.FadeIn);
+
+                        }
+                        else
+                        {
+                            //  int? itemcount = invoiceItems.Count();
+                            if (email.emailId == 0)
+                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoEmailForThisDept"), animation: ToasterAnimation.FadeIn);
+                            else
+                            {
+                                if (prInvoice.invoiceId == 0)
+                                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trThereIsNoOrderToSen"), animation: ToasterAnimation.FadeIn);
+                                else
+                                {
+                                    if (invoiceItems == null || invoiceItems.Count() == 0)
+                                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trThereIsNoItemsToSend"), animation: ToasterAnimation.FadeIn);
+                                    else
+                                    {
+
+                                        if (toAgent.email.Trim() == "")
+                                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trTheVendorHasNoEmail"), animation: ToasterAnimation.FadeIn);
+                                        else
+                                        {
+                                            SetValues setvmodel = new SetValues();
+
+
+                                            List<SetValues> setvlist = new List<SetValues>();
+                                            if (prInvoice.invType == "pw")
+                                            {
+                                                setvlist = await setvmodel.GetBySetName("pur_email_temp");
+                                            }
+                                            else if (prInvoice.invType == "or")
+                                            {
+                                                setvlist = await setvmodel.GetBySetName("sale_order_email_temp");
+                                            }
+                                            foreach(var i in invoiceItems)
+                                            {
+                                                i.price = decimal.Parse(SectionData.DecTostring(i.price));
+                                            }
+                                            this.Dispatcher.Invoke(new Action(() =>
+                                            {
+                                                mailtosend = mailtosend.fillSaleTempData(prInvoice, invoiceItems, email, toAgent, setvlist);
+                                                //string pdfpath = SavePurpdf(); 
+                                                SavePurpdf();
+                                                string pdfpath = emailpdfpath;
+                                                mailtosend.AddAttachTolist(pdfpath);
+                                            }));
+                                            string msg = "";
+                                             msg = mailtosend.Sendmail();// temp comment
+                                            if (msg == "Failure sending mail.")
+                                            {
+                                                // msg = "No Internet connection";
+
+                                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoInternetConnection"), animation: ToasterAnimation.FadeIn);
+                                            }
+                                            else if (msg == "mailsent")
+                                                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trMailSent"), animation: ToasterAnimation.FadeIn);
+                                            else
+                                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trMailNotSent"), animation: ToasterAnimation.FadeIn);
+
+
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                    }
+                    else
+                    {
+                        MessageBox.Show("only purshase invoice");
+                    }
+                }
+                //
+            }
+            else
+            {
+                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trThereIsNoItemsToSend"), animation: ToasterAnimation.FadeIn);
+
+            }
+
+
+            //
+        }
+        string emailpdfpath = "";
+        //public async Task<string> SavePurpdf()
+        public async void SavePurpdf()
+        {
+            string pdfpath;
+            pdfpath = @"\Thumb\report\File.pdf";
+            if (prInvoiceId > 0)
+            {
+                prInvoice = new Invoice();
+                prInvoice = await invoiceModel.GetById(prInvoiceId);
+
+                List<ReportParameter> paramarr = new List<ReportParameter>();
+
+                //
+
+                pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
+                string reppath = reportclass.GetpayInvoiceRdlcpath(prInvoice);
+                if (prInvoice.invoiceId > 0)
+                {
+                    invoiceItems = await invoiceModel.GetInvoicesItems(prInvoice.invoiceId);
+                    if (prInvoice.agentId != null)
+                    {
+                        Agent agentinv = new Agent();
+                        agentinv = vendors.Where(X => X.agentId == prInvoice.agentId).FirstOrDefault();
+
+                        prInvoice.agentCode = agentinv.code;
+                        //new lines
+                        prInvoice.agentName = agentinv.name;
+                        prInvoice.agentCompany = agentinv.company;
+                    }
+                    else
+                    {
+
+                        prInvoice.agentCode = "-";
+                        //new lines
+                        prInvoice.agentName = "-";
+                        prInvoice.agentCompany = "-";
+                    }
+
+                    invoiceItems = await invoiceModel.GetInvoicesItems(prInvoice.invoiceId);
+                    Branch branch = new Branch();
+                    branch = await branchModel.getBranchById((int)prInvoice.branchCreatorId);
+                    if (branch.branchId > 0)
+                    {
+                        prInvoice.branchName = branch.name;
+                    }
+
+                    User employ = new User();
+                    employ = await employ.getUserById((int)prInvoice.updateUserId);
+                    prInvoice.uuserName = employ.name;
+                    prInvoice.uuserLast = employ.lastname;
+
+                    ReportCls.checkLang();
+                    foreach (var i in invoiceItems)
+                    {
+                        i.price = decimal.Parse(SectionData.DecTostring(i.price));
+                    }
+                    clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
+                    clsReports.setReportLanguage(paramarr);
+                    clsReports.Header(paramarr);
+                    paramarr = reportclass.fillPurInvReport(prInvoice, paramarr);
+
+                    rep.SetParameters(paramarr);
+                    rep.Refresh();
+                    this.Dispatcher.Invoke(new Action(() =>
+                    {
+                        LocalReportExtensions.ExportToPDF(rep, pdfpath);
+                    }));
+                }
+            }
+            //return pdfpath;
+            emailpdfpath = pdfpath;
+        }
+        private  void btn_printInvoice_Click(object sender, RoutedEventArgs e)
+        {//print
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                prInvoiceId = invoice.invoiceId;
+            // printPurInvoice();
+                /////////////////////////////////////////////////
+                
+                               Thread t1 = new Thread(() =>
+                               {
+                                   //      pdfPurInvoice();
+                                   printPurInvoice();
+
+                               });
+                t1.Start();
+                ////////////////////////////////////////////////
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -2098,99 +2466,9 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-
-                if (invoice.invoiceId > 0)
-                {
-                    Window.GetWindow(this).Opacity = 0.2;
-
-                    List<ReportParameter> paramarr = new List<ReportParameter>();
-                    string pdfpath;
-
-                    //
-                    pdfpath = @"\Thumb\report\temp.pdf";
-                    pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
-                    string reppath = reportclass.GetpayInvoiceRdlcpath(invoice);
-                    if (invoice.invoiceId > 0)
-                    {
-                        invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
-                        if (invoice.agentId != null)
-                        {
-                            Agent agentinv = new Agent();
-                            agentinv = vendors.Where(X => X.agentId == invoice.agentId).FirstOrDefault();
-
-                            invoice.agentCode = agentinv.code;
-                            //new lines
-                            invoice.agentName = agentinv.name;
-                            invoice.agentCompany = agentinv.company;
-                        }
-                        else
-                        {
-
-                            invoice.agentCode = "-";
-                            //new lines
-                            invoice.agentName = "-";
-                            invoice.agentCompany = "-";
-                        }
-
-                        invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
-                        Branch branch = new Branch();
-                        branch = await branchModel.getBranchById((int)invoice.branchCreatorId);
-                        if (branch.branchId > 0)
-                        {
-                            invoice.branchName = branch.name;
-                        }
-
-                        User employ = new User();
-                        employ = await employ.getUserById((int)invoice.updateUserId);
-                        invoice.uuserName = employ.name;
-                        invoice.uuserLast = employ.lastname;
-
-                        ReportCls.checkLang();
-                        foreach (var r in invoiceItems)
-                        {
-                            r.price = decimal.Parse(SectionData.DecTostring(r.price));
-                            //r.deserveDate = Convert.ToDateTime(SectionData.DateToString(r.deserveDate));
-                        }
-                        clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
-                        clsReports.setReportLanguage(paramarr);
-                        clsReports.Header(paramarr);
-                        paramarr = reportclass.fillPurInvReport(invoice, paramarr);
-
-                        rep.SetParameters(paramarr);
-                        rep.Refresh();
-
-                        LocalReportExtensions.ExportToPDF(rep, pdfpath);
-
-                    }
-
-                    //  }
-
-                    //
-
-                    wd_previewPdf w = new wd_previewPdf();
-                    w.pdfPath = pdfpath;
-                    if (!string.IsNullOrEmpty(w.pdfPath))
-                    {
-                        w.ShowDialog();
-                        //delete file
-                        /*
-                        if (File.Exists(pdfpath))
-                        { File.Delete(pdfpath);}
-                        */
-                        //  ClosePDF();
-                        w.wb_pdfWebViewer.Dispose();
-
-
-                    }
-                    else
-                        Toaster.ShowError(Window.GetWindow(this), message: "", animation: ToasterAnimation.FadeIn);
-                    Window.GetWindow(this).Opacity = 1;
-                }
-                else
-                {
-               Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trSaveInvoiceToPreview"), animation: ToasterAnimation.FadeIn);
-
-                }
+                //////////////////////////////////////
+                previewPurInvoice();
+                //////////////////////////////////////
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -2306,6 +2584,31 @@ namespace POS.View
             }
         }
 
+        private void Btn_emailMessage_Click(object sender, RoutedEventArgs e)
+        {//email
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                prInvoiceId = invoice.invoiceId;
+                sendPurEmail();
+                /////////////////////////////////////
+                //Thread t1 = new Thread(() =>
+                //{
+                //    sendPurEmail();
+                //});
+                //t1.Start();
+                //////////////////////////////////////
 
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
     }
 }

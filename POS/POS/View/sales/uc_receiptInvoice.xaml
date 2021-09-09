@@ -944,8 +944,8 @@
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
                                 <DataGridTextColumn  Header="Amount"  Width="*"  Binding="{Binding Path=Count}"/>
-                                <DataGridTextColumn  Header="Price"  Width="*"  Binding="{Binding Path=Price}" IsReadOnly="True"/>
-                                <DataGridTextColumn IsReadOnly="True"  Width="*"  Header="Total" Binding="{Binding Path=Total}"/>
+                                <DataGridTextColumn  Header="Price"  Width="*"  Binding="{Binding Path=Price , Converter={StaticResource accuracyConverter}}" IsReadOnly="True"/>
+                                <DataGridTextColumn IsReadOnly="True"  Width="*"  Header="Total" Binding="{Binding Path=Total ,Converter={StaticResource accuracyConverter}}"/>
                                 <DataGridTemplateColumn Width="30" Header="" IsReadOnly="True" >
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>

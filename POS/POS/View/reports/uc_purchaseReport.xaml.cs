@@ -2750,7 +2750,7 @@ fillColumnChart(cb_Items, selectedItemId);
         }
         List<ItemTransferInvoice> query = new List<ItemTransferInvoice>();
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
-        {
+        {//pdf
             try
             {
                 if (sender != null)
@@ -2815,6 +2815,14 @@ fillColumnChart(cb_Items, selectedItemId);
 
                 ReportCls.checkLang();
                 //  getpuritemcount
+                foreach (var r in query)
+                {
+                    r.discountValue = decimal.Parse(SectionData.DecTostring(r.discountValue));
+                    r.ITprice = decimal.Parse(SectionData.DecTostring(r.ITprice));
+                    r.tax = decimal.Parse(SectionData.DecTostring(r.tax));
+                    r.subTotal = decimal.Parse(SectionData.DecTostring(r.subTotal));
+                    r.totalNet = decimal.Parse(SectionData.DecTostring(r.totalNet));
+                }
                 clsReports.PurStsReport(query, rep, reppath);
                 clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);
@@ -2847,7 +2855,7 @@ fillColumnChart(cb_Items, selectedItemId);
         }
 
         private void Btn_print_Click(object sender, RoutedEventArgs e)
-        {
+        {//print
             try
             {
                 if (sender != null)
@@ -2912,6 +2920,14 @@ fillColumnChart(cb_Items, selectedItemId);
 
                 ReportCls.checkLang();
                 //  getpuritemcount
+                foreach (var r in query)
+                {
+                    r.discountValue = decimal.Parse(SectionData.DecTostring(r.discountValue));
+                    r.ITprice = decimal.Parse(SectionData.DecTostring(r.ITprice));
+                    r.tax = decimal.Parse(SectionData.DecTostring(r.tax));
+                    r.subTotal = decimal.Parse(SectionData.DecTostring(r.subTotal));
+                    r.totalNet = decimal.Parse(SectionData.DecTostring(r.totalNet));
+                }
                 clsReports.PurStsReport(query, rep, reppath);
                 clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);
@@ -3009,7 +3025,7 @@ fillColumnChart(cb_Items, selectedItemId);
         }
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
-        {
+        {//excel
             try
             {
                 if (sender != null)
@@ -3072,6 +3088,14 @@ fillColumnChart(cb_Items, selectedItemId);
 
           ReportCls.checkLang();
                 //  getpuritemcount
+                foreach (var r in query)
+                {
+                    r.discountValue = decimal.Parse(SectionData.DecTostring(r.discountValue));
+                    r.ITprice = decimal.Parse(SectionData.DecTostring(r.ITprice));
+                    r.tax = decimal.Parse(SectionData.DecTostring(r.tax));
+                    r.subTotal = decimal.Parse(SectionData.DecTostring(r.subTotal));
+                    r.totalNet = decimal.Parse(SectionData.DecTostring(r.totalNet));
+                }
                 clsReports.PurStsReport(query, rep, reppath);
           clsReports.setReportLanguage(paramarr);
           clsReports.Header(paramarr);
@@ -3104,7 +3128,7 @@ fillColumnChart(cb_Items, selectedItemId);
         }
 
         private void Btn_preview_Click(object sender, RoutedEventArgs e)
-        {
+        {//preview
             try
             {
                 if (sender != null)
@@ -3172,6 +3196,14 @@ fillColumnChart(cb_Items, selectedItemId);
 
                 ReportCls.checkLang();
                 //  getpuritemcount
+                foreach (var r in query)
+                {
+                    r.discountValue = decimal.Parse(SectionData.DecTostring(r.discountValue));
+                    r.ITprice = decimal.Parse(SectionData.DecTostring(r.ITprice));
+                    r.tax = decimal.Parse(SectionData.DecTostring(r.tax));
+                    r.subTotal = decimal.Parse(SectionData.DecTostring(r.subTotal));
+                    r.totalNet = decimal.Parse(SectionData.DecTostring(r.totalNet));
+                }
                 clsReports.PurStsReport(query, rep, reppath);
                 clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);

@@ -12,8 +12,6 @@
             <ColumnDefinition Width="2.54*"/>
             <ColumnDefinition x:Name="gridWidth" Width="*" MinWidth="225"/>
         </Grid.ColumnDefinitions>
-
-
         <!--Left Section Grid-->
         <!--#region -->
         <Grid Margin="0,15,10,15" Grid.Column="0">
@@ -509,18 +507,14 @@
 
                             <Button  Grid.Row="0" VerticalAlignment="Top" FlowDirection="LeftToRight"
                                Grid.RowSpan="3" x:Name="img_user"
-                     Margin="0,5,10,5"
-                            BorderBrush="{x:Null}" materialDesign:ButtonAssist.CornerRadius="5" HorizontalAlignment="Center" Height="90" Width="90" Grid.Column="1" Click="Img_user_Click">
+                     Margin="0,5,10,5" BorderBrush="{x:Null}"
+                    materialDesign:ButtonAssist.CornerRadius="5" HorizontalAlignment="Center" 
+                                     Height="90" Width="90" Grid.Column="1" Click="Img_user_Click">
                                 <Button.Background>
                                     <ImageBrush Stretch="UniformToFill"  x:Name="IMG_customer"
                                             ImageSource="/pic/no-image-icon-125x125.png"   />
                                 </Button.Background>
                             </Button>
-                            <!--<Image  Grid.Row="0"  Grid.RowSpan="3" x:Name="img_user" Stretch="UniformToFill"
-                                    materialDesign:ButtonAssist.CornerRadius="5" HorizontalAlignment="Center" Height="90" Width="90" Grid.Column="1"
-                                    Margin="0,-45,10,5"  Source="/pic/no-image-icon-125x125.png" MouseDown="Img_user_MouseDown"  >
-                            </Image>-->
-
                             <TextBox x:Name="tb_firstName"  Text="{Binding name, Mode=OneWay}" Padding="10,0,5,0" 
                                       Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                             BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="First Name..."  
@@ -984,7 +978,7 @@
 
                         <Button x:Name="btn_add" TabIndex="14"
                           Background="#4E4E4E" BorderBrush="{x:Null}"
-                    Margin="1,1" Click="Btn_add_Click" >
+                    Margin="1,1,1,0" Click="Btn_add_Click" VerticalAlignment="Top" >
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                                 <materialDesign:PackIcon Name="txt_add_Icon" Kind="PlusThick" VerticalAlignment="Center" Width="15"  Height="15" Margin="0,1,2,0">
 

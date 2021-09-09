@@ -144,6 +144,7 @@
             <Visibility>
               <Hidden>=Parameters!watermark.Value = "0"</Hidden>
             </Visibility>
+            <RepeatWith>Tablix1</RepeatWith>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -585,7 +586,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Round(Fields!price.Value*Fields!quantity.Value,2)</Value>
+                                  <Value>=Fields!price.Value*Fields!quantity.Value</Value>
                                   <Style>
                                     <FontFamily>Montserrat</FontFamily>
                                     <FontWeight>Bold</FontWeight>
@@ -668,7 +669,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
-            <Top>5.67111cm</Top>
+            <Top>5.25836cm</Top>
             <Left>6.98087cm</Left>
             <Height>0.67938cm</Height>
             <Width>1.96087cm</Width>
@@ -717,7 +718,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
-            <Top>5.67111cm</Top>
+            <Top>5.25836cm</Top>
             <Left>1.80589cm</Left>
             <Height>0.67938cm</Height>
             <Width>5.18113cm</Width>
@@ -752,7 +753,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
-            <Top>7.23802cm</Top>
+            <Top>6.82527cm</Top>
             <Left>6.98087cm</Left>
             <Height>0.67938cm</Height>
             <Width>1.93885cm</Width>
@@ -801,7 +802,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
-            <Top>7.23802cm</Top>
+            <Top>6.82527cm</Top>
             <Left>1.78472cm</Left>
             <Height>0.67938cm</Height>
             <Width>5.2023cm</Width>
@@ -836,7 +837,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
-            <Top>8.29846cm</Top>
+            <Top>7.88571cm</Top>
             <Left>6.98087cm</Left>
             <Height>0.67938cm</Height>
             <Width>1.96087cm</Width>
@@ -890,7 +891,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
-            <Top>8.29846cm</Top>
+            <Top>7.88571cm</Top>
             <Left>1.80589cm</Left>
             <Height>0.67938cm</Height>
             <Width>5.18113cm</Width>
@@ -942,7 +943,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
-            <Top>6.55864cm</Top>
+            <Top>6.14589cm</Top>
             <Left>6.98087cm</Left>
             <Height>0.67938cm</Height>
             <Width>1.96087cm</Width>
@@ -991,11 +992,14 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
-            <Top>6.55864cm</Top>
+            <Top>6.14589cm</Top>
             <Left>1.78874cm</Left>
             <Height>0.67938cm</Height>
             <Width>5.19828cm</Width>
             <ZIndex>10</ZIndex>
+            <Visibility>
+              <Hidden>=Parameters!discountType.Value = 2</Hidden>
+            </Visibility>
             <Style>
               <Border>
                 <Style>Solid</Style>
@@ -1297,6 +1301,51 @@
             <Style>
               <Border>
                 <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Textbox Name="Textbox23">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>% </Value>
+                    <Style>
+                      <FontFamily>Montserrat</FontFamily>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                  <TextRun>
+                    <Value>=Parameters!discountValue.Value</Value>
+                    <Style>
+                      <FontFamily>Montserrat</FontFamily>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style>
+                  <TextAlign>Right</TextAlign>
+                </Style>
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>Textbox1</rd:DefaultName>
+            <Top>6.14589cm</Top>
+            <Left>1.78874cm</Left>
+            <Height>0.67938cm</Height>
+            <Width>5.19828cm</Width>
+            <ZIndex>19</ZIndex>
+            <Visibility>
+              <Hidden>=Parameters!discountType.Value &lt;&gt; 2</Hidden>
+            </Visibility>
+            <Style>
+              <Border>
+                <Style>Solid</Style>
               </Border>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2086,6 +2135,12 @@
       <AllowBlank>true</AllowBlank>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
+    <ReportParameter Name="discountType">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
   </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
@@ -2231,6 +2286,11 @@
           <ColumnIndex>0</ColumnIndex>
           <RowIndex>7</RowIndex>
           <ParameterName>Notes</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>1</ColumnIndex>
+          <RowIndex>7</RowIndex>
+          <ParameterName>discountType</ParameterName>
         </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>

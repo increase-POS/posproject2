@@ -466,7 +466,9 @@
                         <DataGridTextColumn x:Name="col_stockTakeNum" Visibility="Hidden" Width="*" Header="Number" Binding="{Binding inventoryNum}"/>
                         <DataGridTextColumn x:Name="col_stockTakingCoastType" Visibility="Hidden" Width="*" Header="Type" Binding="{Binding inventoryType}"/>
                         <DataGridTextColumn x:Name="col_stockTakingDate" Visibility="Hidden" Width="*" Header="Date" Binding="{Binding inventoryDate,Converter={StaticResource dateFrameConverter }}"/>
-                        <DataGridTextColumn x:Name="col_diffPercentage" Visibility="Hidden" Width="*" Header="diffrence Percentage" Binding="{Binding diffPercentage,StringFormat=F2}"/>
+                        <!--<DataGridTextColumn x:Name="col_diffPercentage" Visibility="Hidden" Width="*" Header="diffrence Percentage" Binding="{Binding diffPercentage,StringFormat=F2}"/>-->
+                        <DataGridTextColumn x:Name="col_diffPercentage" Visibility="Hidden" Width="*" Header="diffrence Percentage" Binding="{Binding diffPercentage,Converter={StaticResource accuracyConverter}}"/>
+
                         <DataGridTextColumn x:Name="col_itemCountAr" Visibility="Hidden" Width="*" Header="Items Count" Binding="{Binding itemCount}"/>
                         <DataGridTextColumn x:Name="col_DestroyedCount" Visibility="Hidden" Width="*" Header="Destroyed Count" Binding="{Binding DestroyedCount}"/>
 

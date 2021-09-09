@@ -152,11 +152,12 @@
             <rd:DefaultName>Textbox30</rd:DefaultName>
             <Top>1.04375cm</Top>
             <Left>3.52177cm</Left>
-            <Height>7.57051cm</Height>
+            <Height>7.04134cm</Height>
             <Width>13.95646cm</Width>
             <Visibility>
               <Hidden>=Parameters!watermark.Value="0"</Hidden>
             </Visibility>
+            <RepeatWith>Tablix1</RepeatWith>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -664,7 +665,7 @@
             <Source>External</Source>
             <Value>=Parameters!barcodeimage.Value</Value>
             <Sizing>Fit</Sizing>
-            <Top>8.40918cm</Top>
+            <Top>7.20268cm</Top>
             <Left>1.78874cm</Left>
             <Height>0.97083cm</Height>
             <Width>5.41158cm</Width>
@@ -954,7 +955,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>agentTitle</rd:DefaultName>
-            <Top>7.62397cm</Top>
+            <Top>6.41747cm</Top>
             <Left>4.01125cm</Left>
             <Height>0.67938cm</Height>
             <Width>6.8488cm</Width>
@@ -989,7 +990,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>agentTitle</rd:DefaultName>
-            <Top>7.62397cm</Top>
+            <Top>6.41747cm</Top>
             <Left>1.78875cm</Left>
             <Height>0.67938cm</Height>
             <Width>2.3792cm</Width>
@@ -1024,7 +1025,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>agentTitle</rd:DefaultName>
-            <Top>6.83875cm</Top>
+            <Top>5.63225cm</Top>
             <Left>1.78875cm</Left>
             <Height>0.67938cm</Height>
             <Width>6.63713cm</Width>
@@ -1040,7 +1041,7 @@
             </Style>
           </Textbox>
         </ReportItems>
-        <Height>9.65801cm</Height>
+        <Height>8.99655cm</Height>
         <Style>
           <Border>
             <Style>None</Style>
@@ -1583,6 +1584,12 @@
       <AllowBlank>true</AllowBlank>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
+    <ReportParameter Name="discountType">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
   </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
@@ -1723,6 +1730,11 @@
           <ColumnIndex>2</ColumnIndex>
           <RowIndex>6</RowIndex>
           <ParameterName>userName</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>3</ColumnIndex>
+          <RowIndex>6</RowIndex>
+          <ParameterName>discountType</ParameterName>
         </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>

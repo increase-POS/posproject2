@@ -139,7 +139,7 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn Width="*"  Header="Value" Binding="{Binding Path=discountValue}">
+                        <DataGridTextColumn Width="*"  Header="Value" Binding="{Binding Path=discountValue , Converter={StaticResource accuracyConverter}}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Style.Triggers>
