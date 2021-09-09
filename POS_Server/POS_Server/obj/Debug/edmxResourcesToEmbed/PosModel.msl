@@ -1036,6 +1036,7 @@
     <EntitySetMapping Name="paperSize">
       <EntityTypeMapping TypeName="incposdbModel.paperSize">
         <MappingFragment StoreEntitySet="paperSize">
+          <ScalarProperty Name="sizeValue" ColumnName="sizeValue" />
           <ScalarProperty Name="printfor" ColumnName="printfor" />
           <ScalarProperty Name="paperSize1" ColumnName="paperSize" />
           <ScalarProperty Name="sizeId" ColumnName="sizeId" />

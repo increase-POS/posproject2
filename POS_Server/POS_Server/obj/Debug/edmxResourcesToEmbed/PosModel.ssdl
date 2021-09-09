@@ -704,6 +704,7 @@
     <Property Name="sizeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="paperSize" Type="nvarchar" MaxLength="200" />
     <Property Name="printfor" Type="nvarchar" MaxLength="200" />
+    <Property Name="sizeValue" Type="nvarchar" MaxLength="200" />
   </EntityType>
   <EntityType Name="Points">
     <Key>

@@ -52,16 +52,19 @@ namespace POS_Server.Controllers
                                     saleInvPapersizeId = S.saleInvPapersizeId,
                                     posSerial = S.posSerial,
 
-                                    repprinterId = jjrep.printerId,
-                                    repname = jjrep.name,
-                                    repprintFor = jjrep.printFor,
-                                    salprinterId = jjsale.printerId,
-                                    salname = jjsale.name,
-                                    salprintFor = jjsale.printFor,
-                                    sizeId = jjpaper.sizeId,
-                                    paperSize1 = jjpaper.paperSize1,
-                                    docPapersize = jdocpaper.paperSize1,
-                                    docPapersizeId = S.docPapersizeId,
+                                    repprinterId = jjrep.printerId,//printer
+                                    repname = jjrep.name,//printer
+                                    repprintFor = jjrep.printFor,//printer
+                                    salprinterId = jjsale.printerId,//printer
+                                    salname = jjsale.name,//printer
+                                    salprintFor = jjsale.printFor,//printer
+                                    sizeId = jjpaper.sizeId,// paper
+                                    paperSize1 = jjpaper.paperSize1,// paper saleInvPapersize
+                                    saleSizeValue= jjpaper.sizeValue,// paper sale
+                                    docSizeValue = jdocpaper.sizeValue,// paper doc
+                                    docPapersize = jdocpaper.paperSize1,// paper
+                                    docPapersizeId = S.docPapersizeId,// paper
+
                                 }).ToList();
                     /*
    public int posSettingId { get; set; }
@@ -147,6 +150,8 @@ namespace POS_Server.Controllers
 
                                    docPapersize = jdocpaper.paperSize1,
                                    docPapersizeId = S.docPapersizeId,
+                                   saleSizeValue = jjpaper.sizeValue,// paper sale
+                                   docSizeValue = jdocpaper.sizeValue,// paper doc
                                }).FirstOrDefault();
 
                     if (row == null)
@@ -209,7 +214,8 @@ namespace POS_Server.Controllers
                                    paperSize1 = jjpaper.paperSize1,
                                    docPapersize = jdocpaper.paperSize1,
                                    docPapersizeId=S.docPapersizeId,
-
+                                   saleSizeValue = jjpaper.sizeValue,// paper sale
+                                   docSizeValue = jdocpaper.sizeValue,// paper doc
                                }).FirstOrDefault();
 
                     if (row == null)

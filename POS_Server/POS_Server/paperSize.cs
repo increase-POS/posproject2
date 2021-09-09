@@ -23,6 +23,7 @@ namespace POS_Server
         public int sizeId { get; set; }
         public string paperSize1 { get; set; }
         public string printfor { get; set; }
+        public string sizeValue { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<posSetting> posSetting { get; set; }

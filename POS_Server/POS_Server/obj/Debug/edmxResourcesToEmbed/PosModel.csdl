@@ -4356,6 +4356,7 @@
     <Property Name="paperSize1" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="posSetting" Relationship="incposdbModel.FK_posSetting_paperSize" FromRole="paperSize" ToRole="posSetting" />
     <Property Name="printfor" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="sizeValue" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="posSetting">
     <Key>

@@ -709,6 +709,7 @@
           <Property Name="sizeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="paperSize" Type="nvarchar" MaxLength="200" />
           <Property Name="printfor" Type="nvarchar" MaxLength="200" />
+          <Property Name="sizeValue" Type="nvarchar" MaxLength="200" />
         </EntityType>
         <EntityType Name="Points">
           <Key>
@@ -8513,6 +8514,7 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <Property Name="paperSize1" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="posSetting" Relationship="incposdbModel.FK_posSetting_paperSize" FromRole="paperSize" ToRole="posSetting" />
           <Property Name="printfor" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="sizeValue" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="posSetting">
           <Key>
@@ -9706,6 +9708,7 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <EntitySetMapping Name="paperSize">
             <EntityTypeMapping TypeName="incposdbModel.paperSize">
               <MappingFragment StoreEntitySet="paperSize">
+                <ScalarProperty Name="sizeValue" ColumnName="sizeValue" />
                 <ScalarProperty Name="printfor" ColumnName="printfor" />
                 <ScalarProperty Name="paperSize1" ColumnName="paperSize" />
                 <ScalarProperty Name="sizeId" ColumnName="sizeId" />

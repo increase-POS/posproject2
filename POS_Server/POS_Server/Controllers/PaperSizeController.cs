@@ -39,8 +39,9 @@ namespace POS_Server.Controllers
                                     S.sizeId,
                                     S.paperSize1,
                                     S.printfor,
+                                    S.sizeValue ,
 
-                                }).ToList();
+    }).ToList();
 
 
 
@@ -80,6 +81,7 @@ namespace POS_Server.Controllers
                        S.sizeId,
                        S.paperSize1,
                        S.printfor,
+                       S.sizeValue,
                    })
                    .FirstOrDefault();
 
@@ -137,7 +139,8 @@ namespace POS_Server.Controllers
                          
                             tmpObject.paperSize1 = newObject.paperSize1;
                             tmpObject.printfor  = newObject.printfor;
-
+                            tmpObject.sizeValue = newObject.sizeValue;
+                         
                             entity.SaveChanges();
 
                             message = tmpObject.sizeId.ToString();

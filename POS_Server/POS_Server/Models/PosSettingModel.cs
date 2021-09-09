@@ -27,6 +27,8 @@ namespace POS_Server.Models
         public string paperSize1 { get; set; }
         public Nullable<int> docPapersizeId { get; set; }
         public string docPapersize { get; set; }
+        public string saleSizeValue { get; set; }
+        public string docSizeValue { get; set; }
 
     }
 }
