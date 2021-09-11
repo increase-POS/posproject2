@@ -159,5 +159,17 @@ C:\Users\HP\Documents\GitHub\posproject2\POS\netoaster\obj\Debug\netoaster.cspro
 C:\Users\HP\Documents\GitHub\posproject2\POS\netoaster\obj\Debug\netoaster.dll
 C:\Users\HP\Documents\GitHub\posproject2\POS\netoaster\obj\Debug\netoaster.pdb
 C:\Users\HP\Documents\GitHub\posproject2\POS\netoaster\obj\Debug\netoaster.csprojAssemblyReference.cache
-E:\GitHub\posproject2\POS\netoaster\obj\Debug\netoaster.csprojAssemblyReference.cache
-D:\myproj\posproject2\POS\netoaster\obj\Debug\netoaster.csprojAssemblyReference.cache
+D:\ملفات المشروع\ياسين\POS\POS\netoaster\bin\Debug\netoaster.dll
+D:\ملفات المشروع\ياسين\POS\POS\netoaster\bin\Debug\netoaster.pdb
+D:\ملفات المشروع\ياسين\POS\POS\netoaster\obj\Debug\ToasterWindow.g.cs
+D:\ملفات المشروع\ياسين\POS\POS\netoaster\obj\Debug\GeneratedInternalTypeHelper.g.cs
+D:\ملفات المشروع\ياسين\POS\POS\netoaster\obj\Debug\netoaster_MarkupCompile.cache
+D:\ملفات المشروع\ياسين\POS\POS\netoaster\obj\Debug\netoaster_MarkupCompile.lref
+D:\ملفات المشروع\ياسين\POS\POS\netoaster\obj\Debug\Themes\Generic.baml
+D:\ملفات المشروع\ياسين\POS\POS\netoaster\obj\Debug\ToasterWindow.baml
+D:\ملفات المشروع\ياسين\POS\POS\netoaster\obj\Debug\netoaster.g.resources
+D:\ملفات المشروع\ياسين\POS\POS\netoaster\obj\Debug\netoaster.Properties.Resources.resources
+D:\ملفات المشروع\ياسين\POS\POS\netoaster\obj\Debug\netoaster.csproj.GenerateResource.cache
+D:\ملفات المشروع\ياسين\POS\POS\netoaster\obj\Debug\netoaster.csproj.CoreCompileInputs.cache
+D:\ملفات المشروع\ياسين\POS\POS\netoaster\obj\Debug\netoaster.dll
+D:\ملفات المشروع\ياسين\POS\POS\netoaster\obj\Debug\netoaster.pdb

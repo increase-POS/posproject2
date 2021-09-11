@@ -13,30 +13,30 @@ namespace POS.Classes
     {
         public static void setReportLanguage(List<ReportParameter> paramarr)
         {
-          
+
             paramarr.Add(new ReportParameter("lang", MainWindow.Reportlang));
-        
+
         }
 
 
         public static void Header(List<ReportParameter> paramarr)
         {
-            
-          ReportCls rep = new ReportCls();
+
+            ReportCls rep = new ReportCls();
             paramarr.Add(new ReportParameter("companyName", MainWindow.companyName));
             paramarr.Add(new ReportParameter("Fax", MainWindow.Fax));
             paramarr.Add(new ReportParameter("Tel", MainWindow.Mobile));
             paramarr.Add(new ReportParameter("Address", MainWindow.Address));
             paramarr.Add(new ReportParameter("Email", MainWindow.Email));
             paramarr.Add(new ReportParameter("logoImage", "file:\\" + rep.GetLogoImagePath()));
-           
+
         }
         public static void bankdg(List<ReportParameter> paramarr)
         {
 
             ReportCls rep = new ReportCls();
-            paramarr.Add(new ReportParameter("trTransferNumber",MainWindow.resourcemanagerreport.GetString("trTransferNumberTooltip")));
-        
+            paramarr.Add(new ReportParameter("trTransferNumber", MainWindow.resourcemanagerreport.GetString("trTransferNumberTooltip")));
+
 
         }
         public static void bondsReport(IEnumerable<Bonds> bondsQuery, LocalReport rep, string reppath, List<ReportParameter> paramarr)
@@ -111,7 +111,7 @@ namespace POS.Classes
                 c.invMax = decimal.Parse(SectionData.DecTostring(c.invMax));
 
             }
-           
+
             rep.DataSources.Add(new ReportDataSource("DataSetCoupon", CouponQuery));
             paramarr.Add(new ReportParameter("dateForm", MainWindow.dateFormat));
         }
@@ -120,9 +120,9 @@ namespace POS.Classes
             rep.ReportPath = reppath;
             rep.EnableExternalImages = true;
             rep.DataSources.Clear();
-            foreach(var o in OfferQuery)
+            foreach (var o in OfferQuery)
             {
-            
+
                 o.discountValue = decimal.Parse(SectionData.DecTostring(o.discountValue));
             }
 
@@ -268,5 +268,9 @@ namespace POS.Classes
             rep.DataSources.Add(new ReportDataSource("DataSetUnit", unitQuery));
         }
 
+        internal static void itemLocation(IEnumerable<ItemLocation> itemLocationListQuery, LocalReport rep, string reppath)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

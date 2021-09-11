@@ -1155,7 +1155,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
 
             return String.Empty;
         }
-
+        List<NotificationUser> notifications;
         private async void BTN_notifications_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -1164,7 +1164,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
                 {
                     bdrMain.Visibility = Visibility.Visible;
                     bdrMain.RenderTransform = Animations.borderAnimation(-25, bdrMain, true);
-                    List<NotificationUser> notifications = await notificationUser.GetByUserId(userID.Value, "alert", posID.Value);
+                    notifications = await notificationUser.GetByUserId(userID.Value, "alert", posID.Value);
                     IEnumerable<NotificationUser> orderdNotifications = notifications.OrderByDescending(x => x.createDate);
                     await notificationUser.setAsRead(userID.Value, posID.Value, "alert");
                     md_notificationCount.Badge = "";
@@ -1236,6 +1236,14 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             }
         }
 
+        private void Btn_showAll_Click(object sender, RoutedEventArgs e)
+        {
+            Window.GetWindow(this).Opacity = 0.2;
+            wd_notifications w = new wd_notifications();
+            w.notifications = notifications;
+            w.ShowDialog();
+            Window.GetWindow(this).Opacity = 1;
+        }
 
         private void TextBlock_MouseEnter(object sender, MouseEventArgs e)
         {
@@ -1265,11 +1273,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             }
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
+       
         private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
         {
             try
@@ -1296,6 +1300,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
                 SectionData.ExceptionMessage(ex, this );
             }
         }
+
 
         private void clearImg()
         {

@@ -577,6 +577,9 @@
     <Compile Include="View\windows\wd_locationsList.xaml.cs">
       <DependentUpon>wd_locationsList.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\windows\wd_notifications.xaml.cs">
+      <DependentUpon>wd_notifications.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\windows\wd_previewPdf.xaml.cs">
       <DependentUpon>wd_previewPdf.xaml</DependentUpon>
     </Compile>
@@ -1077,6 +1080,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\windows\wd_locationsList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\windows\wd_notifications.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

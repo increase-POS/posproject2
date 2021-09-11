@@ -634,6 +634,10 @@
                                   <Value>=Fields!deserveDate.Value</Value>
                                   <Style>
                                     <FontFamily>Montserrat</FontFamily>
+                                    <Format>=IIf(Parameters!dateForm.Value="ShortDatePattern","dd/MM/yyyy",
+(IIf(Parameters!dateForm.Value="LongDatePattern","dddd, MMMM d, yyyy",
+IIf(Parameters!dateForm.Value="MonthDayPattern","MMMM dd",
+IIf(Parameters!dateForm.Value="YearMonthPattern","MMMM yyyy","dd/MM/yyyy")))))</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -699,7 +703,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>بندات المالية</Value>
+                    <Value>السندات المالية</Value>
                     <Style>
                       <FontFamily>Montserrat</FontFamily>
                       <FontSize>20pt</FontSize>
@@ -1448,6 +1452,12 @@
       <AllowBlank>true</AllowBlank>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
+    <ReportParameter Name="dateForm">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
   </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
@@ -1528,6 +1538,11 @@
           <ColumnIndex>2</ColumnIndex>
           <RowIndex>3</RowIndex>
           <ParameterName>logoImage</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>3</ColumnIndex>
+          <RowIndex>3</RowIndex>
+          <ParameterName>dateForm</ParameterName>
         </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>
