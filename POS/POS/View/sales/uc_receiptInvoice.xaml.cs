@@ -179,6 +179,10 @@ namespace POS.View
             txt_ordersWait.Text = MainWindow.resourcemanager.GetString("trOrders");
             txt_invoices.Text = MainWindow.resourcemanager.GetString("trInvoices");
 
+            tt_error_previous.Content = MainWindow.resourcemanager.GetString("trPrevious");
+            tt_error_next.Content = MainWindow.resourcemanager.GetString("trNext");
+
+
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_barcode, MainWindow.resourcemanager.GetString("trBarcodeHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_coupon, MainWindow.resourcemanager.GetString("trCoponHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_customer, MainWindow.resourcemanager.GetString("trCustomerHint"));
@@ -348,6 +352,8 @@ namespace POS.View
             string invoiceType = "sd ,sbd";
             int duration = 2;
             int draftCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
+            if ((_InvoiceType == "sd" || _InvoiceType == "sbd") && invoice.invoiceId != 0)
+                draftCount--;
 
             int previouseCount = 0;
             if(md_draft.Badge != null && md_draft.Badge.ToString() != "") previouseCount = int.Parse(md_draft.Badge.ToString());
@@ -368,6 +374,8 @@ namespace POS.View
         {
             string invoiceType = "or";
             int ordersCount = await invoice.GetCountUnHandeledOrders(invoiceType,0, MainWindow.branchID.Value);
+            if (_InvoiceType == "or"  && invoice.invoiceId != 0)
+                ordersCount--;
 
             int previouseCount = 0;
             if (md_ordersWait.Badge != null && md_ordersWait.Badge.ToString() != "") previouseCount = int.Parse(md_ordersWait.Badge.ToString());
@@ -388,6 +396,8 @@ namespace POS.View
         {
             string invoiceType = "q";
             int ordersCount = await invoice.GetCountUnHandeledOrders(invoiceType, MainWindow.branchID.Value);
+            if (_InvoiceType == "q" && invoice.invoiceId != 0)
+                ordersCount--;
 
             int previouseCount = 0;
             if (md_quotations.Badge != null && md_quotations.Badge.ToString() != "") previouseCount = int.Parse(md_quotations.Badge.ToString());
@@ -1191,8 +1201,9 @@ namespace POS.View
                 if (billDetails.Count > 0 && available && valid)
                 {
                     await addInvoice(_InvoiceType);
-                    await refreshDraftNotification();
+                   // await refreshDraftNotification();
                     await clearInvoice();
+                    setNotifications();
                 }
                 else if (billDetails.Count == 0)
                 {
@@ -1277,9 +1288,11 @@ namespace POS.View
                     {
                         invoice = w.invoice;
                         _InvoiceType = invoice.invType;
+                        // notifications
                         md_payments.Badge = "";
-
+                        setNotifications();
                         await refreshDocCount(invoice.invoiceId);
+
                         await fillInvoiceInputs(invoice);
 
                         // set title to bill
@@ -1397,15 +1410,18 @@ namespace POS.View
                             //this.DataContext = invoice;
 
                             _InvoiceType = invoice.invType;
-                           
+                            //notifications
+                            setNotifications();
+                            await refreshDocCount(invoice.invoiceId);
+                            md_payments.Badge = "";
+                            
                             // set title to bill
                             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSaleOrder");
                             // orange #FFA926 red #D22A17
                             brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
                             await fillInvoiceInputs(invoice);
                             mainInvoiceItems = invoiceItems;
-                            await refreshDocCount(invoice.invoiceId);
-                            md_payments.Badge = "";
+                            
                         }
                     }
                     Window.GetWindow(this).Opacity = 1;
@@ -1944,14 +1960,14 @@ namespace POS.View
                 tb_sum.Text = SectionData.DecTostring(_Sum);
             else
                 tb_sum.Text = "0";
-            if (MainWindow.isInvTax == 0)
-            {
+            //if (MainWindow.isInvTax == 0)
+            //{
                 //tb_taxValue.Text = _Tax.ToString();
                 if (_Tax != 0)
                     tb_taxValue.Text = SectionData.DecTostring(_Tax);
                 else
                     tb_taxValue.Text = "0";
-            }
+            //}
         }
 
 
@@ -3217,7 +3233,10 @@ namespace POS.View
                         if (w.invoice != null)
                         {
                             invoice = w.invoice;
-                           // this.DataContext = invoice;
+                            //notifications
+                            setNotifications();
+                            md_payments.Badge = "";
+                            await refreshDocCount(invoice.invoiceId);
 
                             _InvoiceType = invoice.invType;
                             // set title to bill
@@ -3226,8 +3245,7 @@ namespace POS.View
                             brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
                             await fillInvoiceInputs(invoice);
                             mainInvoiceItems = invoiceItems;
-                            md_payments.Badge = "";
-                            await refreshDocCount(invoice.invoiceId);
+                            
 
                         }
                     }

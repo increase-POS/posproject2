@@ -155,8 +155,11 @@ namespace POS.View.sales
             txt_invoiceImages.Text = MainWindow.resourcemanager.GetString("trImages");
             txt_items.Text = MainWindow.resourcemanager.GetString("trItems");
             txt_quotations.Text = MainWindow.resourcemanager.GetString("trQuotations");
-            txt_drafts.Text = MainWindow.resourcemanager.GetString("trDrafts");
+            //txt_drafts.Text = MainWindow.resourcemanager.GetString("trDrafts");
             txt_newDraft.Text = MainWindow.resourcemanager.GetString("trNew");
+
+            tt_error_previous.Content = MainWindow.resourcemanager.GetString("trPrevious");
+            tt_error_next.Content = MainWindow.resourcemanager.GetString("trNext");
 
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_barcode, MainWindow.resourcemanager.GetString("trBarcodeHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_customer, MainWindow.resourcemanager.GetString("trCustomerHint"));
@@ -197,7 +200,7 @@ namespace POS.View.sales
                 translate();
                 configureDiscountType();
                 setTimer();
-                await refreshDraftNotification();
+                refreshDraftNotification();
                 await RefrishItems();
                 await RefrishCustomers();
                 await fillBarcodeList();
@@ -240,7 +243,7 @@ namespace POS.View.sales
             try
             {
                 if (invoice.invoiceId != 0)
-                    await refreshDocCount(invoice.invoiceId);
+                    refreshDocCount(invoice.invoiceId);
             }
             catch (Exception ex)
             {
@@ -249,14 +252,16 @@ namespace POS.View.sales
         }
         #endregion
         #region notifications
-        private async Task refreshDraftNotification()
+        private async void refreshDraftNotification()
         {
             string invoiceType = "qd";
             int duration = 2;
             int draftCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
+            if (_InvoiceType == "qd"  && invoice.invoiceId != 0)
+                draftCount--;
 
             int previouseCount = 0;
-            if (md_draft.Badge != null) previouseCount = int.Parse(md_draft.Badge.ToString());
+            if (md_draft.Badge != null && md_draft.Badge.ToString() != "") previouseCount = int.Parse(md_draft.Badge.ToString());
 
             if (draftCount != previouseCount)
             {
@@ -270,13 +275,13 @@ namespace POS.View.sales
                     md_draft.Badge = draftCount.ToString();
             }
         }
-        private async Task refreshDocCount(int invoiceId)
+        private async void refreshDocCount(int invoiceId)
         {
             DocImage doc = new DocImage();
             int docCount = await doc.GetDocCount("Invoices", invoiceId);
 
             int previouseCount = 0;
-            if (md_docImage.Badge != null) previouseCount = int.Parse(md_docImage.Badge.ToString());
+            if (md_docImage.Badge != null && md_docImage.Badge.ToString() != "") previouseCount = int.Parse(md_docImage.Badge.ToString());
 
             if (docCount != previouseCount)
             {
@@ -759,7 +764,7 @@ namespace POS.View.sales
                     invoiceItems.Add(itemT);
                 }
                 await invoiceModel.saveInvoiceItems(invoiceItems, invoiceId);
-                await refreshDraftNotification();
+                refreshDraftNotification();
             }
             clearInvoice();
         }
@@ -1016,10 +1021,10 @@ namespace POS.View.sales
                     if (w.invoice != null)
                     {
                         invoice = w.invoice;
-                        //this.DataContext = invoice;
 
                         _InvoiceType = invoice.invType;
-                        await refreshDocCount(invoice.invoiceId);
+                        refreshDraftNotification();
+                        refreshDocCount(invoice.invoiceId);
                         // set title to bill
                         txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trQuotationsDraft");
 
@@ -1169,10 +1174,10 @@ namespace POS.View.sales
                     if (w.invoice != null)
                     {
                         invoice = w.invoice;
-                       // this.DataContext = invoice;
 
                         _InvoiceType = invoice.invType;
-                        await refreshDocCount(invoice.invoiceId);
+                        refreshDraftNotification();
+                        refreshDocCount(invoice.invoiceId);
                         // set title to bill
                         txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trQuotations");
 
@@ -1952,7 +1957,7 @@ namespace POS.View.sales
                     w.tableId = invoice.invoiceId;
                     w.docNum = invoice.invNumber;
                     w.ShowDialog();
-                    await refreshDocCount(invoice.invoiceId);
+                    refreshDocCount(invoice.invoiceId);
                     Window.GetWindow(this).Opacity = 1;
                 }
                 else

@@ -39,12 +39,13 @@ namespace POS.Classes
         
 
         }
-        public static void bondsReport(IEnumerable<Bonds> bondsQuery, LocalReport rep, string reppath)
+        public static void bondsReport(IEnumerable<Bonds> bondsQuery, LocalReport rep, string reppath, List<ReportParameter> paramarr)
         {
             rep.ReportPath = reppath;
             rep.EnableExternalImages = true;
             rep.DataSources.Clear();
             rep.DataSources.Add(new ReportDataSource("DataSetBond", bondsQuery));
+            paramarr.Add(new ReportParameter("dateForm", MainWindow.dateFormat));
         }
         public static void orderReport(IEnumerable<Invoice> invoiceQuery, LocalReport rep, string reppath)
         {
@@ -60,12 +61,13 @@ namespace POS.Classes
             rep.DataSources.Clear();
             rep.DataSources.Add(new ReportDataSource("DataSetBankAcc", cash));
         }
-        public static void invItem(IEnumerable<InventoryItemLocation> itemLocations, LocalReport rep, string reppath)
+        public static void invItem(IEnumerable<InventoryItemLocation> itemLocations, LocalReport rep, string reppath, List<ReportParameter> paramarr)
         {
             rep.ReportPath = reppath;
             rep.EnableExternalImages = true;
             rep.DataSources.Clear();
             rep.DataSources.Add(new ReportDataSource("DataSetInvItemLocation", itemLocations));
+            paramarr.Add(new ReportParameter("dateForm", MainWindow.dateFormat));
         }
         public static void section(IEnumerable<Section> sections, LocalReport rep, string reppath)
         {
@@ -81,12 +83,13 @@ namespace POS.Classes
             rep.DataSources.Clear();
             rep.DataSources.Add(new ReportDataSource("DataSetLocation", locations));
         }
-        public static void itemLocation(IEnumerable<ItemLocation> itemLocations, LocalReport rep, string reppath)
+        public static void itemLocation(IEnumerable<ItemLocation> itemLocations, LocalReport rep, string reppath, List<ReportParameter> paramarr)
         {
             rep.ReportPath = reppath;
             rep.EnableExternalImages = true;
             rep.DataSources.Clear();
             rep.DataSources.Add(new ReportDataSource("DataSetItemLocation", itemLocations));
+            paramarr.Add(new ReportParameter("dateForm", MainWindow.dateFormat));
         }
         public static void bankReport(IEnumerable<Bank> banksQuery, LocalReport rep, string reppath)
         {
@@ -106,8 +109,6 @@ namespace POS.Classes
                 c.discountValue = decimal.Parse(SectionData.DecTostring(c.discountValue));
                 c.invMin = decimal.Parse(SectionData.DecTostring(c.invMin));
                 c.invMax = decimal.Parse(SectionData.DecTostring(c.invMax));
-
-
 
             }
            

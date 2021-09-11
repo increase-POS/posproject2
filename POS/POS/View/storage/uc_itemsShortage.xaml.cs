@@ -191,7 +191,7 @@ namespace POS.View.storage
 
                         ReportCls.checkLang();
 
-                        clsReports.invItem(invItemsQuery, rep, reppath);
+                        clsReports.invItem(invItemsQuery, rep, reppath, paramarr);
                         clsReports.setReportLanguage(paramarr);
                         clsReports.Header(paramarr);
 
@@ -683,7 +683,7 @@ namespace POS.View.storage
         LocalReport rep = new LocalReport();
         SaveFileDialog saveFileDialog = new SaveFileDialog();
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
-        {
+        {//pdf
             try
             {
                 if (sender != null)
@@ -705,7 +705,7 @@ namespace POS.View.storage
 
                     ReportCls.checkLang();
 
-                    clsReports.invItem(invItemsQuery, rep, reppath);
+                    clsReports.invItem(invItemsQuery, rep, reppath, paramarr);
                     clsReports.setReportLanguage(paramarr);
                     clsReports.Header(paramarr);
 
@@ -755,7 +755,7 @@ namespace POS.View.storage
 
                     ReportCls.checkLang();
 
-                    clsReports.invItem(invItemsQuery, rep, reppath);
+                    clsReports.invItem(invItemsQuery, rep, reppath, paramarr);
                     clsReports.setReportLanguage(paramarr);
                     clsReports.Header(paramarr);
 
@@ -799,7 +799,7 @@ namespace POS.View.storage
 
             ReportCls.checkLang();
 
-            clsReports.invItem(invItemsQuery, rep, reppath);
+            clsReports.invItem(invItemsQuery, rep, reppath, paramarr);
             clsReports.setReportLanguage(paramarr);
             clsReports.Header(paramarr);
 

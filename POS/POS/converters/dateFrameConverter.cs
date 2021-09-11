@@ -12,6 +12,31 @@ namespace POS.converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            //DateTimeFormatInfo dtfi = DateTimeFormatInfo.CurrentInfo;
+            //DateTime date;
+            //if (value is DateTime)
+            //    date = (DateTime)value;
+            //else return value;
+
+            //switch (MainWindow.dateFormat)
+            //{
+            //    case "ShortDatePattern":
+            //        return date.ToString(dtfi.ShortDatePattern);
+            //        //break;
+            //    case "LongDatePattern":
+            //        return date.ToString(dtfi.LongDatePattern);
+            //        //break;
+            //    case "MonthDayPattern":
+            //        return date.ToString(dtfi.MonthDayPattern);
+            //        //break;
+            //    case "YearMonthPattern":
+            //        return date.ToString(dtfi.YearMonthPattern);
+            //        //break;
+            //    default:
+            //        return date.ToString(dtfi.ShortDatePattern);
+            //        //break;
+            //}
+
             DateTimeFormatInfo dtfi = DateTimeFormatInfo.CurrentInfo;
             DateTime date;
             if (value is DateTime)
@@ -21,21 +46,17 @@ namespace POS.converters
             switch (MainWindow.dateFormat)
             {
                 case "ShortDatePattern":
-                    return date.ToString(dtfi.ShortDatePattern);
-                    //break;
+                    return date.ToString(@"dd/MM/yyyy");
                 case "LongDatePattern":
-                    return date.ToString(dtfi.LongDatePattern);
-                    //break;
+                    return date.ToString(@"dddd, MMMM d, yyyy");
                 case "MonthDayPattern":
-                    return date.ToString(dtfi.MonthDayPattern);
-                    //break;
+                    return date.ToString(@"MMMM dd");
                 case "YearMonthPattern":
-                    return date.ToString(dtfi.YearMonthPattern);
-                    //break;
+                    return date.ToString(@"MMMM yyyy");
                 default:
-                    return date.ToString(dtfi.ShortDatePattern);
-                    //break;
+                    return date.ToString(@"dd/MM/yyyy");
             }
+
         }
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {

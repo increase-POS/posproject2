@@ -163,6 +163,9 @@ namespace POS.View.sales
             txt_drafts.Text = MainWindow.resourcemanager.GetString("trDrafts");
             txt_newDraft.Text = MainWindow.resourcemanager.GetString("trNew");
 
+            tt_error_previous.Content = MainWindow.resourcemanager.GetString("trPrevious");
+            tt_error_next.Content = MainWindow.resourcemanager.GetString("trNext");
+
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_barcode, MainWindow.resourcemanager.GetString("trBarcodeHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_branch, MainWindow.resourcemanager.GetString("trStore/BranchHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_coupon, MainWindow.resourcemanager.GetString("trCoponHint"));
@@ -205,8 +208,8 @@ namespace POS.View.sales
 
                 translate();
                 configureDiscountType();
-                setTimer();
-                await setNotifications();
+                setNotifications();
+                setTimer();              
                 await RefrishItems();
                 await RefrishCustomers();
                 await fillBarcodeList();
@@ -263,7 +266,7 @@ namespace POS.View.sales
         }
         #endregion
         #region notifications
-        private async Task setNotifications()
+        private async void setNotifications()
         {
             await refreshDraftNotification();
             await refreshOrdersWaitNotification();
@@ -273,9 +276,11 @@ namespace POS.View.sales
             string invoiceType = "ord";
             int duration = 2;
             int draftCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
+            if (_InvoiceType == "ord"  && invoice.invoiceId != 0)
+                draftCount--;
 
             int previouseCount = 0;
-            if (md_draft.Badge != null) previouseCount = int.Parse(md_draft.Badge.ToString());
+            if ( md_draft.Badge != null && md_draft.Badge.ToString() != "") previouseCount = int.Parse(md_draft.Badge.ToString());
 
             if (draftCount != previouseCount)
             {
@@ -293,9 +298,11 @@ namespace POS.View.sales
         {
             string invoiceType = "s";
             int ordersCount = await invoice.getDeliverOrdersCount(invoiceType, "ex", MainWindow.userID.Value);
+            if (_InvoiceType == "s" && invoice.invoiceId != 0)
+                ordersCount--;
 
             int previouseCount = 0;
-            if (md_ordersWait.Badge != null) previouseCount = int.Parse(md_ordersWait.Badge.ToString());
+            if (md_ordersWait.Badge != null && md_ordersWait.Badge.ToString() != "") previouseCount = int.Parse(md_ordersWait.Badge.ToString());
 
             if (ordersCount != previouseCount)
             {
@@ -653,8 +660,8 @@ namespace POS.View.sales
                     if (billDetails.Count > 0 && available && valid)
                     {
                         await addInvoice(_InvoiceType);
-                        await refreshDraftNotification();
                         clearInvoice();
+                        setNotifications();                     
                     }
                     else if (billDetails.Count == 0)
                     {
@@ -705,12 +712,12 @@ namespace POS.View.sales
             cb_user.SelectedItem = "";
             tb_discount.Clear();
             cb_typeDiscount.SelectedIndex = 0;
-            if (MainWindow.isInvTax == 1)
+            //if (MainWindow.isInvTax == 1)
                 //tb_taxValue.Text = MainWindow.tax.ToString();
-                tb_taxValue.Text = SectionData.DecTostring(MainWindow.tax);
+            tb_taxValue.Text = SectionData.DecTostring(MainWindow.tax);
 
-            else
-                tb_taxValue.Text = "0";
+            //else
+                //tb_taxValue.Text = "0";
             lst_coupons.Items.Clear();
             tb_discountCoupon.Text = "0";
 
@@ -1155,10 +1162,10 @@ namespace POS.View.sales
                         if (w.invoice != null)
                         {
                             invoice = w.invoice;
-                            //this.DataContext = invoice;
 
                             _InvoiceType = invoice.invType;
-                            await refreshDocCount(invoice.invoiceId);
+                            setNotifications();
+                            refreshDocCount(invoice.invoiceId);
                             // set title to bill
                             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSaleOrderDraft");
 
@@ -1444,10 +1451,10 @@ SectionData.isAdminPermision())
                         if (w.invoice != null)
                         {
                             invoice = w.invoice;
-                            //this.DataContext = invoice;
-
                             _InvoiceType = invoice.invType;
-                            await refreshDocCount(invoice.invoiceId);
+
+                            setNotifications();
+                            refreshDocCount(invoice.invoiceId);
 
                             // set title to bill
                             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSaleOrder");

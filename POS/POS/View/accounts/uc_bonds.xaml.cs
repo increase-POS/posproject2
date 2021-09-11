@@ -512,7 +512,7 @@ namespace POS.View.accounts
                             r.amount = decimal.Parse(SectionData.DecTostring(r.amount));
                             r.deserveDate = Convert.ToDateTime(SectionData.DateToString(r.deserveDate));
                         }
-                        clsReports.bondsReport(bondsQuery, rep, reppath);
+                        clsReports.bondsReport(bondsQuery, rep, reppath, paramarr);
                         clsReports.setReportLanguage(paramarr);
                         clsReports.Header(paramarr);
 
@@ -894,7 +894,7 @@ namespace POS.View.accounts
 
                 ReportCls.checkLang();
 
-                clsReports.bondsReport(bondsQuery, rep, reppath);
+                clsReports.bondsReport(bondsQuery, rep, reppath, paramarr);
                 clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);
 
@@ -938,7 +938,7 @@ namespace POS.View.accounts
             else addpath = @"\Reports\Account\EN\BondAccReport.rdlc";
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
             ReportCls.checkLang();
-            clsReports.bondsReport(bondsQuery, rep, reppath);
+            clsReports.bondsReport(bondsQuery, rep, reppath, paramarr);
             clsReports.setReportLanguage(paramarr);
             clsReports.Header(paramarr);
 
@@ -982,7 +982,7 @@ namespace POS.View.accounts
                     r.amount = decimal.Parse(SectionData.DecTostring(r.amount));
                     r.deserveDate = Convert.ToDateTime(SectionData.DateToString(r.deserveDate));
                 }
-                clsReports.bondsReport(bondsQuery, rep, reppath);
+                clsReports.bondsReport(bondsQuery, rep, reppath, paramarr);
 
                 clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);

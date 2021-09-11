@@ -12,28 +12,32 @@ namespace POS.converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            decimal num =  decimal.Parse(value.ToString());
-            string s = num.ToString();
-            switch (MainWindow.accuracy)
+            if (value != null)
             {
-                case "0":
-                    s = string.Format("{0:F0}", num);
-                    break;
-                case "1":
-                    s = string.Format("{0:F1}", num);
-                    break;
-                case "2":
-                    s = string.Format("{0:F2}", num);
-                    break;
-                case "3":
-                    s = string.Format("{0:F3}", num);
-                    break;
-                default:
-                    s = string.Format("{0:F1}", num);
-                    break;
-            }
+                decimal num = decimal.Parse(value.ToString());
+                string s = num.ToString();
+                switch (MainWindow.accuracy)
+                {
+                    case "0":
+                        s = string.Format("{0:F0}", num);
+                        break;
+                    case "1":
+                        s = string.Format("{0:F1}", num);
+                        break;
+                    case "2":
+                        s = string.Format("{0:F2}", num);
+                        break;
+                    case "3":
+                        s = string.Format("{0:F3}", num);
+                        break;
+                    default:
+                        s = string.Format("{0:F1}", num);
+                        break;
+                }
 
-            return decimal.Parse(s);
+                return decimal.Parse(s);
+            }
+            else return 0;
         }
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {

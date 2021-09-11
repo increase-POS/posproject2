@@ -128,7 +128,7 @@ namespace POS.controlTemplate
                 //priceText.Text = cardViewitem.item.priceTax.ToString();
                 try
                 {
-                    priceText.Text = SectionData.DecTostring(cardViewitem.item.priceTax);
+                    priceText.Text = SectionData.DecTostring(cardViewitem.item.priceTax) ;
                 }
                 catch
                 {
@@ -240,7 +240,7 @@ namespace POS.controlTemplate
             }
             if (cardViewitem.item.itemCount > 0)
             {
-                this.ToolTip = MainWindow.resourcemanager.GetString("trCount:") + cardViewitem.item.itemCount;
+                this.ToolTip = MainWindow.resourcemanager.GetString("trCount: ") + cardViewitem.item.itemCount + " " + cardViewitem.item.unitName;
                 //tt_name.Content = "Count" + cardViewitem.item.itemCount;
             }
             gridContainer.Children.Add(titleText);
