@@ -28,6 +28,9 @@ using System.Threading;
 using System.Windows.Media.Animation;
 using Zen.Barcode;
 using POS.View.windows;
+using Microsoft.Reporting.WinForms;
+
+
 namespace POS.View
 {
     /// <summary>
@@ -55,7 +58,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -113,7 +116,10 @@ namespace POS.View
 
         List<int> unitIds = new List<int>();
         List<string> unitNames = new List<string>();
-
+        // report
+        ReportCls reportclass = new ReportCls();
+        LocalReport rep = new LocalReport();
+        SaveFileDialog saveFileDialog = new SaveFileDialog();
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {//load
             try
@@ -469,7 +475,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-               
+
                 if (dg_items.SelectedIndex != -1)
                 {
                     item = dg_items.SelectedItem as Item;
@@ -571,7 +577,7 @@ namespace POS.View
                 {
                     itemUnitId = uQuery.itemUnitId;
                     //tb_price.Text = uQuery.price.ToString();
-                    tb_price.Text =SectionData.DecTostring(uQuery.price);
+                    tb_price.Text = SectionData.DecTostring(uQuery.price);
                     tb_barcode.Text = uQuery.barcode;
                 }
                 else
@@ -600,7 +606,7 @@ namespace POS.View
                     SectionData.StartAwait(grid_main);
 
                 tglItemState = 1;
-               
+
                 Txb_searchitems_TextChanged(null, null);
 
                 if (sender != null)
@@ -622,7 +628,7 @@ namespace POS.View
                     SectionData.StartAwait(grid_main);
 
                 tglItemState = 0;
-                
+
                 Txb_searchitems_TextChanged(null, null);
                 tb_barcode.Focus();
                 if (sender != null)
@@ -702,7 +708,7 @@ namespace POS.View
         /// <param name="e"></param>
         private async void Txb_searchitems_TextChanged(object sender, TextChangedEventArgs e)
         {
-             try
+            try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
@@ -965,7 +971,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                 Button b = (Button)sender;
+                Button b = (Button)sender;
                 if (!string.IsNullOrEmpty(b.Tag.ToString()))
                 {
                     await generateTrack(int.Parse(b.Tag.ToString()));
@@ -1013,6 +1019,22 @@ namespace POS.View
 
         #endregion
         #region Excel
+
+        public void ExcelPackage()
+        {
+
+            BuildReport();
+
+            this.Dispatcher.Invoke(() =>
+            {
+                saveFileDialog.Filter = "EXCEL|*.xls;";
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    string filepath = saveFileDialog.FileName;
+                    LocalReportExtensions.ExportToExcel(rep, filepath);
+                }
+            });
+        }
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -1022,12 +1044,12 @@ namespace POS.View
                 //excel
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
                 {
-                    this.Dispatcher.Invoke(() =>
-                {
-                    Thread t1 = new Thread(FN_ExportToExcel);
-                    t1.SetApartmentState(ApartmentState.STA);
+                    Thread t1 = new Thread(() =>
+                    {
+                        ExcelPackage();
+
+                    });
                     t1.Start();
-                });
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -1511,8 +1533,8 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
-        private   void Btn_items_Click(object sender, RoutedEventArgs e)
+     
+        private void Btn_items_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -1550,7 +1572,48 @@ namespace POS.View
             }
         }
 
-        private async void Btn_pdf_Click(object sender, RoutedEventArgs e)
+        public void BuildReport()
+        {
+            List<ReportParameter> paramarr = new List<ReportParameter>();
+
+            string addpath;
+            bool isArabic = ReportCls.checkLang();
+            if (isArabic)
+            {
+                addpath = @"\Reports\Sale\Ar\PackageReport.rdlc";
+            }
+            else
+                addpath = @"\Reports\Sale\En\PackageReport.rdlc";
+            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+            ReportCls.checkLang();
+
+            clsReports.packageReport(itemsQuery, rep, reppath, paramarr);
+            clsReports.setReportLanguage(paramarr);
+            clsReports.Header(paramarr);
+
+            rep.SetParameters(paramarr);
+
+            rep.Refresh();
+        }
+        public void pdfpackage()
+        {
+
+            BuildReport();
+
+            this.Dispatcher.Invoke(() =>
+            {
+                saveFileDialog.Filter = "PDF|*.pdf;";
+
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    string filepath = saveFileDialog.FileName;
+                    LocalReportExtensions.ExportToPDF(rep, filepath);
+                }
+            });
+        }
+
+        private void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {//pdf
             try
             {
@@ -1559,8 +1622,18 @@ namespace POS.View
                     SectionData.StartAwait(grid_main);
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
                 {
-                    List<Item> pkg = await packageModel.GetPackages();
-                    MessageBox.Show(pkg.Count.ToString());
+                    // List<Item> pkg = await packageModel.GetPackages();
+                    // MessageBox.Show(pkg.Count.ToString());
+
+                    /////////////////////////////////////
+                    Thread t1 = new Thread(() =>
+                    {
+                        pdfpackage();
+                    });
+                    t1.Start();
+                    //////////////////////////////////////
+
+
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -1575,6 +1648,15 @@ namespace POS.View
             }
         }
 
+        public void printpackage()
+        {
+            BuildReport();
+
+            this.Dispatcher.Invoke(() =>
+            {
+                LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.rep_printer_name, short.Parse(MainWindow.rep_print_count));
+            });
+        }
         private void Btn_print_Click(object sender, RoutedEventArgs e)
         {//print
             try
@@ -1584,7 +1666,13 @@ namespace POS.View
 
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
                 {
-
+                    /////////////////////////////////////
+                    Thread t1 = new Thread(() =>
+                    {
+                        printpackage();
+                    });
+                    t1.Start();
+                    //////////////////////////////////////
 
                 }
                 else
@@ -1626,7 +1714,46 @@ namespace POS.View
 
         private void Btn_preview_Click(object sender, RoutedEventArgs e)
         {
-         
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
+                {
+                    //preview
+                    Window.GetWindow(this).Opacity = 0.2;
+                    /////////////////////
+                    string pdfpath = "";
+                    pdfpath = @"\Thumb\report\temp.pdf";
+                    pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
+                    BuildReport();
+                    LocalReportExtensions.ExportToPDF(rep, pdfpath);
+                    ///////////////////
+                    wd_previewPdf w = new wd_previewPdf();
+                    w.pdfPath = pdfpath;
+                    if (!string.IsNullOrEmpty(w.pdfPath))
+                    {
+                        w.ShowDialog();
+                        w.wb_pdfWebViewer.Dispose();
+
+
+                    }
+                    Window.GetWindow(this).Opacity = 1;
+
+
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
     }
 }

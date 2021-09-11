@@ -214,7 +214,7 @@ namespace POS.View.catalog
                         {
                             addpath = @"\Reports\Catalog\Ar\ArStorageCostReport.rdlc";
                         }
-                        else addpath = @"\Reports\Catalog\EN\StorageCostReport.rdlc";
+                        else addpath = @"\Reports\Catalog\En\StorageCostReport.rdlc";
                         string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                         ReportCls.checkLang();
@@ -698,7 +698,7 @@ namespace POS.View.catalog
             {
                 addpath = @"\Reports\Catalog\Ar\ArStorageCostReport.rdlc";
             }
-            else addpath = @"\Reports\Catalog\EN\StorageCostReport.rdlc";
+            else addpath = @"\Reports\Catalog\En\StorageCostReport.rdlc";
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
             ReportCls.checkLang();
@@ -741,7 +741,7 @@ namespace POS.View.catalog
             {
                 addpath = @"\Reports\Catalog\Ar\ArStorageCostReport.rdlc";
             }
-            else addpath = @"\Reports\Catalog\EN\StorageCostReport.rdlc";
+            else addpath = @"\Reports\Catalog\En\StorageCostReport.rdlc";
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
             ReportCls.checkLang();
@@ -785,7 +785,7 @@ namespace POS.View.catalog
             {
                 addpath = @"\Reports\Catalog\Ar\ArStorageCostReport.rdlc";
             }
-            else addpath = @"\Reports\Catalog\EN\StorageCostReport.rdlc";
+            else addpath = @"\Reports\Catalog\En\StorageCostReport.rdlc";
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
             ReportCls.checkLang();

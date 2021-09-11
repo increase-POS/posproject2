@@ -115,6 +115,23 @@ namespace POS.Classes
             rep.DataSources.Add(new ReportDataSource("DataSetCoupon", CouponQuery));
             paramarr.Add(new ReportParameter("dateForm", MainWindow.dateFormat));
         }
+
+        public static void packageReport(IEnumerable<Item> packageQuery, LocalReport rep, string reppath, List<ReportParameter> paramarr)
+        {
+            rep.ReportPath = reppath;
+            rep.EnableExternalImages = true;
+            rep.DataSources.Clear();
+         
+
+            rep.DataSources.Add(new ReportDataSource("DataSetItem", packageQuery));
+            //    paramarr.Add(new ReportParameter("dateForm", MainWindow.dateFormat));
+            paramarr.Add(new ReportParameter("Title", MainWindow.resourcemanagerreport.GetString("trPackageItems")));
+            paramarr.Add(new ReportParameter("trCode", MainWindow.resourcemanagerreport.GetString("trCode")));
+            paramarr.Add(new ReportParameter("trName", MainWindow.resourcemanagerreport.GetString("trPackage")));
+            paramarr.Add(new ReportParameter("trDetails", MainWindow.resourcemanagerreport.GetString("trDetails")));
+            paramarr.Add(new ReportParameter("trCategory", MainWindow.resourcemanagerreport.GetString("trCategorie")));
+
+        }
         public static void offerReport(IEnumerable<Offer> OfferQuery, LocalReport rep, string reppath, List<ReportParameter> paramarr)
         {
             rep.ReportPath = reppath;
@@ -268,9 +285,12 @@ namespace POS.Classes
             rep.DataSources.Add(new ReportDataSource("DataSetUnit", unitQuery));
         }
 
-        internal static void itemLocation(IEnumerable<ItemLocation> itemLocationListQuery, LocalReport rep, string reppath)
+        public static void itemLocation(IEnumerable<ItemLocation> itemLocations, LocalReport rep, string reppath)
         {
-            throw new NotImplementedException();
+            rep.ReportPath = reppath;
+            rep.EnableExternalImages = true;
+            rep.DataSources.Clear();
+            rep.DataSources.Add(new ReportDataSource("DataSetItemLocation", itemLocations));
         }
     }
 }

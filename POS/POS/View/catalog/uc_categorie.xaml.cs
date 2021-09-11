@@ -1106,7 +1106,7 @@ namespace POS.View
                         {
                             addpath = @"\Reports\Catalog\Ar\ArCategoryReport.rdlc";
                         }
-                        else addpath = @"\Reports\Catalog\EN\CategoryReport.rdlc";
+                        else addpath = @"\Reports\Catalog\En\CategoryReport.rdlc";
                         string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                         ReportCls.checkLang();
@@ -1439,7 +1439,7 @@ namespace POS.View
             {
                 addpath = @"\Reports\Catalog\Ar\ArCategoryReport.rdlc";
             }
-            else addpath = @"\Reports\Catalog\EN\CategoryReport.rdlc";
+            else addpath = @"\Reports\Catalog\En\CategoryReport.rdlc";
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
             ReportCls.checkLang();
@@ -1482,7 +1482,7 @@ namespace POS.View
             {
                 addpath = @"\Reports\Catalog\Ar\ArCategoryReport.rdlc";
             }
-            else addpath = @"\Reports\Catalog\EN\CategoryReport.rdlc";
+            else addpath = @"\Reports\Catalog\En\CategoryReport.rdlc";
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
             ReportCls.checkLang();
@@ -1518,7 +1518,7 @@ namespace POS.View
             {
                 addpath = @"\Reports\Catalog\Ar\ArCategoryReport.rdlc";
             }
-            else addpath = @"\Reports\Catalog\EN\CategoryReport.rdlc";
+            else addpath = @"\Reports\Catalog\En\CategoryReport.rdlc";
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
             ReportCls.checkLang();

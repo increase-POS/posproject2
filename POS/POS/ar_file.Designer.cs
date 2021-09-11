@@ -4121,7 +4121,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to رزمة.
+        ///   Looks up a localized string similar to الحزمة.
         /// </summary>
         internal static string trPackage {
             get {

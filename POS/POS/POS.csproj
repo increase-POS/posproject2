@@ -1219,6 +1219,7 @@
     <EmbeddedResource Include="Reports\Sale\En\LargeSaleReport.rdlc" />
     <EmbeddedResource Include="Reports\Sale\En\MediumSaleReport.rdlc" />
     <EmbeddedResource Include="Reports\Sale\En\OfferReport.rdlc" />
+    <EmbeddedResource Include="Reports\Sale\En\PackageReport.rdlc" />
     <EmbeddedResource Include="Reports\Sale\En\SmallSaleReport.rdlc" />
     <EmbeddedResource Include="Reports\SectionData\Ar\ArBankReport.rdlc" />
     <EmbeddedResource Include="Reports\SectionData\Ar\ArBranchReport.rdlc" />

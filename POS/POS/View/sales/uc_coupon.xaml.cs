@@ -571,7 +571,7 @@ namespace POS.View
                         {
                             addpath = @"\Reports\Sale\Ar\CouponReport.rdlc";
                         }
-                        else addpath = @"\Reports\Sale\EN\CouponReport.rdlc";
+                        else addpath = @"\Reports\Sale\En\CouponReport.rdlc";
                         string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                         ReportCls.checkLang();
@@ -1217,7 +1217,7 @@ namespace POS.View
             {
                 addpath = @"\Reports\Sale\Ar\CouponReport.rdlc";
             }
-            else addpath = @"\Reports\Sale\EN\CouponReport.rdlc";
+            else addpath = @"\Reports\Sale\En\CouponReport.rdlc";
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
             ReportCls.checkLang();
@@ -1281,7 +1281,7 @@ namespace POS.View
             {
                 addpath = @"\Reports\Sale\Ar\CouponReport.rdlc";
             }
-            else addpath = @"\Reports\Sale\EN\CouponReport.rdlc";
+            else addpath = @"\Reports\Sale\En\CouponReport.rdlc";
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
             ReportCls.checkLang();
@@ -1313,7 +1313,7 @@ namespace POS.View
                     {
                         addpath = @"\Reports\Sale\Ar\CouponReport.rdlc";
                     }
-                    else addpath = @"\Reports\Sale\EN\CouponReport.rdlc";
+                    else addpath = @"\Reports\Sale\En\CouponReport.rdlc";
                     string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                     ReportCls.checkLang();
@@ -1360,7 +1360,7 @@ namespace POS.View
             {
                 addpath = @"\Reports\Sale\Ar\CouponReport.rdlc";
             }
-            else addpath = @"\Reports\Sale\EN\CouponReport.rdlc";
+            else addpath = @"\Reports\Sale\En\CouponReport.rdlc";
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
             ReportCls.checkLang();
