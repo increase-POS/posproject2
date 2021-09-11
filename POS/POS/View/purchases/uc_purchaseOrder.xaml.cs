@@ -191,6 +191,9 @@ namespace POS.View.purchases
             txt_printInvoice.Text = MainWindow.resourcemanager.GetString("trPrint");
             txt_invoiceImages.Text = MainWindow.resourcemanager.GetString("trImages");
 
+            tt_error_previous.Content = MainWindow.resourcemanager.GetString("trPrevious");
+            tt_error_next.Content = MainWindow.resourcemanager.GetString("trNext");
+
             btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
         }
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)

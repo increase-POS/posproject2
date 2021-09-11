@@ -118,6 +118,9 @@ namespace POS.View.storage
             dg_billDetails.Columns[3].Header = MainWindow.resourcemanager.GetString("trUnit");
             dg_billDetails.Columns[4].Header = MainWindow.resourcemanager.GetString("trQuantity");
 
+            
+            tt_error_previous.Content = MainWindow.resourcemanager.GetString("trPrevious");
+            tt_error_next.Content = MainWindow.resourcemanager.GetString("trNext");
 
 
         }

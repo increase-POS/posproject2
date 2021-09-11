@@ -26,6 +26,8 @@
             <converters:unitItemsListConverter x:Key="unitItemsListConverter"/>
             <converters:enabledCouponConverter x:Key="enabledCouponConverter"/>
             <converters:accuracyConverter x:Key="accuracyConverter"/>
+            <converters:notificationsTitleConverter x:Key="notificationsTitleConverter"/>
+            <converters:notificationsContentConverter x:Key="notificationsContentConverter"/>
             <!--#region Fonts-->
             <FontFamily x:Key="BarcodeFont" >IDAHC39M Code 39 Barcode, /POS;component/fonts/#IDAHC39M Code 39 Barcode, Arial</FontFamily>
 

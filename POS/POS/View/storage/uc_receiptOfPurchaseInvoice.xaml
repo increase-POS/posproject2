@@ -294,6 +294,38 @@
                                 <DataGridTextColumn  Header="Amount"  Width="*"  Binding="{Binding Path=Count}"/>
                             </DataGrid.Columns>
                         </DataGrid>
+                        <StackPanel Grid.Row="3"  Orientation="Horizontal" Margin="5">
+                            <Button Grid.Column="1" BorderBrush="{x:Null}"   
+                        Background="{x:Null}" x:Name="btn_previous" Padding="0"  
+                                    Margin="5,0,5,0" Height="auto">
+                                <StackPanel>
+                                    <Path Fill="{StaticResource MainColorBlue}" Stretch="Fill" Height="25" Width="25" x:Name="path_previous"
+                          Data="M275,150.15a122.58,122.58,0,0,0-16.83-62.72c-11.12-19.21-26.44-34.22-45.37-45.62a125.71,125.71,0,0,0-125.6,0A122.43,122.43,0,0,0,41.83,87.42a125.3,125.3,0,0,0,0,125.45A123.88,123.88,0,0,0,87.2,258.19C106.43,269.6,127.16,275,150,275a124.83,124.83,0,0,0,108.17-62.12C269.59,193.67,275,173,275,150.15Zm-82.93,50.42a10,10,0,0,1,3,7.5,10.44,10.44,0,0,1-3,7.51l-16.53,16.8a10.16,10.16,0,0,1-14.42,0L88.1,158a10.87,10.87,0,0,1,0-15l73-74.73a10.16,10.16,0,0,1,14.42,0L192.07,85a10,10,0,0,1,3,7.51,10.41,10.41,0,0,1-3,7.5l-49.58,50.12Z">
+                                        <Path.ToolTip>
+                                            <ToolTip x:Name="tt_error_previous" Style="{StaticResource ToolTipError}"/>
+                                        </Path.ToolTip>
+                                    </Path>
+                                </StackPanel>
+                            </Button>
+                            <Button Grid.Column="1" BorderBrush="{x:Null}"   
+                        Background="{x:Null}" x:Name="btn_next" Padding="0" 
+                                    Margin="5,0,5,0" Height="auto">
+                                <StackPanel>
+                                    <Path Fill="{StaticResource MainColorBlue}" Stretch="Fill" Height="25" Width="25" 
+                                          x:Name="path_next"
+                          Data="M25.2,150c0,22.8,5.7,43.5,16.8,62.7s26.4,34.2,45.3,45.6c19.2,11.1,39.9,16.8,62.7,16.8s43.5-5.7,62.7-16.8
+	                        c19.2-11.1,34.2-26.4,45.3-45.6c11.1-19.2,16.8-39.9,16.8-62.7s-5.7-43.5-16.8-62.7c-11.1-19.2-26.4-34.2-45.3-45.3
+	                        c-19.2-11.4-39.9-16.8-62.7-16.8S106.5,30.9,87.3,42S53.1,68.4,42,87.3C30.6,106.5,25.2,127.2,25.2,150z M108,99.6
+	                        c-2.1-2.1-3-4.5-3-7.5c0-2.7,0.9-5.4,3-7.5l16.5-16.8c2.1-2.1,4.5-3,7.2-3c2.7,0,5.1,0.9,7.2,3l72.9,74.4c2.1,2.1,3,4.5,3,7.5
+	                        s-0.9,5.4-3,7.5l-72.9,74.7c-2.1,2.1-4.5,3-7.2,3c-2.7,0-5.1-0.9-7.2-3L108,215.1c-2.1-2.1-3-4.5-3-7.5c0-2.7,0.9-5.4,3-7.5
+	                        l49.5-50.1L108,99.6z">
+                                        <Path.ToolTip>
+                                            <ToolTip x:Name="tt_error_next" Style="{StaticResource ToolTipError}"/>
+                                        </Path.ToolTip>
+                                    </Path>
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
 
 
                     </Grid>

@@ -105,6 +105,10 @@ namespace POS.View.storage
 
             txt_invoices.Text = MainWindow.resourcemanager.GetString("trInvoices");
             txt_returnInvoice.Text = MainWindow.resourcemanager.GetString("trReturnInvoices");
+
+            tt_error_previous.Content = MainWindow.resourcemanager.GetString("trPrevious");
+            tt_error_next.Content = MainWindow.resourcemanager.GetString("trNext");
+
         }
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {

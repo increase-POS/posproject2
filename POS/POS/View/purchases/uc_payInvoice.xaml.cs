@@ -170,6 +170,9 @@ namespace POS.View
             MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_invoiceDate, MainWindow.resourcemanager.GetString("trInvoiceDateHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_note, MainWindow.resourcemanager.GetString("trNoteHint"));
 
+            tt_error_previous.Content = MainWindow.resourcemanager.GetString("trPrevious");
+            tt_error_next.Content = MainWindow.resourcemanager.GetString("trNext");
+
             btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
         }
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)

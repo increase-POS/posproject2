@@ -108,7 +108,6 @@
 	c0-1.4,0.2-2.8,0.6-4.2C68,27.3,58.3,36.5,57.9,48.2C57.5,60,66.7,69.7,78.5,70.1c11.7,0.4,21.5-8.8,21.9-20.6c0.1-2-0.2-4-0.7-5.9
 	C97.6,44.8,95.2,45.5,92.7,45.5z"/>
                     </Grid>
-
                 </Grid>
                 <Line Grid.Row="1" Grid.Column="0"  Grid.ColumnSpan="3" Stretch="Fill" Stroke="#DFDFDF"  X2="1"  Margin="1,1,1,1"
                           VerticalAlignment="Bottom"/>
@@ -128,9 +127,8 @@
                         </Style>
                     </DataGrid.Resources>
                     <DataGrid.Columns>
-                        <DataGridTextColumn Width="*"   Header="Bill Number" Binding="{Binding Path=invNumber}"/>
+                        <DataGridTextColumn Width="*"  Header="Bill Number" Binding="{Binding Path=invNumber}"/>
                         <DataGridTextColumn Width="*"  Header="items count" Binding="{Binding Path=itemsCount}"/>
-                        <!--Binding="{Binding Path=totalNet}"-->
                         <DataGridTextColumn Width="*"  Header="Total" Binding="{Binding Path =totalNet,Converter={StaticResource accuracyConverter }}"/>
                         <DataGridTextColumn Width="*"  Header="" Binding="{Binding invType,Converter={StaticResource invoiceTypeConverter}}"/>
                     </DataGrid.Columns>

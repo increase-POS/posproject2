@@ -54,30 +54,30 @@ namespace POS.View.windows
             try
             {
                 if (sender != null)
-                    SectionData.StartAwait(grid_ucInvoice);
+                    SectionData.StartAwait(grid_main);
 
                 #region translate
                 if (MainWindow.lang.Equals("en"))
                 {
                     MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
-                    grid_ucInvoice.FlowDirection = FlowDirection.LeftToRight;
+                    grid_main.FlowDirection = FlowDirection.LeftToRight;
                 }
                 else
                 {
                     MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
-                    grid_ucInvoice.FlowDirection = FlowDirection.RightToLeft;
+                    grid_main.FlowDirection = FlowDirection.RightToLeft;
                 }
                 translat();
                 #endregion
-
+                dg_notifications.ItemsSource = notifications.OrderByDescending(x => x.createDate);
 
                 if (sender != null)
-                    SectionData.EndAwait(grid_ucInvoice);
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
                 if (sender != null)
-                    SectionData.EndAwait(grid_ucInvoice);
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this);
             }
         }
@@ -104,5 +104,7 @@ namespace POS.View.windows
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+
+         
     }
 }
