@@ -2815,6 +2815,24 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to مسودة تصدير.
+        /// </summary>
+        internal static string trExportDraft {
+            get {
+                return ResourceManager.GetString("trExportDraft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to طلب تصدير.
+        /// </summary>
+        internal static string trExportOrder {
+            get {
+                return ResourceManager.GetString("trExportOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to المفضلة.
         /// </summary>
         internal static string trFavorite {
@@ -3058,11 +3076,29 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to مسودة استيراد.
+        /// </summary>
+        internal static string trImportDraft {
+            get {
+                return ResourceManager.GetString("trImportDraft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to التنقلات.
         /// </summary>
         internal static string trImportExport {
             get {
                 return ResourceManager.GetString("trImportExport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to طلب استيراد.
+        /// </summary>
+        internal static string trImportOrder {
+            get {
+                return ResourceManager.GetString("trImportOrder", resourceCulture);
             }
         }
         
@@ -3859,6 +3895,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to التالي.
+        /// </summary>
+        internal static string trNext {
+            get {
+                return ResourceManager.GetString("trNext", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to الرقم.
         /// </summary>
         internal static string trNo_ {
@@ -4576,6 +4621,15 @@ namespace POS {
         internal static string trPreview {
             get {
                 return ResourceManager.GetString("trPreview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to السابق.
+        /// </summary>
+        internal static string trPrevious {
+            get {
+                return ResourceManager.GetString("trPrevious", resourceCulture);
             }
         }
         

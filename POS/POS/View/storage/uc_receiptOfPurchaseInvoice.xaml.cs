@@ -129,9 +129,9 @@ namespace POS.View.storage
 
                 translate();
                 tb_barcode.Focus();
+                setNotifications();
                 setTimer();
                 await RefrishVendors();
-                await setNotifications();
                 //await RefrishBranches();
                 #region datagridChange
                 CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(dg_billDetails.Items);
@@ -161,8 +161,8 @@ namespace POS.View.storage
             {
                 if (sendert != null)
                     SectionData.StartAwait(grid_main);
-               await refreshInvoiceNotification();
-                await refreshReturnNotification();
+                refreshInvoiceNotification();
+                refreshReturnNotification();
                 if (sendert != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -173,15 +173,17 @@ namespace POS.View.storage
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-        private async Task setNotifications()
+        private void setNotifications()
         {
-            await refreshInvoiceNotification();
-            await refreshReturnNotification();
+             refreshInvoiceNotification();
+             refreshReturnNotification();
         }
-        private async Task refreshInvoiceNotification()
+        private async void refreshInvoiceNotification()
         {
             string invoiceType = "pw"; 
             int invoiceCount = await invoice.GetCountBranchInvoices(invoiceType,0, MainWindow.branchID.Value);
+            if (invoice.invType == "pw")
+                invoiceCount--;
 
             int previouseCount = 0;
             if (md_invoiceCount.Badge != null && md_invoiceCount.Badge.ToString() != "") previouseCount = int.Parse(md_invoiceCount.Badge.ToString());
@@ -197,10 +199,12 @@ namespace POS.View.storage
                     md_invoiceCount.Badge = invoiceCount.ToString();
             }
         }
-        private async Task refreshReturnNotification()
+        private async void refreshReturnNotification()
         {
             string invoiceType = "pbw";
             int returnsCount = await invoice.GetCountBranchInvoices(invoiceType,0, MainWindow.branchID.Value);
+            if (invoice.invType == "pbw")
+                returnsCount--;
 
             int previouseCount = 0;
             if (md_returnsCount.Badge != null && md_returnsCount.Badge.ToString() != "") previouseCount = int.Parse(md_returnsCount.Badge.ToString());
@@ -471,6 +475,7 @@ namespace POS.View.storage
                             this.DataContext = invoice;
 
                             _InvoiceType = "pbd";
+                            setNotifications();
                             // set title to bill
                             txt_titleDataGridInvoice.Text = MainWindow.resourcemanager.GetString("trReturnedInvoice");
                             btn_save.Content = MainWindow.resourcemanager.GetString("trReturn");
@@ -702,7 +707,7 @@ namespace POS.View.storage
                             this.DataContext = invoice;
 
                             _InvoiceType = invoice.invType;
-
+                            setNotifications();
                             // set title to bill
                             txt_titleDataGridInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaseInvoice");
                             btn_save.Content = MainWindow.resourcemanager.GetString("trStoreBtn");
@@ -863,7 +868,6 @@ namespace POS.View.storage
                         await receiptInvoice();
                     else if (_InvoiceType == "pbd")
                         await returnInvoice("pb");
-
                 }
 
                 //clearInvoice();
@@ -958,7 +962,7 @@ namespace POS.View.storage
                             int quantity = (int)readyItemsLoc[i].quantity;
                             await itemLocationModel.decreaseItemLocationQuantity(itemLocId, quantity, MainWindow.userID.Value, "storageAlerts_minMaxItem", not);
                         }
-                        await refreshReturnNotification();
+                        refreshReturnNotification();
                         clearInvoice();
                         Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                     }
@@ -988,7 +992,7 @@ namespace POS.View.storage
             invoice.updateUserId = MainWindow.userID.Value;
             await invoiceModel.saveInvoice(invoice);
             await itemLocationModel.recieptInvoice(invoiceItems, MainWindow.branchID.Value, MainWindow.userID.Value, "storageAlerts_minMaxItem", not); // increase item quantity in DB
-            await refreshInvoiceNotification();
+             refreshInvoiceNotification();
             clearInvoice();
         }
 

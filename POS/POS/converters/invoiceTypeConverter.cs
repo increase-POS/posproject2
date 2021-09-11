@@ -81,6 +81,30 @@ namespace POS.converters
                 case "sh":
                     value = MainWindow.resourcemanager.GetString("trShortage");
                     break;
+                //مسودة  استراد
+                case "imd":
+                    value = MainWindow.resourcemanager.GetString("trImportDraft");
+                    break; 
+                // استراد
+                case "im":
+                    value = MainWindow.resourcemanager.GetString("trImport");
+                    break;  
+              // طلب استيراد
+                case "imw":
+                    value = MainWindow.resourcemanager.GetString("trImportOrder");
+                    break; 
+                //مسودة تصدير
+                case "exd":
+                    value = MainWindow.resourcemanager.GetString("trExportDraft");
+                    break; 
+                // تصدير
+                case "ex":
+                    value = MainWindow.resourcemanager.GetString("trExport");
+                    break;
+               // طلب تصدير
+                case "exw":
+                    value = MainWindow.resourcemanager.GetString("trExportOrder");
+                    break;
                 default: break;
             }
             return value;

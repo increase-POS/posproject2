@@ -2395,4 +2395,22 @@ Please add Email in setting</value>
   <data name="trVip" xml:space="preserve">
     <value>Vip</value>
   </data>
+  <data name="trExportDraft" xml:space="preserve">
+    <value>Export Draft</value>
+  </data>
+  <data name="trExportOrder" xml:space="preserve">
+    <value>Export Order</value>
+  </data>
+  <data name="trImportDraft" xml:space="preserve">
+    <value>Import Draft</value>
+  </data>
+  <data name="trImportOrder" xml:space="preserve">
+    <value>Import Order</value>
+  </data>
+  <data name="trNext" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="trPrevious" xml:space="preserve">
+    <value>Previous</value>
+  </data>
 </root>

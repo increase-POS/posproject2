@@ -2270,7 +2270,9 @@ namespace POS.View
                     billDetails[dg_billDetails.SelectedIndex].itemUnitId = (int)cmb.SelectedValue;
                     //var unit = itemUnits.ToList().Find(x => x.itemUnitId == (int)cmb.SelectedValue);
                     var unit = await itemUnitModel.GetById((int)cmb.SelectedValue);
-                    int availableAmount = await itemLocationModel.getAmountInBranch(itemUnitId, MainWindow.branchID.Value);
+                    //int availableAmount = await itemLocationModel.getAmountInBranch(itemUnitId, MainWindow.branchID.Value);
+                    int availableAmount = await getAvailableAmount(billDetails[dg_billDetails.SelectedIndex].itemId, itemUnitId, MainWindow.branchID.Value);
+
 
                     int oldCount = 0;
                     long newCount = 0;
@@ -2290,10 +2292,11 @@ namespace POS.View
                     oldCount = billDetails[dg_billDetails.SelectedIndex].Count;
                     oldPrice = billDetails[dg_billDetails.SelectedIndex].Price;
 
-                    if (availableAmount < oldCount)
+                  //  if (availableAmount < oldCount)
+                    if (availableAmount <= 0)
                     {
                         Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountNotAvailableToolTip"), animation: ToasterAnimation.FadeIn);
-                        newCount = availableAmount;
+                        newCount = newCount + availableAmount;
                         tb = dg_billDetails.Columns[4].GetCellContent(dg_billDetails.Items[dg_billDetails.SelectedIndex]) as TextBlock;
                         tb.Text = availableAmount.ToString();
                     }
@@ -2497,11 +2500,11 @@ namespace POS.View
                     }
                     else
                     {
-                        int availableAmount = await itemLocationModel.getAmountInBranch(row.itemUnitId, MainWindow.branchID.Value);
-                        if (availableAmount < newCount)
+                        int availableAmount = await getAvailableAmount(row.itemId,row.itemUnitId, MainWindow.branchID.Value);
+                        if (availableAmount <= 0)
                         {
                             Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountNotAvailableToolTip"), animation: ToasterAnimation.FadeIn);
-                            newCount = availableAmount;
+                            newCount = newCount + availableAmount;
                             tb = dg_billDetails.Columns[4].GetCellContent(dg_billDetails.Items[index]) as TextBlock;
                             tb.Text = newCount.ToString();
                             row.Count = (int)newCount;
@@ -2556,7 +2559,43 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+        private async Task<int> getAvailableAmount(int itemId,int itemUnitId, int branchId)
+        {
+            var itemUnits = await itemUnitModel.GetItemUnits(itemId);
+            int availableAmount = await itemLocationModel.getAmountInBranch(itemUnitId, branchId);
+            var smallUnits = await itemUnitModel.getSmallItemUnits(itemId, itemUnitId);
+            foreach (ItemUnit u in itemUnits)
+            {
+               
+                var isInBill = billDetails.ToList().Find(x => x.itemUnitId == (int)u.itemUnitId); // unit exist in invoice
+                if (isInBill != null)
+                {
+                    var isSmall = smallUnits.Find(x => x.itemUnitId == (int)u.itemUnitId);
+                    int unitValue = 0;
+                   
+                    int index = billDetails.IndexOf(billDetails.Where(p => p.itemUnitId == u.itemUnitId).FirstOrDefault());
+                    int quantity = billDetails[index].Count;
+                    if (itemUnitId == u.itemUnitId)
+                    { }
+                    else if (isSmall != null) // from-unit is bigger than to-unit
+                    {
+                        unitValue = await itemUnitModel.largeToSmallUnitQuan(itemUnitId, u.itemUnitId);
+                        quantity = quantity / unitValue;
+                    }
+                    else
+                    {
+                        unitValue = await itemUnitModel.smallToLargeUnit(itemUnitId, u.itemUnitId);
 
+                        if (unitValue != 0)
+                        {
+                            quantity = quantity * unitValue;
+                        }
+                    }
+                    availableAmount -= quantity;
+                }
+            }
+            return availableAmount;
+        }
         private void Dp_date_PreviewKeyUp(object sender, KeyEventArgs e)
         {
             try

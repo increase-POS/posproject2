@@ -181,14 +181,14 @@ namespace POS.View.storage
 
                 translate();
                 catigoriesAndItemsView.ucItemsExport = this;
-
+                setNotifications();
                 setTimer();
                 configureProcessType();
                 pos = await pos.getPosById(MainWindow.posID.Value);
                 await SectionData.fillBranches(cb_branch, "bs");
                 //await RefrishBranches();
                 await RefrishItems();
-                await setNotifications();
+                
                 #region datagridChange
                 CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(dg_billDetails.Items);
                 ((INotifyCollectionChanged)myCollectionView).CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
@@ -215,7 +215,7 @@ namespace POS.View.storage
         {
             try
             {
-                await setNotifications();
+                setNotifications();
             }
             catch (Exception ex)
             {
@@ -224,19 +224,21 @@ namespace POS.View.storage
         }
         #endregion
         #region notifications
-        private async Task setNotifications()
+        private async void setNotifications()
         {
-            await refreshDraftNotification();
-            await refreshOrderWaitNotification();
+             refreshDraftNotification();
+             refreshOrderWaitNotification();
         }
-        private async Task refreshDraftNotification()
+        private async void refreshDraftNotification()
         {
             string invoiceType = "imd ,exd";
             int duration = 2;
             int draftCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
+            if (invoice.invType == "imd" || invoice.invType == "exd")
+                draftCount--;
 
             int previouseCount = 0;
-            if (md_draftsCount.Badge != null) previouseCount = int.Parse(md_draftsCount.Badge.ToString());
+            if (md_draftsCount.Badge != null && md_draftsCount.Badge.ToString() != "") previouseCount = int.Parse(md_draftsCount.Badge.ToString());
 
             if (draftCount != previouseCount)
             {
@@ -250,14 +252,16 @@ namespace POS.View.storage
                     md_draftsCount.Badge = draftCount.ToString();
             }
         }
-        private async Task refreshOrderWaitNotification()
+        private async void refreshOrderWaitNotification()
         {
             string invoiceType = "exw";
             
             int waitedOrdersCount = await invoice.GetCountBranchInvoices(invoiceType, 0, MainWindow.branchID.Value);
+            if (invoice.invType == "exw")
+                waitedOrdersCount--;
 
             int previouseCount = 0;
-            if (md_orderWaitCount.Badge != null) previouseCount = int.Parse(md_orderWaitCount.Badge.ToString());
+            if (md_orderWaitCount.Badge != null && md_orderWaitCount.Badge.ToString() != "") previouseCount = int.Parse(md_orderWaitCount.Badge.ToString());
 
             if (waitedOrdersCount != previouseCount)
             {
@@ -524,8 +528,6 @@ namespace POS.View.storage
                 Window.GetWindow(this).Opacity = 0.2;
                 wd_invoice w = new wd_invoice();
 
-                //w.invoiceType = "im ,ex";
-
                 if ((
                        MainWindow.groupObject.HasPermissionAction(importPermission, MainWindow.groupObjects, "one")
                        || SectionData.isAdminPermision()
@@ -551,9 +553,8 @@ namespace POS.View.storage
                     if (w.invoice != null)
                     {
                         invoice = w.invoice;
-                        //  mainInvoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceMainId.Value);
                         _ProcessType = invoice.invType;
-
+                        setNotifications();
                         await fillOrderInputs(invoice);
                         if (_ProcessType == "im")// set title to bill
                         {
@@ -601,7 +602,7 @@ namespace POS.View.storage
                         {
                             invoice = w.invoice;
                             _ProcessType = invoice.invType;
-
+                            setNotifications();
                             await fillOrderInputs(invoice);
                         }
                     }
@@ -853,7 +854,7 @@ namespace POS.View.storage
                     SectionData.StartAwait(grid_main);
 
                 await saveDraft();
-                await refreshDraftNotification();
+                setNotifications();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -1010,7 +1011,7 @@ namespace POS.View.storage
                         //this.DataContext = invoice;
                         //  mainInvoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceMainId.Value);
                         _ProcessType = invoice.invType;
-
+                        setNotifications();
                         await fillOrderInputs(invoice);
                         if (_ProcessType == "imd")// set title to bill
                         {
@@ -1347,7 +1348,7 @@ namespace POS.View.storage
                                 await save();
                                 break;
                         }
-                        await setNotifications();
+                        setNotifications();
 
                     }
                 }

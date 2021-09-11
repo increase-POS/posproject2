@@ -2833,6 +2833,24 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Export Draft.
+        /// </summary>
+        internal static string trExportDraft {
+            get {
+                return ResourceManager.GetString("trExportDraft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export Order.
+        /// </summary>
+        internal static string trExportOrder {
+            get {
+                return ResourceManager.GetString("trExportOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Favorite.
         /// </summary>
         internal static string trFavorite {
@@ -3076,11 +3094,29 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Import Draft.
+        /// </summary>
+        internal static string trImportDraft {
+            get {
+                return ResourceManager.GetString("trImportDraft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Movements.
         /// </summary>
         internal static string trImportExport {
             get {
                 return ResourceManager.GetString("trImportExport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Import Order.
+        /// </summary>
+        internal static string trImportOrder {
+            get {
+                return ResourceManager.GetString("trImportOrder", resourceCulture);
             }
         }
         
@@ -3877,6 +3913,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Next.
+        /// </summary>
+        internal static string trNext {
+            get {
+                return ResourceManager.GetString("trNext", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No..
         /// </summary>
         internal static string trNo_ {
@@ -4612,6 +4657,15 @@ namespace POS {
         internal static string trPreview {
             get {
                 return ResourceManager.GetString("trPreview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Previous.
+        /// </summary>
+        internal static string trPrevious {
+            get {
+                return ResourceManager.GetString("trPrevious", resourceCulture);
             }
         }
         

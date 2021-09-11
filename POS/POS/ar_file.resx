@@ -2380,4 +2380,22 @@
   <data name="trVip" xml:space="preserve">
     <value>Vip</value>
   </data>
+  <data name="trExportDraft" xml:space="preserve">
+    <value>مسودة تصدير</value>
+  </data>
+  <data name="trExportOrder" xml:space="preserve">
+    <value>طلب تصدير</value>
+  </data>
+  <data name="trImportDraft" xml:space="preserve">
+    <value>مسودة استيراد</value>
+  </data>
+  <data name="trImportOrder" xml:space="preserve">
+    <value>طلب استيراد</value>
+  </data>
+  <data name="trNext" xml:space="preserve">
+    <value>التالي</value>
+  </data>
+  <data name="trPrevious" xml:space="preserve">
+    <value>السابق</value>
+  </data>
 </root>

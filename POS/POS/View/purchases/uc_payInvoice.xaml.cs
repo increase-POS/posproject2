@@ -242,7 +242,7 @@ namespace POS.View
                 await SectionData.fillBranches(cb_branch, "bs");
                 await RefrishVendors();
                 await fillBarcodeList();
-                await setNotifications();
+                setNotifications();
                 #region Style Date
                 SectionData.defaultDatePickerStyle(dp_desrvedDate);
                 SectionData.defaultDatePickerStyle(dp_invoiceDate);
@@ -357,9 +357,9 @@ namespace POS.View
                 await refreshOrdersNotification();
             if (invoice.invoiceId != 0)
             {
-                    await refreshDocCount(invoice.invoiceId);
+                     refreshDocCount(invoice.invoiceId);
                 if (_InvoiceType == "pw" || _InvoiceType == "p" || _InvoiceType == "pb" || _InvoiceType == "pbw")
-                        await refreshPaymentsNotification(invoice.invoiceId);
+                        refreshPaymentsNotification(invoice.invoiceId);
             }
             }
             catch (Exception ex)
@@ -369,7 +369,7 @@ namespace POS.View
         }
         #endregion
         #region notifications
-        private async Task setNotifications()
+        private async void setNotifications()
         {
             await refreshDraftNotification();
             await refreshOrdersNotification();
@@ -379,6 +379,8 @@ namespace POS.View
             string invoiceType = "pd ,pbd";
             int duration = 2;
             int draftCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
+            if ((invoice.invType == "pd" || invoice.invType == "pbd") && invoice.invoiceId != 0)
+                draftCount--;
 
             int previouseCount = 0;
             if (md_draft.Badge != null && md_draft.Badge.ToString() != "") previouseCount = int.Parse(md_draft.Badge.ToString());
@@ -400,6 +402,8 @@ namespace POS.View
             string invoiceType = "po";
             int duration = 0;
             int ordersCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
+            if (_InvoiceType == "po" && invoice.invoiceId != 0)
+                ordersCount--;
 
             int previouseCount = 0;
             if (md_orders.Badge != null && md_orders.Badge.ToString() != "") previouseCount = int.Parse(md_orders.Badge.ToString());
@@ -416,7 +420,7 @@ namespace POS.View
                     md_orders.Badge = ordersCount.ToString();
             }
         }
-        private async Task refreshDocCount(int invoiceId)
+        private async void refreshDocCount(int invoiceId)
         {
             DocImage doc = new DocImage();
             int docCount = await doc.GetDocCount("Invoices",invoiceId);
@@ -437,7 +441,7 @@ namespace POS.View
                     md_docImage.Badge = docCount.ToString();
             }
         }
-        private async Task refreshPaymentsNotification(int invoiceId)
+        private async void refreshPaymentsNotification(int invoiceId)
         {
             int paymentsCount = await cashTransfer.GetCashCount(invoice.invoiceId);
             int previouseCount = 0;
@@ -637,7 +641,7 @@ namespace POS.View
         private async Task addInvoice(string invType, string invCode)
         {
 
-            if (invoice.invType == "p" && (invType == "pbw" || invType == "pbd")) // invoice is purchase and will be bounce purchase  or purchase bounce draft , save another invoice in db
+            if ((invoice.invType == "p" || invoice.invType == "pw") && (invType == "pbw" || invType == "pbd")) // invoice is purchase and will be bounce purchase  or purchase bounce draft , save another invoice in db
             {
                 invoice.invoiceMainId = invoice.invoiceId;
                 invoice.invoiceId = 0;
@@ -925,7 +929,7 @@ namespace POS.View
                 if (billDetails.Count > 0 && valid)
                 {
                     await addInvoice(_InvoiceType, "pi");
-                    await refreshDraftNotification();
+                   refreshDraftNotification();
                     clearInvoice();
                 }
                 else if (billDetails.Count == 0)
@@ -1006,7 +1010,8 @@ namespace POS.View
                         _InvoiceType = invoice.invType;
 
                         await fillInvoiceInputs(invoice);
-                        await refreshDocCount(invoice.invoiceId);
+                        setNotifications();
+                        refreshDocCount(invoice.invoiceId);
                         md_payments.Badge = "";
                         if (_InvoiceType == "pd")// set title to bill
                         {
@@ -1059,13 +1064,15 @@ namespace POS.View
                         //this.DataContext = invoice;
 
                         _InvoiceType = invoice.invType;
+                        setNotifications();
+                        refreshDocCount(invoice.invoiceId);
                         // set title to bill
-                        if(invoice.invType == "p" || invoice.invType == "pw")
+                        if (invoice.invType == "p" || invoice.invType == "pw")
                             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaseInvoice");
                         else
                             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trReturnedInvoice");
                         brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
-                        await refreshDocCount(invoice.invoiceId);
+
                         await fillInvoiceInputs(invoice);
 
                     }
@@ -1103,16 +1110,16 @@ namespace POS.View
                     {
                         invoice = w.invoice;
 
-                        //this.DataContext = invoice;
-
                         _InvoiceType = invoice.invType;
+                        // notifications
+                        md_payments.Badge = "";
+                        setNotifications();
+                        refreshDocCount(invoice.invoiceId);
+
                         // set title to bill
                         txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaseOrder");
                         brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
                         await fillInvoiceInputs(invoice);
-                        await refreshDocCount(invoice.invoiceId);
-                        md_payments.Badge = "";
-
                     }
                 }
                 Window.GetWindow(this).Opacity = 1;
@@ -1189,13 +1196,14 @@ namespace POS.View
                         {
                             _InvoiceType = "pbd";
                             invoice = w.invoice;
-
-                           // this.DataContext = invoice;
+                            // notifications
+                            setNotifications();
+                            refreshDocCount(invoice.invoiceId);
+                            md_payments.Badge = "";
 
                             await fillInvoiceInputs(invoice);
                             mainInvoiceItems = invoiceItems;
-                            await refreshDocCount(invoice.invoiceId);
-                            md_payments.Badge = "";
+                            
                             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trReturnedInvoice");
                             brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D22A17"));
                         }
@@ -1337,7 +1345,7 @@ namespace POS.View
                     w.tableId = invoice.invoiceId;
                     w.docNum = invoice.invNumber;
                     w.ShowDialog();
-                    await refreshDocCount(invoice.invoiceId);
+                    refreshDocCount(invoice.invoiceId);
                     Window.GetWindow(this).Opacity = 1;
                 }
                 else

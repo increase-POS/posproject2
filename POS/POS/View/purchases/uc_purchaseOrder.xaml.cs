@@ -80,12 +80,14 @@ namespace POS.View.purchases
                     {
                         invoice = w.invoice;
                         _InvoiceType = invoice.invType;
+                        // notifications
+                        refreshDraftNotification();
+                        refreshDocCount(invoice.invoiceId);
 
                         await fillInvoiceInputs(invoice);
 
                         mainInvoiceItems = invoiceItems;
-                        txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaceOrder");
-                        await refreshDocCount(invoice.invoiceId);
+                        txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaceOrder"); 
                     }
                 }
                 Window.GetWindow(this).Opacity = 1;
@@ -256,7 +258,7 @@ namespace POS.View.purchases
                 await RefrishItems();
                 await RefrishVendors();
                 await fillBarcodeList();
-                await refreshDraftNotification();
+                refreshDraftNotification();
                 tb_barcode.Focus();
                 #region datagridChange
                 CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(dg_billDetails.Items);
@@ -354,7 +356,7 @@ namespace POS.View.purchases
             {
                 if (invoice.invoiceId != 0)
             {
-                await refreshDocCount(invoice.invoiceId);
+                refreshDocCount(invoice.invoiceId);
             }
             }
             catch (Exception ex)
@@ -364,14 +366,16 @@ namespace POS.View.purchases
         }
         #endregion
         #region notification
-        private async Task refreshDraftNotification()
+        private async void refreshDraftNotification()
         {
             string invoiceType = "pod";
             int duration = 2;
             int draftCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
+            if (invoice.invType == "pod")
+                draftCount--;
 
             int previouseCount = 0;
-            if (md_draft.Badge != null)
+            if (md_draft.Badge != null && md_draft.Badge.ToString() != "")
                 previouseCount = int.Parse(md_draft.Badge.ToString());
 
             if (draftCount != previouseCount)
@@ -386,13 +390,13 @@ namespace POS.View.purchases
                     md_draft.Badge = draftCount.ToString();
             }
         }
-        private async Task refreshDocCount(int invoiceId)
+        private async void refreshDocCount(int invoiceId)
         {
             DocImage doc = new DocImage();
             int docCount = await doc.GetDocCount("Invoices", invoiceId);
 
             int previouseCount = 0;
-            if (md_docImage.Badge != null)
+            if (md_docImage.Badge != null && md_docImage.Badge.ToString() != "")
                 previouseCount = int.Parse(md_docImage.Badge.ToString());
 
             if (docCount != previouseCount)
@@ -617,7 +621,7 @@ namespace POS.View.purchases
                     invoiceItems.Add(itemT);
                 }
                 await invoiceModel.saveInvoiceItems(invoiceItems, invoiceId);
-                await refreshDraftNotification();
+                refreshDraftNotification();
                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
             }
             else
@@ -781,12 +785,13 @@ namespace POS.View.purchases
                     {
                         invoice = w.invoice;
                         _InvoiceType = invoice.invType;
-
+                        // notifications
+                        refreshDraftNotification();
+                        refreshDocCount(invoice.invoiceId);
                         await fillInvoiceInputs(invoice);
 
                         mainInvoiceItems = invoiceItems;
-                        txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaceOrderDraft");
-                        await refreshDocCount(invoice.invoiceId);
+                        txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaceOrderDraft");                       
                     }
                 }
                 Window.GetWindow(this).Opacity = 1;
@@ -927,7 +932,7 @@ namespace POS.View.purchases
                         w.tableId = invoice.invoiceId;
                         w.docNum = invoice.invNumber;
                         w.ShowDialog();
-                        await refreshDocCount(invoice.invoiceId);
+                        refreshDocCount(invoice.invoiceId);
                         Window.GetWindow(this).Opacity = 1;
                     }
                     else
