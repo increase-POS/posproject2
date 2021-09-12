@@ -85,7 +85,29 @@
                             </TransformGroup>
                         </Button.RenderTransform>
                     </Button>
-                    <ToggleButton DockPanel.Dock="Right"  x:Name="tgl_IsActive"  
+                    <StackPanel  DockPanel.Dock="Right" Orientation="Horizontal" >
+                        <CheckBox x:Name="chk_stored" IsChecked="True"
+                                                          Background="{StaticResource MainColorBlue}"
+                                                          Content="Stored"
+                                                          Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}"
+                                                          Checked="search_Checking" 
+                                                          Unchecked="search_Checking"/>
+                        <CheckBox x:Name="chk_freezone" 
+                                                          Background="{StaticResource MainColorBlue}"
+                                                          Content="Freezone"
+                                                          Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}"
+                                                          Checked="search_Checking" 
+                                                          Unchecked="search_Checking"/>
+                        <CheckBox x:Name="chk_locked" 
+                                                          Background="{StaticResource MainColorBlue}"
+                                                          Content="Locked"
+                                                          Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}"
+                                                          Checked="search_Checking" 
+                                                          Unchecked="search_Checking"/>
+                        <Border  DockPanel.Dock="Right"   Margin="7.5,10"    CornerRadius="0,0,0,0"  Width="2" BorderThickness="0" Background="#377EB8" />
+
+                    </StackPanel>
+                    <!--<ToggleButton DockPanel.Dock="Right"  x:Name="tgl_IsActive"  
                                       Checked="Tgl_IsActive_Checked" 
                                       Unchecked="Tgl_IsActive_Unchecked"
                                       VerticalAlignment="Center" Padding="10,15,5,5"  IsChecked="True" 
@@ -93,7 +115,7 @@
                     <TextBlock  DockPanel.Dock="Right"
                                    Margin="5,0,5,0" Text="Stored" Foreground="#6e6e6e"
                                    HorizontalAlignment="Left" VerticalAlignment="Center"
-                                   FontSize="12"/>
+                                   FontSize="12"/>-->
                 </DockPanel>
             </Border>
             <Border Margin="5,5,5,0" Grid.Row="1"  Background="White" CornerRadius="7,7,0,0">
@@ -527,17 +549,19 @@
                         </Grid>
                     </Grid>
                 </ScrollViewer>
-                <Button x:Name="btn_transfer"  TabIndex="10" Content="Transfer" Grid.Row="11"
+                <Grid  Grid.Row="11"  Margin="5,5,5,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="0" x:Name="btn_locked"  TabIndex="10" Content="locked"
                                 Background="#4E4E4E" BorderBrush="{x:Null}" 
-                              Margin="5,5,5,10"  Click="Btn_transfer_Click" >
-                    <Button.ToolTip>
-                        <ToolTip x:Name="tt_pay" Content="Pay"
-                                    Placement="left" 
-                                    HorizontalOffset="15"
-                                    PlacementRectangle="50,0,0,0"
-                                    VerticalOffset="30"/>
-                    </Button.ToolTip>
-                </Button>
+                              Margin="1"  Click="Btn_locked_Click" />
+                    <Button Grid.Column="1" x:Name="btn_transfer"  TabIndex="10" Content="Transfer" Grid.Row="11"
+                                Background="#4E4E4E" BorderBrush="{x:Null}" 
+                              Margin="1"  Click="Btn_transfer_Click" />
+                </Grid>
+               
             </Grid>
 
         </Border>

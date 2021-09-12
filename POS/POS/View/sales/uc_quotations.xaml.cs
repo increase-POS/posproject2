@@ -78,6 +78,7 @@ namespace POS.View.sales
 
         Invoice invoiceModel = new Invoice();
         Invoice invoice = new Invoice();
+        List<Invoice> invoices;
 
         Coupon couponModel = new Coupon();
         IEnumerable<Coupon> coupons;
@@ -107,6 +108,7 @@ namespace POS.View.sales
 
         //for bill details
         static private int _SequenceNum = 0;
+        static private int _invoiceId;
         static private decimal _Sum = 0;
         static private decimal _Tax = 0;
         static private decimal _Discount = 0;
@@ -656,6 +658,8 @@ namespace POS.View.sales
             refrishBillDetails();
             tb_barcode.Focus();
             inputEditable();
+            btn_next.Visibility = Visibility.Collapsed;
+            btn_previous.Visibility = Visibility.Collapsed;
             await fillCouponsList();
         }
         private void inputEditable()
@@ -689,6 +693,8 @@ namespace POS.View.sales
                     tgl_ActiveOffer.IsEnabled = false;
                     break;
             }
+            btn_next.Visibility = Visibility.Visible;
+            btn_previous.Visibility = Visibility.Visible;
         }
         private async Task addInvoice(string invType)
         {
@@ -1010,10 +1016,11 @@ namespace POS.View.sales
                 Window.GetWindow(this).Opacity = 0.2;
 
                 wd_invoice w = new wd_invoice();
-
-                w.invoiceType = "qd"; //quontations draft invoices
+                string invoiceType = "qd";
+                int duration = 2;
+                w.invoiceType = invoiceType; //quontations draft invoices
                 w.userId = MainWindow.userLogin.userId;
-                w.duration = 2; // view drafts which updated during 2 last days 
+                w.duration = duration; // view drafts which updated during 2 last days 
                 w.title = MainWindow.resourcemanager.GetString("trDrafts");
 
                 if (w.ShowDialog() == true)
@@ -1023,12 +1030,15 @@ namespace POS.View.sales
                         invoice = w.invoice;
 
                         _InvoiceType = invoice.invType;
+                        _invoiceId = invoice.invoiceId;
                         refreshDraftNotification();
                         refreshDocCount(invoice.invoiceId);
                         // set title to bill
                         txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trQuotationsDraft");
 
                         await fillInvoiceInputs(invoice);
+                        invoices = await invoice.GetInvoicesByCreator(invoiceType, MainWindow.userID.Value, duration);
+                        navigateBtnActivate();
                     }
                 }
                 Window.GetWindow(this).Opacity = 1;
@@ -1164,9 +1174,11 @@ namespace POS.View.sales
                  wd_invoice w = new wd_invoice();
 
                 // quontations invoices
-                w.invoiceType = "q";
+                string invoiceType = "q";
+                w.invoiceType = invoiceType;
+                int duration = 1;
                 w.userId = MainWindow.userLogin.userId;
-                w.duration = 1; // view quotations which updated during 1 last days 
+                w.duration = duration; // view quotations which updated during 1 last days 
                 w.title = MainWindow.resourcemanager.GetString("trQuotations");
 
                 if (w.ShowDialog() == true)
@@ -1182,6 +1194,8 @@ namespace POS.View.sales
                         txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trQuotations");
 
                         await fillInvoiceInputs(invoice);
+                        invoices = await invoice.GetInvoicesByCreator(invoiceType, MainWindow.userID.Value, duration);
+                        navigateBtnActivate();
                     }
                 }
                 Window.GetWindow(this).Opacity =1;
@@ -1623,12 +1637,13 @@ namespace POS.View.sales
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
                 //await printInvoice();
+                ///////////////////////////////////
                 Thread t1 = new Thread(() =>
                 {
                     printInvoice();
                 });
                 t1.Start();
-
+                //////////////////////////////////
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -1655,13 +1670,15 @@ namespace POS.View.sales
                 || prInvoice.invType == "sbd" || prInvoice.invType == "pbd"
                 || prInvoice.invType == "ord" || prInvoice.invType == "imd" || prInvoice.invType == "exd")
             {
-                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPrintDraftInvoice"), animation: ToasterAnimation.FadeIn);
+                this.Dispatcher.Invoke(() =>
+                {
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPrintDraftInvoice"), animation: ToasterAnimation.FadeIn);
+                });
             }
             else
             {
 
                 List<ReportParameter> paramarr = new List<ReportParameter>();
-
 
                 if (prInvoice.invoiceId > 0)
                 {
@@ -1712,19 +1729,24 @@ namespace POS.View.sales
 
                     rep.SetParameters(paramarr);
                     rep.Refresh();
+                    //this.Dispatcher.Invoke(() =>
+                    //{
+                    //    if (MainWindow.salePaperSize == "A4")
+                    //    {
+                    //        LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.sale_printer_name, short.Parse(MainWindow.sale_copy_count));
+
+                    //    }
+                    //    else
+                    //    {
+                    //        LocalReportExtensions.customPrintToPrinter(rep, MainWindow.sale_printer_name, short.Parse(MainWindow.sale_copy_count), width, height);
+
+                    //    }
+                    //});
                     this.Dispatcher.Invoke(() =>
                     {
-                        if (MainWindow.salePaperSize == "A4")
-                        {
-                            LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.sale_printer_name, short.Parse(MainWindow.sale_copy_count));
-
-                        }
-                        else
-                        {
-                            LocalReportExtensions.customPrintToPrinter(rep, MainWindow.sale_printer_name, short.Parse(MainWindow.sale_copy_count), width, height);
-
-                        }
+                        LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.rep_printer_name, short.Parse(MainWindow.rep_print_count));
                     });
+
                 }
                 else
                 {
@@ -1765,7 +1787,10 @@ namespace POS.View.sales
                          || invoice.invType == "sbd" || invoice.invType == "pbd"
                          || invoice.invType == "ord" || invoice.invType == "imd" || invoice.invType == "exd")
             {
-                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPrintDraftInvoice"), animation: ToasterAnimation.FadeIn);
+                this.Dispatcher.Invoke(() =>
+                {
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPrintDraftInvoice"), animation: ToasterAnimation.FadeIn);
+                });
             }
             else
             {
@@ -2048,25 +2073,27 @@ namespace POS.View.sales
 
         private void Tgl_ActiveOffer_Checked(object sender, RoutedEventArgs e)
         {
-
-            #region Accept
-            if (cb_customer.SelectedIndex != -1)
+            if (tgl_ActiveOffer.IsFocused)
             {
-                MainWindow.mainWindow.Opacity = 0.2;
-                wd_acceptCancelPopup w = new wd_acceptCancelPopup();
-                w.contentText = MainWindow.resourcemanager.GetString("trApproveQuotationNotification");
+                #region Accept
+                if (cb_customer.SelectedIndex != -1)
+                {
+                    MainWindow.mainWindow.Opacity = 0.2;
+                    wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                    w.contentText = MainWindow.resourcemanager.GetString("trApproveQuotationNotification");
 
-                w.ShowDialog();
-                if (!w.isOk)
+                    w.ShowDialog();
+                    if (!w.isOk)
+                        tgl_ActiveOffer.IsChecked = false;
+                    MainWindow.mainWindow.Opacity = 1;
+
+                }
+                #endregion
+                else
+                {
                     tgl_ActiveOffer.IsChecked = false;
-                MainWindow.mainWindow.Opacity = 1;
-               
-            }
-            #endregion
-            else
-            {
-                tgl_ActiveOffer.IsChecked = false;
-                SectionData.validateEmptyComboBox(cb_customer,p_errorCustomer,tt_errorCustomer, "trEmptyCustomerToolTip");
+                    SectionData.validateEmptyComboBox(cb_customer, p_errorCustomer, tt_errorCustomer, "trEmptyCustomerToolTip");
+                }
             }
         }
 
@@ -2095,5 +2122,38 @@ namespace POS.View.sales
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+        #region navigation buttons
+        private void navigateBtnActivate()
+        {
+            int index = invoices.IndexOf(invoices.Where(x => x.invoiceId == _invoiceId).FirstOrDefault());
+            if (index == invoices.Count - 1)
+                btn_next.IsEnabled = false;
+            else
+                btn_next.IsEnabled = true;
+
+            if (index == 0)
+                btn_previous.IsEnabled = false;
+            else
+                btn_previous.IsEnabled = true;
+        }
+        private async void Btn_next_Click(object sender, RoutedEventArgs e)
+        {
+            int index = invoices.IndexOf(invoices.Where(x => x.invoiceId == _invoiceId).FirstOrDefault());
+            index++;
+            invoice = invoices[index];
+            _invoiceId = invoice.invoiceId;
+            navigateBtnActivate();
+            await fillInvoiceInputs(invoice);
+        }
+        private async void Btn_previous_Click(object sender, RoutedEventArgs e)
+        {
+            int index = invoices.IndexOf(invoices.Where(x => x.invoiceId == _invoiceId).FirstOrDefault());
+            index--;
+            invoice = invoices[index];
+            _invoiceId = invoice.invoiceId;
+            navigateBtnActivate();
+            await fillInvoiceInputs(invoice);
+        }
+        #endregion
     }
 }

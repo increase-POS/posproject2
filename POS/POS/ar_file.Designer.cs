@@ -3517,6 +3517,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to مكان التخزين.
+        /// </summary>
+        internal static string trLocationt {
+            get {
+                return ResourceManager.GetString("trLocationt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to تسجيل الدخول.
         /// </summary>
         internal static string trLogIn {
@@ -6430,6 +6439,15 @@ namespace POS {
         internal static string trUnits {
             get {
                 return ResourceManager.GetString("trUnits", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to إلغاء الحجز.
+        /// </summary>
+        internal static string trUnlock {
+            get {
+                return ResourceManager.GetString("trUnlock", resourceCulture);
             }
         }
         

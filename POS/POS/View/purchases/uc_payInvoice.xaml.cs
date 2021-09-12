@@ -81,7 +81,7 @@ namespace POS.View
 
         Invoice invoiceModel = new Invoice();
         public Invoice invoice = new Invoice();
-
+        List<Invoice> invoices;
         List<ItemTransfer> invoiceItems;
         List<ItemTransfer> mainInvoiceItems;
         //  Bill bill;
@@ -105,6 +105,7 @@ namespace POS.View
 
         //for bill details
         static private int _SequenceNum = 0;
+        static private int _invoiceId;
         static private decimal _Sum = 0;
         static public string _InvoiceType = "pd"; // purchase draft
 
@@ -196,10 +197,16 @@ namespace POS.View
                     if (w.isOk)
                         Btn_newDraft_Click(null, null);
                     else
+                    {
                         clearInvoice();
+                        _InvoiceType = "pd";
+                    }
                 }
                 else
+                {
                     clearInvoice();
+                    _InvoiceType = "pd";
+                }
                 timer.Stop();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -737,6 +744,7 @@ namespace POS.View
 
             }
             clearInvoice();
+            _InvoiceType = "pd";
         }
         private void dp_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -862,29 +870,37 @@ namespace POS.View
                             }
 
                             if (invoice.invoiceId == 0)
+                            {
                                 clearInvoice();
+                                _InvoiceType = "pd";
+                            }
                             //
                             prInvoice = await invoiceModel.GetById(prInvoiceId);
                             ///////////////////////////////////////
-                            
-                                if (prInvoice.invType == "pw")
-                                {
+
+                            if (prInvoice.invType == "pw")
+                            {
+                                Thread t = new Thread(() =>
+                                { 
                                     if (MainWindow.print_on_save_pur == "1")
-                                    {
-                                        Thread t1 = new Thread(() =>
-                                        {
-                                            printPurInvoice();
-                                        });
-                                        t1.Start();
-                                    }
-                                    if (MainWindow.email_on_save_pur == "1")
-                                    {
-                                        Thread t1 = new Thread(() =>
-                                        {
-                                            sendPurEmail();
-                                        });
-                                        t1.Start();
-                                    }
+                                {
+                                    //Thread t1 = new Thread(() =>
+                                    //{
+                                    printPurInvoice();
+                                    //});
+                                    //t1.Start();
+                                }
+                                if (MainWindow.email_on_save_pur == "1")
+                                {
+                                    //Thread t2 = new Thread(() =>
+                                    //{
+                                    sendPurEmail();
+                                    //});
+                                    //t2.Start();
+                                }
+                                });
+                                t.Start();
+
                                 }
                            
                             /////////////////////////////////////////
@@ -932,12 +948,16 @@ namespace POS.View
                 if (billDetails.Count > 0 && valid)
                 {
                     await addInvoice(_InvoiceType, "pi");
-                   refreshDraftNotification();
+                    refreshDraftNotification();
                     clearInvoice();
+                    _InvoiceType = "pd";
                 }
                 else if (billDetails.Count == 0)
+                {
                     clearInvoice();
-                if (sender != null)
+                    _InvoiceType = "pd";
+                }
+                    if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
@@ -953,8 +973,7 @@ namespace POS.View
             txt_invNumber.Text = "";
             _SequenceNum = 0;
             _SelectedBranch = -1;
-            _SelectedVendor = -1;
-            _InvoiceType = "pd";
+            _SelectedVendor = -1;          
             invoice = new Invoice();
             tb_barcode.Clear();
             cb_branch.SelectedIndex = -1;
@@ -984,10 +1003,11 @@ namespace POS.View
             SectionData.clearValidate(tbStartDate, p_errorDesrvedDate);
             brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
 
-            //btn_updateVendor.IsEnabled = false;
             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaseBill");
             refrishBillDetails();
             inputEditable();
+            btn_next.Visibility = Visibility.Collapsed;
+            btn_previous.Visibility = Visibility.Collapsed;
         }
         #endregion
         private async void Btn_draft_Click(object sender, RoutedEventArgs e)
@@ -998,10 +1018,11 @@ namespace POS.View
                     SectionData.StartAwait(grid_main);
                 Window.GetWindow(this).Opacity = 0.2;
                 wd_invoice w = new wd_invoice();
-
-                w.invoiceType = "pd ,pbd";
+                string invoiceType = "pd ,pbd";
+                int duration = 2;
+                w.invoiceType = invoiceType;
                 w.userId = MainWindow.userLogin.userId;
-                w.duration = 2; // view drafts which created during 2 last days 
+                w.duration = duration; // view drafts which created during 2 last days 
 
                 w.title = MainWindow.resourcemanager.GetString("trDrafts");
 
@@ -1011,10 +1032,12 @@ namespace POS.View
                     {
                         invoice = w.invoice;
                         _InvoiceType = invoice.invType;
-
+                        _invoiceId = invoice.invoiceId;
                         await fillInvoiceInputs(invoice);
                         setNotifications();
                         refreshDocCount(invoice.invoiceId);
+                        invoices = await invoice.GetInvoicesByCreator(invoiceType, MainWindow.userID.Value, duration);
+                        navigateBtnActivate();
                         md_payments.Badge = "";
                         if (_InvoiceType == "pd")// set title to bill
                         {
@@ -1052,9 +1075,11 @@ namespace POS.View
                 wd_invoice w = new wd_invoice();
 
                 // purchase invoices
-                w.invoiceType = "p , pw , pb, pbw";
+                string invoiceType = "p , pw , pb, pbw";
+                int duration = 1;
+                w.invoiceType = invoiceType;
                 w.userId = MainWindow.userLogin.userId;
-                w.duration = 1; // view drafts which created during 1 last days 
+                w.duration = duration; // view drafts which created during 1 last days 
 
                 w.title = MainWindow.resourcemanager.GetString("trInvoices");
 
@@ -1064,9 +1089,8 @@ namespace POS.View
                     {
                         invoice = w.invoice;
 
-                        //this.DataContext = invoice;
-
                         _InvoiceType = invoice.invType;
+                        _invoiceId = invoice.invoiceId;
                         setNotifications();
                         refreshDocCount(invoice.invoiceId);
                         // set title to bill
@@ -1077,7 +1101,8 @@ namespace POS.View
                         brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
 
                         await fillInvoiceInputs(invoice);
-
+                        invoices = await invoice.GetInvoicesByCreator(invoiceType, MainWindow.userID.Value, duration);
+                        navigateBtnActivate();
                     }
                 }
                 Window.GetWindow(this).Opacity = 1;
@@ -1101,9 +1126,9 @@ namespace POS.View
                 wd_invoice w = new wd_invoice();
 
                 // purchase orders
-                w.invoiceType = "po";
+                string invoiceType = "po";
+                w.invoiceType = invoiceType;
                 w.userId = MainWindow.userLogin.userId;
-                // w.duration = 1; // view drafts which created during 1 last days 
 
                 w.title = MainWindow.resourcemanager.GetString("trOrders");
 
@@ -1114,6 +1139,7 @@ namespace POS.View
                         invoice = w.invoice;
 
                         _InvoiceType = invoice.invType;
+                        _invoiceId = invoice.invoiceId;
                         // notifications
                         md_payments.Badge = "";
                         setNotifications();
@@ -1123,6 +1149,8 @@ namespace POS.View
                         txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaseOrder");
                         brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
                         await fillInvoiceInputs(invoice);
+                        invoices = await invoice.GetInvoicesByCreator(invoiceType, MainWindow.userID.Value, 0);
+                        navigateBtnActivate();
                     }
                 }
                 Window.GetWindow(this).Opacity = 1;
@@ -1189,7 +1217,8 @@ namespace POS.View
 
                     w.title = MainWindow.resourcemanager.GetString("trReturn");
                     // purchase invoices
-                    w.invoiceType = "p, pw"; // invoice type to view in grid
+                    string invoiceType = "p, pw";
+                    w.invoiceType = invoiceType; // invoice type to view in grid
                     w.branchCreatorId = MainWindow.branchID.Value;
                     w.branchId = MainWindow.branchID.Value;
 
@@ -1199,12 +1228,15 @@ namespace POS.View
                         {
                             _InvoiceType = "pbd";
                             invoice = w.invoice;
+                            _invoiceId = invoice.invoiceId;
                             // notifications
                             setNotifications();
                             refreshDocCount(invoice.invoiceId);
                             md_payments.Badge = "";
 
                             await fillInvoiceInputs(invoice);
+                            invoices = await invoice.getBranchInvoices(invoiceType, MainWindow.branchID.Value, MainWindow.branchID.Value);
+                            navigateBtnActivate();
                             mainInvoiceItems = invoiceItems;
                             
                             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trReturnedInvoice");
@@ -1330,6 +1362,8 @@ namespace POS.View
                 tb_invoiceNumber.IsEnabled = false;
                 tb_taxValue.IsEnabled = false;
             }
+            btn_next.Visibility = Visibility.Visible;
+            btn_previous.Visibility = Visibility.Visible;
         }
         private async void Btn_invoiceImage_Click(object sender, RoutedEventArgs e)
         {
@@ -2322,27 +2356,28 @@ namespace POS.View
                                             {
                                                 i.price = decimal.Parse(SectionData.DecTostring(i.price));
                                             }
+                                            
+                                            mailtosend = mailtosend.fillSaleTempData(prInvoice, invoiceItems, email, toAgent, setvlist);
+                                            string pdfpath = await SavePurpdf(); 
+                                            //SavePurpdf();
+                                            //string pdfpath = emailpdfpath;
+                                            mailtosend.AddAttachTolist(pdfpath);
+                                            
+                                            string msg = "";
                                             this.Dispatcher.Invoke(new Action(() =>
                                             {
-                                                mailtosend = mailtosend.fillSaleTempData(prInvoice, invoiceItems, email, toAgent, setvlist);
-                                                //string pdfpath = SavePurpdf(); 
-                                                SavePurpdf();
-                                                string pdfpath = emailpdfpath;
-                                                mailtosend.AddAttachTolist(pdfpath);
+                                                msg = mailtosend.Sendmail();// temp comment
+                                                if (msg == "Failure sending mail.")
+                                                {
+                                                    // msg = "No Internet connection";
+
+                                                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoInternetConnection"), animation: ToasterAnimation.FadeIn);
+                                                }
+                                                else if (msg == "mailsent")
+                                                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trMailSent"), animation: ToasterAnimation.FadeIn);
+                                                else
+                                                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trMailNotSent"), animation: ToasterAnimation.FadeIn);
                                             }));
-                                            string msg = "";
-                                             msg = mailtosend.Sendmail();// temp comment
-                                            if (msg == "Failure sending mail.")
-                                            {
-                                                // msg = "No Internet connection";
-
-                                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoInternetConnection"), animation: ToasterAnimation.FadeIn);
-                                            }
-                                            else if (msg == "mailsent")
-                                                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trMailSent"), animation: ToasterAnimation.FadeIn);
-                                            else
-                                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trMailNotSent"), animation: ToasterAnimation.FadeIn);
-
 
                                         }
                                     }
@@ -2360,16 +2395,18 @@ namespace POS.View
             }
             else
             {
-                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trThereIsNoItemsToSend"), animation: ToasterAnimation.FadeIn);
-
+                this.Dispatcher.Invoke(new Action(() =>
+                {
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trThereIsNoItemsToSend"), animation: ToasterAnimation.FadeIn);
+                }));
             }
 
 
             //
         }
-        string emailpdfpath = "";
-        //public async Task<string> SavePurpdf()
-        public async void SavePurpdf()
+        //public async void SavePurpdf()
+
+        public async Task<string> SavePurpdf()
         {
             string pdfpath;
             pdfpath = @"\Thumb\report\File.pdf";
@@ -2437,8 +2474,7 @@ namespace POS.View
                     }));
                 }
             }
-            //return pdfpath;
-            emailpdfpath = pdfpath;
+            return pdfpath;
         }
         private  void btn_printInvoice_Click(object sender, RoutedEventArgs e)
         {//print
@@ -2535,6 +2571,7 @@ namespace POS.View
                     SectionData.StartAwait(grid_main);
 
                 clearInvoice();
+                _InvoiceType = "pd";
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -2602,14 +2639,14 @@ namespace POS.View
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
                 prInvoiceId = invoice.invoiceId;
-                sendPurEmail();
-                /////////////////////////////////////
-                //Thread t1 = new Thread(() =>
-                //{
-                //    sendPurEmail();
-                //});
-                //t1.Start();
-                //////////////////////////////////////
+                //sendPurEmail();
+                ///////////////////////////////////
+                Thread t1 = new Thread(() =>
+                {
+                    sendPurEmail();
+                });
+                t1.Start();
+                ////////////////////////////////////
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -2621,5 +2658,41 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+
+        #region navigation buttons
+        private void navigateBtnActivate()
+        {
+            int index = invoices.IndexOf(invoices.Where(x => x.invoiceId == _invoiceId).FirstOrDefault());
+            if (index == invoices.Count - 1)
+                btn_next.IsEnabled = false;
+            else
+                btn_next.IsEnabled = true;
+
+            if (index == 0)
+                btn_previous.IsEnabled = false;
+            else
+                btn_previous.IsEnabled = true;
+        }
+        private async void Btn_next_Click(object sender, RoutedEventArgs e)
+        {
+            int index = invoices.IndexOf(invoices.Where(x => x.invoiceId == _invoiceId).FirstOrDefault());
+            index++;
+            clearInvoice();
+            invoice = invoices[index];
+            _invoiceId = invoice.invoiceId;
+            navigateBtnActivate();
+            await fillInvoiceInputs(invoice);
+        }
+        private async void Btn_previous_Click(object sender, RoutedEventArgs e)
+        {
+            int index = invoices.IndexOf(invoices.Where(x => x.invoiceId == _invoiceId).FirstOrDefault());
+            index--;
+            clearInvoice();
+            invoice = invoices[index];
+            _invoiceId = invoice.invoiceId;
+            navigateBtnActivate();
+            await fillInvoiceInputs(invoice);
+        }
+        #endregion
     }
 }

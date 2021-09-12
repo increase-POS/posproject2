@@ -92,9 +92,9 @@ namespace POS.View
             x = 1000;
             y = 2000;
             z = 3000;
-            value_items = Convert.ToInt32(tb_items.Text);
-            value_purchase = Convert.ToInt32(tb_purchase.Text);
-            value_sales = Convert.ToInt32(tb_sales.Text);
+            //value_items = Convert.ToInt32(tb_items.Text);
+            //value_purchase = Convert.ToInt32(tb_purchase.Text);
+            //value_sales = Convert.ToInt32(tb_sales.Text);
             timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromMilliseconds(10);
             timer.Tick += timer_Tick;
@@ -108,14 +108,14 @@ namespace POS.View
             y += 74;
             z += 65;
 
-            tb_items.Text = x.ToString();
-            tb_purchase.Text = x.ToString();
-            tb_sales.Text = x.ToString();
+            //tb_items.Text = x.ToString();
+            //tb_purchase.Text = x.ToString();
+            //tb_sales.Text = x.ToString();
             if (x >= 5000)
             {
-                tb_items.Text = Convert.ToString(value_items);
-                tb_purchase.Text = Convert.ToString(value_purchase);
-                tb_sales.Text = Convert.ToString(value_sales);
+                //tb_items.Text = Convert.ToString(value_items);
+                //tb_purchase.Text = Convert.ToString(value_purchase);
+                //tb_sales.Text = Convert.ToString(value_sales);
                 timer.Stop();
             }
         }

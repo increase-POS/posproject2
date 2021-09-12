@@ -13,7 +13,7 @@ using System.Web;
 
 namespace POS.Classes
 {
-    class Bonds
+    public class Bonds
 
     {
         public int bondId { get; set; }

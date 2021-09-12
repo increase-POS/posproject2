@@ -2,6 +2,7 @@
 using Microsoft.Win32;
 using netoaster;
 using POS.Classes;
+using POS.View.sectionData.Charts;
 using POS.View.windows;
 using System;
 using System.Collections;
@@ -328,9 +329,9 @@ namespace POS.View.accounts
                     SectionData.StartAwait(grid_ucBonds);
                 if (bonds is null)
                 await RefreshBondsList();
-                //this.Dispatcher.Invoke(() =>
-                //{
-                searchText = tb_search.Text.ToLower();
+                this.Dispatcher.Invoke(() =>
+                {
+                    searchText = tb_search.Text.ToLower();
 
                 bondsQuery = bonds.Where(s => (
                 s.number.ToLower().Contains(searchText)
@@ -343,9 +344,9 @@ namespace POS.View.accounts
                 && s.isRecieved == tgl_bondState
                 );
 
-                //});
+                });
 
-                bondsQueryExcel = bondsQuery;
+                bondsQueryExcel = bondsQuery.ToList();
                 RefreshBondView();
                 if (sender != null)
                     SectionData.EndAwait(grid_ucBonds);
@@ -492,8 +493,10 @@ namespace POS.View.accounts
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_ucBonds);
+
                 if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
+                    #region
                     Thread t1 = new Thread(() =>
                     {
                         List<ReportParameter> paramarr = new List<ReportParameter>();
@@ -507,12 +510,12 @@ namespace POS.View.accounts
                         else addpath = @"\Reports\Account\EN\BondAccReport.rdlc";
                         string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
                         ReportCls.checkLang();
-                        foreach (var r in bondsQuery)
+                        foreach (var r in bondsQueryExcel)
                         {
                             r.amount = decimal.Parse(SectionData.DecTostring(r.amount));
                             r.deserveDate = Convert.ToDateTime(SectionData.DateToString(r.deserveDate));
                         }
-                        clsReports.bondsReport(bondsQuery, rep, reppath, paramarr);
+                        clsReports.bondsReport(bondsQueryExcel, rep, reppath, paramarr);
                         clsReports.setReportLanguage(paramarr);
                         clsReports.Header(paramarr);
 
@@ -532,9 +535,11 @@ namespace POS.View.accounts
 
                     });
                     t1.Start();
+                    #endregion
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+
                 if (sender != null)
                     SectionData.EndAwait(grid_ucBonds);
             }
@@ -791,11 +796,6 @@ namespace POS.View.accounts
             return bonds;
         }
 
-        private void Btn_pdf_Click(object sender, RoutedEventArgs e)
-        {//pdf
-
-        }
-
         private void Cb_paymentProcessType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//type selection
             try
@@ -836,13 +836,48 @@ namespace POS.View.accounts
 
         private void Btn_printInvoice_Click(object sender, RoutedEventArgs e)
         {//print
-            if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+            try
             {
+                if (sender != null)
+                    SectionData.StartAwait(grid_ucBonds);
 
+                if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+                {
+                    #region
+                    List<ReportParameter> paramarr = new List<ReportParameter>();
 
+                    string addpath;
+                    bool isArabic = ReportCls.checkLang();
+                    if (isArabic)
+                    {
+                        addpath = @"\Reports\Account\Ar\ArBondAccReport.rdlc";
+                    }
+                    else addpath = @"\Reports\Account\EN\BondAccReport.rdlc";
+                    string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+                    ReportCls.checkLang();
+
+                    clsReports.bondsReport(bondsQuery, rep, reppath , paramarr);
+                    clsReports.setReportLanguage(paramarr);
+                    clsReports.Header(paramarr);
+
+                    rep.SetParameters(paramarr);
+                    rep.Refresh();
+                    LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.rep_printer_name, short.Parse(MainWindow.rep_print_count));
+                    #endregion
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucBonds);
             }
-            else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucBonds);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         private async Task fillVendors()
@@ -875,7 +910,7 @@ namespace POS.View.accounts
         }
 
         private void Btn_print_Click(object sender, RoutedEventArgs e)
-        {
+        {//print
             try
             {
                 if (sender != null)
@@ -918,45 +953,94 @@ namespace POS.View.accounts
         SaveFileDialog saveFileDialog = new SaveFileDialog();
 
         private void Btn_preview1_Click(object sender, RoutedEventArgs e)
-        {
-            Window.GetWindow(this).Opacity = 0.2;
-            string pdfpath = "";
-
-            List<ReportParameter> paramarr = new List<ReportParameter>();
-
-
-            //
-            pdfpath = @"\Thumb\report\temp.pdf";
-            pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
-
-            string addpath = "";
-            bool isArabic = ReportCls.checkLang();
-            if (isArabic)
+        {//preview
+            try
             {
-                addpath = @"\Reports\Account\Ar\ArBondAccReport.rdlc";
+                if (sender != null)
+                    SectionData.StartAwait(grid_ucBonds);
+                /////////////////////
+                if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+                {
+                    #region
+                    Window.GetWindow(this).Opacity = 0.2;
+                    string pdfpath = "";
+
+                    List<ReportParameter> paramarr = new List<ReportParameter>();
+
+                    //
+                    pdfpath = @"\Thumb\report\temp.pdf";
+                    pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
+
+                    string addpath = "";
+                    bool isArabic = ReportCls.checkLang();
+                    if (isArabic)
+                    {
+                        addpath = @"\Reports\Account\Ar\ArBondAccReport.rdlc";
+                    }
+                    else addpath = @"\Reports\Account\EN\BondAccReport.rdlc";
+                    string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+                    ReportCls.checkLang();
+                    clsReports.bondsReport(bondsQuery, rep, reppath, paramarr);
+                    clsReports.setReportLanguage(paramarr);
+                    clsReports.Header(paramarr);
+
+                    rep.SetParameters(paramarr);
+
+                    rep.Refresh();
+
+                    LocalReportExtensions.ExportToPDF(rep, pdfpath);
+                    wd_previewPdf w = new wd_previewPdf();
+                    w.pdfPath = pdfpath;
+                    if (!string.IsNullOrEmpty(w.pdfPath))
+                    {
+                        w.ShowDialog();
+                        w.wb_pdfWebViewer.Dispose();
+                    }
+                    Window.GetWindow(this).Opacity = 1;
+                    #endregion
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                /////////////////////
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucBonds);
             }
-            else addpath = @"\Reports\Account\EN\BondAccReport.rdlc";
-            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-            ReportCls.checkLang();
-            clsReports.bondsReport(bondsQuery, rep, reppath, paramarr);
-            clsReports.setReportLanguage(paramarr);
-            clsReports.Header(paramarr);
-
-            rep.SetParameters(paramarr);
-
-            rep.Refresh();
-
-            LocalReportExtensions.ExportToPDF(rep, pdfpath);
-            wd_previewPdf w = new wd_previewPdf();
-            w.pdfPath = pdfpath;
-            if (!string.IsNullOrEmpty(w.pdfPath))
+            catch (Exception ex)
             {
-                w.ShowDialog();
-                w.wb_pdfWebViewer.Dispose();
-
-
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucBonds);
+                SectionData.ExceptionMessage(ex, this);
             }
-            Window.GetWindow(this).Opacity = 1;
+
+        }
+
+        private void Btn_pieChart_Click(object sender, RoutedEventArgs e)
+        {//pie
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_ucBonds);
+                /////////////////////
+                if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+                {
+                    Window.GetWindow(this).Opacity = 0.2;
+                    win_lvc win = new win_lvc(bondsQuery, 6);
+                    win.ShowDialog();
+                    Window.GetWindow(this).Opacity = 1;
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                /////////////////////
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucBonds);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucBonds);
+                SectionData.ExceptionMessage(ex, this);
+            }
+
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -966,7 +1050,10 @@ namespace POS.View.accounts
                 if (sender != null)
                     SectionData.StartAwait(grid_ucBonds);
 
-                List<ReportParameter> paramarr = new List<ReportParameter>();
+                if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+                {
+                    #region
+                    List<ReportParameter> paramarr = new List<ReportParameter>();
                 string addpath;
                 bool isArabic = ReportCls.checkLang();
                 if (isArabic)
@@ -994,6 +1081,10 @@ namespace POS.View.accounts
                     string filepath = saveFileDialog.FileName;
                     LocalReportExtensions.ExportToPDF(rep, filepath);
                 }
+                    #endregion
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
 
                 if (sender != null)
                     SectionData.EndAwait(grid_ucBonds);

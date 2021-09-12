@@ -2413,4 +2413,10 @@ Please add Email in setting</value>
   <data name="trPrevious" xml:space="preserve">
     <value>Previous</value>
   </data>
+  <data name="trLocationt" xml:space="preserve">
+    <value>Location</value>
+  </data>
+  <data name="trUnlock" xml:space="preserve">
+    <value>Unlock</value>
+  </data>
 </root>

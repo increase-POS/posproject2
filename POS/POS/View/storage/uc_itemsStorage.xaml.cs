@@ -134,16 +134,16 @@ namespace POS.View.storage
                     SectionData.StartAwait(grid_main);
 
                 //if (itemLocationList is null)
-                if (tgl_IsActive.IsChecked == true)
-                {
-                    await refreshItemsLocations();
-                    clearInputs();
-                }
-                else
-                {
-                    await refreshFreeZoneItemsLocations();
-                    clearInputs();
-                }
+                //if (tgl_IsActive.IsChecked == true)
+                //{
+                //    await refreshItemsLocations();
+                //    clearInputs();
+                //}
+                //else
+                //{
+                //    await refreshFreeZoneItemsLocations();
+                //    clearInputs();
+                //}
 
 
                 searchText = tb_search.Text.ToLower();
@@ -164,43 +164,8 @@ namespace POS.View.storage
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-        private void Tgl_IsActive_Checked(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
+       
 
-                Tb_search_TextChanged(null, null);
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
-        private   void Tgl_IsActive_Unchecked(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-
-                Tb_search_TextChanged(null, null);
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
         private async Task refreshItemsLocations()
         {
             itemLocationList = await itemLocation.get(MainWindow.branchID.Value);
@@ -421,10 +386,10 @@ namespace POS.View.storage
                                 else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
                                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
-                                if (tgl_IsActive.IsChecked == true)
-                                    await refreshItemsLocations();
-                                else
-                                    await refreshFreeZoneItemsLocations();
+                                //if (tgl_IsActive.IsChecked == true)
+                                //    await refreshItemsLocations();
+                                //else
+                                //    await refreshFreeZoneItemsLocations();
 
                                 clearInputs();
                             }
@@ -484,22 +449,22 @@ namespace POS.View.storage
                         gd_date.Visibility = Visibility.Visible;
                     else
                         gd_date.Visibility = Visibility.Collapsed;
-                    if (tgl_IsActive.IsChecked == true)
-                    {
-                        tb_itemName.IsReadOnly = true;
-                        dp_endDate.IsEnabled = false;
-                        dp_startDate.IsEnabled = false;
-                        cb_section.SelectedValue = itemLocation.sectionId;
-                        await refreshLocations();
-                        cb_XYZ.SelectedValue = itemLocation.locationId;
-                    }
-                    else
-                    {
-                        dp_endDate.IsEnabled = true;
-                        dp_startDate.IsEnabled = true;
-                        cb_section.SelectedIndex = -1;
-                        cb_XYZ.SelectedIndex = -1;
-                    }
+                    //if (tgl_IsActive.IsChecked == true)
+                    //{
+                    //    tb_itemName.IsReadOnly = true;
+                    //    dp_endDate.IsEnabled = false;
+                    //    dp_startDate.IsEnabled = false;
+                    //    cb_section.SelectedValue = itemLocation.sectionId;
+                    //    await refreshLocations();
+                    //    cb_XYZ.SelectedValue = itemLocation.locationId;
+                    //}
+                    //else
+                    //{
+                    //    dp_endDate.IsEnabled = true;
+                    //    dp_startDate.IsEnabled = true;
+                    //    cb_section.SelectedIndex = -1;
+                    //    cb_XYZ.SelectedIndex = -1;
+                    //}
 
                 }
                 if (sender != null)
@@ -746,5 +711,17 @@ namespace POS.View.storage
             }
             Window.GetWindow(this).Opacity = 1;
         }
+
+        private void Btn_locked_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void search_Checking(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+      
     }
 }

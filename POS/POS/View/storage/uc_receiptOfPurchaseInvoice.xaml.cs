@@ -61,7 +61,7 @@ namespace POS.View.storage
 
         Invoice invoiceModel = new Invoice();
         Invoice invoice = new Invoice();
-
+        List<Invoice> invoices;
         List<ItemTransfer> invoiceItems;
         List<ItemTransfer> mainInvoiceItems;
         ItemLocation itemLocationModel = new ItemLocation();
@@ -70,14 +70,15 @@ namespace POS.View.storage
         IEnumerable<Agent> vendors;
 
         //Branch branchModel = new Branch();
-        IEnumerable<Branch> branches;
+       // IEnumerable<Branch> branches;
         // for barcode
         DateTime _lastKeystroke = new DateTime(0);
         static private string _BarcodeStr = "";
         static private object _Sender;
         //for bill details
         static private int _SequenceNum = 0;
-        static private string _InvoiceType = "pbd"; // purchase bounce draft
+        static private int _invoiceId;
+        static private string _InvoiceType = "pbw"; // purchase bounce wait
         static private decimal _Count = 0;
         //tglItemState
         private static DispatcherTimer timer;
@@ -376,7 +377,7 @@ namespace POS.View.storage
                         {
                             txt_titleDataGridInvoice.Text = MainWindow.resourcemanager.GetString("trReturnedInvoice");
                             brd_count.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D22A17"));
-                            _InvoiceType = "pbd";
+                            _InvoiceType = "pbw";
                         }
                         else if (_InvoiceType == "pw")
                         {
@@ -465,7 +466,8 @@ namespace POS.View.storage
                     wd_invoice w = new wd_invoice();
 
                     // sale invoices
-                    w.invoiceType = "pbw";
+                    string invoiceType = "pbw";
+                    w.invoiceType = invoiceType;
                     w.invoiceStatus = "return";
                     w.branchId = MainWindow.branchID.Value;
 
@@ -476,9 +478,8 @@ namespace POS.View.storage
                         if (w.invoice != null)
                         {
                             invoice = w.invoice;
-                            this.DataContext = invoice;
-
-                            _InvoiceType = "pbd";
+                            _invoiceId = invoice.invoiceId;
+                            _InvoiceType = invoice.invType;
                             setNotifications();
                             // set title to bill
                             txt_titleDataGridInvoice.Text = MainWindow.resourcemanager.GetString("trReturnedInvoice");
@@ -487,6 +488,8 @@ namespace POS.View.storage
                             brd_count.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D22A17"));
                             await fillInvoiceInputs(invoice);
                             mainInvoiceItems = invoiceItems;
+                            invoices = await invoice.getBranchInvoices(invoiceType, 0, MainWindow.branchID.Value);
+                            navigateBtnActivate();
                         }
                     }
                     Window.GetWindow(this).Opacity = 1;
@@ -530,17 +533,18 @@ namespace POS.View.storage
         private void clearInvoice()
         {
           
-                _SequenceNum = 0;
-                _Count = 0;
-                _InvoiceType = "pbd";
-                invoice = new Invoice();
-                txt_branch.Text = "";
-                txt_invNumber.Text = "";
-                billDetails.Clear();
-                tb_count.Text = "";
-                refrishBillDetails();
-                inputEditable();
-            
+            _SequenceNum = 0;
+            _Count = 0;
+            _InvoiceType = "pbw";
+            invoice = new Invoice();
+            txt_branch.Text = "";
+            txt_invNumber.Text = "";
+            billDetails.Clear();
+            tb_count.Text = "";
+            refrishBillDetails();
+            inputEditable();
+            btn_next.Visibility = Visibility.Collapsed;
+            btn_previous.Visibility = Visibility.Collapsed;
         }
         private void Cbm_unitItemDetails_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -698,7 +702,8 @@ namespace POS.View.storage
                     wd_invoice w = new wd_invoice();
 
                     // sale invoices
-                    w.invoiceType = "pw";
+                    string invoiceType = "pw";
+                    w.invoiceType = invoiceType;
                     w.branchId = MainWindow.branchID.Value;
 
                     w.title = MainWindow.resourcemanager.GetString("trInvoices");
@@ -708,9 +713,9 @@ namespace POS.View.storage
                         if (w.invoice != null)
                         {
                             invoice = w.invoice;
-                            this.DataContext = invoice;
 
                             _InvoiceType = invoice.invType;
+                            _invoiceId = invoice.invoiceId;
                             setNotifications();
                             // set title to bill
                             txt_titleDataGridInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaseInvoice");
@@ -719,6 +724,8 @@ namespace POS.View.storage
                             // orange #FFA926 red #D22A17
                             brd_count.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
                             await fillInvoiceInputs(invoice);
+                            invoices = await invoice.getBranchInvoices(invoiceType,0, MainWindow.branchID.Value);
+                            navigateBtnActivate();
                         }
                     }
                     Window.GetWindow(this).Opacity = 1;
@@ -794,6 +801,8 @@ namespace POS.View.storage
                 dg_billDetails.Columns[0].Visibility = Visibility.Collapsed; //make delete column visible
                 dg_billDetails.Columns[4].IsReadOnly = true; //make count editable
             }
+            btn_next.Visibility = Visibility.Visible;
+            btn_previous.Visibility = Visibility.Visible;
         }
 
         private void Dg_billDetails_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
@@ -828,7 +837,7 @@ namespace POS.View.storage
 
                     oldCount = row.Count;
 
-                    if (_InvoiceType == "pbd")
+                    if (_InvoiceType == "pbw")
                     {
                         ItemTransfer item = mainInvoiceItems.ToList().Find(i => i.itemUnitId == row.itemUnitId);
                         if (newCount > item.quantity)
@@ -870,7 +879,7 @@ namespace POS.View.storage
                 {
                     if (_InvoiceType == "pw") //p  wait purchase invoice
                         await receiptInvoice();
-                    else if (_InvoiceType == "pbd")
+                    else if (_InvoiceType == "pbw")
                         await returnInvoice("pb");
                 }
 
@@ -1070,7 +1079,43 @@ namespace POS.View.storage
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+        #region navigation buttons
+        private void navigateBtnActivate()
+        {
+            int index = invoices.IndexOf(invoices.Where(x => x.invoiceId == _invoiceId).FirstOrDefault());
+            if (index == invoices.Count - 1)
+                btn_next.IsEnabled = false;
+            else
+                btn_next.IsEnabled = true;
 
-        
+            if (index == 0)
+                btn_previous.IsEnabled = false;
+            else
+                btn_previous.IsEnabled = true;
+        }
+        private async void Btn_next_Click(object sender, RoutedEventArgs e)
+        {
+            int index = invoices.IndexOf(invoices.Where(x => x.invoiceId == _invoiceId).FirstOrDefault());
+            index++;
+            clearInvoice();
+            invoice = invoices[index];
+            _InvoiceType = invoice.invType;
+            _invoiceId = invoice.invoiceId;
+            navigateBtnActivate();
+            await fillInvoiceInputs(invoice);
+        }
+        private async void Btn_previous_Click(object sender, RoutedEventArgs e)
+        {
+            int index = invoices.IndexOf(invoices.Where(x => x.invoiceId == _invoiceId).FirstOrDefault());
+            index--;
+            clearInvoice();
+            invoice = invoices[index];
+            _InvoiceType = invoice.invType;
+            _invoiceId = invoice.invoiceId;
+            navigateBtnActivate();
+            await fillInvoiceInputs(invoice);
+        }
+        #endregion
+
     }
 }

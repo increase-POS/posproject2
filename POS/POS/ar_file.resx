@@ -2398,4 +2398,10 @@
   <data name="trPrevious" xml:space="preserve">
     <value>السابق</value>
   </data>
+  <data name="trLocationt" xml:space="preserve">
+    <value>مكان التخزين</value>
+  </data>
+  <data name="trUnlock" xml:space="preserve">
+    <value>إلغاء الحجز</value>
+  </data>
 </root>

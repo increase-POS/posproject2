@@ -34,8 +34,8 @@ namespace POS.Classes
         public string itemSerial { get; set; }
         public string unitName { get; set; }
         public string barcode { get; set; }    
-        public string itemType { get; set; }  
-
+        public string itemType { get; set; }
+        public bool isActive { get; set; }
     }
     public  class CouponInvoice
     {

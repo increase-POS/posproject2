@@ -67,11 +67,13 @@ namespace POS.View.storage
         ItemLocation itemLocationModel = new ItemLocation();
         Invoice invoice = new Invoice();
         Invoice generatedInvoice = new Invoice();
+        List<Invoice> invoices;
         List<ItemTransfer> invoiceItems;
         static private string _ProcessType = "imd"; //draft import
 
         static private int _SequenceNum = 0;
         static private int _Count = 0;
+        static private int _invoiceId;
         // for barcode
         DateTime _lastKeystroke = new DateTime(0);
         static private string _BarcodeStr = "";
@@ -557,6 +559,7 @@ namespace POS.View.storage
                     {
                         invoice = w.invoice;
                         _ProcessType = invoice.invType;
+                        _invoiceId = invoice.invoiceId;
                         setNotifications();
                         await fillOrderInputs(invoice);
                         if (_ProcessType == "im")// set title to bill
@@ -569,6 +572,8 @@ namespace POS.View.storage
                             //   mainInvoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceMainId.Value);
 
                         }
+                        invoices = await invoice.getBranchInvoices(w.invoiceType, 0, MainWindow.branchID.Value);
+                        navigateBtnActivate();
                     }
                 }
                 Window.GetWindow(this).Opacity = 1;
@@ -605,8 +610,11 @@ namespace POS.View.storage
                         {
                             invoice = w.invoice;
                             _ProcessType = invoice.invType;
+                            _invoiceId = invoice.invoiceId;
                             setNotifications();
                             await fillOrderInputs(invoice);
+                            invoices = await invoice.getBranchInvoices(w.invoiceType, 0,MainWindow.branchID.Value);
+                            navigateBtnActivate();
                         }
                     }
                     Window.GetWindow(this).Opacity = 1;
@@ -884,6 +892,8 @@ namespace POS.View.storage
             SectionData.clearComboBoxValidate(cb_branch, p_errorBranch);
             refrishBillDetails();
             inputEditable();
+            btn_next.Visibility = Visibility.Collapsed;
+            btn_previous.Visibility = Visibility.Collapsed;
         }
         private async Task saveDraft()
         {
@@ -999,10 +1009,11 @@ namespace POS.View.storage
 
                 Window.GetWindow(this).Opacity = 0.2;
                 wd_invoice w = new wd_invoice();
-
-                w.invoiceType = "imd ,exd";
+                string  invoiceType = "imd ,exd";
+                int duration = 2;
+                w.invoiceType = invoiceType;
                 w.userId = MainWindow.userLogin.userId;
-                w.duration = 2; // view drafts which updated during 2 last days 
+                w.duration = duration; // view drafts which updated during 2 last days 
                 w.title = MainWindow.resourcemanager.GetString("trDrafts");
                 // w.branchId = MainWindow.branchID.Value;
 
@@ -1011,9 +1022,8 @@ namespace POS.View.storage
                     if (w.invoice != null)
                     {
                         invoice = w.invoice;
-                        //this.DataContext = invoice;
-                        //  mainInvoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceMainId.Value);
                         _ProcessType = invoice.invType;
+                        _invoiceId = invoice.invoiceId;
                         setNotifications();
                         await fillOrderInputs(invoice);
                         if (_ProcessType == "imd")// set title to bill
@@ -1026,6 +1036,8 @@ namespace POS.View.storage
                             //   mainInvoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceMainId.Value);
 
                         }
+                        invoices = await invoice.GetInvoicesByCreator(invoiceType, MainWindow.userLogin.userId, duration);
+                        navigateBtnActivate();
                     }
                 }
                 Window.GetWindow(this).Opacity = 1;
@@ -1138,6 +1150,8 @@ namespace POS.View.storage
                 tb_barcode.IsEnabled = false;
                 btn_save.IsEnabled = true;
             }
+            btn_next.Visibility = Visibility.Visible;
+            btn_previous.Visibility = Visibility.Visible;
         }
         private async Task save()
         {
@@ -1623,6 +1637,42 @@ namespace POS.View.storage
             }
         }
 
-        
+        #region navigation buttons
+        private void navigateBtnActivate()
+        {
+            int index = invoices.IndexOf(invoices.Where(x => x.invoiceId == _invoiceId).FirstOrDefault());
+            if (index == invoices.Count - 1)
+                btn_next.IsEnabled = false;
+            else
+                btn_next.IsEnabled = true;
+
+            if (index == 0)
+                btn_previous.IsEnabled = false;
+            else
+                btn_previous.IsEnabled = true;
+        }
+        private async void Btn_next_Click(object sender, RoutedEventArgs e)
+        {
+            int index = invoices.IndexOf(invoices.Where(x => x.invoiceId == _invoiceId).FirstOrDefault());
+            index++;
+            clearProcess();
+            invoice = invoices[index];
+            _ProcessType = invoice.invType;
+            _invoiceId = invoice.invoiceId;
+            navigateBtnActivate();
+            await fillOrderInputs(invoice);
+        }
+        private async void Btn_previous_Click(object sender, RoutedEventArgs e)
+        {
+            int index = invoices.IndexOf(invoices.Where(x => x.invoiceId == _invoiceId).FirstOrDefault());
+            index--;
+            clearProcess();
+            invoice = invoices[index];
+            _ProcessType = invoice.invType;
+            _invoiceId = invoice.invoiceId;
+            navigateBtnActivate();
+            await fillOrderInputs(invoice);
+        }
+        #endregion
     }
 }

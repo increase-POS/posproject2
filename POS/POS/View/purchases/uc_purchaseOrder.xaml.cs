@@ -59,48 +59,7 @@ namespace POS.View.purchases
             }
         }
 
-        private async void Btn_purchaseOrder_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-                Window.GetWindow(this).Opacity = 0.2;
-                wd_invoice w = new wd_invoice();
-
-                w.invoiceType = "po";
-                w.userId = MainWindow.userLogin.userId;
-                w.duration = 1; // view purchase orders which created during  last one day 
-
-                w.title = MainWindow.resourcemanager.GetString("trOrders");
-
-                if (w.ShowDialog() == true)
-                {
-                    if (w.invoice != null)
-                    {
-                        invoice = w.invoice;
-                        _InvoiceType = invoice.invType;
-                        // notifications
-                        refreshDraftNotification();
-                        refreshDocCount(invoice.invoiceId);
-
-                        await fillInvoiceInputs(invoice);
-
-                        mainInvoiceItems = invoiceItems;
-                        txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaceOrder"); 
-                    }
-                }
-                Window.GetWindow(this).Opacity = 1;
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
+       
         string createPermission = "purchaseOrder_create";
         string reportsPermission = "purchaseOrder_reports";
         string sendEmailPermission = "purchaseOrder_sendEmail";
@@ -124,7 +83,7 @@ namespace POS.View.purchases
 
         Invoice invoiceModel = new Invoice();
         public Invoice invoice = new Invoice();
-
+        List<Invoice> invoices;
         List<ItemTransfer> invoiceItems;
         List<ItemTransfer> mainInvoiceItems;
         CatigoriesAndItemsView catigoriesAndItemsView = new CatigoriesAndItemsView();
@@ -144,6 +103,7 @@ namespace POS.View.purchases
 
         //for bill details
         static private int _SequenceNum = 0;
+        static private int _invoiceId;
         static private decimal _Sum = 0;
         static public string _InvoiceType = "pod"; // purchase order draft
         static private decimal _Count = 0;
@@ -232,6 +192,52 @@ namespace POS.View.purchases
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+        private async void Btn_purchaseOrder_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                Window.GetWindow(this).Opacity = 0.2;
+                wd_invoice w = new wd_invoice();
+                string invoiceType = "po";
+                int duration = 1;
+                w.invoiceType = invoiceType;
+                w.userId = MainWindow.userLogin.userId;
+                w.duration = duration; // view purchase orders which created during  last one day 
+
+                w.title = MainWindow.resourcemanager.GetString("trOrders");
+
+                if (w.ShowDialog() == true)
+                {
+                    if (w.invoice != null)
+                    {
+                        invoice = w.invoice;
+                        _InvoiceType = invoice.invType;
+                        _invoiceId = invoice.invoiceId;
+                        // notifications
+                        refreshDraftNotification();
+                        refreshDocCount(invoice.invoiceId);
+
+                        await fillInvoiceInputs(invoice);
+
+                        mainInvoiceItems = invoiceItems;
+                        txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaceOrder");
+                        invoices = await invoice.GetInvoicesByCreator(invoiceType, MainWindow.userID.Value, duration);
+                        navigateBtnActivate();
+                    }
+                }
+                Window.GetWindow(this).Opacity = 1;
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
         public async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             try
@@ -239,7 +245,6 @@ namespace POS.View.purchases
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
                 MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
-
 
                 // for pagination
                 MainWindow.mainWindow.KeyDown += HandleKeyPress;
@@ -666,7 +671,7 @@ namespace POS.View.purchases
 
         }
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
-        {
+        {//save
             try
             {
                 if (sender != null)
@@ -763,7 +768,8 @@ namespace POS.View.purchases
             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaseOrder");
             refrishBillDetails();
             inputEditable();
-
+            btn_next.Visibility = Visibility.Collapsed;
+            btn_previous.Visibility = Visibility.Collapsed;
         }
         #endregion
         private async void Btn_draft_Click(object sender, RoutedEventArgs e)
@@ -776,9 +782,11 @@ namespace POS.View.purchases
                 wd_invoice w = new wd_invoice();
 
                 // purchase drafts and purchase bounce drafts
-                w.invoiceType = "pod";
+                string invoiceType = "pod";
+                int duration = 2;
+                w.invoiceType = invoiceType;
                 w.userId = MainWindow.userLogin.userId;
-                w.duration = 2; // view drafts which created during 2 last days 
+                w.duration = duration; // view drafts which created during 2 last days 
 
                 w.title = MainWindow.resourcemanager.GetString("trDrafts");
 
@@ -788,13 +796,16 @@ namespace POS.View.purchases
                     {
                         invoice = w.invoice;
                         _InvoiceType = invoice.invType;
+                        _invoiceId = invoice.invoiceId;
                         // notifications
                         refreshDraftNotification();
                         refreshDocCount(invoice.invoiceId);
                         await fillInvoiceInputs(invoice);
 
                         mainInvoiceItems = invoiceItems;
-                        txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaceOrderDraft");                       
+                        txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaceOrderDraft");
+                        invoices = await invoice.GetInvoicesByCreator(invoiceType, MainWindow.userID.Value, duration);
+                        navigateBtnActivate();
                     }
                 }
                 Window.GetWindow(this).Opacity = 1;
@@ -915,6 +926,8 @@ namespace POS.View.purchases
                 tb_barcode.IsEnabled = false;
                 btn_save.IsEnabled = true;
             }
+            btn_next.Visibility = Visibility.Visible;
+            btn_previous.Visibility = Visibility.Visible;
         }
         private async void Btn_invoiceImage_Click(object sender, RoutedEventArgs e)
         {
@@ -1886,62 +1899,21 @@ namespace POS.View.purchases
         }
 
         private async void Btn_emailMessage_Click(object sender, RoutedEventArgs e)
-        {
+        {//email
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                if (MainWindow.groupObject.HasPermissionAction(sendEmailPermission, MainWindow.groupObjects, "one"))
+                //prInvoiceId = invoice.invoiceId;
+                //sendPurEmail();
+                ///////////////////////////////////
+                Thread t1 = new Thread(() =>
                 {
-                    SysEmails email = new SysEmails();
-                    EmailClass mailtosend = new EmailClass();
-                    email = await email.GetByBranchIdandSide((int)MainWindow.branchID, "mg");
-                    Agent toAgent = new Agent();
-                    toAgent = vendors.Where(x => x.agentId == invoice.agentId).FirstOrDefault();
-                    //  int? itemcount = invoiceItems.Count();
-                    if (email.emailId == 0)
-                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoEmailForThisDept"), animation: ToasterAnimation.FadeIn);
-                    else
-                    {
-                        if (invoice.invoiceId == 0)
-                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trThereIsNoOrderToSen"), animation: ToasterAnimation.FadeIn);
-                        else
-                        {
-                            if (invoiceItems == null || invoiceItems.Count() == 0)
-                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trThereIsNoItemsToSend"), animation: ToasterAnimation.FadeIn);
-                            else
-                            {
-                                if (toAgent.email.Trim() == "")
-                                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trTheVendorHasNoEmail"), animation: ToasterAnimation.FadeIn);
-                                else
-                                {
-                                    SetValues setvmodel = new SetValues();
+                    sendPurEmail();
+                });
+                t1.Start();
+                ////////////////////////////////////
 
-                                    string pdfpath = await SavePurOrderpdf();
-                                    mailtosend.AddAttachTolist(pdfpath);
-                                    List<SetValues> setvlist = new List<SetValues>();
-                                    setvlist = await setvmodel.GetBySetName("pur_order_email_temp");
-
-                                    mailtosend = mailtosend.fillOrderTempData(invoice, invoiceItems, email, toAgent, setvlist);
-
-                                    string msg = mailtosend.Sendmail();
-                                    if (msg == "Failure sending mail.")
-                                    {
-                                          Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoInternetConnection"), animation: ToasterAnimation.FadeIn);
-                                    }
-                                    else if (msg == "mailsent")
-                                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trMailSent"), animation: ToasterAnimation.FadeIn);
-                                    else
-                                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trMailNotSent"), animation: ToasterAnimation.FadeIn);
-
-
-                                }
-                            }
-                        }
-                    }
-                }
-                else
-                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -1951,6 +1923,158 @@ namespace POS.View.purchases
                     SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this);
             }
+            //try
+            //{
+            //    if (sender != null)
+            //        SectionData.StartAwait(grid_main);
+            //    if (MainWindow.groupObject.HasPermissionAction(sendEmailPermission, MainWindow.groupObjects, "one"))
+            //    {
+
+            //        SysEmails email = new SysEmails();
+            //        EmailClass mailtosend = new EmailClass();
+            //        email = await email.GetByBranchIdandSide((int)MainWindow.branchID, "mg");
+            //        Agent toAgent = new Agent();
+            //        toAgent = vendors.Where(x => x.agentId == invoice.agentId).FirstOrDefault();
+            //        //  int? itemcount = invoiceItems.Count();
+            //        if (email.emailId == 0)
+            //            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoEmailForThisDept"), animation: ToasterAnimation.FadeIn);
+            //        else
+            //        {
+            //            if (invoice.invoiceId == 0)
+            //                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trThereIsNoOrderToSen"), animation: ToasterAnimation.FadeIn);
+            //            else
+            //            {
+            //                if (invoiceItems == null || invoiceItems.Count() == 0)
+            //                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trThereIsNoItemsToSend"), animation: ToasterAnimation.FadeIn);
+            //                else
+            //                {
+            //                    if (toAgent.email.Trim() == "")
+            //                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trTheVendorHasNoEmail"), animation: ToasterAnimation.FadeIn);
+            //                    else
+            //                    {
+            //                        SetValues setvmodel = new SetValues();
+
+            //                        string pdfpath = await SavePurOrderpdf();
+            //                        mailtosend.AddAttachTolist(pdfpath);
+            //                        List<SetValues> setvlist = new List<SetValues>();
+            //                        setvlist = await setvmodel.GetBySetName("pur_order_email_temp");
+
+            //                        mailtosend = mailtosend.fillOrderTempData(invoice, invoiceItems, email, toAgent, setvlist);
+
+            //                        string msg = mailtosend.Sendmail();
+            //                        if (msg == "Failure sending mail.")
+            //                        {
+            //                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoInternetConnection"), animation: ToasterAnimation.FadeIn);
+            //                        }
+            //                        else if (msg == "mailsent")
+            //                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trMailSent"), animation: ToasterAnimation.FadeIn);
+            //                        else
+            //                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trMailNotSent"), animation: ToasterAnimation.FadeIn);
+
+
+            //                    }
+            //                }
+            //            }
+            //        }
+            //    }
+            //    else
+            //        Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_main);
+            //}
+            //catch (Exception ex)
+            //{
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_main);
+            //    SectionData.ExceptionMessage(ex, this);
+            //}
         }
+        public async void sendPurEmail()
+        {
+            SysEmails email = new SysEmails();
+            EmailClass mailtosend = new EmailClass();
+            email = await email.GetByBranchIdandSide((int)MainWindow.branchID, "mg");
+            Agent toAgent = new Agent();
+            toAgent = vendors.Where(x => x.agentId == invoice.agentId).FirstOrDefault();
+            //  int? itemcount = invoiceItems.Count();
+            if (email.emailId == 0)
+                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoEmailForThisDept"), animation: ToasterAnimation.FadeIn);
+            else
+            {
+                if (invoice.invoiceId == 0)
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trThereIsNoOrderToSen"), animation: ToasterAnimation.FadeIn);
+                else
+                {
+                    if (invoiceItems == null || invoiceItems.Count() == 0)
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trThereIsNoItemsToSend"), animation: ToasterAnimation.FadeIn);
+                    else
+                    {
+                        if (toAgent.email.Trim() == "")
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trTheVendorHasNoEmail"), animation: ToasterAnimation.FadeIn);
+                        else
+                        {
+                            SetValues setvmodel = new SetValues();
+
+                            string pdfpath = await SavePurOrderpdf();
+                            mailtosend.AddAttachTolist(pdfpath);
+                            List<SetValues> setvlist = new List<SetValues>();
+                            setvlist = await setvmodel.GetBySetName("pur_order_email_temp");
+
+                            mailtosend = mailtosend.fillOrderTempData(invoice, invoiceItems, email, toAgent, setvlist);
+                            this.Dispatcher.Invoke(new Action(() =>
+                            {
+                                string msg = mailtosend.Sendmail();
+                                if (msg == "Failure sending mail.")
+                                {
+                                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoInternetConnection"), animation: ToasterAnimation.FadeIn);
+                                }
+                                else if (msg == "mailsent")
+                                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trMailSent"), animation: ToasterAnimation.FadeIn);
+                                else
+                                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trMailNotSent"), animation: ToasterAnimation.FadeIn);
+                            }));
+
+                        }
+                    }
+                }
+            }
+        }
+        #region navigation buttons
+        private void navigateBtnActivate()
+        {
+            int index = invoices.IndexOf(invoices.Where(x => x.invoiceId == _invoiceId).FirstOrDefault());
+            if (index == invoices.Count - 1)
+                btn_next.IsEnabled = false;
+            else
+                btn_next.IsEnabled = true;
+
+            if (index == 0)
+                btn_previous.IsEnabled = false;
+            else
+                btn_previous.IsEnabled = true;
+        }
+        private async void Btn_next_Click(object sender, RoutedEventArgs e)
+        {
+            int index = invoices.IndexOf(invoices.Where(x => x.invoiceId == _invoiceId).FirstOrDefault());
+            index++;
+            clearInvoice();
+            invoice = invoices[index];
+            _InvoiceType = invoice.invType;
+            _invoiceId = invoice.invoiceId;
+            navigateBtnActivate();
+            await fillInvoiceInputs(invoice);
+        }
+        private async void Btn_previous_Click(object sender, RoutedEventArgs e)
+        {
+            int index = invoices.IndexOf(invoices.Where(x => x.invoiceId == _invoiceId).FirstOrDefault());
+            index--;
+            clearInvoice();
+            invoice = invoices[index];
+            _invoiceId = invoice.invoiceId;
+            _InvoiceType = invoice.invType;
+            navigateBtnActivate();
+            await fillInvoiceInputs(invoice);
+        }
+        #endregion
     }
 }

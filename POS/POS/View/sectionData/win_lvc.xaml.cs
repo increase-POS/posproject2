@@ -27,10 +27,12 @@ namespace POS.View.sectionData.Charts
         int selectedChart = 1;
         IEnumerable<Agent> agentsQuery;
         IEnumerable<Bank> banksQuery;
+        IEnumerable<Bonds> bondsQuery;
         IEnumerable<User> usersQuery;
         IEnumerable<Branch> branchesQuery;
         IEnumerable<Pos> possQuery;
         IEnumerable<Card> cardsQuery;
+        IEnumerable<Invoice> invoiceQuery;
         List<double> chartList;
         List<double> PiechartList;
         List<double> ColumnchartList;
@@ -63,6 +65,19 @@ namespace POS.View.sectionData.Charts
             {
                 InitializeComponent();
                 banksQuery = _banksQuery;
+                sectionDate = _sectionDate;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+        public win_lvc(IEnumerable<Bonds> _bondsQuery, int _sectionDate)
+        {
+            try
+            {
+                InitializeComponent();
+                bondsQuery = _bondsQuery;
                 sectionDate = _sectionDate;
             }
             catch (Exception ex)
@@ -106,6 +121,19 @@ namespace POS.View.sectionData.Charts
             {
                 InitializeComponent();
                 possQuery = _possQuery;
+                sectionDate = _sectionDate;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+        public win_lvc(IEnumerable<Invoice> _invoiceQuery, int _sectionDate)
+        {
+            try
+            {
+                InitializeComponent();
+                invoiceQuery = _invoiceQuery;
                 sectionDate = _sectionDate;
             }
             catch (Exception ex)
@@ -225,6 +253,18 @@ namespace POS.View.sectionData.Charts
                             chartList.Add(Draw);
                             label = "Pos count";
                         }
+                        else if (sectionDate == 6)
+                        {
+                            var Draw = bondsQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
+                            chartList.Add(Draw);
+                            label = "Pos count";
+                        }
+                        //else if (sectionDate == 7)
+                        //{
+                        //    var Draw = invoiceQuery.ToList().Where(c => c.cre > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
+                        //    chartList.Add(Draw);
+                        //    label = "Invoice count";
+                        //}
                         else
                         {
                             var Draw = cardsQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
@@ -288,6 +328,12 @@ namespace POS.View.sectionData.Charts
                         var Draw = possQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
                         chartList.Add(Draw);
                         label = "Pos count";
+                    }
+                    else if (sectionDate == 6)
+                    {
+                        var Draw = bondsQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
+                        chartList.Add(Draw);
+                        label = "Bondes count";
                     }
                     else
                     {
@@ -370,6 +416,12 @@ namespace POS.View.sectionData.Charts
                             PiechartList.Add(Draw);
                             label = "Pos count";
                         }
+                        else if (sectionDate == 6)
+                        {
+                            var Draw = bondsQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
+                            PiechartList.Add(Draw);
+                            label = "Bonde count";
+                        }
                         else
                         {
                             var Draw = cardsQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
@@ -432,6 +484,12 @@ namespace POS.View.sectionData.Charts
                         var Draw = possQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
                         PiechartList.Add(Draw);
                         label = "Pos count";
+                    }
+                    else if (sectionDate == 6)
+                    {
+                        var Draw = bondsQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
+                        PiechartList.Add(Draw);
+                        label = "Bonde count";
                     }
                     else
                     {
@@ -517,6 +575,12 @@ namespace POS.View.sectionData.Charts
                             ColumnchartList.Add(Draw);
                             label = "Pos count";
                         }
+                        else if (sectionDate == 6)
+                        {
+                            var Draw = bondsQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
+                            ColumnchartList.Add(Draw);
+                            label = "Bonde count";
+                        }
                         else
                         {
                             var Draw = cardsQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
@@ -580,6 +644,12 @@ namespace POS.View.sectionData.Charts
                         var Draw = possQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
                         ColumnchartList.Add(Draw);
                         label = "Pos count";
+                    }
+                    else if (sectionDate == 6)
+                    {
+                        var Draw = bondsQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
+                        ColumnchartList.Add(Draw);
+                        label = "Bonde count";
                     }
                     else
                     {
