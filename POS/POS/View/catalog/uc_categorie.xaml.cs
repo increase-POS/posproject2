@@ -1114,7 +1114,7 @@ namespace POS.View
                         {
                             r.taxes = decimal.Parse(SectionData.DecTostring(r.taxes));
                         }
-                        clsReports.categoryReport(categoriesQuery, rep, reppath);
+                        clsReports.categoryReport(categoriesQuery, rep, reppath, paramarr);
                         clsReports.setReportLanguage(paramarr);
                         clsReports.Header(paramarr);
 
@@ -1447,7 +1447,7 @@ namespace POS.View
             {
                 r.taxes = decimal.Parse(SectionData.DecTostring(r.taxes));
             }
-            clsReports.categoryReport(categoriesQuery, rep, reppath);
+            clsReports.categoryReport(categoriesQuery, rep, reppath, paramarr);
             clsReports.setReportLanguage(paramarr);
             clsReports.Header(paramarr);
 
@@ -1487,7 +1487,7 @@ namespace POS.View
 
             ReportCls.checkLang();
 
-            clsReports.categoryReport(categoriesQuery, rep, reppath);
+            clsReports.categoryReport(categoriesQuery, rep, reppath, paramarr);
             clsReports.setReportLanguage(paramarr);
             clsReports.Header(paramarr);
 
@@ -1523,7 +1523,7 @@ namespace POS.View
 
             ReportCls.checkLang();
 
-            clsReports.categoryReport(categoriesQuery, rep, reppath);
+            clsReports.categoryReport(categoriesQuery, rep, reppath, paramarr);
             clsReports.setReportLanguage(paramarr);
             clsReports.Header(paramarr);
 

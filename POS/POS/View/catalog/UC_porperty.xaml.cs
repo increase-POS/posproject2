@@ -828,7 +828,7 @@ namespace POS.View
 
                         ReportCls.checkLang();
 
-                        clsReports.properyReport(propertiesQuery, rep, reppath);
+                        clsReports.properyReport(propertiesQuery, rep, reppath, paramarr);
                         clsReports.setReportLanguage(paramarr);
                         clsReports.Header(paramarr);
 
@@ -900,7 +900,7 @@ namespace POS.View
 
             ReportCls.checkLang();
 
-            clsReports.properyReport(propertiesQuery, rep, reppath);
+            clsReports.properyReport(propertiesQuery, rep, reppath, paramarr);
             clsReports.setReportLanguage(paramarr);
             clsReports.Header(paramarr);
 
@@ -938,7 +938,7 @@ namespace POS.View
 
             ReportCls.checkLang();
 
-            clsReports.properyReport(propertiesQuery, rep, reppath);
+            clsReports.properyReport(propertiesQuery, rep, reppath, paramarr);
             clsReports.setReportLanguage(paramarr);
             clsReports.Header(paramarr);
 
@@ -970,7 +970,7 @@ namespace POS.View
 
             ReportCls.checkLang();
 
-            clsReports.properyReport(propertiesQuery, rep, reppath);
+            clsReports.properyReport(propertiesQuery, rep, reppath, paramarr);
             clsReports.setReportLanguage(paramarr);
             clsReports.Header(paramarr);
 

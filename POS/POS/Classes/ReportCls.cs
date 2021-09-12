@@ -15,6 +15,46 @@ namespace POS.Classes
     class ReportCls
     {
 
+        public static void clearFolder(string FolderName)
+        {
+            string filename = "";
+            DirectoryInfo dir = new DirectoryInfo(FolderName);
+
+            foreach (FileInfo fi in dir.GetFiles())
+            {
+                filename = fi.FullName;
+                if (!FileIsLocked(filename))
+                {
+                    fi.Delete();
+                }
+
+            }
+
+
+        }
+        public static bool FileIsLocked(string strFullFileName)
+        {
+            bool blnReturn = false;
+            FileStream fs = null;
+
+            try
+            {
+                fs = File.Open(strFullFileName, FileMode.OpenOrCreate, FileAccess.Read, FileShare.None);
+                fs.Close();
+            }
+            catch (IOException ex)
+            {
+                blnReturn = true;
+            }
+            finally
+            {
+                if (fs != null)
+                    fs.Close();
+            }
+            return blnReturn;
+
+        }
+
         public string PathUp(string path, int levelnum, string addtopath)
         {
             int pos1 = 0;
@@ -83,16 +123,16 @@ namespace POS.Classes
                 {
                     case "ShortDatePattern":
                         sdate = date.Value.ToString(@"dd/MM/yyyy");
-                    break;
+                        break;
                     case "LongDatePattern":
                         sdate = date.Value.ToString(@"dddd, MMMM d, yyyy");
-                    break;
+                        break;
                     case "MonthDayPattern":
                         sdate = date.Value.ToString(@"MMMM dd");
-                    break;
+                        break;
                     case "YearMonthPattern":
                         sdate = date.Value.ToString(@"MMMM yyyy");
-                    break;
+                        break;
                     default:
                         sdate = date.Value.ToString(@"dd/MM/yyyy");
                         break;
@@ -236,11 +276,11 @@ namespace POS.Classes
 
         public List<ReportParameter> fillPayReport(CashTransfer cashtrans)
         {
-          bool isArabic=  checkLang();
+            bool isArabic = checkLang();
             string title;
-          if ( cashtrans.transType=="p")
-          title = MainWindow.resourcemanagerreport.GetString("trPayVocher");
-          else
+            if (cashtrans.transType == "p")
+                title = MainWindow.resourcemanagerreport.GetString("trPayVocher");
+            else
                 title = MainWindow.resourcemanagerreport.GetString("trReceiptVoucher");
 
 
@@ -267,7 +307,7 @@ namespace POS.Classes
             string user_name = cashtrans.createUserName + " " + cashtrans.createUserLName;
             string job = "Employee"; //cashtrans.createUserJob;
             string pay_to;
-          
+
             if (cashtrans.side == "u")
             {
                 pay_to = cashtrans.usersName + " " + cashtrans.usersLName;
@@ -277,7 +317,7 @@ namespace POS.Classes
             {
                 pay_to = cashtrans.agentName;
             }
-            else if (cashtrans.side == "sh" )
+            else if (cashtrans.side == "sh")
             {
                 pay_to = cashtrans.shippingCompanyName;
             }
@@ -297,7 +337,7 @@ namespace POS.Classes
                 {
                     trans_num_txt = "Cheque Num:";
                 }
-               
+
                 //    MainWindow.resourcemanagerreport.GetString("trCheque");
             }
             else if (cashtrans.processType == "card")
@@ -312,7 +352,7 @@ namespace POS.Classes
                 {
                     trans_num_txt = "Transfer Num:";
                 }
-              
+
 
                 // card name and number
             }
@@ -336,7 +376,7 @@ namespace POS.Classes
                 }
 
 
-               
+
 
             }
 
@@ -505,7 +545,7 @@ namespace POS.Classes
             return content;
         }
 
-      public string GetpayInvoiceRdlcpath(Invoice invoice)
+        public string GetpayInvoiceRdlcpath(Invoice invoice)
         {
             string addpath;
             bool isArabic = ReportCls.checkLang();
@@ -541,10 +581,10 @@ namespace POS.Classes
         }
         public int GetpageHeight(int itemcount, int repheight)
         {
-           // int repheight = 457;
+            // int repheight = 457;
             int tableheight = 33 * itemcount;// 33 is cell height
-           
-      
+
+
             int totalheight = repheight + tableheight;
             return totalheight;
 
@@ -552,142 +592,37 @@ namespace POS.Classes
         public string GetreceiptInvoiceRdlcpath(Invoice invoice)
         {
             string addpath;
-            bool isArabic =checkLang();
+            bool isArabic = checkLang();
             if (isArabic)
             {
 
-                if (invoice.invType == "q"|| invoice.invType == "qd")
+                if (invoice.invType == "q" || invoice.invType == "qd")
                 {
                     addpath = @"\Reports\Sale\Ar\ArInvPurQtReport.rdlc";
                 }
-                else if(invoice.invType == "or" || invoice.invType == "ord")
+                else if (invoice.invType == "or" || invoice.invType == "ord")
                 {
                     addpath = @"\Reports\Sale\Ar\ArInvPurOrderReport.rdlc";
                 }
-                   else
-                {
-
-                     if (MainWindow.salePaperSize == "10cm")
-                    {
-                        addpath = @"\Reports\Sale\Ar\LargeSaleReport.rdlc";
-                        View.uc_receiptInvoice.width = 400;//400 =10cm
-                        View.uc_receiptInvoice.height = GetpageHeight(View.uc_receiptInvoice.itemscount, 500);
-
-                    }
-                    else if(MainWindow.salePaperSize == "8cm")
-                    {
-                        addpath = @"\Reports\Sale\Ar\MediumSaleReport.rdlc";
-                        View.uc_receiptInvoice.width = 315;//315 =8cm
-                        View.uc_receiptInvoice.height = GetpageHeight(View.uc_receiptInvoice.itemscount, 500);
-
-
-                    }
-                    else if (MainWindow.salePaperSize == "5.7cm")
-                    {
-                        addpath = @"\Reports\Sale\Ar\SmallSaleReport.rdlc";
-                        View.uc_receiptInvoice.width = 224;//224 =5.7cm
-                        View.uc_receiptInvoice.height = GetpageHeight(View.uc_receiptInvoice.itemscount, 460);
-
-                    }
-                    else //MainWindow.salePaperSize == "A4"
-                    {
-
-                        addpath = @"\Reports\Sale\Ar\ArInvPurReport.rdlc";
-                    }
-
-                    //   addpath = @"\Reports\Sale\Ar\LargeSaleReport.rdlc";
-                    //   addpath = @"\Reports\Sale\Ar\MediumSaleReport.rdlc";
-                    //   addpath = @"\Reports\Sale\Ar\SmallSaleReport.rdlc";
-                }
-
-            }
-            else
-            {
-                if (invoice.invType == "q" || invoice.invType == "qd")
-                {
-                    addpath = @"\Reports\Sale\En\InvPurQtReport.rdlc";
-                }
-                else if (invoice.invType == "or" || invoice.invType == "ord")
-                {
-                    addpath = @"\Reports\Sale\En\InvPurOrderReport.rdlc";
-                }
                 else
                 {
+
                     if (MainWindow.salePaperSize == "10cm")
                     {
-                        addpath = @"\Reports\Sale\En\LargeSaleReport.rdlc";
+                        addpath = @"\Reports\Sale\Ar\LargeSaleReport.rdlc";
                         View.uc_receiptInvoice.width = 400;//400 =10cm
                         View.uc_receiptInvoice.height = GetpageHeight(View.uc_receiptInvoice.itemscount, 500);
 
                     }
                     else if (MainWindow.salePaperSize == "8cm")
                     {
-                        addpath = @"\Reports\Sale\En\MediumSaleReport.rdlc";
-                        View.uc_receiptInvoice.width = 315;//315 =8cm
-                        View.uc_receiptInvoice.height = GetpageHeight(View.uc_receiptInvoice.itemscount, 500);
-
-                    }
-                    else if (MainWindow.salePaperSize == "5.7cm")
-                    {
-                        addpath = @"\Reports\Sale\En\SmallSaleReport.rdlc";
-                        View.uc_receiptInvoice.width = 224;//224 =5.7cm
-                        View.uc_receiptInvoice.height = GetpageHeight(View.uc_receiptInvoice.itemscount, 460);
-
-                    }
-                    else //MainWindow.salePaperSize == "A4"
-                    {
-
-                        addpath = @"\Reports\Sale\En\InvPurReport.rdlc";
-                    }
-                    //  addpath = @"\Reports\Sale\En\InvPurReport.rdlc";
-                    //    addpath = @"\Reports\Sale\En\LargeSaleReport.rdlc";
-                    //   addpath = @"\Reports\Sale\En\MediumSaleReport.rdlc";
-                   // addpath = @"\Reports\Sale\En\SmallSaleReport.rdlc";
-                }
-
-            }
-
-
-            //
-
-            string reppath = PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-            return reppath;
-        }
-
-        public string GetreceiptInvoiceRdlcpath(Invoice invoice,int isPreview)
-        {
-            string addpath;
-            bool isArabic = checkLang();
-            if (isArabic)
-            {
-
-                if ( (invoice.invType == "q" || invoice.invType == "qd") )
-                {
-                    addpath = @"\Reports\Sale\Ar\ArInvPurQtReport.rdlc";
-                }
-                else if (invoice.invType == "or" || invoice.invType == "ord" )
-                {
-                    addpath = @"\Reports\Sale\Ar\ArInvPurOrderReport.rdlc";
-                }
-                else
-                {
-
-                    if (MainWindow.salePaperSize == "10cm" && isPreview == 1)
-                    {
-                        addpath = @"\Reports\Sale\Ar\LargeSaleReport.rdlc";
-                        View.uc_receiptInvoice.width = 400;//400 =10cm
-                        View.uc_receiptInvoice.height = GetpageHeight(View.uc_receiptInvoice.itemscount, 500);
-
-                    }
-                    else if (MainWindow.salePaperSize == "8cm" && isPreview == 1)
-                    {
                         addpath = @"\Reports\Sale\Ar\MediumSaleReport.rdlc";
                         View.uc_receiptInvoice.width = 315;//315 =8cm
                         View.uc_receiptInvoice.height = GetpageHeight(View.uc_receiptInvoice.itemscount, 500);
 
 
                     }
-                    else if (MainWindow.salePaperSize == "5.7cm" && isPreview == 1)
+                    else if (MainWindow.salePaperSize == "5.7cm")
                     {
                         addpath = @"\Reports\Sale\Ar\SmallSaleReport.rdlc";
                         View.uc_receiptInvoice.width = 224;//224 =5.7cm
@@ -758,6 +693,111 @@ namespace POS.Classes
             string reppath = PathUp(Directory.GetCurrentDirectory(), 2, addpath);
             return reppath;
         }
+
+        public string GetreceiptInvoiceRdlcpath(Invoice invoice, int isPreview)
+        {
+            string addpath;
+            bool isArabic = checkLang();
+            if (isArabic)
+            {
+
+                if ((invoice.invType == "q" || invoice.invType == "qd"))
+                {
+                    addpath = @"\Reports\Sale\Ar\ArInvPurQtReport.rdlc";
+                }
+                else if (invoice.invType == "or" || invoice.invType == "ord")
+                {
+                    addpath = @"\Reports\Sale\Ar\ArInvPurOrderReport.rdlc";
+                }
+                else
+                {
+
+                    if (MainWindow.salePaperSize == "10cm" && isPreview == 1)
+                    {
+                        addpath = @"\Reports\Sale\Ar\LargeSaleReport.rdlc";
+                        View.uc_receiptInvoice.width = 400;//400 =10cm
+                        View.uc_receiptInvoice.height = GetpageHeight(View.uc_receiptInvoice.itemscount, 500);
+
+                    }
+                    else if (MainWindow.salePaperSize == "8cm" && isPreview == 1)
+                    {
+                        addpath = @"\Reports\Sale\Ar\MediumSaleReport.rdlc";
+                        View.uc_receiptInvoice.width = 315;//315 =8cm
+                        View.uc_receiptInvoice.height = GetpageHeight(View.uc_receiptInvoice.itemscount, 500);
+
+
+                    }
+                    else if (MainWindow.salePaperSize == "5.7cm" && isPreview == 1)
+                    {
+                        addpath = @"\Reports\Sale\Ar\SmallSaleReport.rdlc";
+                        View.uc_receiptInvoice.width = 224;//224 =5.7cm
+                        View.uc_receiptInvoice.height = GetpageHeight(View.uc_receiptInvoice.itemscount, 460);
+
+                    }
+                    else //MainWindow.salePaperSize == "A4"
+                    {
+
+                        addpath = @"\Reports\Sale\Ar\ArInvPurReport.rdlc";
+                    }
+
+                    //   addpath = @"\Reports\Sale\Ar\LargeSaleReport.rdlc";
+                    //   addpath = @"\Reports\Sale\Ar\MediumSaleReport.rdlc";
+                    //   addpath = @"\Reports\Sale\Ar\SmallSaleReport.rdlc";
+                }
+
+            }
+            else
+            {
+                if (invoice.invType == "q" || invoice.invType == "qd")
+                {
+                    addpath = @"\Reports\Sale\En\InvPurQtReport.rdlc";
+                }
+                else if (invoice.invType == "or" || invoice.invType == "ord")
+                {
+                    addpath = @"\Reports\Sale\En\InvPurOrderReport.rdlc";
+                }
+                else
+                {
+                    if (MainWindow.salePaperSize == "10cm" && isPreview == 1)
+                    {
+                        addpath = @"\Reports\Sale\En\LargeSaleReport.rdlc";
+                        View.uc_receiptInvoice.width = 400;//400 =10cm
+                        View.uc_receiptInvoice.height = GetpageHeight(View.uc_receiptInvoice.itemscount, 500);
+
+                    }
+                    else if (MainWindow.salePaperSize == "8cm" && isPreview == 1)
+                    {
+                        addpath = @"\Reports\Sale\En\MediumSaleReport.rdlc";
+                        View.uc_receiptInvoice.width = 315;//315 =8cm
+                        View.uc_receiptInvoice.height = GetpageHeight(View.uc_receiptInvoice.itemscount, 500);
+
+                    }
+                    else if (MainWindow.salePaperSize == "5.7cm" && isPreview == 1)
+                    {
+                        addpath = @"\Reports\Sale\En\SmallSaleReport.rdlc";
+                        View.uc_receiptInvoice.width = 224;//224 =5.7cm
+                        View.uc_receiptInvoice.height = GetpageHeight(View.uc_receiptInvoice.itemscount, 460);
+
+                    }
+                    else //MainWindow.salePaperSize == "A4"
+                    {
+
+                        addpath = @"\Reports\Sale\En\InvPurReport.rdlc";
+                    }
+                    //  addpath = @"\Reports\Sale\En\InvPurReport.rdlc";
+                    //    addpath = @"\Reports\Sale\En\LargeSaleReport.rdlc";
+                    //   addpath = @"\Reports\Sale\En\MediumSaleReport.rdlc";
+                    // addpath = @"\Reports\Sale\En\SmallSaleReport.rdlc";
+                }
+
+            }
+
+
+            //
+
+            string reppath = PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+            return reppath;
+        }
         public List<ReportParameter> fillPurInvReport(Invoice invoice, List<ReportParameter> paramarr)
         {
             checkLang();
@@ -773,8 +813,9 @@ namespace POS.Classes
                 totalafterdis = 0;
             }
             string userName = invoice.uuserName + " " + invoice.uuserLast;
-            string agentName = (invoice.agentCompany != null || invoice.agentCompany != "") ? invoice.agentCompany.Trim()
-                : ((invoice.agentName != null || invoice.agentName != "") ? invoice.agentName.Trim() : "-");
+            // string agentName = (invoice.agentCompany != null || invoice.agentCompany != "") ? invoice.agentCompany.Trim()
+            //    : ((invoice.agentName != null || invoice.agentName != "") ? invoice.agentName.Trim() : "-");
+            string agentName = "-";
 
             //    decimal taxval = calcpercentval("2", invoice.tax, totalafterdis);
             // decimal totalnet = totalafterdis + taxval;
@@ -793,9 +834,9 @@ namespace POS.Classes
             paramarr.Add(new ReportParameter("agentName", agentName));
             paramarr.Add(new ReportParameter("total", DecTostring(invoice.total) == null ? "-" : DecTostring(invoice.total)));
 
-          //  paramarr.Add(new ReportParameter("discountValue", DecTostring(disval) == null ? "-" : DecTostring(disval)));
+            //  paramarr.Add(new ReportParameter("discountValue", DecTostring(disval) == null ? "-" : DecTostring(disval)));
             paramarr.Add(new ReportParameter("discountValue", invoice.discountValue == null ? "0" : DecTostring(invoice.discountValue)));
-            paramarr.Add(new ReportParameter("discountType", invoice.discountType == null ? "1" :invoice.discountType.ToString()));
+            paramarr.Add(new ReportParameter("discountType", invoice.discountType == null ? "1" : invoice.discountType.ToString()));
 
             paramarr.Add(new ReportParameter("totalNet", DecTostring(invoice.totalNet) == null ? "-" : DecTostring(invoice.totalNet)));
             paramarr.Add(new ReportParameter("paid", DecTostring(invoice.paid) == null ? "-" : DecTostring(invoice.paid)));
@@ -841,7 +882,7 @@ namespace POS.Classes
 
                 if (discountType == null || discountType == "-1" || discountType == "0" || discountType == "1")
                 {
-                    disval =(decimal) discountValue;
+                    disval = (decimal)discountValue;
                 }
                 else
 
@@ -870,7 +911,7 @@ namespace POS.Classes
             string agentName = (invoice.agentCompany != null || invoice.agentCompany != "") ? invoice.agentCompany.Trim()
             : ((invoice.agentName != null || invoice.agentName != "") ? invoice.agentName.Trim() : "-");
             string userName = invoice.uuserName + " " + invoice.uuserLast;
-       
+
             //  rep.DataSources.Add(new ReportDataSource("DataSetBank", banksQuery));
             decimal disval = calcpercentval(invoice.discountType, invoice.discountValue, invoice.total);
             decimal totalafterdis;
@@ -888,9 +929,9 @@ namespace POS.Classes
 
             // decimal totalnet = totalafterdis + taxval;
             //  percentValue(decimal ? value, decimal ? percent);
-          
-            paramarr.Add(new ReportParameter("Notes", (invoice.notes == null || invoice.notes =="") ? "-" : invoice.notes.Trim()));
-            paramarr.Add(new ReportParameter("invNumber", (invoice.invNumber == null|| invoice.invNumber == "" ) ? "-" : invoice.invNumber.ToString()));//paramarr[6]
+
+            paramarr.Add(new ReportParameter("Notes", (invoice.notes == null || invoice.notes == "") ? "-" : invoice.notes.Trim()));
+            paramarr.Add(new ReportParameter("invNumber", (invoice.invNumber == null || invoice.invNumber == "") ? "-" : invoice.invNumber.ToString()));//paramarr[6]
             paramarr.Add(new ReportParameter("invoiceId", invoice.invoiceId.ToString()));
 
             paramarr.Add(new ReportParameter("invDate", DateToString(invoice.updateDate) == null ? "-" : DateToString(invoice.invDate)));
@@ -909,10 +950,10 @@ namespace POS.Classes
             paramarr.Add(new ReportParameter("paid", DecTostring(invoice.paid) == null ? "-" : DecTostring(invoice.paid)));
             paramarr.Add(new ReportParameter("deserved", DecTostring(invoice.deserved) == null ? "-" : DecTostring(invoice.deserved)));
             //paramarr.Add(new ReportParameter("deservedDate", invoice.deservedDate.ToString() == null ? "-" : invoice.deservedDate.ToString()));
-            paramarr.Add(new ReportParameter("deservedDate", invoice.deservedDate.ToString() == null ? "-" :DateToString(invoice.deservedDate)));
+            paramarr.Add(new ReportParameter("deservedDate", invoice.deservedDate.ToString() == null ? "-" : DateToString(invoice.deservedDate)));
 
 
-            paramarr.Add(new ReportParameter("tax", DecTostring(invoice.tax)==null ? "0" : DecTostring(invoice.tax)));
+            paramarr.Add(new ReportParameter("tax", DecTostring(invoice.tax) == null ? "0" : DecTostring(invoice.tax)));
             string invNum = invoice.invNumber == null ? "-" : invoice.invNumber.ToString();
             paramarr.Add(new ReportParameter("barcodeimage", "file:\\" + BarcodeToImage(invNum, "invnum")));
             paramarr.Add(new ReportParameter("Currency", MainWindow.Currency));

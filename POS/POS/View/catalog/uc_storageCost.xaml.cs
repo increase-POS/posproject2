@@ -222,7 +222,7 @@ namespace POS.View.catalog
                         {
                             r.cost = decimal.Parse(SectionData.DecTostring(r.cost));
                         }
-                        clsReports.storageCostReport(storageCostQuery, rep, reppath);
+                        clsReports.storageCostReport(storageCostQuery, rep, reppath, paramarr);
                         clsReports.setReportLanguage(paramarr);
                         clsReports.Header(paramarr);
 
@@ -703,7 +703,7 @@ namespace POS.View.catalog
 
             ReportCls.checkLang();
 
-            clsReports.storageCostReport(storageCostQuery, rep, reppath);
+            clsReports.storageCostReport(storageCostQuery, rep, reppath, paramarr);
             clsReports.setReportLanguage(paramarr);
             clsReports.Header(paramarr);
 
@@ -749,7 +749,7 @@ namespace POS.View.catalog
                 {
                     r.cost = decimal.Parse(SectionData.DecTostring(r.cost));
                 }
-                clsReports.storageCostReport(storageCostQuery, rep, reppath);
+                clsReports.storageCostReport(storageCostQuery, rep, reppath, paramarr);
             clsReports.setReportLanguage(paramarr);
             clsReports.Header(paramarr);
 
@@ -790,7 +790,7 @@ namespace POS.View.catalog
 
             ReportCls.checkLang();
 
-            clsReports.storageCostReport(storageCostQuery, rep, reppath);
+            clsReports.storageCostReport(storageCostQuery, rep, reppath, paramarr);
             clsReports.setReportLanguage(paramarr);
             clsReports.Header(paramarr);
 

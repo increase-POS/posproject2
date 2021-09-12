@@ -160,3 +160,4 @@ C:\Users\HP\Documents\GitHub\posproject2\POS\netoaster\obj\Debug\netoaster.dll
 C:\Users\HP\Documents\GitHub\posproject2\POS\netoaster\obj\Debug\netoaster.pdb
 C:\Users\HP\Documents\GitHub\posproject2\POS\netoaster\obj\Debug\netoaster.csprojAssemblyReference.cache
 E:\GitHub\posproject2\POS\netoaster\obj\Debug\netoaster.csprojAssemblyReference.cache
+D:\myproj\posproject2\POS\netoaster\obj\Debug\netoaster.csprojAssemblyReference.cache
