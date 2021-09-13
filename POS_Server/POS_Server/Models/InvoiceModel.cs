@@ -46,7 +46,8 @@ namespace POS_Server.Models
         public int invStatusId { get; set; }
         public decimal manualDiscountValue { get; set; }
         public string manualDiscountType { get; set; }
-
+        public bool isActive { get; set; }
+        
     }
 
     public class CouponInvoiceModel

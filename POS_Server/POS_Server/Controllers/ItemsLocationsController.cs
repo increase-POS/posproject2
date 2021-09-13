@@ -36,7 +36,7 @@ namespace POS_Server.Controllers
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    var docImageList = (from b in entity.itemsLocations where b.quantity > 0
+                    var docImageList = (from b in entity.itemsLocations where b.quantity > 0 && b.invoiceId == null
                                         join u in entity.itemsUnits on b.itemUnitId equals u.itemUnitId
                                         join i in entity.items on u.itemId equals i.itemId
                                         join l in entity.locations on b.locationId equals l.locationId
@@ -62,6 +62,64 @@ namespace POS_Server.Controllers
                                             sectionId = s.sectionId,
                                             itemType = i.type,
                                             unitName = u.units.name,
+                                            invoiceId = b.invoiceId,
+                                        }).ToList().OrderBy(x => x.location).ToList();
+
+                    if (docImageList == null)
+                        return NotFound();
+                    else
+                        return Ok(docImageList);
+                }
+            }
+            //else
+            return NotFound();
+        }
+        [HttpGet]
+        [Route("GetLockedItems")]
+        public IHttpActionResult GetLockedItems(int branchId)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var docImageList = (from b in entity.itemsLocations where b.quantity > 0 && b.invoiceId != null
+                                        join u in entity.itemsUnits on b.itemUnitId equals u.itemUnitId
+                                        join i in entity.items on u.itemId equals i.itemId
+                                        join l in entity.locations on b.locationId equals l.locationId
+                                        join s in entity.sections on l.sectionId equals s.sectionId where s.branchId == branchId && s.isFreeZone != 1
+
+                                        select new ItemLocationModel
+                                        {
+                                            createDate = b.createDate,
+                                            createUserId = b.createUserId,
+                                            endDate = b.endDate,
+                                            itemsLocId = b.itemsLocId,
+                                            itemUnitId = b.itemUnitId,
+                                            locationId = b.locationId,
+                                            note = b.note,
+                                            quantity = b.quantity,
+                                            startDate = b.startDate,
+
+                                            updateDate = b.updateDate,
+                                            updateUserId = b.updateUserId,
+                                            itemName = i.name,
+                                            location = l.x + l.y + l.z,
+                                            section = s.name,
+                                            sectionId = s.sectionId,
+                                            itemType = i.type,
+                                            unitName = u.units.name,
+                                            invoiceId = b.invoiceId,
+                                            invNumber = b.invoices.invNumber,
                                         }).ToList().OrderBy(x => x.location).ToList();
 
                     if (docImageList == null)
@@ -91,7 +149,7 @@ namespace POS_Server.Controllers
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    var docImageList = (from b in entity.itemsLocations where b.quantity > 0
+                    var docImageList = (from b in entity.itemsLocations where b.quantity > 0 && b.invoiceId == null
                                         join u in entity.itemsUnits on b.itemUnitId equals u.itemUnitId
                                         join i in entity.items on u.itemId equals i.itemId
                                         join l in entity.locations on b.locationId equals l.locationId
@@ -117,6 +175,7 @@ namespace POS_Server.Controllers
                                             sectionId = s.sectionId,
                                             itemType = i.type,
                                             unitName = u.units.name,
+                                            invoiceId = b.invoiceId,
                                         }).ToList().OrderBy(x => x.location).ToList();
 
                     if (docImageList == null)
@@ -175,7 +234,7 @@ namespace POS_Server.Controllers
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    var itemLocList = (from b in entity.itemsLocations where b.quantity > 0
+                    var itemLocList = (from b in entity.itemsLocations where b.quantity > 0 && b.invoiceId == null
                                         join u in entity.itemsUnits on b.itemUnitId equals u.itemUnitId
                                         join un in entity.units on u.unitId equals un.unitId
                                         join i in entity.items on u.itemId equals i.itemId
@@ -237,7 +296,7 @@ namespace POS_Server.Controllers
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    var docImageList = (from b in entity.itemsLocations where b.quantity > 0
+                    var docImageList = (from b in entity.itemsLocations where b.quantity > 0 && b.invoiceId == null
                                         join u in entity.itemsUnits on b.itemUnitId equals u.itemUnitId
                                         join i in entity.items on u.itemId equals i.itemId
                                         join l in entity.locations on b.locationId equals l.locationId
@@ -296,7 +355,7 @@ namespace POS_Server.Controllers
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var docImageList = entity.itemsLocations
-                        .Where(b => b.itemUnitId == itemUnitId && b.locationId == locationId)
+                        .Where(b => b.itemUnitId == itemUnitId && b.locationId == locationId && b.invoiceId == null)
                         .Select(b => new {
                             b.createDate,
                             b.createUserId,
@@ -376,7 +435,7 @@ namespace POS_Server.Controllers
                             item.startDate = itemLoc.startDate;
                             item.endDate = itemLoc.endDate;
                             item.note = itemLoc.note;
-                      
+                            item.invoiceId = itemLoc.invoiceId;
                             item.updateDate = DateTime.Now;
                             item.updateUserId = itemLoc.updateUserId;
                         }
@@ -514,7 +573,7 @@ namespace POS_Server.Controllers
                                           join s in entity.sections on b.branchId equals s.branchId
                                           join l in entity.locations on s.sectionId equals l.sectionId
                                           join il in entity.itemsLocations on l.locationId equals il.locationId
-                                          where il.itemUnitId == itemUnitId && il.quantity > 0
+                                          where il.itemUnitId == itemUnitId && il.quantity > 0 && il.invoiceId == null
                                           select new
                                           {
                                               il.itemsLocId,
@@ -625,7 +684,7 @@ namespace POS_Server.Controllers
             using (incposdbEntities entity = new incposdbEntities())
             {
                 var itemUnit = (from  il in entity.itemsLocations 
-                                where il.itemUnitId == itemUnitId && il.locationId == locationId
+                                where il.itemUnitId == itemUnitId && il.locationId == locationId && il.invoiceId == null
                                 select new { il.itemsLocId }
                                 ).FirstOrDefault();
                 itemsLocations itemL = new itemsLocations();
@@ -684,7 +743,7 @@ namespace POS_Server.Controllers
                    
                     var newtemLocation = (from il in entity.itemsLocations
                                           where il.itemUnitId == itemObject.itemUnitId && il.locationId == itemObject.locationId
-                                          && il.startDate == itemObject.startDate && il.endDate == itemObject.endDate
+                                          && il.startDate == itemObject.startDate && il.endDate == itemObject.endDate && il.invoiceId == null
                                           select new { il.itemsLocId }
                                    ).FirstOrDefault();
                   
@@ -736,7 +795,7 @@ namespace POS_Server.Controllers
                                   join s in entity.sections on b.branchId equals s.branchId 
                                   join l in entity.locations on s.sectionId equals l.sectionId
                                   join il in entity.itemsLocations on l.locationId equals il.locationId
-                                  where il.itemUnitId == itemUnitId && il.quantity > 0
+                                  where il.itemUnitId == itemUnitId && il.quantity > 0 && il.invoiceId == null
                                   select new
                                   {
                                       il.itemsLocId,
@@ -778,7 +837,7 @@ namespace POS_Server.Controllers
                     if (dic["remainQuantity"] > 0)
                     {
                         var item = (from il in entity.itemsLocations
-                                    where il.itemUnitId == itemUnitId
+                                    where il.itemUnitId == itemUnitId && il.invoiceId == null
                                     join l in entity.locations on il.locationId equals l.locationId
                                     join s in entity.sections on l.sectionId equals s.sectionId
                                     where s.branchId == branchId
@@ -848,7 +907,7 @@ namespace POS_Server.Controllers
                                       join s in entity.sections on b.branchId equals s.branchId
                                       join l in entity.locations on s.sectionId equals l.sectionId
                                       join il in entity.itemsLocations on l.locationId equals il.locationId
-                                      where il.itemUnitId == upperUnit.itemUnitId && il.quantity > 0
+                                      where il.itemUnitId == upperUnit.itemUnitId && il.quantity > 0 && il.invoiceId == null
                                       select new
                                       {
                                           il.itemsLocId,
@@ -862,7 +921,7 @@ namespace POS_Server.Controllers
                     {
 
                         var itemL = entity.itemsLocations.Find(itemInLocs[i].itemsLocId);
-                        var smallUnitLocId = entity.itemsLocations.Where(x => x.itemUnitId == itemUnitId).
+                        var smallUnitLocId = entity.itemsLocations.Where(x => x.itemUnitId == itemUnitId && x.invoiceId == null).
                             Select(x => x.itemsLocId).FirstOrDefault();
                         //var smallUnit = entity.itemsLocations.Find(smallUnitLocId);
 
@@ -898,7 +957,7 @@ namespace POS_Server.Controllers
                                     where s.branchId == branchId
                                     join l in entity.locations on s.sectionId equals l.sectionId
                                     join il in entity.itemsLocations on l.locationId equals il.locationId
-                                    where il.itemUnitId == upperUnit.itemUnitId
+                                    where il.itemUnitId == upperUnit.itemUnitId && il.invoiceId == null
                                     select new
                                     {
                                         il.itemsLocId,
@@ -976,7 +1035,7 @@ namespace POS_Server.Controllers
                                        join s in entity.sections on b.branchId equals s.branchId 
                                        join l in entity.locations on s.sectionId equals l.sectionId
                                        join il in entity.itemsLocations on l.locationId equals il.locationId
-                                       where il.itemUnitId == lowerUnit.itemUnitId && il.quantity > 0
+                                       where il.itemUnitId == lowerUnit.itemUnitId && il.quantity > 0 && il.invoiceId == null
                                        select new
                                        {
                                            il.itemsLocId,
@@ -990,7 +1049,7 @@ namespace POS_Server.Controllers
                     {
                         
                         var itemL = entity.itemsLocations.Find(itemInLocs[i].itemsLocId);
-                        var smallUnitLocId = entity.itemsLocations.Where(x => x.itemUnitId == itemUnitId).
+                        var smallUnitLocId = entity.itemsLocations.Where(x => x.itemUnitId == itemUnitId && x.invoiceId == null).
                             Select(x => x.itemsLocId).FirstOrDefault();
                         //var smallUnit = entity.itemsLocations.Find(smallUnitLocId);
                         
@@ -1106,7 +1165,7 @@ namespace POS_Server.Controllers
                                   join s in entity.sections on b.branchId equals s.branchId 
                                   join l in entity.locations on s.sectionId equals l.sectionId
                                   join il in entity.itemsLocations on l.locationId equals il.locationId
-                                  where il.itemUnitId == itemUnitId && il.quantity > 0
+                                  where il.itemUnitId == itemUnitId && il.quantity > 0 && il.invoiceId == null
                                   select new
                                   {
                                       il.itemsLocId,
@@ -1151,7 +1210,7 @@ namespace POS_Server.Controllers
                                       join s in entity.sections on b.branchId equals s.branchId
                                       join l in entity.locations on s.sectionId equals l.sectionId
                                       join il in entity.itemsLocations on l.locationId equals il.locationId
-                                      where il.itemUnitId == smallUnit.itemUnitId && il.quantity > 0
+                                      where il.itemUnitId == smallUnit.itemUnitId && il.quantity > 0 && il.invoiceId == null
                                       select new
                                       {
                                           il.itemsLocId,
@@ -1186,7 +1245,7 @@ namespace POS_Server.Controllers
                                   join s in entity.sections on b.branchId equals s.branchId 
                                   join l in entity.locations on s.sectionId equals l.sectionId
                                   join il in entity.itemsLocations on l.locationId equals il.locationId
-                                  where il.itemUnitId == itemUnitId && il.quantity > 0
+                                  where il.itemUnitId == itemUnitId && il.quantity > 0 && il.invoiceId == null
                                   select new
                                   {
                                       il.itemsLocId,
@@ -1222,7 +1281,7 @@ namespace POS_Server.Controllers
                                   join s in entity.sections on b.branchId equals s.branchId 
                                   join l in entity.locations on s.sectionId equals l.sectionId
                                   join il in entity.itemsLocations on l.locationId equals il.locationId
-                                  where il.itemUnitId == itemUnitId && il.quantity > 0
+                                  where il.itemUnitId == itemUnitId && il.quantity > 0 && il.invoiceId == null
                                   select new
                                   {
                                       il.itemsLocId,
@@ -1270,7 +1329,7 @@ namespace POS_Server.Controllers
                                   join s in entity.sections on b.branchId equals s.branchId
                                   join l in entity.locations on s.sectionId equals l.sectionId
                                   join il in entity.itemsLocations on l.locationId equals il.locationId
-                                  where il.itemUnitId == itemUnitId && il.quantity > 0
+                                  where il.itemUnitId == itemUnitId && il.quantity > 0 && il.invoiceId == null
                                   select new
                                   {
                                       il.itemsLocId,
@@ -1304,7 +1363,7 @@ namespace POS_Server.Controllers
                 {
                     var amount = (from l in entity.locations where l.locationId == locationId
                                   join il in entity.itemsLocations on l.locationId equals il.locationId
-                                  where il.itemUnitId == itemUnitId && il.quantity > 0
+                                  where il.itemUnitId == itemUnitId && il.quantity > 0 && il.invoiceId == null
                                   select new
                                   {
                                       il.itemsLocId,
@@ -1389,7 +1448,7 @@ namespace POS_Server.Controllers
             using (incposdbEntities entity = new incposdbEntities())
             {
                 var itemUnit = (from il in entity.itemsLocations
-                                where il.itemUnitId == itemUnitId && il.locationId == locationId
+                                where il.itemUnitId == itemUnitId && il.locationId == locationId && il.invoiceId == null
                                 select new { il.itemsLocId }
                                 ).FirstOrDefault();
                 itemsLocations itemL = new itemsLocations();
@@ -1543,7 +1602,7 @@ namespace POS_Server.Controllers
                                           join s in entity.sections on b.branchId equals s.branchId
                                           join l in entity.locations on s.sectionId equals l.sectionId
                                           join il in entity.itemsLocations on l.locationId equals il.locationId
-                                          where il.itemUnitId == fromItemUnit && il.quantity > 0
+                                          where il.itemUnitId == fromItemUnit && il.quantity > 0 && il.invoiceId == null
                                           select new
                                           {
                                               il.itemsLocId,
@@ -1594,7 +1653,7 @@ namespace POS_Server.Controllers
                                           join s in entity.sections on b.branchId equals s.branchId
                                           join l in entity.locations on s.sectionId equals l.sectionId
                                           join il in entity.itemsLocations on l.locationId equals il.locationId
-                                          where il.itemUnitId == fromItemUnit && il.quantity > 0
+                                          where il.itemUnitId == fromItemUnit && il.quantity > 0 && il.invoiceId == null
                                           select new
                                           {
                                               il.itemsLocId,
@@ -1683,7 +1742,7 @@ namespace POS_Server.Controllers
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var locList = (from b in entity.itemsLocations
-                                        where b.quantity > 0 && ids.Contains(b.itemUnitId??0)
+                                        where b.quantity > 0 && b.invoiceId == null && ids.Contains(b.itemUnitId??0)
                                         join u in entity.itemsUnits on b.itemUnitId equals u.itemUnitId
                                         join i in entity.items on u.itemId equals i.itemId
                                         join l in entity.locations on b.locationId equals l.locationId

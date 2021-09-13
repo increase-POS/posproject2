@@ -409,6 +409,7 @@
     <Property Name="userId" Type="int" />
     <Property Name="manualDiscountValue" Type="decimal" Precision="20" Scale="3" Nullable="false" />
     <Property Name="manualDiscountType" Type="nvarchar" MaxLength="10" />
+    <Property Name="isActive" Type="bit" Nullable="false" />
   </EntityType>
   <EntityType Name="invoiceStatus">
     <Key>
@@ -462,6 +463,7 @@
     <Property Name="endDate" Type="date" />
     <Property Name="itemUnitId" Type="int" />
     <Property Name="note" Type="ntext" />
+    <Property Name="invoiceId" Type="int" />
   </EntityType>
   <EntityType Name="itemsMaterials">
     <Key>
@@ -2123,6 +2125,18 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_itemsLocations_invoices">
+    <End Role="invoices" Type="Self.invoices" Multiplicity="0..1" />
+    <End Role="itemsLocations" Type="Self.itemsLocations" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="invoices">
+        <PropertyRef Name="invoiceId" />
+      </Principal>
+      <Dependent Role="itemsLocations">
+        <PropertyRef Name="invoiceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_itemsLocations_itemsUnits">
     <End Role="itemsUnits" Type="Self.itemsUnits" Multiplicity="0..1" />
     <End Role="itemsLocations" Type="Self.itemsLocations" Multiplicity="*" />
@@ -3751,6 +3765,10 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
     <AssociationSet Name="FK_items_users3" Association="Self.FK_items_users3">
       <End Role="users" EntitySet="users" />
       <End Role="items" EntitySet="items" />
+    </AssociationSet>
+    <AssociationSet Name="FK_itemsLocations_invoices" Association="Self.FK_itemsLocations_invoices">
+      <End Role="invoices" EntitySet="invoices" />
+      <End Role="itemsLocations" EntitySet="itemsLocations" />
     </AssociationSet>
     <AssociationSet Name="FK_itemsLocations_itemsUnits" Association="Self.FK_itemsLocations_itemsUnits">
       <End Role="itemsUnits" EntitySet="itemsUnits" />
