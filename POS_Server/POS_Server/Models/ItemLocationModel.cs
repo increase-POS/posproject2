@@ -27,7 +27,8 @@ namespace POS_Server.Models
         public string itemType { get; set; }
         public Nullable<decimal> storeCost { get; set; }
         public Nullable<byte> isFreeZone { get; set; }
-
+        public Nullable<int> invoiceId { get; set; }
+        public string invNumber { get; set; }
 
     }
 }

@@ -525,6 +525,8 @@
     <NavigationProperty Name="itemsTransfer" Relationship="Self.FK_itemsTransfer_invoices" FromRole="invoices" ToRole="itemsTransfer" />
     <Property Name="manualDiscountValue" Type="Decimal" Nullable="false" Precision="20" Scale="3" />
     <Property Name="manualDiscountType" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="isActive" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="itemsLocations" Relationship="incposdbModel.FK_itemsLocations_invoices" FromRole="invoices" ToRole="itemsLocations" />
   </EntityType>
   <EntityType Name="invoiceStatus">
     <Key>
@@ -601,6 +603,8 @@
     <NavigationProperty Name="users1" Relationship="Self.FK_itemsLocations_users1" FromRole="itemsLocations" ToRole="users" />
     <NavigationProperty Name="users2" Relationship="Self.FK_itemsLocations_users2" FromRole="itemsLocations" ToRole="users" />
     <NavigationProperty Name="users3" Relationship="Self.FK_itemsLocations_users3" FromRole="itemsLocations" ToRole="users" />
+    <Property Name="invoiceId" Type="Int32" />
+    <NavigationProperty Name="invoices" Relationship="incposdbModel.FK_itemsLocations_invoices" FromRole="itemsLocations" ToRole="invoices" />
   </EntityType>
   <EntityType Name="itemsMaterials">
     <Key>
@@ -4347,6 +4351,10 @@
     </AssociationSet>
     <EntitySet Name="sysdiagrams" EntityType="incposdbModel.sysdiagrams" />
     <EntitySet Name="ProgramDetails" EntityType="incposdbModel.ProgramDetails" />
+    <AssociationSet Name="FK_itemsLocations_invoices" Association="incposdbModel.FK_itemsLocations_invoices">
+      <End Role="invoices" EntitySet="invoices" />
+      <End Role="itemsLocations" EntitySet="itemsLocations" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="paperSize">
     <Key>
@@ -4509,4 +4517,16 @@
     <Property Name="versionName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
     <Property Name="storeCount" Type="Int32" Nullable="false" />
   </EntityType>
+  <Association Name="FK_itemsLocations_invoices">
+    <End Type="incposdbModel.invoices" Role="invoices" Multiplicity="0..1" />
+    <End Type="incposdbModel.itemsLocations" Role="itemsLocations" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="invoices">
+        <PropertyRef Name="invoiceId" />
+      </Principal>
+      <Dependent Role="itemsLocations">
+        <PropertyRef Name="invoiceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

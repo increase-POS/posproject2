@@ -258,6 +258,7 @@
         <AssociationConnector Association="incposdbModel.FK_notificationUser_pos" />
         <EntityTypeShape EntityType="incposdbModel.sysdiagrams" Width="1.5" PointX="0.75" PointY="4.75" />
         <EntityTypeShape EntityType="incposdbModel.ProgramDetails" Width="1.5" PointX="5.75" PointY="0.75" />
+        <AssociationConnector Association="incposdbModel.FK_itemsLocations_invoices" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

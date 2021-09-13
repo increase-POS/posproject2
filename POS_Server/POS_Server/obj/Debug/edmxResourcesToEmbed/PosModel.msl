@@ -397,6 +397,7 @@
     <EntitySetMapping Name="invoices">
       <EntityTypeMapping TypeName="incposdbModel.invoices">
         <MappingFragment StoreEntitySet="invoices">
+          <ScalarProperty Name="isActive" ColumnName="isActive" />
           <ScalarProperty Name="manualDiscountType" ColumnName="manualDiscountType" />
           <ScalarProperty Name="manualDiscountValue" ColumnName="manualDiscountValue" />
           <ScalarProperty Name="invoiceId" ColumnName="invoiceId" />
@@ -476,6 +477,7 @@
     <EntitySetMapping Name="itemsLocations">
       <EntityTypeMapping TypeName="incposdbModel.itemsLocations">
         <MappingFragment StoreEntitySet="itemsLocations">
+          <ScalarProperty Name="invoiceId" ColumnName="invoiceId" />
           <ScalarProperty Name="itemsLocId" ColumnName="itemsLocId" />
           <ScalarProperty Name="locationId" ColumnName="locationId" />
           <ScalarProperty Name="quantity" ColumnName="quantity" />

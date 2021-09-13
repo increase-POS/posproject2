@@ -1335,7 +1335,7 @@ namespace POS_Server.Controllers
                 statusL.Add("rc");
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    var invoicesList = (from b in entity.invoices.Where(x => x.invType == "s" && x.branchCreatorId == branchId)
+                    var invoicesList = (from b in entity.invoices.Where(x => x.invType == "s" && x.branchCreatorId == branchId && x.shipUserId != null)
                                         join a in entity.agents on b.agentId equals a.agentId
                                         join s in entity.invoiceStatus on b.invoiceId equals s.invoiceId
                                         join u in entity.users on b.shipUserId equals u.userId into lj
@@ -1379,14 +1379,15 @@ namespace POS_Server.Controllers
                                             userId = b.userId,
                                             manualDiscountType = b.manualDiscountType,
                                             manualDiscountValue = b.manualDiscountValue,
+                                            
                                         })
                     .ToList();
                     if (invoicesList != null)
                     {
-                        for (int i = 0; i < invoicesList.Count; i++)
+                        for (int i = 0; i < invoicesList.Count(); i++)
                         {
                             int invoiceId = invoicesList[i].invoiceId;
-                            int itemCount = entity.itemsTransfer.Where(x => x.invoiceId == invoiceId).Select(x => x.itemsTransId).ToList().Count;
+                            int itemCount = entity.itemsTransfer.Where(x => x.invoiceId == invoiceId ).Select(x => x.itemsTransId).ToList().Count;
                             invoicesList[i].itemsCount = itemCount;
                         }
                     }
