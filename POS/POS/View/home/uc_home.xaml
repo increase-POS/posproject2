@@ -454,6 +454,19 @@
 
                         <lvc:PieChart Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" 
                                       x:Name="pch_userOnline"  />
+
+                        <Grid Grid.Row="2" Grid.ColumnSpan="2" >
+                            <Ellipse Grid.Column="7" Margin="5,5,5,5" 
+                HorizontalAlignment="Center" VerticalAlignment="Center"   
+                     Height="40" Width="40">
+                                <Ellipse.Fill >
+                                    <ImageBrush Stretch="UniformToFill"   ImageSource="/pic/no-image-icon-40x40.png"   />
+                                </Ellipse.Fill>
+                            </Ellipse>
+                        </Grid>
+                      
+
+
                     </Grid>
                 </Border>
                 <!--#endregion-->
