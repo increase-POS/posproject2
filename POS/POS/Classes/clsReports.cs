@@ -52,6 +52,24 @@ namespace POS.Classes
             rep.ReportPath = reppath;
             rep.EnableExternalImages = true;
             rep.DataSources.Clear();
+            foreach(var o in invoiceQuery)
+            {
+                string status = "";
+                switch (o.status)
+                {
+                    case "tr":
+                        status = MainWindow.resourcemanager.GetString("trDelivered");
+                        break;
+                    case "rc":
+                        status = MainWindow.resourcemanager.GetString("trInDelivery");
+                        break;
+                    default:
+                        status = "";
+                        break;
+                }
+                o.status = status;
+                o.deserved = decimal.Parse(SectionData.DecTostring(o.deserved));
+            }
             rep.DataSources.Add(new ReportDataSource("DataSetInvoice", invoiceQuery));
         }
         public static void bankAccReport(IEnumerable<CashTransfer> cash, LocalReport rep, string reppath)
@@ -59,6 +77,63 @@ namespace POS.Classes
             rep.ReportPath = reppath;
             rep.EnableExternalImages = true;
             rep.DataSources.Clear();
+           
+            foreach (var c in cash)
+            {
+                ///////////////////
+                c.cash = decimal.Parse(SectionData.DecTostring(c.cash));
+                string s ;
+                switch (c.processType)
+                {
+                    case "cash": s = MainWindow.resourcemanager.GetString("trCash");
+                    break;
+                    case "doc": s = MainWindow.resourcemanager.GetString("trDocument");
+                    break;
+                    case "cheque": s = MainWindow.resourcemanager.GetString("trCheque");
+                    break;
+                    case "balance": s = MainWindow.resourcemanager.GetString("trCredit");
+                    break;
+                    default: s = c.processType;
+                        break;
+                }
+                ///////////////////
+                c.processType = s;
+                string name = "";
+                switch (c.side)
+                {
+                    case "bnd": break;
+                    case "v": name = MainWindow.resourcemanager.GetString("trVendor"); break;
+                    case "c": name = MainWindow.resourcemanager.GetString("trCustomer"); break;
+                    case "u": name = MainWindow.resourcemanager.GetString("trUser"); break;
+                    case "s": name = MainWindow.resourcemanager.GetString("trSalary"); break;
+                    case "e": name = MainWindow.resourcemanager.GetString("trGeneralExpenses"); break;
+                    case "m":
+                        if (c.transType == "d")
+                            name = MainWindow.resourcemanager.GetString("trAdministrativeDeposit");
+                        if (c.transType == "p")
+                            name = MainWindow.resourcemanager.GetString("trAdministrativePull");
+                        break;
+                    case "sh": name = MainWindow.resourcemanager.GetString("trShippingCompany"); break;
+                    default: break;
+                }
+                string fullName = "";
+                if (!string.IsNullOrEmpty(c.agentName))
+                    fullName = name + " " + c.agentName;
+                else if (!string.IsNullOrEmpty(c.usersLName))
+                    fullName = name + " " + c.usersLName;
+                else if (!string.IsNullOrEmpty(c.shippingCompanyName))
+                    fullName = name + " " + c.shippingCompanyName;
+                else
+                    fullName = name;
+                /////////////////////
+                c.side = fullName;
+
+                string type;
+                if (c.transType.Equals("p")) type = MainWindow.resourcemanager.GetString("trPull");
+                else type = MainWindow.resourcemanager.GetString("trDeposit");
+                ////////////////////
+                c.transType = type;
+            }
             rep.DataSources.Add(new ReportDataSource("DataSetBankAcc", cash));
         }
         public static void invItem(IEnumerable<InventoryItemLocation> itemLocations, LocalReport rep, string reppath, List<ReportParameter> paramarr)
@@ -131,7 +206,7 @@ namespace POS.Classes
             rep.ReportPath = reppath;
             rep.EnableExternalImages = true;
             rep.DataSources.Clear();
-         
+
 
             rep.DataSources.Add(new ReportDataSource("DataSetItem", packageQuery));
             //    paramarr.Add(new ReportParameter("dateForm", MainWindow.dateFormat));
@@ -160,7 +235,7 @@ namespace POS.Classes
             paramarr.Add(new ReportParameter("trDiscount", MainWindow.resourcemanagerreport.GetString("")));
             paramarr.Add(new ReportParameter("trStartDate", MainWindow.resourcemanagerreport.GetString("")));
             paramarr.Add(new ReportParameter("trEndDate", MainWindow.resourcemanagerreport.GetString("")));
-            
+
 
 
         }
@@ -276,7 +351,7 @@ namespace POS.Classes
             paramarr.Add(new ReportParameter("trCode", MainWindow.resourcemanagerreport.GetString("")));
             paramarr.Add(new ReportParameter("trName", MainWindow.resourcemanagerreport.GetString("")));
             paramarr.Add(new ReportParameter("trDetails", MainWindow.resourcemanagerreport.GetString("")));
-      
+
 
         }
         public static void itemReport(IEnumerable<Item> itemQuery, LocalReport rep, string reppath)
@@ -296,7 +371,7 @@ namespace POS.Classes
             paramarr.Add(new ReportParameter("Title", MainWindow.resourcemanagerreport.GetString("")));
             paramarr.Add(new ReportParameter("trName", MainWindow.resourcemanagerreport.GetString("")));
             paramarr.Add(new ReportParameter("trValues", MainWindow.resourcemanagerreport.GetString("")));
-      
+
 
 
 
@@ -310,7 +385,7 @@ namespace POS.Classes
             paramarr.Add(new ReportParameter("Title", MainWindow.resourcemanagerreport.GetString("")));
             paramarr.Add(new ReportParameter("trName", MainWindow.resourcemanagerreport.GetString("")));
             paramarr.Add(new ReportParameter("trCost", MainWindow.resourcemanagerreport.GetString("")));
-          
+
         }
         public static void unitReport(IEnumerable<Unit> unitQuery, LocalReport rep, string reppath, List<ReportParameter> paramarr)
         {

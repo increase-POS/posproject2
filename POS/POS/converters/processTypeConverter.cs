@@ -23,7 +23,7 @@ namespace POS.converters
                     //break;
                 case "balance": return MainWindow.resourcemanager.GetString("trCredit");
                     //break;
-                default : return MainWindow.resourcemanager.GetString("trCreditCard");
+                default : return s;
                     //break;
             }
         }

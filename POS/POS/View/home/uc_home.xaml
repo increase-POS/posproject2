@@ -5,10 +5,36 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:POS.View"
              mc:Ignorable="d" 
+             xmlns:MetroChart="clr-namespace:De.TorstenMandelkow.MetroChart;assembly=De.TorstenMandelkow.MetroChart"
              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf" 
                xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              d:DesignHeight="700" d:DesignWidth="1100"
              Loaded="UserControl_Loaded"    TouchLeave="UserControl_TouchLeave"  >
+    <UserControl.Resources>
+        <Style TargetType="lvc:DefaultLegend" x:Key="PieChartDefaultLegend">
+            <Setter Property="BulletSize" Value="0"/>
+        </Style>
+
+        <Style TargetType="lvc:DefaultTooltip" x:Key="PieChartDefaultTooltip">
+            <Setter Property="SelectionMode" Value="OnlySender"/>
+            <!--<Setter Property="Foreground" Value="{StaticResource LightForegroundScb}"/>-->
+            <!--<Setter Property="Background" Value="{StaticResource MenuBackgroundScb2}" />-->
+            <Setter Property="BorderThickness" Value="2"/>
+            <!--<Setter Property="BorderBrush" Value="{StaticResource MenuBackgroundScb}"/>-->
+            <Setter Property="BulletSize" Value="20" />
+        </Style>
+
+        <Style TargetType="lvc:PieChart">
+            <Setter Property="InnerRadius" Value="12.5"/>
+            <!--<Setter Property="SeriesColors" Value="{StaticResource GraphColors}" />-->
+            <!--<Setter Property="Foreground" Value="{StaticResource LightForegroundScb}"/>-->
+            <Setter Property="LegendLocation" Value="Right" />
+            <Style.Resources>
+                <Style BasedOn="{StaticResource PieChartDefaultLegend}" TargetType="lvc:DefaultLegend"/>
+                <Style BasedOn="{StaticResource PieChartDefaultTooltip}" TargetType="lvc:DefaultTooltip"/>
+            </Style.Resources>
+        </Style>
+    </UserControl.Resources>
     <Grid>
         <materialDesign:TransitioningContent >
             <materialDesign:TransitioningContent.OpeningEffects>
@@ -19,7 +45,9 @@
                 <Grid.RowDefinitions >
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="2*"/>
-                    <RowDefinition Height="6*"/>
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="2*"/>
                     <RowDefinition Height="30"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
@@ -101,7 +129,7 @@
                         <StackPanel Grid.Column="3" Orientation="Vertical" VerticalAlignment="Center">
                             <TextBlock   Text="Purchase" FontSize="16" HorizontalAlignment="Center" 
                                 FontWeight="Regular" Foreground="#707070" />
-                            <TextBlock  Text="21568" FontWeight="Bold" FontSize="16" HorizontalAlignment="Center"  Foreground="#707070" />
+                            <TextBlock  Text="11568" FontWeight="Bold" FontSize="16" HorizontalAlignment="Center"  Foreground="#707070" />
                         </StackPanel>
                     </Grid>
                 </Border>
@@ -208,7 +236,7 @@
                             CornerRadius="7">
                     <Grid Background="Transparent">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="7.5"/>
+                            <RowDefinition Height="10"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
                         <Border Background="#49BBEB"
@@ -247,18 +275,18 @@
                         <TextBlock  Text="Best Seller" FontWeight="Bold" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" 
                           Grid.ColumnSpan="6"  Foreground="White" />
 
-                        <TextBlock Grid.Row="1" Grid.Column="0" Margin="5" Text="Item:" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                        <TextBlock Grid.Row="1" Grid.Column="0" Margin="5,1" Text="Item:" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" 
                                 FontWeight="Regular" Foreground="#707070" />
-                        <TextBlock Grid.Row="1" Grid.Column="1"  Margin="5" Text="Caffe" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center" 
+                        <TextBlock Grid.Row="1" Grid.Column="1"  Margin="5,1" Text="Caffe" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center" 
                                 FontWeight="Regular" Foreground="#707070" />
-                        <TextBlock Grid.Row="1" Grid.Column="2"  Margin="5" Text="Count:" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                        <TextBlock Grid.Row="1" Grid.Column="2"  Margin="5,1" Text="Count:" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" 
                                 FontWeight="Regular" Foreground="#707070" />
-                        <TextBlock Grid.Row="1" Grid.Column="3"  Margin="5" Text="156" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center" 
+                        <TextBlock Grid.Row="1" Grid.Column="3"  Margin="5,1" Text="156" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center" 
                                 FontWeight="Regular" Foreground="#1D75B8" />
-                        <TextBlock Grid.Row="1" Grid.Column="4"  Margin="5" Text="Amount:" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                        <TextBlock Grid.Row="1" Grid.Column="4"  Margin="5,1" Text="Amount:" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" 
                                 FontWeight="Regular" Foreground="#707070" />
-                        <StackPanel Grid.Row="1" Grid.Column="5"  Margin="5" Orientation="Horizontal"
-                                    HorizontalAlignment="Left"  VerticalAlignment="Center"  >
+                        <StackPanel Grid.Row="1" Grid.Column="5"  Margin="5,1" Orientation="Horizontal"
+                                    HorizontalAlignment="Right"  VerticalAlignment="Center"  >
                             <TextBlock Grid.Row="1" Margin="0,0,5,0" Text="5648" FontSize="16" 
                                 FontWeight="Regular" Foreground="#008A1C" />
                             <TextBlock  Text="$" FontWeight="Bold" FontSize="16" Foreground="#008A1C"  />
@@ -267,18 +295,18 @@
                         <Border Grid.Row="2" Grid.ColumnSpan="6" Margin="10,2.5"   CornerRadius="0,0,0,0" 
                                 Height="1" BorderThickness="0" Background="#C2F3E8" />
 
-                        <TextBlock Grid.Row="3" Grid.Column="0" Margin="5" Text="Item:" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                        <TextBlock Grid.Row="3" Grid.Column="0" Margin="5,1" Text="Item:" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" 
                                 FontWeight="Regular" Foreground="#707070" />
-                        <TextBlock Grid.Row="3" Grid.Column="1"  Margin="5" Text="Caffe" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center" 
+                        <TextBlock Grid.Row="3" Grid.Column="1"  Margin="5,1" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center" 
+                                FontWeight="Regular" Foreground="#707070" ><Span Foreground="#FF707070"><Run Text="Program CD"/></Span></TextBlock>
+                        <TextBlock Grid.Row="3" Grid.Column="2"  Margin="5,1" Text="Count:" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" 
                                 FontWeight="Regular" Foreground="#707070" />
-                        <TextBlock Grid.Row="3" Grid.Column="2"  Margin="5" Text="Count:" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                                FontWeight="Regular" Foreground="#707070" />
-                        <TextBlock Grid.Row="3" Grid.Column="3"  Margin="5" Text="156" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center" 
+                        <TextBlock Grid.Row="3" Grid.Column="3"  Margin="5,1" Text="141" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center" 
                                 FontWeight="Regular" Foreground="#1D75B8" />
-                        <TextBlock Grid.Row="3" Grid.Column="4"  Margin="5" Text="Amount:" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                        <TextBlock Grid.Row="3" Grid.Column="4"  Margin="5,1" Text="Amount:" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" 
                                 FontWeight="Regular" Foreground="#707070" />
-                        <StackPanel Grid.Row="3" Grid.Column="5"  Margin="5" Orientation="Horizontal"
-                                    HorizontalAlignment="Left"  VerticalAlignment="Center"  >
+                        <StackPanel Grid.Row="3" Grid.Column="5"  Margin="5,1" Orientation="Horizontal"
+                                    HorizontalAlignment="Right"  VerticalAlignment="Center"  >
                             <TextBlock  Margin="0,0,5,0" Text="5648" FontSize="16" 
                                 FontWeight="Regular" Foreground="#008A1C" />
                             <TextBlock  Text="$" FontWeight="Bold" FontSize="16" Foreground="#008A1C"  />
@@ -289,18 +317,18 @@
                                 Height="1" BorderThickness="0" Background="#C2F3E8" />
 
 
-                        <TextBlock Grid.Row="5" Grid.Column="0" Margin="5" Text="Item:" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                        <TextBlock Grid.Row="5" Grid.Column="0" Margin="5,1" Text="Item:" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" 
                                 FontWeight="Regular" Foreground="#707070" />
-                        <TextBlock Grid.Row="5" Grid.Column="1"  Margin="5" Text="Caffe" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center" 
+                        <TextBlock Grid.Row="5" Grid.Column="1"  Margin="5,1" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center" 
+                                FontWeight="Regular" Foreground="#707070" ><Span Foreground="#FF707070" FontSize="20" FontFamily="Segoe UI"><Run Text="Screen"/></Span></TextBlock>
+                        <TextBlock Grid.Row="5" Grid.Column="2"  Margin="5,1" Text="Count:" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" 
                                 FontWeight="Regular" Foreground="#707070" />
-                        <TextBlock Grid.Row="5" Grid.Column="2"  Margin="5" Text="Count:" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                                FontWeight="Regular" Foreground="#707070" />
-                        <TextBlock Grid.Row="5" Grid.Column="3"  Margin="5" Text="156" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center" 
+                        <TextBlock Grid.Row="5" Grid.Column="3"  Margin="5,1" Text="137" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center" 
                                 FontWeight="Regular" Foreground="#1D75B8" />
-                        <TextBlock Grid.Row="5" Grid.Column="4"  Margin="5" Text="Amount:" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                        <TextBlock Grid.Row="5" Grid.Column="4"  Margin="5,1" Text="Amount:" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" 
                                 FontWeight="Regular" Foreground="#707070" />
-                        <StackPanel Grid.Row="5" Grid.Column="5"  Margin="5" Orientation="Horizontal"
-                                    HorizontalAlignment="Left"  VerticalAlignment="Center"  >
+                        <StackPanel Grid.Row="5" Grid.Column="5"  Margin="5,1" Orientation="Horizontal"
+                                    HorizontalAlignment="Right"  VerticalAlignment="Center"  >
                             <TextBlock Margin="0,0,5,0" Text="5648" FontSize="16" 
                                 FontWeight="Regular" Foreground="#008A1C" />
                             <TextBlock  Text="$" FontWeight="Bold" FontSize="16" Foreground="#008A1C"  />
@@ -311,20 +339,235 @@
 
                     </Grid>
                 </Border>
+                <Border Margin="10" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2"  Background="White"
+                            CornerRadius="7">
+                    <Grid Background="Transparent">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="25"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Border Background="#BC80EF" Grid.ColumnSpan="6"
+                            CornerRadius="7,7,0,0"/>
+                        <TextBlock  Text="Best Category" FontWeight="Bold" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                          Grid.ColumnSpan="6"  Foreground="White" />
+
+                        <TextBlock Grid.Row="1" Grid.Column="0" Margin="5,1" Text="Category:" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                FontWeight="Regular" Foreground="#707070" />
+                        <TextBlock Grid.Row="1" Grid.Column="1"  Margin="5,1" Text="Foods" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center" 
+                                FontWeight="Regular" Foreground="#707070" />
+                        <TextBlock Grid.Row="1" Grid.Column="2"  Margin="5,1" Text="Count:" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                FontWeight="Regular" Foreground="#707070" />
+                        <TextBlock Grid.Row="1" Grid.Column="3"  Margin="5,1" Text="954" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center" 
+                                FontWeight="Regular" Foreground="#1D75B8" />
+                        <TextBlock Grid.Row="1" Grid.Column="4"  Margin="5,1" Text="Amount:" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                FontWeight="Regular" Foreground="#707070" />
+                        <StackPanel Grid.Row="1" Grid.Column="5"  Margin="5,1" Orientation="Horizontal"
+                                    HorizontalAlignment="Right"  VerticalAlignment="Center"  >
+                            <TextBlock Grid.Row="1" Margin="0,0,5,0" Text="50158" FontSize="16" 
+                                FontWeight="Regular" Foreground="#008A1C" />
+                            <TextBlock  Text="$" FontWeight="Bold" FontSize="16" Foreground="#008A1C"  />
+                        </StackPanel>
+
+                        <Border Grid.Row="2" Grid.ColumnSpan="6" Margin="10,2.5"   CornerRadius="0,0,0,0" 
+                                Height="1" BorderThickness="0" Background="#BC80EF" />
+
+                        <TextBlock Grid.Row="3" Grid.Column="0" Margin="5,1" Text="Category:" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                FontWeight="Regular" Foreground="#707070" />
+                        <TextBlock Grid.Row="3" Grid.Column="1"  Margin="5,1" Text="Electronic"  FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center" 
+                                FontWeight="Regular" Foreground="#707070" />
+                        <TextBlock Grid.Row="3" Grid.Column="2"  Margin="5,1" Text="Count:" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                FontWeight="Regular" Foreground="#707070" />
+                        <TextBlock Grid.Row="3" Grid.Column="3"  Margin="5,1" Text="373" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center" 
+                                FontWeight="Regular" Foreground="#1D75B8" />
+                        <TextBlock Grid.Row="3" Grid.Column="4"  Margin="5,1" Text="Amount:" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                FontWeight="Regular" Foreground="#707070" />
+                        <StackPanel Grid.Row="3" Grid.Column="5"  Margin="5,1" Orientation="Horizontal"
+                                    HorizontalAlignment="Right"  VerticalAlignment="Center"  >
+                            <TextBlock  Margin="0,0,5,0" Text="45116" FontSize="16" 
+                                FontWeight="Regular" Foreground="#008A1C" />
+                            <TextBlock  Text="$" FontWeight="Bold" FontSize="16" Foreground="#008A1C"  />
+                        </StackPanel>
+
+
+                        <Border Grid.Row="4" Grid.ColumnSpan="6" Margin="10,2.5"   CornerRadius="0,0,0,0" 
+                                Height="1" BorderThickness="0" Background="#BC80EF" />
+
+
+                        <TextBlock Grid.Row="5" Grid.Column="0" Margin="5,1" Text="Category:" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                FontWeight="Regular" Foreground="#707070" />
+                        <TextBlock Grid.Row="5" Grid.Column="1"  Margin="5,1" Text="Clothes" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center" 
+                                FontWeight="Regular" Foreground="#707070" />
+                        <TextBlock Grid.Row="5" Grid.Column="2"  Margin="5,1" Text="Count:" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                FontWeight="Regular" Foreground="#707070" />
+                        <TextBlock Grid.Row="5" Grid.Column="3"  Margin="5,1" Text="217" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center" 
+                                FontWeight="Regular" Foreground="#1D75B8" />
+                        <TextBlock Grid.Row="5" Grid.Column="4"  Margin="5,1" Text="Amount:" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                FontWeight="Regular" Foreground="#707070" />
+                        <StackPanel Grid.Row="5" Grid.Column="5"  Margin="5,1" Orientation="Horizontal"
+                                    HorizontalAlignment="Right"  VerticalAlignment="Center"  >
+                            <TextBlock Margin="0,0,5,0" Text="20358" FontSize="16" 
+                                FontWeight="Regular" Foreground="#008A1C" />
+                            <TextBlock  Text="$" FontWeight="Bold" FontSize="16" Foreground="#008A1C"  />
+                        </StackPanel>
+
+
+
+
+                    </Grid>
+                </Border>
+                <Border Margin="10" Grid.Row="1" Grid.Column="5" Background="White"
+                            CornerRadius="7">
+                    <Grid Background="Transparent">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="25"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Border Background="#FF5D6F" Grid.ColumnSpan="2"
+                            CornerRadius="7,7,0,0"/>
+                        <TextBlock  Text="Users" FontWeight="Bold" FontSize="16"
+                                    HorizontalAlignment="Center" VerticalAlignment="Center" 
+                          Grid.ColumnSpan="6"  Foreground="White" />
+
+                        <StackPanel Grid.Row="1" Grid.Column="0"  Margin="5,1" Orientation="Horizontal"
+                                    HorizontalAlignment="Center"  VerticalAlignment="Center"  >
+                            <TextBlock Grid.Row="1" Margin="0,0,5,0" Text="Online:" FontSize="16" 
+                                FontWeight="Bold" Foreground="#707070" />
+                            <TextBlock  Text="5" FontWeight="Bold" FontSize="16" Foreground="#008A1C"  />
+                        </StackPanel>
+
+                        <lvc:PieChart Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" 
+                                      x:Name="pch_userOnline"  />
+                    </Grid>
+                </Border>
                 <!--#endregion-->
                 <!--#region  Third Row -->
-                <lvc:CartesianChart Grid.Row="2" Grid.ColumnSpan="4" Margin="25,10,10,10"
-                  Series="{Binding SeriesCollection}" LegendLocation="Right"   Background="White" >
-                    <lvc:CartesianChart.AxisY>
-                        <lvc:Axis Title="Sales" LabelFormatter="{Binding YFormatter}"></lvc:Axis>
-                    </lvc:CartesianChart.AxisY>
-                    <lvc:CartesianChart.AxisX>
-                        <lvc:Axis Title="Month" Labels="{Binding Labels}"></lvc:Axis>
-                    </lvc:CartesianChart.AxisX>
-                </lvc:CartesianChart>
+                <Border Margin="10" Grid.Row="2" Grid.Column="5" Background="White"
+                            CornerRadius="7">
+                    <Grid Background="Transparent">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="25"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Border Background="#BC80EF" Grid.ColumnSpan="2"
+                            CornerRadius="7,7,0,0"/>
+                        <TextBlock  Text="Branch and Store" FontWeight="Bold" FontSize="16"
+                                    HorizontalAlignment="Center" VerticalAlignment="Center" 
+                          Grid.ColumnSpan="6"  Foreground="White" />
+
+                        <StackPanel Grid.Row="1" Grid.Column="0"  Margin="5,1" Orientation="Horizontal"
+                                    HorizontalAlignment="Center"  VerticalAlignment="Center"  >
+                            <TextBlock Grid.Row="1" Margin="0,0,5,0" Text="Online:" FontSize="16" 
+                                FontWeight="Bold" Foreground="#707070" />
+                            <TextBlock  Text="2" FontWeight="Bold" FontSize="16" Foreground="#008A1C"  />
+                        </StackPanel>
+
+                        <lvc:PieChart Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" 
+                                      x:Name="pch_branch"  />
+                    </Grid>
+                </Border>
+                <Border Margin="10" Grid.Row="3" Grid.Column="5" Background="White"
+                            CornerRadius="7">
+                    <Grid Background="Transparent">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="25"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Border Background="#5B5182" Grid.ColumnSpan="2"
+                            CornerRadius="7,7,0,0"/>
+                        <TextBlock  Text="Daily Purchase Invoice" FontWeight="Bold" FontSize="16"
+                                    HorizontalAlignment="Center" VerticalAlignment="Center" 
+                          Grid.ColumnSpan="6"  Foreground="White" />
+
+                        <StackPanel Grid.Row="1" Grid.Column="0"  Margin="5,1" Orientation="Horizontal"
+                                    HorizontalAlignment="Center"  VerticalAlignment="Center"  >
+                            <TextBlock Grid.Row="1" Margin="0,0,5,0" Text="Count:" FontSize="16" 
+                                FontWeight="Bold" Foreground="#707070" />
+                            <TextBlock  Text="43" FontWeight="Bold" FontSize="16" Foreground="#008A1C"  />
+                        </StackPanel>
+
+                        <lvc:PieChart Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" 
+                                      x:Name="pch_dailyPurchaseInvoice"  />
+                    </Grid>
+                </Border>
+                <Border Margin="10" Grid.Row="4" Grid.Column="5" Background="White"
+                            CornerRadius="7">
+                    <Grid Background="Transparent">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="25"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Border Background="#1D75B8" Grid.ColumnSpan="2"
+                            CornerRadius="7,7,0,0"/>
+                        <TextBlock  Text="Daily Sales Invoice" FontWeight="Bold" FontSize="16"
+                                    HorizontalAlignment="Center" VerticalAlignment="Center" 
+                          Grid.ColumnSpan="6"  Foreground="White" />
+
+                        <StackPanel Grid.Row="1" Grid.Column="0"  Margin="5,1" Orientation="Horizontal"
+                                    HorizontalAlignment="Center"  VerticalAlignment="Center"  >
+                            <TextBlock Grid.Row="1" Margin="0,0,5,0" Text="Count:" FontSize="16" 
+                                FontWeight="Bold" Foreground="#707070" />
+                            <TextBlock  Text="257" FontWeight="Bold" FontSize="16" Foreground="#008A1C"  />
+                        </StackPanel>
+
+                        <lvc:PieChart Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" 
+                                      x:Name="pch_dailySalesInvoice"  />
+                    </Grid>
+                </Border>
+                <Border Margin="10" Grid.Row="2" Grid.RowSpan="3"  Grid.ColumnSpan="4" Background="White"
+                            CornerRadius="7">
+                    <Grid Background="Transparent">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="25"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Border Background="#49BBEB"
+                            CornerRadius="7,7,0,0"/>
+                        <TextBlock  Text="Purchase and Sales" FontWeight="Bold" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                          Grid.ColumnSpan="6"  Foreground="White" />
+                        <lvc:CartesianChart Grid.Row="1"  Margin="5"
+                  Series="{Binding SeriesCollection}"
+                       LegendLocation="Right"   Background="White" >
+                            <lvc:CartesianChart.AxisY>
+                                <lvc:Axis Title="Sales" LabelFormatter="{Binding YFormatter}"></lvc:Axis>
+                            </lvc:CartesianChart.AxisY>
+                            <lvc:CartesianChart.AxisX>
+                                <lvc:Axis Title="Month" Labels="{Binding Labels}"></lvc:Axis>
+                            </lvc:CartesianChart.AxisX>
+                        </lvc:CartesianChart>
+                    </Grid>
+                </Border>
                 <!--#endregion-->
                 <!--#region  Four Row -->
-                <TextBlock Grid.Row="4" Grid.Column="0"  FontSize="12" 
+                <TextBlock Grid.Row="7" Grid.Column="0"  FontSize="12" 
                    FontWeight="Normal" Foreground="#9B9B9B"
                        VerticalAlignment="Center" Margin="25,5,5,5"
                    Text="2021 © AllRight Reserved for Increase"/>

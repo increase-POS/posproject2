@@ -185,7 +185,6 @@ namespace POS.View.accounts
                 cb_state.ItemsSource = statuslist;
                 #endregion
 
-
                 await RefreshInvoiceList();
                 Tb_search_TextChanged(null, null);
 
@@ -333,9 +332,13 @@ namespace POS.View.accounts
                         btn_image.IsEnabled = true;
 
                         tb_invoiceNum.Text = invoice.invNumber;
+
                         agentId = invoice.agentId.Value;
+                       
                         userId = invoice.shipUserId.Value;
+
                         tb_cash.Text = SectionData.DecTostring(cashtrans.cash);
+
                         if (cb_paymentProcessType.SelectedIndex == 0)
                         {
                             tb_cash.Text = invoice.deserved.ToString();
@@ -517,10 +520,10 @@ namespace POS.View.accounts
                         string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                         ReportCls.checkLang();
-                        foreach (var r in invoiceQueryExcel)
-                        {
-                            r.deserved = decimal.Parse(SectionData.DecTostring(r.deserved));
-                        }
+                        //foreach (var r in invoiceQueryExcel)
+                        //{
+                        //    r.deserved = decimal.Parse(SectionData.DecTostring(r.deserved));
+                        //}
                         clsReports.orderReport(invoiceQueryExcel, rep, reppath);
                         clsReports.setReportLanguage(paramarr);
                         clsReports.Header(paramarr);
@@ -1101,30 +1104,30 @@ namespace POS.View.accounts
                     #region
                     List<ReportParameter> paramarr = new List<ReportParameter>();
 
-                string addpath;
-                bool isArabic = ReportCls.checkLang();
-                if (isArabic)
-                {
-                    addpath = @"\Reports\Account\Ar\ArOrderAccReport.rdlc";
-                }
-                else addpath = @"\Reports\Account\EN\OrderAccReport.rdlc";
-                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+                    string addpath;
+                    bool isArabic = ReportCls.checkLang();
+                    if (isArabic)
+                    {
+                        addpath = @"\Reports\Account\Ar\ArOrderAccReport.rdlc";
+                    }
+                    else addpath = @"\Reports\Account\EN\OrderAccReport.rdlc";
+                    string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
-                ReportCls.checkLang();
+                    ReportCls.checkLang();
 
-                clsReports.orderReport(invoiceQuery, rep, reppath);
-                clsReports.setReportLanguage(paramarr);
-                clsReports.Header(paramarr);
+                    clsReports.orderReport(invoiceQuery, rep, reppath);
+                    clsReports.setReportLanguage(paramarr);
+                    clsReports.Header(paramarr);
 
-                rep.SetParameters(paramarr);
-                rep.Refresh();
-                LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.rep_printer_name, short.Parse(MainWindow.rep_print_count));
-                    #endregion
-                }
-                else
-                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-                if (sender != null)
-                    SectionData.EndAwait(grid_ucOrderAccounts);
+                    rep.SetParameters(paramarr);
+                    rep.Refresh();
+                    LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.rep_printer_name, short.Parse(MainWindow.rep_print_count));
+                        #endregion
+                    }
+                    else
+                        Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                    if (sender != null)
+                        SectionData.EndAwait(grid_ucOrderAccounts);
             }
             catch (Exception ex)
             {
@@ -1148,8 +1151,6 @@ namespace POS.View.accounts
                     string pdfpath = "";
 
                     List<ReportParameter> paramarr = new List<ReportParameter>();
-
-
                     //
                     pdfpath = @"\Thumb\report\temp.pdf";
                     pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
@@ -1180,8 +1181,6 @@ namespace POS.View.accounts
                     {
                         w.ShowDialog();
                         w.wb_pdfWebViewer.Dispose();
-
-
                     }
                     Window.GetWindow(this).Opacity = 1;
                     #endregion
@@ -1209,10 +1208,10 @@ namespace POS.View.accounts
                 /////////////////////
                 if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
-                    //Window.GetWindow(this).Opacity = 0.2;
-                    //win_lvc win = new win_lvc(invoiceQuery, 6);
-                    //win.ShowDialog();
-                    //Window.GetWindow(this).Opacity = 1;
+                    Window.GetWindow(this).Opacity = 0.2;
+                    win_lvc win = new win_lvc(invoiceQuery, 7);
+                    win.ShowDialog();
+                    Window.GetWindow(this).Opacity = 1;
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -1251,10 +1250,7 @@ namespace POS.View.accounts
                     string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                     ReportCls.checkLang();
-                    foreach (var r in invoiceQuery)
-                    {
-                        r.deserved = decimal.Parse(SectionData.DecTostring(r.deserved));
-                    }
+                    
                     clsReports.orderReport(invoiceQuery, rep, reppath);
                     clsReports.setReportLanguage(paramarr);
                     clsReports.Header(paramarr);

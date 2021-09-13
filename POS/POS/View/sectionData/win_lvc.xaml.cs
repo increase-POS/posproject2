@@ -31,6 +31,7 @@ namespace POS.View.sectionData.Charts
         IEnumerable<User> usersQuery;
         IEnumerable<Branch> branchesQuery;
         IEnumerable<Pos> possQuery;
+        IEnumerable<CashTransfer> cashQuery;
         IEnumerable<Card> cardsQuery;
         IEnumerable<Invoice> invoiceQuery;
         List<double> chartList;
@@ -78,6 +79,19 @@ namespace POS.View.sectionData.Charts
             {
                 InitializeComponent();
                 bondsQuery = _bondsQuery;
+                sectionDate = _sectionDate;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+        public win_lvc(IEnumerable<CashTransfer> _cashQuery, int _sectionDate)
+        {
+            try
+            {
+                InitializeComponent();
+                cashQuery = _cashQuery;
                 sectionDate = _sectionDate;
             }
             catch (Exception ex)
@@ -259,12 +273,18 @@ namespace POS.View.sectionData.Charts
                             chartList.Add(Draw);
                             label = "Pos count";
                         }
-                        //else if (sectionDate == 7)
-                        //{
-                        //    var Draw = invoiceQuery.ToList().Where(c => c.cre > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
-                        //    chartList.Add(Draw);
-                        //    label = "Invoice count";
-                        //}
+                        else if (sectionDate == 7)
+                        {
+                            var Draw = invoiceQuery.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth).Count();
+                            chartList.Add(Draw);
+                            label = "Invoice count";
+                        }
+                        else if (sectionDate == 8)
+                        {
+                            var Draw = cashQuery.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth).Count();
+                            chartList.Add(Draw);
+                            label = "CashTransfer count";
+                        }
                         else
                         {
                             var Draw = cardsQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
@@ -334,6 +354,18 @@ namespace POS.View.sectionData.Charts
                         var Draw = bondsQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
                         chartList.Add(Draw);
                         label = "Bondes count";
+                    }
+                    else if (sectionDate == 7)
+                    {
+                        var Draw = invoiceQuery.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear).Count();
+                        chartList.Add(Draw);
+                        label = "Bondes count";
+                    }
+                    else if (sectionDate == 8)
+                    {
+                        var Draw = cashQuery.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear).Count();
+                        chartList.Add(Draw);
+                        label = "Cashtransfer count";
                     }
                     else
                     {
@@ -422,6 +454,18 @@ namespace POS.View.sectionData.Charts
                             PiechartList.Add(Draw);
                             label = "Bonde count";
                         }
+                        else if (sectionDate == 7)
+                        {
+                            var Draw = invoiceQuery.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth).Count();
+                            PiechartList.Add(Draw);
+                            label = "Invoice count";
+                        }
+                        else if (sectionDate == 8)
+                        {
+                            var Draw = cashQuery.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth).Count();
+                            PiechartList.Add(Draw);
+                            label = "Cashtransfer count";
+                        }
                         else
                         {
                             var Draw = cardsQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
@@ -490,6 +534,18 @@ namespace POS.View.sectionData.Charts
                         var Draw = bondsQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
                         PiechartList.Add(Draw);
                         label = "Bonde count";
+                    }
+                    else if (sectionDate == 7)
+                    {
+                        var Draw = invoiceQuery.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear).Count();
+                        PiechartList.Add(Draw);
+                        label = "Invoice count";
+                    }
+                    else if (sectionDate == 8)
+                    {
+                        var Draw = cashQuery.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear).Count();
+                        PiechartList.Add(Draw);
+                        label = "Cashtrasfer count";
                     }
                     else
                     {
@@ -581,6 +637,18 @@ namespace POS.View.sectionData.Charts
                             ColumnchartList.Add(Draw);
                             label = "Bonde count";
                         }
+                        else if (sectionDate == 7)
+                        {
+                            var Draw = invoiceQuery.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth).Count();
+                            ColumnchartList.Add(Draw);
+                            label = "Invoice count";
+                        }
+                        else if (sectionDate == 8)
+                        {
+                            var Draw = cashQuery.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth).Count();
+                            ColumnchartList.Add(Draw);
+                            label = "Cashtrasfer count";
+                        }
                         else
                         {
                             var Draw = cardsQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
@@ -650,6 +718,18 @@ namespace POS.View.sectionData.Charts
                         var Draw = bondsQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
                         ColumnchartList.Add(Draw);
                         label = "Bonde count";
+                    }
+                    else if (sectionDate == 7)
+                    {
+                        var Draw = invoiceQuery.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear).Count();
+                        ColumnchartList.Add(Draw);
+                        label = "Invoice count";
+                    }
+                    else if (sectionDate == 8)
+                    {
+                        var Draw = cashQuery.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear).Count();
+                        ColumnchartList.Add(Draw);
+                        label = "Cashtrasfer count";
                     }
                     else
                     {

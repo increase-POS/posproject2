@@ -3,6 +3,7 @@ using LiveCharts.Helpers;
 using LiveCharts.Wpf;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -42,10 +43,17 @@ namespace POS.View
                 return _instance;
             }
         }
+
         public uc_home()
         {
             InitializeComponent();
             timerAnimation();
+
+      
+
+
+
+
         }
 
         public SeriesCollection SeriesCollection { get; set; }
@@ -53,7 +61,7 @@ namespace POS.View
         public Func<double, string> YFormatter { get; set; }
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            #region
+            #region Purchase and Sales
             double[] ArrayS = new double[30];
             double[] ArrayP = new double[30];
             string[] ArrayCount = new string[30];
@@ -86,6 +94,94 @@ namespace POS.View
 
             #endregion
 
+            #region user online 
+            SeriesCollection seriesUser = new SeriesCollection();
+            seriesUser.Add(
+                 new PieSeries
+                 {
+                     Values = new ChartValues<int> { 5 },
+                     Title = "",
+                     DataLabels = false,
+                     Fill = Application.Current.Resources["mediumGreen"] as SolidColorBrush
+                 }
+             );
+            seriesUser.Add(
+                 new PieSeries
+                 {
+                     Values = new ChartValues<int> { 15 - 5 },
+                     Title = "",
+                     DataLabels = false,
+                     Fill = Application.Current.Resources["MainColorlightGrey"] as SolidColorBrush
+                 }
+             );
+            pch_userOnline.Series = seriesUser;
+            #endregion
+            #region Branch 
+            SeriesCollection seriesBranch = new SeriesCollection();
+            seriesBranch.Add(
+                 new PieSeries
+                 {
+                     Values = new ChartValues<int> { 2 },
+                     Title = "",
+                     DataLabels = false,
+                     Fill = Application.Current.Resources["mediumGreen"] as SolidColorBrush
+                 }
+             );
+            seriesBranch.Add(
+                 new PieSeries
+                 {
+                     Values = new ChartValues<int> { 10 - 2 },
+                     Title = "",
+                     DataLabels = false,
+                     Fill = Application.Current.Resources["MainColorlightGrey"] as SolidColorBrush
+                 }
+             );
+            pch_branch.Series = seriesBranch;
+            #endregion
+            #region DailyPurchaseInvoice
+            SeriesCollection seriesDailyPurchaseInvoice = new SeriesCollection();
+            seriesDailyPurchaseInvoice.Add(
+                 new PieSeries
+                 {
+                     Values = new ChartValues<int> { 43 },
+                     Title = "",
+                     DataLabels = false,
+                     Fill = Application.Current.Resources["mediumGreen"] as SolidColorBrush
+                 }
+             );
+            seriesDailyPurchaseInvoice.Add(
+                 new PieSeries
+                 {
+                     Values = new ChartValues<int> { 1165 - 43 },
+                     Title = "",
+                     DataLabels = false,
+                     Fill = Application.Current.Resources["MainColorlightGrey"] as SolidColorBrush
+                 }
+             );
+            pch_dailyPurchaseInvoice.Series = seriesDailyPurchaseInvoice;
+            #endregion
+            #region DailySalesInvoice
+            SeriesCollection seriesDailySalesInvoice = new SeriesCollection();
+            seriesDailySalesInvoice.Add(
+                 new PieSeries
+                 {
+                     Values = new ChartValues<int> { 257 },
+                     Title = "",
+                     DataLabels = false,
+                     Fill = Application.Current.Resources["mediumGreen"] as SolidColorBrush
+                 }
+             );
+            seriesDailySalesInvoice.Add(
+                 new PieSeries
+                 {
+                     Values = new ChartValues<int> { 7258 - 257 },
+                     Title = "",
+                     DataLabels = false,
+                     Fill = Application.Current.Resources["MainColorlightGrey"] as SolidColorBrush
+                 }
+             );
+            pch_dailySalesInvoice.Series = seriesDailySalesInvoice;
+            #endregion
         }
         public void timerAnimation()
         {

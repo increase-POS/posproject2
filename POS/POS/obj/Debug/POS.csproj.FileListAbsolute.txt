@@ -2977,3 +2977,6 @@ E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_notifications.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_notifications.baml
 D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\wd_notifications.g.cs
 D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\wd_notifications.baml
+E:\GitHub\posproject2\POS\POS\bin\Debug\Panteam.MetroChart.dll
+E:\GitHub\posproject2\POS\POS\bin\Debug\De.TorstenMandelkow.MetroChart.dll
+E:\GitHub\posproject2\POS\POS\obj\Debug\POS.csprojAssemblyReference.cache

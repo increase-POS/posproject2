@@ -22,6 +22,7 @@ using System.Windows.Shapes;
 using System.IO;
 using Microsoft.Reporting.WinForms;
 using Microsoft.Win32;
+using POS.View.sectionData.Charts;
 
 namespace POS.View.accounts
 {
@@ -813,6 +814,7 @@ namespace POS.View.accounts
             )
             && (s.side == "v" || s.side == "c" || s.side == "u" || s.side == "s" || s.side == "e" || s.side == "m" || s.side == "sh")
             && s.transType == "p"
+            && s.processType != "inv"
             && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
             && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
             );
@@ -830,8 +832,10 @@ namespace POS.View.accounts
 
                 if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
+                    #region
                     Thread t1 = new Thread(() =>
                     {
+                        #region
                         List<ReportParameter> paramarr = new List<ReportParameter>();
 
                         string addpath;
@@ -844,10 +848,7 @@ namespace POS.View.accounts
                         string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                         ReportCls.checkLang();
-                        foreach (var r in cashesQueryExcel)
-                        {
-                            r.cash = decimal.Parse(SectionData.DecTostring(r.cash));
-                        }
+                        //cashesQueryExcel = cashesQuery.ToList();
                         clsReports.bankAccReport(cashesQueryExcel, rep, reppath);
                         clsReports.setReportLanguage(paramarr);
                         clsReports.Header(paramarr);
@@ -865,9 +866,10 @@ namespace POS.View.accounts
                             }
                         });
 
-
+                        #endregion
                     });
                     t1.Start();
+                    #endregion
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
@@ -1507,32 +1509,38 @@ namespace POS.View.accounts
         }
 
         private void Btn_print_Click(object sender, RoutedEventArgs e)
-        {
+        {//print
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_ucPaymentsAccounts);
-
-                List<ReportParameter> paramarr = new List<ReportParameter>();
-
-                string addpath;
-                bool isArabic = ReportCls.checkLang();
-                if (isArabic)
+                if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
-                    addpath = @"\Reports\Account\Ar\ArPayAccReport.rdlc";
+                    #region
+                    List<ReportParameter> paramarr = new List<ReportParameter>();
+
+                    string addpath;
+                    bool isArabic = ReportCls.checkLang();
+                    if (isArabic)
+                    {
+                        addpath = @"\Reports\Account\Ar\ArPayAccReport.rdlc";
+                    }
+                    else addpath = @"\Reports\Account\EN\PayAccReport.rdlc";
+                    string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+                    ReportCls.checkLang();
+                    //cashesQueryExcel = cashesQuery.ToList();
+                    clsReports.bankAccReport(cashesQueryExcel, rep, reppath);
+                    clsReports.setReportLanguage(paramarr);
+                    clsReports.Header(paramarr);
+
+                    rep.SetParameters(paramarr);
+                    rep.Refresh();
+                    LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.rep_printer_name, short.Parse(MainWindow.rep_print_count));
+                    #endregion
                 }
-                else addpath = @"\Reports\Account\EN\PayAccReport.rdlc";
-                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-                ReportCls.checkLang();
-
-                clsReports.bankAccReport(cashesQuery, rep, reppath);
-                clsReports.setReportLanguage(paramarr);
-                clsReports.Header(paramarr);
-
-                rep.SetParameters(paramarr);
-                rep.Refresh();
-                LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.rep_printer_name, short.Parse(MainWindow.rep_print_count));
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
                 if (sender != null)
                     SectionData.EndAwait(grid_ucPaymentsAccounts);
             }
@@ -1545,47 +1553,96 @@ namespace POS.View.accounts
         }
 
         private void Btn_preview1_Click(object sender, RoutedEventArgs e)
-        {
-            Window.GetWindow(this).Opacity = 0.2;
-            string pdfpath = "";
-
-            List<ReportParameter> paramarr = new List<ReportParameter>();
-
-
-            //
-            pdfpath = @"\Thumb\report\temp.pdf";
-            pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
-
-            string addpath = "";
-            bool isArabic = ReportCls.checkLang();
-            if (isArabic)
+        {//preview
+            try
             {
-                addpath = @"\Reports\Account\Ar\ArPayAccReport.rdlc";
+                if (sender != null)
+                    SectionData.StartAwait(grid_ucPaymentsAccounts);
+                /////////////////////
+                if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+                {
+                    #region
+                    Window.GetWindow(this).Opacity = 0.2;
+                    string pdfpath = "";
+
+                    List<ReportParameter> paramarr = new List<ReportParameter>();
+                    //
+                    pdfpath = @"\Thumb\report\temp.pdf";
+                    pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
+
+                    string addpath = "";
+                    bool isArabic = ReportCls.checkLang();
+                    if (isArabic)
+                    {
+                        addpath = @"\Reports\Account\Ar\ArPayAccReport.rdlc";
+                    }
+                    else addpath = @"\Reports\Account\EN\PayAccReport.rdlc";
+                    string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+                    ReportCls.checkLang();
+                    //cashesQueryExcel = cashesQuery.ToList();
+                    clsReports.bankAccReport(cashesQueryExcel, rep, reppath);
+                    clsReports.setReportLanguage(paramarr);
+                    clsReports.Header(paramarr);
+
+                    rep.SetParameters(paramarr);
+
+                    rep.Refresh();
+
+                    LocalReportExtensions.ExportToPDF(rep, pdfpath);
+                    wd_previewPdf w = new wd_previewPdf();
+                    w.pdfPath = pdfpath;
+                    if (!string.IsNullOrEmpty(w.pdfPath))
+                    {
+                        w.ShowDialog();
+                        w.wb_pdfWebViewer.Dispose();
+                    }
+                    Window.GetWindow(this).Opacity = 1;
+                     #endregion
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                /////////////////////
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucPaymentsAccounts);
             }
-            else addpath = @"\Reports\Account\EN\PayAccReport.rdlc";
-            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-            ReportCls.checkLang();
-
-            clsReports.bankAccReport(cashesQuery, rep, reppath);
-            clsReports.setReportLanguage(paramarr);
-            clsReports.Header(paramarr);
-
-            rep.SetParameters(paramarr);
-
-            rep.Refresh();
-
-            LocalReportExtensions.ExportToPDF(rep, pdfpath);
-            wd_previewPdf w = new wd_previewPdf();
-            w.pdfPath = pdfpath;
-            if (!string.IsNullOrEmpty(w.pdfPath))
+            catch (Exception ex)
             {
-                w.ShowDialog();
-                w.wb_pdfWebViewer.Dispose();
-
-
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucPaymentsAccounts);
+                SectionData.ExceptionMessage(ex, this);
             }
-            Window.GetWindow(this).Opacity = 1;
+
+        }
+
+        private void Btn_pieChart_Click(object sender, RoutedEventArgs e)
+        {//pie
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_ucPaymentsAccounts);
+                /////////////////////
+                if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+                {
+                    Window.GetWindow(this).Opacity = 0.2;
+                    //cashesQueryExcel = cashesQuery.ToList();
+                    win_lvc win = new win_lvc(cashesQueryExcel, 8);
+                    win.ShowDialog();
+                    Window.GetWindow(this).Opacity = 1;
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                /////////////////////
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucPaymentsAccounts);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucPaymentsAccounts);
+                SectionData.ExceptionMessage(ex, this);
+            }
+
         }
 
         private void Btn_pdf1_Click(object sender, RoutedEventArgs e)
@@ -1595,38 +1652,43 @@ namespace POS.View.accounts
                 if (sender != null)
                     SectionData.StartAwait(grid_ucPaymentsAccounts);
 
-                List<ReportParameter> paramarr = new List<ReportParameter>();
-
-                string addpath;
-                bool isArabic = ReportCls.checkLang();
-                if (isArabic)
+                if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one"))
                 {
-                    addpath = @"\Reports\Account\Ar\ArPayAccReport.rdlc";
+                    #region
+                    List<ReportParameter> paramarr = new List<ReportParameter>();
+
+                    string addpath;
+                    bool isArabic = ReportCls.checkLang();
+                    if (isArabic)
+                    {
+                        addpath = @"\Reports\Account\Ar\ArPayAccReport.rdlc";
+                    }
+                    else addpath = @"\Reports\Account\EN\PayAccReport.rdlc";
+                    string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+                    ReportCls.checkLang();
+                    //cashesQueryExcel = cashesQuery.ToList();
+                    clsReports.bankAccReport(cashesQueryExcel, rep, reppath);
+                    clsReports.setReportLanguage(paramarr);
+                    clsReports.Header(paramarr);
+                    clsReports.bankdg(paramarr);
+
+                    rep.SetParameters(paramarr);
+
+                    rep.Refresh();
+
+                    saveFileDialog.Filter = "PDF|*.pdf;";
+
+                    if (saveFileDialog.ShowDialog() == true)
+                    {
+                        string filepath = saveFileDialog.FileName;
+                        LocalReportExtensions.ExportToPDF(rep, filepath);
+                    }
+                    #endregion
                 }
-                else addpath = @"\Reports\Account\EN\PayAccReport.rdlc";
-                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
 
-                ReportCls.checkLang();
-                foreach (var r in cashesQuery)
-                {
-                    r.cash = decimal.Parse(SectionData.DecTostring(r.cash));
-                }
-                clsReports.bankAccReport(cashesQuery, rep, reppath);
-                clsReports.setReportLanguage(paramarr);
-                clsReports.Header(paramarr);
-                clsReports.bankdg(paramarr);
-
-                rep.SetParameters(paramarr);
-
-                rep.Refresh();
-
-                saveFileDialog.Filter = "PDF|*.pdf;";
-
-                if (saveFileDialog.ShowDialog() == true)
-                {
-                    string filepath = saveFileDialog.FileName;
-                    LocalReportExtensions.ExportToPDF(rep, filepath);
-                }
 
                 if (sender != null)
                     SectionData.EndAwait(grid_ucPaymentsAccounts);
