@@ -121,6 +121,58 @@ namespace POS.View
                  }
              );
             pch_userOnline.Series = seriesUser;
+
+            #region userImageLoad
+            grid_userImages.Children.Clear();
+            users = await user.GetUsersActive();
+            int userCount = 0;
+            foreach (var item in users)
+            {
+                if (userCount > 4)
+                {
+                    Grid grid = new Grid();
+                    grid.Margin = new Thickness(-5, 0, -5, 0);
+                    Grid.SetColumn(grid, 4);
+                    #region rectangle
+                    Rectangle rectangle = new Rectangle();
+                    rectangle.Fill = Application.Current.Resources["Orange"] as SolidColorBrush;
+                    rectangle.RadiusX = 90;
+                    rectangle.RadiusY = 90;
+                    rectangle.Height = 40;
+                    rectangle.Width = 40;
+                    rectangle.StrokeThickness = 1;
+                    rectangle.Stroke = Application.Current.Resources["White"] as SolidColorBrush; ;
+                    grid.Children.Add(rectangle);
+                    #endregion
+                    #region rectangle
+                    TextBlock textBlock = new TextBlock();
+                    textBlock.Text = "+"+ (users.Count() - 4).ToString();
+                    textBlock.HorizontalAlignment = HorizontalAlignment.Center;
+                    textBlock.VerticalAlignment = VerticalAlignment.Center;
+                    textBlock.FontWeight = FontWeights.Bold;
+                    textBlock.Foreground = Application.Current.Resources["White"] as SolidColorBrush;
+                    grid.Children.Add(textBlock);
+                    #endregion
+                    grid_userImages.Children.Add(grid);
+                    break;
+                }
+                else
+                {
+                    Ellipse ellipse = new Ellipse();
+                    ellipse.Margin = new Thickness(-5, 0, -5, 0);
+                    ellipse.StrokeThickness = 1;
+                    ellipse.Stroke = Application.Current.Resources["White"] as SolidColorBrush;
+                    ellipse.Height = 40;
+                    ellipse.Width = 40;
+                    ellipse.FlowDirection = FlowDirection.LeftToRight;
+                    ellipse.ToolTip = item.username;
+                    userImageLoad(ellipse, item.image);
+                    Grid.SetColumn(ellipse, userCount);
+                    grid_userImages.Children.Add(ellipse);
+                    userCount++;
+                }
+            }
+            #endregion
             #endregion
             #region Branch 
             SeriesCollection seriesBranch = new SeriesCollection();
@@ -188,57 +240,7 @@ namespace POS.View
              );
             pch_dailySalesInvoice.Series = seriesDailySalesInvoice;
             #endregion
-            #region userImageLoad
-            grid_userImages.Children.Clear();
-            users = await user.GetUsersActive();
-            int userCount = 0;
-            foreach (var item in users)
-            {
-                if (userCount > 4)
-                {
-                    Grid grid = new Grid();
-                    grid.Margin = new Thickness(-5, 0, -5, 0);
-                    Grid.SetColumn(grid, 4);
-                    #region rectangle
-                    Rectangle rectangle = new Rectangle();
-                    rectangle.Fill = Application.Current.Resources["Orange"] as SolidColorBrush;
-                    rectangle.RadiusX = 90;
-                    rectangle.RadiusY = 90;
-                    rectangle.Height = 40;
-                    rectangle.Width = 40;
-                    rectangle.StrokeThickness = 1;
-                    rectangle.Stroke = Application.Current.Resources["White"] as SolidColorBrush; ;
-                    grid.Children.Add(rectangle);
-                    #endregion
-                    #region rectangle
-                    TextBlock textBlock = new TextBlock();
-                    textBlock.Text = (users.Count() - 4).ToString();
-                    textBlock.HorizontalAlignment = HorizontalAlignment.Center;
-                    textBlock.VerticalAlignment = VerticalAlignment.Center;
-                    textBlock.FontWeight = FontWeights.Bold;
-                    textBlock.Foreground = Application.Current.Resources["White"] as SolidColorBrush;
-                    grid.Children.Add(textBlock);
-                    #endregion
-                    grid_userImages.Children.Add(grid);
-                    break;
-                }
-                else
-                {
-                    Ellipse ellipse = new Ellipse();
-                    ellipse.Margin = new Thickness(-5, 0, -5, 0);
-                    ellipse.StrokeThickness = 1;
-                    ellipse.Stroke = Application.Current.Resources["White"] as SolidColorBrush;
-                    ellipse.Height = 40;
-                    ellipse.Width = 40;
-                    ellipse.FlowDirection = FlowDirection.LeftToRight;
-                    ellipse.ToolTip = item.username;
-                    userImageLoad(ellipse, item.image);
-                    Grid.SetColumn(ellipse, userCount);
-                    grid_userImages.Children.Add(ellipse);
-                    userCount++;
-                }
-            }
-            #endregion
+           
         }
 
         async void userImageLoad(Ellipse ellipse, string image)
