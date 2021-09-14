@@ -111,10 +111,15 @@ namespace POS.View
                     txt_delete_Icon.Visibility = Visibility.Visible;
 
                 }
+                
             }
             catch (Exception ex)
             { SectionData.ExceptionMessage(ex, this); }
         }
+
+       
+
+
         //area code methods
         async Task<IEnumerable<CountryCode>> RefreshCountry()
         {

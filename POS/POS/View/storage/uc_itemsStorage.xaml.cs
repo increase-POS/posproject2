@@ -89,7 +89,7 @@ namespace POS.View.storage
                 }
 
                 translate();
-                 
+               
                 Tb_search_TextChanged(null, null);
 
                 await fillSections();
@@ -118,6 +118,7 @@ namespace POS.View.storage
                 #endregion
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
+                chk_stored.IsChecked = true;
             }
             catch (Exception ex)
             {
@@ -134,17 +135,13 @@ namespace POS.View.storage
                     SectionData.StartAwait(grid_main);
 
                 //if (itemLocationList is null)
-                //if (tgl_IsActive.IsChecked == true)
-                //{
-                //    await refreshItemsLocations();
-                //    clearInputs();
-                //}
-                //else
-                //{
-                //    await refreshFreeZoneItemsLocations();
-                //    clearInputs();
-                //}
-
+                if (chk_stored.IsChecked == true)
+                    await refreshItemsLocations();
+                else if(chk_freezone.IsChecked == true)
+                    await refreshFreeZoneItemsLocations();
+                else
+                    await refreshLockedItems();
+                clearInputs();
 
                 searchText = tb_search.Text.ToLower();
 
@@ -164,8 +161,43 @@ namespace POS.View.storage
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-       
+        private void Tgl_IsActive_Checked(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
+                Tb_search_TextChanged(null, null);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+
+        private   void Tgl_IsActive_Unchecked(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                Tb_search_TextChanged(null, null);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
         private async Task refreshItemsLocations()
         {
             itemLocationList = await itemLocation.get(MainWindow.branchID.Value);
@@ -174,10 +206,36 @@ namespace POS.View.storage
         {
             itemLocationList = await itemLocation.GetFreeZoneItems(MainWindow.branchID.Value);
         }
+        private async Task refreshLockedItems()
+        {
+            itemLocationList = await itemLocation.GetLockedItems(MainWindow.branchID.Value);
+        }
         private void translate()
         {
+            ////////////////////////////////----invoice----/////////////////////////////////
+            dg_itemsStorage.Columns[0].Header = MainWindow.resourcemanager.GetString("trItemUnit");
+            dg_itemsStorage.Columns[1].Header = MainWindow.resourcemanager.GetString("trSectionLocation");
+            dg_itemsStorage.Columns[2].Header = MainWindow.resourcemanager.GetString("trQuantity");
+            dg_itemsStorage.Columns[3].Header = MainWindow.resourcemanager.GetString("trSartDate");
+            dg_itemsStorage.Columns[4].Header = MainWindow.resourcemanager.GetString("trEndDate");
+            dg_itemsStorage.Columns[5].Header = MainWindow.resourcemanager.GetString("trNote");
+            dg_itemsStorage.Columns[6].Header = MainWindow.resourcemanager.GetString("trOrderNum");
+
+            txt_itemsStorageHeader.Text = MainWindow.resourcemanager.GetString("trItemStorage");
+            txt_Location.Text = MainWindow.resourcemanager.GetString("trLocationt");         
+
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_itemName, MainWindow.resourcemanager.GetString("trItemNameHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_quantity, MainWindow.resourcemanager.GetString("trQuantityHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_section, MainWindow.resourcemanager.GetString("trSectionHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_XYZ, MainWindow.resourcemanager.GetString("trLocationHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_notes, MainWindow.resourcemanager.GetString("trNoteHint"));
 
 
+            chk_stored.Content = MainWindow.resourcemanager.GetString("trStored");
+            chk_freezone.Content = MainWindow.resourcemanager.GetString("trFreeZone");
+            chk_locked.Content = MainWindow.resourcemanager.GetString("trReserved");
+            btn_transfer.Content = MainWindow.resourcemanager.GetString("trTransfer");
+            btn_locked.Content = MainWindow.resourcemanager.GetString("trUnlock");
         }
 
         private async Task refreshLocations()
@@ -345,6 +403,71 @@ namespace POS.View.storage
                 SectionData.showDatePickerValidate(dp_endDate, p_errorEndDate, tt_errorEndDate, "trEmptyEndDateToolTip");
             }
         }
+        private async void  Btn_locked_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                if (MainWindow.groupObject.HasPermissionAction(transferPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+                {
+                    if (dg_itemsStorage.SelectedIndex != -1)
+                    {
+                        //validateMandatoryInputs();
+                        if (itemLocation != null && !tb_quantity.Text.Equals(""))
+                        {
+                            //int oldLocationId = (int)itemLocation.locationId;
+                            //int newLocationId = (int)cb_XYZ.SelectedValue;
+                            //if (oldLocationId != newLocationId)
+                            //{
+                                int quantity = int.Parse(tb_quantity.Text);
+                                ItemLocation newLocation = new ItemLocation();
+                            newLocation.itemsLocId = itemLocation.itemsLocId;
+                                newLocation.itemUnitId = itemLocation.itemUnitId;
+                                newLocation.locationId = itemLocation.locationId;
+                                newLocation.quantity = quantity;
+                                newLocation.startDate = dp_startDate.SelectedDate;
+                                newLocation.endDate = dp_endDate.SelectedDate;
+                                newLocation.note = tb_notes.Text;
+                                newLocation.updateUserId = MainWindow.userID.Value;
+                                newLocation.createUserId = MainWindow.userID.Value;   
+                                bool res = await itemLocation.unlockItem(newLocation);
+                                if (res)
+                                {
+                                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+
+                                }
+                                else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+                                if (chk_stored.IsChecked == true)
+                                    await refreshItemsLocations();
+                                else if (chk_freezone.IsChecked == true)
+                                    await refreshFreeZoneItemsLocations();
+                                else
+                                { }
+
+                                clearInputs();
+                            //}
+                            //else
+                            //    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trTranseToSameLocation"), animation: ToasterAnimation.FadeIn);
+                            Tb_search_TextChanged(null, null);
+                        }
+                    }
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
         private async void Btn_transfer_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -369,6 +492,7 @@ namespace POS.View.storage
                                 int quantity = int.Parse(tb_quantity.Text);
                                 ItemLocation newLocation = new ItemLocation();
                                 newLocation.itemUnitId = itemLocation.itemUnitId;
+                                newLocation.invoiceId = itemLocation.invoiceId;
                                 newLocation.locationId = newLocationId;
                                 newLocation.quantity = quantity;
                                 newLocation.startDate = dp_startDate.SelectedDate;
@@ -386,10 +510,12 @@ namespace POS.View.storage
                                 else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
                                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
-                                //if (tgl_IsActive.IsChecked == true)
-                                //    await refreshItemsLocations();
-                                //else
-                                //    await refreshFreeZoneItemsLocations();
+                                if (chk_stored.IsChecked == true)
+                                    await refreshItemsLocations();
+                                else if(chk_freezone.IsChecked == true)
+                                    await refreshFreeZoneItemsLocations();
+                                else
+                                { }
 
                                 clearInputs();
                             }
@@ -449,22 +575,22 @@ namespace POS.View.storage
                         gd_date.Visibility = Visibility.Visible;
                     else
                         gd_date.Visibility = Visibility.Collapsed;
-                    //if (tgl_IsActive.IsChecked == true)
-                    //{
-                    //    tb_itemName.IsReadOnly = true;
-                    //    dp_endDate.IsEnabled = false;
-                    //    dp_startDate.IsEnabled = false;
-                    //    cb_section.SelectedValue = itemLocation.sectionId;
-                    //    await refreshLocations();
-                    //    cb_XYZ.SelectedValue = itemLocation.locationId;
-                    //}
-                    //else
-                    //{
-                    //    dp_endDate.IsEnabled = true;
-                    //    dp_startDate.IsEnabled = true;
-                    //    cb_section.SelectedIndex = -1;
-                    //    cb_XYZ.SelectedIndex = -1;
-                    //}
+                    if (chk_stored.IsChecked == true)
+                    {
+                        tb_itemName.IsReadOnly = true;
+                        dp_endDate.IsEnabled = false;
+                        dp_startDate.IsEnabled = false;
+                        cb_section.SelectedValue = itemLocation.sectionId;
+                        await refreshLocations();
+                        cb_XYZ.SelectedValue = itemLocation.locationId;
+                    }
+                    else if(chk_freezone.IsChecked == true)
+                    {
+                        dp_endDate.IsEnabled = true;
+                        dp_startDate.IsEnabled = true;
+                        cb_section.SelectedIndex = -1;
+                        cb_XYZ.SelectedIndex = -1;
+                    }
 
                 }
                 if (sender != null)
@@ -712,16 +838,75 @@ namespace POS.View.storage
             Window.GetWindow(this).Opacity = 1;
         }
 
-        private void Btn_locked_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void search_Checking(object sender, RoutedEventArgs e)
         {
-
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                CheckBox cb = sender as CheckBox;
+                if (chk_freezone != null)
+                {
+                    if (cb.Name == "chk_stored")
+                    {
+                        chk_freezone.IsChecked = false;
+                        chk_locked.IsChecked = false;
+                        btn_locked.Visibility = Visibility.Collapsed;
+                        dg_itemsStorage.Columns[6].Visibility = Visibility.Collapsed; //make order num column unvisible
+                    }
+                    else if (cb.Name == "chk_freezone")
+                    {
+                        chk_stored.IsChecked = false;
+                        chk_locked.IsChecked = false;
+                        btn_locked.Visibility = Visibility.Collapsed;
+                        dg_itemsStorage.Columns[6].Visibility = Visibility.Collapsed; //make order num column unvisible
+                    }
+                    else
+                    {
+                        chk_stored.IsChecked = false;
+                        chk_freezone.IsChecked = false;
+                        btn_locked.Visibility = Visibility.Visible;
+                        dg_itemsStorage.Columns[6].Visibility = Visibility.Visible; //make order num column visible
+                    }
+                }
+                Tb_search_TextChanged(null, null);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
-      
+        private void chk_uncheck(object sender, RoutedEventArgs e)
+        {
+
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                CheckBox cb = sender as CheckBox;
+                if (cb.IsFocused)
+                {
+                    if (cb.Name == "chk_stored")
+                        chk_stored.IsChecked = true;
+                    else if (cb.Name == "chk_freezone")
+                        chk_freezone.IsChecked = true;
+                    else
+                        chk_locked.IsChecked = true;
+                }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
     }
 }

@@ -7,48 +7,13 @@
         <DataProvider>System.Data.DataSet</DataProvider>
         <ConnectString>/* Local Connection */</ConnectString>
       </ConnectionProperties>
-      <rd:DataSourceID>b1dc2aa5-be6f-48cf-88c5-f10cfde82426</rd:DataSourceID>
-    </DataSource>
-    <DataSource Name="POSClasses1">
-      <ConnectionProperties>
-        <DataProvider>System.Data.DataSet</DataProvider>
-        <ConnectString>/* Local Connection */</ConnectString>
-      </ConnectionProperties>
-      <rd:DataSourceID>5c4f1923-567a-4c17-b9ff-a513539b8459</rd:DataSourceID>
-    </DataSource>
-    <DataSource Name="POSClasses2">
-      <ConnectionProperties>
-        <DataProvider>System.Data.DataSet</DataProvider>
-        <ConnectString>/* Local Connection */</ConnectString>
-      </ConnectionProperties>
-      <rd:DataSourceID>917982fa-c9e7-4d71-b2ee-3d9f4af20cad</rd:DataSourceID>
-    </DataSource>
-    <DataSource Name="POSClasses3">
-      <ConnectionProperties>
-        <DataProvider>System.Data.DataSet</DataProvider>
-        <ConnectString>/* Local Connection */</ConnectString>
-      </ConnectionProperties>
-      <rd:DataSourceID>9447ab86-8354-43b4-8bc3-d3ddd5219773</rd:DataSourceID>
-    </DataSource>
-    <DataSource Name="POSClasses4">
-      <ConnectionProperties>
-        <DataProvider>System.Data.DataSet</DataProvider>
-        <ConnectString>/* Local Connection */</ConnectString>
-      </ConnectionProperties>
-      <rd:DataSourceID>cd1d9aaf-8ebc-48d8-b330-b7fe0ae32a70</rd:DataSourceID>
-    </DataSource>
-    <DataSource Name="POSClasses5">
-      <ConnectionProperties>
-        <DataProvider>System.Data.DataSet</DataProvider>
-        <ConnectString>/* Local Connection */</ConnectString>
-      </ConnectionProperties>
-      <rd:DataSourceID>71755a34-a4f2-420f-824a-eaf9b0a9bd74</rd:DataSourceID>
+      <rd:DataSourceID>26ab1bee-99ea-48d3-8619-d0f8db914fb1</rd:DataSourceID>
     </DataSource>
   </DataSources>
   <DataSets>
     <DataSet Name="DataSetCategory">
       <Query>
-        <DataSourceName>POSClasses5</DataSourceName>
+        <DataSourceName>POSClasses</DataSourceName>
         <CommandText>/* Local Query */</CommandText>
       </Query>
       <Fields>
@@ -411,7 +376,7 @@
             <Top>2.0185cm</Top>
             <Left>1.18768cm</Left>
             <Height>1.2cm</Height>
-            <Width>18.5cm</Width>
+            <Width>18.50001cm</Width>
             <ZIndex>1</ZIndex>
             <Style>
               <Border>

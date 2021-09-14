@@ -204,6 +204,7 @@ namespace POS.View.catalog
 
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
                 {
+                    #region
                     Thread t1 = new Thread(() =>
                     {
                         List<ReportParameter> paramarr = new List<ReportParameter>();
@@ -242,6 +243,7 @@ namespace POS.View.catalog
 
                     });
                     t1.Start();
+                    #endregion
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -681,47 +683,47 @@ namespace POS.View.catalog
         }
 
         private void Btn_preview_Click(object sender, RoutedEventArgs e)
-        {
-            Window.GetWindow(this).Opacity = 0.2;
-            string pdfpath = "";
-
-            List<ReportParameter> paramarr = new List<ReportParameter>();
-
-
-            //
-            pdfpath = @"\Thumb\report\temp.pdf";
-            pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
-
-            string addpath;
-            bool isArabic = ReportCls.checkLang();
-            if (isArabic)
+        {//preview
+            try
             {
-                addpath = @"\Reports\Catalog\Ar\ArStorageCostReport.rdlc";
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
+                {
+                    #region
+                    Window.GetWindow(this).Opacity = 0.2;
+                    /////////////////////
+                    string pdfpath = "";
+                    pdfpath = @"\Thumb\report\temp.pdf";
+                    pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
+                    BuildReport();
+                    LocalReportExtensions.ExportToPDF(rep, pdfpath);
+                    ///////////////////
+                    wd_previewPdf w = new wd_previewPdf();
+                    w.pdfPath = pdfpath;
+                    if (!string.IsNullOrEmpty(w.pdfPath))
+                    {
+                        w.ShowDialog();
+                        w.wb_pdfWebViewer.Dispose();
+                    }
+                    Window.GetWindow(this).Opacity = 1;
+                    //////////////////////////////////////
+                    #endregion
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
-            else addpath = @"\Reports\Catalog\En\StorageCostReport.rdlc";
-            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-            ReportCls.checkLang();
-
-            clsReports.storageCostReport(storageCostQuery, rep, reppath, paramarr);
-            clsReports.setReportLanguage(paramarr);
-            clsReports.Header(paramarr);
-
-            rep.SetParameters(paramarr);
-
-            rep.Refresh();
-
-            LocalReportExtensions.ExportToPDF(rep, pdfpath);
-            wd_previewPdf w = new wd_previewPdf();
-            w.pdfPath = pdfpath;
-            if (!string.IsNullOrEmpty(w.pdfPath))
+            catch (Exception ex)
             {
-                w.ShowDialog();
-                w.wb_pdfWebViewer.Dispose();
-
-
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
             }
-            Window.GetWindow(this).Opacity = 1;
+
         }
         ReportCls reportclass = new ReportCls();
         LocalReport rep = new LocalReport();
@@ -732,38 +734,17 @@ namespace POS.View.catalog
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-
-                List<ReportParameter> paramarr = new List<ReportParameter>();
-
-            string addpath;
-            bool isArabic = ReportCls.checkLang();
-            if (isArabic)
-            {
-                addpath = @"\Reports\Catalog\Ar\ArStorageCostReport.rdlc";
-            }
-            else addpath = @"\Reports\Catalog\En\StorageCostReport.rdlc";
-            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-            ReportCls.checkLang();
-                foreach (var r in storageCostQuery)
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
                 {
-                    r.cost = decimal.Parse(SectionData.DecTostring(r.cost));
+                    Thread t1 = new Thread(() =>
+                    {
+                        pdfStorageCost();
+                    });
+                    t1.Start();
                 }
-                clsReports.storageCostReport(storageCostQuery, rep, reppath, paramarr);
-            clsReports.setReportLanguage(paramarr);
-            clsReports.Header(paramarr);
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
 
-            rep.SetParameters(paramarr);
-
-            rep.Refresh();
-
-            saveFileDialog.Filter = "PDF|*.pdf;";
-
-            if (saveFileDialog.ShowDialog() == true)
-            {
-                string filepath = saveFileDialog.FileName;
-                LocalReportExtensions.ExportToPDF(rep, filepath);
-            }
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -775,7 +756,23 @@ namespace POS.View.catalog
             }
         }
 
-        private void Btn_print_Click(object sender, RoutedEventArgs e)
+        private void pdfStorageCost()
+        {
+            BuildReport();
+
+            this.Dispatcher.Invoke(() =>
+            {
+                saveFileDialog.Filter = "PDF|*.pdf;";
+
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    string filepath = saveFileDialog.FileName;
+                    LocalReportExtensions.ExportToPDF(rep, filepath);
+                }
+            });
+        }
+
+        private void BuildReport()
         {
             List<ReportParameter> paramarr = new List<ReportParameter>();
 
@@ -785,7 +782,8 @@ namespace POS.View.catalog
             {
                 addpath = @"\Reports\Catalog\Ar\ArStorageCostReport.rdlc";
             }
-            else addpath = @"\Reports\Catalog\En\StorageCostReport.rdlc";
+            else
+                addpath = addpath = @"\Reports\Catalog\En\StorageCostReport.rdlc";
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
             ReportCls.checkLang();
@@ -795,8 +793,77 @@ namespace POS.View.catalog
             clsReports.Header(paramarr);
 
             rep.SetParameters(paramarr);
+
             rep.Refresh();
-            LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.rep_printer_name, short.Parse(MainWindow.rep_print_count));
+        }
+
+
+        private void Btn_print_Click(object sender, RoutedEventArgs e)
+        {//print
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
+                {
+                    /////////////////////////////////////
+                    Thread t1 = new Thread(() =>
+                    {
+                        printStorageCost();
+                    });
+                    t1.Start();
+                    //////////////////////////////////////
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+
+        private void printStorageCost()
+        {
+            BuildReport();
+
+            this.Dispatcher.Invoke(() =>
+            {
+                LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.rep_printer_name, short.Parse(MainWindow.rep_print_count));
+            });
+        }
+
+        private void Btn_pieChart_Click(object sender, RoutedEventArgs e)
+        {//pie
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
+                {
+                    Window.GetWindow(this).Opacity = 0.2;
+                    win_lvcCatalog win = new win_lvcCatalog(storageCostQuery, 4);
+                    win.ShowDialog();
+                    Window.GetWindow(this).Opacity = 1;
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
     }
 }

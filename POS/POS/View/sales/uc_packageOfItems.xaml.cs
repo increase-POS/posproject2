@@ -299,13 +299,6 @@ namespace POS.View
             tt_clear.Content = MainWindow.resourcemanager.GetString("trClear");
             tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
             tt_search.Content = MainWindow.resourcemanager.GetString("trSearch");
-            tt_code.Content = MainWindow.resourcemanager.GetString("trCode");
-            tt_name.Content = MainWindow.resourcemanager.GetString("trName");
-            tt_details.Content = MainWindow.resourcemanager.GetString("trDetails");
-            tt_category.Content = MainWindow.resourcemanager.GetString("trCategorie");
-            tt_tax.Content = MainWindow.resourcemanager.GetString("trTax");
-            tt_price.Content = MainWindow.resourcemanager.GetString("trPrice");
-            tt_barCode.Content = MainWindow.resourcemanager.GetString("trBarcode");
             tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
             tt_print.Content = MainWindow.resourcemanager.GetString("trPrint");
             tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");

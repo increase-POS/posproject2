@@ -30,6 +30,7 @@ namespace POS.Classes
         public string location { get; set; }
         public string section { get; set; }
         public string unitName { get; set; }
+        public string invNumber { get; set; }
         public Nullable<int> invoiceId { get; set; }
         public Nullable<int> sectionId { get; set; }
         public Nullable<decimal> storeCost { get; set; }
@@ -273,6 +274,37 @@ namespace POS.Classes
                 return false;
             }
         }
+        public async Task<Boolean> unlockItem(ItemLocation il)
+        {
+            // ... Use HttpClient.
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            // 
+            var myContent = JsonConvert.SerializeObject(il);
+
+            using (var client = new HttpClient())
+            {
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                client.BaseAddress = new Uri(Global.APIUri);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+                HttpRequestMessage request = new HttpRequestMessage();
+                // encoding parameter to get special characters
+                myContent = HttpUtility.UrlEncode(myContent);
+                request.RequestUri = new Uri(Global.APIUri + "ItemsLocations/unlockItem?itemLocation=" + myContent);
+                request.Headers.Add("APIKey", Global.APIKey);
+                request.Method = HttpMethod.Post;
+                //set content type
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
         public async Task<Boolean> unitsConversion(int branchId,int fromItemUnit , int toItemUnt, int fromQuantity,int toQuantity, int userId, ItemUnit smallUnit)
         {
             // ... Use HttpClient.
@@ -350,6 +382,40 @@ namespace POS.Classes
                 // encoding parameter to get special characters
                 myContent = HttpUtility.UrlEncode(myContent);
                 request.RequestUri = new Uri(Global.APIUri + "ItemsLocations/trasnferItem?itemLocId=" + itemLocId + "&itemLocation=" + myContent);
+                request.Headers.Add("APIKey", Global.APIKey);
+                request.Method = HttpMethod.Post;
+                //set content type
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
+        public async Task<Boolean> reserveItems(List<ItemTransfer> invoiceItems,int invoiceId, int branchId, int userId)
+        {
+            // ... Use HttpClient.
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            // 
+            var myContent = JsonConvert.SerializeObject(invoiceItems);
+            //var myContent1 = JsonConvert.SerializeObject(not);
+
+            using (var client = new HttpClient())
+            {
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                client.BaseAddress = new Uri(Global.APIUri);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+                HttpRequestMessage request = new HttpRequestMessage();
+                // encoding parameter to get special characters
+                myContent = HttpUtility.UrlEncode(myContent);
+                //myContent1 = HttpUtility.UrlEncode(myContent1);
+                request.RequestUri = new Uri(Global.APIUri + "ItemsLocations/reserveItems?itemLocationObject=" + myContent+"&invoiceId="+invoiceId + "&branchId=" + branchId +
+                                        "&userId=" + userId );
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Post;
                 //set content type

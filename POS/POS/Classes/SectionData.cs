@@ -661,7 +661,7 @@ namespace POS.Classes
         }
 
         static List<Branch> branches;
-        static public async Task fillBranches(ComboBox combo, string type )
+        static public async Task fillBranches(ComboBox combo, string type = "" )
         {
             if (isAdminPermision())
             branches = await branchModel.GetAll();

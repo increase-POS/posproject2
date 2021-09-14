@@ -2901,6 +2901,7 @@ namespace POS.View
 
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
                 {
+                    #region
                     Thread t1 = new Thread(() =>
                     {
                         List<ReportParameter> paramarr = new List<ReportParameter>();
@@ -2915,11 +2916,8 @@ namespace POS.View
                         string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                         ReportCls.checkLang();
-                        foreach (var r in itemsQuery)
-                        {
-                            r.taxes = decimal.Parse(SectionData.DecTostring(r.taxes));
-                        }
-                        clsReports.itemReport(itemsQuery, rep, reppath);
+                       
+                        clsReports.itemReport(itemsQuery, rep, reppath , paramarr);
                         clsReports.setReportLanguage(paramarr);
                         clsReports.Header(paramarr);
 
@@ -2939,6 +2937,7 @@ namespace POS.View
 
                     });
                     t1.Start();
+                    #endregion
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -3068,7 +3067,7 @@ namespace POS.View
         }
 
         private void btn_pieChart_Click(object sender, RoutedEventArgs e)
-        {
+        {//pie
             try
             {
                 if (sender != null)
@@ -3198,37 +3197,17 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                List<ReportParameter> paramarr = new List<ReportParameter>();
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
+                {
+                    Thread t1 = new Thread(() =>
+                    {
+                        pdfitem();
+                    });
+                    t1.Start();
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
 
-            string addpath;
-            bool isArabic = ReportCls.checkLang();
-            if (isArabic)
-            {
-                addpath = @"\Reports\Catalog\Ar\ArItemReport.rdlc";
-            }
-            else addpath = @"\Reports\Catalog\En\ItemReport.rdlc";
-            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-            ReportCls.checkLang();
-            foreach (var r in itemsQuery)
-            {
-                r.taxes = decimal.Parse(SectionData.DecTostring(r.taxes));
-            }
-            clsReports.itemReport(itemsQuery, rep, reppath);
-            clsReports.setReportLanguage(paramarr);
-            clsReports.Header(paramarr);
-
-            rep.SetParameters(paramarr);
-
-            rep.Refresh();
-
-            saveFileDialog.Filter = "PDF|*.pdf;";
-
-            if (saveFileDialog.ShowDialog() == true)
-            {
-                string filepath = saveFileDialog.FileName;
-                LocalReportExtensions.ExportToPDF(rep, filepath);
-            }
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -3240,17 +3219,26 @@ namespace POS.View
             }
         }
 
-        private void Btn_preview_Click(object sender, RoutedEventArgs e)
+        public void pdfitem()
         {
-            Window.GetWindow(this).Opacity = 0.2;
-            string pdfpath = "";
 
+            BuildReport();
+
+            this.Dispatcher.Invoke(() =>
+            {
+                saveFileDialog.Filter = "PDF|*.pdf;";
+
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    string filepath = saveFileDialog.FileName;
+                    LocalReportExtensions.ExportToPDF(rep, filepath);
+                }
+            });
+        }
+
+        private void BuildReport()
+        {
             List<ReportParameter> paramarr = new List<ReportParameter>();
-
-
-            //
-            pdfpath = @"\Thumb\report\temp.pdf";
-            pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
 
             string addpath;
             bool isArabic = ReportCls.checkLang();
@@ -3258,54 +3246,104 @@ namespace POS.View
             {
                 addpath = @"\Reports\Catalog\Ar\ArItemReport.rdlc";
             }
-            else addpath = @"\Reports\Catalog\En\ItemReport.rdlc";
+            else
+                addpath = @"\Reports\Catalog\En\ItemReport.rdlc";
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
             ReportCls.checkLang();
 
-            clsReports.itemReport(itemsQuery, rep, reppath);
+            clsReports.itemReport(itemsQuery, rep, reppath , paramarr);
             clsReports.setReportLanguage(paramarr);
             clsReports.Header(paramarr);
 
             rep.SetParameters(paramarr);
 
             rep.Refresh();
+        }
 
-            LocalReportExtensions.ExportToPDF(rep, pdfpath);
-            wd_previewPdf w = new wd_previewPdf();
-            w.pdfPath = pdfpath;
-            if (!string.IsNullOrEmpty(w.pdfPath))
+        private void Btn_preview_Click(object sender, RoutedEventArgs e)
+        {//preview
+            try
             {
-                w.ShowDialog();
-                w.wb_pdfWebViewer.Dispose();
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
+                {
+                    #region
+                    Window.GetWindow(this).Opacity = 0.2;
+                    /////////////////////
+                    string pdfpath = "";
+                    pdfpath = @"\Thumb\report\temp.pdf";
+                    pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
+                    BuildReport();
+                    LocalReportExtensions.ExportToPDF(rep, pdfpath);
+                    ///////////////////
+                    wd_previewPdf w = new wd_previewPdf();
+                    w.pdfPath = pdfpath;
+                    if (!string.IsNullOrEmpty(w.pdfPath))
+                    {
+                        w.ShowDialog();
+                        w.wb_pdfWebViewer.Dispose();
+                    }
+                    Window.GetWindow(this).Opacity = 1;
+                    //////////////////////////////////////
+                    #endregion
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
 
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
-            Window.GetWindow(this).Opacity = 1;
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+
         }
 
         private void Btn_print_Click(object sender, RoutedEventArgs e)
-        {
-            List<ReportParameter> paramarr = new List<ReportParameter>();
-
-            string addpath;
-            bool isArabic = ReportCls.checkLang();
-            if (isArabic)
+        {//print
+            try
             {
-                addpath = @"\Reports\Catalog\Ar\ArItemReport.rdlc";
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+             
+                if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
+                {
+                    /////////////////////////////////////
+                    Thread t1 = new Thread(() =>
+                    {
+                        printitem();
+                    });
+                    t1.Start();
+                    //////////////////////////////////////
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
-            else addpath = @"\Reports\Catalog\En\ItemReport.rdlc";
-            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
 
-            ReportCls.checkLang();
+        private void printitem()
+        {
+            BuildReport();
 
-            clsReports.itemReport(itemsQuery, rep, reppath);
-            clsReports.setReportLanguage(paramarr);
-            clsReports.Header(paramarr);
-
-            rep.SetParameters(paramarr);
-            rep.Refresh();
-            LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.rep_printer_name, short.Parse(MainWindow.rep_print_count));
+            this.Dispatcher.Invoke(() =>
+            {
+                LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.rep_printer_name, short.Parse(MainWindow.rep_print_count));
+            });
         }
     }
 }

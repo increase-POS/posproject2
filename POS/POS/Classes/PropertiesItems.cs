@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace POS.Classes
 {
-    class PropertiesItems
+    public class PropertiesItems
     {
         public int propertyItemId { get; set; }
         public string propertyItemName { get; set; }

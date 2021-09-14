@@ -2887,6 +2887,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to المنطقة الحرة.
+        /// </summary>
+        internal static string trFreeZone {
+            get {
+                return ResourceManager.GetString("trFreeZone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to من الموقع ....
         /// </summary>
         internal static string trFromLocationHint {
@@ -4112,6 +4121,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to رقم الطلبية.
+        /// </summary>
+        internal static string trOrderNum {
+            get {
+                return ResourceManager.GetString("trOrderNum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to الطلبات.
         /// </summary>
         internal static string trOrders {
@@ -5138,6 +5156,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to محجوز.
+        /// </summary>
+        internal static string trReserved {
+            get {
+                return ResourceManager.GetString("trReserved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to إرجاع.
         /// </summary>
         internal static string trReturn {
@@ -5719,6 +5746,15 @@ namespace POS {
         internal static string trSettings {
             get {
                 return ResourceManager.GetString("trSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to الشحن.
+        /// </summary>
+        internal static string trShipping {
+            get {
+                return ResourceManager.GetString("trShipping", resourceCulture);
             }
         }
         

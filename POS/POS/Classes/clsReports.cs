@@ -47,29 +47,43 @@ namespace POS.Classes
             rep.DataSources.Add(new ReportDataSource("DataSetBond", bondsQuery));
             paramarr.Add(new ReportParameter("dateForm", MainWindow.dateFormat));
         }
-        public static void orderReport(IEnumerable<Invoice> invoiceQuery, LocalReport rep, string reppath)
+        //public static void orderReport(IEnumerable<Invoice> invoiceQuery, LocalReport rep, string reppath)
+        //{
+        //    rep.ReportPath = reppath;
+        //    rep.EnableExternalImages = true;
+        //    rep.DataSources.Clear();
+        //    foreach(var o in invoiceQuery)
+        //    {
+        //        string status = "";
+        //        switch (o.status)
+        //        {
+        //            case "tr":
+        //                status = MainWindow.resourcemanager.GetString("trDelivered");
+        //                break;
+        //            case "rc":
+        //                status = MainWindow.resourcemanager.GetString("trInDelivery");
+        //                break;
+        //            default:
+        //                status = "";
+        //                break;
+        //        }
+        //        o.status = status;
+        //        o.deserved = decimal.Parse(SectionData.DecTostring(o.deserved));
+        //    }
+        //    rep.DataSources.Add(new ReportDataSource("DataSetInvoice", invoiceQuery));
+        //}
+        public static void orderReport(IEnumerable<Invoice> invoiceQuery, LocalReport rep, string reppath, List<ReportParameter> paramarr)
         {
             rep.ReportPath = reppath;
             rep.EnableExternalImages = true;
             rep.DataSources.Clear();
-            foreach(var o in invoiceQuery)
+
+            foreach (var o in invoiceQuery)
             {
-                string status = "";
-                switch (o.status)
-                {
-                    case "tr":
-                        status = MainWindow.resourcemanager.GetString("trDelivered");
-                        break;
-                    case "rc":
-                        status = MainWindow.resourcemanager.GetString("trInDelivery");
-                        break;
-                    default:
-                        status = "";
-                        break;
-                }
-                o.status = status;
                 o.deserved = decimal.Parse(SectionData.DecTostring(o.deserved));
             }
+            paramarr.Add(new ReportParameter("trDelivered", MainWindow.resourcemanagerreport.GetString("trDelivered")));
+            paramarr.Add(new ReportParameter("trInDelivery", MainWindow.resourcemanagerreport.GetString("trInDelivery")));
             rep.DataSources.Add(new ReportDataSource("DataSetInvoice", invoiceQuery));
         }
         public static void bankAccReport(IEnumerable<CashTransfer> cash, LocalReport rep, string reppath)
@@ -346,21 +360,39 @@ namespace POS.Classes
             rep.ReportPath = reppath;
             rep.EnableExternalImages = true;
             rep.DataSources.Clear();
+            foreach (var r in categoryQuery)
+            {
+                r.taxes = decimal.Parse(SectionData.DecTostring(r.taxes));
+            }
             rep.DataSources.Add(new ReportDataSource("DataSetCategory", categoryQuery));
-            paramarr.Add(new ReportParameter("Title", MainWindow.resourcemanagerreport.GetString("")));
-            paramarr.Add(new ReportParameter("trCode", MainWindow.resourcemanagerreport.GetString("")));
-            paramarr.Add(new ReportParameter("trName", MainWindow.resourcemanagerreport.GetString("")));
-            paramarr.Add(new ReportParameter("trDetails", MainWindow.resourcemanagerreport.GetString("")));
-
-
+            paramarr.Add(new ReportParameter("Title", MainWindow.resourcemanagerreport.GetString("trCategories")));
+            paramarr.Add(new ReportParameter("trCode", MainWindow.resourcemanagerreport.GetString("trCode")));
+            paramarr.Add(new ReportParameter("trName", MainWindow.resourcemanagerreport.GetString("trName")));
+            paramarr.Add(new ReportParameter("trDetails", MainWindow.resourcemanagerreport.GetString("trDetails")));
         }
-        public static void itemReport(IEnumerable<Item> itemQuery, LocalReport rep, string reppath)
+        //public static void itemReport(IEnumerable<Item> itemQuery, LocalReport rep, string reppath)
+        //{
+        //    rep.ReportPath = reppath;
+        //    rep.EnableExternalImages = true;
+        //    rep.DataSources.Clear();
+        //    rep.DataSources.Add(new ReportDataSource("DataSetItem", itemQuery));
+
+        //}
+        public static void itemReport(IEnumerable<Item> itemQuery, LocalReport rep, string reppath, List<ReportParameter> paramarr)
         {
             rep.ReportPath = reppath;
             rep.EnableExternalImages = true;
             rep.DataSources.Clear();
+            foreach (var r in itemQuery)
+            {
+                r.taxes = decimal.Parse(SectionData.DecTostring(r.taxes));
+            }
             rep.DataSources.Add(new ReportDataSource("DataSetItem", itemQuery));
-
+            paramarr.Add(new ReportParameter("Title", MainWindow.resourcemanagerreport.GetString("trItems")));
+            paramarr.Add(new ReportParameter("trCode", MainWindow.resourcemanagerreport.GetString("trCode")));
+            paramarr.Add(new ReportParameter("trName", MainWindow.resourcemanagerreport.GetString("trName")));
+            paramarr.Add(new ReportParameter("trDetails", MainWindow.resourcemanagerreport.GetString("trDetails")));
+            paramarr.Add(new ReportParameter("trCategory", MainWindow.resourcemanagerreport.GetString("trCategorie")));
         }
         public static void properyReport(IEnumerable<Property> propertyQuery, LocalReport rep, string reppath, List<ReportParameter> paramarr)
         {
@@ -368,23 +400,23 @@ namespace POS.Classes
             rep.EnableExternalImages = true;
             rep.DataSources.Clear();
             rep.DataSources.Add(new ReportDataSource("DataSetProperty", propertyQuery));
-            paramarr.Add(new ReportParameter("Title", MainWindow.resourcemanagerreport.GetString("")));
-            paramarr.Add(new ReportParameter("trName", MainWindow.resourcemanagerreport.GetString("")));
-            paramarr.Add(new ReportParameter("trValues", MainWindow.resourcemanagerreport.GetString("")));
-
-
-
-
+            paramarr.Add(new ReportParameter("Title", MainWindow.resourcemanagerreport.GetString("trProperties")));
+            paramarr.Add(new ReportParameter("trName", MainWindow.resourcemanagerreport.GetString("trProperty")));
+            paramarr.Add(new ReportParameter("trValues", MainWindow.resourcemanagerreport.GetString("trValues")));
         }
         public static void storageCostReport(IEnumerable<StorageCost> storageCostQuery, LocalReport rep, string reppath, List<ReportParameter> paramarr)
         {
             rep.ReportPath = reppath;
             rep.EnableExternalImages = true;
             rep.DataSources.Clear();
+            foreach (var s in storageCostQuery)
+            {
+                s.cost = decimal.Parse(SectionData.DecTostring(s.cost));
+            }
             rep.DataSources.Add(new ReportDataSource("DataSetStorageCost", storageCostQuery));
-            paramarr.Add(new ReportParameter("Title", MainWindow.resourcemanagerreport.GetString("")));
-            paramarr.Add(new ReportParameter("trName", MainWindow.resourcemanagerreport.GetString("")));
-            paramarr.Add(new ReportParameter("trCost", MainWindow.resourcemanagerreport.GetString("")));
+            paramarr.Add(new ReportParameter("Title", MainWindow.resourcemanagerreport.GetString("trStorageCost")));
+            paramarr.Add(new ReportParameter("trName", MainWindow.resourcemanagerreport.GetString("trName")));
+            paramarr.Add(new ReportParameter("trCost", MainWindow.resourcemanagerreport.GetString("trStorageCost")));
 
         }
         public static void unitReport(IEnumerable<Unit> unitQuery, LocalReport rep, string reppath, List<ReportParameter> paramarr)
@@ -393,9 +425,9 @@ namespace POS.Classes
             rep.EnableExternalImages = true;
             rep.DataSources.Clear();
             rep.DataSources.Add(new ReportDataSource("DataSetUnit", unitQuery));
-            paramarr.Add(new ReportParameter("Title", MainWindow.resourcemanagerreport.GetString("")));
-            paramarr.Add(new ReportParameter("trName", MainWindow.resourcemanagerreport.GetString("")));
-            paramarr.Add(new ReportParameter("trNotes", MainWindow.resourcemanagerreport.GetString("")));
+            paramarr.Add(new ReportParameter("Title", MainWindow.resourcemanagerreport.GetString("trUnit")));
+            paramarr.Add(new ReportParameter("trName", MainWindow.resourcemanagerreport.GetString("trUnitName")));
+            paramarr.Add(new ReportParameter("trNotes", MainWindow.resourcemanagerreport.GetString("trNote")));
 
         }
 

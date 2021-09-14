@@ -516,15 +516,13 @@ namespace POS.View.accounts
                         {
                             addpath = @"\Reports\Account\Ar\ArOrderAccReport.rdlc";
                         }
-                        else addpath = @"\Reports\Account\EN\OrderAccReport.rdlc";
+                        else addpath = @"\Reports\Account\En\OrderAccReport.rdlc";
                         string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                         ReportCls.checkLang();
-                        //foreach (var r in invoiceQueryExcel)
-                        //{
-                        //    r.deserved = decimal.Parse(SectionData.DecTostring(r.deserved));
-                        //}
-                        clsReports.orderReport(invoiceQueryExcel, rep, reppath);
+
+                        //clsReports.orderReport(invoiceQueryExcel, rep, reppath);
+                        clsReports.orderReport(invoiceQueryExcel, rep, reppath, paramarr);
                         clsReports.setReportLanguage(paramarr);
                         clsReports.Header(paramarr);
 
@@ -1110,12 +1108,13 @@ namespace POS.View.accounts
                     {
                         addpath = @"\Reports\Account\Ar\ArOrderAccReport.rdlc";
                     }
-                    else addpath = @"\Reports\Account\EN\OrderAccReport.rdlc";
+                    else addpath = @"\Reports\Account\En\OrderAccReport.rdlc";
                     string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                     ReportCls.checkLang();
 
-                    clsReports.orderReport(invoiceQuery, rep, reppath);
+                    //clsReports.orderReport(invoiceQuery, rep, reppath);
+                    clsReports.orderReport(invoiceQuery, rep, reppath, paramarr);
                     clsReports.setReportLanguage(paramarr);
                     clsReports.Header(paramarr);
 
@@ -1161,12 +1160,13 @@ namespace POS.View.accounts
                     {
                         addpath = @"\Reports\Account\Ar\ArOrderAccReport.rdlc";
                     }
-                    else addpath = @"\Reports\Account\EN\OrderAccReport.rdlc";
+                    else addpath = @"\Reports\Account\En\OrderAccReport.rdlc";
                     string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                     ReportCls.checkLang();
 
-                    clsReports.orderReport(invoiceQuery, rep, reppath);
+                    //clsReports.orderReport(invoiceQuery, rep, reppath);
+                    clsReports.orderReport(invoiceQuery, rep, reppath, paramarr);
                     clsReports.setReportLanguage(paramarr);
                     clsReports.Header(paramarr);
 
@@ -1246,12 +1246,13 @@ namespace POS.View.accounts
                     {
                         addpath = @"\Reports\Account\Ar\ArOrderAccReport.rdlc";
                     }
-                    else addpath = @"\Reports\Account\EN\OrderAccReport.rdlc";
+                    else addpath = @"\Reports\Account\En\OrderAccReport.rdlc";
                     string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                     ReportCls.checkLang();
-                    
-                    clsReports.orderReport(invoiceQuery, rep, reppath);
+
+                    //clsReports.orderReport(invoiceQuery, rep, reppath);
+                    clsReports.orderReport(invoiceQuery, rep, reppath, paramarr);
                     clsReports.setReportLanguage(paramarr);
                     clsReports.Header(paramarr);
 

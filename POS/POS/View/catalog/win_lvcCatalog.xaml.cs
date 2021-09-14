@@ -27,6 +27,9 @@ namespace POS.View.catalog
         int selectedChart = 1;
         IEnumerable<Category> categoriesQuery;
         IEnumerable<Item> itemsQuery;
+        IEnumerable<Property> propertiesQuery;
+        IEnumerable<StorageCost> storagecostQuery;
+        IEnumerable<Unit> unitsQuery;
         List<double> chartList;
         List<double> PiechartList;
         List<double> ColumnchartList;
@@ -56,6 +59,48 @@ namespace POS.View.catalog
             {
                 InitializeComponent();
                 itemsQuery = _itemsQuery;
+                catalog = _catalog;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+
+        }
+        public win_lvcCatalog(IEnumerable<Property> _propertiesQuery, int _catalog)
+        {
+            try
+            {
+                InitializeComponent();
+                propertiesQuery = _propertiesQuery;
+                catalog = _catalog;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+
+        }
+        public win_lvcCatalog(IEnumerable<StorageCost> _storagecostQuery, int _catalog)
+        {
+            try
+            {
+                InitializeComponent();
+                storagecostQuery = _storagecostQuery;
+                catalog = _catalog;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+
+        }
+        public win_lvcCatalog(IEnumerable<Unit> _unitsQuery, int _catalog)
+        {
+            try
+            {
+                InitializeComponent();
+                unitsQuery = _unitsQuery;
                 catalog = _catalog;
             }
             catch (Exception ex)
@@ -130,11 +175,29 @@ namespace POS.View.catalog
                             chartList.Add(Draw);
                             label = "Categories count";
                         }
-                        else
+                        else if(catalog == 2)
                         {
                             var Draw = itemsQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
                             chartList.Add(Draw);
                             label = "Items count";
+                        }
+                        else if (catalog == 3)
+                        {
+                            var Draw = propertiesQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
+                            chartList.Add(Draw);
+                            label = "Properties count";
+                        }
+                        else if (catalog == 4)
+                        {
+                            var Draw = storagecostQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
+                            chartList.Add(Draw);
+                            label = "Storage Costs count";
+                        }
+                        else if (catalog == 5)
+                        {
+                            var Draw = unitsQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
+                            chartList.Add(Draw);
+                            label = "Units count";
                         }
                         MyAxis.Separator.Step = 2;
                         MyAxis.Labels.Add(CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month) + "/" + year);
@@ -164,11 +227,29 @@ namespace POS.View.catalog
                         label = "Categories count";
                     }
 
-                    else
+                    else if (catalog == 2)
                     {
                         var Draw = itemsQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
                         chartList.Add(Draw);
                         label = "Items count";
+                    }
+                    else if (catalog == 3)
+                    {
+                        var Draw = propertiesQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
+                        chartList.Add(Draw);
+                        label = "Properties count";
+                    }
+                    else if (catalog == 4)
+                    {
+                        var Draw = storagecostQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
+                        chartList.Add(Draw);
+                        label = "Storage Costs count";
+                    }
+                    else if (catalog == 5)
+                    {
+                        var Draw = unitsQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
+                        chartList.Add(Draw);
+                        label = "Units count";
                     }
                     MyAxis.Separator.Step = 1;
                     MyAxis.Labels.Add(year.ToString());
@@ -212,11 +293,29 @@ namespace POS.View.catalog
                             PiechartList.Add(Draw);
                             label = "Categories count";
                         }
-                        else
+                        else if (catalog == 2)
                         {
                             var Draw = itemsQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
                             PiechartList.Add(Draw);
                             label = "Items count";
+                        }
+                        else if (catalog == 3)
+                        {
+                            var Draw = propertiesQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
+                            PiechartList.Add(Draw);
+                            label = "Properties count";
+                        }
+                        else if (catalog == 4)
+                        {
+                            var Draw = storagecostQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
+                            chartList.Add(Draw);
+                            label = "Storage Costs count";
+                        }
+                        else if (catalog == 5)
+                        {
+                            var Draw = unitsQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
+                            chartList.Add(Draw);
+                            label = "Units count";
                         }
                         titles.Add(CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month) + "/" + year);
                         if (year == dpEndDate.SelectedDate.Value.Year && month == dpEndDate.SelectedDate.Value.Month)
@@ -243,11 +342,29 @@ namespace POS.View.catalog
                         PiechartList.Add(Draw);
                         label = "Categories count";
                     }
-                    else
+                    else if (catalog == 2)
                     {
                         var Draw = itemsQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
                         PiechartList.Add(Draw);
                         label = "Items count";
+                    }
+                    else if (catalog == 3)
+                    {
+                        var Draw = propertiesQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
+                        PiechartList.Add(Draw);
+                        label = "Properties count";
+                    }
+                    else if (catalog == 4)
+                    {
+                        var Draw = storagecostQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
+                        chartList.Add(Draw);
+                        label = "Storage Costs count";
+                    }
+                    else if (catalog == 5)
+                    {
+                        var Draw = unitsQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
+                        chartList.Add(Draw);
+                        label = "Units count";
                     }
                     titles.Add(year.ToString());
                 }
@@ -293,11 +410,29 @@ namespace POS.View.catalog
                             ColumnchartList.Add(Draw);
                             label = "Categories count";
                         }
-                        else
+                        else if (catalog == 2)
                         {
                             var Draw = itemsQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
                             ColumnchartList.Add(Draw);
                             label = "Items count";
+                        }
+                        else if (catalog == 3)
+                        {
+                            var Draw = propertiesQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
+                            ColumnchartList.Add(Draw);
+                            label = "Properties count";
+                        }
+                        else if (catalog == 4)
+                        {
+                            var Draw = storagecostQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
+                            ColumnchartList.Add(Draw);
+                            label = "Storage Costs count";
+                        }
+                        else if (catalog == 5)
+                        {
+                            var Draw = unitsQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
+                            chartList.Add(Draw);
+                            label = "Units count";
                         }
                         columnAxis.Separator.Step = 2;
                         columnAxis.Labels.Add(CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month) + "/" + year);
@@ -325,11 +460,29 @@ namespace POS.View.catalog
                         ColumnchartList.Add(Draw);
                         label = "Categories count";
                     }
-                    else
+                    else if (catalog == 2)
                     {
                         var Draw = itemsQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
                         ColumnchartList.Add(Draw);
                         label = "Items count";
+                    }
+                    else if (catalog == 3)
+                    {
+                        var Draw = propertiesQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
+                        ColumnchartList.Add(Draw);
+                        label = "Properties count";
+                    }
+                    else if (catalog == 4)
+                    {
+                        var Draw = storagecostQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
+                        ColumnchartList.Add(Draw);
+                        label = "Storage Costs count";
+                    }
+                    else if (catalog == 5)
+                    {
+                        var Draw = unitsQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
+                        chartList.Add(Draw);
+                        label = "Units count";
                     }
                     columnAxis.Separator.Step = 1;
                     columnAxis.Labels.Add(year.ToString());

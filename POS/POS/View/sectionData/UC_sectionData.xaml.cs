@@ -183,7 +183,7 @@ namespace POS.View
             btn_pos.Content = MainWindow.resourcemanager.GetString("trPOS");
             btn_banks.Content = MainWindow.resourcemanager.GetString("trBanks");
             btn_cards.Content = MainWindow.resourcemanager.GetString("trCard");
-            btn_shippingCompany.Content = MainWindow.resourcemanager.GetString("trShippingCompanies");
+            btn_shippingCompany.Content = MainWindow.resourcemanager.GetString("trShipping");
         }
 
 

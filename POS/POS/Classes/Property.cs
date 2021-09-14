@@ -11,7 +11,7 @@ using System.Web;
 
 namespace POS.Classes
 {
-    class Property
+    public class Property
     {
         public int propertyId { get; set; }
         public string name { get; set; }

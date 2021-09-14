@@ -202,6 +202,8 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
                 if (sender != null)
                     SectionData.StartAwait(grid_mainWindow);
 
+                
+
                 #region bonni
 #pragma warning disable CS0436 // Type conflicts with imported type
                 TabTipAutomation.IgnoreHardwareKeyboard = HardwareKeyboardIgnoreOptions.IgnoreAll;
@@ -404,6 +406,8 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
                 btn_reports.Visibility = Visibility.Visible;
                 //grid_mainWindow.IsEnabled = true;
 
+                EventManager.RegisterClassHandler(typeof(System.Windows.Controls.TextBox), System.Windows.Controls.TextBox.GotKeyboardFocusEvent, new RoutedEventHandler(SelectAllText));
+
                 if (sender != null)
                     SectionData.EndAwait(grid_mainWindow);
             }
@@ -413,9 +417,15 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
                     SectionData.EndAwait(grid_mainWindow);
                 SectionData.ExceptionMessage(ex, this );
             }
-
         }
-
+       
+        void SelectAllText(object sender, RoutedEventArgs e)
+        {
+            var textBox = sender as System.Windows.Controls.TextBox;
+            if (textBox != null)
+                if (!textBox.IsReadOnly)
+                    textBox.SelectAll();
+        }
 
         bool loadingDefaultPath(string first, string second)
         {

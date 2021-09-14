@@ -77,13 +77,13 @@ namespace POS.View.sales
         List<ItemUnit> itemUnits;
         Invoice invoiceModel = new Invoice();
         Invoice invoice = new Invoice();
+        ItemLocation itemLocationModel = new ItemLocation();
         Coupon couponModel = new Coupon();
         IEnumerable<Coupon> coupons;
         List<CouponInvoice> selectedCoupons = new List<CouponInvoice>();
         Pos posModel = new Pos();
         Pos pos;
         List<ItemTransfer> invoiceItems;
-        ItemLocation itemLocationModel = new ItemLocation();
         ShippingCompanies companyModel = new ShippingCompanies();
         List<ShippingCompanies> companies;
         User userModel = new User();
@@ -848,7 +848,7 @@ namespace POS.View.sales
                     invoiceItems.Add(itemT);
                 }
                 await invoiceModel.saveInvoiceItems(invoiceItems, invoiceId);
-
+                await itemLocationModel.reserveItems(invoiceItems,invoiceId, MainWindow.branchID.Value, MainWindow.userID.Value);
                 // save order status
                 await saveOrderStatus(invoiceId, "pr");
                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
@@ -1784,7 +1784,7 @@ SectionData.isAdminPermision())
                         }
                         else
                         {
-                            await addInvoice("or");//quontation invoice
+                            await addInvoice("or");//quontation invoice                            
                             #region notification Object
                             Notification not = new Notification()
                             {
@@ -1813,7 +1813,7 @@ SectionData.isAdminPermision())
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-        
+
         private void Cb_customer_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try

@@ -1,6 +1,7 @@
 ﻿using LiveCharts;
 using LiveCharts.Helpers;
 using LiveCharts.Wpf;
+using POS.Classes;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -15,6 +16,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
+using System.Windows.Resources;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 
@@ -43,24 +45,29 @@ namespace POS.View
                 return _instance;
             }
         }
-
+       
         public uc_home()
         {
             InitializeComponent();
             timerAnimation();
-
-      
-
-
-
-
         }
+        string branchesPermission = "dashboard_branches";
 
+        User user = new User();
+        List<User> users = new List<User>();
+        ImageBrush brush = new ImageBrush();
         public SeriesCollection SeriesCollection { get; set; }
         public string[] Labels { get; set; }
         public Func<double, string> YFormatter { get; set; }
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
+            await SectionData.fillBranches(cb_branch);
+            cb_branch.SelectedValue = MainWindow.branchID;
+            if (MainWindow.groupObject.HasPermissionAction(branchesPermission, MainWindow.groupObjects, "one"))
+            cb_branch.IsEnabled = true;
+            else cb_branch.IsEnabled = false;
+
+
             #region Purchase and Sales
             double[] ArrayS = new double[30];
             double[] ArrayP = new double[30];
@@ -93,7 +100,6 @@ namespace POS.View
             DataContext = this;
 
             #endregion
-
             #region user online 
             SeriesCollection seriesUser = new SeriesCollection();
             seriesUser.Add(
@@ -182,6 +188,93 @@ namespace POS.View
              );
             pch_dailySalesInvoice.Series = seriesDailySalesInvoice;
             #endregion
+            #region userImageLoad
+            grid_userImages.Children.Clear();
+            users = await user.GetUsersActive();
+            int userCount = 0;
+            foreach (var item in users)
+            {
+                if (userCount > 4)
+                {
+                    Grid grid = new Grid();
+                    grid.Margin = new Thickness(-5, 0, -5, 0);
+                    Grid.SetColumn(grid, 4);
+                    #region rectangle
+                    Rectangle rectangle = new Rectangle();
+                    rectangle.Fill = Application.Current.Resources["Orange"] as SolidColorBrush;
+                    rectangle.RadiusX = 90;
+                    rectangle.RadiusY = 90;
+                    rectangle.Height = 40;
+                    rectangle.Width = 40;
+                    rectangle.StrokeThickness = 1;
+                    rectangle.Stroke = Application.Current.Resources["White"] as SolidColorBrush; ;
+                    grid.Children.Add(rectangle);
+                    #endregion
+                    #region rectangle
+                    TextBlock textBlock = new TextBlock();
+                    textBlock.Text = (users.Count() - 4).ToString();
+                    textBlock.HorizontalAlignment = HorizontalAlignment.Center;
+                    textBlock.VerticalAlignment = VerticalAlignment.Center;
+                    textBlock.FontWeight = FontWeights.Bold;
+                    textBlock.Foreground = Application.Current.Resources["White"] as SolidColorBrush;
+                    grid.Children.Add(textBlock);
+                    #endregion
+                    grid_userImages.Children.Add(grid);
+                    break;
+                }
+                else
+                {
+                    Ellipse ellipse = new Ellipse();
+                    ellipse.Margin = new Thickness(-5, 0, -5, 0);
+                    ellipse.StrokeThickness = 1;
+                    ellipse.Stroke = Application.Current.Resources["White"] as SolidColorBrush;
+                    ellipse.Height = 40;
+                    ellipse.Width = 40;
+                    ellipse.FlowDirection = FlowDirection.LeftToRight;
+                    ellipse.ToolTip = item.username;
+                    userImageLoad(ellipse, item.image);
+                    Grid.SetColumn(ellipse, userCount);
+                    grid_userImages.Children.Add(ellipse);
+                    userCount++;
+                }
+            }
+            #endregion
+        }
+
+        async void userImageLoad(Ellipse ellipse, string image)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(image))
+                {
+                    byte[] imageBuffer = await user.downloadImage(image); // read this as BLOB from your DB
+                    var bitmapImage = new BitmapImage();
+                    using (var memoryStream = new System.IO.MemoryStream(imageBuffer))
+                    {
+                        bitmapImage.BeginInit();
+                        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmapImage.StreamSource = memoryStream;
+                        bitmapImage.EndInit();
+                    }
+                    ellipse.Fill = new ImageBrush(bitmapImage);
+                }
+                else
+                {
+                    clearImg(ellipse);
+                }
+            }
+            catch
+            {
+                clearImg(ellipse);
+            }
+        }
+        private void clearImg(Ellipse ellipse)
+        {
+            Uri resourceUri = new Uri("pic/no-image-icon-90x90.png", UriKind.Relative);
+            StreamResourceInfo streamInfo = Application.GetResourceStream(resourceUri);
+            BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
+            brush.ImageSource = temp;
+            ellipse.Fill = brush;
         }
         public void timerAnimation()
         {

@@ -878,8 +878,9 @@ t1.Start();
 
             public void paintSecondLevel()
             {
+                paintHome();
                 paintCatalog();
-                paintStore();
+            paintStore();
                 paintPurchase();
                 paintSale();
                 paintAccounts();
@@ -888,7 +889,13 @@ t1.Start();
                 paintAlerts();
             paintReports();
             }
-            public void paintCatalog()
+        public void paintHome()
+        {
+            path_dashboard.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+
+            txt_dashboard.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+        }
+        public void paintCatalog()
             {
                 path_categories.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
                 path_item.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
@@ -1060,6 +1067,8 @@ t1.Start();
                 dg_group.Columns[0].Header = MainWindow.resourcemanager.GetString("trName");
                 dg_group.Columns[1].Header = MainWindow.resourcemanager.GetString("trNote");
 
+                txt_dashboard.Text = MainWindow.resourcemanager.GetString("trDashBoard");
+
 
                 txt_categories.Text = MainWindow.resourcemanager.GetString("trCategories");
                 txt_properties.Text = MainWindow.resourcemanager.GetString("trProperties");
@@ -1113,7 +1122,7 @@ t1.Start();
                 paint();
                     bdr_home.Background = Brushes.White;
                     path_home.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-                    grid_bank.Visibility = Visibility.Visible;
+                    grid_home.Visibility = Visibility.Visible;
                     isEnabledButtons();
                     btn_home.IsEnabled = false;
                     btn_home.Opacity = 1;
@@ -1304,7 +1313,8 @@ t1.Start();
             path_settings.Fill = Brushes.White;
             path_alerts.Fill = Brushes.White;
 
-            grid_bank.Visibility = Visibility.Hidden;
+            grid_home.Visibility = Visibility.Hidden;
+            //grid_bank.Visibility = Visibility.Hidden;
                 grid_catalog.Visibility = Visibility.Hidden;
                 grid_store.Visibility = Visibility.Hidden;
                 grid_purchase.Visibility = Visibility.Hidden;
@@ -1312,7 +1322,7 @@ t1.Start();
                 grid_charts.Visibility = Visibility.Hidden;
                 grid_data.Visibility = Visibility.Hidden;
                 grid_settings.Visibility = Visibility.Hidden;
-            grid_alerts.Visibility = Visibility.Hidden;
+                grid_alerts.Visibility = Visibility.Hidden;
                 grid_account.Visibility = Visibility.Hidden;
             }
             #endregion

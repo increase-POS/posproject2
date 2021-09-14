@@ -2905,6 +2905,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Free Zone.
+        /// </summary>
+        internal static string trFreeZone {
+            get {
+                return ResourceManager.GetString("trFreeZone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to From location ....
         /// </summary>
         internal static string trFromLocationHint {
@@ -4148,6 +4157,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Order Num.
+        /// </summary>
+        internal static string trOrderNum {
+            get {
+                return ResourceManager.GetString("trOrderNum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Orders.
         /// </summary>
         internal static string trOrders {
@@ -5165,6 +5183,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reserved.
+        /// </summary>
+        internal static string trReserved {
+            get {
+                return ResourceManager.GetString("trReserved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Return.
         /// </summary>
         internal static string trReturn {
@@ -5755,6 +5782,15 @@ namespace POS {
         internal static string trSettings {
             get {
                 return ResourceManager.GetString("trSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shipping.
+        /// </summary>
+        internal static string trShipping {
+            get {
+                return ResourceManager.GetString("trShipping", resourceCulture);
             }
         }
         

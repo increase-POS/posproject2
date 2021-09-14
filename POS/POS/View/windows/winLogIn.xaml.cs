@@ -294,6 +294,7 @@ namespace POS.View.windows
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
+                logInProcessing = false;
                 SectionData.ExceptionMessage(ex, this);
             }
         }

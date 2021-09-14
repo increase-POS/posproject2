@@ -2404,4 +2404,16 @@
   <data name="trUnlock" xml:space="preserve">
     <value>إلغاء الحجز</value>
   </data>
+  <data name="trFreeZone" xml:space="preserve">
+    <value>المنطقة الحرة</value>
+  </data>
+  <data name="trOrderNum" xml:space="preserve">
+    <value>رقم الطلبية</value>
+  </data>
+  <data name="trReserved" xml:space="preserve">
+    <value>محجوز</value>
+  </data>
+  <data name="trShipping" xml:space="preserve">
+    <value>الشحن</value>
+  </data>
 </root>
