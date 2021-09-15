@@ -371,6 +371,14 @@
     <Property Name="isFalls" Type="bit" Nullable="false" />
     <Property Name="fallCause" Type="ntext" />
   </EntityType>
+  <EntityType Name="invoiceOrder">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="invoiceId" Type="int" />
+    <Property Name="orderId" Type="int" />
+  </EntityType>
   <EntityType Name="invoices">
     <Key>
       <PropertyRef Name="invoiceId" />
@@ -1861,6 +1869,30 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_invoiceOrder_invoices">
+    <End Role="invoices" Type="Self.invoices" Multiplicity="0..1" />
+    <End Role="invoiceOrder" Type="Self.invoiceOrder" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="invoices">
+        <PropertyRef Name="invoiceId" />
+      </Principal>
+      <Dependent Role="invoiceOrder">
+        <PropertyRef Name="invoiceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_invoiceOrder_invoices1">
+    <End Role="invoices" Type="Self.invoices" Multiplicity="0..1" />
+    <End Role="invoiceOrder" Type="Self.invoiceOrder" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="invoices">
+        <PropertyRef Name="invoiceId" />
+      </Principal>
+      <Dependent Role="invoiceOrder">
+        <PropertyRef Name="orderId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_invoices_agents">
     <End Role="agents" Type="Self.agents" Multiplicity="0..1" />
     <End Role="invoices" Type="Self.invoices" Multiplicity="*" />
@@ -3348,6 +3380,7 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
     <EntitySet Name="groups" EntityType="Self.groups" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Inventory" EntityType="Self.Inventory" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="inventoryItemLocation" EntityType="Self.inventoryItemLocation" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="invoiceOrder" EntityType="Self.invoiceOrder" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="invoices" EntityType="Self.invoices" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="invoiceStatus" EntityType="Self.invoiceStatus" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="items" EntityType="Self.items" Schema="dbo" store:Type="Tables" />
@@ -3677,6 +3710,14 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
     <AssociationSet Name="FK_inventoryItemLocation_users1" Association="Self.FK_inventoryItemLocation_users1">
       <End Role="users" EntitySet="users" />
       <End Role="inventoryItemLocation" EntitySet="inventoryItemLocation" />
+    </AssociationSet>
+    <AssociationSet Name="FK_invoiceOrder_invoices" Association="Self.FK_invoiceOrder_invoices">
+      <End Role="invoices" EntitySet="invoices" />
+      <End Role="invoiceOrder" EntitySet="invoiceOrder" />
+    </AssociationSet>
+    <AssociationSet Name="FK_invoiceOrder_invoices1" Association="Self.FK_invoiceOrder_invoices1">
+      <End Role="invoices" EntitySet="invoices" />
+      <End Role="invoiceOrder" EntitySet="invoiceOrder" />
     </AssociationSet>
     <AssociationSet Name="FK_invoices_agents" Association="Self.FK_invoices_agents">
       <End Role="agents" EntitySet="agents" />

@@ -89,5 +89,6 @@ namespace POS_Server
         public virtual DbSet<printers> printers { get; set; }
         public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<ProgramDetails> ProgramDetails { get; set; }
+        public virtual DbSet<invoiceOrder> invoiceOrder { get; set; }
     }
 }

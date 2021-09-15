@@ -376,6 +376,14 @@
           <Property Name="isFalls" Type="bit" Nullable="false" />
           <Property Name="fallCause" Type="ntext" />
         </EntityType>
+        <EntityType Name="invoiceOrder">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="invoiceId" Type="int" />
+          <Property Name="orderId" Type="int" />
+        </EntityType>
         <EntityType Name="invoices">
           <Key>
             <PropertyRef Name="invoiceId" />
@@ -1866,6 +1874,30 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_invoiceOrder_invoices">
+          <End Role="invoices" Type="Self.invoices" Multiplicity="0..1" />
+          <End Role="invoiceOrder" Type="Self.invoiceOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="invoices">
+              <PropertyRef Name="invoiceId" />
+            </Principal>
+            <Dependent Role="invoiceOrder">
+              <PropertyRef Name="invoiceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_invoiceOrder_invoices1">
+          <End Role="invoices" Type="Self.invoices" Multiplicity="0..1" />
+          <End Role="invoiceOrder" Type="Self.invoiceOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="invoices">
+              <PropertyRef Name="invoiceId" />
+            </Principal>
+            <Dependent Role="invoiceOrder">
+              <PropertyRef Name="orderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_invoices_agents">
           <End Role="agents" Type="Self.agents" Multiplicity="0..1" />
           <End Role="invoices" Type="Self.invoices" Multiplicity="*" />
@@ -3353,6 +3385,7 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <EntitySet Name="groups" EntityType="Self.groups" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Inventory" EntityType="Self.Inventory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="inventoryItemLocation" EntityType="Self.inventoryItemLocation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="invoiceOrder" EntityType="Self.invoiceOrder" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="invoices" EntityType="Self.invoices" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="invoiceStatus" EntityType="Self.invoiceStatus" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="items" EntityType="Self.items" Schema="dbo" store:Type="Tables" />
@@ -3682,6 +3715,14 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <AssociationSet Name="FK_inventoryItemLocation_users1" Association="Self.FK_inventoryItemLocation_users1">
             <End Role="users" EntitySet="users" />
             <End Role="inventoryItemLocation" EntitySet="inventoryItemLocation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_invoiceOrder_invoices" Association="Self.FK_invoiceOrder_invoices">
+            <End Role="invoices" EntitySet="invoices" />
+            <End Role="invoiceOrder" EntitySet="invoiceOrder" />
+          </AssociationSet>
+          <AssociationSet Name="FK_invoiceOrder_invoices1" Association="Self.FK_invoiceOrder_invoices1">
+            <End Role="invoices" EntitySet="invoices" />
+            <End Role="invoiceOrder" EntitySet="invoiceOrder" />
           </AssociationSet>
           <AssociationSet Name="FK_invoices_agents" Association="Self.FK_invoices_agents">
             <End Role="agents" EntitySet="agents" />
@@ -4703,6 +4744,8 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <Property Name="manualDiscountType" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="isActive" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="itemsLocations" Relationship="incposdbModel.FK_itemsLocations_invoices" FromRole="invoices" ToRole="itemsLocations" />
+          <NavigationProperty Name="invoiceOrder" Relationship="incposdbModel.FK_invoiceOrder_invoices" FromRole="invoices" ToRole="invoiceOrder" />
+          <NavigationProperty Name="invoiceOrder1" Relationship="incposdbModel.FK_invoiceOrder_invoices1" FromRole="invoices" ToRole="invoiceOrder" />
         </EntityType>
         <EntityType Name="invoiceStatus">
           <Key>
@@ -8531,6 +8574,15 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
             <End Role="invoices" EntitySet="invoices" />
             <End Role="itemsLocations" EntitySet="itemsLocations" />
           </AssociationSet>
+          <EntitySet Name="invoiceOrder" EntityType="incposdbModel.invoiceOrder" />
+          <AssociationSet Name="FK_invoiceOrder_invoices" Association="incposdbModel.FK_invoiceOrder_invoices">
+            <End Role="invoices" EntitySet="invoices" />
+            <End Role="invoiceOrder" EntitySet="invoiceOrder" />
+          </AssociationSet>
+          <AssociationSet Name="FK_invoiceOrder_invoices1" Association="incposdbModel.FK_invoiceOrder_invoices1">
+            <End Role="invoices" EntitySet="invoices" />
+            <End Role="invoiceOrder" EntitySet="invoiceOrder" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="paperSize">
           <Key>
@@ -8702,6 +8754,40 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
             </Principal>
             <Dependent Role="itemsLocations">
               <PropertyRef Name="invoiceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="invoiceOrder">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="invoiceId" Type="Int32" />
+          <Property Name="orderId" Type="Int32" />
+          <NavigationProperty Name="invoices" Relationship="incposdbModel.FK_invoiceOrder_invoices" FromRole="invoiceOrder" ToRole="invoices" />
+          <NavigationProperty Name="invoices1" Relationship="incposdbModel.FK_invoiceOrder_invoices1" FromRole="invoiceOrder" ToRole="invoices" />
+        </EntityType>
+        <Association Name="FK_invoiceOrder_invoices">
+          <End Type="incposdbModel.invoices" Role="invoices" Multiplicity="0..1" />
+          <End Type="incposdbModel.invoiceOrder" Role="invoiceOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="invoices">
+              <PropertyRef Name="invoiceId" />
+            </Principal>
+            <Dependent Role="invoiceOrder">
+              <PropertyRef Name="invoiceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_invoiceOrder_invoices1">
+          <End Type="incposdbModel.invoices" Role="invoices" Multiplicity="0..1" />
+          <End Type="incposdbModel.invoiceOrder" Role="invoiceOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="invoices">
+              <PropertyRef Name="invoiceId" />
+            </Principal>
+            <Dependent Role="invoiceOrder">
+              <PropertyRef Name="orderId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -9807,6 +9893,15 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
                 <ScalarProperty Name="posCount" ColumnName="posCount" />
                 <ScalarProperty Name="branchCount" ColumnName="branchCount" />
                 <ScalarProperty Name="programName" ColumnName="programName" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="invoiceOrder">
+            <EntityTypeMapping TypeName="incposdbModel.invoiceOrder">
+              <MappingFragment StoreEntitySet="invoiceOrder">
+                <ScalarProperty Name="orderId" ColumnName="orderId" />
+                <ScalarProperty Name="invoiceId" ColumnName="invoiceId" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>

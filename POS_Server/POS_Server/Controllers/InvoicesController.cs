@@ -692,6 +692,7 @@ namespace POS_Server.Controllers
                     }
                     searchPredicate = searchPredicate.And(inv => invTypeL.Contains(inv.invType));
                     searchPredicate = searchPredicate.And(inv => inv.createUserId == createUserId);
+                    searchPredicate = searchPredicate.And(inv => inv.isActive == true);
 
                     var invoicesList = (from b in entity.invoices.Where(searchPredicate)
                                         join l in entity.branches on b.branchId equals l.branchId into lj
@@ -796,6 +797,7 @@ namespace POS_Server.Controllers
                     }
                     searchPredicate = searchPredicate.And(inv => invTypeL.Contains(inv.invType));
                     searchPredicate = searchPredicate.And(inv => inv.createUserId == createUserId);
+                    searchPredicate = searchPredicate.And(inv => inv.isActive == true);
 
                     var invoicesCount = (from b in entity.invoices.Where(searchPredicate)
                                         join l in entity.branches on b.branchId equals l.branchId into lj
@@ -867,10 +869,10 @@ namespace POS_Server.Controllers
                 {
                     var searchPredicate = PredicateBuilder.New<invoices>();
                     if (branchCreatorId != 0)
-                        searchPredicate = searchPredicate.And(inv => inv.branchCreatorId == branchCreatorId && invTypeL.Contains(inv.invType));
+                        searchPredicate = searchPredicate.And(inv => inv.branchCreatorId == branchCreatorId && inv.isActive == true && invTypeL.Contains(inv.invType));
                     // searchPredicate = searchPredicate.And(inv => invTypeL.Contains(inv.invType));
                     if (branchId != 0)
-                        searchPredicate = searchPredicate.Or(inv => inv.branchId == branchId && invTypeL.Contains(inv.invType));
+                        searchPredicate = searchPredicate.Or(inv => inv.branchId == branchId && inv.isActive == true && invTypeL.Contains(inv.invType));
 
                     var invoicesList = (from b in entity.invoices.Where(searchPredicate)
                                         join l in entity.branches on b.branchId equals l.branchId into lj
@@ -954,10 +956,10 @@ namespace POS_Server.Controllers
                 {
                     var searchPredicate = PredicateBuilder.New<invoices>();
                     if (branchCreatorId != 0)
-                        searchPredicate = searchPredicate.And(inv => inv.branchCreatorId == branchCreatorId && invTypeL.Contains(inv.invType));
+                        searchPredicate = searchPredicate.And(inv => inv.branchCreatorId == branchCreatorId && inv.isActive == true && invTypeL.Contains(inv.invType));
                     // searchPredicate = searchPredicate.And(inv => invTypeL.Contains(inv.invType));
                     if (branchId != 0)
-                        searchPredicate = searchPredicate.Or(inv => inv.branchId == branchId && invTypeL.Contains(inv.invType));
+                        searchPredicate = searchPredicate.Or(inv => inv.branchId == branchId && inv.isActive == true && invTypeL.Contains(inv.invType));
                     var invoicesList = (from b in entity.invoices.Where(searchPredicate)
                                         join l in entity.branches on b.branchId equals l.branchId into lj
                                         from x in lj.DefaultIfEmpty()
@@ -1041,10 +1043,10 @@ namespace POS_Server.Controllers
                 {
                     var searchPredicate = PredicateBuilder.New<invoices>();
                     if (branchCreatorId != 0)
-                        searchPredicate = searchPredicate.And(inv => inv.branchCreatorId == branchCreatorId && invTypeL.Contains(inv.invType));
+                        searchPredicate = searchPredicate.And(inv => inv.branchCreatorId == branchCreatorId && inv.isActive == true && invTypeL.Contains(inv.invType));
 
                     if (branchId != 0)
-                        searchPredicate = searchPredicate.Or(inv => inv.branchId == branchId && invTypeL.Contains(inv.invType));
+                        searchPredicate = searchPredicate.Or(inv => inv.branchId == branchId && inv.isActive == true && invTypeL.Contains(inv.invType));
                     var invoicesList = (from b in entity.invoices.Where(searchPredicate)
                                         join l in entity.branches on b.branchId equals l.branchId into lj
                                         from x in lj.DefaultIfEmpty()
@@ -1116,10 +1118,10 @@ namespace POS_Server.Controllers
                 {
                     var searchPredicate = PredicateBuilder.New<invoices>();
                     if (branchCreatorId != 0)
-                        searchPredicate = searchPredicate.And(inv => inv.branchCreatorId == branchCreatorId && invTypeL.Contains(inv.invType));
+                        searchPredicate = searchPredicate.And(inv => inv.branchCreatorId == branchCreatorId && inv.isActive == true && invTypeL.Contains(inv.invType));
                     // searchPredicate = searchPredicate.And(inv => invTypeL.Contains(inv.invType));
                     if (branchId != 0)
-                        searchPredicate = searchPredicate.Or(inv => inv.branchId == branchId && invTypeL.Contains(inv.invType));
+                        searchPredicate = searchPredicate.Or(inv => inv.branchId == branchId && inv.isActive == true && invTypeL.Contains(inv.invType));
 
                     var invoicesCount = (from b in entity.invoices.Where(searchPredicate)
                                         join l in entity.branches on b.branchId equals l.branchId into lj
@@ -1190,7 +1192,7 @@ namespace POS_Server.Controllers
 
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    var invoicesList = (from b in entity.invoices.Where(x => invTypeL.Contains(x.invType) && x.shipUserId == shipUserId)
+                    var invoicesList = (from b in entity.invoices.Where(x => invTypeL.Contains(x.invType) && x.shipUserId == shipUserId && x.isActive == true)
                                         join s in entity.invoiceStatus on b.invoiceId equals s.invoiceId
                                         where (s.status == status && s.invStatusId == entity.invoiceStatus.Where(x => x.invoiceId == b.invoiceId).Max(x => x.invStatusId))
                                         select new InvoiceModel()
@@ -1269,7 +1271,7 @@ namespace POS_Server.Controllers
 
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    var invoicesCount = (from b in entity.invoices.Where(x => invTypeL.Contains(x.invType) && x.shipUserId == shipUserId)
+                    var invoicesCount = (from b in entity.invoices.Where(x => invTypeL.Contains(x.invType) && x.shipUserId == shipUserId && x.isActive == true)
                                         join s in entity.invoiceStatus on b.invoiceId equals s.invoiceId
                                         where (s.status == status && s.invStatusId == entity.invoiceStatus.Where(x => x.invoiceId == b.invoiceId).Max(x => x.invStatusId))
                                         select new InvoiceModel()
@@ -1335,8 +1337,7 @@ namespace POS_Server.Controllers
                 statusL.Add("rc");
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    var invoicesList = (from b in entity.invoices.Where(x => x.invType == "s" && x.branchCreatorId == branchId && x.shipUserId != null)
-                                        join a in entity.agents on b.agentId equals a.agentId
+                    var invoicesList = (from b in entity.invoices.Where(x => x.invType == "s" && x.branchCreatorId == branchId && x.shipUserId != null && x.isActive == true)
                                         join s in entity.invoiceStatus on b.invoiceId equals s.invoiceId
                                         join u in entity.users on b.shipUserId equals u.userId into lj
                                         from y in lj.DefaultIfEmpty()
@@ -1379,15 +1380,14 @@ namespace POS_Server.Controllers
                                             userId = b.userId,
                                             manualDiscountType = b.manualDiscountType,
                                             manualDiscountValue = b.manualDiscountValue,
-                                            
                                         })
                     .ToList();
                     if (invoicesList != null)
                     {
-                        for (int i = 0; i < invoicesList.Count(); i++)
+                        for (int i = 0; i < invoicesList.Count; i++)
                         {
                             int invoiceId = invoicesList[i].invoiceId;
-                            int itemCount = entity.itemsTransfer.Where(x => x.invoiceId == invoiceId ).Select(x => x.itemsTransId).ToList().Count;
+                            int itemCount = entity.itemsTransfer.Where(x => x.invoiceId == invoiceId).Select(x => x.itemsTransId).ToList().Count;
                             invoicesList[i].itemsCount = itemCount;
                         }
                     }
@@ -1879,6 +1879,7 @@ namespace POS_Server.Controllers
                             newObject.invTime = DateTime.Now.TimeOfDay;
                             newObject.updateDate = DateTime.Now;
                             newObject.updateUserId = newObject.createUserId;
+                            newObject.isActive = true;
 
                             tmpInvoice = invoiceEntity.Add(newObject);
                         }
@@ -1924,7 +1925,120 @@ namespace POS_Server.Controllers
                     return Ok(0);
                 }
             }
-            return Ok(0);
+            return NotFound();
+        }
+        [HttpPost]
+        [Route("delete")]
+        public IHttpActionResult delete(int invoiceId)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid)
+            {      
+                try
+                {
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+                        var inv = entity.invoices.Find(invoiceId);
+                        inv.isActive = false;
+                        entity.SaveChanges();
+                        return Ok(1);
+                    }
+                }
+                catch
+                {
+                    return Ok(0);
+                }
+            }
+            return NotFound();
+        }
+        [HttpPost]
+        [Route("deleteOrder")]
+        public IHttpActionResult deleteOrder(int invoiceId)
+        {
+            ItemsLocationsController ilc = new ItemsLocationsController();
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid)
+            {      
+                try
+                {
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+                        // desactive invoice
+                        var inv = entity.invoices.Find(invoiceId);
+                        inv.isActive = false;
+                        entity.SaveChanges();
+
+                        // unlockItems
+                        var itemsLocations = entity.itemsLocations.Where(x => x.invoiceId == invoiceId).ToList();
+                        foreach(itemsLocations il in itemsLocations)
+                        {
+                            var itemLoc = (from b in entity.itemsLocations
+                                           where b.invoiceId == null && b.itemUnitId == il.itemUnitId && b.locationId == il.locationId
+                                           && b.startDate == il.startDate && b.endDate == il.endDate
+                                           select new ItemLocationModel
+                                           {
+                                               itemsLocId = b.itemsLocId,
+                                           }).FirstOrDefault();
+                            var orderItem = entity.itemsLocations.Find(il.itemsLocId);
+                            if (orderItem.quantity == il.quantity)
+                                entity.itemsLocations.Remove(orderItem);
+                            else
+                                orderItem.quantity -= il.quantity;
+
+                            if (itemLoc == null)
+                            {
+                                var loc = new itemsLocations()
+                                {
+                                    locationId = il.locationId,
+                                    quantity = il.quantity,
+                                    createDate = DateTime.Now,
+                                    updateDate = DateTime.Now,
+                                    createUserId = il.createUserId,
+                                    updateUserId = il.createUserId,
+                                    startDate = il.startDate,
+                                    endDate = il.endDate,
+                                    itemUnitId = il.itemUnitId,
+                                    note = il.note,
+                                };
+                                entity.itemsLocations.Add(loc);
+                            }
+                            else
+                            {
+                                var loc = entity.itemsLocations.Find(itemLoc.itemsLocId);
+                                loc.quantity += il.quantity;
+                                loc.updateDate = DateTime.Now;
+                                loc.updateUserId = il.updateUserId;
+
+                            }
+                            entity.SaveChanges();
+                        }
+                        return Ok(1);
+                    }
+                }
+                catch
+                {
+                    return Ok(0);
+                }
+            }
+            return NotFound();
         }
         [HttpGet]
         [Route("GetLastNumOfInv")]

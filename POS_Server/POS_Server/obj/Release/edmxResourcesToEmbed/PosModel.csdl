@@ -527,6 +527,8 @@
     <Property Name="manualDiscountType" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
     <Property Name="isActive" Type="Boolean" Nullable="false" />
     <NavigationProperty Name="itemsLocations" Relationship="incposdbModel.FK_itemsLocations_invoices" FromRole="invoices" ToRole="itemsLocations" />
+    <NavigationProperty Name="invoiceOrder" Relationship="incposdbModel.FK_invoiceOrder_invoices" FromRole="invoices" ToRole="invoiceOrder" />
+    <NavigationProperty Name="invoiceOrder1" Relationship="incposdbModel.FK_invoiceOrder_invoices1" FromRole="invoices" ToRole="invoiceOrder" />
   </EntityType>
   <EntityType Name="invoiceStatus">
     <Key>
@@ -4355,6 +4357,15 @@
       <End Role="invoices" EntitySet="invoices" />
       <End Role="itemsLocations" EntitySet="itemsLocations" />
     </AssociationSet>
+    <EntitySet Name="invoiceOrder" EntityType="incposdbModel.invoiceOrder" />
+    <AssociationSet Name="FK_invoiceOrder_invoices" Association="incposdbModel.FK_invoiceOrder_invoices">
+      <End Role="invoices" EntitySet="invoices" />
+      <End Role="invoiceOrder" EntitySet="invoiceOrder" />
+    </AssociationSet>
+    <AssociationSet Name="FK_invoiceOrder_invoices1" Association="incposdbModel.FK_invoiceOrder_invoices1">
+      <End Role="invoices" EntitySet="invoices" />
+      <End Role="invoiceOrder" EntitySet="invoiceOrder" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="paperSize">
     <Key>
@@ -4526,6 +4537,40 @@
       </Principal>
       <Dependent Role="itemsLocations">
         <PropertyRef Name="invoiceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="invoiceOrder">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="invoiceId" Type="Int32" />
+    <Property Name="orderId" Type="Int32" />
+    <NavigationProperty Name="invoices" Relationship="incposdbModel.FK_invoiceOrder_invoices" FromRole="invoiceOrder" ToRole="invoices" />
+    <NavigationProperty Name="invoices1" Relationship="incposdbModel.FK_invoiceOrder_invoices1" FromRole="invoiceOrder" ToRole="invoices" />
+  </EntityType>
+  <Association Name="FK_invoiceOrder_invoices">
+    <End Type="incposdbModel.invoices" Role="invoices" Multiplicity="0..1" />
+    <End Type="incposdbModel.invoiceOrder" Role="invoiceOrder" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="invoices">
+        <PropertyRef Name="invoiceId" />
+      </Principal>
+      <Dependent Role="invoiceOrder">
+        <PropertyRef Name="invoiceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_invoiceOrder_invoices1">
+    <End Type="incposdbModel.invoices" Role="invoices" Multiplicity="0..1" />
+    <End Type="incposdbModel.invoiceOrder" Role="invoiceOrder" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="invoices">
+        <PropertyRef Name="invoiceId" />
+      </Principal>
+      <Dependent Role="invoiceOrder">
+        <PropertyRef Name="orderId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

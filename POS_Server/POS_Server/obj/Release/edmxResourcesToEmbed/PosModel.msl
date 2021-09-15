@@ -1101,5 +1101,14 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="invoiceOrder">
+      <EntityTypeMapping TypeName="incposdbModel.invoiceOrder">
+        <MappingFragment StoreEntitySet="invoiceOrder">
+          <ScalarProperty Name="orderId" ColumnName="orderId" />
+          <ScalarProperty Name="invoiceId" ColumnName="invoiceId" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

@@ -254,6 +254,7 @@
     <Compile Include="Controllers\CardController.cs" />
     <Compile Include="Controllers\couponsController.cs" />
     <Compile Include="Controllers\couponsInvoices.cs" />
+    <Compile Include="Controllers\dashController.cs" />
     <Compile Include="Controllers\DocImageController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\GroupController.cs" />
@@ -330,6 +331,9 @@
     <Compile Include="inventoryItemLocation.cs">
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="invoiceOrder.cs">
+      <DependentUpon>PosModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="invoices.cs">
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>
@@ -383,6 +387,7 @@
     <Compile Include="Models\CategoryModel.cs" />
     <Compile Include="Models\CardModel.cs" />
     <Compile Include="Models\CouponModel.cs" />
+    <Compile Include="Models\DashModel.cs" />
     <Compile Include="Models\ErrorModel.cs" />
     <Compile Include="Models\GroupModel.cs" />
     <Compile Include="Models\GroupObjectModel.cs" />
