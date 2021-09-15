@@ -249,6 +249,8 @@ namespace POS.View
             {
                 if (!string.IsNullOrEmpty(image))
                 {
+                    clearImg(ellipse);
+
                     byte[] imageBuffer = await user.downloadImage(image); // read this as BLOB from your DB
                     var bitmapImage = new BitmapImage();
                     using (var memoryStream = new System.IO.MemoryStream(imageBuffer))
