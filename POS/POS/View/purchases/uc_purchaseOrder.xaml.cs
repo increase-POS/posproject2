@@ -629,13 +629,14 @@ namespace POS.View.purchases
                     invoiceItems.Add(itemT);
                 }
                 await invoiceModel.saveInvoiceItems(invoiceItems, invoiceId);
-                refreshDraftNotification();
+                
                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
             }
             else
                 Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
             clearInvoice();
+            refreshDraftNotification();
         }
         private bool validateInvoiceValues()
         {

@@ -865,7 +865,7 @@ namespace POS.View
                                 #endregion
 
                                 await addInvoice("pw", "pi");
-
+                                clearInvoice();
                                 await refreshDraftNotification();
                             }
 

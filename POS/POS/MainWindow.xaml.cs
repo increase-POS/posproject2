@@ -59,6 +59,7 @@ namespace POS
         internal static int? userID;
         internal static User userLogin;
         internal static int? userLogInID;
+        internal static Pos posLogIn = new Pos();
         internal static int? posID = 2;
         internal static int? branchID;
         bool isHome = false;
@@ -276,6 +277,8 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
                     CountryCode c = await getDefaultRegion();
                     Region = c;
                     Currency = c.currency;
+                    txt_cashSympol.Text = MainWindow.Currency;
+
                 }
                 catch
                 {
@@ -405,6 +408,9 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
                 //BTN_Home_Click(null, null);
                 btn_reports.Visibility = Visibility.Visible;
                 //grid_mainWindow.IsEnabled = true;
+
+                
+
 
                 EventManager.RegisterClassHandler(typeof(System.Windows.Controls.TextBox), System.Windows.Controls.TextBox.GotKeyboardFocusEvent, new RoutedEventHandler(SelectAllText));
 
@@ -575,9 +581,19 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             {
                 SectionData.ExceptionMessage(ex, this );
             }
+            try
+            {
+                posLogIn = await posLogIn.getPosById(posID.Value);
+                txt_cashValue.Text = posLogIn.balance.ToString();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+
 
         }
-         
+
         void timer_Tick(object sender, EventArgs e)
         {
             try
@@ -730,6 +746,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             txt_sectiondata.Text = resourcemanager.GetString("trSectionData");
             tt_settings.Content = resourcemanager.GetString("trSettings");
             txt_settings.Text = resourcemanager.GetString("trSettings");
+            txt_cashTitle.Text = resourcemanager.GetString("trBalance");
 
             mi_changePassword.Header = resourcemanager.GetString("trChangePassword");
             BTN_logOut.Header = resourcemanager.GetString("trLogOut");

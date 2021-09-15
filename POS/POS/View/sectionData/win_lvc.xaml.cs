@@ -33,6 +33,7 @@ namespace POS.View.sectionData.Charts
         IEnumerable<Pos> possQuery;
         IEnumerable<CashTransfer> cashQuery;
         IEnumerable<Card> cardsQuery;
+        IEnumerable<ShippingCompanies> shippingCompanyQuery;
         IEnumerable<Invoice> invoiceQuery;
         List<double> chartList;
         List<double> PiechartList;
@@ -169,6 +170,19 @@ namespace POS.View.sectionData.Charts
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+        public win_lvc(IEnumerable<ShippingCompanies> _shippingCompanyQuery, int _sectionDate)
+        {
+            try
+            {
+                InitializeComponent();
+                shippingCompanyQuery = _shippingCompanyQuery;
+                sectionDate = _sectionDate;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -285,11 +299,17 @@ namespace POS.View.sectionData.Charts
                             chartList.Add(Draw);
                             label = "CashTransfer count";
                         }
-                        else
+                        else if (sectionDate == 9)
                         {
                             var Draw = cardsQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
                             chartList.Add(Draw);
                             label = "Cards count";
+                        }
+                        else if (sectionDate == 10)
+                        {
+                            var Draw = shippingCompanyQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
+                            chartList.Add(Draw);
+                            label = "Shipping Companies count";
                         }
                         MyAxis.Separator.Step = 2;
                         MyAxis.Labels.Add(CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month) + "/" + year);
@@ -367,11 +387,17 @@ namespace POS.View.sectionData.Charts
                         chartList.Add(Draw);
                         label = "Cashtransfer count";
                     }
-                    else
+                    else if (sectionDate == 9)
                     {
                         var Draw = cardsQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
                         chartList.Add(Draw);
                         label = "Cards count";
+                    }
+                    else if (sectionDate == 10)
+                    {
+                        var Draw = shippingCompanyQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
+                        chartList.Add(Draw);
+                        label = "Shipping Companies count";
                     }
                     MyAxis.Separator.Step = 1;
                     MyAxis.Labels.Add(year.ToString());
@@ -466,11 +492,17 @@ namespace POS.View.sectionData.Charts
                             PiechartList.Add(Draw);
                             label = "Cashtransfer count";
                         }
-                        else
+                        else if (sectionDate == 9)
                         {
                             var Draw = cardsQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
                             PiechartList.Add(Draw);
                             label = "Cards count";
+                        }
+                        else if (sectionDate == 10)
+                        {
+                            var Draw = shippingCompanyQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
+                            chartList.Add(Draw);
+                            label = "Shipping Companies count";
                         }
                         titles.Add(CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month) + "/" + year);
                         if (year == dpEndDate.SelectedDate.Value.Year && month == dpEndDate.SelectedDate.Value.Month)
@@ -547,11 +579,17 @@ namespace POS.View.sectionData.Charts
                         PiechartList.Add(Draw);
                         label = "Cashtrasfer count";
                     }
-                    else
+                    else if (sectionDate == 9)
                     {
                         var Draw = cardsQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
                         PiechartList.Add(Draw);
                         label = "Cards count";
+                    }
+                     else if (sectionDate == 10)
+                    {
+                        var Draw = shippingCompanyQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
+                        chartList.Add(Draw);
+                        label = "Shipping Companies count";
                     }
                     titles.Add(year.ToString());
                 }
@@ -649,11 +687,17 @@ namespace POS.View.sectionData.Charts
                             ColumnchartList.Add(Draw);
                             label = "Cashtrasfer count";
                         }
-                        else
+                        else if (sectionDate == 9)
                         {
                             var Draw = cardsQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
                             ColumnchartList.Add(Draw);
                             label = "Cards count";
+                        }
+                        else if (sectionDate == 10)
+                        {
+                            var Draw = shippingCompanyQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
+                            ColumnchartList.Add(Draw);
+                            label = "Shipping Companies count";
                         }
                         columnAxis.Separator.Step = 2;
                         columnAxis.Labels.Add(CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month) + "/" + year);
@@ -731,11 +775,17 @@ namespace POS.View.sectionData.Charts
                         ColumnchartList.Add(Draw);
                         label = "Cashtrasfer count";
                     }
-                    else
+                    else if (sectionDate == 9)
                     {
                         var Draw = cardsQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
                         ColumnchartList.Add(Draw);
                         label = "Cards count";
+                    }
+                    else if (sectionDate == 10)
+                    {
+                        var Draw = shippingCompanyQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
+                        ColumnchartList.Add(Draw);
+                        label = "Shipping Companies count";
                     }
                     columnAxis.Separator.Step = 1;
                     columnAxis.Labels.Add(year.ToString());

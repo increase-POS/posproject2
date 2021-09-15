@@ -1262,6 +1262,7 @@ namespace POS.View
             md_docImage.Badge = "";
             md_payments.Badge = "";
             gd_card.Visibility = Visibility.Collapsed;
+            btn_deleteInvoice.Visibility = Visibility.Collapsed;
             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesInvoice");
             SectionData.clearComboBoxValidate(cb_paymentProcessType, p_errorpaymentProcessType);
             SectionData.clearComboBoxValidate(cb_card, p_errorCard);
@@ -1669,6 +1670,7 @@ namespace POS.View
                     btn_clearCoupon.IsEnabled = false;
                     tb_discount.IsEnabled = false;
                     cb_typeDiscount.IsEnabled = false;
+                    btn_deleteInvoice.Visibility = Visibility.Collapsed;
                     break;
                 case "sd": // sales draft invoice
                     dg_billDetails.Columns[0].Visibility = Visibility.Visible; //make delete column visible
@@ -1687,6 +1689,7 @@ namespace POS.View
                     tb_processNum.IsEnabled = true;
                     cb_coupon.IsEnabled = true;
                     btn_clearCoupon.IsEnabled = true;
+                    btn_deleteInvoice.Visibility = Visibility.Collapsed;
                     if (cb_company.SelectedIndex != -1)
                     {
                         cb_paymentProcessType.IsEnabled = false;
@@ -1716,6 +1719,7 @@ namespace POS.View
                     tb_processNum.IsEnabled = true;
                     cb_coupon.IsEnabled = true;
                     btn_clearCoupon.IsEnabled = true;
+                    btn_deleteInvoice.Visibility = Visibility.Visible;
                     if (cb_company.SelectedIndex != -1)
                     {
                         cb_paymentProcessType.IsEnabled = false;
@@ -1746,6 +1750,7 @@ namespace POS.View
                     tb_processNum.IsEnabled = false;
                     cb_coupon.IsEnabled = false;
                     btn_clearCoupon.IsEnabled = false;
+                    btn_deleteInvoice.Visibility = Visibility.Collapsed;
                     tb_discount.IsEnabled = false;
                     cb_typeDiscount.IsEnabled = false;
                     break;
@@ -1767,6 +1772,7 @@ namespace POS.View
                     tb_processNum.IsEnabled = false;
                     cb_coupon.IsEnabled = false;
                     btn_clearCoupon.IsEnabled = false;
+                    btn_deleteInvoice.Visibility = Visibility.Collapsed;
                     if (cb_company.SelectedIndex != -1)
                     {
                         cb_paymentProcessType.IsEnabled = false;
@@ -3745,6 +3751,36 @@ namespace POS.View
             _invoiceId = invoice.invoiceId;
             navigateBtnActivate();
             await fillInvoiceInputs(invoice);
+        }
+
+        private async void Btn_deleteInvoice_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                if (invoice.invoiceId != 0)
+                {
+                    string res = await invoice.deleteOrder(invoice.invoiceId);
+                    if (res.Equals("1"))
+                    {
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
+
+                        await clearInvoice();
+                        await refreshDraftNotification();
+                    }
+                    else
+                        Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
     }
 }

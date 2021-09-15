@@ -1,12 +1,18 @@
-﻿using netoaster;
+﻿using Microsoft.Reporting.WinForms;
+using Microsoft.Win32;
+using netoaster;
 using POS.Classes;
 using POS.View.windows;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
 using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -508,7 +514,11 @@ namespace POS.View.storage
 
                 if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one"))
                 {
-
+                    Thread t1 = new Thread(() =>
+                    {
+                        pdfInventory();
+                    });
+                    t1.Start();
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -522,8 +532,25 @@ namespace POS.View.storage
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+
+        private void pdfInventory()
+        {
+            BuildReport();
+
+            this.Dispatcher.Invoke(() =>
+            {
+                saveFileDialog.Filter = "PDF|*.pdf;";
+
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    string filepath = saveFileDialog.FileName;
+                    LocalReportExtensions.ExportToPDF(rep, filepath);
+                }
+            });
+        }
+
         private void Btn_printInvoice_Click(object sender, RoutedEventArgs e)
-        {
+        {//print
             try
             {
                 if (sender != null)
@@ -531,7 +558,13 @@ namespace POS.View.storage
 
                 if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one"))
                 {
-
+                    /////////////////////////////////////
+                    Thread t1 = new Thread(() =>
+                    {
+                        printInventory();
+                    });
+                    t1.Start();
+                    //////////////////////////////////////
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -545,8 +578,19 @@ namespace POS.View.storage
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-        private void Btn_preview_Click(object sender, RoutedEventArgs e)
+
+        private void printInventory()
         {
+            BuildReport();
+
+            this.Dispatcher.Invoke(() =>
+            {
+                LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.rep_printer_name, short.Parse(MainWindow.rep_print_count));
+            });
+        }
+
+        private void Btn_preview_Click(object sender, RoutedEventArgs e)
+        {//preview
             try
             {
                 if (sender != null)
@@ -554,7 +598,25 @@ namespace POS.View.storage
 
                 if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one"))
                 {
-
+                    #region
+                    Window.GetWindow(this).Opacity = 0.2;
+                    /////////////////////
+                    string pdfpath = "";
+                    pdfpath = @"\Thumb\report\temp.pdf";
+                    pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
+                    BuildReport();
+                    LocalReportExtensions.ExportToPDF(rep, pdfpath);
+                    ///////////////////
+                    wd_previewPdf w = new wd_previewPdf();
+                    w.pdfPath = pdfpath;
+                    if (!string.IsNullOrEmpty(w.pdfPath))
+                    {
+                        w.ShowDialog();
+                        w.wb_pdfWebViewer.Dispose();
+                    }
+                    Window.GetWindow(this).Opacity = 1;
+                    //////////////////////////////////////
+                    #endregion
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -567,6 +629,33 @@ namespace POS.View.storage
                     SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this);
             }
+        }
+        ReportCls reportclass = new ReportCls();
+        LocalReport rep = new LocalReport();
+        SaveFileDialog saveFileDialog = new SaveFileDialog();
+        private void BuildReport()
+        {
+            //List<ReportParameter> paramarr = new List<ReportParameter>();
+
+            //string addpath;
+            //bool isArabic = ReportCls.checkLang();
+            //if (isArabic)
+            //{
+            //    addpath = @"\Reports\Store\Ar\ArUnitReport.rdlc";//////////??????????
+            //}
+            //else
+            //    addpath = @"\Reports\Store\En\UnitReport.rdlc";/////////???????????
+            //string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+            //ReportCls.checkLang();
+
+            //clsReports.unitReport(unitsQuery, rep, reppath, paramarr);////////////?????
+            //clsReports.setReportLanguage(paramarr);
+            //clsReports.Header(paramarr);
+
+            //rep.SetParameters(paramarr);
+
+            //rep.Refresh();
         }
 
         private async void Btn_invoiceImage_Click(object sender, RoutedEventArgs e)

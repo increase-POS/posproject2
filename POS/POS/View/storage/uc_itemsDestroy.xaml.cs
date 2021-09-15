@@ -205,6 +205,7 @@ namespace POS.View.storage
 
                 if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
+                    #region
                     Thread t1 = new Thread(() =>
                     {
                         List<ReportParameter> paramarr = new List<ReportParameter>();
@@ -236,10 +237,9 @@ namespace POS.View.storage
                                 LocalReportExtensions.ExportToExcel(rep, filepath);
                             }
                         });
-
-
                     });
                     t1.Start();
+                    #endregion
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -573,12 +573,8 @@ namespace POS.View.storage
             }
         }
 
-
-
-
-
         private void Btn_pieChart_Click(object sender, RoutedEventArgs e)
-        {
+        {//pie
             try
             {
                 if (sender != null)
@@ -586,7 +582,10 @@ namespace POS.View.storage
 
                 if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
-
+                    Window.GetWindow(this).Opacity = 0.2;
+                    win_Storagelvc win = new win_Storagelvc(invItemsQuery, 1);
+                    win.ShowDialog();
+                    Window.GetWindow(this).Opacity = 1;
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -880,6 +879,7 @@ namespace POS.View.storage
 
                 if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
+                    #region
                     List<ReportParameter> paramarr = new List<ReportParameter>();
 
                     string addpath;
@@ -908,6 +908,7 @@ namespace POS.View.storage
                         string filepath = saveFileDialog.FileName;
                         LocalReportExtensions.ExportToPDF(rep, filepath);
                     }
+                    #endregion
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -923,7 +924,7 @@ namespace POS.View.storage
         }
 
         private void Btn_print_Click(object sender, RoutedEventArgs e)
-        {
+        {//print
             try
             {
                 if (sender != null)
@@ -931,6 +932,7 @@ namespace POS.View.storage
 
                 if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
+                    #region
                     List<ReportParameter> paramarr = new List<ReportParameter>();
 
                     string addpath;
@@ -951,6 +953,7 @@ namespace POS.View.storage
                     rep.SetParameters(paramarr);
                     rep.Refresh();
                     LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.rep_printer_name, short.Parse(MainWindow.rep_print_count));
+                    #endregion
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -965,14 +968,20 @@ namespace POS.View.storage
             }
         }
         private void Btn_preview_Click(object sender, RoutedEventArgs e)
-        {
-            Window.GetWindow(this).Opacity = 0.2;
+        {//preview
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+                {
+                    #region
+                    Window.GetWindow(this).Opacity = 0.2;
             string pdfpath = "";
 
             List<ReportParameter> paramarr = new List<ReportParameter>();
 
-
-            //
             pdfpath = @"\Thumb\report\temp.pdf";
             pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
 
@@ -1002,10 +1011,21 @@ namespace POS.View.storage
             {
                 w.ShowDialog();
                 w.wb_pdfWebViewer.Dispose();
-
-
             }
             Window.GetWindow(this).Opacity = 1;
+                    #endregion
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
     }

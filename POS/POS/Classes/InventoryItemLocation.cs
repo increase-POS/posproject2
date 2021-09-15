@@ -13,7 +13,7 @@ using System.Web;
 
 namespace POS.Classes
 {
-    class InventoryItemLocation
+    public class InventoryItemLocation
     {
         public int sequence { get; set; }
         public int id { get; set; }

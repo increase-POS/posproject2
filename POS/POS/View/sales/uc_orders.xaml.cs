@@ -657,19 +657,20 @@ namespace POS.View.sales
                     Boolean available = true;
                     bool valid = validateItemUnits();
 
-                    if (billDetails.Count > 0 && available && valid && _InvoiceType != "s")
+                    if (billDetails.Count > 0 && available && valid && _InvoiceType == "ord")
                     {
                         await addInvoice(_InvoiceType); 
-                        clearInvoice();
-                        setNotifications();
+                        
                     }
-                    else if (billDetails.Count == 0 || _InvoiceType == "s")
-                    {
+                    clearInvoice();
+                    setNotifications();
+                    //else if (billDetails.Count == 0 || _InvoiceType == "s")
+                    //{
 
-                        clearInvoice();
-                        setNotifications();
-                    }
-                   
+
+                    //    setNotifications();
+                    //}
+
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -723,7 +724,7 @@ namespace POS.View.sales
                 //tb_taxValue.Text = "0";
             lst_coupons.Items.Clear();
             tb_discountCoupon.Text = "0";
-
+            btn_deleteInvoice.Visibility = Visibility.Collapsed;
             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSaleOrder");
             SectionData.clearComboBoxValidate(cb_customer, p_errorCustomer);
             refrishBillDetails();
@@ -749,6 +750,7 @@ namespace POS.View.sales
                     btn_save.IsEnabled = true;
                     cb_coupon.IsEnabled = true;
                     btn_clearCoupon.IsEnabled = true;
+                    btn_deleteInvoice.Visibility = Visibility.Collapsed;
                     break;
                 case "or": //quotation invoice
                     dg_billDetails.Columns[0].Visibility = Visibility.Collapsed; //make delete column unvisible
@@ -764,6 +766,7 @@ namespace POS.View.sales
                     btn_save.IsEnabled = false;
                     cb_coupon.IsEnabled = false;
                     btn_clearCoupon.IsEnabled = false;
+                    btn_deleteInvoice.Visibility = Visibility.Visible;
                     break;
                 case "s": //sale invoice
                     dg_billDetails.Columns[0].Visibility = Visibility.Collapsed; //make delete column unvisible
@@ -779,6 +782,7 @@ namespace POS.View.sales
                     btn_save.IsEnabled = true;
                     cb_coupon.IsEnabled = false;
                     btn_clearCoupon.IsEnabled = false;
+                    btn_deleteInvoice.Visibility = Visibility.Collapsed;
                     break;
             }
         }
@@ -2375,6 +2379,36 @@ SectionData.isAdminPermision())
                     w.agent.agentId = (int)cb_customer.SelectedValue;
                     w.ShowDialog();
                     Window.GetWindow(this).Opacity = 1;
+                }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+
+        private async void Btn_deleteInvoice_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                if (invoice.invoiceId != 0)
+                {
+                    string res = await invoice.deleteOrder(invoice.invoiceId);
+                    if (res.Equals("1"))
+                    {
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
+                        
+                        clearInvoice();
+                       await refreshDraftNotification();
+                    }
+                    else
+                        Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                 }
                 if (sender != null)
                     SectionData.EndAwait(grid_main);

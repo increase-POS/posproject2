@@ -660,6 +660,7 @@ namespace POS.View.sales
             inputEditable();
             btn_next.Visibility = Visibility.Collapsed;
             btn_previous.Visibility = Visibility.Collapsed;
+            btn_deleteInvoice.Visibility = Visibility.Collapsed;
             await fillCouponsList();
         }
         private void inputEditable()
@@ -678,6 +679,7 @@ namespace POS.View.sales
                     cb_coupon.IsEnabled = true;
                     btn_clearCoupon.IsEnabled = true;
                     tgl_ActiveOffer.IsEnabled = true;
+                    btn_deleteInvoice.Visibility = Visibility.Visible;
                     break;
                 case "q": //quotation invoice
                     dg_billDetails.Columns[0].Visibility = Visibility.Collapsed; //make delete column unvisible
@@ -691,6 +693,7 @@ namespace POS.View.sales
                     cb_coupon.IsEnabled = false;
                     btn_clearCoupon.IsEnabled = false;
                     tgl_ActiveOffer.IsEnabled = false;
+                    btn_deleteInvoice.Visibility = Visibility.Collapsed;
                     break;
             }
             btn_next.Visibility = Visibility.Visible;
@@ -2155,5 +2158,34 @@ namespace POS.View.sales
             await fillInvoiceInputs(invoice);
         }
         #endregion
+
+        private async void Btn_deleteInvoice_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                if (invoice.invoiceId != 0)
+                {
+                   string res = await invoice.deleteInvoice(invoice.invoiceId);
+                    if (res.Equals("1"))
+                    {
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
+                        clearInvoice();
+                        refreshDraftNotification();
+                    }
+                    else
+                        Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
     }
 }
