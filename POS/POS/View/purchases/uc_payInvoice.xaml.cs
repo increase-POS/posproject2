@@ -2042,15 +2042,18 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                /////////////////////////////////////
-                Thread t1 = new Thread(() =>
+                if (MainWindow.groupObject.HasPermissionAction(paymentsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
-
-                    pdfPurInvoice();
-                });
-                t1.Start();
-                //////////////////////////////////////
-
+                    ////////////////////////////
+                    Thread t1 = new Thread(() =>
+                    {
+                        pdfPurInvoice();
+                    });
+                    t1.Start();
+                    ////////////////////////////
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -2482,18 +2485,22 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                prInvoiceId = invoice.invoiceId;
-            // printPurInvoice();
-                /////////////////////////////////////////////////
-                
-                               Thread t1 = new Thread(() =>
-                               {
-                                   //      pdfPurInvoice();
-                                   printPurInvoice();
+                if (MainWindow.groupObject.HasPermissionAction(paymentsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+                {
+                    prInvoiceId = invoice.invoiceId;
+              
+                    ////////////////////////////
+                    Thread t1 = new Thread(() =>
+                    {
+                        printPurInvoice();
 
-                               });
-                t1.Start();
-                ////////////////////////////////////////////////
+                    });
+                    t1.Start();
+                    ////////////////////////////
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -2513,11 +2520,16 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                //////////////////////////////////////
-                previewPurInvoice();
-                //////////////////////////////////////
+                if (MainWindow.groupObject.HasPermissionAction(paymentsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+                {
+                    /////////////////////
+                    previewPurInvoice();
+                    /////////////////////
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
                 if (sender != null)
-                    SectionData.EndAwait(grid_main);
+                SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
@@ -2638,16 +2650,20 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                prInvoiceId = invoice.invoiceId;
-                //sendPurEmail();
-                ///////////////////////////////////
-                Thread t1 = new Thread(() =>
-                {
-                    sendPurEmail();
-                });
-                t1.Start();
-                ////////////////////////////////////
 
+                if (MainWindow.groupObject.HasPermissionAction(paymentsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+                {
+                    prInvoiceId = invoice.invoiceId;
+                    ///////////////////////////////////
+                    Thread t1 = new Thread(() =>
+                    {
+                        sendPurEmail();
+                    });
+                    t1.Start();
+                    ////////////////////////////////////
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }

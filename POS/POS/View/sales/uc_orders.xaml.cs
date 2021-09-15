@@ -657,16 +657,19 @@ namespace POS.View.sales
                     Boolean available = true;
                     bool valid = validateItemUnits();
 
-                    if (billDetails.Count > 0 && available && valid)
+                    if (billDetails.Count > 0 && available && valid && _InvoiceType != "s")
                     {
-                        await addInvoice(_InvoiceType);
+                        await addInvoice(_InvoiceType); 
                         clearInvoice();
-                        setNotifications();                     
+                        setNotifications();
                     }
-                    else if (billDetails.Count == 0)
+                    else if (billDetails.Count == 0 || _InvoiceType == "s")
                     {
+
                         clearInvoice();
+                        setNotifications();
                     }
+                   
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -736,6 +739,7 @@ namespace POS.View.sales
                     dg_billDetails.Columns[0].Visibility = Visibility.Visible; //make delete column visible
                     dg_billDetails.Columns[3].IsReadOnly = false; //make unit read only
                     dg_billDetails.Columns[4].IsReadOnly = false; //make count read only
+                    cb_branch.IsEnabled = true;
                     cb_customer.IsEnabled = true;
                     cb_company.IsEnabled = true;
                     cb_user.IsEnabled = true;
@@ -750,6 +754,7 @@ namespace POS.View.sales
                     dg_billDetails.Columns[0].Visibility = Visibility.Collapsed; //make delete column unvisible
                     dg_billDetails.Columns[3].IsReadOnly = true; //make unit read only
                     dg_billDetails.Columns[4].IsReadOnly = true; //make count read only
+                    cb_branch.IsEnabled = false;
                     cb_customer.IsEnabled = false;
                     cb_company.IsEnabled = false;
                     cb_user.IsEnabled = false;
@@ -764,6 +769,7 @@ namespace POS.View.sales
                     dg_billDetails.Columns[0].Visibility = Visibility.Collapsed; //make delete column unvisible
                     dg_billDetails.Columns[3].IsReadOnly = true; //make unit read only
                     dg_billDetails.Columns[4].IsReadOnly = true; //make count read only
+                    cb_branch.IsEnabled = false;
                     cb_customer.IsEnabled = false;
                     cb_company.IsEnabled = false;
                     cb_user.IsEnabled = false;
@@ -1192,6 +1198,7 @@ namespace POS.View.sales
             _Sum = (decimal)invoice.total;
             if (invoice.tax != null)
                 _Tax = (decimal)invoice.tax;
+            cb_branch.SelectedValue = invoice.branchId;
             cb_customer.SelectedValue = invoice.agentId;
             if (invoice.totalNet != null)
             {
@@ -1220,7 +1227,7 @@ namespace POS.View.sales
 
             cb_company.SelectedValue = invoice.shippingCompanyId;
             cb_user.SelectedValue = invoice.shipUserId;
-            //tb_discount.Text = invoice.manualDiscountValue.ToString();
+            
             if (invoice.manualDiscountValue != 0)
                 tb_discount.Text = SectionData.DecTostring(invoice.manualDiscountValue);
             else
@@ -1780,6 +1787,7 @@ SectionData.isAdminPermision())
                         if (_InvoiceType == "s")
                         {
                             await saveOrderStatus(invoice.invoiceId, "tr");
+                            clearInvoice();
                             await refreshOrdersWaitNotification();
                         }
                         else
@@ -1796,9 +1804,9 @@ SectionData.isAdminPermision())
                             };
                             await notification.Save(not, (int)cb_branch.SelectedValue, "saleAlerts_executeOrder", branch.name);
                             #endregion
+                            clearInvoice();
                             await refreshDraftNotification();
-                        }
-                        clearInvoice();
+                        }                        
                     }
                 }
                 else

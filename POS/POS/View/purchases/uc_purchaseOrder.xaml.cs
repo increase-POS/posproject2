@@ -1566,7 +1566,7 @@ namespace POS.View.purchases
 
 
         private async void btn_printInvoice_Click(object sender, RoutedEventArgs e)
-        {
+        {//print
             try
             {
                 if (sender != null)
@@ -1578,8 +1578,6 @@ namespace POS.View.purchases
                         printPurInvoice();
                     });
                     t1.Start();
-
-
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -1793,16 +1791,14 @@ namespace POS.View.purchases
 
                 if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
-
+                    #region
                     if (invoice.invoiceId > 0)
                     {
                         Window.GetWindow(this).Opacity = 0.2;
 
-
                         List<ReportParameter> paramarr = new List<ReportParameter>();
                         string pdfpath;
 
-                        //
                         pdfpath = @"\Thumb\report\temp.pdf";
                         pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
                         string reppath = reportclass.GetpayInvoiceRdlcpath(invoice);
@@ -1821,7 +1817,6 @@ namespace POS.View.purchases
                             }
                             else
                             {
-
                                 invoice.agentCode = "-";
                                 //new lines
                                 invoice.agentName = "-";
@@ -1842,10 +1837,7 @@ namespace POS.View.purchases
                             invoice.uuserLast = employ.lastname;
 
                             ReportCls.checkLang();
-                            //foreach (var r in invoiceItems)
-                            //{
-                            //    r.price = decimal.Parse(SectionData.DecTostring(r.price));
-                            //}
+                           
                             clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
                             clsReports.setReportLanguage(paramarr);
                             clsReports.Header(paramarr);
@@ -1855,25 +1847,14 @@ namespace POS.View.purchases
                             rep.Refresh();
 
                             LocalReportExtensions.ExportToPDF(rep, pdfpath);
-
                         }
-
-
 
                         wd_previewPdf w = new wd_previewPdf();
                         w.pdfPath = pdfpath;
                         if (!string.IsNullOrEmpty(w.pdfPath))
                         {
                             w.ShowDialog();
-                            //delete file
-                            /*
-                            if (File.Exists(pdfpath))
-                            { File.Delete(pdfpath);}
-                            */
-                            //  ClosePDF();
                             w.wb_pdfWebViewer.Dispose();
-
-
                         }
                         else
                             Toaster.ShowError(Window.GetWindow(this), message: "", animation: ToasterAnimation.FadeIn);
@@ -1881,9 +1862,9 @@ namespace POS.View.purchases
                     }
                     else
                     {
-               Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trSaveInvoiceToPreview"), animation: ToasterAnimation.FadeIn);
+                        Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trSaveInvoiceToPreview"), animation: ToasterAnimation.FadeIn);
                     }
-
+                    #endregion
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -1904,16 +1885,18 @@ namespace POS.View.purchases
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                //prInvoiceId = invoice.invoiceId;
-                //sendPurEmail();
-                ///////////////////////////////////
-                Thread t1 = new Thread(() =>
+                if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
-                    sendPurEmail();
-                });
-                t1.Start();
-                ////////////////////////////////////
-
+                    /////////////////////////////
+                    Thread t1 = new Thread(() =>
+                    {
+                        sendPurEmail();
+                    });
+                    t1.Start();
+                    /////////////////////////////
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -1923,71 +1906,6 @@ namespace POS.View.purchases
                     SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this);
             }
-            //try
-            //{
-            //    if (sender != null)
-            //        SectionData.StartAwait(grid_main);
-            //    if (MainWindow.groupObject.HasPermissionAction(sendEmailPermission, MainWindow.groupObjects, "one"))
-            //    {
-
-            //        SysEmails email = new SysEmails();
-            //        EmailClass mailtosend = new EmailClass();
-            //        email = await email.GetByBranchIdandSide((int)MainWindow.branchID, "mg");
-            //        Agent toAgent = new Agent();
-            //        toAgent = vendors.Where(x => x.agentId == invoice.agentId).FirstOrDefault();
-            //        //  int? itemcount = invoiceItems.Count();
-            //        if (email.emailId == 0)
-            //            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoEmailForThisDept"), animation: ToasterAnimation.FadeIn);
-            //        else
-            //        {
-            //            if (invoice.invoiceId == 0)
-            //                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trThereIsNoOrderToSen"), animation: ToasterAnimation.FadeIn);
-            //            else
-            //            {
-            //                if (invoiceItems == null || invoiceItems.Count() == 0)
-            //                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trThereIsNoItemsToSend"), animation: ToasterAnimation.FadeIn);
-            //                else
-            //                {
-            //                    if (toAgent.email.Trim() == "")
-            //                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trTheVendorHasNoEmail"), animation: ToasterAnimation.FadeIn);
-            //                    else
-            //                    {
-            //                        SetValues setvmodel = new SetValues();
-
-            //                        string pdfpath = await SavePurOrderpdf();
-            //                        mailtosend.AddAttachTolist(pdfpath);
-            //                        List<SetValues> setvlist = new List<SetValues>();
-            //                        setvlist = await setvmodel.GetBySetName("pur_order_email_temp");
-
-            //                        mailtosend = mailtosend.fillOrderTempData(invoice, invoiceItems, email, toAgent, setvlist);
-
-            //                        string msg = mailtosend.Sendmail();
-            //                        if (msg == "Failure sending mail.")
-            //                        {
-            //                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoInternetConnection"), animation: ToasterAnimation.FadeIn);
-            //                        }
-            //                        else if (msg == "mailsent")
-            //                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trMailSent"), animation: ToasterAnimation.FadeIn);
-            //                        else
-            //                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trMailNotSent"), animation: ToasterAnimation.FadeIn);
-
-
-            //                    }
-            //                }
-            //            }
-            //        }
-            //    }
-            //    else
-            //        Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //    SectionData.ExceptionMessage(ex, this);
-            //}
         }
         public async void sendPurEmail()
         {

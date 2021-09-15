@@ -120,7 +120,8 @@ namespace POS.View.storage
             dg_billDetails.Columns[3].Header = MainWindow.resourcemanager.GetString("trUnit");
             dg_billDetails.Columns[4].Header = MainWindow.resourcemanager.GetString("trQuantity");
 
-            
+            txt_ordersWait.Text = MainWindow.resourcemanager.GetString("trWaiting");
+
             tt_error_previous.Content = MainWindow.resourcemanager.GetString("trPrevious");
             tt_error_next.Content = MainWindow.resourcemanager.GetString("trNext");
 
@@ -1674,5 +1675,7 @@ namespace POS.View.storage
             await fillOrderInputs(invoice);
         }
         #endregion
+
+       
     }
 }

@@ -873,6 +873,7 @@ namespace POS.View
             else if ((invoice.invNumber == null && invType == "s") || (invoice.invType == "sd" && invType == "s"))
             {
                 invoice.invNumber = await invoice.generateInvNumber("si");
+                invoice.branchId = MainWindow.branchID.Value;
             }
             else if (invoice.invType == "sbd" && invType == "sb") // convert invoicce from draft bounce to bounce
                 invoice.invNumber = await invoice.generateInvNumber("sb");
@@ -1121,16 +1122,19 @@ namespace POS.View
                         if (_InvoiceType == "sbd") //sbd means sale bounse draft
                         {
                             await addInvoice("sb"); // sb means sale bounce
+                            await clearInvoice();
                             await refreshDraftNotification();
                         }
                         else if (_InvoiceType == "or")
                         {
                             await saveOrder("s");
+                            await clearInvoice();
                             await refreshOrdersWaitNotification();
                         }
                         else//s  sale invoice
                         {
                             await saveSaleInvoice("s");
+                            await clearInvoice();
                             await refreshDraftNotification();
                         }
 
@@ -1156,10 +1160,7 @@ namespace POS.View
                                 });
                                 t1.Start();
                             }
-
-
-                        }
-                        await clearInvoice();
+                        }       
                         prinvoiceId = 0;
                     }
                     //awaitSaveBtn(false);
@@ -1991,10 +1992,10 @@ namespace POS.View
             //if (MainWindow.isInvTax == 0)
             //{
             //tb_taxValue.Text = _Tax.ToString();
-            if (_Tax != 0)
-                tb_taxValue.Text = SectionData.DecTostring(_Tax);
-            else
-                tb_taxValue.Text = "0";
+            //if (_Tax != 0)
+            //    tb_taxValue.Text = SectionData.DecTostring(_Tax);
+            //else
+            //    tb_taxValue.Text = "0";
             //}
         }
 
@@ -2299,7 +2300,7 @@ namespace POS.View
                     //var unit = itemUnits.ToList().Find(x => x.itemUnitId == (int)cmb.SelectedValue);
                     var unit = await itemUnitModel.GetById((int)cmb.SelectedValue);
                     //int availableAmount = await itemLocationModel.getAmountInBranch(itemUnitId, MainWindow.branchID.Value);
-                    int availableAmount = await getAvailableAmount(billDetails[dg_billDetails.SelectedIndex].itemId, itemUnitId, MainWindow.branchID.Value);
+                    int availableAmount = await getAvailableAmount(billDetails[dg_billDetails.SelectedIndex].itemId, itemUnitId, MainWindow.branchID.Value, billDetails[dg_billDetails.SelectedIndex].ID);
 
 
                     int oldCount = 0;
@@ -2314,14 +2315,13 @@ namespace POS.View
                     decimal newPrice = price;
 
                     //"tb_amont"
-                    tb = dg_billDetails.Columns[4].GetCellContent(dg_billDetails.Items[dg_billDetails.SelectedIndex]) as TextBlock;
-                    tb.Text = availableAmount.ToString();
+                   
 
                     oldCount = billDetails[dg_billDetails.SelectedIndex].Count;
                     oldPrice = billDetails[dg_billDetails.SelectedIndex].Price;
 
-                    //  if (availableAmount < oldCount)
-                    if (availableAmount <= 0)
+                    if (availableAmount < oldCount)
+                    //if (availableAmount <= 0)
                     {
                         Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountNotAvailableToolTip"), animation: ToasterAnimation.FadeIn);
                         newCount = newCount + availableAmount;
@@ -2329,7 +2329,11 @@ namespace POS.View
                         tb.Text = availableAmount.ToString();
                     }
                     else
-                        newCount = oldCount;
+                    {
+                        // newCount = oldCount;
+                        tb = dg_billDetails.Columns[4].GetCellContent(dg_billDetails.Items[dg_billDetails.SelectedIndex]) as TextBlock;
+                        newCount = int.Parse(tb.Text);
+                    }
 
                     // old total for changed item
                     decimal total = oldPrice * oldCount;
@@ -2528,11 +2532,12 @@ namespace POS.View
                     }
                     else
                     {
-                        int availableAmount = await getAvailableAmount(row.itemId, row.itemUnitId, MainWindow.branchID.Value);
-                        if (availableAmount <= 0)
+                        int availableAmount = await getAvailableAmount(row.itemId, row.itemUnitId, MainWindow.branchID.Value,row.ID);
+                        if (availableAmount < newCount)
                         {
                             Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountNotAvailableToolTip"), animation: ToasterAnimation.FadeIn);
-                            newCount = newCount + availableAmount;
+                            //newCount = newCount + availableAmount;
+                            newCount = availableAmount;
                             tb = dg_billDetails.Columns[4].GetCellContent(dg_billDetails.Items[index]) as TextBlock;
                             tb.Text = newCount.ToString();
                             row.Count = (int)newCount;
@@ -2587,15 +2592,14 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-        private async Task<int> getAvailableAmount(int itemId, int itemUnitId, int branchId)
+        private async Task<int> getAvailableAmount(int itemId, int itemUnitId, int branchId, int ID)
         {
             var itemUnits = await itemUnitModel.GetItemUnits(itemId);
             int availableAmount = await itemLocationModel.getAmountInBranch(itemUnitId, branchId);
             var smallUnits = await itemUnitModel.getSmallItemUnits(itemId, itemUnitId);
             foreach (ItemUnit u in itemUnits)
             {
-
-                var isInBill = billDetails.ToList().Find(x => x.itemUnitId == (int)u.itemUnitId); // unit exist in invoice
+                var isInBill = billDetails.ToList().Find(x => x.itemUnitId == (int)u.itemUnitId && x.ID != ID); // unit exist in invoice
                 if (isInBill != null)
                 {
                     var isSmall = smallUnits.Find(x => x.itemUnitId == (int)u.itemUnitId);

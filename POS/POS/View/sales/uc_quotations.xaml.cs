@@ -710,7 +710,7 @@ namespace POS.View.sales
 
             invoice.total = _Sum;
             invoice.totalNet = decimal.Parse(tb_total.Text);
-
+           
             if (cb_customer.SelectedIndex != -1)
                 invoice.agentId = (int)cb_customer.SelectedValue;
 
@@ -769,10 +769,10 @@ namespace POS.View.sales
 
                     invoiceItems.Add(itemT);
                 }
-                await invoiceModel.saveInvoiceItems(invoiceItems, invoiceId);
-                refreshDraftNotification();
+                await invoiceModel.saveInvoiceItems(invoiceItems, invoiceId);               
             }
             clearInvoice();
+            refreshDraftNotification();
         }
 
         #region Get Id By Click  Y
@@ -877,9 +877,9 @@ namespace POS.View.sales
                 tb_sum.Text = SectionData.DecTostring(_Sum);
             else tb_sum.Text = "0";
 
-            if (MainWindow.isInvTax == 0)
-                //tb_taxValue.Text = _Tax.ToString();
-                tb_taxValue.Text = SectionData.DecTostring(_Tax);
+            //if (MainWindow.isInvTax == 0)
+            //    //tb_taxValue.Text = _Tax.ToString();
+            //    tb_taxValue.Text = SectionData.DecTostring(_Tax);
 
         }
 
