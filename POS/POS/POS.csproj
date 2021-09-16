@@ -179,6 +179,7 @@
     <Compile Include="Classes\clsReports.cs" />
     <Compile Include="Classes\CountryCode.cs" />
     <Compile Include="Classes\Coupon.cs" />
+    <Compile Include="Classes\Dash.cs" />
     <Compile Include="Classes\DataGridHelper.cs" />
     <Compile Include="Classes\DocImage.cs" />
     <Compile Include="Classes\EmailClass.cs" />
