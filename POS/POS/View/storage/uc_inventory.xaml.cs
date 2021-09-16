@@ -635,27 +635,27 @@ namespace POS.View.storage
         SaveFileDialog saveFileDialog = new SaveFileDialog();
         private void BuildReport()
         {
-            //List<ReportParameter> paramarr = new List<ReportParameter>();
+            List<ReportParameter> paramarr = new List<ReportParameter>();
 
-            //string addpath;
-            //bool isArabic = ReportCls.checkLang();
-            //if (isArabic)
-            //{
-            //    addpath = @"\Reports\Store\Ar\ArUnitReport.rdlc";//////////??????????
-            //}
-            //else
-            //    addpath = @"\Reports\Store\En\UnitReport.rdlc";/////////???????????
-            //string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+            string addpath;
+            bool isArabic = ReportCls.checkLang();
+            if (isArabic)
+            {
+                addpath = @"\Reports\Store\Ar\ArInventory.rdlc";//////////??????????
+            }
+            else
+                addpath = @"\Reports\Store\En\Inventory.rdlc";/////////???????????
+            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
-            //ReportCls.checkLang();
+            ReportCls.checkLang();
 
-            //clsReports.unitReport(unitsQuery, rep, reppath, paramarr);////////////?????
-            //clsReports.setReportLanguage(paramarr);
-            //clsReports.Header(paramarr);
+            clsReports.inventoryReport(invItemsLocations, rep, reppath, paramarr);////////////?????
+            clsReports.setReportLanguage(paramarr);
+            clsReports.Header(paramarr);
 
-            //rep.SetParameters(paramarr);
+            rep.SetParameters(paramarr);
 
-            //rep.Refresh();
+            rep.Refresh();
         }
 
         private async void Btn_invoiceImage_Click(object sender, RoutedEventArgs e)

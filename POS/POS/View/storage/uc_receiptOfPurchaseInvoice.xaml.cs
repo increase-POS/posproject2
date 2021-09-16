@@ -1023,11 +1023,14 @@ namespace POS.View.storage
 
                 if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
-                    Thread t1 = new Thread(() =>
+                    if (invoiceItems != null)
                     {
-                        printReceipt();
-                    });
-                    t1.Start();
+                        Thread t1 = new Thread(() =>
+                        {
+                            printReceipt();
+                        });
+                        t1.Start();
+                    }
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -1044,6 +1047,7 @@ namespace POS.View.storage
 
         private void printReceipt()
         {
+
             BuildReport();
 
             this.Dispatcher.Invoke(() =>
@@ -1073,20 +1077,20 @@ namespace POS.View.storage
         private void BuildReport()
         {
             List<ReportParameter> paramarr = new List<ReportParameter>();
-
+            //ReceiptPurchase
             string addpath;
             bool isArabic = ReportCls.checkLang();
             if (isArabic)
             {
-               /// addpath = @"\Reports\Store\Ar\ArUnitReport.rdlc";//////??????????
+               addpath = @"\Reports\Store\Ar\ArReceiptPurchaseReport.rdlc";//////??????????
             }
             else
-                addpath = @"\Reports\Store\En\UnitReport.rdlc";/////////////?????????????
-            //string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);?????????????
+                addpath = @"\Reports\Store\En\ReceiptPurchaseReport.rdlc";/////////////?????????????
+            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
             ReportCls.checkLang();
 
-            //clsReports.unitReport(unitsQuery, rep, reppath, paramarr);/////??????????????
+            clsReports.ReceiptPurchaseReport(invoiceItems, rep, reppath, paramarr);/////??????????????
             clsReports.setReportLanguage(paramarr);
             clsReports.Header(paramarr);
 
@@ -1105,7 +1109,9 @@ namespace POS.View.storage
                 if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
                     #region
-                    Window.GetWindow(this).Opacity = 0.2;
+                    if (invoiceItems != null)
+                    {
+                        Window.GetWindow(this).Opacity = 0.2;
                     /////////////////////
                     string pdfpath = "";
                     pdfpath = @"\Thumb\report\temp.pdf";
@@ -1122,6 +1128,7 @@ namespace POS.View.storage
                     }
                     Window.GetWindow(this).Opacity = 1;
                     //////////////////////////////////////
+                    }
                     #endregion
                 }
                 else
@@ -1145,11 +1152,14 @@ namespace POS.View.storage
 
                 if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
-                    Thread t1 = new Thread(() =>
+                    if (invoiceItems !=null)
+                    {
+                        Thread t1 = new Thread(() =>
                     {
                         pdfReceipt();
                     });
-                    t1.Start();
+                        t1.Start();
+                    }
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);

@@ -2988,3 +2988,5 @@ D:\myproj\posproject2\POS\POS\obj\Debug\View\storage\win_Storagelvc.g.cs
 D:\myproj\posproject2\POS\POS\obj\Debug\View\storage\win_Storagelvc.baml
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\sales\win_lvcSales.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\sales\win_lvcSales.baml
+D:\myproj\posproject2\POS\POS\obj\Debug\View\sales\win_lvcSales.g.cs
+D:\myproj\posproject2\POS\POS\obj\Debug\View\sales\win_lvcSales.baml

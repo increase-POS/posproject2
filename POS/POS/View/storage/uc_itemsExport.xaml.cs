@@ -1504,11 +1504,15 @@ namespace POS.View.storage
                 if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
                     /////////////////////////////////////
-                    Thread t1 = new Thread(() =>
+                    ///  
+                    if (invoiceItems.Count > 0)
+                    {
+                        Thread t1 = new Thread(() =>
                     {
                         printExport();
                     });
                     t1.Start();
+                }
                     //////////////////////////////////////
                 }
                 else
@@ -1544,11 +1548,14 @@ namespace POS.View.storage
 
                 if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
-                    Thread t1 = new Thread(() =>
+                    if (invoiceItems.Count > 0)
+                    {
+                        Thread t1 = new Thread(() =>
                     {
                         pdfExport();
                     });
-                    t1.Start();
+                        t1.Start();
+                    }
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -1565,6 +1572,7 @@ namespace POS.View.storage
 
         private void pdfExport()
         {
+          
             BuildReport();
 
             this.Dispatcher.Invoke(() =>
@@ -1577,6 +1585,7 @@ namespace POS.View.storage
                     LocalReportExtensions.ExportToPDF(rep, filepath);
                 }
             });
+         
         }
 
         ReportCls reportclass = new ReportCls();
@@ -1591,12 +1600,16 @@ namespace POS.View.storage
 
                 if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
+
                     #region
-                    Window.GetWindow(this).Opacity = 0.2;
+                    if (invoiceItems.Count() > 0)
+                    { 
+                        Window.GetWindow(this).Opacity = 0.2;
                     /////////////////////
                     string pdfpath = "";
                     pdfpath = @"\Thumb\report\temp.pdf";
                     pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
+
                     BuildReport();
                     LocalReportExtensions.ExportToPDF(rep, pdfpath);
                     ///////////////////
@@ -1608,6 +1621,7 @@ namespace POS.View.storage
                         w.wb_pdfWebViewer.Dispose();
                     }
                     Window.GetWindow(this).Opacity = 1;
+                }
                     //////////////////////////////////////
                     #endregion
                 }
@@ -1627,20 +1641,20 @@ namespace POS.View.storage
         private void BuildReport()
         {
             List<ReportParameter> paramarr = new List<ReportParameter>();
-
+         
             string addpath;
             bool isArabic = ReportCls.checkLang();
             if (isArabic)
-            {
-                addpath = @"\Reports\Catalog\Ar\ArUnitReport.rdlc";
+            {//ItemsExport
+                addpath = @"\Reports\Store\Ar\ArItemsExportReport.rdlc";
             }
             else
-                addpath = @"\Reports\Catalog\En\UnitReport.rdlc";
+                addpath = @"\Reports\Store\En\ItemsExportReport.rdlc";
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
             ReportCls.checkLang();
 
-            //clsReports.unitReport(unitsQuery, rep, reppath, paramarr);
+            clsReports.ItemsExportReport(invoiceItems, rep, reppath, paramarr);
             clsReports.setReportLanguage(paramarr);
             clsReports.Header(paramarr);
 
