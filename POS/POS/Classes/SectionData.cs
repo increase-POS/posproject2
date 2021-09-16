@@ -38,7 +38,7 @@ namespace POS.Classes
         public static BrushConverter bc = new BrushConverter();
 
         public static ImageBrush brush = new ImageBrush();
-         
+
         public async static Task<long> genRandomCode(string type)
         {
             Random rnd = new Random();
@@ -325,13 +325,13 @@ namespace POS.Classes
                     p_error.Visibility = Visibility.Visible;
                     tt_error.Content = MainWindow.resourcemanager.GetString("trErrorEmailToolTip");
                     tb.Background = (Brush)bc.ConvertFrom("#15FF0000");
-                isValid = false;
+                    isValid = false;
                 }
                 else
                 {
                     p_error.Visibility = Visibility.Collapsed;
                     tb.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-                isValid = true;
+                    isValid = true;
                 }
             }
             return isValid;
@@ -366,7 +366,7 @@ namespace POS.Classes
                 p_error.Visibility = Visibility.Collapsed;
             }
         }
-        public static void clearValidate(TextBox tb , Path p_error)
+        public static void clearValidate(TextBox tb, Path p_error)
         {
             tb.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             p_error.Visibility = Visibility.Collapsed;
@@ -418,18 +418,18 @@ namespace POS.Classes
             tb.Background = (Brush)bc.ConvertFrom("#15FF0000");
         }
 
-       
 
-     
 
-        public static void validateDuplicateCode(TextBox tb, Path p_error, ToolTip tt_error ,string tr)
+
+
+        public static void validateDuplicateCode(TextBox tb, Path p_error, ToolTip tt_error, string tr)
         {
             p_error.Visibility = Visibility.Visible;
             tt_error.Content = MainWindow.resourcemanager.GetString(tr);
             tb.Background = (Brush)bc.ConvertFrom("#15FF0000");
         }
 
-        public static void getMobile(string _mobile , ComboBox _area , TextBox _tb)
+        public static void getMobile(string _mobile, ComboBox _area, TextBox _tb)
         {//mobile
             if ((_mobile != null))
             {
@@ -462,7 +462,7 @@ namespace POS.Classes
             }
         }
 
-        public static void getPhone(string _phone , ComboBox _area , ComboBox _areaLocal , TextBox _tb)
+        public static void getPhone(string _phone, ComboBox _area, ComboBox _areaLocal, TextBox _tb)
         {//phone
             if ((_phone != null))
             {
@@ -601,7 +601,7 @@ namespace POS.Classes
             };
         }
 
-        public static async Task<string> generateNumber(char opperationType , string side)
+        public static async Task<string> generateNumber(char opperationType, string side)
         {
             List<CashTransfer> cashes = new List<CashTransfer>();
             Branch b = new Branch();
@@ -613,7 +613,7 @@ namespace POS.Classes
 
             string str3 = "";
             cashes = await cashModel.GetCashTransferAsync(Convert.ToString(opperationType), side);
-            str3 = (cashes.Count()+1).ToString();
+            str3 = (cashes.Count() + 1).ToString();
 
             return str1 + str2 + str3;
         }
@@ -628,7 +628,7 @@ namespace POS.Classes
 
             string str1 = b.code;
 
-            string str2 = opperationType + side; 
+            string str2 = opperationType + side;
 
             string str3 = "";
             cashes = await cashModel.GetCashTransferAsync(Convert.ToString(opperationType), "all");
@@ -653,7 +653,7 @@ namespace POS.Classes
             });
             itemsViewOriginal.Refresh();
         }
-       static public bool isAdminPermision()
+        static public bool isAdminPermision()
         {
             if (MainWindow.userLogin.userId == 1 || MainWindow.userLogin.userId == 2)
                 return true;
@@ -661,10 +661,11 @@ namespace POS.Classes
         }
 
         static List<Branch> branches;
-        static public async Task fillBranches(ComboBox combo, string type = "" )
+        static List<Branch> branchesWithAll;
+        static public async Task fillBranches(ComboBox combo, string type = "")
         {
             if (isAdminPermision())
-            branches = await branchModel.GetAll();
+                branches = await branchModel.GetAll();
             else
                 branches = await branchModel.BranchesByBranchandUser(MainWindow.branchID.Value, MainWindow.userLogin.userId);
 
@@ -673,6 +674,25 @@ namespace POS.Classes
             combo.DisplayMemberPath = "name";
             combo.SelectedIndex = -1;
         }
+        static public async Task fillBranchesWithAll(ComboBox combo, string type = "")
+        {
+            if (isAdminPermision())
+                branches = await branchModel.GetAll();
+            else
+                branches = await branchModel.BranchesByBranchandUser(MainWindow.branchID.Value, MainWindow.userLogin.userId);
+
+            branchesWithAll = branches.ToList();
+            Branch branch = new Branch();
+            branch.name = "All";
+            branch.branchId = 0;
+            branchesWithAll.Insert(0, branch);
+
+            combo.ItemsSource = branchesWithAll.Where(b => b.type != type && b.branchId != 1);
+            combo.SelectedValuePath = "branchId";
+            combo.DisplayMemberPath = "name";
+            combo.SelectedIndex = -1;
+        }
+
         /// <summary>
         /// لمنع  الصفر بالبداية
         /// </summary>

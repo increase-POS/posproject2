@@ -185,7 +185,7 @@ namespace POS.View.sectionData.Charts
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
+        {//load
             try
             {
                 if (sender != null)
@@ -209,6 +209,7 @@ namespace POS.View.sectionData.Charts
         public void fillDates()
         {
             dpEndDate.SelectedDate = DateTime.Now;
+          
             dpStrtDate.SelectedDate = dpEndDate.SelectedDate.Value.AddYears(-1);
         }
 
@@ -501,7 +502,7 @@ namespace POS.View.sectionData.Charts
                         else if (sectionDate == 10)
                         {
                             var Draw = shippingCompanyQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
-                            chartList.Add(Draw);
+                            PiechartList.Add(Draw);
                             label = "Shipping Companies count";
                         }
                         titles.Add(CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month) + "/" + year);
@@ -588,7 +589,7 @@ namespace POS.View.sectionData.Charts
                      else if (sectionDate == 10)
                     {
                         var Draw = shippingCompanyQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
-                        chartList.Add(Draw);
+                        PiechartList.Add(Draw);
                         label = "Shipping Companies count";
                     }
                     titles.Add(year.ToString());
@@ -800,19 +801,6 @@ namespace POS.View.sectionData.Charts
                  }
              );
 
-            //for (int i = 0; i < ColumnchartList.Count(); i++)
-            //{
-            //    List<double> final = new List<double>();
-            //    List<string> lable = new List<string>();
-            //    final.Add(ColumnchartList.ToList().Skip(i).FirstOrDefault());
-            //    columnchartData.Add(
-            //      new ColumnSeries
-            //      {
-            //          Values = final.AsChartValues(),
-
-            //      }
-            //  );
-            //}
             columnChart.Series = columnchartData;
         }
 

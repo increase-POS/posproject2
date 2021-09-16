@@ -35,7 +35,7 @@
             </Style.Resources>
         </Style>
     </UserControl.Resources>
-    <Grid>
+    <Grid x:Name="grid_main">
         <materialDesign:TransitioningContent >
             <materialDesign:TransitioningContent.OpeningEffects>
                 <materialDesign:TransitionEffect Kind="FadeIn"  Duration="0:0:1.5"/>
@@ -125,11 +125,11 @@
 	C268.9,599.5,271.1,612.3,273.6,625z M237.4,538.1c-3.8-18.5-7.6-36.9-11.5-55.7c-16.6,7.7-23,21.3-18.7,37.6
 	C209.7,529.3,226.1,539.4,237.4,538.1z"/>
                         <Border Grid.Column="2" Margin="10,12.5"   CornerRadius="0,0,0,0"  Width="1" BorderThickness="0" Background="#5B5182" />
-
                         <StackPanel Grid.Column="3" Orientation="Vertical" VerticalAlignment="Center">
-                            <TextBlock   Text="Purchase" FontSize="16" HorizontalAlignment="Center" 
+                            <TextBlock x:Name="txt_countAllPurchase"   Text="Purchase" FontSize="16" HorizontalAlignment="Center" 
                                 FontWeight="Regular" Foreground="#707070" />
-                            <TextBlock  Text="11568" FontWeight="Bold" FontSize="16" HorizontalAlignment="Center"  Foreground="#707070" />
+                            <!--x:Name="txt_countAllPurchaseValue"-->
+                            <TextBlock  Text="{Binding countAllPurchase, Mode=OneWay}" FontWeight="Bold" FontSize="16" HorizontalAlignment="Center"  Foreground="#707070" />
                         </StackPanel>
                     </Grid>
                 </Border>
@@ -161,9 +161,10 @@
                                 Background="#1D75B8" />
 
                         <StackPanel Grid.Column="3" Orientation="Vertical" VerticalAlignment="Center">
-                            <TextBlock   Text="Sales" FontSize="16" HorizontalAlignment="Center" 
+                            <TextBlock x:Name="txt_countAllSales"  Text="Sales" FontSize="16" HorizontalAlignment="Center" 
                                 FontWeight="Regular" Foreground="#707070" />
-                            <TextBlock  Text="68942" FontWeight="Bold" FontSize="16" HorizontalAlignment="Center"  Foreground="#707070" />
+                            <!--x:Name="txt_countAllSalesValue"-->
+                            <TextBlock Text="{Binding countAllSalesValue}" FontWeight="Bold" FontSize="16" HorizontalAlignment="Center"  Foreground="#707070" />
                         </StackPanel>
                     </Grid>
                 </Border>
@@ -192,9 +193,9 @@
                                 Background="#FF5D6F" />
 
                         <StackPanel Grid.Column="3" Orientation="Vertical" VerticalAlignment="Center">
-                            <TextBlock   Text="Vendor" FontSize="16" HorizontalAlignment="Center" 
+                            <TextBlock  x:Name="txt_countAllVendor"  Text="Vendor" FontSize="16" HorizontalAlignment="Center" 
                                 FontWeight="Regular" Foreground="#707070" />
-                            <TextBlock  Text="67" FontWeight="Bold" FontSize="16" HorizontalAlignment="Center"  Foreground="#707070" />
+                            <TextBlock  Text="{Binding vendorCount, Mode=OneWay}" FontWeight="Bold" FontSize="16" HorizontalAlignment="Center"  Foreground="#707070" />
                         </StackPanel>
                     </Grid>
                 </Border>
@@ -226,9 +227,9 @@
                                 Background="#FFB36B" />
 
                         <StackPanel Grid.Column="3" Orientation="Vertical" VerticalAlignment="Center">
-                            <TextBlock   Text="Customer" FontSize="16" HorizontalAlignment="Center" 
+                            <TextBlock x:Name="txt_countAllCustomer"  Text="Customer" FontSize="16" HorizontalAlignment="Center" 
                                 FontWeight="Regular" Foreground="#707070" />
-                            <TextBlock  Text="935" FontWeight="Bold" FontSize="16" HorizontalAlignment="Center"  Foreground="#707070" />
+                            <TextBlock  Text="{Binding customerCount, Mode=OneWay}" FontWeight="Bold" FontSize="16" HorizontalAlignment="Center"  Foreground="#707070" />
                         </StackPanel>
                     </Grid>
                 </Border>
@@ -246,6 +247,7 @@
                                     Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                     materialDesign:HintAssist.Hint="Branch Name ..."  
                                      Height="40"   Margin="5" BorderBrush="#737373"
+                                  SelectionChanged="Cb_branch_SelectionChanged"
                                      BorderThickness="0" IsEditable="True"/>
                     </Grid>
                 </Border>
@@ -272,23 +274,23 @@
                         </Grid.ColumnDefinitions>
                         <Border Background="#00CC9E" Grid.ColumnSpan="6"
                             CornerRadius="7,7,0,0"/>
-                        <TextBlock  Text="Best Seller" FontWeight="Bold" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                        <TextBlock x:Name="bestSellerTitle" Text="Best Seller" FontWeight="Bold" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" 
                           Grid.ColumnSpan="6"  Foreground="White" />
 
                         <TextBlock Grid.Row="1" Grid.Column="0" Margin="5,1" Text="Item:" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                                FontWeight="Regular" Foreground="#707070" />
+                            Tag="itemTitle"    FontWeight="Regular" Foreground="#707070" />
                         <TextBlock Grid.Row="1" Grid.Column="1"  Margin="5,1" Text="Caffe" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center" 
-                                FontWeight="Regular" Foreground="#707070" />
+                              Tag="itemName"     FontWeight="Regular" Foreground="#707070" />
                         <TextBlock Grid.Row="1" Grid.Column="2"  Margin="5,1" Text="Count:" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" 
                                 FontWeight="Regular" Foreground="#707070" />
                         <TextBlock Grid.Row="1" Grid.Column="3"  Margin="5,1" Text="156" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center" 
-                                FontWeight="Regular" Foreground="#1D75B8" />
+                             Tag="itemCount"      FontWeight="Regular" Foreground="#1D75B8" />
                         <TextBlock Grid.Row="1" Grid.Column="4"  Margin="5,1" Text="Amount:" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" 
                                 FontWeight="Regular" Foreground="#707070" />
                         <StackPanel Grid.Row="1" Grid.Column="5"  Margin="5,1" Orientation="Horizontal"
                                     HorizontalAlignment="Right"  VerticalAlignment="Center"  >
-                            <TextBlock Grid.Row="1" Margin="0,0,5,0" Text="5648" FontSize="16" 
-                                FontWeight="Regular" Foreground="#008A1C" />
+                            <TextBlock Grid.Row="1"  Margin="0,0,5,0" Text="5648" FontSize="16" 
+                            Tag="itemAmount"    FontWeight="Regular" Foreground="#008A1C" />
                             <TextBlock  Text="$" FontWeight="Bold" FontSize="16" Foreground="#008A1C"  />
                         </StackPanel>
 
@@ -296,19 +298,19 @@
                                 Height="1" BorderThickness="0" Background="#C2F3E8" />
 
                         <TextBlock Grid.Row="3" Grid.Column="0" Margin="5,1" Text="Item:" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                                FontWeight="Regular" Foreground="#707070" />
+                               Tag="itemTitle"   FontWeight="Regular" Foreground="#707070" />
                         <TextBlock Grid.Row="3" Grid.Column="1"  Margin="5,1" Text="Program CD" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center" 
-                                FontWeight="Regular" Foreground="#707070" />
+                                Tag="itemName"   FontWeight="Regular" Foreground="#707070" />
                         <TextBlock Grid.Row="3" Grid.Column="2"  Margin="5,1" Text="Count:" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" 
                                 FontWeight="Regular" Foreground="#707070" />
                         <TextBlock Grid.Row="3" Grid.Column="3"  Margin="5,1" Text="141" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center" 
-                                FontWeight="Regular" Foreground="#1D75B8" />
+                              Tag="itemCount"  FontWeight="Regular" Foreground="#1D75B8" />
                         <TextBlock Grid.Row="3" Grid.Column="4"  Margin="5,1" Text="Amount:" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" 
                                 FontWeight="Regular" Foreground="#707070" />
                         <StackPanel Grid.Row="3" Grid.Column="5"  Margin="5,1" Orientation="Horizontal"
                                     HorizontalAlignment="Right"  VerticalAlignment="Center"  >
                             <TextBlock  Margin="0,0,5,0" Text="5648" FontSize="16" 
-                                FontWeight="Regular" Foreground="#008A1C" />
+                              Tag="itemAmount"  FontWeight="Regular" Foreground="#008A1C" />
                             <TextBlock  Text="$" FontWeight="Bold" FontSize="16" Foreground="#008A1C"  />
                         </StackPanel>
 
@@ -318,19 +320,19 @@
 
 
                         <TextBlock Grid.Row="5" Grid.Column="0" Margin="5,1" Text="Item:" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                                FontWeight="Regular" Foreground="#707070" />
+                               Tag="itemTitle"   FontWeight="Regular" Foreground="#707070" />
                         <TextBlock Grid.Row="5" Grid.Column="1"  Margin="5,1" Text="Screen" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center" 
-                                FontWeight="Regular" Foreground="#707070" />
+                               Tag="itemName"    FontWeight="Regular" Foreground="#707070" />
                         <TextBlock Grid.Row="5" Grid.Column="2"  Margin="5,1" Text="Count:" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" 
                                 FontWeight="Regular" Foreground="#707070" />
                         <TextBlock Grid.Row="5" Grid.Column="3"  Margin="5,1" Text="137" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center" 
-                                FontWeight="Regular" Foreground="#1D75B8" />
+                              Tag="itemCount"  FontWeight="Regular" Foreground="#1D75B8" />
                         <TextBlock Grid.Row="5" Grid.Column="4"  Margin="5,1" Text="Amount:" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" 
                                 FontWeight="Regular" Foreground="#707070" />
                         <StackPanel Grid.Row="5" Grid.Column="5"  Margin="5,1" Orientation="Horizontal"
                                     HorizontalAlignment="Right"  VerticalAlignment="Center"  >
                             <TextBlock Margin="0,0,5,0" Text="5648" FontSize="16" 
-                                FontWeight="Regular" Foreground="#008A1C" />
+                               Tag="itemAmount" FontWeight="Regular" Foreground="#008A1C" />
                             <TextBlock  Text="$" FontWeight="Bold" FontSize="16" Foreground="#008A1C"  />
                         </StackPanel>
 
@@ -360,7 +362,7 @@
                         </Grid.ColumnDefinitions>
                         <Border Background="#BC80EF" Grid.ColumnSpan="6"
                             CornerRadius="7,7,0,0"/>
-                        <TextBlock  Text="Storage" FontWeight="Bold" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                        <TextBlock  x:Name="storageTitle" Text="Storage" FontWeight="Bold" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" 
                           Grid.ColumnSpan="6"  Foreground="White" />
                         <Button   Background="{x:Null}"     Grid.ColumnSpan="6"
                                   HorizontalAlignment="Right" VerticalAlignment="Center" Margin="7.5,0,7.5,0"
@@ -376,66 +378,38 @@
                         </Button>
                         
                         <TextBlock Grid.Row="1" Grid.Column="0" Margin="5,1" Text="Item Unit:" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                                FontWeight="Regular" Foreground="#707070" />
+                             Tag="itemUnitTitle"     FontWeight="Regular" Foreground="#707070" />
                         <TextBlock Grid.Row="1" Grid.Column="1"  Margin="5,1" Text="PC Screen" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center" 
-                                FontWeight="Regular" Foreground="#707070" />
+                           Tag="itemUnitName"     FontWeight="Regular" Foreground="#707070" />
                         <TextBlock Grid.Row="1" Grid.Column="2"  Margin="5,1" Text="Count:" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" 
                                 FontWeight="Regular" Foreground="#707070" />
                         <TextBlock Grid.Row="1" Grid.Column="3"  Margin="5,1" Text="954" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center" 
-                                FontWeight="Regular" Foreground="#1D75B8" />
-                        <!--<TextBlock Grid.Row="1" Grid.Column="4"  Margin="5,1" Text="Amount:" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                                FontWeight="Regular" Foreground="#707070" />
-                        <StackPanel Grid.Row="1" Grid.Column="5"  Margin="5,1" Orientation="Horizontal"
-                                    HorizontalAlignment="Right"  VerticalAlignment="Center"  >
-                            <TextBlock Grid.Row="1" Margin="0,0,5,0" Text="50158" FontSize="16" 
-                                FontWeight="Regular" Foreground="#008A1C" />
-                            <TextBlock  Text="$" FontWeight="Bold" FontSize="16" Foreground="#008A1C"  />
-                        </StackPanel>-->
+                            Tag="itemUnitCount"    FontWeight="Regular" Foreground="#1D75B8" />
+                         
 
                         <Border Grid.Row="2" Grid.ColumnSpan="6" Margin="10,2.5"   CornerRadius="0,0,0,0" 
                                 Height="1" BorderThickness="0" Background="#BC80EF" />
 
                         <TextBlock Grid.Row="3" Grid.Column="0" Margin="5,1" Text="Item Unit:" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                                FontWeight="Regular" Foreground="#707070" />
+                              Tag="itemUnitTitle"   FontWeight="Regular" Foreground="#707070" />
                         <TextBlock Grid.Row="3" Grid.Column="1"  Margin="5,1" Text="CocaCola"  FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center" 
-                                FontWeight="Regular" Foreground="#707070" />
+                           Tag="itemUnitName"     FontWeight="Regular" Foreground="#707070" />
                         <TextBlock Grid.Row="3" Grid.Column="2"  Margin="5,1" Text="Count:" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" 
                                 FontWeight="Regular" Foreground="#707070" />
                         <TextBlock Grid.Row="3" Grid.Column="3"  Margin="5,1" Text="373" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center" 
-                                FontWeight="Regular" Foreground="#1D75B8" />
-                        <!--<TextBlock Grid.Row="3" Grid.Column="4"  Margin="5,1" Text="Amount:" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                                FontWeight="Regular" Foreground="#707070" />
-                        <StackPanel Grid.Row="3" Grid.Column="5"  Margin="5,1" Orientation="Horizontal"
-                                    HorizontalAlignment="Right"  VerticalAlignment="Center"  >
-                            <TextBlock  Margin="0,0,5,0" Text="45116" FontSize="16" 
-                                FontWeight="Regular" Foreground="#008A1C" />
-                            <TextBlock  Text="$" FontWeight="Bold" FontSize="16" Foreground="#008A1C"  />
-                        </StackPanel>-->
-
+                              Tag="itemUnitCount"   FontWeight="Regular" Foreground="#1D75B8" />
 
                         <Border Grid.Row="4" Grid.ColumnSpan="6" Margin="10,2.5"   CornerRadius="0,0,0,0" 
                                 Height="1" BorderThickness="0" Background="#BC80EF" />
 
-
                         <TextBlock Grid.Row="5" Grid.Column="0" Margin="5,1" Text="Item Unit:" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                                FontWeight="Regular" Foreground="#707070" />
+                            Tag="itemUnitTitle"     FontWeight="Regular" Foreground="#707070" />
                         <TextBlock Grid.Row="5" Grid.Column="1"  Margin="5,1" Text="Tea" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center" 
-                                FontWeight="Regular" Foreground="#707070" />
+                             Tag="itemUnitName"   FontWeight="Regular" Foreground="#707070" />
                         <TextBlock Grid.Row="5" Grid.Column="2"  Margin="5,1" Text="Count:" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" 
                                 FontWeight="Regular" Foreground="#707070" />
                         <TextBlock Grid.Row="5" Grid.Column="3"  Margin="5,1" Text="217" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center" 
-                                FontWeight="Regular" Foreground="#1D75B8" />
-                        <!--<TextBlock Grid.Row="5" Grid.Column="4"  Margin="5,1" Text="Amount:" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                                FontWeight="Regular" Foreground="#707070" />
-                        <StackPanel Grid.Row="5" Grid.Column="5"  Margin="5,1" Orientation="Horizontal"
-                                    HorizontalAlignment="Right"  VerticalAlignment="Center"  >
-                            <TextBlock Margin="0,0,5,0" Text="20358" FontSize="16" 
-                                FontWeight="Regular" Foreground="#008A1C" />
-                            <TextBlock  Text="$" FontWeight="Bold" FontSize="16" Foreground="#008A1C"  />
-                        </StackPanel>-->
-
-
-
+                             Tag="itemUnitCount"    FontWeight="Regular" Foreground="#1D75B8" />
 
                     </Grid>
                 </Border>
@@ -453,15 +427,15 @@
                         </Grid.ColumnDefinitions>
                         <Border Background="#FF5D6F" Grid.ColumnSpan="2"
                             CornerRadius="7,7,0,0"/>
-                        <TextBlock  Text="Users" FontWeight="Bold" FontSize="16"
+                        <TextBlock x:Name="txt_userOnlineTitle" Text="Users" FontWeight="Bold" FontSize="16"
                                     HorizontalAlignment="Center" VerticalAlignment="Center" 
                           Grid.ColumnSpan="6"  Foreground="White" />
 
                         <StackPanel Grid.Row="1" Grid.Column="0"  Margin="5,1" Orientation="Horizontal"
                                     HorizontalAlignment="Center"  VerticalAlignment="Center"  >
-                            <TextBlock Grid.Row="1" Margin="0,0,5,0" Text="Online:" FontSize="16" 
-                                FontWeight="Bold" Foreground="#707070" />
-                            <TextBlock  Text="5" FontWeight="Bold" FontSize="16" Foreground="#008A1C"  />
+                            <TextBlock Grid.Row="1" x:Name="txt_userOnline"  Text="Online:" FontSize="16" 
+                                FontWeight="Bold" Foreground="#707070" Margin="0,0,5,0"/>
+                            <TextBlock  Text="{Binding userOnline, Mode=OneWay}" FontWeight="Bold" FontSize="16" Foreground="#008A1C"  />
                         </StackPanel>
 
                         <lvc:PieChart Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" 
@@ -492,15 +466,15 @@
                         </Grid.ColumnDefinitions>
                         <Border Background="#BC80EF" Grid.ColumnSpan="2"
                             CornerRadius="7,7,0,0"/>
-                        <TextBlock  Text="Branch &amp; Store" FontWeight="Bold" FontSize="16"
+                        <TextBlock x:Name="txt_branchOnlineTitle"  Text="Branch &amp; Store" FontWeight="Bold" FontSize="16"
                                     HorizontalAlignment="Center" VerticalAlignment="Center" 
                           Grid.ColumnSpan="6"  Foreground="White" />
 
                         <StackPanel Grid.Row="1" Grid.Column="0"  Margin="5,1" Orientation="Horizontal"
                                     HorizontalAlignment="Center"  VerticalAlignment="Center"  >
-                            <TextBlock Grid.Row="1" Margin="0,0,5,0" Text="Online:" FontSize="16" 
-                                FontWeight="Bold" Foreground="#707070" />
-                            <TextBlock  Text="2" FontWeight="Bold" FontSize="16" Foreground="#008A1C"  />
+                            <TextBlock Grid.Row="1"  x:Name="txt_branchOnline" Text="Online:" FontSize="16" 
+                                FontWeight="Bold" Foreground="#707070" Margin="0,0,5,0"/>
+                            <TextBlock x:Name="txt_branchOnlineValue"  Text="2" FontWeight="Bold" FontSize="16" Foreground="#008A1C"  />
                         </StackPanel>
 
                         <lvc:PieChart Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" 
@@ -520,15 +494,15 @@
                         </Grid.ColumnDefinitions>
                         <Border Background="#5B5182" Grid.ColumnSpan="2"
                             CornerRadius="7,7,0,0"/>
-                        <TextBlock  Text="Daily Purchase" FontWeight="Bold" FontSize="16"
+                        <TextBlock x:Name="txt_dailyPurchaseTitle" Text="Daily Purchase" FontWeight="Bold" FontSize="16"
                                     HorizontalAlignment="Center" VerticalAlignment="Center" 
                           Grid.ColumnSpan="6"  Foreground="White" />
 
                         <StackPanel Grid.Row="1" Grid.Column="0"  Margin="5,1" Orientation="Horizontal"
                                     HorizontalAlignment="Center"  VerticalAlignment="Center"  >
-                            <TextBlock Grid.Row="1" Margin="0,0,5,0" Text="Count:" FontSize="16" 
+                            <TextBlock Grid.Row="1" x:Name="txt_countDailyPurchase" Margin="0,0,5,0" Text="Count:" FontSize="16" 
                                 FontWeight="Bold" Foreground="#707070" />
-                            <TextBlock  Text="43" FontWeight="Bold" FontSize="16" Foreground="#008A1C"  />
+                            <TextBlock x:Name="txt_countDailyPurchaseValue" Text="43"  FontWeight="Bold" FontSize="16" Foreground="#008A1C"  />
                         </StackPanel>
 
                         <lvc:PieChart Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" 
@@ -548,15 +522,15 @@
                         </Grid.ColumnDefinitions>
                         <Border Background="#1D75B8" Grid.ColumnSpan="2"
                             CornerRadius="7,7,0,0"/>
-                        <TextBlock  Text="Daily Sales" FontWeight="Bold" FontSize="16"
-                                    HorizontalAlignment="Center" VerticalAlignment="Center" 
+                        <TextBlock x:Name="txt_dailySalesTitle"  Text="Daily Sales" FontWeight="Bold" FontSize="16"
+                          HorizontalAlignment="Center" VerticalAlignment="Center" 
                           Grid.ColumnSpan="6"  Foreground="White" />
 
                         <StackPanel Grid.Row="1" Grid.Column="0"  Margin="5,1" Orientation="Horizontal"
                                     HorizontalAlignment="Center"  VerticalAlignment="Center"  >
-                            <TextBlock Grid.Row="1" Margin="0,0,5,0" Text="Count:" FontSize="16" 
-                                FontWeight="Bold" Foreground="#707070" />
-                            <TextBlock  Text="257" FontWeight="Bold" FontSize="16" Foreground="#008A1C"  />
+                            <TextBlock Grid.Row="1" x:Name="txt_countDailySales"  Text="Count:" FontSize="16" 
+                                FontWeight="Bold" Foreground="#707070" Margin="0,0,5,0" />
+                            <TextBlock x:Name="txt_countDailySalesValue" Text="257" FontWeight="Bold" FontSize="16" Foreground="#008A1C"  />
                         </StackPanel>
 
                         <lvc:PieChart Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" 
@@ -572,7 +546,7 @@
                         </Grid.RowDefinitions>
                         <Border Background="#49BBEB"
                             CornerRadius="7,7,0,0"/>
-                        <TextBlock  Text="Purchase &amp; Sales" FontWeight="Bold" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                        <TextBlock x:Name="purchaseAndSalesTitle" Text="Purchase &amp; Sales" FontWeight="Bold" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" 
                           Grid.ColumnSpan="6"  Foreground="White" />
                         <lvc:CartesianChart Grid.Row="1"  Margin="5"
                   Series="{Binding SeriesCollection}"

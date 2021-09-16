@@ -263,19 +263,19 @@ namespace POS.View.storage
                         else if (sectionDate == 2)
                         {
                             var Draw = itemLocationListQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
-                            chartList.Add(Draw);
+                            PiechartList.Add(Draw);
                             label = "Items count";
                         }
                         else if (sectionDate == 3)
                         {
                             var Draw = locationsQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
-                            chartList.Add(Draw);
+                            PiechartList.Add(Draw);
                             label = "Locations count";
                         }
                         else if (sectionDate == 4)
                         {
                             var Draw = sectionsQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
-                            chartList.Add(Draw);
+                            PiechartList.Add(Draw);
                             label = "Sections count";
                         }
                         titles.Add(CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month) + "/" + year);
@@ -306,19 +306,19 @@ namespace POS.View.storage
                     else if (sectionDate == 2)
                     {
                         var Draw = itemLocationListQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
-                        chartList.Add(Draw);
+                        PiechartList.Add(Draw);
                         label = "Items count";
                     }
                     else if (sectionDate == 3)
                     {
                         var Draw = locationsQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
-                        chartList.Add(Draw);
+                        PiechartList.Add(Draw);
                         label = "Locations count";
                     }
                     else if (sectionDate == 4)
                     {
                         var Draw = sectionsQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
-                        chartList.Add(Draw);
+                        PiechartList.Add(Draw);
                         label = "Sections count";
                     }
                     titles.Add(year.ToString());
@@ -367,19 +367,19 @@ namespace POS.View.storage
                         else if (sectionDate == 2)
                         {
                             var Draw = itemLocationListQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
-                            chartList.Add(Draw);
+                            ColumnchartList.Add(Draw);
                             label = "Items count";
                         }
                         else if (sectionDate == 3)
                         {
                             var Draw = locationsQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
-                            chartList.Add(Draw);
+                            ColumnchartList.Add(Draw);
                             label = "Locations count";
                         }
                         else if (sectionDate == 4)
                         {
                             var Draw = sectionsQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
-                            chartList.Add(Draw);
+                            ColumnchartList.Add(Draw);
                             label = "Sections count";
                         }
                         columnAxis.Separator.Step = 2;
@@ -411,19 +411,19 @@ namespace POS.View.storage
                     else if (sectionDate == 2)
                     {
                         var Draw = itemLocationListQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
-                        chartList.Add(Draw);
+                        ColumnchartList.Add(Draw);
                         label = "Items count";
                     }
                     else if (sectionDate == 3)
                     {
                         var Draw = locationsQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
-                        chartList.Add(Draw);
+                        ColumnchartList.Add(Draw);
                         label = "Locations count";
                     }
                     else if (sectionDate == 4)
                     {
                         var Draw = sectionsQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
-                        chartList.Add(Draw);
+                        ColumnchartList.Add(Draw);
                         label = "Sections count";
                     }
                     columnAxis.Separator.Step = 1;

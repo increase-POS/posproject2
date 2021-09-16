@@ -52,7 +52,7 @@ namespace POS.View
             timerAnimation();
         }
         string branchesPermission = "dashboard_branches";
-
+        Dash dash = new Dash();
         User user = new User();
         List<User> users = new List<User>();
         ImageBrush brush = new ImageBrush();
@@ -61,7 +61,7 @@ namespace POS.View
         public Func<double, string> YFormatter { get; set; }
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            await SectionData.fillBranches(cb_branch);
+            await SectionData.fillBranchesWithAll(cb_branch);
             cb_branch.SelectedValue = MainWindow.branchID;
             if (MainWindow.groupObject.HasPermissionAction(branchesPermission, MainWindow.groupObjects, "one"))
             cb_branch.IsEnabled = true;
@@ -240,9 +240,151 @@ namespace POS.View
              );
             pch_dailySalesInvoice.Series = seriesDailySalesInvoice;
             #endregion
-           
-        }
 
+
+           await refreshView();
+
+        }
+       async Task refreshView()
+        {
+           await AllSalPur();
+            await AgentCount();
+            await UserOnline();
+            await BranchOnline();
+
+
+
+
+
+            this.DataContext = new Dash();
+            this.DataContext = dash;
+
+        }
+        async Task AllSalPur()
+        {
+            try
+            {
+                List<InvoiceCount> listSalPur = await dash.Getdashsalpur();
+                if (cb_branch.SelectedValue != null)
+                    if ((int)cb_branch.SelectedValue == 0)
+                    {
+                        dash.countAllPurchase = listSalPur.Sum(x => x.purCount).ToString();
+                        dash.countAllSalesValue = listSalPur.Sum(x => x.saleCount).ToString();
+                    }
+                    else
+                    {
+                        var newSalPur = listSalPur.Where(s => s.branchCreatorId == (int)cb_branch.SelectedValue).FirstOrDefault();
+                        if (newSalPur != null)
+                        {
+                            dash.countAllPurchase = newSalPur.purCount.ToString();
+                            dash.countAllSalesValue = newSalPur.saleCount.ToString();
+                        }
+                        else
+                            dash.countAllPurchase = dash.countAllSalesValue = "0";
+                    }
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+        async Task AgentCount()
+        {
+            try
+            {
+                List<AgentsCount> listAgentCount = await dash.GetAgentCount();
+                var newAgentCount = listAgentCount.FirstOrDefault();
+                        if (newAgentCount != null)
+                        {
+                            dash.customerCount = newAgentCount.customerCount.ToString();
+                            dash.vendorCount = newAgentCount.vendorCount.ToString();
+                        }
+                        else
+                        {
+                            dash.customerCount = dash.vendorCount = "0";
+                        }
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+        async Task UserOnline()
+        {
+            try
+            {
+                List<UserOnlineCount> listUserOnline = await dash.Getuseronline();
+                if (cb_branch.SelectedValue != null)
+                    if ((int)cb_branch.SelectedValue == 0)
+                    {
+                        dash.userOnline = listUserOnline.Sum(x => x.userOnlineCount).ToString();
+                        dash.userOffline = listUserOnline.Sum(x => x.offlineUsers).ToString();
+                    }
+                    else
+                    {
+                    var newUserOnline = listUserOnline.Where(s => s.branchId == (int)cb_branch.SelectedValue).FirstOrDefault();
+                        if (newUserOnline != null)
+                        {
+                            dash.userOnline = newUserOnline.userOnlineCount.ToString();
+                            dash.userOffline = newUserOnline.offlineUsers.ToString();
+                        }
+                        else
+                            dash.userOnline = dash.userOffline = "0";
+                    }
+                InitializePieChart(pch_userOnline, 
+                    int.Parse(dash.userOnline),
+                    (int.Parse(dash.userOnline) + int.Parse(dash.userOffline)));
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+        async Task BranchOnline()
+        {
+            try
+            {
+                List<BranchOnlineCount> listBranchOnline = await dash.GetBrachonline();
+                var newBranchOnline = listBranchOnline.FirstOrDefault();
+                if (newBranchOnline != null)
+                {
+                    dash.branchOnline = newBranchOnline.branchOnline.ToString();
+                    dash.branchOffline = newBranchOnline.branchOffline.ToString();
+                }
+                else
+                    dash.branchOnline = dash.branchOffline  = "0";
+                InitializePieChart(pch_branch,
+                    int.Parse(dash.branchOnline),
+                    (int.Parse(dash.branchOnline) + int.Parse(dash.branchOffline)));
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+        void InitializePieChart(PieChart pieChart ,int partial=0, int all=0)
+        {
+            SeriesCollection series = new SeriesCollection();
+            series.Add(
+                 new PieSeries
+                 {
+                     Values = new ChartValues<int> { partial },
+                     Title = "",
+                     DataLabels = false,
+                     Fill = Application.Current.Resources["mediumGreen"] as SolidColorBrush
+                 }
+             );
+            series.Add(
+                 new PieSeries
+                 {
+                     Values = new ChartValues<int> { all - partial },
+                     Title = "",
+                     DataLabels = false,
+                     Fill = Application.Current.Resources["MainColorlightGrey"] as SolidColorBrush
+                 }
+             );
+            pieChart.Series = series;
+        }
         async void userImageLoad(Ellipse ellipse, string image)
         {
             try
@@ -316,6 +458,24 @@ namespace POS.View
         {
             MessageBox.Show("hey i'm here in TouchLeave");
 
+        }
+        private async void Cb_branch_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                if (sender != null)
+                SectionData.StartAwait(grid_main);
+
+            await refreshView();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
     }
 }

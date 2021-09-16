@@ -15,8 +15,6 @@ namespace POS.Classes
 {
     public class InvoiceCount
     {
-
-
         public string invType { get; set; }
         public Nullable<int> branchCreatorId { get; set; }
         public string branchCreatorName { get; set; }
@@ -24,8 +22,6 @@ namespace POS.Classes
         public int saleCount { get; set; }
         public int purBackCount { get; set; }
         public int saleBackCount { get; set; }
-
-
 
     }
     public class AgentsCount
@@ -57,7 +53,6 @@ namespace POS.Classes
 
 
     }
-
     public class BestSeller
     {
 
@@ -94,7 +89,6 @@ namespace POS.Classes
 
 
     }
-
     public class TotalPurSale
     {
         public Nullable<int> branchCreatorId { get; set; }
@@ -104,11 +98,29 @@ namespace POS.Classes
         public int day { get; set; }
 
     }
-
-    class Dash
+    public class Dash
     {
-        // عدد فواتير المبيعات ومرتجع المبيعات والمشتريات ومرتجع المشتريات حسب الفرع
 
+        public string countAllPurchase { get; set; }
+        public string countAllSalesValue { get; set; }
+
+        public string customerCount { get; set; }
+        public string vendorCount { get; set; }
+
+
+        public string userOnline { get; set; }
+        public string userOffline { get; set; }
+
+        public string branchOnline { get; set; }
+        public string branchOffline { get; set; }
+
+        
+            
+
+
+
+
+        // عدد فواتير المبيعات ومرتجع المبيعات والمشتريات ومرتجع المشتريات حسب الفرع
         public async Task<List<InvoiceCount>> Getdashsalpur()
         {
             List<InvoiceCount> list = null;
@@ -276,9 +288,7 @@ namespace POS.Classes
             }
         }
 
-
         // عدد فواتير المبيعات ومرتجع المبيعات والمشتريات ومرتجع المشتريات حسب الفرع في اليوم الحالي
-
         public async Task<List<InvoiceCount>> GetdashsalpurDay()
         {
             List<InvoiceCount> list = null;
@@ -406,10 +416,7 @@ namespace POS.Classes
             }
         }
 
-
-
         // مجموع مبالغ المشتريات والمبيعات اليومي خلال الشهر الحالي لكل فرع
-
         public async Task<List<TotalPurSale>> GetTotalPurSale()
         {
             List<TotalPurSale> list = null;

@@ -29,7 +29,7 @@ using System.Windows.Media.Animation;
 using Zen.Barcode;
 using POS.View.windows;
 using Microsoft.Reporting.WinForms;
-
+using POS.View.sales;
 
 namespace POS.View
 {
@@ -1029,12 +1029,12 @@ namespace POS.View
             });
         }
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
-        {
+        {//excel
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                //excel
+                
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
                 {
                     Thread t1 = new Thread(() =>
@@ -1615,9 +1615,6 @@ namespace POS.View
                     SectionData.StartAwait(grid_main);
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
                 {
-                    // List<Item> pkg = await packageModel.GetPackages();
-                    // MessageBox.Show(pkg.Count.ToString());
-
                     /////////////////////////////////////
                     Thread t1 = new Thread(() =>
                     {
@@ -1625,8 +1622,6 @@ namespace POS.View
                     });
                     t1.Start();
                     //////////////////////////////////////
-
-
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -1683,7 +1678,7 @@ namespace POS.View
         }
 
         private void Btn_pieChart_Click(object sender, RoutedEventArgs e)
-        {
+        {//pie
             try
             {
                 if (sender != null)
@@ -1691,6 +1686,12 @@ namespace POS.View
 
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
                 {
+                    #region
+                    Window.GetWindow(this).Opacity = 0.2;
+                    win_lvcSales win = new win_lvcSales(itemsQuery, 3);
+                    win.ShowDialog();
+                    Window.GetWindow(this).Opacity = 1;
+                    #endregion
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -1706,7 +1707,7 @@ namespace POS.View
         }
 
         private void Btn_preview_Click(object sender, RoutedEventArgs e)
-        {
+        {//preview
             try
             {
                 if (sender != null)
@@ -1714,7 +1715,7 @@ namespace POS.View
 
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
                 {
-                    //preview
+                    #region
                     Window.GetWindow(this).Opacity = 0.2;
                     /////////////////////
                     string pdfpath = "";
@@ -1729,12 +1730,9 @@ namespace POS.View
                     {
                         w.ShowDialog();
                         w.wb_pdfWebViewer.Dispose();
-
-
                     }
                     Window.GetWindow(this).Opacity = 1;
-
-
+                    #endregion
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);

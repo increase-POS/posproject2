@@ -1873,6 +1873,7 @@ namespace POS.View.sales
                     SectionData.StartAwait(grid_main);
                 if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
+                    #region
                     if (invoice.invoiceId > 0)
                     {
                         Window.GetWindow(this).Opacity = 0.2;
@@ -1943,17 +1944,17 @@ namespace POS.View.sales
 
                             w.wb_pdfWebViewer.Dispose();
 
-
                         }
                         else
                             Toaster.ShowError(Window.GetWindow(this), message: "", animation: ToasterAnimation.FadeIn);
+
                         Window.GetWindow(this).Opacity = 1;
                     }
                     else
                     {
-
                         Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trSaveInvoiceToPreview"), animation: ToasterAnimation.FadeIn);
                     }
+                    #endregion
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);

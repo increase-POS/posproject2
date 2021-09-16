@@ -409,9 +409,6 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
                 btn_reports.Visibility = Visibility.Visible;
                 //grid_mainWindow.IsEnabled = true;
 
-                
-
-
                 EventManager.RegisterClassHandler(typeof(System.Windows.Controls.TextBox), System.Windows.Controls.TextBox.GotKeyboardFocusEvent, new RoutedEventHandler(SelectAllText));
 
                 if (sender != null)
@@ -584,7 +581,9 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             try
             {
                 posLogIn = await posLogIn.getPosById(posID.Value);
-                txt_cashValue.Text = posLogIn.balance.ToString();
+                //txt_cashValue.Text = posLogIn.balance.ToString();
+                txt_cashValue.Text = SectionData.DecTostring(posLogIn.balance);
+
             }
             catch (Exception ex)
             {

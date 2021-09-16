@@ -13,7 +13,7 @@ using System.Web;
 
 namespace POS.Classes
 {
-    class Coupon
+    public class Coupon
     {
         public int cId { get; set; }
         public string name { get; set; }

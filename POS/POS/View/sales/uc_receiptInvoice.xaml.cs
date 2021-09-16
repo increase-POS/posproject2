@@ -184,7 +184,6 @@ namespace POS.View
             tt_error_previous.Content = MainWindow.resourcemanager.GetString("trPrevious");
             tt_error_next.Content = MainWindow.resourcemanager.GetString("trNext");
 
-
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_barcode, MainWindow.resourcemanager.GetString("trBarcodeHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_coupon, MainWindow.resourcemanager.GetString("trCoponHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_customer, MainWindow.resourcemanager.GetString("trCustomerHint"));
@@ -200,9 +199,8 @@ namespace POS.View
 
             btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
 
-
-
         }
+
         private async void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
             try
@@ -1103,11 +1101,10 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                if ((
-(MainWindow.groupObject.HasPermissionAction(invoicePermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
-&&
-(invoice.invType == "sd" || invoice.invType == "s"))
-|| (invoice.invType != "sd" && invoice.invType != "s"))
+                if (((MainWindow.groupObject.HasPermissionAction(invoicePermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+                        &&
+                        (invoice.invType == "sd" || invoice.invType == "s"))
+                        || (invoice.invType != "sd" && invoice.invType != "s"))
                 {
                     //if (logInProcessing)
                     //{
@@ -2686,21 +2683,14 @@ namespace POS.View
                     string folderpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath) + @"\Thumb\report\";
                     ReportCls.clearFolder(folderpath);
 
-                    //pdfpath = @"\Thumb\report\File.pdf";
-                  //  pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
-    
-                        pdfpath = @"\Thumb\report\File" + DateTime.Now.ToFileTime().ToString() + ".pdf";
-                        pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
-                   //////////////////////////////////
-                    //  invoiceItems = await invoiceModel.GetInvoicesItems(prInvoice.invoiceId);
-
+                    pdfpath = @"\Thumb\report\File" + DateTime.Now.ToFileTime().ToString() + ".pdf";
+                    pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
+                   
                     User employ = new User();
                     employ = await userModel.getUserById((int)prInvoice.updateUserId);
                     prInvoice.uuserName = employ.name;
                     prInvoice.uuserLast = employ.lastname;
-                    //  agentinv = customers.Where(X => X.agentId == prInvoice.agentId).FirstOrDefault();
-
-                    //  prInvoice.agentCode = agentinv.code;
+               
                     if (prInvoice.agentId != null)
                     {
                         Agent agentinv = new Agent();
@@ -2790,14 +2780,11 @@ namespace POS.View
                     employ = await userModel.getUserById((int)invoice.updateUserId);
                     invoice.uuserName = employ.name;
                     invoice.uuserLast = employ.lastname;
-                    //  agentinv = customers.Where(X => X.agentId == invoice.agentId).FirstOrDefault();
-
-                    //  invoice.agentCode = agentinv.code;
+                  
                     if (invoice.agentId != null)
                     {
                         Agent agentinv = new Agent();
                         agentinv = customers.Where(X => X.agentId == invoice.agentId).FirstOrDefault();
-
 
                         invoice.agentCode = agentinv.code;
                         //new lines
@@ -2903,40 +2890,25 @@ namespace POS.View
                     }
 
                     ReportCls.checkLang();
-                    /*
-                    List<ItemTransfer> newl = new List<ItemTransfer>();
-                    for (int i = 0; i < 25; i++)
-                    {
-                        newl.AddRange(invoiceItems);
-
-                    }
-                    */
+               
                     foreach (var i in invoiceItems)
                     {
                         i.price = decimal.Parse(SectionData.DecTostring(i.price));
                     }
                     clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
-                    // clsReports.purchaseInvoiceReport(newl, rep, reppath);
+                   
                     clsReports.setReportLanguage(paramarr);
                     clsReports.Header(paramarr);
                     paramarr = reportclass.fillSaleInvReport(prInvoice, paramarr);
 
                     rep.SetParameters(paramarr);
                     rep.Refresh();
-                    /*
-                      int repheight = 457;
-                     int tableheight = 33 * invoiceItems.Count;
-                    //  int tableheight = 30 * newl.Count;//35
-                      width = 224;
-                      int totalheight = repheight + tableheight;
-                      */
-                    // LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.rep_printer_name, short.Parse(MainWindow.rep_print_count));
+                 
                     this.Dispatcher.Invoke(() =>
                     {
                         if (MainWindow.salePaperSize == "A4")
                         {
                             LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.sale_printer_name, short.Parse(MainWindow.sale_copy_count));
-
                         }
                         else
                         {
@@ -2988,16 +2960,15 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
+                #region
                 if (invoice.invoiceId > 0)
                 {
                     Window.GetWindow(this).Opacity = 0.2;
 
                     List<ReportParameter> paramarr = new List<ReportParameter>();
-                    string pdfpath = "" ;
+                    string pdfpath = "";
 
-                    //
-                   // pdfpath = @"\Thumb\report\temp.pdf";
-                   // pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
                     ////////////////////////
                     string folderpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath) + @"\Thumb\report\";
                     ReportCls.clearFolder(folderpath);
@@ -3008,7 +2979,6 @@ namespace POS.View
 
                     if (invoice.invoiceId > 0)
                     {
-
                         invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
                         itemscount = invoiceItems.Count();
                         string reppath = reportclass.GetreceiptInvoiceRdlcpath(invoice);
@@ -3064,28 +3034,16 @@ namespace POS.View
                         else
                         {
                             LocalReportExtensions.ExportToPDF(rep, pdfpath);
-
                         }
-
-
-
                     }
-
-
 
                     wd_previewPdf w = new wd_previewPdf();
                     w.pdfPath = pdfpath;
                     if (!string.IsNullOrEmpty(w.pdfPath))
                     {
                         w.ShowDialog();
-                        //delete file
-                        /*
-                        if (File.Exists(pdfpath))
-                        { File.Delete(pdfpath);}
-                        */
-                        //  ClosePDF();
-                        w.wb_pdfWebViewer.Dispose();
 
+                        w.wb_pdfWebViewer.Dispose();
 
                     }
                     else
@@ -3094,9 +3052,28 @@ namespace POS.View
                 }
                 else
                 {
-
                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trSaveInvoiceToPreview"), animation: ToasterAnimation.FadeIn);
                 }
+                #endregion
+
+                #region
+                //Window.GetWindow(this).Opacity = 0.2;
+                ///////////////////////
+                //string pdfpath = "";
+                //pdfpath = @"\Thumb\report\temp.pdf";
+                //pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
+                //BuildReport();
+                //LocalReportExtensions.ExportToPDF(rep, pdfpath);
+                /////////////////////
+                //wd_previewPdf w = new wd_previewPdf();
+                //w.pdfPath = pdfpath;
+                //if (!string.IsNullOrEmpty(w.pdfPath))
+                //{
+                //    w.ShowDialog();
+                //    w.wb_pdfWebViewer.Dispose();
+                //}
+                //Window.GetWindow(this).Opacity = 1;
+                #endregion
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -3109,6 +3086,30 @@ namespace POS.View
             }
         }
 
+        public void BuildReport()
+        {
+            List<ReportParameter> paramarr = new List<ReportParameter>();
+
+            string addpath;
+            bool isArabic = ReportCls.checkLang();
+            if (isArabic)
+            {
+                addpath = @"\Reports\Sale\Ar\PackageReport.rdlc";
+            }
+            else
+                addpath = @"\Reports\Sale\En\PackageReport.rdlc";
+            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+            ReportCls.checkLang();
+
+            clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
+            clsReports.setReportLanguage(paramarr);
+            clsReports.Header(paramarr);
+
+            rep.SetParameters(paramarr);
+
+            rep.Refresh();
+        }
         public async void sendsaleEmail()
         {
             //

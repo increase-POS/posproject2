@@ -308,13 +308,13 @@ namespace POS.View.catalog
                         else if (catalog == 4)
                         {
                             var Draw = storagecostQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
-                            chartList.Add(Draw);
+                            PiechartList.Add(Draw);
                             label = "Storage Costs count";
                         }
                         else if (catalog == 5)
                         {
                             var Draw = unitsQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
-                            chartList.Add(Draw);
+                            PiechartList.Add(Draw);
                             label = "Units count";
                         }
                         titles.Add(CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month) + "/" + year);
@@ -357,13 +357,13 @@ namespace POS.View.catalog
                     else if (catalog == 4)
                     {
                         var Draw = storagecostQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
-                        chartList.Add(Draw);
+                        PiechartList.Add(Draw);
                         label = "Storage Costs count";
                     }
                     else if (catalog == 5)
                     {
                         var Draw = unitsQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
-                        chartList.Add(Draw);
+                        PiechartList.Add(Draw);
                         label = "Units count";
                     }
                     titles.Add(year.ToString());
@@ -431,7 +431,7 @@ namespace POS.View.catalog
                         else if (catalog == 5)
                         {
                             var Draw = unitsQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
-                            chartList.Add(Draw);
+                            ColumnchartList.Add(Draw);
                             label = "Units count";
                         }
                         columnAxis.Separator.Step = 2;
@@ -481,7 +481,7 @@ namespace POS.View.catalog
                     else if (catalog == 5)
                     {
                         var Draw = unitsQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
-                        chartList.Add(Draw);
+                        ColumnchartList.Add(Draw);
                         label = "Units count";
                     }
                     columnAxis.Separator.Step = 1;

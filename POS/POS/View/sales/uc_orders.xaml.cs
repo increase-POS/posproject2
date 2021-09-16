@@ -1295,12 +1295,13 @@ namespace POS.View.sales
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                
+                ///////////////////////////////
                 Thread t1 = new Thread(() =>
                 {
                     pdfPurInvoice();
                 });
                 t1.Start();
+                //////////////////////////////
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -2054,13 +2055,13 @@ SectionData.isAdminPermision())
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                //await printInvoice();
+               /////////////////////////////
                 Thread t1 = new Thread(() =>
                 {
                     printInvoice();
                 });
                 t1.Start();
-
+                //////////////////////////
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -2163,6 +2164,7 @@ SectionData.isAdminPermision())
                     SectionData.StartAwait(grid_main);
                 if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
+                    #region
                     if (invoice.invoiceId > 0)
                     {
                         Window.GetWindow(this).Opacity = 0.2;
@@ -2170,7 +2172,6 @@ SectionData.isAdminPermision())
                         List<ReportParameter> paramarr = new List<ReportParameter>();
                         string pdfpath;
 
-                        //
                         pdfpath = @"\Thumb\report\temp.pdf";
                         pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
 
@@ -2222,7 +2223,6 @@ SectionData.isAdminPermision())
                             rep.Refresh();
 
                             LocalReportExtensions.ExportToPDF(rep, pdfpath);
-
                         }
 
                         wd_previewPdf w = new wd_previewPdf();
@@ -2232,18 +2232,17 @@ SectionData.isAdminPermision())
                             w.ShowDialog();
 
                             w.wb_pdfWebViewer.Dispose();
-
-
                         }
                         else
                             Toaster.ShowError(Window.GetWindow(this), message: "", animation: ToasterAnimation.FadeIn);
                         Window.GetWindow(this).Opacity = 1;
+                      
                     }
                     else
                     {
-
                         Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trSaveInvoiceToPreview"), animation: ToasterAnimation.FadeIn);
                     }
+                    #endregion
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
