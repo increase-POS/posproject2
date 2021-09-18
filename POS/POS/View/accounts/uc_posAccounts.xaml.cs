@@ -766,12 +766,12 @@ namespace POS.View.accounts
                         {
                             addpath = @"\Reports\Account\Ar\ArPosAccReport.rdlc";
                         }
-                        else addpath = @"\Reports\Account\EN\PosAccReport.rdlc";
+                        else addpath = @"\Reports\Account\En\PosAccReport.rdlc";
                         string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                         ReportCls.checkLang();
-                        
-                        clsReports.bankAccReport(cashesQueryExcel, rep, reppath);
+
+                        clsReports.posAccReport(cashesQuery, rep, reppath, paramarr);
                         clsReports.setReportLanguage(paramarr);
                         clsReports.Header(paramarr);
 
@@ -1054,12 +1054,12 @@ namespace POS.View.accounts
                     {
                         addpath = @"\Reports\Account\Ar\ArPosAccReport.rdlc";
                     }
-                    else addpath = @"\Reports\Account\EN\PosAccReport.rdlc";
+                    else addpath = @"\Reports\Account\En\PosAccReport.rdlc";
                     string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                     ReportCls.checkLang();
                    
-                    clsReports.bankAccReport(cashesQuery, rep, reppath);
+                    clsReports.posAccReport(cashesQuery, rep, reppath, paramarr);
                     clsReports.setReportLanguage(paramarr);
                     clsReports.Header(paramarr);
 
@@ -1106,12 +1106,12 @@ namespace POS.View.accounts
                     {
                         addpath = @"\Reports\Account\Ar\ArPosAccReport.rdlc";
                     }
-                    else addpath = @"\Reports\Account\EN\PosAccReport.rdlc";
+                    else addpath = @"\Reports\Account\En\PosAccReport.rdlc";
                     string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                     ReportCls.checkLang();
 
-                    clsReports.bankAccReport(cashesQuery, rep, reppath);
+                    clsReports.posAccReport(cashesQuery, rep, reppath, paramarr);
                     clsReports.setReportLanguage(paramarr);
                     clsReports.Header(paramarr);
 
@@ -1156,12 +1156,12 @@ namespace POS.View.accounts
                     {
                         addpath = @"\Reports\Account\Ar\ArPosAccReport.rdlc";
                     }
-                    else addpath = @"\Reports\Account\EN\PosAccReport.rdlc";
+                    else addpath = @"\Reports\Account\En\PosAccReport.rdlc";
                     string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                     ReportCls.checkLang();
 
-                    clsReports.bankAccReport(cashesQuery, rep, reppath);
+                    clsReports.posAccReport(cashesQuery, rep, reppath, paramarr);
                     clsReports.setReportLanguage(paramarr);
                     clsReports.Header(paramarr);
 

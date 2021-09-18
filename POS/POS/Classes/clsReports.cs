@@ -45,6 +45,21 @@ namespace POS.Classes
             rep.DataSources.Clear();
             rep.DataSources.Add(new ReportDataSource("DataSetBond", bondsQuery));
             paramarr.Add(new ReportParameter("dateForm", MainWindow.dateFormat));
+          
+            paramarr.Add(new ReportParameter("trVendor", MainWindow.resourcemanagerreport.GetString("trVendor")));
+            paramarr.Add(new ReportParameter("trCustomer", MainWindow.resourcemanagerreport.GetString("trCustomer")));
+            paramarr.Add(new ReportParameter("trUser", MainWindow.resourcemanagerreport.GetString("trUser")));
+            paramarr.Add(new ReportParameter("trSalary", MainWindow.resourcemanagerreport.GetString("trSalary")));
+            paramarr.Add(new ReportParameter("trGeneralExpenses", MainWindow.resourcemanagerreport.GetString("trGeneralExpenses")));
+
+            paramarr.Add(new ReportParameter("trAdministrativeDeposit", MainWindow.resourcemanagerreport.GetString("trAdministrativeDeposit")));
+
+            paramarr.Add(new ReportParameter("trAdministrativePull", MainWindow.resourcemanagerreport.GetString("trAdministrativePull")));
+            paramarr.Add(new ReportParameter("trShippingCompany", MainWindow.resourcemanagerreport.GetString("trShippingCompany")));
+      
+            paramarr.Add(new ReportParameter("trPull", MainWindow.resourcemanagerreport.GetString("trPull")));
+            paramarr.Add(new ReportParameter("trDeposit", MainWindow.resourcemanagerreport.GetString("trDeposit")));
+
         }
         //public static void orderReport(IEnumerable<Invoice> invoiceQuery, LocalReport rep, string reppath)
         //{
@@ -98,13 +113,13 @@ namespace POS.Classes
                 string s ;
                 switch (c.processType)
                 {
-                    case "cash": s = MainWindow.resourcemanager.GetString("trCash");
+                    case "cash": s = MainWindow.resourcemanagerreport.GetString("trCash");
                     break;
-                    case "doc": s = MainWindow.resourcemanager.GetString("trDocument");
+                    case "doc": s = MainWindow.resourcemanagerreport.GetString("trDocument");
                     break;
-                    case "cheque": s = MainWindow.resourcemanager.GetString("trCheque");
+                    case "cheque": s = MainWindow.resourcemanagerreport.GetString("trCheque");
                     break;
-                    case "balance": s = MainWindow.resourcemanager.GetString("trCredit");
+                    case "balance": s = MainWindow.resourcemanagerreport.GetString("trCredit");
                     break;
                     default: s = c.processType;
                         break;
@@ -115,18 +130,18 @@ namespace POS.Classes
                 switch (c.side)
                 {
                     case "bnd": break;
-                    case "v": name = MainWindow.resourcemanager.GetString("trVendor"); break;
-                    case "c": name = MainWindow.resourcemanager.GetString("trCustomer"); break;
-                    case "u": name = MainWindow.resourcemanager.GetString("trUser"); break;
-                    case "s": name = MainWindow.resourcemanager.GetString("trSalary"); break;
-                    case "e": name = MainWindow.resourcemanager.GetString("trGeneralExpenses"); break;
+                    case "v": name = MainWindow.resourcemanagerreport.GetString("trVendor"); break;
+                    case "c": name = MainWindow.resourcemanagerreport.GetString("trCustomer"); break;
+                    case "u": name = MainWindow.resourcemanagerreport.GetString("trUser"); break;
+                    case "s": name = MainWindow.resourcemanagerreport.GetString("trSalary"); break;
+                    case "e": name = MainWindow.resourcemanagerreport.GetString("trGeneralExpenses"); break;
                     case "m":
                         if (c.transType == "d")
-                            name = MainWindow.resourcemanager.GetString("trAdministrativeDeposit");
+                            name = MainWindow.resourcemanagerreport.GetString("trAdministrativeDeposit");
                         if (c.transType == "p")
-                            name = MainWindow.resourcemanager.GetString("trAdministrativePull");
+                            name = MainWindow.resourcemanagerreport.GetString("trAdministrativePull");
                         break;
-                    case "sh": name = MainWindow.resourcemanager.GetString("trShippingCompany"); break;
+                    case "sh": name = MainWindow.resourcemanagerreport.GetString("trShippingCompany"); break;
                     default: break;
                 }
                 string fullName = "";
@@ -142,11 +157,116 @@ namespace POS.Classes
                 c.side = fullName;
 
                 string type;
-                if (c.transType.Equals("p")) type = MainWindow.resourcemanager.GetString("trPull");
-                else type = MainWindow.resourcemanager.GetString("trDeposit");
+                if (c.transType.Equals("p")) type = MainWindow.resourcemanagerreport.GetString("trPull");
+                else type = MainWindow.resourcemanagerreport.GetString("trDeposit");
                 ////////////////////
                 c.transType = type;
             }
+            rep.DataSources.Add(new ReportDataSource("DataSetBankAcc", cash));
+        }
+
+        public static void paymentAccReport(IEnumerable<CashTransfer> cash, LocalReport rep, string reppath, List<ReportParameter> paramarr)
+        {
+            rep.ReportPath = reppath;
+            rep.EnableExternalImages = true;
+            rep.DataSources.Clear();
+
+            //foreach (var c in cash)
+            //{
+            //    ///////////////////
+            //    c.cash = decimal.Parse(SectionData.DecTostring(c.cash));
+            //    string s;
+            //    switch (c.processType)
+            //    {
+            //        case "cash":
+            //            s = MainWindow.resourcemanagerreport.GetString("trCash");
+            //            break;
+            //        case "doc":
+            //            s = MainWindow.resourcemanagerreport.GetString("trDocument");
+            //            break;
+            //        case "cheque":
+            //            s = MainWindow.resourcemanagerreport.GetString("trCheque");
+            //            break;
+            //        case "balance":
+            //            s = MainWindow.resourcemanagerreport.GetString("trCredit");
+            //            break;
+            //        default:
+            //            s = c.processType;
+            //            break;
+            //    }
+              
+               
+            //}
+
+            paramarr.Add(new ReportParameter("dateForm", MainWindow.dateFormat));
+
+            paramarr.Add(new ReportParameter("trVendor", MainWindow.resourcemanagerreport.GetString("trVendor")));
+            paramarr.Add(new ReportParameter("trCustomer", MainWindow.resourcemanagerreport.GetString("trCustomer")));
+            paramarr.Add(new ReportParameter("trUser", MainWindow.resourcemanagerreport.GetString("trUser")));
+            paramarr.Add(new ReportParameter("trSalary", MainWindow.resourcemanagerreport.GetString("trSalary")));
+            paramarr.Add(new ReportParameter("trGeneralExpenses", MainWindow.resourcemanagerreport.GetString("trGeneralExpenses")));
+
+            paramarr.Add(new ReportParameter("trAdministrativeDeposit", MainWindow.resourcemanagerreport.GetString("trAdministrativeDeposit")));
+
+            paramarr.Add(new ReportParameter("trAdministrativePull", MainWindow.resourcemanagerreport.GetString("trAdministrativePull")));
+            paramarr.Add(new ReportParameter("trShippingCompany", MainWindow.resourcemanagerreport.GetString("trShippingCompany")));
+
+            paramarr.Add(new ReportParameter("trPull", MainWindow.resourcemanagerreport.GetString("trPull")));
+            paramarr.Add(new ReportParameter("trDeposit", MainWindow.resourcemanagerreport.GetString("trDeposit")));
+
+            paramarr.Add(new ReportParameter("trCash", MainWindow.resourcemanagerreport.GetString("trCash")));
+            paramarr.Add(new ReportParameter("trDocument", MainWindow.resourcemanagerreport.GetString("trDocument")));
+            paramarr.Add(new ReportParameter("trCheque", MainWindow.resourcemanagerreport.GetString("trCheque")));
+            paramarr.Add(new ReportParameter("trCredit", MainWindow.resourcemanagerreport.GetString("trCredit")));
+
+
+
+            rep.DataSources.Add(new ReportDataSource("DataSetBankAcc", cash));
+        }
+
+        public static void receivedAccReport(IEnumerable<CashTransfer> cash, LocalReport rep, string reppath, List<ReportParameter> paramarr)
+        {
+            
+            rep.ReportPath = reppath;
+            rep.EnableExternalImages = true;
+            rep.DataSources.Clear();
+
+
+            paramarr.Add(new ReportParameter("dateForm", MainWindow.dateFormat));
+
+            paramarr.Add(new ReportParameter("trVendor", MainWindow.resourcemanagerreport.GetString("trVendor")));
+            paramarr.Add(new ReportParameter("trCustomer", MainWindow.resourcemanagerreport.GetString("trCustomer")));
+            paramarr.Add(new ReportParameter("trUser", MainWindow.resourcemanagerreport.GetString("trUser")));
+            paramarr.Add(new ReportParameter("trSalary", MainWindow.resourcemanagerreport.GetString("trSalary")));
+            paramarr.Add(new ReportParameter("trGeneralExpenses", MainWindow.resourcemanagerreport.GetString("trGeneralExpenses")));
+
+            paramarr.Add(new ReportParameter("trAdministrativeDeposit", MainWindow.resourcemanagerreport.GetString("trAdministrativeDeposit")));
+
+            paramarr.Add(new ReportParameter("trAdministrativePull", MainWindow.resourcemanagerreport.GetString("trAdministrativePull")));
+            paramarr.Add(new ReportParameter("trShippingCompany", MainWindow.resourcemanagerreport.GetString("trShippingCompany")));
+
+            paramarr.Add(new ReportParameter("trPull", MainWindow.resourcemanagerreport.GetString("trPull")));
+            paramarr.Add(new ReportParameter("trDeposit", MainWindow.resourcemanagerreport.GetString("trDeposit")));
+
+            paramarr.Add(new ReportParameter("trCash", MainWindow.resourcemanagerreport.GetString("trCash")));
+            paramarr.Add(new ReportParameter("trDocument", MainWindow.resourcemanagerreport.GetString("trDocument")));
+            paramarr.Add(new ReportParameter("trCheque", MainWindow.resourcemanagerreport.GetString("trCheque")));
+            paramarr.Add(new ReportParameter("trCredit", MainWindow.resourcemanagerreport.GetString("trCredit")));
+
+
+
+            rep.DataSources.Add(new ReportDataSource("DataSetBankAcc", cash));
+        }
+
+        public static void posAccReport(IEnumerable<CashTransfer> cash, LocalReport rep, string reppath, List<ReportParameter> paramarr)
+        {
+            rep.ReportPath = reppath;
+            rep.EnableExternalImages = true;
+            rep.DataSources.Clear();
+
+            paramarr.Add(new ReportParameter("trPull", MainWindow.resourcemanagerreport.GetString("trPull")));
+            paramarr.Add(new ReportParameter("trDeposit", MainWindow.resourcemanagerreport.GetString("trDeposit")));
+
             rep.DataSources.Add(new ReportDataSource("DataSetBankAcc", cash));
         }
         public static void invItem(IEnumerable<InventoryItemLocation> itemLocations, LocalReport rep, string reppath, List<ReportParameter> paramarr)
