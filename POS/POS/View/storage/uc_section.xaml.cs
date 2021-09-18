@@ -652,41 +652,44 @@ namespace POS.View
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
                 {
                     #region
-                    Thread t1 = new Thread(() =>
+                    if (sectionsQuery != null)
                     {
-                        List<ReportParameter> paramarr = new List<ReportParameter>();
-
-                        string addpath;
-                        bool isArabic = ReportCls.checkLang();
-                        if (isArabic)
+                        Thread t1 = new Thread(() =>
                         {
-                            addpath = @"\Reports\Store\Ar\ArSectionReport.rdlc";
-                        }
-                        else addpath = @"\Reports\Store\EN\SectionReport.rdlc";
-                        string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+                            List<ReportParameter> paramarr = new List<ReportParameter>();
 
-                        ReportCls.checkLang();
-
-                        clsReports.section(sectionsQuery, rep, reppath);
-                        clsReports.setReportLanguage(paramarr);
-                        clsReports.Header(paramarr);
-
-                        rep.SetParameters(paramarr);
-
-                        rep.Refresh();
-                        this.Dispatcher.Invoke(() =>
-                        {
-                            saveFileDialog.Filter = "EXCEL|*.xls;";
-                            if (saveFileDialog.ShowDialog() == true)
+                            string addpath;
+                            bool isArabic = ReportCls.checkLang();
+                            if (isArabic)
                             {
-                                string filepath = saveFileDialog.FileName;
-                                LocalReportExtensions.ExportToExcel(rep, filepath);
+                                addpath = @"\Reports\Store\Ar\ArSectionReport.rdlc";
                             }
+                            else addpath = @"\Reports\Store\EN\SectionReport.rdlc";
+                            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+                            ReportCls.checkLang();
+
+                            clsReports.section(sectionsQuery, rep, reppath);
+                            clsReports.setReportLanguage(paramarr);
+                            clsReports.Header(paramarr);
+
+                            rep.SetParameters(paramarr);
+
+                            rep.Refresh();
+                            this.Dispatcher.Invoke(() =>
+                            {
+                                saveFileDialog.Filter = "EXCEL|*.xls;";
+                                if (saveFileDialog.ShowDialog() == true)
+                                {
+                                    string filepath = saveFileDialog.FileName;
+                                    LocalReportExtensions.ExportToExcel(rep, filepath);
+                                }
+                            });
+
+
                         });
-
-
-                    });
-                    t1.Start();
+                        t1.Start();
+                    }
                     #endregion
                 }
                 else
@@ -770,33 +773,36 @@ namespace POS.View
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
                 {
                     #region
-                    List<ReportParameter> paramarr = new List<ReportParameter>();
-
-                    string addpath;
-                    bool isArabic = ReportCls.checkLang();
-                    if (isArabic)
+                    if (sectionsQuery != null)
                     {
-                        addpath = @"\Reports\Store\Ar\ArSectionReport.rdlc";
-                    }
-                    else addpath = @"\Reports\Store\EN\SectionReport.rdlc";
-                    string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+                        List<ReportParameter> paramarr = new List<ReportParameter>();
 
-                    ReportCls.checkLang();
+                        string addpath;
+                        bool isArabic = ReportCls.checkLang();
+                        if (isArabic)
+                        {
+                            addpath = @"\Reports\Store\Ar\ArSectionReport.rdlc";
+                        }
+                        else addpath = @"\Reports\Store\EN\SectionReport.rdlc";
+                        string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
-                    clsReports.section(sectionsQuery, rep, reppath);
-                    clsReports.setReportLanguage(paramarr);
-                    clsReports.Header(paramarr);
+                        ReportCls.checkLang();
 
-                    rep.SetParameters(paramarr);
+                        clsReports.section(sectionsQuery, rep, reppath);
+                        clsReports.setReportLanguage(paramarr);
+                        clsReports.Header(paramarr);
 
-                    rep.Refresh();
+                        rep.SetParameters(paramarr);
 
-                    saveFileDialog.Filter = "PDF|*.pdf;";
+                        rep.Refresh();
 
-                    if (saveFileDialog.ShowDialog() == true)
-                    {
-                        string filepath = saveFileDialog.FileName;
-                        LocalReportExtensions.ExportToPDF(rep, filepath);
+                        saveFileDialog.Filter = "PDF|*.pdf;";
+
+                        if (saveFileDialog.ShowDialog() == true)
+                        {
+                            string filepath = saveFileDialog.FileName;
+                            LocalReportExtensions.ExportToPDF(rep, filepath);
+                        }
                     }
                     #endregion
                 }
@@ -823,26 +829,29 @@ namespace POS.View
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
                 {
                     #region
-                    List<ReportParameter> paramarr = new List<ReportParameter>();
-
-                    string addpath;
-                    bool isArabic = ReportCls.checkLang();
-                    if (isArabic)
+                    if (sectionsQuery != null)
                     {
-                        addpath = @"\Reports\Store\Ar\ArSectionReport.rdlc";
+                        List<ReportParameter> paramarr = new List<ReportParameter>();
+
+                        string addpath;
+                        bool isArabic = ReportCls.checkLang();
+                        if (isArabic)
+                        {
+                            addpath = @"\Reports\Store\Ar\ArSectionReport.rdlc";
+                        }
+                        else addpath = @"\Reports\Store\EN\SectionReport.rdlc";
+                        string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+                        ReportCls.checkLang();
+
+                        clsReports.section(sectionsQuery, rep, reppath);
+                        clsReports.setReportLanguage(paramarr);
+                        clsReports.Header(paramarr);
+
+                        rep.SetParameters(paramarr);
+                        rep.Refresh();
+                        LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.rep_printer_name, short.Parse(MainWindow.rep_print_count));
                     }
-                    else addpath = @"\Reports\Store\EN\SectionReport.rdlc";
-                    string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-                    ReportCls.checkLang();
-
-                    clsReports.section(sectionsQuery, rep, reppath);
-                    clsReports.setReportLanguage(paramarr);
-                    clsReports.Header(paramarr);
-
-                    rep.SetParameters(paramarr);
-                    rep.Refresh();
-                    LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.rep_printer_name, short.Parse(MainWindow.rep_print_count));
                     #endregion
 
                 }
@@ -870,42 +879,45 @@ namespace POS.View
                 {
 
                     #region
-                    Window.GetWindow(this).Opacity = 0.2;
-            string pdfpath = "";
+                    if (sectionsQuery != null)
+                    {
+                        Window.GetWindow(this).Opacity = 0.2;
+                        string pdfpath = "";
 
-            List<ReportParameter> paramarr = new List<ReportParameter>();
+                        List<ReportParameter> paramarr = new List<ReportParameter>();
 
-            pdfpath = @"\Thumb\report\temp.pdf";
-            pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
+                        pdfpath = @"\Thumb\report\temp.pdf";
+                        pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
 
-            string addpath;
-            bool isArabic = ReportCls.checkLang();
-            if (isArabic)
-            {
-                addpath = @"\Reports\Store\Ar\ArSectionReport.rdlc";
-            }
-            else addpath = @"\Reports\Store\EN\SectionReport.rdlc";
-            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+                        string addpath;
+                        bool isArabic = ReportCls.checkLang();
+                        if (isArabic)
+                        {
+                            addpath = @"\Reports\Store\Ar\ArSectionReport.rdlc";
+                        }
+                        else addpath = @"\Reports\Store\EN\SectionReport.rdlc";
+                        string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
-            ReportCls.checkLang();
+                        ReportCls.checkLang();
 
-            clsReports.section(sectionsQuery, rep, reppath);
-            clsReports.setReportLanguage(paramarr);
-            clsReports.Header(paramarr);
+                        clsReports.section(sectionsQuery, rep, reppath);
+                        clsReports.setReportLanguage(paramarr);
+                        clsReports.Header(paramarr);
 
-            rep.SetParameters(paramarr);
+                        rep.SetParameters(paramarr);
 
-            rep.Refresh();
+                        rep.Refresh();
 
-            LocalReportExtensions.ExportToPDF(rep, pdfpath);
-            wd_previewPdf w = new wd_previewPdf();
-            w.pdfPath = pdfpath;
-            if (!string.IsNullOrEmpty(w.pdfPath))
-            {
-                w.ShowDialog();
-                w.wb_pdfWebViewer.Dispose();
-            }
-            Window.GetWindow(this).Opacity = 1;
+                        LocalReportExtensions.ExportToPDF(rep, pdfpath);
+                        wd_previewPdf w = new wd_previewPdf();
+                        w.pdfPath = pdfpath;
+                        if (!string.IsNullOrEmpty(w.pdfPath))
+                        {
+                            w.ShowDialog();
+                            w.wb_pdfWebViewer.Dispose();
+                        }
+                        Window.GetWindow(this).Opacity = 1;
+                    }
                     #endregion
 
                 }
@@ -931,11 +943,13 @@ namespace POS.View
 
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
                 {
-                    Window.GetWindow(this).Opacity = 0.2;
-                    win_Storagelvc win = new win_Storagelvc(sectionsQuery, 4);
-                    win.ShowDialog();
-                    Window.GetWindow(this).Opacity = 1;
-
+                    if (sectionsQuery != null)
+                    {
+                        Window.GetWindow(this).Opacity = 0.2;
+                        win_Storagelvc win = new win_Storagelvc(sectionsQuery, 4);
+                        win.ShowDialog();
+                        Window.GetWindow(this).Opacity = 1;
+                    }
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);

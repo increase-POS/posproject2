@@ -2416,4 +2416,10 @@
   <data name="trShipping" xml:space="preserve">
     <value>الشحن</value>
   </data>
+  <data name="trItemsImport/Export" xml:space="preserve">
+    <value>تصدير/استيراد العناصر</value>
+  </data>
+  <data name="trReceiptOfPurchasesBill" xml:space="preserve">
+    <value>وصل فاتورة المشتريات</value>
+  </data>
 </root>

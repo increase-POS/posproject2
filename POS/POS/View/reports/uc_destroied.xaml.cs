@@ -324,6 +324,7 @@ namespace POS.View.reports
         {
             temp = fillListDestroied(cb_destroiedBranch, cb_destroiedItemsUnits, dp_destroiedStartDate, dp_destroiedEndDate);
             dgStock.ItemsSource = temp;
+            txt_count.Text = temp.Count().ToString();
             fillDestroyColumnChart();
             fillDestroyRowChart();
             fillDestroyPieChart();
@@ -689,6 +690,7 @@ namespace POS.View.reports
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
+                #region
                 List<ReportParameter> paramarr = new List<ReportParameter>();
 
                 string addpath = "";
@@ -704,17 +706,7 @@ namespace POS.View.reports
                 string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                 ReportCls.checkLang();
-                foreach (var r in temp)
-                {
-                    //r.startDate = DateTime.Parse(SectionData.DateToString(r.startDate));
-                    //r.endDate = DateTime.Parse(SectionData.DateToString(r.endDate));
-                    r.inventoryDate = DateTime.Parse(SectionData.DateToString(r.inventoryDate));
-                    r.IupdateDate = DateTime.Parse(SectionData.DateToString(r.IupdateDate));
-                    r.updateDate = DateTime.Parse(SectionData.DateToString(r.updateDate));
-
-                    //r.storageCostValue = decimal.Parse(SectionData.DecTostring(r.storageCostValue)); 
-                    //r.diffPercentage = decimal.Parse(SectionData.DecTostring(r.diffPercentage));
-                }
+               
                 clsReports.itemTransferInvoice(temp, rep, reppath);
                 clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);
@@ -730,7 +722,7 @@ namespace POS.View.reports
                     string filepath = saveFileDialog.FileName;
                     LocalReportExtensions.ExportToPDF(rep, filepath);
                 }
-
+                #endregion
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -749,6 +741,7 @@ namespace POS.View.reports
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
+                #region
                 List<ReportParameter> paramarr = new List<ReportParameter>();
 
                 string addpath = "";
@@ -764,17 +757,7 @@ namespace POS.View.reports
                 string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                 ReportCls.checkLang();
-                foreach (var r in temp)
-                {
-                    //r.startDate = DateTime.Parse(SectionData.DateToString(r.startDate));
-                    //r.endDate = DateTime.Parse(SectionData.DateToString(r.endDate));
-                    r.inventoryDate = DateTime.Parse(SectionData.DateToString(r.inventoryDate));
-                    r.IupdateDate = DateTime.Parse(SectionData.DateToString(r.IupdateDate));
-                    r.updateDate = DateTime.Parse(SectionData.DateToString(r.updateDate));
-
-                    //r.storageCostValue = decimal.Parse(SectionData.DecTostring(r.storageCostValue)); 
-                    //r.diffPercentage = decimal.Parse(SectionData.DecTostring(r.diffPercentage));
-                }
+              
                 clsReports.itemTransferInvoice(temp, rep, reppath);
                 clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);
@@ -782,6 +765,7 @@ namespace POS.View.reports
                 rep.SetParameters(paramarr);
                 rep.Refresh();
                 LocalReportExtensions.PrintToPrinter(rep);
+                #endregion
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -800,54 +784,47 @@ namespace POS.View.reports
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
+                #region
                 Thread t1 = new Thread(() =>
-{
-List<ReportParameter> paramarr = new List<ReportParameter>();
+                {
+                List<ReportParameter> paramarr = new List<ReportParameter>();
 
-string addpath = "";
-bool isArabic = ReportCls.checkLang();
-if (isArabic)
-{
-addpath = @"\Reports\StatisticReport\Storage\Destructive\Ar\ArDes.rdlc";
-}
-else
-{
-addpath = @"\Reports\StatisticReport\Storage\Destructive\En\Des.rdlc";
-}
-string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+                string addpath = "";
+                bool isArabic = ReportCls.checkLang();
+                if (isArabic)
+                {
+                addpath = @"\Reports\StatisticReport\Storage\Destructive\Ar\ArDes.rdlc";
+                }
+                else
+                {
+                addpath = @"\Reports\StatisticReport\Storage\Destructive\En\Des.rdlc";
+                }
+                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
-ReportCls.checkLang();
-    foreach (var r in temp)
-    {
-        //r.startDate = DateTime.Parse(SectionData.DateToString(r.startDate));
-        //r.endDate = DateTime.Parse(SectionData.DateToString(r.endDate));
-        r.inventoryDate = DateTime.Parse(SectionData.DateToString(r.inventoryDate));
-        r.IupdateDate = DateTime.Parse(SectionData.DateToString(r.IupdateDate));
-        r.updateDate = DateTime.Parse(SectionData.DateToString(r.updateDate));
+                ReportCls.checkLang();
 
-        //r.storageCostValue = decimal.Parse(SectionData.DecTostring(r.storageCostValue)); 
-        //r.diffPercentage = decimal.Parse(SectionData.DecTostring(r.diffPercentage));
-    }
-    clsReports.itemTransferInvoice(temp, rep, reppath);
-clsReports.setReportLanguage(paramarr);
-clsReports.Header(paramarr);
+                    clsReports.itemTransferInvoice(temp, rep, reppath);
+                clsReports.setReportLanguage(paramarr);
+                clsReports.Header(paramarr);
 
-rep.SetParameters(paramarr);
+                rep.SetParameters(paramarr);
 
-rep.Refresh();
-this.Dispatcher.Invoke(() =>
-{
-saveFileDialog.Filter = "EXCEL|*.xls;";
-if (saveFileDialog.ShowDialog() == true)
-{
-string filepath = saveFileDialog.FileName;
-LocalReportExtensions.ExportToExcel(rep, filepath);
-}
-});
+                rep.Refresh();
+                this.Dispatcher.Invoke(() =>
+                {
+                    saveFileDialog.Filter = "EXCEL|*.xls;";
+                    if (saveFileDialog.ShowDialog() == true)
+                    {
+                        string filepath = saveFileDialog.FileName;
+                        LocalReportExtensions.ExportToExcel(rep, filepath);
+                    }
+                });
 
-
-});
+                });
                 t1.Start();
+                #endregion
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -865,13 +842,13 @@ LocalReportExtensions.ExportToExcel(rep, filepath);
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
+                #region
                 Window.GetWindow(this).Opacity = 0.2;
                 string pdfpath = "";
 
                 List<ReportParameter> paramarr = new List<ReportParameter>();
 
-
-                //
                 pdfpath = @"\Thumb\report\temp.pdf";
                 pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
 
@@ -888,17 +865,7 @@ LocalReportExtensions.ExportToExcel(rep, filepath);
                 string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                 ReportCls.checkLang();
-                foreach (var r in temp)
-                {
-                    //r.startDate = DateTime.Parse(SectionData.DateToString(r.startDate));
-                    //r.endDate = DateTime.Parse(SectionData.DateToString(r.endDate));
-                    r.inventoryDate = DateTime.Parse(SectionData.DateToString(r.inventoryDate));
-                    r.IupdateDate = DateTime.Parse(SectionData.DateToString(r.IupdateDate));
-                    r.updateDate = DateTime.Parse(SectionData.DateToString(r.updateDate));
-
-                    //r.storageCostValue = decimal.Parse(SectionData.DecTostring(r.storageCostValue)); 
-                    //r.diffPercentage = decimal.Parse(SectionData.DecTostring(r.diffPercentage));
-                }
+             
                 clsReports.itemTransferInvoice(temp, rep, reppath);
                 clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);
@@ -914,10 +881,10 @@ LocalReportExtensions.ExportToExcel(rep, filepath);
                 {
                     w.ShowDialog();
                     w.wb_pdfWebViewer.Dispose();
-
-
                 }
                 Window.GetWindow(this).Opacity = 1;
+                #endregion
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }

@@ -1,11 +1,14 @@
 ﻿using LiveCharts;
 using LiveCharts.Helpers;
 using LiveCharts.Wpf;
+using Microsoft.Reporting.WinForms;
 using netoaster;
 using POS.Classes;
+using POS.View.windows;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
@@ -21,6 +24,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using static POS.Classes.Statistics;
+using Microsoft.Win32;
+using System.Threading;
 
 namespace POS.View.reports
 {
@@ -30,14 +35,16 @@ namespace POS.View.reports
     public partial class uc_accountStatement : UserControl
     {
         public uc_accountStatement()
-        {try
-				{
-            InitializeComponent();
+        {
+            try
+			{
+                InitializeComponent();
 			}
-        catch (Exception ex)
+            catch (Exception ex)
             {
 				SectionData.ExceptionMessage(ex,this );
-            } }
+            }
+        }
         Statistics statisticModel = new Statistics();
 
         List<CashTransferSts> statement;
@@ -47,13 +54,16 @@ namespace POS.View.reports
         IEnumerable<VendorCombo> userCombo;
         IEnumerable<ShippingCombo> ShippingCombo;
 
-
+        // report
+        ReportCls reportclass = new ReportCls();
+        LocalReport rep = new LocalReport();
+        SaveFileDialog saveFileDialog = new SaveFileDialog();
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-					try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
+			try
+			{
+				if (sender != null)
+				SectionData.StartAwait(grid_main);
 					  
             #region translate
             if (MainWindow.lang.Equals("en"))
@@ -76,15 +86,14 @@ namespace POS.View.reports
             userCombo = statisticModel.getUserAcc(statement, "u");
             ShippingCombo = statisticModel.getShippingCombo(statement);
 
-
             fillVendorCombo(vendorCombo, cb_vendors);
             fillDateCombo(cb_vendorsDate);
 
             fillVendorsEvents();
             hideAllColumn();
 
-       if (sender != null)
-			  SectionData.EndAwait(grid_main);
+            if (sender != null)
+			        SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
@@ -670,10 +679,11 @@ namespace POS.View.reports
         {
             temp = statisticModel.getstate(fillList(statement, cb_vendors, cb_vendorsDate));
             dgPayments.ItemsSource = temp;
+            txt_count.Text = temp.Count().ToString();
             decimal cashTotal = temp.Select(x => x.cashTotal).LastOrDefault();
             if (cashTotal > 0)
             {
-                txt_total.Text = cashTotal.ToString();
+                txt_total.Text = SectionData.DecTostring(cashTotal);
                 //txt_for.Text = "Worthy";
                 txt_for.Text = MainWindow.resourcemanager.GetString("trWorthy");
                 tb_moneyIcon.Text = MainWindow.Currency;
@@ -705,10 +715,11 @@ namespace POS.View.reports
         {
             temp = statisticModel.getstate(fillList(statement, cb_customer, cb_customerDate));
             dgPayments.ItemsSource = temp;
+            txt_count.Text = temp.Count().ToString();
             decimal cashTotal = temp.Select(x => x.cashTotal).LastOrDefault();
             if (cashTotal > 0)
             {
-                txt_total.Text = cashTotal.ToString();
+                txt_total.Text = SectionData.DecTostring(cashTotal);
                 //txt_for.Text = "Worthy";
                 txt_for.Text = MainWindow.resourcemanager.GetString("trWorthy");
                 bdr_email.Visibility = Visibility.Collapsed;
@@ -716,7 +727,7 @@ namespace POS.View.reports
             else
             {
                 cashTotal = -cashTotal;
-                txt_total.Text = cashTotal.ToString();
+                txt_total.Text = SectionData.DecTostring(cashTotal);
                 //txt_for.Text = "Required";
                 txt_for.Text = MainWindow.resourcemanager.GetString("trRequired");
                 bdr_email.Visibility = Visibility.Visible;
@@ -738,10 +749,11 @@ namespace POS.View.reports
         {
             temp = statisticModel.getstate(fillList(statement, cb_users, cb_userDate));
             dgPayments.ItemsSource = temp;
+            txt_count.Text = temp.Count().ToString();
             decimal cashTotal = temp.Select(x => x.cashTotal).LastOrDefault();
             if (cashTotal > 0)
             {
-                txt_total.Text = cashTotal.ToString();
+                txt_total.Text = SectionData.DecTostring(cashTotal);
                 //txt_for.Text = "Worthy";
                 txt_for.Text = MainWindow.resourcemanager.GetString("trWorthy");
                 bdr_email.Visibility = Visibility.Collapsed;
@@ -773,10 +785,11 @@ namespace POS.View.reports
         {
             temp = statisticModel.getstate(fillList(statement, cb_shipping, cb_shippingDate));
             dgPayments.ItemsSource = temp;
+            txt_count.Text = temp.Count().ToString();
             decimal cashTotal = temp.Select(x => x.cashTotal).LastOrDefault();
             if (cashTotal > 0)
             {
-                txt_total.Text = cashTotal.ToString();
+                txt_total.Text = SectionData.DecTostring(cashTotal);
                 //txt_for.Text = "Worthy";
                 txt_for.Text = MainWindow.resourcemanager.GetString("trWorthy");
                 bdr_email.Visibility = Visibility.Collapsed;
@@ -784,7 +797,7 @@ namespace POS.View.reports
             else
             {
                 cashTotal = -cashTotal;
-                txt_total.Text = cashTotal.ToString();
+                txt_total.Text = SectionData.DecTostring(cashTotal);
                 //txt_for.Text = "Required";
                 txt_for.Text = MainWindow.resourcemanager.GetString("trRequired");
                 bdr_email.Visibility = Visibility.Visible;
@@ -1050,41 +1063,60 @@ namespace POS.View.reports
 		 }
 
         private void Txt_search_TextChanged(object sender, TextChangedEventArgs e)
-        {
-         
-					try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
-					     if (selectedTab == 0)
+        {//search
+            IEnumerable<CashTransferSts> t = null;
+            try
+			{
+				if (sender != null)
+				SectionData.StartAwait(grid_main);
+			if (selectedTab == 0)
             {
                 temp = statisticModel.getstate(fillList(statement, cb_vendors, cb_vendorsDate));
-                dgPayments.ItemsSource = temp.Where(obj => obj.transNum.Contains(txt_search.Text) ||
+
+                //dgPayments.ItemsSource = temp.Where(obj => obj.transNum.Contains(txt_search.Text) ||
+                //obj.Description.Contains(txt_search.Text) ||
+                //obj.Description1.Contains(txt_search.Text));
+                t = temp.Where(obj => obj.transNum.Contains(txt_search.Text) ||
                 obj.Description.Contains(txt_search.Text) ||
-                obj.Description1.Contains(txt_search.Text));
+                obj.Description1.Contains(txt_search.Text)).ToList();
+
             }
             else if (selectedTab == 1)
             {
                 temp = statisticModel.getstate(fillList(statement, cb_customer, cb_customerDate));
-                dgPayments.ItemsSource = temp.Where(obj => obj.transNum.Contains(txt_search.Text) ||
+                //dgPayments.ItemsSource = temp.Where(obj => obj.transNum.Contains(txt_search.Text) ||
+                //obj.Description.Contains(txt_search.Text) ||
+                //obj.Description1.Contains(txt_search.Text));
+                t = temp.Where(obj => obj.transNum.Contains(txt_search.Text) ||
                 obj.Description.Contains(txt_search.Text) ||
                 obj.Description1.Contains(txt_search.Text));
-            }
-            else if (selectedTab == 2)
+                }
+                else if (selectedTab == 2)
             {
                 temp = statisticModel.getstate(fillList(statement, cb_users, cb_userDate));
-                dgPayments.ItemsSource = temp.Where(obj => obj.transNum.Contains(txt_search.Text) ||
+                //dgPayments.ItemsSource = temp.Where(obj => obj.transNum.Contains(txt_search.Text) ||
+                //obj.Description.Contains(txt_search.Text) ||
+                //obj.Description1.Contains(txt_search.Text));
+                t = temp.Where(obj => obj.transNum.Contains(txt_search.Text) ||
                 obj.Description.Contains(txt_search.Text) ||
-                obj.Description1.Contains(txt_search.Text));
-            }
-            else if (selectedTab == 3)
+                obj.Description1.Contains(txt_search.Text)).ToList();
+                }
+                else if (selectedTab == 3)
             {
                 temp = statisticModel.getstate(fillList(statement, cb_shipping, cb_shippingDate));
-                dgPayments.ItemsSource = temp.Where(obj => obj.transNum.Contains(txt_search.Text) ||
+                //dgPayments.ItemsSource = temp.Where(obj => obj.transNum.Contains(txt_search.Text) ||
+                //obj.Description.Contains(txt_search.Text) ||
+                //obj.Description1.Contains(txt_search.Text));
+                t = temp.Where(obj => obj.transNum.Contains(txt_search.Text) ||
                 obj.Description.Contains(txt_search.Text) ||
-                obj.Description1.Contains(txt_search.Text));
-            }
-       if (sender != null)
+                obj.Description1.Contains(txt_search.Text)).ToList();
+                }
+
+                dgPayments.ItemsSource = t;
+
+                txt_count.Text = t.Count().ToString();
+
+                if (sender != null)
 			  SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
@@ -1096,20 +1128,40 @@ namespace POS.View.reports
 		 }
 
         private async void Btn_emailMessage_Click(object sender, RoutedEventArgs e)
-        {
-           
-					try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
-					   if (txt_for.Text == "Required")
+        {//email?????????????????????????????????????????????????????????????????????
+            try
             {
-                // btn_emailMessage.Visibility = Visibility.Visible;
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
+                Thread t1 = new Thread(() =>
+                {
+                    sendEmail();
+                });
+                t1.Start();
+                //
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+
+          
+		 }
+
+        private async void sendEmail()
+        {
+            if (txt_for.Text == "Required")
+            {
                 string total = txt_total.Text;
                 SysEmails email = new SysEmails();
                 EmailClass mailtosend = new EmailClass();
-                // email = await email.GetByBranchIdandSide((int)MainWindow.branchID, "mg");
+
                 Agent toAgent = new Agent();
                 User toUser = new User();
                 ShippingCompanies toShipCompanies = new ShippingCompanies();
@@ -1130,13 +1182,15 @@ namespace POS.View.reports
                         {
                             toemailexist = false;
 
-                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trTheVendorHasNoEmail"), animation: ToasterAnimation.FadeIn);
+                            this.Dispatcher.Invoke(() =>
+                            {
+                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trTheVendorHasNoEmail"), animation: ToasterAnimation.FadeIn);
+                            });
                         }
                         else
                         {
                             toemailexist = true;
                         }
-
 
                         break;
 
@@ -1149,7 +1203,10 @@ namespace POS.View.reports
                         if (emailto is null || emailto == "")
                         {
                             toemailexist = false;
-                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trTheCustomerHasNoEmail"), animation: ToasterAnimation.FadeIn);
+                            this.Dispatcher.Invoke(() =>
+                            {
+                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trTheCustomerHasNoEmail"), animation: ToasterAnimation.FadeIn);
+                            });
                         }
                         else
                         {
@@ -1165,7 +1222,10 @@ namespace POS.View.reports
                         if (emailto is null || emailto == "")
                         {
                             toemailexist = false;
-                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trTheUserHasNoEmail"), animation: ToasterAnimation.FadeIn);
+                            this.Dispatcher.Invoke(() =>
+                            {
+                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trTheUserHasNoEmail"), animation: ToasterAnimation.FadeIn);
+                            });
                         }
                         else
                         {
@@ -1182,7 +1242,10 @@ namespace POS.View.reports
                         if (emailto is null || emailto == "")
                         {
                             toemailexist = false;
-                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trTheShippingCompaniesHasNoEmail"), animation: ToasterAnimation.FadeIn);
+                            this.Dispatcher.Invoke(() =>
+                            {
+                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trTheShippingCompaniesHasNoEmail"), animation: ToasterAnimation.FadeIn);
+                            });
                         }
                         else
                         {
@@ -1193,85 +1256,239 @@ namespace POS.View.reports
 
                 }
 
-
-
                 if (email != null)
                 {
-
-
-                    //  int? itemcount = invoiceItems.Count();
                     if (email.emailId == 0)
                     {
-                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoEmailForThisDept"), animation: ToasterAnimation.FadeIn);
-
+                        this.Dispatcher.Invoke(() =>
+                        {
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoEmailForThisDept"), animation: ToasterAnimation.FadeIn);
+                        });
                     }
                     else
                     {
-
                         if (toemailexist)
                         {
-
                             SetValues setvmodel = new SetValues();
-
 
                             List<SetValues> setvlist = new List<SetValues>();
 
                             setvlist = await setvmodel.GetBySetName("required_email_temp");
 
                             mailtosend = mailtosend.fillRequirdTempData(total, emailto, email, setvlist);
-                            //   string pdfpath = await SaveSalepdf();
-                            //  mailtosend.AddAttachTolist(pdfpath);
+
                             string msg = "";
                             msg = mailtosend.Sendmail();// temp comment
                             if (msg == "Failure sending mail.")
                             {
-
-                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoInternetConnection"), animation: ToasterAnimation.FadeIn);
+                                this.Dispatcher.Invoke(() =>
+                                {
+                                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoInternetConnection"), animation: ToasterAnimation.FadeIn);
+                                });
                             }
                             else if (msg == "mailsent")
                             {
-                                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trMailSent"), animation: ToasterAnimation.FadeIn);
-
+                                this.Dispatcher.Invoke(() =>
+                                {
+                                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trMailSent"), animation: ToasterAnimation.FadeIn);
+                                });
                             }
                             else
                             {
-                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trMailNotSent"), animation: ToasterAnimation.FadeIn);
-
+                                this.Dispatcher.Invoke(() =>
+                                {
+                                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trMailNotSent"), animation: ToasterAnimation.FadeIn);
+                                });
                             }
-
 
                         }
                     }
                 }
             }
-            else
+            //else
+            //{
+            //}
+        }
+
+        private void Btn_preview_Click(object sender, RoutedEventArgs e)
+        {//preview
+            try
             {
-                // btn_emailMessage.Visibility = Visibility.Hidden;
-            }
-       if (sender != null)
-			  SectionData.EndAwait(grid_main);
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                #region
+                Window.GetWindow(this).Opacity = 0.2;
+                /////////////////////
+                string pdfpath = "";
+                pdfpath = @"\Thumb\report\temp.pdf";
+                pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
+                BuildReport();
+                LocalReportExtensions.ExportToPDF(rep, pdfpath);
+                ///////////////////
+                wd_previewPdf w = new wd_previewPdf();
+                w.pdfPath = pdfpath;
+                if (!string.IsNullOrEmpty(w.pdfPath))
+                {
+                    w.ShowDialog();
+                    w.wb_pdfWebViewer.Dispose();
+                }
+                Window.GetWindow(this).Opacity = 1;
+                #endregion
+              
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-				if (sender != null)
-				SectionData.EndAwait(grid_main);
-				SectionData.ExceptionMessage(ex, this);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
             }
-		 }
+        }
 
-        private void Btn_preview_Click(object sender, RoutedEventArgs e)
+        private void BuildReport()
         {
-          
+            List<ReportParameter> paramarr = new List<ReportParameter>();
+
+            string addpath;
+            bool isArabic = ReportCls.checkLang();
+            if (isArabic)
+            {
+                addpath = @"\Reports\StatisticReport\Accounts\AccountStatement\Ar\ArAccStatement.rdlc";
+            }
+            else
+                addpath = @"\Reports\StatisticReport\Accounts\AccountStatement\En\AccStatement.rdlc";
+            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+            ReportCls.checkLang();
+
+            clsReports.cashTransferSts(temp, rep, reppath);
+            clsReports.setReportLanguage(paramarr);
+            clsReports.Header(paramarr);
+
+            rep.SetParameters(paramarr);
+
+            rep.Refresh();
         }
 
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {//pdf
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+               
+                /////////////////////////////////////
+                Thread t1 = new Thread(() =>
+                {
+                    pdfStatement();
+                });
+                t1.Start();
+                //////////////////////////////////////
+              
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
 
+        private void pdfStatement()
+        {
+            BuildReport();
+
+            this.Dispatcher.Invoke(() =>
+            {
+                saveFileDialog.Filter = "PDF|*.pdf;";
+
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    string filepath = saveFileDialog.FileName;
+                    LocalReportExtensions.ExportToPDF(rep, filepath);
+                }
+            });
         }
 
         private void Btn_print_Click(object sender, RoutedEventArgs e)
         {//print
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
+                /////////////////////////////////////
+                Thread t1 = new Thread(() =>
+                {
+                    printStatement();
+                });
+                t1.Start();
+                //////////////////////////////////////
+
+              
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+
+        private void printStatement()
+        {
+            BuildReport();
+
+            this.Dispatcher.Invoke(() =>
+            {
+                LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.rep_printer_name, short.Parse(MainWindow.rep_print_count));
+            });
+        }
+
+        private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
+        {//excel
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                Thread t1 = new Thread(() =>
+                {
+                    ExcelStatement();
+
+                });
+                t1.Start();
+                
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+
+        private void ExcelStatement()
+        {
+            BuildReport();
+
+            this.Dispatcher.Invoke(() =>
+            {
+                saveFileDialog.Filter = "EXCEL|*.xls;";
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    string filepath = saveFileDialog.FileName;
+                    LocalReportExtensions.ExportToExcel(rep, filepath);
+                }
+            });
         }
     }
 }

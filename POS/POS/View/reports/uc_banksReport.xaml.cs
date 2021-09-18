@@ -330,7 +330,6 @@ namespace POS.View.reports
             }
             chart1.Series = piechartData;
         }
-
         private void fillColumnChart()
         {
             axcolumn.Labels = new List<string>();
@@ -342,7 +341,6 @@ namespace POS.View.reports
             {
                 temp = fillList(BankChart, cb_recipientBank, cb_recipientUser, cb_recipientAccountant, dp_recipientStartDate, dp_recipientEndDate).Where(s => s.side == "bn");
             }
-
             var res = temp.GroupBy(x => new { x.bankId, x.transType }).Select(x => new CashTransferSts
             {
                 bankName = x.FirstOrDefault().bankName,
@@ -1013,6 +1011,7 @@ namespace POS.View.reports
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
+                #region
                 List<ReportParameter> paramarr = new List<ReportParameter>();
 
                 string addpath = "";
@@ -1044,11 +1043,7 @@ namespace POS.View.reports
                 string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                 ReportCls.checkLang();
-                foreach (var r in temp)
-                {
-                    r.updateDate = DateTime.Parse(SectionData.DateToString(r.updateDate));
-                    r.cash = decimal.Parse(SectionData.DecTostring(r.cash));
-                }
+               
                 clsReports.cashTransferSts(temp, rep, reppath);
                 clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);
@@ -1064,7 +1059,7 @@ namespace POS.View.reports
                     string filepath = saveFileDialog.FileName;
                     LocalReportExtensions.ExportToPDF(rep, filepath);
                 }
-
+                #endregion
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -1084,6 +1079,7 @@ namespace POS.View.reports
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
+                #region
                 List<ReportParameter> paramarr = new List<ReportParameter>();
 
                 string addpath = "";
@@ -1098,7 +1094,6 @@ namespace POS.View.reports
                     {
                         addpath = @"\Reports\StatisticReport\Accounts\Bank\Ar\ArPull.rdlc";
                     }
-
                 }
                 else
                 {
@@ -1115,11 +1110,7 @@ namespace POS.View.reports
                 string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                 ReportCls.checkLang();
-                foreach (var r in temp)
-                {
-                    r.updateDate = DateTime.Parse(SectionData.DateToString(r.updateDate));
-                    r.cash = decimal.Parse(SectionData.DecTostring(r.cash));
-                }
+               
                 clsReports.cashTransferSts(temp, rep, reppath);
                 clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);
@@ -1127,7 +1118,7 @@ namespace POS.View.reports
                 rep.SetParameters(paramarr);
                 rep.Refresh();
                 LocalReportExtensions.PrintToPrinter(rep);
-
+                #endregion
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -1146,64 +1137,63 @@ namespace POS.View.reports
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
+                #region
                 Thread t1 = new Thread(() =>
                 {
-                List<ReportParameter> paramarr = new List<ReportParameter>();
+                    List<ReportParameter> paramarr = new List<ReportParameter>();
 
-                string addpath = "";
-                bool isArabic = ReportCls.checkLang();
-                if (isArabic)
-                {
-                if (selectedTab == 0)
-                {
-                addpath = @"\Reports\StatisticReport\Accounts\Bank\Ar\ArDeposite.rdlc";
-                }
-                else if (selectedTab == 1)
-                {
-                addpath = @"\Reports\StatisticReport\Accounts\Bank\Ar\ArPull.rdlc";
-                }
-
-                }
-                else
-                {
-                if (selectedTab == 0)
-                {
-                addpath = @"\Reports\StatisticReport\Accounts\Bank\En\Deposite.rdlc";
-                }
-                else if (selectedTab == 1)
-                {
-                addpath = @"\Reports\StatisticReport\Accounts\Bank\En\Pull.rdlc";
-                }
-
-                }
-                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-                ReportCls.checkLang();
-                    foreach (var r in temp)
+                    string addpath = "";
+                    bool isArabic = ReportCls.checkLang();
+                    if (isArabic)
                     {
-                        r.updateDate = DateTime.Parse(SectionData.DateToString(r.updateDate));
-                        r.cash = decimal.Parse(SectionData.DecTostring(r.cash));
+                        if (selectedTab == 0)
+                        {
+                            addpath = @"\Reports\StatisticReport\Accounts\Bank\Ar\ArDeposite.rdlc";
+                        }
+                        else if (selectedTab == 1)
+                        {
+                            addpath = @"\Reports\StatisticReport\Accounts\Bank\Ar\ArPull.rdlc";
+                        }
                     }
+                    else
+                    {
+                        if (selectedTab == 0)
+                        {
+                            addpath = @"\Reports\StatisticReport\Accounts\Bank\En\Deposite.rdlc";
+                        }
+                        else if (selectedTab == 1)
+                        {
+                            addpath = @"\Reports\StatisticReport\Accounts\Bank\En\Pull.rdlc";
+                        }
+
+                    }
+                    string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+                    ReportCls.checkLang();
+                  
                     clsReports.cashTransferSts(temp, rep, reppath);
-                clsReports.setReportLanguage(paramarr);
-                clsReports.Header(paramarr);
+                    clsReports.setReportLanguage(paramarr);
+                    clsReports.Header(paramarr);
 
-                rep.SetParameters(paramarr);
+                    rep.SetParameters(paramarr);
 
-                rep.Refresh();
-                this.Dispatcher.Invoke(() =>
-                {
-                saveFileDialog.Filter = "EXCEL|*.xls;";
-                if (saveFileDialog.ShowDialog() == true)
-                {
-                string filepath = saveFileDialog.FileName;
-                LocalReportExtensions.ExportToExcel(rep, filepath);
-                }
-                });
+                    rep.Refresh();
+                    this.Dispatcher.Invoke(() =>
+                    {
+                        saveFileDialog.Filter = "EXCEL|*.xls;";
+                        if (saveFileDialog.ShowDialog() == true)
+                        {
+                            string filepath = saveFileDialog.FileName;
+                            LocalReportExtensions.ExportToExcel(rep, filepath);
+                        }
+                    });
 
 
-                });
+                    });
                 t1.Start();
+
+                #endregion
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -1227,8 +1217,6 @@ namespace POS.View.reports
 
                 List<ReportParameter> paramarr = new List<ReportParameter>();
 
-
-                //
                 pdfpath = @"\Thumb\report\temp.pdf";
                 pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
 
@@ -1261,11 +1249,7 @@ namespace POS.View.reports
                 string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                 ReportCls.checkLang();
-                foreach (var r in temp)
-                {
-                    r.updateDate = DateTime.Parse(SectionData.DateToString(r.updateDate));
-                    r.cash = decimal.Parse(SectionData.DecTostring(r.cash));
-                }
+             
                 clsReports.cashTransferSts(temp, rep, reppath);
                 clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);
@@ -1281,8 +1265,6 @@ namespace POS.View.reports
                 {
                     w.ShowDialog();
                     w.wb_pdfWebViewer.Dispose();
-
-
                 }
                 Window.GetWindow(this).Opacity = 1;
 

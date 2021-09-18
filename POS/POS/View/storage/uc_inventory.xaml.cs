@@ -506,7 +506,7 @@ namespace POS.View.storage
         }
 
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
-        {
+        {//pdf
             try
             {
                 if (sender != null)
@@ -514,11 +514,14 @@ namespace POS.View.storage
 
                 if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one"))
                 {
-                    Thread t1 = new Thread(() =>
+                    if (invItemsLocations != null)
                     {
-                        pdfInventory();
-                    });
-                    t1.Start();
+                        Thread t1 = new Thread(() =>
+                        {
+                            pdfInventory();
+                        });
+                        t1.Start();
+                    }
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -559,11 +562,14 @@ namespace POS.View.storage
                 if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one"))
                 {
                     /////////////////////////////////////
-                    Thread t1 = new Thread(() =>
+                    if (invItemsLocations != null)
                     {
-                        printInventory();
-                    });
-                    t1.Start();
+                        Thread t1 = new Thread(() =>
+                        {
+                            printInventory();
+                        });
+                        t1.Start();
+                    }
                     //////////////////////////////////////
                 }
                 else
@@ -599,23 +605,26 @@ namespace POS.View.storage
                 if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one"))
                 {
                     #region
-                    Window.GetWindow(this).Opacity = 0.2;
-                    /////////////////////
-                    string pdfpath = "";
-                    pdfpath = @"\Thumb\report\temp.pdf";
-                    pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
-                    BuildReport();
-                    LocalReportExtensions.ExportToPDF(rep, pdfpath);
-                    ///////////////////
-                    wd_previewPdf w = new wd_previewPdf();
-                    w.pdfPath = pdfpath;
-                    if (!string.IsNullOrEmpty(w.pdfPath))
-                    {
-                        w.ShowDialog();
-                        w.wb_pdfWebViewer.Dispose();
+                    if(invItemsLocations != null)
+                    { 
+                        Window.GetWindow(this).Opacity = 0.2;
+                        /////////////////////
+                        string pdfpath = "";
+                        pdfpath = @"\Thumb\report\temp.pdf";
+                        pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
+                        BuildReport();
+                        LocalReportExtensions.ExportToPDF(rep, pdfpath);
+                        ///////////////////
+                        wd_previewPdf w = new wd_previewPdf();
+                        w.pdfPath = pdfpath;
+                        if (!string.IsNullOrEmpty(w.pdfPath))
+                        {
+                            w.ShowDialog();
+                            w.wb_pdfWebViewer.Dispose();
+                        }
+                        Window.GetWindow(this).Opacity = 1;
+                        //////////////////////////////////////
                     }
-                    Window.GetWindow(this).Opacity = 1;
-                    //////////////////////////////////////
                     #endregion
                 }
                 else

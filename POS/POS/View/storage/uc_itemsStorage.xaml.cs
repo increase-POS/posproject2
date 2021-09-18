@@ -63,7 +63,7 @@ namespace POS.View.storage
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -71,9 +71,9 @@ namespace POS.View.storage
         {
             try
             {
-                 
-                    if (sender != null)
-                        SectionData.StartAwait(grid_main);
+
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
                 MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
 
@@ -89,7 +89,7 @@ namespace POS.View.storage
                 }
 
                 translate();
-               
+
                 Tb_search_TextChanged(null, null);
 
                 await fillSections();
@@ -137,7 +137,7 @@ namespace POS.View.storage
                 //if (itemLocationList is null)
                 if (chk_stored.IsChecked == true)
                     await refreshItemsLocations();
-                else if(chk_freezone.IsChecked == true)
+                else if (chk_freezone.IsChecked == true)
                     await refreshFreeZoneItemsLocations();
                 else
                     await refreshLockedItems();
@@ -180,7 +180,7 @@ namespace POS.View.storage
             }
         }
 
-        private   void Tgl_IsActive_Unchecked(object sender, RoutedEventArgs e)
+        private void Tgl_IsActive_Unchecked(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -222,7 +222,7 @@ namespace POS.View.storage
             dg_itemsStorage.Columns[6].Header = MainWindow.resourcemanager.GetString("trOrderNum");
 
             txt_itemsStorageHeader.Text = MainWindow.resourcemanager.GetString("trItemStorage");
-            txt_Location.Text = MainWindow.resourcemanager.GetString("trLocationt");         
+            txt_Location.Text = MainWindow.resourcemanager.GetString("trLocationt");
 
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_itemName, MainWindow.resourcemanager.GetString("trItemNameHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_quantity, MainWindow.resourcemanager.GetString("trQuantityHint"));
@@ -291,41 +291,43 @@ namespace POS.View.storage
                 if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
                     #region
-                    Thread t1 = new Thread(() =>
+                    if (itemLocationListQuery != null)
                     {
-                        List<ReportParameter> paramarr = new List<ReportParameter>();
-
-                        string addpath;
-                        bool isArabic = ReportCls.checkLang();
-                        if (isArabic)
+                        Thread t1 = new Thread(() =>
                         {
-                            addpath = @"\Reports\Store\Ar\ArStorageReport.rdlc";
-                        }
-                        else addpath = @"\Reports\Store\EN\StorageReport.rdlc";
-                        string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+                            List<ReportParameter> paramarr = new List<ReportParameter>();
 
-                        ReportCls.checkLang();
-
-                        clsReports.itemLocation(itemLocationListQuery, rep, reppath);
-                        clsReports.setReportLanguage(paramarr);
-                        clsReports.Header(paramarr);
-
-                        rep.SetParameters(paramarr);
-
-                        rep.Refresh();
-                        this.Dispatcher.Invoke(() =>
-                        {
-                            saveFileDialog.Filter = "EXCEL|*.xls;";
-                            if (saveFileDialog.ShowDialog() == true)
+                            string addpath;
+                            bool isArabic = ReportCls.checkLang();
+                            if (isArabic)
                             {
-                                string filepath = saveFileDialog.FileName;
-                                LocalReportExtensions.ExportToExcel(rep, filepath);
+                                addpath = @"\Reports\Store\Ar\ArStorageReport.rdlc";
                             }
+                            else addpath = @"\Reports\Store\EN\StorageReport.rdlc";
+                            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+                            ReportCls.checkLang();
+
+                            clsReports.itemLocation(itemLocationListQuery, rep, reppath, paramarr);
+                            clsReports.setReportLanguage(paramarr);
+                            clsReports.Header(paramarr);
+
+                            rep.SetParameters(paramarr);
+
+                            rep.Refresh();
+                            this.Dispatcher.Invoke(() =>
+                            {
+                                saveFileDialog.Filter = "EXCEL|*.xls;";
+                                if (saveFileDialog.ShowDialog() == true)
+                                {
+                                    string filepath = saveFileDialog.FileName;
+                                    LocalReportExtensions.ExportToExcel(rep, filepath);
+                                }
+                            });
+
                         });
-
-
-                    });
-                    t1.Start();
+                        t1.Start();
+                    }
                     #endregion
                 }
                 else
@@ -405,7 +407,7 @@ namespace POS.View.storage
                 SectionData.showDatePickerValidate(dp_endDate, p_errorEndDate, tt_errorEndDate, "trEmptyEndDateToolTip");
             }
         }
-        private async void  Btn_locked_Click(object sender, RoutedEventArgs e)
+        private async void Btn_locked_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -423,34 +425,34 @@ namespace POS.View.storage
                             //int newLocationId = (int)cb_XYZ.SelectedValue;
                             //if (oldLocationId != newLocationId)
                             //{
-                                int quantity = int.Parse(tb_quantity.Text);
-                                ItemLocation newLocation = new ItemLocation();
+                            int quantity = int.Parse(tb_quantity.Text);
+                            ItemLocation newLocation = new ItemLocation();
                             newLocation.itemsLocId = itemLocation.itemsLocId;
-                                newLocation.itemUnitId = itemLocation.itemUnitId;
-                                newLocation.locationId = itemLocation.locationId;
-                                newLocation.quantity = quantity;
-                                newLocation.startDate = dp_startDate.SelectedDate;
-                                newLocation.endDate = dp_endDate.SelectedDate;
-                                newLocation.note = tb_notes.Text;
-                                newLocation.updateUserId = MainWindow.userID.Value;
-                                newLocation.createUserId = MainWindow.userID.Value;   
-                                bool res = await itemLocation.unlockItem(newLocation);
-                                if (res)
-                                {
-                                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                            newLocation.itemUnitId = itemLocation.itemUnitId;
+                            newLocation.locationId = itemLocation.locationId;
+                            newLocation.quantity = quantity;
+                            newLocation.startDate = dp_startDate.SelectedDate;
+                            newLocation.endDate = dp_endDate.SelectedDate;
+                            newLocation.note = tb_notes.Text;
+                            newLocation.updateUserId = MainWindow.userID.Value;
+                            newLocation.createUserId = MainWindow.userID.Value;
+                            bool res = await itemLocation.unlockItem(newLocation);
+                            if (res)
+                            {
+                                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
 
-                                }
-                                else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
-                                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                            }
+                            else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
-                                if (chk_stored.IsChecked == true)
-                                    await refreshItemsLocations();
-                                else if (chk_freezone.IsChecked == true)
-                                    await refreshFreeZoneItemsLocations();
-                                else
-                                { }
+                            if (chk_stored.IsChecked == true)
+                                await refreshItemsLocations();
+                            else if (chk_freezone.IsChecked == true)
+                                await refreshFreeZoneItemsLocations();
+                            else
+                            { }
 
-                                clearInputs();
+                            clearInputs();
                             //}
                             //else
                             //    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trTranseToSameLocation"), animation: ToasterAnimation.FadeIn);
@@ -514,7 +516,7 @@ namespace POS.View.storage
 
                                 if (chk_stored.IsChecked == true)
                                     await refreshItemsLocations();
-                                else if(chk_freezone.IsChecked == true)
+                                else if (chk_freezone.IsChecked == true)
                                     await refreshFreeZoneItemsLocations();
                                 else
                                 { }
@@ -586,7 +588,7 @@ namespace POS.View.storage
                         await refreshLocations();
                         cb_XYZ.SelectedValue = itemLocation.locationId;
                     }
-                    else if(chk_freezone.IsChecked == true)
+                    else if (chk_freezone.IsChecked == true)
                     {
                         dp_endDate.IsEnabled = true;
                         dp_startDate.IsEnabled = true;
@@ -712,33 +714,36 @@ namespace POS.View.storage
                 if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
                     #region
-                    List<ReportParameter> paramarr = new List<ReportParameter>();
-
-                    string addpath;
-                    bool isArabic = ReportCls.checkLang();
-                    if (isArabic)
+                    if (itemLocationListQuery != null)
                     {
-                        addpath = @"\Reports\Store\Ar\ArStorageReport.rdlc";
-                    }
-                    else addpath = @"\Reports\Store\EN\StorageReport.rdlc";
-                    string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+                        List<ReportParameter> paramarr = new List<ReportParameter>();
 
-                    ReportCls.checkLang();
+                        string addpath;
+                        bool isArabic = ReportCls.checkLang();
+                        if (isArabic)
+                        {
+                            addpath = @"\Reports\Store\Ar\ArStorageReport.rdlc";
+                        }
+                        else addpath = @"\Reports\Store\EN\StorageReport.rdlc";
+                        string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
-                    clsReports.itemLocation(itemLocationListQuery, rep, reppath);
-                    clsReports.setReportLanguage(paramarr);
-                    clsReports.Header(paramarr);
+                        ReportCls.checkLang();
+                        clsReports.setReportLanguage(paramarr);
+                        clsReports.itemLocation(itemLocationListQuery, rep, reppath, paramarr);
 
-                    rep.SetParameters(paramarr);
+                        clsReports.Header(paramarr);
 
-                    rep.Refresh();
+                        rep.SetParameters(paramarr);
 
-                    saveFileDialog.Filter = "PDF|*.pdf;";
+                        rep.Refresh();
 
-                    if (saveFileDialog.ShowDialog() == true)
-                    {
-                        string filepath = saveFileDialog.FileName;
-                        LocalReportExtensions.ExportToPDF(rep, filepath);
+                        saveFileDialog.Filter = "PDF|*.pdf;";
+
+                        if (saveFileDialog.ShowDialog() == true)
+                        {
+                            string filepath = saveFileDialog.FileName;
+                            LocalReportExtensions.ExportToPDF(rep, filepath);
+                        }
                     }
                     #endregion
                 }
@@ -765,26 +770,29 @@ namespace POS.View.storage
                 if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
                     #region
-                    List<ReportParameter> paramarr = new List<ReportParameter>();
-
-                    string addpath;
-                    bool isArabic = ReportCls.checkLang();
-                    if (isArabic)
+                    if (itemLocationListQuery != null)
                     {
-                        addpath = @"\Reports\Store\Ar\ArStorageReport.rdlc";
+                        List<ReportParameter> paramarr = new List<ReportParameter>();
+
+                        string addpath;
+                        bool isArabic = ReportCls.checkLang();
+                        if (isArabic)
+                        {
+                            addpath = @"\Reports\Store\Ar\ArStorageReport.rdlc";
+                        }
+                        else addpath = @"\Reports\Store\EN\StorageReport.rdlc";
+                        string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+                        ReportCls.checkLang();
+
+                        clsReports.itemLocation(itemLocationListQuery, rep, reppath, paramarr);
+                        clsReports.setReportLanguage(paramarr);
+                        clsReports.Header(paramarr);
+
+                        rep.SetParameters(paramarr);
+                        rep.Refresh();
+                        LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.rep_printer_name, short.Parse(MainWindow.rep_print_count));
                     }
-                    else addpath = @"\Reports\Store\EN\StorageReport.rdlc";
-                    string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-                    ReportCls.checkLang();
-
-                    clsReports.itemLocation(itemLocationListQuery, rep, reppath);
-                    clsReports.setReportLanguage(paramarr);
-                    clsReports.Header(paramarr);
-
-                    rep.SetParameters(paramarr);
-                    rep.Refresh();
-                    LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.rep_printer_name, short.Parse(MainWindow.rep_print_count));
                     #endregion
                 }
                 else
@@ -810,42 +818,45 @@ namespace POS.View.storage
                 if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
                     #region
-                    Window.GetWindow(this).Opacity = 0.2;
-            string pdfpath = "";
+                    if (itemLocationListQuery != null)
+                    {
+                        Window.GetWindow(this).Opacity = 0.2;
+                        string pdfpath = "";
 
-            List<ReportParameter> paramarr = new List<ReportParameter>();
+                        List<ReportParameter> paramarr = new List<ReportParameter>();
 
-            pdfpath = @"\Thumb\report\temp.pdf";
-            pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
+                        pdfpath = @"\Thumb\report\temp.pdf";
+                        pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
 
-            string addpath;
-            bool isArabic = ReportCls.checkLang();
-            if (isArabic)
-            {
-                addpath = @"\Reports\Store\Ar\ArStorageReport.rdlc";
-            }
-            else addpath = @"\Reports\Store\EN\StorageReport.rdlc";
-            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+                        string addpath;
+                        bool isArabic = ReportCls.checkLang();
+                        if (isArabic)
+                        {
+                            addpath = @"\Reports\Store\Ar\ArStorageReport.rdlc";
+                        }
+                        else addpath = @"\Reports\Store\EN\StorageReport.rdlc";
+                        string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
-            ReportCls.checkLang();
+                        ReportCls.checkLang();
 
-            clsReports.itemLocation(itemLocationListQuery, rep, reppath);
-            clsReports.setReportLanguage(paramarr);
-            clsReports.Header(paramarr);
+                        clsReports.itemLocation(itemLocationListQuery, rep, reppath, paramarr);
+                        clsReports.setReportLanguage(paramarr);
+                        clsReports.Header(paramarr);
 
-            rep.SetParameters(paramarr);
+                        rep.SetParameters(paramarr);
 
-            rep.Refresh();
+                        rep.Refresh();
 
-            LocalReportExtensions.ExportToPDF(rep, pdfpath);
-            wd_previewPdf w = new wd_previewPdf();
-            w.pdfPath = pdfpath;
-            if (!string.IsNullOrEmpty(w.pdfPath))
-            {
-                w.ShowDialog();
-                w.wb_pdfWebViewer.Dispose();
-            }
-            Window.GetWindow(this).Opacity = 1;
+                        LocalReportExtensions.ExportToPDF(rep, pdfpath);
+                        wd_previewPdf w = new wd_previewPdf();
+                        w.pdfPath = pdfpath;
+                        if (!string.IsNullOrEmpty(w.pdfPath))
+                        {
+                            w.ShowDialog();
+                            w.wb_pdfWebViewer.Dispose();
+                        }
+                        Window.GetWindow(this).Opacity = 1;
+                    }
                     #endregion
                 }
                 else
@@ -941,10 +952,13 @@ namespace POS.View.storage
 
                 if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
-                    Window.GetWindow(this).Opacity = 0.2;
-                    win_Storagelvc win = new win_Storagelvc(itemLocationListQuery, 2);
-                    win.ShowDialog();
-                    Window.GetWindow(this).Opacity = 1;
+                    if (itemLocationListQuery != null)
+                    {
+                        Window.GetWindow(this).Opacity = 0.2;
+                        win_Storagelvc win = new win_Storagelvc(itemLocationListQuery, 2);
+                        win.ShowDialog();
+                        Window.GetWindow(this).Opacity = 1;
+                    }
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);

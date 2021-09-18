@@ -303,6 +303,7 @@ namespace POS.View
             public int Count { get; set; }
             public decimal Price { get; set; }
             public decimal Total { get; set; }
+            public int OrderId { get; set; }
         }
 
         #endregion
@@ -551,7 +552,7 @@ namespace POS.View
                 var defaultPurUnit = itemUnits.ToList().Find(c => c.defaultPurchase == 1);
                 if (defaultPurUnit != null)
                 {
-                    int index = billDetails.IndexOf(billDetails.Where(p => p.itemUnitId == defaultPurUnit.itemUnitId).FirstOrDefault());
+                    int index = billDetails.IndexOf(billDetails.Where(p => p.itemUnitId == defaultPurUnit.itemUnitId && p.OrderId == 0).FirstOrDefault());
                     if (index == -1)//item doesn't exist in bill
                     {
                         // create new row in bill details data grid
@@ -732,6 +733,7 @@ namespace POS.View
                         itemT.price = billDetails[i].Price;
                         itemT.itemUnitId = billDetails[i].itemUnitId;
                         itemT.createUserId = MainWindow.userID;
+                        itemT.invoiceId = billDetails[i].OrderId;
 
                         invoiceItems.Add(itemT);
                     }
@@ -947,9 +949,9 @@ namespace POS.View
                 bool valid = validateItemUnits();
                 if (billDetails.Count > 0 && valid)
                 {
-                    await addInvoice(_InvoiceType, "pi");
-                    refreshDraftNotification();
+                    await addInvoice(_InvoiceType, "pi");                 
                     clearInvoice();
+                    refreshDraftNotification();
                     _InvoiceType = "pd";
                 }
                 else if (billDetails.Count == 0)
@@ -990,7 +992,6 @@ namespace POS.View
             billDetails.Clear();
             tb_total.Text = "0";
             tb_sum.Text = "0";
-            //tb_taxValue.Text = MainWindow.tax.ToString();
             if (MainWindow.tax != 0)
                 tb_taxValue.Text = SectionData.DecTostring(MainWindow.tax);
             else
@@ -1270,6 +1271,9 @@ namespace POS.View
             {
                 _SequenceNum++;
                 decimal total = (decimal)(itemT.price * itemT.quantity);
+                int orderId = 0;
+                if (itemT.invoiceId != null)
+                    orderId = (int)itemT.invoiceId;
                 billDetails.Add(new BillDetails()
                 {
                     ID = _SequenceNum,
@@ -1281,6 +1285,7 @@ namespace POS.View
                     //Price = (decimal)itemT.price,
                     Price = decimal.Parse(SectionData.DecTostring((decimal)itemT.price)),
                     Total = total,
+                    OrderId = orderId,
                 });
             }
 
@@ -1742,7 +1747,7 @@ namespace POS.View
                             int itemId = (int)unit1.itemId;
                             if (unit1.itemId != 0)
                             {
-                                int index = billDetails.IndexOf(billDetails.Where(p => p.itemUnitId == unit1.itemUnitId).FirstOrDefault());
+                                int index = billDetails.IndexOf(billDetails.Where(p => p.itemUnitId == unit1.itemUnitId && p.OrderId == 0).FirstOrDefault());
 
                                 if (index == -1)//item doesn't exist in bill
                                 {
@@ -1910,7 +1915,7 @@ namespace POS.View
                 var columnName = e.Column.Header.ToString();
 
                 BillDetails row = e.Row.Item as BillDetails;
-                int index = billDetails.IndexOf(billDetails.Where(p => p.itemUnitId == row.itemUnitId).FirstOrDefault());
+                int index = billDetails.IndexOf(billDetails.Where(p => p.itemUnitId == row.itemUnitId && p.OrderId == row.OrderId).FirstOrDefault());
 
                 TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
                 if (elapsed.TotalMilliseconds < 100)
@@ -2710,5 +2715,40 @@ namespace POS.View
             await fillInvoiceInputs(invoice);
         }
         #endregion
+
+        private async void Btn_shortageInvoice_Click(object sender, RoutedEventArgs e)
+        {
+            _InvoiceType = "pd"; // shortage purchase invoice
+            await buildShortageInvoiceDetails();
+        }
+        private async Task buildShortageInvoiceDetails()
+        {
+            //get invoice items
+            invoiceItems = await invoice.getShortageItems(MainWindow.branchID.Value);
+            // build invoice details grid
+            _SequenceNum = 0;
+            billDetails.Clear();
+            foreach (ItemTransfer itemT in invoiceItems)
+            {
+                _SequenceNum++;
+                decimal total = (decimal)(itemT.price * itemT.quantity);
+                billDetails.Add(new BillDetails()
+                {
+                    ID = _SequenceNum,
+                    Product = itemT.itemName,
+                    itemId = (int)itemT.itemId,
+                    Unit = itemT.itemUnitId.ToString(),
+                    itemUnitId = (int)itemT.itemUnitId,
+                    Count = (int)itemT.quantity,
+                    OrderId = (int)itemT.invoiceId,
+                    Price = decimal.Parse(SectionData.DecTostring((decimal)itemT.price)),
+                    Total = total,
+                });
+            }
+
+            tb_barcode.Focus();
+
+            refrishBillDetails();
+        }
     }
 }

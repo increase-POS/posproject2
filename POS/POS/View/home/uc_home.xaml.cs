@@ -51,6 +51,9 @@ namespace POS.View
             InitializeComponent();
             timerAnimation();
         }
+        DispatcherTimer threadtimer;
+        public static int threadtime = 15;
+        int Skip = 0;
         string branchesPermission = "dashboard_branches";
         Dash dash = new Dash();
         User user = new User();
@@ -59,6 +62,8 @@ namespace POS.View
         public SeriesCollection SeriesCollection { get; set; }
         public string[] Labels { get; set; }
         public Func<double, string> YFormatter { get; set; }
+        public List<BestSeller> listBestSeller { get; set; }
+
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             await SectionData.fillBranchesWithAll(cb_branch);
@@ -101,78 +106,78 @@ namespace POS.View
 
             #endregion
             #region user online 
-            SeriesCollection seriesUser = new SeriesCollection();
-            seriesUser.Add(
-                 new PieSeries
-                 {
-                     Values = new ChartValues<int> { 5 },
-                     Title = "",
-                     DataLabels = false,
-                     Fill = Application.Current.Resources["mediumGreen"] as SolidColorBrush
-                 }
-             );
-            seriesUser.Add(
-                 new PieSeries
-                 {
-                     Values = new ChartValues<int> { 15 - 5 },
-                     Title = "",
-                     DataLabels = false,
-                     Fill = Application.Current.Resources["MainColorlightGrey"] as SolidColorBrush
-                 }
-             );
-            pch_userOnline.Series = seriesUser;
+            //SeriesCollection seriesUser = new SeriesCollection();
+            //seriesUser.Add(
+            //     new PieSeries
+            //     {
+            //         Values = new ChartValues<int> { 5 },
+            //         Title = "",
+            //         DataLabels = false,
+            //         Fill = Application.Current.Resources["mediumGreen"] as SolidColorBrush
+            //     }
+            // );
+            //seriesUser.Add(
+            //     new PieSeries
+            //     {
+            //         Values = new ChartValues<int> { 15 - 5 },
+            //         Title = "",
+            //         DataLabels = false,
+            //         Fill = Application.Current.Resources["MainColorlightGrey"] as SolidColorBrush
+            //     }
+            // );
+            //pch_userOnline.Series = seriesUser;
 
-            #region userImageLoad
-            grid_userImages.Children.Clear();
-            users = await user.GetUsersActive();
-            int userCount = 0;
-            foreach (var item in users)
-            {
-                if (userCount > 4)
-                {
-                    Grid grid = new Grid();
-                    grid.Margin = new Thickness(-5, 0, -5, 0);
-                    Grid.SetColumn(grid, 4);
-                    #region rectangle
-                    Rectangle rectangle = new Rectangle();
-                    rectangle.Fill = Application.Current.Resources["Orange"] as SolidColorBrush;
-                    rectangle.RadiusX = 90;
-                    rectangle.RadiusY = 90;
-                    rectangle.Height = 40;
-                    rectangle.Width = 40;
-                    rectangle.StrokeThickness = 1;
-                    rectangle.Stroke = Application.Current.Resources["White"] as SolidColorBrush; ;
-                    grid.Children.Add(rectangle);
-                    #endregion
-                    #region rectangle
-                    TextBlock textBlock = new TextBlock();
-                    textBlock.Text = "+"+ (users.Count() - 4).ToString();
-                    textBlock.HorizontalAlignment = HorizontalAlignment.Center;
-                    textBlock.VerticalAlignment = VerticalAlignment.Center;
-                    textBlock.FontWeight = FontWeights.Bold;
-                    textBlock.Foreground = Application.Current.Resources["White"] as SolidColorBrush;
-                    grid.Children.Add(textBlock);
-                    #endregion
-                    grid_userImages.Children.Add(grid);
-                    break;
-                }
-                else
-                {
-                    Ellipse ellipse = new Ellipse();
-                    ellipse.Margin = new Thickness(-5, 0, -5, 0);
-                    ellipse.StrokeThickness = 1;
-                    ellipse.Stroke = Application.Current.Resources["White"] as SolidColorBrush;
-                    ellipse.Height = 40;
-                    ellipse.Width = 40;
-                    ellipse.FlowDirection = FlowDirection.LeftToRight;
-                    ellipse.ToolTip = item.username;
-                    userImageLoad(ellipse, item.image);
-                    Grid.SetColumn(ellipse, userCount);
-                    grid_userImages.Children.Add(ellipse);
-                    userCount++;
-                }
-            }
-            #endregion
+            //#region userImageLoad
+            //grid_userImages.Children.Clear();
+            //users = await user.GetUsersActive();
+            //int userCount = 0;
+            //foreach (var item in users)
+            //{
+            //    if (userCount > 4)
+            //    {
+            //        Grid grid = new Grid();
+            //        grid.Margin = new Thickness(-5, 0, -5, 0);
+            //        Grid.SetColumn(grid, 4);
+            //        #region rectangle
+            //        Rectangle rectangle = new Rectangle();
+            //        rectangle.Fill = Application.Current.Resources["Orange"] as SolidColorBrush;
+            //        rectangle.RadiusX = 90;
+            //        rectangle.RadiusY = 90;
+            //        rectangle.Height = 40;
+            //        rectangle.Width = 40;
+            //        rectangle.StrokeThickness = 1;
+            //        rectangle.Stroke = Application.Current.Resources["White"] as SolidColorBrush; ;
+            //        grid.Children.Add(rectangle);
+            //        #endregion
+            //        #region rectangle
+            //        TextBlock textBlock = new TextBlock();
+            //        textBlock.Text = "+"+ (users.Count() - 4).ToString();
+            //        textBlock.HorizontalAlignment = HorizontalAlignment.Center;
+            //        textBlock.VerticalAlignment = VerticalAlignment.Center;
+            //        textBlock.FontWeight = FontWeights.Bold;
+            //        textBlock.Foreground = Application.Current.Resources["White"] as SolidColorBrush;
+            //        grid.Children.Add(textBlock);
+            //        #endregion
+            //        grid_userImages.Children.Add(grid);
+            //        break;
+            //    }
+            //    else
+            //    {
+            //        Ellipse ellipse = new Ellipse();
+            //        ellipse.Margin = new Thickness(-5, 0, -5, 0);
+            //        ellipse.StrokeThickness = 1;
+            //        ellipse.Stroke = Application.Current.Resources["White"] as SolidColorBrush;
+            //        ellipse.Height = 40;
+            //        ellipse.Width = 40;
+            //        ellipse.FlowDirection = FlowDirection.LeftToRight;
+            //        ellipse.ToolTip = item.username;
+            //        userImageLoad(ellipse, item.image);
+            //        Grid.SetColumn(ellipse, userCount);
+            //        grid_userImages.Children.Add(ellipse);
+            //        userCount++;
+            //    }
+            //}
+            //#endregion
             #endregion
             #region Branch 
             SeriesCollection seriesBranch = new SeriesCollection();
@@ -242,15 +247,47 @@ namespace POS.View
             #endregion
 
 
-           await refreshView();
+            //thread
+            threadtimer = new DispatcherTimer();
+            threadtimer.Interval = TimeSpan.FromSeconds(threadtime);
+            threadtimer.Tick += timer_Thread;
+            threadtimer.Start();
+
+            await refreshView();
 
         }
-       async Task refreshView()
+        void timer_Thread(object sendert, EventArgs et)
+        {
+            try
+            {
+                refreshView();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+
+
+        }
+        async Task refreshView()
         {
            await AllSalPur();
             await AgentCount();
             await UserOnline();
             await BranchOnline();
+            #region
+            await BestSeller();
+            if (listBestSeller.Count < 4 || Skip == 2)
+                Skip = 0;
+            else if (listBestSeller.Count < 7 && Skip < 1)
+                Skip++;
+            else if (listBestSeller.Count < 10 && Skip < 2)
+                Skip++;
+            paginationBestSeller(listBestSeller, Skip);
+            #endregion
+            await UserOnlinePic();
+
+
 
 
 
@@ -314,7 +351,7 @@ namespace POS.View
             try
             {
                 List<UserOnlineCount> listUserOnline = await dash.Getuseronline();
-                if (cb_branch.SelectedValue != null)
+                    if (cb_branch.SelectedValue != null)
                     if ((int)cb_branch.SelectedValue == 0)
                     {
                         dash.userOnline = listUserOnline.Sum(x => x.userOnlineCount).ToString();
@@ -331,7 +368,7 @@ namespace POS.View
                         else
                             dash.userOnline = dash.userOffline = "0";
                     }
-                InitializePieChart(pch_userOnline, 
+                    InitializePieChart(pch_userOnline, 
                     int.Parse(dash.userOnline),
                     (int.Parse(dash.userOnline) + int.Parse(dash.userOffline)));
             }
@@ -339,6 +376,115 @@ namespace POS.View
             {
                 SectionData.ExceptionMessage(ex, this);
             }
+        }
+        async Task UserOnlinePic()
+        {
+            try
+            {
+                List<userOnlineInfo> listUserOnline = await dash.GetuseronlineInfo();
+                if (cb_branch.SelectedValue != null)
+                    if ((int)cb_branch.SelectedValue == 0)
+                    {
+                        InitializeUserOnlinePic(listUserOnline);
+                    }
+                    else
+                    {
+                        List<userOnlineInfo> newUserOnline = listUserOnline.Where(s => s.branchId == (int)cb_branch.SelectedValue).ToList();
+                        if (newUserOnline != null && newUserOnline.Count != 0)
+                        {
+                        InitializeUserOnlinePic(newUserOnline);
+                        }
+                        else
+                            InitializeNoUserOnlinePic();
+                    }
+                InitializePieChart(pch_userOnline,
+                int.Parse(dash.userOnline),
+                (int.Parse(dash.userOnline) + int.Parse(dash.userOffline)));
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+        void InitializeUserOnlinePic(List<userOnlineInfo> users)
+        {
+            #region userImageLoad
+            grid_userImages.Children.Clear();
+            int userCount = 0;
+            foreach (var item in users)
+            {
+                if (userCount > 4)
+                {
+                    Grid grid = new Grid();
+                    grid.Margin = new Thickness(-5, 0, -5, 0);
+                    Grid.SetColumn(grid, 4);
+                    #region rectangle
+                    Rectangle rectangle = new Rectangle();
+                    rectangle.Fill = Application.Current.Resources["Orange"] as SolidColorBrush;
+                    rectangle.RadiusX = 90;
+                    rectangle.RadiusY = 90;
+                    rectangle.Height = 40;
+                    rectangle.Width = 40;
+                    rectangle.StrokeThickness = 1;
+                    rectangle.Stroke = Application.Current.Resources["White"] as SolidColorBrush; ;
+                    grid.Children.Add(rectangle);
+                    #endregion
+                    #region rectangle
+                    TextBlock textBlock = new TextBlock();
+                    textBlock.Text = "+" + (users.Count() - 4).ToString();
+                    textBlock.HorizontalAlignment = HorizontalAlignment.Center;
+                    textBlock.VerticalAlignment = VerticalAlignment.Center;
+                    textBlock.FontWeight = FontWeights.Bold;
+                    textBlock.Foreground = Application.Current.Resources["White"] as SolidColorBrush;
+                    grid.Children.Add(textBlock);
+                    #endregion
+                    grid_userImages.Children.Add(grid);
+                    break;
+                }
+                else
+                {
+                    Ellipse ellipse = new Ellipse();
+                    ellipse.Margin = new Thickness(-5, 0, -5, 0);
+                    ellipse.StrokeThickness = 1;
+                    ellipse.Stroke = Application.Current.Resources["White"] as SolidColorBrush;
+                    ellipse.Height = 40;
+                    ellipse.Width = 40;
+                    ellipse.FlowDirection = FlowDirection.LeftToRight;
+                    ellipse.ToolTip = item.userName;
+                    userImageLoad(ellipse, item.image);
+                    Grid.SetColumn(ellipse, userCount);
+                    grid_userImages.Children.Add(ellipse);
+                    userCount++;
+                }
+            }
+            #endregion
+        }
+        void InitializeNoUserOnlinePic()
+        {
+            Grid grid = new Grid();
+            grid.Margin = new Thickness(-5, 0, -5, 0);
+            Grid.SetColumn(grid, 4);
+            #region rectangle
+            Rectangle rectangle = new Rectangle();
+            rectangle.Fill = Application.Current.Resources["Orange"] as SolidColorBrush;
+            rectangle.RadiusX = 90;
+            rectangle.RadiusY = 90;
+            rectangle.Height = 40;
+            rectangle.Width = 40;
+            rectangle.StrokeThickness = 1;
+            rectangle.Stroke = Application.Current.Resources["White"] as SolidColorBrush; ;
+            grid.Children.Add(rectangle);
+            #endregion
+            #region rectangle
+            TextBlock textBlock = new TextBlock();
+            textBlock.Text = "0";
+            textBlock.HorizontalAlignment = HorizontalAlignment.Center;
+            textBlock.VerticalAlignment = VerticalAlignment.Center;
+            textBlock.FontWeight = FontWeights.Bold;
+            textBlock.Foreground = Application.Current.Resources["White"] as SolidColorBrush;
+            grid.Children.Add(textBlock);
+            #endregion
+            grid_userImages.Children.Add(grid);
         }
         async Task BranchOnline()
         {
@@ -361,6 +507,198 @@ namespace POS.View
             {
                 SectionData.ExceptionMessage(ex, this);
             }
+        }
+
+       
+
+        async  Task BestSeller()
+        {
+            try
+            {
+                List<BestSeller> listAllBestSeller = await dash.Getbestseller();
+                if (cb_branch.SelectedValue != null)
+                    if ((int)cb_branch.SelectedValue == 0)
+                    {
+                        listBestSeller = listAllBestSeller.GroupBy(x => new { x.itemName, x.unitName }).Select(s => new BestSeller
+                        {
+                            itemName = s.FirstOrDefault().itemName,
+                            unitName = s.FirstOrDefault().unitName,
+                            quantity = s.Sum(g => g.quantity),
+                            subTotal = s.Sum(g => g.subTotal),
+                        }).ToList();
+                        //paginationBestSeller(dash.listBestSeller);
+                    }
+                    else
+                    {
+                        listBestSeller = listAllBestSeller.Where(s => s.branchCreatorId == (int)cb_branch.SelectedValue).ToList();
+                        if (listBestSeller != null)
+                        {
+                            listBestSeller = listBestSeller.GroupBy(x => new { x.itemName, x.unitName }).Select(s => new BestSeller
+                            {
+                                itemName = s.FirstOrDefault().itemName,
+                                unitName = s.FirstOrDefault().unitName,
+                                quantity = s.Sum(g => g.quantity),
+                                subTotal = s.Sum(g => g.subTotal),
+                            }).ToList();
+                            //paginationBestSeller(dash.listBestSeller);
+                        }
+                        else
+                            listBestSeller =new List<BestSeller>();
+                    }
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+        void paginationBestSeller(List<BestSeller> listBestSeller, int skip = 0)
+        {
+            grid_bestSeller.Children.Clear();
+            int order = (skip*3)+1;
+            int row = 1;
+            listBestSeller = listBestSeller.Skip(skip * 3).Take(3).ToList();
+            foreach (var item in listBestSeller)
+            {
+                InitializeBestSellerRow(order.ToString(), item.itemName + "-" + item.unitName,
+                  item.quantity.ToString(), item.subTotal.ToString(), row);
+                order++;
+                row += 2;
+            }
+
+            #region Border
+            #region   firstBorder 
+            var firstBorder = new Border();
+            firstBorder.Margin = new Thickness(10, 2.5, 10, 2.5);
+            firstBorder.Height = 1;
+            firstBorder.BorderThickness = new Thickness(0, 0, 0, 0);
+            firstBorder.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#C2F3E8"));
+            Grid.SetRow(firstBorder, 2);
+            Grid.SetColumnSpan(firstBorder, 7);
+            #endregion
+            #region   firstBorder 
+            var secondBorder = new Border();
+            secondBorder.Margin = new Thickness(10, 2.5, 10, 2.5);
+            secondBorder.Height = 1;
+            secondBorder.BorderThickness = new Thickness(0, 0, 0, 0);
+            secondBorder.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#C2F3E8"));
+            Grid.SetRow(secondBorder, 4);
+            Grid.SetColumnSpan(secondBorder, 7);
+            #endregion
+            grid_bestSeller.Children.Add(firstBorder);
+            grid_bestSeller.Children.Add(secondBorder);
+            #endregion
+
+
+        }
+        void InitializeBestSellerRow(string No,string item, string count,string amount , int row )
+        {
+            #region   itemNo
+            var itemNo = new TextBlock();
+            itemNo.Text = "#" + No;
+            itemNo.Tag = "itemTitle";
+            itemNo.VerticalAlignment = VerticalAlignment.Center;
+            itemNo.HorizontalAlignment = HorizontalAlignment.Center;
+            itemNo.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#1D75B8"));
+            itemNo.FontSize = 16;
+            itemNo.Margin = new Thickness(2.5, 1, 2.5, 1);
+            Grid.SetRow(itemNo, row);
+            Grid.SetColumn(itemNo, 0);
+            #endregion
+            #region   itemTitle
+            var itemTitle = new TextBlock();
+            itemTitle.Text = "Item:";
+            itemTitle.Tag = "itemTitle";
+            itemTitle.VerticalAlignment = VerticalAlignment.Center;
+            itemTitle.HorizontalAlignment = HorizontalAlignment.Center;
+            itemTitle.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#707070"));
+            itemTitle.FontSize = 16;
+            itemTitle.Margin = new Thickness(5, 1, 5, 1);
+            Grid.SetRow(itemTitle, row);
+            Grid.SetColumn(itemTitle, 1);
+            #endregion
+            #region   itemName
+            var itemName = new TextBlock();
+            itemName.Text = item;
+            itemName.Tag = "itemName";
+            itemName.VerticalAlignment = VerticalAlignment.Center;
+            itemName.HorizontalAlignment = HorizontalAlignment.Left;
+            itemName.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#707070"));
+            itemName.FontSize = 16;
+            itemName.Margin = new Thickness(5, 1, 5, 1);
+            Grid.SetRow(itemName, row);
+            Grid.SetColumn(itemName, 2);
+            #endregion
+            #region   countTitle
+            var countTitle = new TextBlock();
+            countTitle.Text = "Count:";
+            countTitle.Tag = "countTitle";
+            countTitle.VerticalAlignment = VerticalAlignment.Center;
+            countTitle.HorizontalAlignment = HorizontalAlignment.Center;
+            countTitle.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#707070"));
+            countTitle.FontSize = 16;
+            countTitle.Margin = new Thickness(5, 1, 5, 1);
+            Grid.SetRow(countTitle, row);
+            Grid.SetColumn(countTitle, 3);
+            #endregion
+            #region   countItem
+            var countItem = new TextBlock();
+            countItem.Text = count;
+            countItem.Tag = "itemName";
+            countItem.VerticalAlignment = VerticalAlignment.Center;
+            countItem.HorizontalAlignment = HorizontalAlignment.Left;
+            countItem.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#1D75B8"));
+            countItem.FontSize = 16;
+            countItem.Margin = new Thickness(5, 1, 5, 1);
+            Grid.SetRow(countItem, row);
+            Grid.SetColumn(countItem, 4);
+            #endregion
+            #region   amountTitle
+            var amountTitle = new TextBlock();
+            amountTitle.Text = "Amount:";
+            amountTitle.Tag = "amountTitle";
+            amountTitle.VerticalAlignment = VerticalAlignment.Center;
+            amountTitle.HorizontalAlignment = HorizontalAlignment.Center;
+            amountTitle.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#707070"));
+            amountTitle.FontSize = 16;
+            amountTitle.Margin = new Thickness(5, 1, 5, 1);
+            Grid.SetRow(amountTitle, row);
+            Grid.SetColumn(amountTitle, 5);
+            #endregion
+            #region amountStackPanel
+            var amountStackPanel = new StackPanel();
+            amountStackPanel.Orientation = Orientation.Horizontal;
+            amountStackPanel.VerticalAlignment = VerticalAlignment.Center;
+            amountStackPanel.HorizontalAlignment = HorizontalAlignment.Right;
+            amountStackPanel.Margin = new Thickness(5, 1, 5, 1);
+            Grid.SetRow(amountStackPanel, row);
+            Grid.SetColumn(amountStackPanel, 6);
+            #region   amountValue
+            var amountValue = new TextBlock();
+            amountValue.Text = amount;
+            amountValue.FontSize = 16;
+            amountValue.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#008A1C"));
+            amountTitle.Margin = new Thickness(0, 0, 5, 0);
+            #endregion
+            #region   amountSympol
+            var amountSympol = new TextBlock();
+            amountSympol.Text = "$";
+            amountSympol.FontSize = 16;
+            amountSympol.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#008A1C"));
+            #endregion
+            amountStackPanel.Children.Add(amountValue);
+            amountStackPanel.Children.Add(amountSympol);
+            #endregion
+            grid_bestSeller.Children.Add(itemNo);
+            grid_bestSeller.Children.Add(itemTitle);
+            grid_bestSeller.Children.Add(itemName);
+            grid_bestSeller.Children.Add(countTitle);
+            grid_bestSeller.Children.Add(countItem);
+            grid_bestSeller.Children.Add(amountTitle);
+            grid_bestSeller.Children.Add(amountStackPanel);
+        }
+        async Task DailyPurchase()
+        {
+
         }
         void InitializePieChart(PieChart pieChart ,int partial=0, int all=0)
         {

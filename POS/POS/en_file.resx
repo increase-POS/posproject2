@@ -2431,4 +2431,10 @@ Please add Email in setting</value>
   <data name="trShipping" xml:space="preserve">
     <value>Shipping</value>
   </data>
+  <data name="trItemsImport/Export" xml:space="preserve">
+    <value>Export/Import Items</value>
+  </data>
+  <data name="trReceiptOfPurchasesBill" xml:space="preserve">
+    <value>Receipt of Purchases Bill</value>
+  </data>
 </root>

@@ -999,8 +999,8 @@ namespace POS.View.storage
                 title = "trExceedMaxLimitAlertTilte",
                 ncontent = "trExceedMaxLimitAlertContent",
                 msgType = "alert",
-                createDate = DateTime.Now,
-                updateDate = DateTime.Now,
+                //createDate = DateTime.Now,
+               // updateDate = DateTime.Now,
                 createUserId = MainWindow.userID.Value,
                 updateUserId = MainWindow.userID.Value,
             };

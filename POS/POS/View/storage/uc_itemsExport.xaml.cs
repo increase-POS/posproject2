@@ -123,7 +123,7 @@ namespace POS.View.storage
             dg_billDetails.Columns[3].Header = MainWindow.resourcemanager.GetString("trUnit");
             dg_billDetails.Columns[4].Header = MainWindow.resourcemanager.GetString("trQuantity");
 
-            
+            txt_titleDataGridInvoice.Text = MainWindow.resourcemanager.GetString("trItemsImport/Export");
             tt_error_previous.Content = MainWindow.resourcemanager.GetString("trPrevious");
             tt_error_next.Content = MainWindow.resourcemanager.GetString("trNext");
 
@@ -1505,7 +1505,7 @@ namespace POS.View.storage
                 {
                     /////////////////////////////////////
                     ///  
-                    if (invoiceItems.Count > 0)
+                    if (invoiceItems!=null)
                     {
                         Thread t1 = new Thread(() =>
                     {
@@ -1545,10 +1545,9 @@ namespace POS.View.storage
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-
                 if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
-                    if (invoiceItems.Count > 0)
+                    if (invoiceItems!=null)
                     {
                         Thread t1 = new Thread(() =>
                     {
@@ -1600,27 +1599,26 @@ namespace POS.View.storage
 
                 if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
-
                     #region
-                    if (invoiceItems.Count() > 0)
+                    if (invoiceItems!=null)
                     { 
                         Window.GetWindow(this).Opacity = 0.2;
-                    /////////////////////
-                    string pdfpath = "";
-                    pdfpath = @"\Thumb\report\temp.pdf";
-                    pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
+                        /////////////////////
+                        string pdfpath = "";
+                        pdfpath = @"\Thumb\report\temp.pdf";
+                        pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
 
-                    BuildReport();
-                    LocalReportExtensions.ExportToPDF(rep, pdfpath);
-                    ///////////////////
-                    wd_previewPdf w = new wd_previewPdf();
-                    w.pdfPath = pdfpath;
-                    if (!string.IsNullOrEmpty(w.pdfPath))
-                    {
-                        w.ShowDialog();
-                        w.wb_pdfWebViewer.Dispose();
-                    }
-                    Window.GetWindow(this).Opacity = 1;
+                        BuildReport();
+                        LocalReportExtensions.ExportToPDF(rep, pdfpath);
+                        ///////////////////
+                        wd_previewPdf w = new wd_previewPdf();
+                        w.pdfPath = pdfpath;
+                        if (!string.IsNullOrEmpty(w.pdfPath))
+                        {
+                            w.ShowDialog();
+                            w.wb_pdfWebViewer.Dispose();
+                        }
+                        Window.GetWindow(this).Opacity = 1;
                 }
                     //////////////////////////////////////
                     #endregion

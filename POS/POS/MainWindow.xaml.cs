@@ -237,7 +237,8 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
 
 
 
-            #endregion
+                #endregion
+                translate();
 
                 #region get user path
                 try
@@ -356,7 +357,6 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
                 }
                 #endregion
 
-                translate();
 
                 #region user personal info
                 txt_userName.Text = userLogin.name;

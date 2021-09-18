@@ -3409,6 +3409,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Export/Import Items.
+        /// </summary>
+        internal static string trItemsImport_Export {
+            get {
+                return ResourceManager.GetString("trItemsImport/Export", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Storage.
         /// </summary>
         internal static string trItemsStorage {
@@ -5026,6 +5035,15 @@ namespace POS {
         internal static string trReasonOfShortageHint {
             get {
                 return ResourceManager.GetString("trReasonOfShortageHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Receipt of Purchases Bill.
+        /// </summary>
+        internal static string trReceiptOfPurchasesBill {
+            get {
+                return ResourceManager.GetString("trReceiptOfPurchasesBill", resourceCulture);
             }
         }
         

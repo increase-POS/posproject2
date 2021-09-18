@@ -44,6 +44,29 @@ namespace POS.Classes
         public int offlineUsers { get; set; }
 
     }
+
+    public class userOnlineInfo
+    {
+        public Nullable<int> branchId { get; set; }
+        public string branchName { get; set; }
+        public Nullable<byte> branchisActive { get; set; }
+        public Nullable<int> posId { get; set; }
+        public string posName { get; set; }
+        public Nullable<byte> posisActive { get; set; }
+        public Nullable<int> userId { get; set; }
+        public string usernameAccount { get; set; }
+        public string userName { get; set; }
+        public string lastname { get; set; }
+        public string job { get; set; }
+        public string phone { get; set; }
+        public string mobile { get; set; }
+        public string email { get; set; }
+        public string address { get; set; }
+        public Nullable<byte> userisActive { get; set; }
+        public Nullable<byte> isOnline { get; set; }
+        public string image { get; set; }
+
+    }
     public class BranchOnlineCount
     {
 
@@ -55,23 +78,16 @@ namespace POS.Classes
     }
     public class BestSeller
     {
-
         public string itemName { get; set; }
         public string unitName { get; set; }
-
-
-
         public Nullable<int> itemUnitId { get; set; }
         public Nullable<int> itemId { get; set; }
         public Nullable<int> unitId { get; set; }
         public Nullable<long> quantity { get; set; }
         public Nullable<decimal> price { get; set; }
         public Nullable<int> branchCreatorId { get; set; }
-
         public string branchCreatorName { get; set; }
         public Nullable<decimal> subTotal { get; set; }
-
-
     }
     // storage
     public class IUStorage
@@ -114,9 +130,8 @@ namespace POS.Classes
         public string branchOnline { get; set; }
         public string branchOffline { get; set; }
 
-        
-            
-
+        public string countDailyPurchase { get; set; }
+        public string countDailySales { get; set; }
 
 
 
@@ -161,7 +176,6 @@ namespace POS.Classes
                 return list;
             }
         }
-
         // عدد الموردين والزبائن الكلي
         public async Task<List<AgentsCount>> GetAgentCount()
         {
@@ -203,7 +217,6 @@ namespace POS.Classes
                 return list;
             }
         }
-
         //عدد المستخدمين المتصلين والغير متصلين  حاليا في كل فرع 
         public async Task<List<UserOnlineCount>> Getuseronline()
         {
@@ -245,7 +258,47 @@ namespace POS.Classes
                 return list;
             }
         }
+        //بيانات المستخدمين المتصلين
+        public async Task<List<userOnlineInfo>> GetuseronlineInfo()
+        {
+            List<userOnlineInfo> list = null;
+            // ... Use HttpClient.
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            using (var client = new HttpClient())
+            {
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                client.BaseAddress = new Uri(Global.APIUri);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+                HttpRequestMessage request = new HttpRequestMessage();
+                request.RequestUri = new Uri(Global.APIUri + "dash/GetuseronlineInfo");
+                request.Headers.Add("APIKey", Global.APIKey);
+                request.Method = HttpMethod.Get;
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = await client.SendAsync(request);
 
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonString = await response.Content.ReadAsStringAsync();
+                    jsonString = jsonString.Replace("\\", string.Empty);
+                    jsonString = jsonString.Trim('"');
+                    // fix date format
+                    JsonSerializerSettings settings = new JsonSerializerSettings
+                    {
+                        Converters = new List<JsonConverter> { new BadDateFixingConverter() },
+                        DateParseHandling = DateParseHandling.None
+                    };
+                    list = JsonConvert.DeserializeObject<List<userOnlineInfo>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    return list;
+                }
+                else //web api sent error response 
+                {
+                    list = new List<userOnlineInfo>();
+                }
+                return list;
+            }
+        }
         // عدد الفروع المتصلة وغير المتصلة
         public async Task<List<BranchOnlineCount>> GetBrachonline()
         {
@@ -287,7 +340,6 @@ namespace POS.Classes
                 return list;
             }
         }
-
         // عدد فواتير المبيعات ومرتجع المبيعات والمشتريات ومرتجع المشتريات حسب الفرع في اليوم الحالي
         public async Task<List<InvoiceCount>> GetdashsalpurDay()
         {
@@ -370,7 +422,6 @@ namespace POS.Classes
                 return list;
             }
         }
-
         //كمية قائمة من 10 اصناف في كل فرع 
         public async Task<List<IUStorage>> GetIUStorage(List<ItemUnit> IUList)
         {
@@ -388,7 +439,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
                 myContent = HttpUtility.UrlEncode(myContent);
-                request.RequestUri = new Uri(Global.APIUri + "dash/GetIUStorage?IUList="+ myContent);
+                request.RequestUri = new Uri(Global.APIUri + "dash/GetIUStorage?IUList=" + myContent);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -415,7 +466,6 @@ namespace POS.Classes
                 return list;
             }
         }
-
         // مجموع مبالغ المشتريات والمبيعات اليومي خلال الشهر الحالي لكل فرع
         public async Task<List<TotalPurSale>> GetTotalPurSale()
         {
