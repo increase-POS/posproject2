@@ -2205,9 +2205,9 @@ namespace POS.View.reports
                 string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                 ReportCls.checkLang();
+                //itemTransferInvoiceExternal
+                clsReports.itemTransferInvoiceExternal(temp, rep, reppath, paramarr);
                
-                clsReports.itemTransferInvoice(temp, rep, reppath);
-                clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);
 
                 rep.SetParameters(paramarr);
@@ -2291,7 +2291,7 @@ namespace POS.View.reports
                 //    //r.storageCostValue = decimal.Parse(SectionData.DecTostring(r.storageCostValue));
                 //    //r.diffPercentage = decimal.Parse(SectionData.DecTostring(r.diffPercentage));
                 //}
-                clsReports.itemTransferInvoice(temp, rep, reppath);
+                 clsReports.itemTransferInvoiceExternal(temp, rep, reppath, paramarr);
                 clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);
 
@@ -2361,7 +2361,7 @@ namespace POS.View.reports
 
                   ReportCls.checkLang();
         
-                  clsReports.itemTransferInvoice(temp, rep, reppath);
+                   clsReports.itemTransferInvoiceExternal(temp, rep, reppath, paramarr);
                   clsReports.setReportLanguage(paramarr);
                   clsReports.Header(paramarr);
 
@@ -2449,7 +2449,7 @@ namespace POS.View.reports
 
                 ReportCls.checkLang();
 
-                clsReports.itemTransferInvoice(temp, rep, reppath);
+                 clsReports.itemTransferInvoiceExternal(temp, rep, reppath, paramarr);
                 clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);
 
