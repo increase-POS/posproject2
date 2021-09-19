@@ -72,6 +72,8 @@ namespace POS.View.storage
         Invoice generatedInvoice = new Invoice();
         List<Invoice> invoices;
         List<ItemTransfer> invoiceItems;
+        List<ItemTransfer> mainInvoiceItems;
+
         static private string _ProcessType = "imd"; //draft import
 
         static private int _SequenceNum = 0;
@@ -383,11 +385,7 @@ namespace POS.View.storage
 
                             int count = 1;
                             _Count++;
-                            //decimal price = 0;
-                            // if (unit1.price != null)
-                            //   price = (decimal)unit1.price;
-                            //decimal total = count * price;
-                            //decimal tax = (decimal)(count * item.taxes);
+
                             addRowToBill(item.name, item.itemId, unit1.mainUnit, unit1.itemUnitId, count);
                         }
                         else // item exist prevoiusly in list
@@ -475,7 +473,7 @@ namespace POS.View.storage
             public int Count { get; set; }
             public decimal Price { get; set; }
             public decimal Total { get; set; }
-            public decimal Tax { get; set; }
+            public int OrderId { get; set; }
         }
         #endregion
 
@@ -1096,6 +1094,9 @@ namespace POS.View.storage
             {
                 _SequenceNum++;
                 decimal total = (decimal)(itemT.price * itemT.quantity);
+                int orderId = 0;
+                if (itemT.invoiceId != null)
+                    orderId = (int)itemT.invoiceId;
                 billDetails.Add(new BillDetails()
                 {
                     ID = _SequenceNum,
@@ -1106,6 +1107,7 @@ namespace POS.View.storage
                     Count = (int)itemT.quantity,
                     Price = (decimal)itemT.price,
                     Total = total,
+                    OrderId = orderId,
                 });
             }
             tb_barcode.Focus();
@@ -1169,7 +1171,7 @@ namespace POS.View.storage
                 itemT.price = billDetails[i].Price;
                 itemT.itemUnitId = billDetails[i].itemUnitId;
                 itemT.createUserId = MainWindow.userID;
-
+                itemT.invoiceId = billDetails[i].OrderId;
                 invoiceItems.Add(itemT);
             }
             switch (_ProcessType)
@@ -1329,6 +1331,7 @@ namespace POS.View.storage
                                 Window.GetWindow(this).Opacity = 0.2;
                                 w = new wd_transItemsLocation();
                                 List<ItemTransfer> orderList = new List<ItemTransfer>();
+                            List<int> ordersIds = new List<int>();
                                 foreach (BillDetails d in billDetails)
                                 {
                                     orderList.Add(new ItemTransfer()
@@ -1338,7 +1341,9 @@ namespace POS.View.storage
                                         unitName = d.Unit,
                                         itemUnitId = d.itemUnitId,
                                         quantity = d.Count,
-                                    });
+                                        invoiceId = d.OrderId,
+                            });
+                                ordersIds.Add(d.OrderId);
                                 }
                                 w.orderList = orderList;
                                 if (w.ShowDialog() == true)
@@ -1354,7 +1359,19 @@ namespace POS.View.storage
                                             if (itemsLocations[i].isSelected == true)
                                                 readyItemsLoc.Add(itemsLocations[i]);
                                         }
-                                        await itemLocationModel.recieptOrder(readyItemsLoc, (int)cb_branch.SelectedValue, MainWindow.userID.Value);
+                                    #region notification Object
+                                    Notification not = new Notification()
+                                    {
+                                        title = "trExceedMaxLimitAlertTilte",
+                                        ncontent = "trExceedMaxLimitAlertContent",
+                                        msgType = "alert",
+                                        createDate = DateTime.Now,
+                                        updateDate = DateTime.Now,
+                                        createUserId = MainWindow.userID.Value,
+                                        updateUserId = MainWindow.userID.Value,
+                                    };
+                                    #endregion
+                                    await itemLocationModel.recieptOrder(readyItemsLoc,orderList, (int)cb_branch.SelectedValue, MainWindow.userID.Value, "storageAlerts_minMaxItem", not);
                                         await save();
                                     }
                                 }
@@ -1436,6 +1453,18 @@ namespace POS.View.storage
                     else
                         newCount = row.Count;
 
+                    if(row.OrderId != 0)
+                    {
+                        ItemTransfer item = mainInvoiceItems.ToList().Find(i => i.itemUnitId == row.itemUnitId && i.invoiceId == row.OrderId);
+                        if (newCount > item.quantity)
+                        {
+                            // return old value 
+                            t.Text = item.quantity.ToString();
+
+                            newCount = (int)item.quantity;
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountIncreaseToolTip"), animation: ToasterAnimation.FadeIn);
+                        }
+                    }
                     oldCount = row.Count;
 
                     _Count -= oldCount;
@@ -1771,5 +1800,43 @@ namespace POS.View.storage
             await fillOrderInputs(invoice);
         }
         #endregion
+
+        private async void Btn_shortageInvoice_Click(object sender, RoutedEventArgs e)
+        {
+            clearProcess();
+            cb_processType.SelectedIndex = 0;
+            cb_processType.IsEnabled = false;
+            await buildShortageInvoiceDetails();
+        }
+        private async Task buildShortageInvoiceDetails()
+        {
+            //get invoice items
+            invoiceItems = await invoice.getShortageItems(MainWindow.branchID.Value);
+            mainInvoiceItems = invoiceItems;
+            // build invoice details grid
+            _SequenceNum = 0;
+            billDetails.Clear();
+            foreach (ItemTransfer itemT in invoiceItems)
+            {
+                _SequenceNum++;
+                decimal total = (decimal)(itemT.price * itemT.quantity);
+                billDetails.Add(new BillDetails()
+                {
+                    ID = _SequenceNum,
+                    Product = itemT.itemName,
+                    itemId = (int)itemT.itemId,
+                    Unit = itemT.itemUnitId.ToString(),
+                    itemUnitId = (int)itemT.itemUnitId,
+                    Count = (int)itemT.quantity,
+                    OrderId = (int)itemT.invoiceId,
+                    Price = decimal.Parse(SectionData.DecTostring((decimal)itemT.price)),
+                    Total = total,
+                });
+            }
+
+            tb_barcode.Focus();
+
+            refrishBillDetails();
+        }
     }
 }

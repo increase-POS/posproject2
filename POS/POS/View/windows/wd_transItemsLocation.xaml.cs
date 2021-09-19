@@ -169,9 +169,11 @@ namespace POS.View.windows
             for(int i=0; i< orderList.Count; i++)
             {
                 strIds += orderList[i].itemUnitId.ToString() + ',';
-                _Quantity.Add(0);
+               
             }
             selectedItemsLocations = await itemLocationModel.getSpecificItemLocation(strIds, MainWindow.branchID.Value);
+            for(int i =0; i<selectedItemsLocations.Count; i++)
+                _Quantity.Add(0);
             itemsLocations = new List<ItemLocation>();
 
             itemsLocations.AddRange( selectedItemsLocations);
@@ -228,9 +230,11 @@ namespace POS.View.windows
                 long totalQuantity = 0;
                 
                 int itemUnitId = row.itemUnitId.Value;
-                long basicCount = (long) orderList.ToList().Find(x => x.itemUnitId == itemUnitId).quantity; 
-                ItemTransfer Item = orderList.ToList().Find(i => i.itemUnitId == row.itemUnitId);
-                int itemIndex = orderList.ToList().FindIndex(i => i.itemUnitId == row.itemUnitId);
+                long basicCount = (long) orderList.ToList().Find(x => x.itemUnitId == itemUnitId).quantity;
+                    // ItemTransfer Item = orderList.ToList().Find(i => i.itemUnitId == row.itemUnitId);
+                    var Item = orderList.ToList().Where(x => x.itemUnitId == row.itemUnitId).Select(x => x.quantity).Sum();
+
+                int itemIndex = selectedItemsLocations.ToList().FindIndex(i => i.itemUnitId == row.itemUnitId);
                 if (cb != null)
                 {                  
                     if (cb.IsChecked == true)
@@ -243,12 +247,12 @@ namespace POS.View.windows
                         if (_Quantity[itemIndex] != 0)
                             _Quantity[itemIndex] -= (long) row.quantity;
                         _Quantity[itemIndex] += long.Parse(tb.Text);
-                        if (_Quantity[itemIndex] > Item.quantity)
+                        if (_Quantity[itemIndex] > Item)
                         {
                             _Quantity[itemIndex] -= (long)selectedItemsLocations[index].quantity;
-                            selectedItemsLocations[index].quantity = Item.quantity - oldQuantity;
+                            selectedItemsLocations[index].quantity = Item - oldQuantity;
                             _Quantity[itemIndex] += (long)selectedItemsLocations[index].quantity;
-                            tb.Text = (Item.quantity - oldQuantity).ToString();
+                            tb.Text = (Item - oldQuantity).ToString();
                         }
                     }
                     else
@@ -283,7 +287,7 @@ namespace POS.View.windows
                                     totalQuantity += (long)il.quantity;
                                 }
                             }
-                            if (totalQuantity > Item.quantity)
+                            if (totalQuantity > Item)
                             {
                                 selectedItemsLocations[index].quantity = 0;
                                 t.Text = "0";

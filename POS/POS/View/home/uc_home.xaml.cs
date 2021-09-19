@@ -52,8 +52,9 @@ namespace POS.View
             timerAnimation();
         }
         DispatcherTimer threadtimer;
-        public static int threadtime = 15;
+        public static int secondTimer15 = 15;
         int Skip = 0;
+        bool firstLoad = true;
         string branchesPermission = "dashboard_branches";
         Dash dash = new Dash();
         User user = new User();
@@ -72,6 +73,11 @@ namespace POS.View
             cb_branch.IsEnabled = true;
             else cb_branch.IsEnabled = false;
 
+
+            Skip = 0;
+            firstLoad = true;
+            //await BestSeller();
+            //paginationBestSeller(listBestSeller, Skip);
 
             #region Purchase and Sales
             double[] ArrayS = new double[30];
@@ -249,7 +255,7 @@ namespace POS.View
 
             //thread
             threadtimer = new DispatcherTimer();
-            threadtimer.Interval = TimeSpan.FromSeconds(threadtime);
+            threadtimer.Interval = TimeSpan.FromSeconds(secondTimer15);
             threadtimer.Tick += timer_Thread;
             threadtimer.Start();
 
@@ -277,6 +283,7 @@ namespace POS.View
             await BranchOnline();
             #region
             await BestSeller();
+            if(!firstLoad)
             if (listBestSeller.Count < 4 || Skip == 2)
                 Skip = 0;
             else if (listBestSeller.Count < 7 && Skip < 1)

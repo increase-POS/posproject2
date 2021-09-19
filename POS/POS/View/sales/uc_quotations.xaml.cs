@@ -2168,15 +2168,25 @@ namespace POS.View.sales
                     SectionData.StartAwait(grid_main);
                 if (invoice.invoiceId != 0)
                 {
-                   string res = await invoice.deleteInvoice(invoice.invoiceId);
-                    if (res.Equals("1"))
+                    #region
+                    Window.GetWindow(this).Opacity = 0.2;
+                    wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                    w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDelete");
+                    w.ShowDialog();
+                    Window.GetWindow(this).Opacity = 1;
+                    #endregion
+                    if (w.isOk)
                     {
-                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
-                        clearInvoice();
-                        refreshDraftNotification();
+                        string res = await invoice.deleteInvoice(invoice.invoiceId);
+                        if (res.Equals("1"))
+                        {
+                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
+                            clearInvoice();
+                            refreshDraftNotification();
+                        }
+                        else
+                            Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                     }
-                    else
-                        Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                 }
                 if (sender != null)
                     SectionData.EndAwait(grid_main);

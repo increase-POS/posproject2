@@ -1328,11 +1328,28 @@ namespace POS.View.purchases
             try
             {
                 //billDetails
-                if (billDetails.Count == 1)
+                //if (billDetails.Count == 1)
+                //{
+                var cmb = sender as ComboBox;
+                //cmb.SelectedValue = (int)billDetails[0].itemUnitId;
+
+
+                if (dg_billDetails.SelectedIndex != -1 && cmb != null)
+                    billDetails[dg_billDetails.SelectedIndex].itemUnitId = (int)cmb.SelectedValue;
+                cmb.SelectedValue = (int)billDetails[0].itemUnitId;
+
+                if (invoice.invoiceId == 0)
                 {
-                    var cmb = sender as ComboBox;
-                    cmb.SelectedValue = (int)billDetails[0].itemUnitId;
+                    cmb.IsEnabled = true;
+                    cmb.IsReadOnly = true;
                 }
+                else
+                {
+                    cmb.IsEnabled = false;
+                    cmb.IsReadOnly = false;
+
+                }
+                //}
             }
             catch (Exception ex)
             {
@@ -1347,6 +1364,8 @@ namespace POS.View.purchases
 
                 if (dg_billDetails.SelectedIndex != -1 && cmb != null)
                     billDetails[dg_billDetails.SelectedIndex].itemUnitId = (int)cmb.SelectedValue;
+
+               
             }
             catch (Exception ex)
             {
