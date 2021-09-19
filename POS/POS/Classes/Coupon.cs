@@ -34,7 +34,7 @@ namespace POS.Classes
         public Nullable<int> updateUserId { get; set; }
         public string barcode { get; set; }
         public Boolean canDelete { get; set; }
-
+        public string state { get; set; }
         public async Task<List<Coupon>> GetCouponsAsync()
         {
             List<Coupon> coupons = null;

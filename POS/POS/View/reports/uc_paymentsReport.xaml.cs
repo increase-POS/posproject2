@@ -1985,6 +1985,7 @@ namespace POS.View.reports
         {
            temp = fillList(payments, cb_vendors, cb_vendorPayType, cb_vendorAccountant, dp_vendorStartDate, dp_vendorEndDate).Where(x => x.side == "v" || x.side == "b");
             dgPayments.ItemsSource = temp;
+            txt_count.Text = temp.Count().ToString();
             fillPieChart();
             fillColumnChart();
             fillRowChart();
@@ -1994,6 +1995,7 @@ namespace POS.View.reports
         {
            temp = fillList(payments, cb_customer, cb_customerPayType, cb_customerAccountant, dp_customerStartDate, dp_customerEndDate).Where(x => x.side == "c" || x.side == "b");
             dgPayments.ItemsSource = temp;
+            txt_count.Text = temp.Count().ToString();
             fillPieChart();
             fillColumnChart();
             fillRowChart();
@@ -2003,6 +2005,7 @@ namespace POS.View.reports
         {
             temp = fillList(payments, cb_users, cb_userPayType, cb_userAccountant, dp_userStartDate, dp_userEndDate).Where(x => x.side == "u");
             dgPayments.ItemsSource = temp;
+            txt_count.Text = temp.Count().ToString();
             fillPieChart();
             fillColumnChart();
             fillRowChart();
@@ -2012,6 +2015,7 @@ namespace POS.View.reports
         {
             temp = fillList(payments, cb_salary, cb_salaryPayType, cb_salaryAccountant, dp_salaryStartDate, dp_salaryEndDate).Where(x => x.side == "s");
             dgPayments.ItemsSource = temp;
+            txt_count.Text = temp.Count().ToString();
             fillPieChart();
             fillColumnChart();
             fillRowChart();
@@ -2021,6 +2025,7 @@ namespace POS.View.reports
         {
             temp = fillList(payments, cb_generalExpenses, cb_generalExpensesPayType, cb_generalExpensesAccountant, dp_generalExpensesStartDate, dp_generalExpensesEndDate).Where(x => x.side == "e");
             dgPayments.ItemsSource = temp;
+            txt_count.Text = temp.Count().ToString();
             fillPieChart();
             fillColumnChart();
             fillRowChart();
@@ -2030,6 +2035,7 @@ namespace POS.View.reports
         {
             temp = fillList(payments, cb_administrativePull, cb_administrativePullPayType, cb_administrativePullAccountant, dp_administrativePullStartDate, dp_administrativePullEndDate).Where(x => x.side == "m");
             dgPayments.ItemsSource = temp;
+            txt_count.Text = temp.Count().ToString();
             fillPieChart();
             fillColumnChart();
             fillRowChart();
@@ -2039,6 +2045,7 @@ namespace POS.View.reports
         {
             temp = fillList(payments, cb_shipping, cb_shippingPayType, cb_shippingAccountant, dp_shippingStartDate, dp_shippingEndDate).Where(x => x.side == "sh");
             dgPayments.ItemsSource = temp;
+            txt_count.Text = temp.Count().ToString();
             fillPieChart();
             fillColumnChart();
             fillRowChart();
@@ -2518,54 +2525,58 @@ namespace POS.View.reports
 		 }
 
         private void Txt_search_TextChanged(object sender, TextChangedEventArgs e)
-        {
+        {//search
           try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
-					   if (selectedTab == 0)
-            {
-                var temp = fillList(payments, cb_vendors, cb_vendorPayType, cb_vendorAccountant, dp_vendorStartDate, dp_vendorEndDate).Where(x => x.side == "v" || x.side == "b");
-                dgPayments.ItemsSource = temp.Where(obj => (
-                obj.transNum.Contains(txt_search.Text) ||
-                obj.processType.Contains(txt_search.Text) ||
-                obj.updateUserAcc.Contains(txt_search.Text) ||
-                obj.agentCompany.Contains(txt_search.Text) ||
-                obj.agentName.Contains(txt_search.Text)
-                ));
-            }
-            else if (selectedTab == 1)
-            {
-                var temp = fillList(payments, cb_customer, cb_customerPayType, cb_customerAccountant, dp_customerStartDate, dp_customerEndDate).Where(x => x.side == "c" || x.side == "b");
+			{
+				if (sender != null)
+				SectionData.StartAwait(grid_main);
 
-                dgPayments.ItemsSource = temp.Where(obj => (
+                //IEnumerable<CashTransferSts> temp ;
+
+                if (selectedTab == 0)
+            {
+                    var temp = fillList(payments, cb_vendors, cb_vendorPayType, cb_vendorAccountant, dp_vendorStartDate, dp_vendorEndDate).Where(x => x.side == "v" || x.side == "b");
+                    dgPayments.ItemsSource = temp.Where(obj => (
                     obj.transNum.Contains(txt_search.Text) ||
                     obj.processType.Contains(txt_search.Text) ||
                     obj.updateUserAcc.Contains(txt_search.Text) ||
                     obj.agentCompany.Contains(txt_search.Text) ||
                     obj.agentName.Contains(txt_search.Text)
                     ));
-            }
+                   
+                }
+                else if (selectedTab == 1)
+            {
+                    var temp = fillList(payments, cb_customer, cb_customerPayType, cb_customerAccountant, dp_customerStartDate, dp_customerEndDate).Where(x => x.side == "c" || x.side == "b");
+
+                    dgPayments.ItemsSource = temp.Where(obj => (
+                        obj.transNum.Contains(txt_search.Text) ||
+                        obj.processType.Contains(txt_search.Text) ||
+                        obj.updateUserAcc.Contains(txt_search.Text) ||
+                        obj.agentCompany.Contains(txt_search.Text) ||
+                        obj.agentName.Contains(txt_search.Text)
+                        ));
+                }
             else if (selectedTab == 2)
             {
-                var temp = fillList(payments, cb_users, cb_userPayType, cb_userAccountant, dp_userStartDate, dp_userEndDate).Where(x => x.side == "u");
-                dgPayments.ItemsSource = temp.Where(obj => (
-                   obj.transNum.Contains(txt_search.Text) ||
-                   obj.processType.Contains(txt_search.Text) ||
-                   obj.updateUserAcc.Contains(txt_search.Text) ||
-                   obj.userAcc.Contains(txt_search.Text)
-                   ));
-            }
+                    var temp = fillList(payments, cb_users, cb_userPayType, cb_userAccountant, dp_userStartDate, dp_userEndDate).Where(x => x.side == "u");
+                    dgPayments.ItemsSource = temp.Where(obj => (
+                       obj.transNum.Contains(txt_search.Text) ||
+                       obj.processType.Contains(txt_search.Text) ||
+                       obj.updateUserAcc.Contains(txt_search.Text) ||
+                       obj.userAcc.Contains(txt_search.Text)
+                       ));
+                }
             else if (selectedTab == 3)
             {
-                var temp = fillList(payments, cb_salary, cb_salaryPayType, cb_salaryAccountant, dp_salaryStartDate, dp_salaryEndDate).Where(x => x.side == "s");
-                dgPayments.ItemsSource = temp.Where(obj => (
-                   obj.transNum.Contains(txt_search.Text) ||
-                   obj.processType.Contains(txt_search.Text) ||
-                   obj.updateUserAcc.Contains(txt_search.Text) ||
-                   obj.userAcc.Contains(txt_search.Text)
-                   ));
-            }
+                    var temp = fillList(payments, cb_salary, cb_salaryPayType, cb_salaryAccountant, dp_salaryStartDate, dp_salaryEndDate).Where(x => x.side == "s");
+                    dgPayments.ItemsSource = temp.Where(obj => (
+                       obj.transNum.Contains(txt_search.Text) ||
+                       obj.processType.Contains(txt_search.Text) ||
+                       obj.updateUserAcc.Contains(txt_search.Text) ||
+                       obj.userAcc.Contains(txt_search.Text)
+                       ));
+                }
             else if (selectedTab == 4)
             {
                 var temp = fillList(payments, cb_generalExpenses, cb_generalExpensesPayType, cb_generalExpensesAccountant, dp_generalExpensesStartDate, dp_generalExpensesEndDate).Where(x => x.side == "e");
@@ -2595,8 +2606,10 @@ namespace POS.View.reports
                    obj.shippingCompanyName.Contains(txt_search.Text)
                    ));
             }
-         
-			  if (sender != null)
+
+                txt_count.Text = dgPayments.Items.Count.ToString();
+
+                if (sender != null)
 			  SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
@@ -2615,7 +2628,8 @@ namespace POS.View.reports
 			{
 				if (sender != null)
 				SectionData.StartAwait(grid_main);
-					 
+
+                #region
                 List<ReportParameter> paramarr = new List<ReportParameter>();
 
                 string addpath = "";
@@ -2686,12 +2700,6 @@ namespace POS.View.reports
 
                 ReportCls.checkLang();
 
-                foreach (var r in temp)
-                {
-                    r.updateDate = DateTime.Parse(SectionData.DateToString(r.updateDate));
-                    r.cash = decimal.Parse(SectionData.DecTostring(r.cash));
-                }
-
                 clsReports.cashTransferSts(temp, rep, reppath);
                 clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);
@@ -2707,9 +2715,9 @@ namespace POS.View.reports
                     string filepath = saveFileDialog.FileName;
                     LocalReportExtensions.ExportToPDF(rep, filepath);
                 }
-            
-         
-			  if (sender != null)
+                #endregion
+
+                if (sender != null)
 			  SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
@@ -2725,8 +2733,10 @@ namespace POS.View.reports
            try
 			{
 				if (sender != null)
-				SectionData.StartAwait(grid_main);
-					 
+				    SectionData.StartAwait(grid_main);
+
+                #region
+
                 List<ReportParameter> paramarr = new List<ReportParameter>();
 
                 string addpath="";
@@ -2796,11 +2806,7 @@ namespace POS.View.reports
                 string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                 ReportCls.checkLang();
-                foreach (var r in temp)
-                {
-                    r.updateDate = DateTime.Parse(SectionData.DateToString(r.updateDate));
-                    r.cash = decimal.Parse(SectionData.DecTostring(r.cash));
-                }
+               
                 clsReports.cashTransferSts(temp, rep, reppath);
                 clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);
@@ -2808,9 +2814,9 @@ namespace POS.View.reports
                 rep.SetParameters(paramarr);
                 rep.Refresh();
                 LocalReportExtensions.PrintToPrinter(rep);
-             
-        
-			  if (sender != null)
+                #endregion
+
+                if (sender != null)
 			  SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
@@ -2823,11 +2829,13 @@ namespace POS.View.reports
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {//excel
-          try
-		{
-			if (sender != null)
-			SectionData.StartAwait(grid_main);
-			Thread t1 = new Thread(() =>
+            try
+            {
+                if (sender != null)
+			    SectionData.StartAwait(grid_main);
+                
+                #region
+                Thread t1 = new Thread(() =>
             {
                 List<ReportParameter> paramarr = new List<ReportParameter>();
 
@@ -2898,11 +2906,7 @@ namespace POS.View.reports
                 string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                 ReportCls.checkLang();
-                foreach (var r in temp)
-                {
-                    r.updateDate = DateTime.Parse(SectionData.DateToString(r.updateDate));
-                    r.cash = decimal.Parse(SectionData.DecTostring(r.cash));
-                }
+               
                 clsReports.cashTransferSts(temp, rep, reppath);
                 clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);
@@ -2919,13 +2923,12 @@ namespace POS.View.reports
                         LocalReportExtensions.ExportToExcel(rep, filepath);
                     }
                 });
+                });
+                t1.Start();
+                #endregion
 
-
-            });
-            t1.Start();
-        
-			  if (sender != null)
-			  SectionData.EndAwait(grid_main);
+                if (sender != null)
+			      SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
@@ -2938,113 +2941,108 @@ namespace POS.View.reports
         private void Btn_preview_Click(object sender, RoutedEventArgs e)
         {//preview
            try
-		{
-			if (sender != null)
-			SectionData.StartAwait(grid_main);
-			Window.GetWindow(this).Opacity = 0.2;
-            string pdfpath = "";
+		   {
+			    if (sender != null)
+			        SectionData.StartAwait(grid_main);
 
-            List<ReportParameter> paramarr = new List<ReportParameter>();
+                #region
+                Window.GetWindow(this).Opacity = 0.2;
+                string pdfpath = "";
 
+                List<ReportParameter> paramarr = new List<ReportParameter>();
 
-            //
-            pdfpath = @"\Thumb\report\temp.pdf";
-            pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
+                pdfpath = @"\Thumb\report\temp.pdf";
+                pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
 
-            string addpath = "";
-            bool isArabic = ReportCls.checkLang();
-            if (isArabic)
-            {
-                if (selectedTab == 0)
+                string addpath = "";
+                bool isArabic = ReportCls.checkLang();
+                if (isArabic)
                 {
-                    addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArVendor.rdlc";
+                    if (selectedTab == 0)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArVendor.rdlc";
+                    }
+                    else if (selectedTab == 1)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArCustomer.rdlc";
+                    }
+                    else if (selectedTab == 2)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArUser.rdlc";
+                    }
+                    else if (selectedTab == 3)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArSalary.rdlc";
+                    }
+                    else if (selectedTab == 4)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArGeneralExpenses.rdlc";
+                    }
+                    else if (selectedTab == 5)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArAdministrativePull.rdlc";
+                    }
+                    else if (selectedTab == 6)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArShipping.rdlc";
+                    }
                 }
-                else if (selectedTab == 1)
+                else
                 {
-                    addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArCustomer.rdlc";
+                    if (selectedTab == 0)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\Vendor.rdlc";
+                    }
+                    else if (selectedTab == 1)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\Customer.rdlc";
+                    }
+                    else if (selectedTab == 2)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\User.rdlc";
+                    }
+                    else if (selectedTab == 3)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\Salary.rdlc";
+                    }
+                    else if (selectedTab == 4)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\GeneralExpenses.rdlc";
+                    }
+                    else if (selectedTab == 5)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\AdministrativePull.rdlc";
+                    }
+                    else if (selectedTab == 6)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\Shipping.rdlc";
+                    }
                 }
-                else if (selectedTab == 2)
-                {
-                    addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArUser.rdlc";
-                }
-                else if (selectedTab == 3)
-                {
-                    addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArSalary.rdlc";
-                }
-                else if (selectedTab == 4)
-                {
-                    addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArGeneralExpenses.rdlc";
-                }
-                else if (selectedTab == 5)
-                {
-                    addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArAdministrativePull.rdlc";
-                }
-                else if (selectedTab == 6)
-                {
-                    addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArShipping.rdlc";
-                }
-            }
-            else
-            {
-                if (selectedTab == 0)
-                {
-                    addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\Vendor.rdlc";
-                }
-                else if (selectedTab == 1)
-                {
-                    addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\Customer.rdlc";
-                }
-                else if (selectedTab == 2)
-                {
-                    addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\User.rdlc";
-                }
-                else if (selectedTab == 3)
-                {
-                    addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\Salary.rdlc";
-                }
-                else if (selectedTab == 4)
-                {
-                    addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\GeneralExpenses.rdlc";
-                }
-                else if (selectedTab == 5)
-                {
-                    addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\AdministrativePull.rdlc";
-                }
-                else if (selectedTab == 6)
-                {
-                    addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\Shipping.rdlc";
-                }
-            }
-            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
-            ReportCls.checkLang();
-                foreach (var r in temp)
-                {
-                    r.updateDate = DateTime.Parse(SectionData.DateToString(r.updateDate));
-                    r.cash = decimal.Parse(SectionData.DecTostring(r.cash));
-                }
+                ReportCls.checkLang();
+                   
                 clsReports.cashTransferSts(temp, rep, reppath);
-            clsReports.setReportLanguage(paramarr);
-            clsReports.Header(paramarr);
+                clsReports.setReportLanguage(paramarr);
+                clsReports.Header(paramarr);
 
-            rep.SetParameters(paramarr);
+                rep.SetParameters(paramarr);
 
-            rep.Refresh();
+                rep.Refresh();
 
-            LocalReportExtensions.ExportToPDF(rep, pdfpath);
-            wd_previewPdf w = new wd_previewPdf();
-            w.pdfPath = pdfpath;
-            if (!string.IsNullOrEmpty(w.pdfPath))
-            {
-                w.ShowDialog();
-                w.wb_pdfWebViewer.Dispose();
+                LocalReportExtensions.ExportToPDF(rep, pdfpath);
+                wd_previewPdf w = new wd_previewPdf();
+                w.pdfPath = pdfpath;
+                if (!string.IsNullOrEmpty(w.pdfPath))
+                {
+                    w.ShowDialog();
+                    w.wb_pdfWebViewer.Dispose();
+                }
+                Window.GetWindow(this).Opacity = 1;
+                #endregion
 
-
-            }
-            Window.GetWindow(this).Opacity = 1;
-        
-			  if (sender != null)
-			  SectionData.EndAwait(grid_main);
+                if (sender != null)
+			        SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {

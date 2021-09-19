@@ -1363,7 +1363,7 @@ namespace POS.View.reports
 
             ReportCls.checkLang();
 
-            clsReports.cashTransferSts(temp, rep, reppath);
+            clsReports.cashTransferStsStatement(temp, rep, reppath, paramarr);
             clsReports.setReportLanguage(paramarr);
             clsReports.Header(paramarr);
 

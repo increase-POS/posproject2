@@ -113,6 +113,7 @@ namespace POS.View.reports
                 temp = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
                 showSelectedTabColumn();
                 dgStock.ItemsSource = temp;
+                txt_count.Text = temp.Count().ToString();
                 fillExternalPieChart();
 
 
@@ -202,6 +203,7 @@ namespace POS.View.reports
                 temp = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
                 showSelectedTabColumn();
                 dgStock.ItemsSource = temp;
+                txt_count.Text = temp.Count().ToString();
                 fillExternalPieChart();
 
                 if (sender != null)
@@ -237,6 +239,7 @@ namespace POS.View.reports
                 temp = fillList(itemsTransfer, cb_externalAgentsBranches, cb_externalAgentsAgentsType, cb_externalAgentsCustomer, dp_externalAgentsStartDate, dp_externalAgentsEndDate, chk_externalAgentsAllBranches, chk_externalAgentsAllAgentsType, chk_externalAgentsAllCustomers, chk_externalAgentsIn, chk_externalAgentsOut);
                 showSelectedTabColumn();
                 dgStock.ItemsSource = temp;
+                txt_count.Text = temp.Count().ToString();
                 fillExternalPieChart();
 
                 if (sender != null)
@@ -281,6 +284,7 @@ namespace POS.View.reports
                                });
                 showSelectedTabColumn();
                 dgStock.ItemsSource = temp;
+                txt_count.Text = temp.Count().ToString();
                 fillExternalPieChart();
 
                 if (sender != null)
@@ -700,6 +704,7 @@ namespace POS.View.reports
                 fillComboExternalItemsItems();
                 temp = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
                 dgStock.ItemsSource = temp;
+                txt_count.Text = temp.Count().ToString();
                 fillExternalPieChart();
 
                 if (sender != null)
@@ -726,6 +731,7 @@ namespace POS.View.reports
                 fillComboExternalItemsItems();
                 temp = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
                 dgStock.ItemsSource = temp;
+                txt_count.Text = temp.Count().ToString();
                 fillExternalPieChart();
 
                 if (sender != null)
@@ -752,6 +758,7 @@ namespace POS.View.reports
                 chk_externalItemsAllItems.IsChecked = false;
                 temp = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
                 dgStock.ItemsSource = temp;
+                txt_count.Text = temp.Count().ToString();
                 fillExternalPieChart();
 
                 if (sender != null)
@@ -773,6 +780,7 @@ namespace POS.View.reports
                     SectionData.StartAwait(grid_main);
                 temp = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
                 dgStock.ItemsSource = temp;
+                txt_count.Text = temp.Count().ToString();
                 fillExternalPieChart();
 
                 if (sender != null)
@@ -794,6 +802,7 @@ namespace POS.View.reports
                     SectionData.StartAwait(grid_main);
                 temp = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
                 dgStock.ItemsSource = temp;
+                txt_count.Text = temp.Count().ToString();
                 fillExternalPieChart();
 
                 if (sender != null)
@@ -815,6 +824,7 @@ namespace POS.View.reports
                     SectionData.StartAwait(grid_main);
                 temp = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
                 dgStock.ItemsSource = temp;
+                txt_count.Text = temp.Count().ToString();
                 fillExternalPieChart();
 
                 if (sender != null)
@@ -836,6 +846,7 @@ namespace POS.View.reports
                     SectionData.StartAwait(grid_main);
                 temp = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
                 dgStock.ItemsSource = temp;
+                txt_count.Text = temp.Count().ToString();
                 fillExternalPieChart();
 
                 if (sender != null)
@@ -857,6 +868,7 @@ namespace POS.View.reports
                     SectionData.StartAwait(grid_main);
                 temp = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
                 dgStock.ItemsSource = temp;
+                txt_count.Text = temp.Count().ToString();
                 fillExternalPieChart();
 
                 if (sender != null)
@@ -878,6 +890,7 @@ namespace POS.View.reports
                     SectionData.StartAwait(grid_main);
                 temp = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
                 dgStock.ItemsSource = temp;
+                txt_count.Text = temp.Count().ToString();
                 fillExternalPieChart();
 
                 if (sender != null)
@@ -902,6 +915,7 @@ namespace POS.View.reports
                 fillComboExternalItemsUnits();
                 temp = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
                 dgStock.ItemsSource = temp;
+                txt_count.Text = temp.Count().ToString();
                 fillExternalPieChart();
 
                 if (sender != null)
@@ -969,6 +983,7 @@ namespace POS.View.reports
                     SectionData.StartAwait(grid_main);
                 temp = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
                 dgStock.ItemsSource = temp;
+                txt_count.Text = temp.Count().ToString();
                 fillExternalPieChart();
 
                 if (sender != null)
@@ -1032,6 +1047,7 @@ namespace POS.View.reports
                 fillComboExternalAgentsAgentsType();
                 temp = fillList(itemsTransfer, cb_externalAgentsBranches, cb_externalAgentsAgentsType, cb_externalAgentsCustomer, dp_externalAgentsStartDate, dp_externalAgentsEndDate, chk_externalAgentsAllBranches, chk_externalAgentsAllAgentsType, chk_externalAgentsAllCustomers, chk_externalAgentsIn, chk_externalAgentsOut);
                 dgStock.ItemsSource = temp;
+                txt_count.Text = temp.Count().ToString();
                 fillExternalPieChart();
 
                 if (sender != null)
@@ -1056,6 +1072,7 @@ namespace POS.View.reports
                 fillComboExternalAgentsAgents();
                 temp = fillList(itemsTransfer, cb_externalAgentsBranches, cb_externalAgentsAgentsType, cb_externalAgentsCustomer, dp_externalAgentsStartDate, dp_externalAgentsEndDate, chk_externalAgentsAllBranches, chk_externalAgentsAllAgentsType, chk_externalAgentsAllCustomers, chk_externalAgentsIn, chk_externalAgentsOut);
                 dgStock.ItemsSource = temp;
+                txt_count.Text = temp.Count().ToString();
                 fillExternalPieChart();
 
                 if (sender != null)
@@ -1077,6 +1094,7 @@ namespace POS.View.reports
                     SectionData.StartAwait(grid_main);
                 temp = fillList(itemsTransfer, cb_externalAgentsBranches, cb_externalAgentsAgentsType, cb_externalAgentsCustomer, dp_externalAgentsStartDate, dp_externalAgentsEndDate, chk_externalAgentsAllBranches, chk_externalAgentsAllAgentsType, chk_externalAgentsAllCustomers, chk_externalAgentsIn, chk_externalAgentsOut);
                 dgStock.ItemsSource = temp;
+                txt_count.Text = temp.Count().ToString();
                 fillExternalPieChart();
 
                 if (sender != null)
@@ -1229,6 +1247,7 @@ namespace POS.View.reports
                     SectionData.StartAwait(grid_main);
                 temp = fillList(itemsTransfer, cb_externalAgentsBranches, cb_externalAgentsAgentsType, cb_externalAgentsCustomer, dp_externalAgentsStartDate, dp_externalAgentsEndDate, chk_externalAgentsAllBranches, chk_externalAgentsAllAgentsType, chk_externalAgentsAllCustomers, chk_externalAgentsIn, chk_externalAgentsOut);
                 dgStock.ItemsSource = temp;
+                txt_count.Text = temp.Count().ToString();
                 fillExternalPieChart();
 
                 if (sender != null)
@@ -1250,6 +1269,7 @@ namespace POS.View.reports
                     SectionData.StartAwait(grid_main);
                 temp = fillList(itemsTransfer, cb_externalAgentsBranches, cb_externalAgentsAgentsType, cb_externalAgentsCustomer, dp_externalAgentsStartDate, dp_externalAgentsEndDate, chk_externalAgentsAllBranches, chk_externalAgentsAllAgentsType, chk_externalAgentsAllCustomers, chk_externalAgentsIn, chk_externalAgentsOut);
                 dgStock.ItemsSource = temp;
+                txt_count.Text = temp.Count().ToString();
                 fillExternalPieChart();
 
                 if (sender != null)
@@ -1271,6 +1291,7 @@ namespace POS.View.reports
                     SectionData.StartAwait(grid_main);
                 temp = fillList(itemsTransfer, cb_externalAgentsBranches, cb_externalAgentsAgentsType, cb_externalAgentsCustomer, dp_externalAgentsStartDate, dp_externalAgentsEndDate, chk_externalAgentsAllBranches, chk_externalAgentsAllAgentsType, chk_externalAgentsAllCustomers, chk_externalAgentsIn, chk_externalAgentsOut);
                 dgStock.ItemsSource = temp;
+                txt_count.Text = temp.Count().ToString();
                 fillExternalPieChart();
 
                 if (sender != null)
@@ -1292,6 +1313,7 @@ namespace POS.View.reports
                     SectionData.StartAwait(grid_main);
                 temp = fillList(itemsTransfer, cb_externalAgentsBranches, cb_externalAgentsAgentsType, cb_externalAgentsCustomer, dp_externalAgentsStartDate, dp_externalAgentsEndDate, chk_externalAgentsAllBranches, chk_externalAgentsAllAgentsType, chk_externalAgentsAllCustomers, chk_externalAgentsIn, chk_externalAgentsOut);
                 dgStock.ItemsSource = temp;
+                txt_count.Text = temp.Count().ToString();
                 fillExternalPieChart();
 
                 if (sender != null)
@@ -1313,6 +1335,7 @@ namespace POS.View.reports
                     SectionData.StartAwait(grid_main);
                 temp = fillList(itemsTransfer, cb_externalAgentsBranches, cb_externalAgentsAgentsType, cb_externalAgentsCustomer, dp_externalAgentsStartDate, dp_externalAgentsEndDate, chk_externalAgentsAllBranches, chk_externalAgentsAllAgentsType, chk_externalAgentsAllCustomers, chk_externalAgentsIn, chk_externalAgentsOut);
                 dgStock.ItemsSource = temp;
+                txt_count.Text = temp.Count().ToString();
                 fillExternalPieChart();
 
                 if (sender != null)
@@ -1334,6 +1357,7 @@ namespace POS.View.reports
                     SectionData.StartAwait(grid_main);
                 temp = fillList(itemsTransfer, cb_externalAgentsBranches, cb_externalAgentsAgentsType, cb_externalAgentsCustomer, dp_externalAgentsStartDate, dp_externalAgentsEndDate, chk_externalAgentsAllBranches, chk_externalAgentsAllAgentsType, chk_externalAgentsAllCustomers, chk_externalAgentsIn, chk_externalAgentsOut);
                 dgStock.ItemsSource = temp;
+                txt_count.Text = temp.Count().ToString();
                 fillExternalPieChart();
 
                 if (sender != null)
@@ -1370,6 +1394,7 @@ namespace POS.View.reports
                                       quantity = s.FirstOrDefault().quantity
                                   }); ;
                 dgStock.ItemsSource = temp;
+                txt_count.Text = temp.Count().ToString();
                 fillExternalPieChart();
 
                 if (sender != null)
@@ -1450,6 +1475,7 @@ namespace POS.View.reports
                        quantity = s.FirstOrDefault().quantity
                    }); ;
                 dgStock.ItemsSource = temp;
+                txt_count.Text = temp.Count().ToString();
                 fillExternalPieChart();
 
                 if (sender != null)
@@ -1482,6 +1508,7 @@ namespace POS.View.reports
                       quantity = s.FirstOrDefault().quantity
                   }); ;
                 dgStock.ItemsSource = temp;
+                txt_count.Text = temp.Count().ToString();
                 fillExternalPieChart();
 
                 if (sender != null)
@@ -1517,6 +1544,7 @@ namespace POS.View.reports
                                    quantity = s.FirstOrDefault().quantity
                                }); ;
                 dgStock.ItemsSource = temp;
+                txt_count.Text = temp.Count().ToString();
                 fillExternalPieChart();
 
                 if (sender != null)
@@ -1582,7 +1610,19 @@ namespace POS.View.reports
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                dgStock.ItemsSource = fillList(itemsTransfer, cb_externalInvoicesBranches, cb_externalInvoicesInvoiceType, cb_externalInvoicesInvoice, dp_externalInvoicesStartDate, dp_externalInvoicesEndDate, chk_externalInvoicesAllBranches, chk_externalInvoicesAllInvoicesType, chk_externalInvoicesALlInvoice, null, null).GroupBy(x => new { x.branchId, x.invoiceId })
+                //dgStock.ItemsSource = fillList(itemsTransfer, cb_externalInvoicesBranches, cb_externalInvoicesInvoiceType, cb_externalInvoicesInvoice, dp_externalInvoicesStartDate, dp_externalInvoicesEndDate, chk_externalInvoicesAllBranches, chk_externalInvoicesAllInvoicesType, chk_externalInvoicesALlInvoice, null, null).GroupBy(x => new { x.branchId, x.invoiceId })
+                //   .Select(s => new ItemTransferInvoice
+                //   {
+                //       branchId = s.FirstOrDefault().branchId,
+                //       branchName = s.FirstOrDefault().branchName,
+                //       AgentTypeAgent = s.FirstOrDefault().AgentTypeAgent,
+                //       ItemUnits = s.FirstOrDefault().ItemUnits
+                //     ,
+                //       invNumber = s.FirstOrDefault().invNumber,
+                //       invType = s.FirstOrDefault().invType,
+                //       quantity = s.FirstOrDefault().quantity
+                //   });
+                var lst = fillList(itemsTransfer, cb_externalInvoicesBranches, cb_externalInvoicesInvoiceType, cb_externalInvoicesInvoice, dp_externalInvoicesStartDate, dp_externalInvoicesEndDate, chk_externalInvoicesAllBranches, chk_externalInvoicesAllInvoicesType, chk_externalInvoicesALlInvoice, null, null).GroupBy(x => new { x.branchId, x.invoiceId })
                    .Select(s => new ItemTransferInvoice
                    {
                        branchId = s.FirstOrDefault().branchId,
@@ -1593,7 +1633,10 @@ namespace POS.View.reports
                        invNumber = s.FirstOrDefault().invNumber,
                        invType = s.FirstOrDefault().invType,
                        quantity = s.FirstOrDefault().quantity
-                   }); ;
+                   });
+
+                dgStock.ItemsSource = lst;
+                txt_count.Text = lst.Count().ToString();
                 fillExternalPieChart();
 
 
@@ -1995,6 +2038,7 @@ namespace POS.View.reports
            s.invType.Contains(txt_search.Text)
            ));
                     dgStock.ItemsSource = temp;
+                    txt_count.Text = temp.Count().ToString();
                     fillExternalPieChart();
                 }
                 else if (selectedExternalTab == 1)
@@ -2012,6 +2056,7 @@ namespace POS.View.reports
            s.invType.Contains(txt_search.Text)
            ));
                     dgStock.ItemsSource = temp;
+                    txt_count.Text = temp.Count().ToString();
                     fillExternalPieChart();
                 }
 
@@ -2038,6 +2083,7 @@ namespace POS.View.reports
            s.invType.Contains(txt_search.Text)
            ));
                     dgStock.ItemsSource = temp;
+                    txt_count.Text = temp.Count().ToString();
                     fillExternalPieChart();
                 }
 
@@ -2121,6 +2167,7 @@ namespace POS.View.reports
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
+                #region
                 List<ReportParameter> paramarr = new List<ReportParameter>();
 
                 string addpath = "";
@@ -2139,7 +2186,6 @@ namespace POS.View.reports
                     {
                         addpath = @"\Reports\StatisticReport\Storage\External\Ar\ArInvoice.rdlc";
                     }
-
                 }
                 else
                 {
@@ -2155,24 +2201,13 @@ namespace POS.View.reports
                     {
                         addpath = @"\Reports\StatisticReport\Storage\External\En\Invoice.rdlc";
                     }
-
                 }
                 string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                 ReportCls.checkLang();
-                foreach (var r in temp)
-                {
-                    //r.startDate = DateTime.Parse(SectionData.DateToString(r.startDate));
-                    //r.endDate = DateTime.Parse(SectionData.DateToString(r.endDate)); 
-                    r.inventoryDate = DateTime.Parse(SectionData.DateToString(r.inventoryDate)); 
-                    r.IupdateDate = DateTime.Parse(SectionData.DateToString(r.IupdateDate));
-                    r.updateDate = DateTime.Parse(SectionData.DateToString(r.updateDate));
-
-                    //r.storageCostValue = decimal.Parse(SectionData.DecTostring(r.storageCostValue));
-                    //r.diffPercentage = decimal.Parse(SectionData.DecTostring(r.diffPercentage));
-                }
-                clsReports.itemTransferInvoice(temp, rep, reppath);
-                clsReports.setReportLanguage(paramarr);
+                //itemTransferInvoiceExternal
+                clsReports.itemTransferInvoiceExternal(temp, rep, reppath, paramarr);
+               
                 clsReports.Header(paramarr);
 
                 rep.SetParameters(paramarr);
@@ -2186,7 +2221,7 @@ namespace POS.View.reports
                     string filepath = saveFileDialog.FileName;
                     LocalReportExtensions.ExportToPDF(rep, filepath);
                 }
-
+                #endregion
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -2206,6 +2241,7 @@ namespace POS.View.reports
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
+                #region
                 List<ReportParameter> paramarr = new List<ReportParameter>();
 
                 string addpath = "";
@@ -2224,7 +2260,6 @@ namespace POS.View.reports
                     {
                         addpath = @"\Reports\StatisticReport\Storage\External\Ar\ArInvoice.rdlc";
                     }
-
                 }
                 else
                 {
@@ -2245,25 +2280,25 @@ namespace POS.View.reports
                 string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                 ReportCls.checkLang();
-                foreach (var r in temp)
-                {
-                    //r.startDate = DateTime.Parse(SectionData.DateToString(r.startDate));
-                    //r.endDate = DateTime.Parse(SectionData.DateToString(r.endDate)); 
-                    r.inventoryDate = DateTime.Parse(SectionData.DateToString(r.inventoryDate));
-                    r.IupdateDate = DateTime.Parse(SectionData.DateToString(r.IupdateDate));
-                    r.updateDate = DateTime.Parse(SectionData.DateToString(r.updateDate));
+                //foreach (var r in temp)
+                //{
+                //    //r.startDate = DateTime.Parse(SectionData.DateToString(r.startDate));
+                //    //r.endDate = DateTime.Parse(SectionData.DateToString(r.endDate)); 
+                //    r.inventoryDate = DateTime.Parse(SectionData.DateToString(r.inventoryDate));
+                //    r.IupdateDate = DateTime.Parse(SectionData.DateToString(r.IupdateDate));
+                //    r.updateDate = DateTime.Parse(SectionData.DateToString(r.updateDate));
 
-                    //r.storageCostValue = decimal.Parse(SectionData.DecTostring(r.storageCostValue));
-                    //r.diffPercentage = decimal.Parse(SectionData.DecTostring(r.diffPercentage));
-                }
-                clsReports.itemTransferInvoice(temp, rep, reppath);
+                //    //r.storageCostValue = decimal.Parse(SectionData.DecTostring(r.storageCostValue));
+                //    //r.diffPercentage = decimal.Parse(SectionData.DecTostring(r.diffPercentage));
+                //}
+                 clsReports.itemTransferInvoiceExternal(temp, rep, reppath, paramarr);
                 clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);
 
                 rep.SetParameters(paramarr);
                 rep.Refresh();
                 LocalReportExtensions.PrintToPrinter(rep);
-
+                #endregion
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -2282,78 +2317,72 @@ namespace POS.View.reports
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
+                #region
                 Thread t1 = new Thread(() =>
-      {
-          List<ReportParameter> paramarr = new List<ReportParameter>();
+                  {
+                      List<ReportParameter> paramarr = new List<ReportParameter>();
 
-          string addpath = "";
-          bool isArabic = ReportCls.checkLang();
-          if (isArabic)
-          {
-              if (selectedExternalTab == 0)
-              {
-                  addpath = @"\Reports\StatisticReport\Storage\External\Ar\ArItem.rdlc";
-              }
-              else if (selectedExternalTab == 1)
-              {
-                  addpath = @"\Reports\StatisticReport\Storage\External\Ar\ArAgent.rdlc";
-              }
-              else if (selectedExternalTab == 2)
-              {
-                  addpath = @"\Reports\StatisticReport\Storage\External\Ar\ArInvoice.rdlc";
-              }
+                      string addpath = "";
+                      bool isArabic = ReportCls.checkLang();
+                      if (isArabic)
+                      {
+                          if (selectedExternalTab == 0)
+                          {
+                              addpath = @"\Reports\StatisticReport\Storage\External\Ar\ArItem.rdlc";
+                          }
+                          else if (selectedExternalTab == 1)
+                          {
+                              addpath = @"\Reports\StatisticReport\Storage\External\Ar\ArAgent.rdlc";
+                          }
+                          else if (selectedExternalTab == 2)
+                          {
+                              addpath = @"\Reports\StatisticReport\Storage\External\Ar\ArInvoice.rdlc";
+                          }
 
-          }
-          else
-          {
-              if (selectedExternalTab == 0)
-              {
-                  addpath = @"\Reports\StatisticReport\Storage\External\En\Item.rdlc";
-              }
-              else if (selectedExternalTab == 1)
-              {
-                  addpath = @"\Reports\StatisticReport\Storage\External\En\Agent.rdlc";
-              }
-              else if (selectedExternalTab == 2)
-              {
-                  addpath = @"\Reports\StatisticReport\Storage\External\En\Invoice.rdlc";
-              }
+                      }
+                      else
+                      {
+                          if (selectedExternalTab == 0)
+                          {
+                              addpath = @"\Reports\StatisticReport\Storage\External\En\Item.rdlc";
+                          }
+                          else if (selectedExternalTab == 1)
+                          {
+                              addpath = @"\Reports\StatisticReport\Storage\External\En\Agent.rdlc";
+                          }
+                          else if (selectedExternalTab == 2)
+                          {
+                              addpath = @"\Reports\StatisticReport\Storage\External\En\Invoice.rdlc";
+                          }
 
-          }
-          string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+                  }
+                  string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
-          ReportCls.checkLang();
-          foreach (var r in temp)
-          {
-              //r.startDate = DateTime.Parse(SectionData.DateToString(r.startDate));
-              //r.endDate = DateTime.Parse(SectionData.DateToString(r.endDate)); 
-              r.inventoryDate = DateTime.Parse(SectionData.DateToString(r.inventoryDate));
-              r.IupdateDate = DateTime.Parse(SectionData.DateToString(r.IupdateDate));
-              r.updateDate = DateTime.Parse(SectionData.DateToString(r.updateDate));
+                  ReportCls.checkLang();
+        
+                   clsReports.itemTransferInvoiceExternal(temp, rep, reppath, paramarr);
+                  clsReports.setReportLanguage(paramarr);
+                  clsReports.Header(paramarr);
 
-              //r.storageCostValue = decimal.Parse(SectionData.DecTostring(r.storageCostValue));
-              //r.diffPercentage = decimal.Parse(SectionData.DecTostring(r.diffPercentage));
-          }
-          clsReports.itemTransferInvoice(temp, rep, reppath);
-          clsReports.setReportLanguage(paramarr);
-          clsReports.Header(paramarr);
+                  rep.SetParameters(paramarr);
 
-          rep.SetParameters(paramarr);
-
-          rep.Refresh();
-          this.Dispatcher.Invoke(() =>
-          {
-              saveFileDialog.Filter = "EXCEL|*.xls;";
-              if (saveFileDialog.ShowDialog() == true)
-              {
-                  string filepath = saveFileDialog.FileName;
-                  LocalReportExtensions.ExportToExcel(rep, filepath);
-              }
-          });
+                  rep.Refresh();
+                  this.Dispatcher.Invoke(() =>
+                  {
+                      saveFileDialog.Filter = "EXCEL|*.xls;";
+                      if (saveFileDialog.ShowDialog() == true)
+                      {
+                          string filepath = saveFileDialog.FileName;
+                          LocalReportExtensions.ExportToExcel(rep, filepath);
+                      }
+                  });
 
 
-      });
+              });
                 t1.Start();
+
+                #endregion
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -2372,13 +2401,13 @@ namespace POS.View.reports
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
+                #region
                 Window.GetWindow(this).Opacity = 0.2;
                 string pdfpath = "";
 
                 List<ReportParameter> paramarr = new List<ReportParameter>();
 
-
-                //
                 pdfpath = @"\Thumb\report\temp.pdf";
                 pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
 
@@ -2419,18 +2448,8 @@ namespace POS.View.reports
                 string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                 ReportCls.checkLang();
-                foreach (var r in temp)
-                {
-                    //r.startDate = DateTime.Parse(SectionData.DateToString(r.startDate));
-                    //r.endDate = DateTime.Parse(SectionData.DateToString(r.endDate)); 
-                    r.inventoryDate = DateTime.Parse(SectionData.DateToString(r.inventoryDate));
-                    r.IupdateDate = DateTime.Parse(SectionData.DateToString(r.IupdateDate));
-                    r.updateDate = DateTime.Parse(SectionData.DateToString(r.updateDate));
 
-                    //r.storageCostValue = decimal.Parse(SectionData.DecTostring(r.storageCostValue));
-                    //r.diffPercentage = decimal.Parse(SectionData.DecTostring(r.diffPercentage));
-                }
-                clsReports.itemTransferInvoice(temp, rep, reppath);
+                 clsReports.itemTransferInvoiceExternal(temp, rep, reppath, paramarr);
                 clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);
 
@@ -2445,10 +2464,9 @@ namespace POS.View.reports
                 {
                     w.ShowDialog();
                     w.wb_pdfWebViewer.Dispose();
-
-
                 }
                 Window.GetWindow(this).Opacity = 1;
+                #endregion
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);

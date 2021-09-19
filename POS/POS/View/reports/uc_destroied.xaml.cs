@@ -707,7 +707,7 @@ namespace POS.View.reports
 
                 ReportCls.checkLang();
                
-                clsReports.itemTransferInvoice(temp, rep, reppath);
+                clsReports.itemTransferInvoiceDestroied(temp, rep, reppath, paramarr);
                 clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);
 
@@ -757,8 +757,8 @@ namespace POS.View.reports
                 string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                 ReportCls.checkLang();
-              
-                clsReports.itemTransferInvoice(temp, rep, reppath);
+
+                clsReports.itemTransferInvoiceDestroied(temp, rep, reppath, paramarr);
                 clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);
 
@@ -804,8 +804,8 @@ namespace POS.View.reports
 
                 ReportCls.checkLang();
 
-                    clsReports.itemTransferInvoice(temp, rep, reppath);
-                clsReports.setReportLanguage(paramarr);
+                    clsReports.itemTransferInvoiceDestroied(temp, rep, reppath, paramarr);
+                    clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);
 
                 rep.SetParameters(paramarr);
@@ -865,8 +865,8 @@ namespace POS.View.reports
                 string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                 ReportCls.checkLang();
-             
-                clsReports.itemTransferInvoice(temp, rep, reppath);
+
+                clsReports.itemTransferInvoiceDestroied(temp, rep, reppath, paramarr);
                 clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);
 

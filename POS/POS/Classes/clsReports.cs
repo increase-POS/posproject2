@@ -308,21 +308,32 @@ namespace POS.Classes
             rep.DataSources.Add(new ReportDataSource("DataSetBank", banksQuery));
         }
 
-        public static void couponReport(IEnumerable<Coupon> CouponQuery, LocalReport rep, string reppath, List<ReportParameter> paramarr)
+        public static void couponReport(IEnumerable<Coupon> CouponQuery2, LocalReport rep, string reppath, List<ReportParameter> paramarr)
         {
+
             rep.ReportPath = reppath;
             rep.EnableExternalImages = true;
             rep.DataSources.Clear();
-            foreach (var c in CouponQuery)
+            foreach (var c in CouponQuery2)
             {
                 c.discountValue = decimal.Parse(SectionData.DecTostring(c.discountValue));
                 c.invMin = decimal.Parse(SectionData.DecTostring(c.invMin));
                 c.invMax = decimal.Parse(SectionData.DecTostring(c.invMax));
 
+                string state = "";
+
+                if ((c.isActive == 1) && (c.endDate > DateTime.Now) && (c.quantity > 0))
+                    state = MainWindow.resourcemanager.GetString("trValid");
+                else
+                    state = MainWindow.resourcemanager.GetString("trExpired");
+
+                c.state = state;
+
             }
 
-            rep.DataSources.Add(new ReportDataSource("DataSetCoupon", CouponQuery));
+            rep.DataSources.Add(new ReportDataSource("DataSetCoupon", CouponQuery2));
             paramarr.Add(new ReportParameter("dateForm", MainWindow.dateFormat));
+            paramarr.Add(new ReportParameter("Title", MainWindow.resourcemanagerreport.GetString("trCoupon")));
             paramarr.Add(new ReportParameter("trCode", MainWindow.resourcemanagerreport.GetString("trCode")));
             paramarr.Add(new ReportParameter("trName", MainWindow.resourcemanagerreport.GetString("trName")));
             paramarr.Add(new ReportParameter("trDiscount", MainWindow.resourcemanagerreport.GetString("trValue")));
@@ -389,6 +400,16 @@ namespace POS.Classes
             rep.ReportPath = reppath;
             rep.EnableExternalImages = true;
             rep.DataSources.Clear();
+            foreach (var r in tempquery)
+            {
+                r.CopdiscountValue = decimal.Parse(SectionData.DecTostring(r.CopdiscountValue));
+                r.couponTotalValue = decimal.Parse(SectionData.DecTostring(r.couponTotalValue));//
+                r.OdiscountValue = decimal.Parse(SectionData.DecTostring(r.OdiscountValue));
+                r.offerTotalValue = decimal.Parse(SectionData.DecTostring(r.offerTotalValue));
+                r.ITprice = decimal.Parse(SectionData.DecTostring(r.ITprice));
+                r.subTotal = decimal.Parse(SectionData.DecTostring(r.subTotal));
+                r.totalNet = decimal.Parse(SectionData.DecTostring(r.totalNet));
+            }
             rep.DataSources.Add(new ReportDataSource("DataSetITinvoice", tempquery));
         }
 
@@ -458,6 +479,27 @@ namespace POS.Classes
             rep.DataSources.Clear();
             rep.DataSources.Add(new ReportDataSource("DataSetStorage", storageQuery));
         }
+
+
+        public static void cashTransferStsBank(IEnumerable<CashTransferSts> cashTransfers, LocalReport rep, string reppath, List<ReportParameter> paramarr)
+        {
+            cashTransferSts(cashTransfers, rep, reppath);
+            paramarr.Add(new ReportParameter("dateForm", MainWindow.dateFormat));
+            paramarr.Add(new ReportParameter("trPull", MainWindow.resourcemanagerreport.GetString("trPull")));
+            paramarr.Add(new ReportParameter("trDeposit", MainWindow.resourcemanagerreport.GetString("trDeposit")));
+
+         
+        }
+
+        public static void cashTransferStsStatement(IEnumerable<CashTransferSts> cashTransfers, LocalReport rep, string reppath, List<ReportParameter> paramarr)
+        {
+            cashTransferSts(cashTransfers, rep, reppath);
+            
+            paramarr.Add(new ReportParameter("dateForm", MainWindow.dateFormat));
+           
+           
+        }
+
         public static void cashTransferSts(IEnumerable<CashTransferSts> cashTransfers, LocalReport rep, string reppath)
         {
             rep.ReportPath = reppath;
@@ -476,6 +518,83 @@ namespace POS.Classes
             rep.EnableExternalImages = true;
             rep.DataSources.Clear();
             rep.DataSources.Add(new ReportDataSource("DataSetItemTransferInvoice", itemTransferInvoices));
+
+        }
+        public static void itemTransferInvTypeConv(List<ReportParameter> paramarr)
+        {
+            paramarr.Add(new ReportParameter("dateForm", MainWindow.dateFormat));
+            paramarr.Add(new ReportParameter("trPurchaseInvoice", MainWindow.resourcemanagerreport.GetString("trPurchaseInvoice")));
+            paramarr.Add(new ReportParameter("trPurchaseInvoiceWaiting", MainWindow.resourcemanagerreport.GetString("trPurchaseInvoiceWaiting")));
+            paramarr.Add(new ReportParameter("trSalesInvoice", MainWindow.resourcemanagerreport.GetString("trSalesInvoice")));
+            paramarr.Add(new ReportParameter("trSalesReturnInvoice", MainWindow.resourcemanagerreport.GetString("trSalesReturnInvoice")));
+            paramarr.Add(new ReportParameter("trPurchaseReturnInvoice", MainWindow.resourcemanagerreport.GetString("trPurchaseReturnInvoice")));
+            paramarr.Add(new ReportParameter("trPurchaseReturnInvoiceWaiting", MainWindow.resourcemanagerreport.GetString("trPurchaseReturnInvoiceWaiting")));
+            paramarr.Add(new ReportParameter("trDraftPurchaseBill", MainWindow.resourcemanagerreport.GetString("trDraftPurchaseBill")));
+            paramarr.Add(new ReportParameter("trSalesDraft", MainWindow.resourcemanagerreport.GetString("trSalesDraft")));
+            paramarr.Add(new ReportParameter("trSalesReturnDraft", MainWindow.resourcemanagerreport.GetString("trSalesReturnDraft")));
+
+            paramarr.Add(new ReportParameter("trSaleOrderDraft", MainWindow.resourcemanagerreport.GetString("trSaleOrderDraft")));
+            paramarr.Add(new ReportParameter("trSaleOrder", MainWindow.resourcemanagerreport.GetString("trSaleOrder")));
+            paramarr.Add(new ReportParameter("trPurchaceOrderDraft", MainWindow.resourcemanagerreport.GetString("trPurchaceOrderDraft")));
+            paramarr.Add(new ReportParameter("trPurchaceOrder", MainWindow.resourcemanagerreport.GetString("trPurchaceOrder")));
+            paramarr.Add(new ReportParameter("trQuotationsDraft", MainWindow.resourcemanagerreport.GetString("trQuotationsDraft")));
+            paramarr.Add(new ReportParameter("trQuotations", MainWindow.resourcemanagerreport.GetString("trQuotations")));
+            paramarr.Add(new ReportParameter("trDestructive", MainWindow.resourcemanagerreport.GetString("trDestructive")));
+            paramarr.Add(new ReportParameter("trShortage", MainWindow.resourcemanagerreport.GetString("trShortage")));
+            paramarr.Add(new ReportParameter("trImportDraft", MainWindow.resourcemanagerreport.GetString("trImportDraft")));
+            paramarr.Add(new ReportParameter("trImport", MainWindow.resourcemanagerreport.GetString("trImport")));
+            paramarr.Add(new ReportParameter("trImportOrder", MainWindow.resourcemanagerreport.GetString("trImportOrder")));
+            paramarr.Add(new ReportParameter("trExportDraft", MainWindow.resourcemanagerreport.GetString("trExportDraft")));
+
+            paramarr.Add(new ReportParameter("trExport", MainWindow.resourcemanagerreport.GetString("trExport")));
+
+            paramarr.Add(new ReportParameter("trExportOrder", MainWindow.resourcemanagerreport.GetString("trExportOrder")));
+
+        }
+        public static void invoiceSideConv(List<ReportParameter> paramarr)
+        {
+            
+            
+                paramarr.Add(new ReportParameter("trVendor", MainWindow.resourcemanagerreport.GetString("trVendor")));
+                paramarr.Add(new ReportParameter("trCustomer", MainWindow.resourcemanagerreport.GetString("trCustomer")));
+           
+
+        }
+        public static void AccountSideConv(List<ReportParameter> paramarr)
+        {
+
+            paramarr.Add(new ReportParameter("dateForm", MainWindow.dateFormat));
+
+            paramarr.Add(new ReportParameter("trVendor", MainWindow.resourcemanagerreport.GetString("trVendor")));
+            paramarr.Add(new ReportParameter("trCustomer", MainWindow.resourcemanagerreport.GetString("trCustomer")));
+            paramarr.Add(new ReportParameter("trUser", MainWindow.resourcemanagerreport.GetString("trUser")));
+            paramarr.Add(new ReportParameter("trSalary", MainWindow.resourcemanagerreport.GetString("trSalary")));
+            paramarr.Add(new ReportParameter("trGeneralExpenses", MainWindow.resourcemanagerreport.GetString("trGeneralExpenses")));
+
+            paramarr.Add(new ReportParameter("trAdministrativeDeposit", MainWindow.resourcemanagerreport.GetString("trAdministrativeDeposit")));
+
+            paramarr.Add(new ReportParameter("trAdministrativePull", MainWindow.resourcemanagerreport.GetString("trAdministrativePull")));
+            paramarr.Add(new ReportParameter("trShippingCompany", MainWindow.resourcemanagerreport.GetString("trShippingCompany")));
+
+
+        }
+        public static void itemTransferInvoiceExternal(IEnumerable<ItemTransferInvoice> itemTransferInvoices, LocalReport rep, string reppath, List<ReportParameter> paramarr)
+        {
+
+        
+
+            itemTransferInvTypeConv(paramarr);
+            invoiceSideConv(paramarr);
+
+            itemTransferInvoice(itemTransferInvoices, rep, reppath);
+
+
+        }
+        public static void itemTransferInvoiceDestroied(IEnumerable<ItemTransferInvoice> itemTransferInvoices, LocalReport rep, string reppath,List<ReportParameter> paramarr)
+        {
+           itemTransferInvoice(itemTransferInvoices, rep, reppath);
+            paramarr.Add(new ReportParameter("dateForm", MainWindow.dateFormat));
+
         }
         public static void categoryReport(IEnumerable<Category> categoryQuery, LocalReport rep, string reppath, List<ReportParameter> paramarr)
         {

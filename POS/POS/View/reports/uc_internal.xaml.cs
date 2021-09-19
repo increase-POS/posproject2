@@ -95,8 +95,11 @@ namespace POS.View.reports
             fillComboInternalItemsItems();
             fillComboBranches(cb_internalItemsFromBranches);
             fillComboBranches(cb_internalItemsToBranches);
-            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
-            fillInternalColumnChart();
+            //dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+            var lst = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+                dgStock.ItemsSource = lst;
+                txt_count.Text = lst.Count().ToString();
+                fillInternalColumnChart();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -359,7 +362,7 @@ namespace POS.View.reports
             fillComboBranches(cb_internalItemsToBranches);
             temp = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
             dgStock.ItemsSource = temp;
-
+            txt_count.Text = temp.Count().ToString();
             showSelectedTabColumn();
             fillInternalColumnChart();
                 if (sender != null)
@@ -395,6 +398,7 @@ namespace POS.View.reports
             temp = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
 
             dgStock.ItemsSource = temp;
+            txt_count.Text = temp.Count().ToString();
             showSelectedTabColumn();
             fillInternalColumnChart();
                 if (sender != null)
@@ -412,13 +416,16 @@ namespace POS.View.reports
 
         private void cb_internalItemsItems_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-                    try
-                    {
-                        if (sender != null)
-                            SectionData.StartAwait(grid_main);
-                        fillComboInternalItemsUnits();
-            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
-            fillInternalColumnChart();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                fillComboInternalItemsUnits();
+                //dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+                var lst = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+                dgStock.ItemsSource = lst;
+                txt_count.Text = lst.Count().ToString();
+                fillInternalColumnChart();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -432,15 +439,18 @@ namespace POS.View.reports
 
         private void chk_internalItemsAllItems_Checked(object sender, RoutedEventArgs e)
         {
-                        try
-                        {
-                            if (sender != null)
-                                SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
-                            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
-            cb_internalItemsItems.IsEnabled = false;
-            fillInternalColumnChart();
-            cb_internalItemsItems.SelectedItem = null;
+                //dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+                var lst = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+                dgStock.ItemsSource = lst;
+                txt_count.Text = lst.Count().ToString();
+                cb_internalItemsItems.IsEnabled = false;
+                fillInternalColumnChart();
+                cb_internalItemsItems.SelectedItem = null;
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -454,14 +464,18 @@ namespace POS.View.reports
 
         private void chk_internalItemsAllItems_Unchecked(object sender, RoutedEventArgs e)
         {
-                            try
-                            {
-                                if (sender != null)
-                                    SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
-                                dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
-            cb_internalItemsItems.IsEnabled = true;
-            fillInternalColumnChart();
+                //dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+                var lst = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+                dgStock.ItemsSource = lst;
+                txt_count.Text = lst.Count().ToString();
+                cb_internalItemsItems.IsEnabled = true;
+                fillInternalColumnChart();
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -475,13 +489,16 @@ namespace POS.View.reports
 
         private void cb_internalItemsUnits_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-                                try
-                                {
-                                    if (sender != null)
-                                        SectionData.StartAwait(grid_main);
+        try
+        {
+            if (sender != null)
+                SectionData.StartAwait(grid_main);
 
-                                    dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
-            fillInternalColumnChart();
+                //dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+                var lst = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+                dgStock.ItemsSource = lst;
+                txt_count.Text = lst.Count().ToString();
+                fillInternalColumnChart();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -495,15 +512,18 @@ namespace POS.View.reports
 
         private void chk_internalItemsAllUnits_Checked(object sender, RoutedEventArgs e)
         {
-                                    try
-                                    {
-                                        if (sender != null)
-                                            SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
-                                        dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
-            cb_internalItemsUnits.IsEnabled = false;
-            cb_internalItemsUnits.SelectedItem = null;
-            fillInternalColumnChart();
+                //dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+                var lst = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+                dgStock.ItemsSource = lst;
+                txt_count.Text = lst.Count().ToString();
+                cb_internalItemsUnits.IsEnabled = false;
+                cb_internalItemsUnits.SelectedItem = null;
+                fillInternalColumnChart();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -517,14 +537,18 @@ namespace POS.View.reports
 
         private void chk_internalItemsAllUnits_Unchecked(object sender, RoutedEventArgs e)
         {
-                                        try
-                                        {
-                                            if (sender != null)
-                                                SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
-                                            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
-            cb_internalItemsUnits.IsEnabled = true;
-            fillInternalColumnChart();
+                //dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+                var lst = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+                dgStock.ItemsSource = lst;
+                txt_count.Text = lst.Count().ToString();
+                cb_internalItemsUnits.IsEnabled = true;
+                fillInternalColumnChart();
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -538,13 +562,16 @@ namespace POS.View.reports
 
         private void cb_internalItemsFromBranches_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-                                            try
-                                            {
-                                                if (sender != null)
-                                                    SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
-                                                dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
-            fillInternalColumnChart();
+                //dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+                var lst = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+                dgStock.ItemsSource = lst;
+                txt_count.Text = lst.Count().ToString();
+                fillInternalColumnChart();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -558,13 +585,16 @@ namespace POS.View.reports
 
         private void cb_internalItemsToBranches_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-                                                try
-                                                {
-                                                    if (sender != null)
-                                                        SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
-                                                    dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
-            fillInternalColumnChart();
+                //dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+                var lst = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+                dgStock.ItemsSource = lst;
+                txt_count.Text = lst.Count().ToString();
+                fillInternalColumnChart();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -578,15 +608,19 @@ namespace POS.View.reports
 
         private void chk_internalItemsFromAllBranches_Checked(object sender, RoutedEventArgs e)
         {
-                                                    try
-                                                    {
-                                                        if (sender != null)
-                                                            SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
-                                                        dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
-            cb_internalItemsFromBranches.IsEnabled = false;
-            cb_internalItemsFromBranches.SelectedItem = null;
-            fillInternalColumnChart();
+                //dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+                var lst = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+                dgStock.ItemsSource = lst;
+                txt_count.Text = lst.Count().ToString();
+                cb_internalItemsFromBranches.IsEnabled = false;
+                cb_internalItemsFromBranches.SelectedItem = null;
+                fillInternalColumnChart();
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -600,14 +634,17 @@ namespace POS.View.reports
 
         private void chk_internalItemsFromAllBranches_Unchecked(object sender, RoutedEventArgs e)
         {
-                                                        try
-                                                        {
-                                                            if (sender != null)
-                                                                SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
-                                                            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
-            cb_internalItemsFromBranches.IsEnabled = true;
-            fillInternalColumnChart();
+                //dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+                var lst = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+                dgStock.ItemsSource = lst;
+                txt_count.Text = lst.Count().ToString();
+                cb_internalItemsFromBranches.IsEnabled = true;
+                fillInternalColumnChart();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -621,14 +658,19 @@ namespace POS.View.reports
 
         private void chk_internalItemsToAllBranches_Checked(object sender, RoutedEventArgs e)
         {
-                                                            try
-                                                            {
-                                                                if (sender != null)
-                                                                    SectionData.StartAwait(grid_main);
-                                                                dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
-            cb_internalItemsToBranches.IsEnabled = false;
-            cb_internalItemsToBranches.SelectedItem = null;
-            fillInternalColumnChart();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                //dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+                var lst = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+                dgStock.ItemsSource = lst;
+                txt_count.Text = lst.Count().ToString();
+                cb_internalItemsToBranches.IsEnabled = false;
+                cb_internalItemsToBranches.SelectedItem = null;
+                fillInternalColumnChart();
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -642,14 +684,17 @@ namespace POS.View.reports
 
         private void chk_internalItemsToAllBranches_Unchecked(object sender, RoutedEventArgs e)
         {
-                                                                try
-                                                                {
-                                                                    if (sender != null)
-                                                                        SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
-                                                                    cb_internalItemsToBranches.IsEnabled = true;
-            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
-            fillInternalColumnChart();
+                cb_internalItemsToBranches.IsEnabled = true;
+                //dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+                var lst = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+                dgStock.ItemsSource = lst;
+                txt_count.Text = lst.Count().ToString();
+                fillInternalColumnChart();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -663,13 +708,17 @@ namespace POS.View.reports
 
         private void dp_internalItemsStartDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-                                                                    try
-                                                                    {
-                                                                        if (sender != null)
-                                                                            SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
-                                                                        dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
-            fillInternalColumnChart();
+                //dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+                var lst = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+                dgStock.ItemsSource = lst;
+                txt_count.Text = lst.Count().ToString();
+                fillInternalColumnChart();
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -683,12 +732,17 @@ namespace POS.View.reports
 
         private void dp_InternalItemsEndDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-                                                                        try
-                                                                        {
-                                                                            if (sender != null)
-                                                                                SectionData.StartAwait(grid_main);
-                                                                            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
-            fillInternalColumnChart();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                //dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+                var lst = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+                dgStock.ItemsSource = lst;
+                txt_count.Text = lst.Count().ToString();
+                fillInternalColumnChart();
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -711,13 +765,17 @@ namespace POS.View.reports
 
         private void cb_internalOperaterFromBranches_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-                                                                            try
-                                                                            {
-                                                                                if (sender != null)
-                                                                                    SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
-                                                                                dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
-            fillInternalColumnChart();
+                //dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
+                var lst = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
+                dgStock.ItemsSource = lst;
+                txt_count.Text = lst.Count().ToString();
+                fillInternalColumnChart();
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -731,15 +789,19 @@ namespace POS.View.reports
 
         private void chk_internalOperaterFromAllBranches_Checked(object sender, RoutedEventArgs e)
         {
-                                                                                try
-                                                                                {
-                                                                                    if (sender != null)
-                                                                                        SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
-                                                                                    dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
-            cb_internalOperaterFromBranches.IsEnabled = false;
-            cb_internalOperaterFromBranches.SelectedItem = null;
-            fillInternalColumnChart();
+                //dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
+                var lst = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
+                dgStock.ItemsSource = lst;
+                txt_count.Text = lst.Count().ToString();
+                cb_internalOperaterFromBranches.IsEnabled = false;
+                cb_internalOperaterFromBranches.SelectedItem = null;
+                fillInternalColumnChart();
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -753,14 +815,17 @@ namespace POS.View.reports
 
         private void chk_internalOperaterFromAllBranches_Unchecked(object sender, RoutedEventArgs e)
         {
-                                                                                    try
-                                                                                    {
-                                                                                        if (sender != null)
-                                                                                            SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
-                                                                                        dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
-            cb_internalOperaterFromBranches.IsEnabled = true;
-            fillInternalColumnChart();
+                //dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
+                var lst = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
+                dgStock.ItemsSource = lst;
+                txt_count.Text = lst.Count().ToString();
+                cb_internalOperaterFromBranches.IsEnabled = true;
+                fillInternalColumnChart();
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -775,12 +840,17 @@ namespace POS.View.reports
 
         private void cb_internalOperaterToBranches_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-                                                                                        try
-                                                                                        {
-                                                                                            if (sender != null)
-                                                                                                SectionData.StartAwait(grid_main);
-                                                                                            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
-            fillInternalColumnChart();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                //dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
+                var lst = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
+                dgStock.ItemsSource = lst;
+                txt_count.Text = lst.Count().ToString();
+                fillInternalColumnChart();
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -794,13 +864,16 @@ namespace POS.View.reports
 
         private void chk_internalOperaterToAllBranches_Checked(object sender, RoutedEventArgs e)
         {
-                                                                                            try
-                                                                                            {
-                                                                                                if (sender != null)
-                                                                                                    SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
-                                                                                                dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
-            fillInternalColumnChart();
+                //dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
+                var lst = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
+                dgStock.ItemsSource = lst;
+                txt_count.Text = lst.Count().ToString();
+                fillInternalColumnChart();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -814,13 +887,17 @@ namespace POS.View.reports
 
         private void chk_internalOperaterToAllBranches_Unchecked(object sender, RoutedEventArgs e)
         {
-                                                                                                try
-                                                                                                {
-                                                                                                    if (sender != null)
-                                                                                                        SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
-                                                                                                    dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
-            fillInternalColumnChart();
+                //dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
+                var lst = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
+                dgStock.ItemsSource = lst;
+                txt_count.Text = lst.Count().ToString();
+                fillInternalColumnChart();
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -834,12 +911,17 @@ namespace POS.View.reports
 
         private void cb_internalOperaterType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-                                                                                                    try
-                                                                                                    {
-                                                                                                        if (sender != null)
-                                                                                                            SectionData.StartAwait(grid_main);
-                                                                                                        dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
-            fillInternalColumnChart();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                //dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
+                var lst = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
+                dgStock.ItemsSource = lst;
+                txt_count.Text = lst.Count().ToString();
+                fillInternalColumnChart();
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -853,14 +935,19 @@ namespace POS.View.reports
 
         private void chk_internalOperatorAllTypes_Checked(object sender, RoutedEventArgs e)
         {
-                                                                                                        try
-                                                                                                        {
-                                                                                                            if (sender != null)
-                                                                                                                SectionData.StartAwait(grid_main);
-                                                                                                            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
-            cb_internalOperaterType.IsEnabled = false;
-            cb_internalOperaterType.SelectedItem = null;
-            fillInternalColumnChart();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                //dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
+                var lst = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
+                dgStock.ItemsSource = lst;
+                txt_count.Text = lst.Count().ToString();
+                cb_internalOperaterType.IsEnabled = false;
+                cb_internalOperaterType.SelectedItem = null;
+                fillInternalColumnChart();
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -874,13 +961,18 @@ namespace POS.View.reports
 
         private void chk_internalOperatorAllTypes_Unchecked(object sender, RoutedEventArgs e)
         {
-                                                                                                            try
-                                                                                                            {
-                                                                                                                if (sender != null)
-                                                                                                                    SectionData.StartAwait(grid_main);
-                                                                                                                dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
-            cb_internalOperaterType.IsEnabled = true;
-            fillInternalColumnChart();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                
+                //dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
+                var lst = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
+                dgStock.ItemsSource = lst;
+                txt_count.Text = lst.Count().ToString();
+                cb_internalOperaterType.IsEnabled = true;
+                fillInternalColumnChart();
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -894,12 +986,17 @@ namespace POS.View.reports
 
         private void cb_internalOperatorOperators_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-                                                                                                                try
-                                                                                                                {
-                                                                                                                    if (sender != null)
-                                                                                                                        SectionData.StartAwait(grid_main);
-                                                                                                                    dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
-            fillInternalColumnChart();
+        try
+        {
+            if (sender != null)
+                SectionData.StartAwait(grid_main);
+
+                //dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
+                var lst = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
+                dgStock.ItemsSource = lst;
+                txt_count.Text = lst.Count().ToString();
+                fillInternalColumnChart();
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -913,12 +1010,18 @@ namespace POS.View.reports
 
         private void chk_internalOperatorAllOperators_Checked(object sender, RoutedEventArgs e)
         {
-                                                                                                                    try
-                                                                                                                    {
-                                                                                                                        if (sender != null)
-                                                                                                                            SectionData.StartAwait(grid_main);
-                                                                                                                        dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
-            fillInternalColumnChart();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                //dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
+                var lst = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
+                dgStock.ItemsSource = lst;
+                txt_count.Text = lst.Count().ToString();
+
+                fillInternalColumnChart();
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -932,12 +1035,17 @@ namespace POS.View.reports
 
         private void chk_internalOperatorAllOperators_Unchecked(object sender, RoutedEventArgs e)
         {
-                                                                                                                        try
-                                                                                                                        {
-                                                                                                                            if (sender != null)
-                                                                                                                                SectionData.StartAwait(grid_main);
-                                                                                                                            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
-            fillInternalColumnChart();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                //dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
+                var lst = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
+                dgStock.ItemsSource = lst;
+                txt_count.Text = lst.Count().ToString();
+                fillInternalColumnChart();
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -951,12 +1059,18 @@ namespace POS.View.reports
 
         private void dp_InternalOperatorEndDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-                                                                                                                            try
-                                                                                                                            {
-                                                                                                                                if (sender != null)
-                                                                                                                                    SectionData.StartAwait(grid_main);
-                                                                                                                                dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
-            fillInternalColumnChart();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                //dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
+                var lst = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
+                dgStock.ItemsSource = lst;
+                txt_count.Text = lst.Count().ToString();
+
+                fillInternalColumnChart();
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -970,12 +1084,17 @@ namespace POS.View.reports
 
         private void dp_internalOperatorStartDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-                                                                                                                                try
-                                                                                                                                {
-                                                                                                                                    if (sender != null)
-                                                                                                                                        SectionData.StartAwait(grid_main);
-                                                                                                                                    dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
-            fillInternalColumnChart();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                //dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
+                var lst = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
+                dgStock.ItemsSource = lst;
+                txt_count.Text = lst.Count().ToString();
+                fillInternalColumnChart();
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -1095,12 +1214,17 @@ namespace POS.View.reports
 
         private void Chk_internalItemsTwoWay_Checked(object sender, RoutedEventArgs e)
         {
-                                                                                                                                    try
-                                                                                                                                    {
-                                                                                                                                        if (sender != null)
-                                                                                                                                            SectionData.StartAwait(grid_main);
-                                                                                                                                        dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
-            fillInternalColumnChart();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                //dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+                var lst = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+                dgStock.ItemsSource = lst;
+                txt_count.Text = lst.Count().ToString();
+                fillInternalColumnChart();
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -1114,12 +1238,17 @@ namespace POS.View.reports
 
         private void Chk_internalItemsTwoWay_Unchecked(object sender, RoutedEventArgs e)
         {
-                                                                                                                                        try
-                                                                                                                                        {
-                                                                                                                                            if (sender != null)
-                                                                                                                                                SectionData.StartAwait(grid_main);
-                                                                                                                                            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
-            fillInternalColumnChart();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                //dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+                var lst = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+                dgStock.ItemsSource = lst;
+                txt_count.Text = lst.Count().ToString();
+                fillInternalColumnChart();
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -1372,31 +1501,49 @@ namespace POS.View.reports
 
         private void Txt_search_TextChanged(object sender, TextChangedEventArgs e)
         {
-                                                                                                                                            try
-                                                                                                                                            {
-                                                                                                                                                if (sender != null)
-                                                                                                                                                    SectionData.StartAwait(grid_main);
-
-                                                                                                                                                if (selectedTab == 0)
+            try
             {
-                dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay)
-            .Where(s => (s.exportBranch.Contains(txt_search.Text) ||
-       s.importBranch.Contains(txt_search.Text) ||
-       s.itemName.Contains(txt_search.Text) ||
-       s.unitName.Contains(txt_search.Text) ||
-       s.InvTypeNumber.Contains(txt_search.Text)
-       ));
-            }
-            else if (selectedTab == 1)
-            {
-                dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null)
-              .Where(s => (s.branchName.Contains(txt_search.Text) ||
-       s.itemName.Contains(txt_search.Text) ||
-       s.unitName.Contains(txt_search.Text) ||
-       s.InvTypeNumber.Contains(txt_search.Text)
-       ));
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
-            }
+                if (selectedTab == 0)
+                {
+                   // dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay)
+                   //.Where(s => (s.exportBranch.Contains(txt_search.Text) ||
+                   //s.importBranch.Contains(txt_search.Text) ||
+                   //s.itemName.Contains(txt_search.Text) ||
+                   //s.unitName.Contains(txt_search.Text) ||
+                   //s.InvTypeNumber.Contains(txt_search.Text)
+                   //));
+
+                    var lst = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay)
+                               .Where(s => (s.exportBranch.Contains(txt_search.Text) ||
+                               s.importBranch.Contains(txt_search.Text) ||
+                               s.itemName.Contains(txt_search.Text) ||
+                               s.unitName.Contains(txt_search.Text) ||
+                               s.InvTypeNumber.Contains(txt_search.Text)
+                               ));
+                    dgStock.ItemsSource = lst;
+                    txt_count.Text = lst.Count().ToString();
+                }
+                else if (selectedTab == 1)
+                {
+                    // dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null)
+                    //.Where(s => (s.branchName.Contains(txt_search.Text) ||
+                    //s.itemName.Contains(txt_search.Text) ||
+                    //s.unitName.Contains(txt_search.Text) ||
+                    //s.InvTypeNumber.Contains(txt_search.Text)
+                    //));
+                    var lst = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null)
+                                .Where(s => (s.branchName.Contains(txt_search.Text) ||
+                                s.itemName.Contains(txt_search.Text) ||
+                                s.unitName.Contains(txt_search.Text) ||
+                                s.InvTypeNumber.Contains(txt_search.Text)
+                                ));
+                    dgStock.ItemsSource = lst;
+                    txt_count.Text = lst.Count().ToString();
+
+                }
 
 
                 if (sender != null)
@@ -1453,12 +1600,13 @@ namespace POS.View.reports
         LocalReport rep = new LocalReport();
         SaveFileDialog saveFileDialog = new SaveFileDialog();
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
-        {
+        {//pdf
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
+                #region
                 List<ReportParameter> paramarr = new List<ReportParameter>();
 
                 string addpath = "";
@@ -1490,16 +1638,16 @@ namespace POS.View.reports
                 string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                 ReportCls.checkLang();
-                foreach (var r in temp)
-                {
-                    //r.startDate = DateTime.Parse(SectionData.DateToString(r.startDate));//
-                    //r.endDate = DateTime.Parse(SectionData.DateToString(r.endDate));
-                    r.inventoryDate = DateTime.Parse(SectionData.DateToString(r.inventoryDate));
-                    r.IupdateDate = DateTime.Parse(SectionData.DateToString(r.IupdateDate));
+                //foreach (var r in temp)
+                //{
+                //    //r.startDate = DateTime.Parse(SectionData.DateToString(r.startDate));//
+                //    //r.endDate = DateTime.Parse(SectionData.DateToString(r.endDate));
+                //    r.inventoryDate = DateTime.Parse(SectionData.DateToString(r.inventoryDate));
+                //    r.IupdateDate = DateTime.Parse(SectionData.DateToString(r.IupdateDate));
 
-                    //r.diffPercentage = decimal.Parse(SectionData.DecTostring(r.diffPercentage));
-                    //r.storageCostValue = decimal.Parse(SectionData.DecTostring(r.storageCostValue));
-                }
+                //    //r.diffPercentage = decimal.Parse(SectionData.DecTostring(r.diffPercentage));
+                //    //r.storageCostValue = decimal.Parse(SectionData.DecTostring(r.storageCostValue));
+                //}
                 clsReports.itemTransferInvoice(temp, rep, reppath);
                 clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);
@@ -1515,6 +1663,9 @@ namespace POS.View.reports
                     string filepath = saveFileDialog.FileName;
                     LocalReportExtensions.ExportToPDF(rep, filepath);
                 }
+
+                #endregion
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -1533,6 +1684,7 @@ namespace POS.View.reports
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
+                #region
                 List<ReportParameter> paramarr = new List<ReportParameter>();
 
                 string addpath = "";
@@ -1563,16 +1715,7 @@ namespace POS.View.reports
                 string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                 ReportCls.checkLang();
-                foreach (var r in temp)
-                {
-                    //r.startDate = DateTime.Parse(SectionData.DateToString(r.startDate));//
-                    //r.endDate = DateTime.Parse(SectionData.DateToString(r.endDate));
-                    r.inventoryDate = DateTime.Parse(SectionData.DateToString(r.inventoryDate));
-                    r.IupdateDate = DateTime.Parse(SectionData.DateToString(r.IupdateDate));
-
-                    //r.diffPercentage = decimal.Parse(SectionData.DecTostring(r.diffPercentage));
-                    //r.storageCostValue = decimal.Parse(SectionData.DecTostring(r.storageCostValue));
-                }
+              
                 clsReports.itemTransferInvoice(temp, rep, reppath);
                 clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);
@@ -1580,6 +1723,8 @@ namespace POS.View.reports
                 rep.SetParameters(paramarr);
                 rep.Refresh();
                 LocalReportExtensions.PrintToPrinter(rep);
+                #endregion
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -1598,11 +1743,90 @@ namespace POS.View.reports
             if (sender != null)
                 SectionData.StartAwait(grid_main);
 
-            Thread t1 = new Thread(() =>
+                #region
+                Thread t1 = new Thread(() =>
+                {
+                    List<ReportParameter> paramarr = new List<ReportParameter>();
+
+                    string addpath = "";
+                    bool isArabic = ReportCls.checkLang();
+                    if (isArabic)
+                    {
+                        if (selectedTab == 0)
+                        {
+                            addpath = @"\Reports\StatisticReport\Storage\Internal\Ar\ArItem.rdlc";
+                        }
+                        else if (selectedTab == 1)
+                        {
+                            addpath = @"\Reports\StatisticReport\Storage\Internal\Ar\ArOperator.rdlc";
+                        }
+                    }
+                    else
+                    {
+                        if (selectedTab == 0)
+                        {
+                            addpath = @"\Reports\StatisticReport\Storage\Internal\En\Item.rdlc";
+                        }
+                        else if (selectedTab == 1)
+                        {
+                            addpath = @"\Reports\StatisticReport\Storage\Internal\En\Operator.rdlc";
+                        }
+
+                    }
+                    string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+                    ReportCls.checkLang();
+              
+                    clsReports.itemTransferInvoice(temp, rep, reppath);
+                    clsReports.setReportLanguage(paramarr);
+                    clsReports.Header(paramarr);
+
+                    rep.SetParameters(paramarr);
+
+                    rep.Refresh();
+                    this.Dispatcher.Invoke(() =>
+                    {
+                        saveFileDialog.Filter = "EXCEL|*.xls;";
+                        if (saveFileDialog.ShowDialog() == true)
+                        {
+                            string filepath = saveFileDialog.FileName;
+                            LocalReportExtensions.ExportToExcel(rep, filepath);
+                        }
+                    });
+
+
+                });
+                t1.Start();
+                #endregion
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
             {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+
+        private void Btn_preview_Click(object sender, RoutedEventArgs e)
+        {//preview
+        try
+        {
+            if (sender != null)
+                SectionData.StartAwait(grid_main);
+
+                #region
+                Window.GetWindow(this).Opacity = 0.2;
+                string pdfpath = "";
+
                 List<ReportParameter> paramarr = new List<ReportParameter>();
 
-                string addpath = "";
+                pdfpath = @"\Thumb\report\temp.pdf";
+                pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
+
+                string addpath="";
                 bool isArabic = ReportCls.checkLang();
                 if (isArabic)
                 {
@@ -1631,16 +1855,7 @@ namespace POS.View.reports
                 string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                 ReportCls.checkLang();
-                foreach (var r in temp)
-                {
-                    //r.startDate = DateTime.Parse(SectionData.DateToString(r.startDate));//
-                    //r.endDate = DateTime.Parse(SectionData.DateToString(r.endDate));
-                    r.inventoryDate = DateTime.Parse(SectionData.DateToString(r.inventoryDate));
-                    r.IupdateDate = DateTime.Parse(SectionData.DateToString(r.IupdateDate));
 
-                    //r.diffPercentage = decimal.Parse(SectionData.DecTostring(r.diffPercentage));
-                    //r.storageCostValue = decimal.Parse(SectionData.DecTostring(r.storageCostValue));
-                }
                 clsReports.itemTransferInvoice(temp, rep, reppath);
                 clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);
@@ -1648,96 +1863,21 @@ namespace POS.View.reports
                 rep.SetParameters(paramarr);
 
                 rep.Refresh();
-                this.Dispatcher.Invoke(() =>
+
+                LocalReportExtensions.ExportToPDF(rep, pdfpath);
+                wd_previewPdf w = new wd_previewPdf();
+                w.pdfPath = pdfpath;
+
+                if (!string.IsNullOrEmpty(w.pdfPath))
                 {
-                    saveFileDialog.Filter = "EXCEL|*.xls;";
-                    if (saveFileDialog.ShowDialog() == true)
-                    {
-                        string filepath = saveFileDialog.FileName;
-                        LocalReportExtensions.ExportToExcel(rep, filepath);
-                    }
-                });
+                    w.ShowDialog();
+                    w.wb_pdfWebViewer.Dispose();
+                }
+                Window.GetWindow(this).Opacity = 1;
 
+                #endregion
 
-            });
-            t1.Start();
                 if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
-        private void Btn_preview_Click(object sender, RoutedEventArgs e)
-        {//preview
-        try
-        {
-            if (sender != null)
-                SectionData.StartAwait(grid_main);
-            Window.GetWindow(this).Opacity = 0.2;
-            string pdfpath = "";
-
-            List<ReportParameter> paramarr = new List<ReportParameter>();
-
-
-            //
-            pdfpath = @"\Thumb\report\temp.pdf";
-            pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
-
-            string addpath="";
-            bool isArabic = ReportCls.checkLang();
-            if (isArabic)
-            {
-                if (selectedTab == 0)
-                {
-                    addpath = @"\Reports\StatisticReport\Storage\Internal\Ar\ArItem.rdlc";
-                }
-                else if (selectedTab == 1)
-                {
-                    addpath = @"\Reports\StatisticReport\Storage\Internal\Ar\ArOperator.rdlc";
-                }
-
-            }
-            else
-            {
-                if (selectedTab == 0)
-                {
-                    addpath = @"\Reports\StatisticReport\Storage\Internal\En\Item.rdlc";
-                }
-                else if (selectedTab == 1)
-                {
-                    addpath = @"\Reports\StatisticReport\Storage\Internal\En\Operator.rdlc";
-                }
-
-            }
-            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-            ReportCls.checkLang();
-
-            clsReports.itemTransferInvoice(temp, rep, reppath);
-            clsReports.setReportLanguage(paramarr);
-            clsReports.Header(paramarr);
-
-            rep.SetParameters(paramarr);
-
-            rep.Refresh();
-
-            LocalReportExtensions.ExportToPDF(rep, pdfpath);
-            wd_previewPdf w = new wd_previewPdf();
-            w.pdfPath = pdfpath;
-            if (!string.IsNullOrEmpty(w.pdfPath))
-            {
-                w.ShowDialog();
-                w.wb_pdfWebViewer.Dispose();
-
-
-            }
-            Window.GetWindow(this).Opacity = 1;
-                    if (sender != null)
                         SectionData.EndAwait(grid_main);
                 }
                 catch (Exception ex)

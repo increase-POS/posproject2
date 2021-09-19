@@ -1044,7 +1044,7 @@ namespace POS.View.reports
 
                 ReportCls.checkLang();
                
-                clsReports.cashTransferSts(temp, rep, reppath);
+                clsReports.cashTransferStsBank(temp, rep, reppath,paramarr);
                 clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);
 
@@ -1111,7 +1111,7 @@ namespace POS.View.reports
 
                 ReportCls.checkLang();
                
-                clsReports.cashTransferSts(temp, rep, reppath);
+                clsReports.cashTransferStsBank(temp, rep, reppath,paramarr);
                 clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);
 
@@ -1172,7 +1172,7 @@ namespace POS.View.reports
 
                     ReportCls.checkLang();
                   
-                    clsReports.cashTransferSts(temp, rep, reppath);
+                    clsReports.cashTransferStsBank(temp, rep, reppath,paramarr);
                     clsReports.setReportLanguage(paramarr);
                     clsReports.Header(paramarr);
 
@@ -1250,7 +1250,7 @@ namespace POS.View.reports
 
                 ReportCls.checkLang();
              
-                clsReports.cashTransferSts(temp, rep, reppath);
+                clsReports.cashTransferStsBank(temp, rep, reppath,paramarr);
                 clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);
 
