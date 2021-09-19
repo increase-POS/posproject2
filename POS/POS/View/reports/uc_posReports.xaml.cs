@@ -60,7 +60,7 @@ namespace POS.View.reports
             }
         }
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
+        {//load
             try
             {
                 if (sender != null)
@@ -159,6 +159,7 @@ namespace POS.View.reports
         {
             temp = fillList(list, cb_formBranch, cb_toBranch, cb_formPos, cb_toPos, cb_Accountant, dp_StartDate, dp_EndDate, chk_twoWay);
             dgPayments.ItemsSource = temp;
+            txt_count.Text = temp.Count().ToString();
             fillColumnChart();
             fillPieChart();
             fillRowChart();
@@ -743,15 +744,19 @@ namespace POS.View.reports
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
                 dgPayments.ItemsSource = fillList(list, cb_formBranch, cb_toBranch, cb_formPos, cb_toPos, cb_Accountant, dp_StartDate, dp_EndDate, chk_twoWay)
-.Where(obj => (
-obj.transNum.Contains(txt_search.Text) ||
-obj.frombranchName.Contains(txt_search.Text) ||
-obj.tobranchName.Contains(txt_search.Text) ||
-obj.fromposName.Contains(txt_search.Text) ||
-obj.toposName.Contains(txt_search.Text) ||
-obj.updateUserAcc.Contains(txt_search.Text)
-));
+                                            .Where(obj => (
+                                            obj.transNum.Contains(txt_search.Text) ||
+                                            obj.frombranchName.Contains(txt_search.Text) ||
+                                            obj.tobranchName.Contains(txt_search.Text) ||
+                                            obj.fromposName.Contains(txt_search.Text) ||
+                                            obj.toposName.Contains(txt_search.Text) ||
+                                            obj.updateUserAcc.Contains(txt_search.Text)
+                                            ));
+
+                txt_count.Text = dgPayments.Items.Count.ToString();
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -772,6 +777,7 @@ obj.updateUserAcc.Contains(txt_search.Text)
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
+                #region
                 List<ReportParameter> paramarr = new List<ReportParameter>();
 
                 string addpath = "";
@@ -787,11 +793,7 @@ obj.updateUserAcc.Contains(txt_search.Text)
                 string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                 ReportCls.checkLang();
-                foreach (var r in temp)
-                {
-                    r.updateDate = DateTime.Parse(SectionData.DateToString(r.updateDate));
-                    r.cash = decimal.Parse(SectionData.DecTostring(r.cash));
-                }
+               
                 clsReports.cashTransferSts(temp, rep, reppath);
                 clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);
@@ -807,6 +809,7 @@ obj.updateUserAcc.Contains(txt_search.Text)
                     string filepath = saveFileDialog.FileName;
                     LocalReportExtensions.ExportToPDF(rep, filepath);
                 }
+                #endregion
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -826,6 +829,7 @@ obj.updateUserAcc.Contains(txt_search.Text)
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
+                #region
                 List<ReportParameter> paramarr = new List<ReportParameter>();
 
                 string addpath = "";
@@ -841,11 +845,7 @@ obj.updateUserAcc.Contains(txt_search.Text)
                 string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                 ReportCls.checkLang();
-                foreach (var r in temp)
-                {
-                    r.updateDate = DateTime.Parse(SectionData.DateToString(r.updateDate));
-                    r.cash = decimal.Parse(SectionData.DecTostring(r.cash));
-                }
+               
                 clsReports.cashTransferSts(temp, rep, reppath);
                 clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);
@@ -853,6 +853,7 @@ obj.updateUserAcc.Contains(txt_search.Text)
                 rep.SetParameters(paramarr);
                 rep.Refresh();
                 LocalReportExtensions.PrintToPrinter(rep);
+                #endregion
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -872,6 +873,7 @@ obj.updateUserAcc.Contains(txt_search.Text)
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
+                #region
                 Thread t1 = new Thread(() =>
             {
                 List<ReportParameter> paramarr = new List<ReportParameter>();
@@ -889,11 +891,7 @@ obj.updateUserAcc.Contains(txt_search.Text)
                 string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                 ReportCls.checkLang();
-                foreach (var r in temp)
-                {
-                    r.updateDate = DateTime.Parse(SectionData.DateToString(r.updateDate));
-                    r.cash = decimal.Parse(SectionData.DecTostring(r.cash));
-                }
+              
                 clsReports.cashTransferSts(temp, rep, reppath);
                 clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);
@@ -914,6 +912,8 @@ obj.updateUserAcc.Contains(txt_search.Text)
 
             });
                 t1.Start();
+                #endregion
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -931,6 +931,7 @@ obj.updateUserAcc.Contains(txt_search.Text)
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+                #region
                 Window.GetWindow(this).Opacity = 0.2;
                 string pdfpath = "";
 
@@ -951,14 +952,8 @@ obj.updateUserAcc.Contains(txt_search.Text)
                 }
                 string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
-
-
                 ReportCls.checkLang();
-                foreach (var r in temp)
-                {
-                    r.updateDate = DateTime.Parse(SectionData.DateToString(r.updateDate));
-                    r.cash = decimal.Parse(SectionData.DecTostring(r.cash));
-                }
+              
                 clsReports.cashTransferSts(temp, rep, reppath);
                 clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);
@@ -974,10 +969,10 @@ obj.updateUserAcc.Contains(txt_search.Text)
                 {
                     w.ShowDialog();
                     w.wb_pdfWebViewer.Dispose();
-
-
                 }
                 Window.GetWindow(this).Opacity = 1;
+                #endregion
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }

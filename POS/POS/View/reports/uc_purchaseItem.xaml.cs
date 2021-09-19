@@ -117,6 +117,7 @@ namespace POS.View.reports
         {
             dgInvoice.ItemsSource = fillList(Items, cb_ItemsBranches, cb_Items, chk_itemInvoice, chk_itemReturn, dp_ItemStartDate, dp_ItemEndDate)
                 .Where(j => (selectedItemId.Count != 0 ? selectedItemId.Contains((int)j.ITitemUnitId) : true));
+            txt_count.Text = dgInvoice.Items.Count.ToString();
             fillPieChart(cb_Items, selectedItemId);
             fillColumnChart(cb_Items, selectedItemId);
             fillRowChart(cb_Items, selectedItemId);
@@ -126,6 +127,7 @@ namespace POS.View.reports
         {
             dgInvoice.ItemsSource = fillCollectListBranch(Items, dp_collectStartDate, dp_collectEndDate)
                 .Where(j => (selectedBranchId.Count != 0 ? selectedBranchId.Contains((int)j.branchCreatorId) : true));
+            txt_count.Text = dgInvoice.Items.Count.ToString();
             fillPieChartCollect(cb_collect, selectedBranchId);
             fillColumnChartCollect(cb_collect, selectedBranchId);
             fillRowChartCollect(cb_collect, selectedBranchId);
@@ -134,6 +136,7 @@ namespace POS.View.reports
         public void fillCollectEventAll()
         {
             dgInvoice.ItemsSource = fillCollectListAll(Items, dp_collectStartDate, dp_collectEndDate);
+            txt_count.Text = dgInvoice.Items.Count.ToString();
             fillPieChartCollect(cb_collect, selectedBranchId);
             fillColumnChartCollect(cb_collect, selectedBranchId);
             fillRowChartCollect(cb_collect, selectedBranchId);
@@ -731,22 +734,376 @@ namespace POS.View.reports
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {//excel
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
+                #region
+                //List<ReportParameter> paramarr = new List<ReportParameter>();
+                //List<ItemTransferInvoice> query = new List<ItemTransferInvoice>();
+                //query = converter(filltoprint());
+                //string addpath = "";
+                //bool isArabic = ReportCls.checkLang();
+                //if (isArabic)
+                //{
+                //    if (selectedTab == 0)
+                //    {
+                //        addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurSts.rdlc";
+                //    }
+                //    else if (selectedTab == 1)
+                //    {
+                //        addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurPosSts.rdlc";
+                //    }
+                //    else if (selectedTab == 2)
+                //    {
+                //        addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurVendorSts.rdlc";
+                //    }
+                //    else if (selectedTab == 3)
+                //    {
+                //        addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurUserSts.rdlc";
+                //    }
+                //    else
+                //    {
+                //        addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurItemSts.rdlc";
+                //    }
+                //}
+                //else
+                //{
+                //    //english
+                //    if (selectedTab == 0)
+                //    { addpath = @"\Reports\StatisticReport\Purchase\En\EnPurSts.rdlc"; }
+                //    else if (selectedTab == 1)
+                //    {
+                //        addpath = @"\Reports\StatisticReport\Purchase\En\EnPurPosSts.rdlc";
+                //    }
+                //    else if (selectedTab == 2)
+                //    {
+                //        addpath = @"\Reports\StatisticReport\Purchase\En\EnPurVendorSts.rdlc";
+                //    }
+                //    else if (selectedTab == 3)
+                //    {
+                //        addpath = @"\Reports\StatisticReport\Purchase\En\EnPurUserSts.rdlc";
+                //    }
+                //    else
+                //    {
+                //        addpath = @"\Reports\StatisticReport\Purchase\En\EnPurItemSts.rdlc";
+                //    }
+                //}
+
+                //string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+                //ReportCls.checkLang();
+                ////  getpuritemcount
+
+                //clsReports.PurStsReport(query, rep, reppath);
+                //clsReports.setReportLanguage(paramarr);
+                //clsReports.Header(paramarr);
+
+                //rep.SetParameters(paramarr);
+
+                //rep.Refresh();
+                //this.Dispatcher.Invoke(() =>
+                //{
+                //    saveFileDialog.Filter = "EXCEL|*.xls;";
+                //    if (saveFileDialog.ShowDialog() == true)
+                //    {
+                //        string filepath = saveFileDialog.FileName;
+                //        LocalReportExtensions.ExportToExcel(rep, filepath);
+                //    }
+                //});
+                #endregion
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         private void Btn_print_Click(object sender, RoutedEventArgs e)
         {//print
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
+                #region
+                //List<ReportParameter> paramarr = new List<ReportParameter>();
+                //List<ItemTransferInvoice> query = new List<ItemTransferInvoice>();
+                //query = converter(filltoprint());
+
+                //string addpath = "";
+                //bool isArabic = ReportCls.checkLang();
+                //if (isArabic)
+                //{
+                //    if (selectedTab == 0)
+                //    {
+                //        addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurSts.rdlc";
+                //    }
+                //    else if (selectedTab == 1)
+                //    {
+                //        addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurPosSts.rdlc";
+                //    }
+                //    else if (selectedTab == 2)
+                //    {
+                //        addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurVendorSts.rdlc";
+                //    }
+                //    else if (selectedTab == 3)
+                //    {
+                //        addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurUserSts.rdlc";
+                //    }
+                //    else
+                //    {
+                //        addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurItemSts.rdlc";
+                //    }
+                //}
+                //else
+                //{
+                //    //english
+                //    if (selectedTab == 0)
+                //    { addpath = @"\Reports\StatisticReport\Purchase\En\EnPurSts.rdlc"; }
+                //    else if (selectedTab == 1)
+                //    {
+                //        addpath = @"\Reports\StatisticReport\Purchase\En\EnPurPosSts.rdlc";
+                //    }
+                //    else if (selectedTab == 2)
+                //    {
+                //        addpath = @"\Reports\StatisticReport\Purchase\En\EnPurVendorSts.rdlc";
+                //    }
+                //    else if (selectedTab == 3)
+                //    {
+                //        addpath = @"\Reports\StatisticReport\Purchase\En\EnPurUserSts.rdlc";
+                //    }
+                //    else
+                //    {
+                //        addpath = @"\Reports\StatisticReport\Purchase\En\EnPurItemSts.rdlc";
+                //    }
+                //}
+
+                //string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+                //ReportCls.checkLang();
+                ////  getpuritemcount
+
+                //clsReports.PurStsReport(query, rep, reppath);
+                //clsReports.setReportLanguage(paramarr);
+                //clsReports.Header(paramarr);
+
+                //rep.SetParameters(paramarr);
+
+                //rep.Refresh();
+
+                //LocalReportExtensions.PrintToPrinter(rep);
+                #endregion
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {//pdf
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
+                #region
+                //List<ReportParameter> paramarr = new List<ReportParameter>();
+
+                //query = converter(filltoprint());
+
+                //string addpath = "";
+                //bool isArabic = ReportCls.checkLang();
+                //if (isArabic)
+                //{
+                //    if (selectedTab == 0)
+                //    {
+                //        addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurSts.rdlc";
+                //    }
+                //    else if (selectedTab == 1)
+                //    {
+                //        addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurPosSts.rdlc";
+                //    }
+                //    else if (selectedTab == 2)
+                //    {
+                //        addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurVendorSts.rdlc";
+                //    }
+                //    else if (selectedTab == 3)
+                //    {
+                //        addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurUserSts.rdlc";
+                //    }
+                //    else
+                //    {
+                //        addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurItemSts.rdlc";
+                //    }
+                //}
+                //else
+                //{
+                //    //english
+                //    if (selectedTab == 0)
+                //    { addpath = @"\Reports\StatisticReport\Purchase\En\EnPurSts.rdlc"; }
+                //    else if (selectedTab == 1)
+                //    {
+                //        addpath = @"\Reports\StatisticReport\Purchase\En\EnPurPosSts.rdlc";
+                //    }
+                //    else if (selectedTab == 2)
+                //    {
+                //        addpath = @"\Reports\StatisticReport\Purchase\En\EnPurVendorSts.rdlc";
+                //    }
+                //    else if (selectedTab == 3)
+                //    {
+                //        addpath = @"\Reports\StatisticReport\Purchase\En\EnPurUserSts.rdlc";
+                //    }
+                //    else
+                //    {
+                //        addpath = @"\Reports\StatisticReport\Purchase\En\EnPurItemSts.rdlc";
+                //    }
+                //}
+
+                //string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+                //ReportCls.checkLang();
+                ////  getpuritemcount
+
+                //clsReports.PurStsReport(query, rep, reppath);
+                //clsReports.setReportLanguage(paramarr);
+                //clsReports.Header(paramarr);
+
+                //rep.SetParameters(paramarr);
+
+                //rep.Refresh();
+
+                //saveFileDialog.Filter = "PDF|*.pdf;";
+
+                //if (saveFileDialog.ShowDialog() == true)
+                //{
+                //    string filepath = saveFileDialog.FileName;
+                //    LocalReportExtensions.ExportToPDF(rep, filepath);
+                //}
+
+                #endregion
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
-
+        
         private void Btn_preview_Click(object sender, RoutedEventArgs e)
-        {
+        {//preview
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
+                #region
+                //Window.GetWindow(this).Opacity = 0.2;
+                //string pdfpath = "";
+                //query = converter(filltoprint());
+                //List<ReportParameter> paramarr = new List<ReportParameter>();
+
+                //pdfpath = @"\Thumb\report\temp.pdf";
+                //pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
+
+                //string addpath = "";
+                //bool isArabic = ReportCls.checkLang();
+                //if (isArabic)
+                //{
+                //    if (selectedTab == 0)
+                //    {
+                //        addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurSts.rdlc";
+                //    }
+                //    else if (selectedTab == 1)
+                //    {
+                //        addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurPosSts.rdlc";
+                //    }
+                //    else if (selectedTab == 2)
+                //    {
+                //        addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurVendorSts.rdlc";
+                //    }
+                //    else if (selectedTab == 3)
+                //    {
+                //        addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurUserSts.rdlc";
+                //    }
+                //    else
+                //    {
+                //        addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurItemSts.rdlc";
+                //    }
+                //}
+                //else
+                //{
+                //    //english
+                //    if (selectedTab == 0)
+                //    { addpath = @"\Reports\StatisticReport\Purchase\En\EnPurSts.rdlc"; }
+                //    else if (selectedTab == 1)
+                //    {
+                //        addpath = @"\Reports\StatisticReport\Purchase\En\EnPurPosSts.rdlc";
+                //    }
+                //    else if (selectedTab == 2)
+                //    {
+                //        addpath = @"\Reports\StatisticReport\Purchase\En\EnPurVendorSts.rdlc";
+                //    }
+                //    else if (selectedTab == 3)
+                //    {
+                //        addpath = @"\Reports\StatisticReport\Purchase\En\EnPurUserSts.rdlc";
+                //    }
+                //    else
+                //    {
+                //        addpath = @"\Reports\StatisticReport\Purchase\En\EnPurItemSts.rdlc";
+                //    }
+
+                //}
+
+                //string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+                //ReportCls.checkLang();
+                ////  getpuritemcount
+
+                //clsReports.PurStsReport(query, rep, reppath);
+                //clsReports.setReportLanguage(paramarr);
+                //clsReports.Header(paramarr);
+
+                //rep.SetParameters(paramarr);
+
+                //rep.Refresh();
+
+                //LocalReportExtensions.ExportToPDF(rep, pdfpath);
+                //wd_previewPdf w = new wd_previewPdf();
+                //w.pdfPath = pdfpath;
+                //if (!string.IsNullOrEmpty(w.pdfPath))
+                //{
+                //    w.ShowDialog();
+                //    w.wb_pdfWebViewer.Dispose();
+                //}
+                //Window.GetWindow(this).Opacity = 1;
+                #endregion
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
         #endregion
 

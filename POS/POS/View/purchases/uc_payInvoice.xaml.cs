@@ -63,7 +63,6 @@ namespace POS.View
         }
         ObservableCollection<BillDetails> billDetails = new ObservableCollection<BillDetails>();
 
-
         Item itemModel = new Item();
         Item item = new Item();
         IEnumerable<Item> items;
@@ -208,6 +207,7 @@ namespace POS.View
                     _InvoiceType = "pd";
                 }
                 timer.Stop();
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -1585,8 +1585,13 @@ namespace POS.View
 
         void refrishBillDetails()
         {
+           
             dg_billDetails.ItemsSource = null;
             dg_billDetails.ItemsSource = billDetails;
+            //dg_billDetails.ItemsSource = null;
+            //dg_billDetails.ItemsSource = billDetails;
+            //dg_billDetails.ItemsSource = null;
+            //dg_billDetails.ItemsSource = billDetails;
 
             //tb_sum.Text = _Sum.ToString();
             if (_Sum != 0)
@@ -1835,11 +1840,44 @@ namespace POS.View
             try
             {
                 //billDetails
-                if (billDetails.Count == 1)
+                //if (billDetails.Count == 1)
+                //{
+                var cmb = sender as ComboBox;
+                cmb.SelectedValue = (int)billDetails[0].itemUnitId;
+                //if (dg_billDetails.SelectedIndex != -1 && cmb != null)
+                //{
+                //    billDetails[dg_billDetails.SelectedIndex].itemUnitId = (int)cmb.SelectedValue;
+                //    cmb.SelectedValue = (int)billDetails[dg_billDetails.SelectedIndex].itemUnitId;
+                //}
+                if (invoice.invoiceId == 0)
                 {
-                    var cmb = sender as ComboBox;
-                    cmb.SelectedValue = (int)billDetails[0].itemUnitId;
+                    cmb.IsEnabled = true;
+                    cmb.IsReadOnly = true;
                 }
+                else
+                {
+                    cmb.IsEnabled = false;
+                    cmb.IsReadOnly = false;
+                }
+                //}
+                //else
+                //{
+                //for (int i = 0; i < billDetails.Count; i++)
+                //{
+                //    var cmb = sender as ComboBox;
+                //    cmb.SelectedValue = (int)billDetails[i].itemUnitId;
+                //    if (invoice.invoiceId == 0)
+                //    {
+                //        cmb.IsEnabled = true;
+                //        cmb.IsReadOnly = true;
+                //    }
+                //    else
+                //    {
+                //        cmb.IsEnabled = false;
+                //        cmb.IsReadOnly = false;
+                //    }
+                //}
+                //}
 
             }
             catch (Exception ex)
@@ -1868,6 +1906,7 @@ namespace POS.View
         {
             try
             {
+                /*
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
@@ -1886,20 +1925,65 @@ namespace POS.View
                                 var combo = (ComboBox)cp.ContentTemplate.FindName("cbm_unitItemDetails", cp);
                                 //var combo = (combo)cell.Content;
                                 combo.SelectedValue = (int)item.itemUnitId;
-                                count++;
+
+                                //if (invoice.invoiceId == 0)
+                                //{
+                                //    combo.IsEnabled = true;
+                                //    combo.IsReadOnly = true;
+                                //}
+                                //else
+                                //{
+                                //    combo.IsEnabled = false;
+                                //    combo.IsReadOnly = false;
+                                //}
                             }
                         }
-
                     }
+                    count++;
                 }
 
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
+                    */
+
+
+                for (int i = 0; i < billDetails.Count; i++)
+                    {
+                        //var cmb = sender as ComboBox;
+                        //cmb.SelectedValue = (int)billDetails[i].itemUnitId;
+                    var cell = DataGridHelper.GetCell(dg_billDetails, i, 3);
+                    if (cell != null)
+                    {
+                        var cp = (ContentPresenter)cell.Content;
+                        var cmb = (ComboBox)cp.ContentTemplate.FindName("cbm_unitItemDetails", cp);
+                        cmb.SelectedValue = (int)item.itemUnitId;
+                        if (invoice.invoiceId == 0)
+                        {
+                            cmb.IsEnabled = true;
+                            cmb.IsReadOnly = true;
+                        }
+                        else
+                        {
+                            cmb.IsEnabled = false;
+                            cmb.IsReadOnly = false;
+                        }
+                    }
+
+                }
+
+
+
+
+
+                    
+
+
+
+                //if (sender != null)
+                //    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
+                //if (sender != null)
+                //    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this);
             }
         }

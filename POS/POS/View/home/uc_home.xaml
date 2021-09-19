@@ -8,7 +8,7 @@
              xmlns:MetroChart="clr-namespace:De.TorstenMandelkow.MetroChart;assembly=De.TorstenMandelkow.MetroChart"
              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf" 
                xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             d:DesignHeight="700" d:DesignWidth="1100"
+             d:DesignHeight="700" d:DesignWidth="1024"
              Loaded="UserControl_Loaded"    TouchLeave="UserControl_TouchLeave"  >
     <UserControl.Resources>
         <Style TargetType="lvc:DefaultLegend" x:Key="PieChartDefaultLegend">
@@ -367,7 +367,7 @@
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
-                            <ColumnDefinition />
+                            <ColumnDefinition  Width="auto" />
                         </Grid.ColumnDefinitions>
                         <Border Background="#FF5D6F" Grid.ColumnSpan="2"
                             CornerRadius="7,7,0,0"/>
@@ -406,7 +406,7 @@
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
-                            <ColumnDefinition />
+                            <ColumnDefinition  Width="auto" />
                         </Grid.ColumnDefinitions>
                         <Border Background="#BC80EF" Grid.ColumnSpan="2"
                             CornerRadius="7,7,0,0"/>
@@ -434,7 +434,7 @@
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
-                            <ColumnDefinition />
+                            <ColumnDefinition   Width="auto"/>
                         </Grid.ColumnDefinitions>
                         <Border Background="#5B5182" Grid.ColumnSpan="2"
                             CornerRadius="7,7,0,0"/>
@@ -446,7 +446,7 @@
                                     HorizontalAlignment="Center"  VerticalAlignment="Center"  >
                             <TextBlock Grid.Row="1" x:Name="txt_countDailyPurchase" Margin="0,0,5,0" Text="Count:" FontSize="16" 
                                 FontWeight="Bold" Foreground="#707070" />
-                            <TextBlock x:Name="txt_countDailyPurchaseValue" Text="43"  FontWeight="Bold" FontSize="16" Foreground="#008A1C"  />
+                            <TextBlock x:Name="txt_countDailyPurchaseValue" Text="9999"  FontWeight="Bold" FontSize="16" Foreground="#008A1C"  />
                         </StackPanel>
 
                         <lvc:PieChart Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" 
@@ -462,7 +462,7 @@
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
-                            <ColumnDefinition />
+                            <ColumnDefinition Width="auto" />
                         </Grid.ColumnDefinitions>
                         <Border Background="#1D75B8" Grid.ColumnSpan="2"
                             CornerRadius="7,7,0,0"/>
@@ -474,7 +474,7 @@
                                     HorizontalAlignment="Center"  VerticalAlignment="Center"  >
                             <TextBlock Grid.Row="1" x:Name="txt_countDailySales"  Text="Count:" FontSize="16" 
                                 FontWeight="Bold" Foreground="#707070" Margin="0,0,5,0" />
-                            <TextBlock x:Name="txt_countDailySalesValue" Text="257" FontWeight="Bold" FontSize="16" Foreground="#008A1C"  />
+                            <TextBlock x:Name="txt_countDailySalesValue" Text="9999" FontWeight="Bold" FontSize="16" Foreground="#008A1C"  />
                         </StackPanel>
 
                         <lvc:PieChart Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" 

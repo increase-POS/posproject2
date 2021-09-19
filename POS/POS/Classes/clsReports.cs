@@ -389,6 +389,16 @@ namespace POS.Classes
             rep.ReportPath = reppath;
             rep.EnableExternalImages = true;
             rep.DataSources.Clear();
+            foreach (var r in tempquery)
+            {
+                r.CopdiscountValue = decimal.Parse(SectionData.DecTostring(r.CopdiscountValue));
+                r.couponTotalValue = decimal.Parse(SectionData.DecTostring(r.couponTotalValue));//
+                r.OdiscountValue = decimal.Parse(SectionData.DecTostring(r.OdiscountValue));
+                r.offerTotalValue = decimal.Parse(SectionData.DecTostring(r.offerTotalValue));
+                r.ITprice = decimal.Parse(SectionData.DecTostring(r.ITprice));
+                r.subTotal = decimal.Parse(SectionData.DecTostring(r.subTotal));
+                r.totalNet = decimal.Parse(SectionData.DecTostring(r.totalNet));
+            }
             rep.DataSources.Add(new ReportDataSource("DataSetITinvoice", tempquery));
         }
 

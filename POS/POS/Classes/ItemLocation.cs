@@ -608,13 +608,14 @@ namespace POS.Classes
                 return false;
             }
         }
-        public async Task<Boolean> recieptOrder(List<ItemLocation> invoiceItems,int toBranch,int userId)
+        public async Task<Boolean> recieptOrder(List<ItemLocation> invoiceItems,List<ItemTransfer> orderList,int toBranch,int userId, string objectName, Notification notificationObj)
         {
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
             // 
             var myContent = JsonConvert.SerializeObject(invoiceItems);
-
+            var myContent1 = JsonConvert.SerializeObject(orderList);
+            var myContent2 = JsonConvert.SerializeObject(notificationObj);
             using (var client = new HttpClient())
             {
                 ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
@@ -625,7 +626,11 @@ namespace POS.Classes
                 HttpRequestMessage request = new HttpRequestMessage();
                 // encoding parameter to get special characters
                 myContent = HttpUtility.UrlEncode(myContent);
-                request.RequestUri = new Uri(Global.APIUri + "ItemsLocations/receiptOrder?itemLocationObject=" + myContent +"&toBranch=" + toBranch + "&userId=" + userId);
+                myContent2 = HttpUtility.UrlEncode(myContent2);
+                request.RequestUri = new Uri(Global.APIUri + "ItemsLocations/receiptOrder?itemLocationObject=" + myContent + "&orderList="+ myContent1
+                                                            + "&toBranch=" + toBranch 
+                                                            + "&userId=" + userId
+                                                            + "&objectName=" + objectName + "&notificationObj=" + myContent2);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Post;
                 //set content type

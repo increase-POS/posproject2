@@ -757,6 +757,7 @@ fillColumnChart(cb_Items, selectedItemId);
         public void fillBranchEvent()
         {
             dgInvoice.ItemsSource = filltoprint();
+            txt_count.Text = dgInvoice.Items.Count.ToString();
             fillPieChart(cb_branches, selectedBranchId);
             fillColumnChart(cb_branches, selectedBranchId);
             fillRowChart(cb_branches, selectedBranchId);
@@ -765,6 +766,7 @@ fillColumnChart(cb_Items, selectedItemId);
         public void fillPosEvent()
         {
             dgInvoice.ItemsSource = filltoprint();
+            txt_count.Text = dgInvoice.Items.Count.ToString();
             fillRowChart(cb_pos, selectedPosId);
             fillPieChart(cb_pos, selectedPosId);
             fillColumnChart(cb_pos, selectedPosId);
@@ -773,6 +775,7 @@ fillColumnChart(cb_Items, selectedItemId);
         public void fillVendorsEvent()
         {
             dgInvoice.ItemsSource = filltoprint();
+            txt_count.Text = dgInvoice.Items.Count.ToString();
             fillPieChart(cb_vendors, selectedVendorsId);
             fillColumnChart(cb_vendors, selectedVendorsId);
             fillRowChart(cb_vendors, selectedVendorsId);
@@ -781,6 +784,7 @@ fillColumnChart(cb_Items, selectedItemId);
         public void fillUsersEvent()
         {
             dgInvoice.ItemsSource = filltoprint();
+            txt_count.Text = dgInvoice.Items.Count.ToString();
             fillPieChart(cb_users, selectedUserId);
             fillColumnChart(cb_users, selectedUserId);
             fillRowChart(cb_users, selectedUserId);
@@ -790,6 +794,7 @@ fillColumnChart(cb_Items, selectedItemId);
         {
             itemTransfers = fillList(Items, chk_itemInvoice, chk_itemReturn, chk_itemDrafs, dp_ItemStartDate, dp_ItemEndDate, dt_itemStartTime, dt_ItemEndTime);
             dgInvoice.ItemsSource = itemTransfers;
+            txt_count.Text = dgInvoice.Items.Count.ToString();
             fillPieChart(cb_Items, selectedItemId);
             fillColumnChart(cb_Items, selectedItemId);
             fillRowChart(cb_Items, selectedItemId);
@@ -2755,8 +2760,8 @@ fillColumnChart(cb_Items, selectedItemId);
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                //   if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
-                //   {
+
+                #region
                 List<ReportParameter> paramarr = new List<ReportParameter>();
 
                 query = converter(filltoprint());
@@ -2815,14 +2820,7 @@ fillColumnChart(cb_Items, selectedItemId);
 
                 ReportCls.checkLang();
                 //  getpuritemcount
-                foreach (var r in query)
-                {
-                    r.discountValue = decimal.Parse(SectionData.DecTostring(r.discountValue));
-                    r.ITprice = decimal.Parse(SectionData.DecTostring(r.ITprice));
-                    r.tax = decimal.Parse(SectionData.DecTostring(r.tax));
-                    r.subTotal = decimal.Parse(SectionData.DecTostring(r.subTotal));
-                    r.totalNet = decimal.Parse(SectionData.DecTostring(r.totalNet));
-                }
+              
                 clsReports.PurStsReport(query, rep, reppath);
                 clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);
@@ -2838,10 +2836,7 @@ fillColumnChart(cb_Items, selectedItemId);
                     string filepath = saveFileDialog.FileName;
                     LocalReportExtensions.ExportToPDF(rep, filepath);
                 }
-                //   }
-                //  else
-                //    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-
+                #endregion
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -2860,8 +2855,8 @@ fillColumnChart(cb_Items, selectedItemId);
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                //   if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
-                //   {
+
+                #region
                 List<ReportParameter> paramarr = new List<ReportParameter>();
                 List<ItemTransferInvoice> query = new List<ItemTransferInvoice>();
                 query = converter(filltoprint());
@@ -2912,22 +2907,13 @@ fillColumnChart(cb_Items, selectedItemId);
                     {
                         addpath = @"\Reports\StatisticReport\Purchase\En\EnPurItemSts.rdlc";
                     }
-
                 }
-
 
                 string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                 ReportCls.checkLang();
                 //  getpuritemcount
-                foreach (var r in query)
-                {
-                    r.discountValue = decimal.Parse(SectionData.DecTostring(r.discountValue));
-                    r.ITprice = decimal.Parse(SectionData.DecTostring(r.ITprice));
-                    r.tax = decimal.Parse(SectionData.DecTostring(r.tax));
-                    r.subTotal = decimal.Parse(SectionData.DecTostring(r.subTotal));
-                    r.totalNet = decimal.Parse(SectionData.DecTostring(r.totalNet));
-                }
+               
                 clsReports.PurStsReport(query, rep, reppath);
                 clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);
@@ -2937,6 +2923,8 @@ fillColumnChart(cb_Items, selectedItemId);
                 rep.Refresh();
 
                 LocalReportExtensions.PrintToPrinter(rep);
+
+                #endregion
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -3013,6 +3001,8 @@ fillColumnChart(cb_Items, selectedItemId);
           ));
                 }
 
+                txt_count.Text = dgInvoice.Items.Count.ToString();
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -3030,91 +3020,83 @@ fillColumnChart(cb_Items, selectedItemId);
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-           
-          List<ReportParameter> paramarr = new List<ReportParameter>();
-          List<ItemTransferInvoice> query = new List<ItemTransferInvoice>();
-          query = converter(filltoprint());
-          string addpath = "";
-          bool isArabic = ReportCls.checkLang();
-          if (isArabic)
-          {
-              if (selectedTab == 0)
-              {
-                  addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurSts.rdlc";
-              }
-              else if (selectedTab == 1)
-              {
-                  addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurPosSts.rdlc";
-              }
-              else if (selectedTab == 2)
-              {
-                  addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurVendorSts.rdlc";
-              }
-              else if (selectedTab == 3)
-              {
-                  addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurUserSts.rdlc";
-              }
-              else
-              {
-                  addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurItemSts.rdlc";
-              }
-          }
-          else
-          {
-                    //english
-                    if (selectedTab == 0)
-              { addpath = @"\Reports\StatisticReport\Purchase\En\EnPurSts.rdlc"; }
-              else if (selectedTab == 1)
-              {
-                  addpath = @"\Reports\StatisticReport\Purchase\En\EnPurPosSts.rdlc";
-              }
-              else if (selectedTab == 2)
-              {
-                  addpath = @"\Reports\StatisticReport\Purchase\En\EnPurVendorSts.rdlc";
-              }
-              else if (selectedTab == 3)
-              {
-                  addpath = @"\Reports\StatisticReport\Purchase\En\EnPurUserSts.rdlc";
-              }
-              else
-              {
-                  addpath = @"\Reports\StatisticReport\Purchase\En\EnPurItemSts.rdlc";
-              }
 
-          }
+                #region
+                List<ReportParameter> paramarr = new List<ReportParameter>();
+                  List<ItemTransferInvoice> query = new List<ItemTransferInvoice>();
+                  query = converter(filltoprint());
+                  string addpath = "";
+                  bool isArabic = ReportCls.checkLang();
+                  if (isArabic)
+                  {
+                      if (selectedTab == 0)
+                      {
+                          addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurSts.rdlc";
+                      }
+                      else if (selectedTab == 1)
+                      {
+                          addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurPosSts.rdlc";
+                      }
+                      else if (selectedTab == 2)
+                      {
+                          addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurVendorSts.rdlc";
+                      }
+                      else if (selectedTab == 3)
+                      {
+                          addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurUserSts.rdlc";
+                      }
+                      else
+                      {
+                          addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurItemSts.rdlc";
+                      }
+                  }
+                  else
+                  {
+                            //english
+                            if (selectedTab == 0)
+                      { addpath = @"\Reports\StatisticReport\Purchase\En\EnPurSts.rdlc"; }
+                      else if (selectedTab == 1)
+                      {
+                          addpath = @"\Reports\StatisticReport\Purchase\En\EnPurPosSts.rdlc";
+                      }
+                      else if (selectedTab == 2)
+                      {
+                          addpath = @"\Reports\StatisticReport\Purchase\En\EnPurVendorSts.rdlc";
+                      }
+                      else if (selectedTab == 3)
+                      {
+                          addpath = @"\Reports\StatisticReport\Purchase\En\EnPurUserSts.rdlc";
+                      }
+                      else
+                      {
+                          addpath = @"\Reports\StatisticReport\Purchase\En\EnPurItemSts.rdlc";
+                      }
 
-
-          string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-          ReportCls.checkLang();
-                //  getpuritemcount
-                foreach (var r in query)
-                {
-                    r.discountValue = decimal.Parse(SectionData.DecTostring(r.discountValue));
-                    r.ITprice = decimal.Parse(SectionData.DecTostring(r.ITprice));
-                    r.tax = decimal.Parse(SectionData.DecTostring(r.tax));
-                    r.subTotal = decimal.Parse(SectionData.DecTostring(r.subTotal));
-                    r.totalNet = decimal.Parse(SectionData.DecTostring(r.totalNet));
-                }
-                clsReports.PurStsReport(query, rep, reppath);
-          clsReports.setReportLanguage(paramarr);
-          clsReports.Header(paramarr);
-
-          rep.SetParameters(paramarr);
-
-          rep.Refresh();
-          this.Dispatcher.Invoke(() =>
-          {
-              saveFileDialog.Filter = "EXCEL|*.xls;";
-              if (saveFileDialog.ShowDialog() == true)
-              {
-                  string filepath = saveFileDialog.FileName;
-                  LocalReportExtensions.ExportToExcel(rep, filepath);
-              }
-          });
+                  }
 
 
-     
+                  string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+                  ReportCls.checkLang();
+                        //  getpuritemcount
+              
+                        clsReports.PurStsReport(query, rep, reppath);
+                  clsReports.setReportLanguage(paramarr);
+                  clsReports.Header(paramarr);
+
+                  rep.SetParameters(paramarr);
+
+                  rep.Refresh();
+                  this.Dispatcher.Invoke(() =>
+                  {
+                      saveFileDialog.Filter = "EXCEL|*.xls;";
+                      if (saveFileDialog.ShowDialog() == true)
+                      {
+                          string filepath = saveFileDialog.FileName;
+                          LocalReportExtensions.ExportToExcel(rep, filepath);
+                      }
+                  });
+                #endregion
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -3133,12 +3115,13 @@ fillColumnChart(cb_Items, selectedItemId);
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
+                #region
                 Window.GetWindow(this).Opacity = 0.2;
                 string pdfpath = "";
                 query = converter(filltoprint());
                 List<ReportParameter> paramarr = new List<ReportParameter>();
 
-                //
                 pdfpath = @"\Thumb\report\temp.pdf";
                 pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
 
@@ -3196,14 +3179,7 @@ fillColumnChart(cb_Items, selectedItemId);
 
                 ReportCls.checkLang();
                 //  getpuritemcount
-                foreach (var r in query)
-                {
-                    r.discountValue = decimal.Parse(SectionData.DecTostring(r.discountValue));
-                    r.ITprice = decimal.Parse(SectionData.DecTostring(r.ITprice));
-                    r.tax = decimal.Parse(SectionData.DecTostring(r.tax));
-                    r.subTotal = decimal.Parse(SectionData.DecTostring(r.subTotal));
-                    r.totalNet = decimal.Parse(SectionData.DecTostring(r.totalNet));
-                }
+              
                 clsReports.PurStsReport(query, rep, reppath);
                 clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);
@@ -3219,10 +3195,9 @@ fillColumnChart(cb_Items, selectedItemId);
                 {
                     w.ShowDialog();
                     w.wb_pdfWebViewer.Dispose();
-
-
                 }
                 Window.GetWindow(this).Opacity = 1;
+                #endregion
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
