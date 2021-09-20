@@ -191,7 +191,7 @@
                     </Border>
 
 
-                    <Border x:Name="bdr_storageStatistic"  Height="87" Grid.Row="8" >
+                    <Border x:Name="bdr_storageStatistic" Visibility="Collapsed"  Height="87" Grid.Row="8" >
                         <Button  Style="{StaticResource SmallButton}"   Grid.Row="8" Grid.Column="0"
                 Height="75" Width="75" Background="White" Margin="5" FlowDirection="LeftToRight"
                   Content="Statistic"  x:Name="btn_storageStatistic"  BorderBrush="#67686D"  Tag="storageStatistic"

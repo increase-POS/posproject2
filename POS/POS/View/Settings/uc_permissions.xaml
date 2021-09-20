@@ -514,7 +514,7 @@
                             <!--***********************************************************-->
                             <!--grid home-->
 
-                            <Grid x:Name="grid_home" Margin="10,10,10,10" MinHeight="80" Visibility="Visible">
+                            <Grid x:Name="grid_home" Margin="10,10,10,10" MinHeight="80" Visibility="Collapsed">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                     <ColumnDefinition Width="auto"></ColumnDefinition>
@@ -809,7 +809,7 @@
                             <!--***********************************************************-->
                             <!--grid store-->
 
-                            <Grid x:Name="grid_store" Margin="10,10,10,10" MinHeight="80" Visibility="Collapsed">
+                            <Grid x:Name="grid_store" Margin="10,10,10,10" MinHeight="80" Visibility="Visible">
 
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
@@ -1062,7 +1062,7 @@
                                     </DockPanel>
                                    
                                 </Button>
-                                <Button Grid.Column="0" HorizontalContentAlignment="Stretch" Tag="storageStatistic"
+                                <!--<Button Grid.Column="0" HorizontalContentAlignment="Stretch" Tag="storageStatistic"
                                         Grid.Row="2" BorderBrush="{x:Null}" Padding="0" Margin="5,0"  Height="auto"
                     Background="{x:Null}" x:Name="btn_storageStatistic" Click="btn_secondLevelClick"  >
 
@@ -1085,7 +1085,7 @@
                                             VerticalAlignment="Bottom" FontSize="14" Foreground="#67686d"  Text="Statistic" />
                                     </DockPanel>
                                  
-                                </Button>
+                                </Button>-->
 
                             </Grid>
 
@@ -1192,7 +1192,7 @@
                                             VerticalAlignment="Bottom" FontSize="14" Foreground="#67686d"   />
                                     </DockPanel>
                                 </Button>
-                                <Button Grid.Column="4" BorderBrush="{x:Null}" Padding="0" Tag="purchaseStatistic"
+                                <!--<Button Grid.Column="4" BorderBrush="{x:Null}" Padding="0" Tag="purchaseStatistic"
                                         Margin="5,0"  Height="auto"
                     Background="{x:Null}" x:Name="btn_purchaseStatistic" Click="btn_secondLevelClick"  HorizontalContentAlignment="Stretch">
                                     <DockPanel LastChildFill="True" >
@@ -1220,7 +1220,7 @@
                                             VerticalAlignment="Bottom" FontSize="14" Foreground="#67686d"   />
                                     </DockPanel>
 
-                                </Button>
+                                </Button>-->
                             </Grid>
 
                             <!--***********************************************************-->
@@ -1477,7 +1477,7 @@
                                             VerticalAlignment="Bottom" FontSize="14" Foreground="#67686d" Text="sales Orders" />
                                     </DockPanel>
                                 </Button>
-                                <Button x:Name="btn_medals" Grid.Column="4" Grid.Row="1" Tag="medals"
+                                <!--<Button x:Name="btn_medals" Grid.Column="4" Grid.Row="1" Tag="medals"
                                         BorderBrush="{x:Null}" Padding="0" Margin="5,0"  Height="auto"
                     Background="{x:Null}"   HorizontalContentAlignment="Stretch" Click="btn_secondLevelClick">
                                     <DockPanel LastChildFill="True" >
@@ -1502,8 +1502,8 @@
                                             VerticalAlignment="Bottom" FontSize="14" Foreground="#67686d"   />
                                     </DockPanel>
                                    
-                                </Button>
-                                <Button  x:Name="btn_membership" Grid.Column="6" Grid.Row="1" Tag="membership"
+                                </Button>-->
+                                <!--<Button  x:Name="btn_membership" Grid.Column="6" Grid.Row="1" Tag="membership"
                                          BorderBrush="{x:Null}" Padding="0" Margin="5,0"  Height="auto"
                     Background="{x:Null}"   HorizontalContentAlignment="Stretch" Click="btn_secondLevelClick">
                                     <DockPanel LastChildFill="True" >
@@ -1518,8 +1518,8 @@
                                             VerticalAlignment="Bottom" FontSize="14" Foreground="#67686d"   />
                                     </DockPanel>
 
-                                </Button>
-                                <Button x:Name="btn_salesStatistic" Grid.Column="0" Grid.Row="2" Tag="salesStatistic"
+                                </Button>-->
+                                <!--<Button x:Name="btn_salesStatistic" Grid.Column="0" Grid.Row="2" Tag="salesStatistic"
                                         BorderBrush="{x:Null}" Padding="0" Margin="5,0"  Height="auto"
                     Background="{x:Null}"   HorizontalContentAlignment="Stretch" Click="btn_secondLevelClick">
                                     <DockPanel LastChildFill="True" >
@@ -1541,7 +1541,7 @@
                                             VerticalAlignment="Bottom" FontSize="14" Foreground="#67686d"   />
                                     </DockPanel>
                                    
-                                </Button>
+                                </Button>-->
 
 
                             </Grid>
@@ -1763,7 +1763,7 @@
                                     </DockPanel>
 
                                 </Button>
-                                <Button x:Name="btn_subscriptions" Grid.Column="4" Grid.Row="1" Tag="subscriptions"
+                                <!--<Button x:Name="btn_subscriptions" Grid.Column="4" Grid.Row="1" Tag="subscriptions"
                                         BorderBrush="{x:Null}" Padding="0" Margin="5,0"  Height="auto"
                     Background="{x:Null}" HorizontalContentAlignment="Stretch" Click="btn_secondLevelClick">
                                     <DockPanel LastChildFill="True"  HorizontalAlignment="Stretch">
@@ -1868,8 +1868,8 @@
                                             VerticalAlignment="Bottom" FontSize="14" Foreground="#67686d" Text="subscriptions" />
                                     </DockPanel>
 
-                                </Button>
-                                <Button x:Name="btn_accountsStatistic" Grid.Column="6" Tag="accountsStatistic"
+                                </Button>-->
+                                <!--<Button x:Name="btn_accountsStatistic" Grid.Column="6" Tag="accountsStatistic"
                                         Grid.Row="1" BorderBrush="{x:Null}" Padding="0" Margin="5,0"  Height="auto"
                     Background="{x:Null}"   HorizontalContentAlignment="Stretch" Click="btn_secondLevelClick">
                                     <DockPanel LastChildFill="True" >
@@ -1905,7 +1905,7 @@
                                               PlacementRectangle="50,0,0,0"
                                               VerticalOffset="-10"/>
                                     </Button.ToolTip>
-                                </Button>
+                                </Button>-->
                               
 
                             </Grid>

@@ -160,7 +160,7 @@
                     <materialDesign:PackIcon Foreground="White" Kind="Keyboard"  FlowDirection="LeftToRight"
                                          Width="30" Height="30"/>
                 </Button>
-                <materialDesign:Badged VerticalAlignment="Center" Margin="7.5,10,7.5,10"  Grid.Column="4" DockPanel.Dock="Right" 
+                <!--<materialDesign:Badged VerticalAlignment="Center" Margin="7.5,10,7.5,10"  Grid.Column="4" DockPanel.Dock="Right" 
                       BadgeBackground="{StaticResource MainColorRed}"  BadgeForeground="White"  Badge="+9">
                     <Button Grid.Column="6" x:Name="BTN_message"
                     Background="{x:Null}" BorderBrush="{x:Null}" Width="25" Height="25" 
@@ -168,7 +168,7 @@
                         <materialDesign:PackIcon Foreground="White" Kind="Message"  FlowDirection="LeftToRight"
                                          Width="25" Height="25"/>
                     </Button>
-                </materialDesign:Badged>
+                </materialDesign:Badged>-->
 
 
 

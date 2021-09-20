@@ -919,7 +919,7 @@ t1.Start();
                 path_itemsDestroy.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
                 path_shortage.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
                 path_inventory.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-                path_storageStatistic.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                //path_storageStatistic.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
 
                 txt_locations.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
                 txt_section.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
@@ -929,17 +929,17 @@ t1.Start();
                 txt_itemsDestroy.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
                 txt_shortage.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
                 txt_inventory.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-                txt_storageStatistic.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                //txt_storageStatistic.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
             }
             public void paintPurchase()
             {
                 path_payInvoice.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
                 path_purchaseOrder.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-                path_purchaseStatistic.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                //path_purchaseStatistic.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
 
                 txt_payInvoice.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
                 txt_purchaseOrder.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-                txt_purchaseStatistic.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                //txt_purchaseStatistic.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
             }
             public void paintSale()
             {
@@ -948,9 +948,9 @@ t1.Start();
                 path_offer.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
                 path_package.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
                 path_quotation.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-                path_medals.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-                path_salesStatistic.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-                path_membership.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                //path_medals.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                //path_salesStatistic.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                //path_membership.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
                 path_salesOrders.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
 
                 txt_reciptInvoice.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
@@ -958,9 +958,9 @@ t1.Start();
                 txt_offer.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
                 txt_package.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
                 txt_quotation.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-                txt_medals.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-                txt_salesStatistic.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-                txt_membership.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                //txt_medals.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                //txt_salesStatistic.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                //txt_membership.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
                 txt_salesOrders.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
             }
             public void paintAccounts()
@@ -970,18 +970,18 @@ t1.Start();
                 path_received.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
                 path_bonds.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
                 path_banksAccounting.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-                path_accountsStatistic.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                //path_accountsStatistic.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
                 path_ordersAccounting.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-                path_subscriptions.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                //path_subscriptions.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
 
                 txt_posAccounting.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
                 txt_payments.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
                 txt_received.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
                 txt_bonds.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
                 txt_banksAccounting.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-                txt_accountsStatistic.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                //txt_accountsStatistic.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
                 txt_ordersAccounting.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-                txt_subscriptions.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                //txt_subscriptions.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
             }
             public void paintReports()
             {
@@ -1082,10 +1082,10 @@ t1.Start();
                 txt_bonds.Text = MainWindow.resourcemanager.GetString("trBonds");
 
                 txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trInvoice");
-                txt_storageStatistic.Text = MainWindow.resourcemanager.GetString("trStatistic");
-                txt_purchaseStatistic.Text = MainWindow.resourcemanager.GetString("trStatistic");
-                txt_salesStatistic.Text = MainWindow.resourcemanager.GetString("trStatistic");
-                txt_accountsStatistic.Text = MainWindow.resourcemanager.GetString("trStatistic");
+                //txt_storageStatistic.Text = MainWindow.resourcemanager.GetString("trStatistic");
+                //txt_purchaseStatistic.Text = MainWindow.resourcemanager.GetString("trStatistic");
+                //txt_salesStatistic.Text = MainWindow.resourcemanager.GetString("trStatistic");
+                //txt_accountsStatistic.Text = MainWindow.resourcemanager.GetString("trStatistic");
 
                 txt_reciptInvoice.Text = MainWindow.resourcemanager.GetString("trInvoice");
                 txt_coupon.Text = MainWindow.resourcemanager.GetString("trCoupon");
