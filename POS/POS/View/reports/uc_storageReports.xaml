@@ -1844,7 +1844,7 @@ Data="M93.34,7.49a3.11,3.11,0,0,1,2,.38,3.06,3.06,0,0,1,1.82,2.78l.2,28.16,0,0,0
 
                             <Button x:Name="btn_pdf"   Background="{x:Null}"   Margin="10,0,5,0"
                           Padding="0" Height="35" 
-                          BorderBrush="{x:Null}" >
+                          BorderBrush="{x:Null}" Click="Btn_pdf_Click" >
                                 <materialDesign:PackIcon Foreground="#D20A0A" Kind="FilePdf"  
                                 
                           Width="22" Height="22">
@@ -1859,7 +1859,7 @@ Data="M93.34,7.49a3.11,3.11,0,0,1,2,.38,3.06,3.06,0,0,1,1.82,2.78l.2,28.16,0,0,0
                             </Button>
                             <Button   Background="{x:Null}"    Margin="5,0,5,0"
                           Padding="0" Height="35"  x:Name="btn_print"
-                          BorderBrush="{x:Null}" >
+                          BorderBrush="{x:Null}" Click="Btn_print_Click" >
                                 <materialDesign:PackIcon Foreground="#313131" Kind="Printer"  
                               HorizontalAlignment="Center" 
                       Width="22" Height="22">
@@ -1875,7 +1875,7 @@ Data="M93.34,7.49a3.11,3.11,0,0,1,2,.38,3.06,3.06,0,0,1,1.82,2.78l.2,28.16,0,0,0
 
                             <Button   Background="{x:Null}"    Grid.Column="3" Margin="5,0,5,0" 
                             Padding="0" Height="35"   x:Name="btn_exportToExcel" 
-                                       BorderBrush="{x:Null}">
+                                       BorderBrush="{x:Null}" Click="Btn_exportToExcel_Click">
                                 <Path Fill="#378500" Stretch="Fill"
                           Width="20" Height="20" 
                            FlowDirection="LeftToRight" Data="M25.162,3H16v2.984h3.031v2.031H16V10h3v2h-3v2h3v2h-3v2h3v2h-3v3h9.162   C25.623,23,26,22.609,26,22.13V3.87C26,3.391,25.623,3,25.162,3z M24,20h-4v-2h4V20z M24,16h-4v-2h4V16z M24,12h-4v-2h4V12z M24,8   h-4V6h4V8z 
@@ -1913,7 +1913,7 @@ Data="M93.34,7.49a3.11,3.11,0,0,1,2,.38,3.06,3.06,0,0,1,1.82,2.78l.2,28.16,0,0,0
                                 </Grid>
                             </Button>
                             <Button   Background="{x:Null}"    Grid.Column="3" Margin="5,0,5,-0.6" 
-                            Padding="0" Height="Auto"   x:Name="btn_settings" 
+                            Padding="0" Height="Auto"   x:Name="btn_settings"  Visibility="Collapsed"
                                        BorderBrush="{x:Null}" >
                                 <materialDesign:PackIcon 
                           Width="20" Height="20" 

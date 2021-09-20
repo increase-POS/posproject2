@@ -941,7 +941,7 @@
                                 </Grid>
                             </Button>
                             <Button   Background="{x:Null}"    Grid.Column="3" Margin="5,0,5,-0.6" 
-                            Padding="0" Height="Auto"   x:Name="btn_settings" 
+                            Padding="0" Height="Auto"   x:Name="btn_settings" Visibility="Collapsed"
                                        BorderBrush="{x:Null}" Click="btn_settings_Click">
                                 <materialDesign:PackIcon 
                           Width="20" Height="20" 

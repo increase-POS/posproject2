@@ -22,8 +22,10 @@ namespace POS.converters
                 case "cheque": return MainWindow.resourcemanager.GetString("trCheque");
                     //break;
                 case "balance": return MainWindow.resourcemanager.GetString("trCredit");
-                    //break;
-                default : return s;
+                //break;
+                case "inv": return MainWindow.resourcemanager.GetString("trInvoice");
+                //break;
+                default: return s;
                     //break;
             }
         }

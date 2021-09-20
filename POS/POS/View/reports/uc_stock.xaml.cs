@@ -105,6 +105,7 @@ namespace POS.View.reports
 
                 temp = fillList(storages, cb_branchesItem, cb_itemsItem, cb_unitsItem, dp_startDateItem, dp_endDateItem, chk_allBranchesItem, chk_allItemsItem, chk_allUnitsItem, chk_expireDateItem);
                 dgStock.ItemsSource = temp;
+                txt_count.Text = dgStock.Items.Count.ToString();
                 fillPieChart();
 
                 if (sender != null)
@@ -317,6 +318,7 @@ namespace POS.View.reports
                 fillComboItems(cb_branchesItem, cb_itemsItem);
                 temp = fillList(storages, cb_branchesItem, cb_itemsItem, cb_unitsItem, dp_startDateItem, dp_endDateItem, chk_allBranchesItem, chk_allItemsItem, chk_allUnitsItem, chk_expireDateItem);
                 dgStock.ItemsSource = temp;
+                txt_count.Text = dgStock.Items.Count.ToString();
                 fillPieChart();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -341,6 +343,7 @@ namespace POS.View.reports
                 fillComboUnits(cb_itemsItem, cb_unitsItem);
                 temp = fillList(storages, cb_branchesItem, cb_itemsItem, cb_unitsItem, dp_startDateItem, dp_endDateItem, chk_allBranchesItem, chk_allItemsItem, chk_allUnitsItem, chk_expireDateItem);
                 dgStock.ItemsSource = temp;
+                txt_count.Text = dgStock.Items.Count.ToString();
                 fillPieChart();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -362,6 +365,7 @@ namespace POS.View.reports
 
                 temp = fillList(storages, cb_branchesItem, cb_itemsItem, cb_unitsItem, dp_startDateItem, dp_endDateItem, chk_allBranchesItem, chk_allItemsItem, chk_allUnitsItem, chk_expireDateItem);
                 dgStock.ItemsSource = temp;
+                txt_count.Text = dgStock.Items.Count.ToString();
                 fillPieChart();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -516,6 +520,7 @@ namespace POS.View.reports
                 dp_startDateItem.IsEnabled = true;
                 temp = fillList(storages, cb_branchesItem, cb_itemsItem, cb_unitsItem, dp_startDateItem, dp_endDateItem, chk_allBranchesItem, chk_allItemsItem, chk_allUnitsItem, chk_expireDateItem);
                 dgStock.ItemsSource = temp;
+                txt_count.Text = dgStock.Items.Count.ToString();
                 fillPieChart();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -538,6 +543,7 @@ namespace POS.View.reports
                 dp_startDateItem.IsEnabled = false;
                 temp = fillList(storages, cb_branchesItem, cb_itemsItem, cb_unitsItem, dp_startDateItem, dp_endDateItem, chk_allBranchesItem, chk_allItemsItem, chk_allUnitsItem, chk_expireDateItem);
                 dgStock.ItemsSource = temp;
+                txt_count.Text = dgStock.Items.Count.ToString();
                 fillPieChart();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -558,6 +564,7 @@ namespace POS.View.reports
                     SectionData.StartAwait(grid_main);
                 temp = fillList(storages, cb_branchesItem, cb_itemsItem, cb_unitsItem, dp_startDateItem, dp_endDateItem, chk_allBranchesItem, chk_allItemsItem, chk_allUnitsItem, chk_expireDateItem);
                 dgStock.ItemsSource = temp;
+                txt_count.Text = dgStock.Items.Count.ToString();
                 fillPieChart();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -578,6 +585,7 @@ namespace POS.View.reports
                     SectionData.StartAwait(grid_main);
                 temp = fillList(storages, cb_branchesItem, cb_itemsItem, cb_unitsItem, dp_startDateItem, dp_endDateItem, chk_allBranchesItem, chk_allItemsItem, chk_allUnitsItem, chk_expireDateItem);
                 dgStock.ItemsSource = temp;
+                txt_count.Text = dgStock.Items.Count.ToString();
                 fillPieChart();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -604,6 +612,7 @@ namespace POS.View.reports
                 fillComboSection();
                 temp = fillList(storages, cb_branchesLocation, cb_sectionsLocation, cb_locationsLocation, dp_startDateLocation, dp_endDateLocation, chk_allBranchesLocation, chk_allSectionsLocation, chk_allLocationsLocation, chk_expireDateLocation);
                 dgStock.ItemsSource = temp;
+                txt_count.Text = dgStock.Items.Count.ToString();
                 fillPieChart();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -627,6 +636,7 @@ namespace POS.View.reports
                 fillComboLoaction();
                 temp = fillList(storages, cb_branchesLocation, cb_sectionsLocation, cb_locationsLocation, dp_startDateLocation, dp_endDateLocation, chk_allBranchesLocation, chk_allSectionsLocation, chk_allLocationsLocation, chk_expireDateLocation);
                 dgStock.ItemsSource = temp;
+                txt_count.Text = dgStock.Items.Count.ToString();
                 fillPieChart();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -647,6 +657,7 @@ namespace POS.View.reports
                     SectionData.StartAwait(grid_main);
                 temp = fillList(storages, cb_branchesLocation, cb_sectionsLocation, cb_locationsLocation, dp_startDateLocation, dp_endDateLocation, chk_allBranchesLocation, chk_allSectionsLocation, chk_allLocationsLocation, chk_expireDateLocation);
                 dgStock.ItemsSource = temp;
+                txt_count.Text = dgStock.Items.Count.ToString();
                 fillPieChart();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -795,6 +806,7 @@ namespace POS.View.reports
                 dp_startDateLocation.IsEnabled = true;
                 temp = fillList(storages, cb_branchesLocation, cb_sectionsLocation, cb_locationsLocation, dp_startDateLocation, dp_endDateLocation, chk_allBranchesLocation, chk_allSectionsLocation, chk_allLocationsLocation, chk_expireDateLocation);
                 dgStock.ItemsSource = temp;
+                txt_count.Text = dgStock.Items.Count.ToString();
                 fillPieChart();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -817,6 +829,7 @@ namespace POS.View.reports
                 dp_startDateLocation.IsEnabled = false;
                 temp = fillList(storages, cb_branchesLocation, cb_sectionsLocation, cb_locationsLocation, dp_startDateLocation, dp_endDateLocation, chk_allBranchesLocation, chk_allSectionsLocation, chk_allLocationsLocation, chk_expireDateLocation);
                 dgStock.ItemsSource = temp;
+                txt_count.Text = dgStock.Items.Count.ToString();
                 fillPieChart();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -837,6 +850,7 @@ namespace POS.View.reports
                     SectionData.StartAwait(grid_main);
                 temp = fillList(storages, cb_branchesLocation, cb_sectionsLocation, cb_locationsLocation, dp_startDateLocation, dp_endDateLocation, chk_allBranchesLocation, chk_allSectionsLocation, chk_allLocationsLocation, chk_expireDateLocation);
                 dgStock.ItemsSource = temp;
+                txt_count.Text = dgStock.Items.Count.ToString();
                 fillPieChart();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -857,6 +871,7 @@ namespace POS.View.reports
                     SectionData.StartAwait(grid_main);
                 temp = fillList(storages, cb_branchesLocation, cb_sectionsLocation, cb_locationsLocation, dp_startDateLocation, dp_endDateLocation, chk_allBranchesLocation, chk_allSectionsLocation, chk_allLocationsLocation, chk_expireDateLocation);
                 dgStock.ItemsSource = temp;
+                txt_count.Text = dgStock.Items.Count.ToString();
                 fillPieChart();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -900,6 +915,7 @@ namespace POS.View.reports
                                    maxUnitName = s.FirstOrDefault().maxUnitName + s.FirstOrDefault().max
                                });
                 dgStock.ItemsSource = temp;
+                txt_count.Text = dgStock.Items.Count.ToString();
                 fillPieChart();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -939,6 +955,7 @@ namespace POS.View.reports
                                      maxUnitName = s.FirstOrDefault().maxUnitName + s.FirstOrDefault().max
                                  });
                 dgStock.ItemsSource = temp;
+                txt_count.Text = dgStock.Items.Count.ToString();
                 fillPieChart();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -975,6 +992,7 @@ namespace POS.View.reports
     maxUnitName = s.FirstOrDefault().maxUnitName + s.FirstOrDefault().max
 });
                 dgStock.ItemsSource = temp;
+                txt_count.Text = dgStock.Items.Count.ToString();
                 fillPieChart();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -1132,6 +1150,7 @@ namespace POS.View.reports
 
                 temp = fillList(storages, cb_branchesItem, cb_itemsItem, cb_unitsItem, dp_startDateItem, dp_endDateItem, chk_allBranchesItem, chk_allItemsItem, chk_allUnitsItem, chk_expireDateItem);
                 dgStock.ItemsSource = temp;
+                txt_count.Text = dgStock.Items.Count.ToString();
                 showSelectedTabColumn();
                 fillPieChart();
                 if (sender != null)
@@ -1166,6 +1185,7 @@ namespace POS.View.reports
 
                 temp = fillList(storages, cb_branchesLocation, cb_sectionsLocation, cb_locationsLocation, dp_startDateLocation, dp_endDateLocation, chk_allBranchesLocation, chk_allSectionsLocation, chk_allLocationsLocation, chk_expireDateLocation);
                 dgStock.ItemsSource = temp;
+                txt_count.Text = dgStock.Items.Count.ToString();
                 fillPieChart();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -1215,6 +1235,7 @@ namespace POS.View.reports
                          maxUnitName = s.FirstOrDefault().maxUnitName + s.FirstOrDefault().max
                      });
                 dgStock.ItemsSource = temp;
+                txt_count.Text = dgStock.Items.Count.ToString();
                 fillPieChart();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -1683,6 +1704,7 @@ namespace POS.View.reports
            s.LoactionName.Contains(txt_search.Text)
            ));
                     dgStock.ItemsSource = temp;
+                    txt_count.Text = dgStock.Items.Count.ToString();
                 }
                 else if (selectedStockTab == 1)
                 {
@@ -1696,6 +1718,7 @@ namespace POS.View.reports
       s.LoactionName.Contains(txt_search.Text)
       ));
                     dgStock.ItemsSource = temp;
+                    txt_count.Text = dgStock.Items.Count.ToString();
                 }
 
 
@@ -1724,6 +1747,7 @@ namespace POS.View.reports
 
            ));
                     dgStock.ItemsSource = temp;
+                    txt_count.Text = dgStock.Items.Count.ToString();
                 }
 
 
@@ -1801,6 +1825,7 @@ namespace POS.View.reports
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
+                #region
                 List<ReportParameter> paramarr = new List<ReportParameter>();
 
                 string addpath = "";
@@ -1838,16 +1863,7 @@ namespace POS.View.reports
                 string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                 ReportCls.checkLang();
-                foreach (var r in temp)
-                {
-                    r.startDate = DateTime.Parse(SectionData.DateToString(r.startDate));//
-                    r.endDate = DateTime.Parse(SectionData.DateToString(r.endDate));
-                    //r.inventoryDate = DateTime.Parse(SectionData.DateToString(r.inventoryDate));
-                    //r.IupdateDate = DateTime.Parse(SectionData.DateToString(r.IupdateDate));
-
-                    //r.diffPercentage = decimal.Parse(SectionData.DecTostring(r.diffPercentage));
-                    r.storageCostValue = decimal.Parse(SectionData.DecTostring(r.storageCostValue));
-                }
+             
                 clsReports.storage(temp, rep, reppath);
                 clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);
@@ -1863,6 +1879,7 @@ namespace POS.View.reports
                     string filepath = saveFileDialog.FileName;
                     LocalReportExtensions.ExportToPDF(rep, filepath);
                 }
+                #endregion
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -1882,6 +1899,7 @@ namespace POS.View.reports
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
+                #region
                 List<ReportParameter> paramarr = new List<ReportParameter>();
 
                 string addpath = "";
@@ -1919,16 +1937,7 @@ namespace POS.View.reports
                 string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                 ReportCls.checkLang();
-                foreach (var r in temp)
-                {
-                    r.startDate = DateTime.Parse(SectionData.DateToString(r.startDate));//
-                    r.endDate = DateTime.Parse(SectionData.DateToString(r.endDate));
-                    //r.inventoryDate = DateTime.Parse(SectionData.DateToString(r.inventoryDate));
-                    //r.IupdateDate = DateTime.Parse(SectionData.DateToString(r.IupdateDate));
-
-                    //r.diffPercentage = decimal.Parse(SectionData.DecTostring(r.diffPercentage));
-                    r.storageCostValue = decimal.Parse(SectionData.DecTostring(r.storageCostValue));
-                }
+              
                 clsReports.storage(temp, rep, reppath);
                 clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);
@@ -1936,6 +1945,7 @@ namespace POS.View.reports
                 rep.SetParameters(paramarr);
                 rep.Refresh();
                 LocalReportExtensions.PrintToPrinter(rep);
+                #endregion
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -1955,6 +1965,7 @@ namespace POS.View.reports
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
+                #region
                 Thread t1 = new Thread(() =>
 {
     List<ReportParameter> paramarr = new List<ReportParameter>();
@@ -1994,16 +2005,7 @@ namespace POS.View.reports
     string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
     ReportCls.checkLang();
-    foreach (var r in temp)
-    {
-        r.startDate = DateTime.Parse(SectionData.DateToString(r.startDate));//
-        r.endDate = DateTime.Parse(SectionData.DateToString(r.endDate));
-        //r.inventoryDate = DateTime.Parse(SectionData.DateToString(r.inventoryDate));
-        //r.IupdateDate = DateTime.Parse(SectionData.DateToString(r.IupdateDate));
-
-        //r.diffPercentage = decimal.Parse(SectionData.DecTostring(r.diffPercentage));
-        r.storageCostValue = decimal.Parse(SectionData.DecTostring(r.storageCostValue));
-    }
+   
     clsReports.storage(temp, rep, reppath);
     clsReports.setReportLanguage(paramarr);
     clsReports.Header(paramarr);
@@ -2024,6 +2026,8 @@ namespace POS.View.reports
 
 });
                 t1.Start();
+                #endregion
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -2041,13 +2045,13 @@ namespace POS.View.reports
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
+                #region
                 Window.GetWindow(this).Opacity = 0.2;
                 string pdfpath = "";
 
                 List<ReportParameter> paramarr = new List<ReportParameter>();
 
-
-                //
                 pdfpath = @"\Thumb\report\temp.pdf";
                 pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
 
@@ -2086,16 +2090,7 @@ namespace POS.View.reports
                 string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                 ReportCls.checkLang();
-                foreach (var r in temp)
-                {
-                    r.startDate = DateTime.Parse(SectionData.DateToString(r.startDate));//
-                    r.endDate = DateTime.Parse(SectionData.DateToString(r.endDate));
-                    //r.inventoryDate = DateTime.Parse(SectionData.DateToString(r.inventoryDate));
-                    //r.IupdateDate = DateTime.Parse(SectionData.DateToString(r.IupdateDate));
-
-                    //r.diffPercentage = decimal.Parse(SectionData.DecTostring(r.diffPercentage));
-                    r.storageCostValue = decimal.Parse(SectionData.DecTostring(r.storageCostValue));
-                }
+             
                 clsReports.storage(temp, rep, reppath);
                 clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);
@@ -2111,10 +2106,10 @@ namespace POS.View.reports
                 {
                     w.ShowDialog();
                     w.wb_pdfWebViewer.Dispose();
-
-
                 }
                 Window.GetWindow(this).Opacity = 1;
+                #endregion
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }

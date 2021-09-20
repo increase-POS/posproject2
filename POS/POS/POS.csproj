@@ -208,6 +208,8 @@
     <Compile Include="Classes\MedalAgent.cs" />
     <Compile Include="Classes\Memberships.cs" />
     <Compile Include="Classes\NotificationUser.cs" />
+    <Compile Include="Classes\numberToWord\CurrencyInfo.cs" />
+    <Compile Include="Classes\numberToWord\ToWord.cs" />
     <Compile Include="Classes\Object.cs" />
     <Compile Include="Classes\Offer.cs" />
     <Compile Include="Classes\Package.cs" />

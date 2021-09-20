@@ -471,12 +471,23 @@ namespace POS.Classes
             rep.DataSources.Clear();
             rep.DataSources.Add(new ReportDataSource("DataSetItemTransfer", invoiceItems));
             rep.EnableExternalImages = true;
+
         }
         public static void storage(IEnumerable<Storage> storageQuery, LocalReport rep, string reppath)
         {
             rep.ReportPath = reppath;
             rep.EnableExternalImages = true;
             rep.DataSources.Clear();
+            foreach (var r in storageQuery)
+            {
+                r.startDate = DateTime.Parse(SectionData.DateToString(r.startDate));//
+                r.endDate = DateTime.Parse(SectionData.DateToString(r.endDate));
+                //r.inventoryDate = DateTime.Parse(SectionData.DateToString(r.inventoryDate));
+                //r.IupdateDate = DateTime.Parse(SectionData.DateToString(r.IupdateDate));
+
+                //r.diffPercentage = decimal.Parse(SectionData.DecTostring(r.diffPercentage));
+                r.storageCostValue = decimal.Parse(SectionData.DecTostring(r.storageCostValue));
+            }
             rep.DataSources.Add(new ReportDataSource("DataSetStorage", storageQuery));
         }
 

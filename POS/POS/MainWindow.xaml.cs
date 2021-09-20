@@ -55,6 +55,7 @@ namespace POS
         public static string Address;
         public static CountryCode Region;
         public static string Currency;
+        public static int CurrencyId;
         public static string Phone;
         internal static int? userID;
         internal static User userLogin;
@@ -279,6 +280,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
                     CountryCode c = await getDefaultRegion();
                     Region = c;
                     Currency = c.currency;
+                    CurrencyId = c.currencyId;
                     txt_cashSympol.Text = MainWindow.Currency;
 
                 }

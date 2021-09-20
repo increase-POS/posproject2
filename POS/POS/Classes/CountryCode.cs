@@ -22,6 +22,7 @@ namespace POS.Classes
         public string currency { get; set; }
         public string name { get; set; }
         public byte isDefault { get; set; }
+         public int currencyId { get; set; }
 
         public async Task<List<CountryCode>> GetAllCountries()
         {

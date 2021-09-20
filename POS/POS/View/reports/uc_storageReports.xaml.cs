@@ -23,6 +23,10 @@ using MaterialDesignThemes.Wpf;
 using System.Collections.ObjectModel;
 using static POS.Classes.Statistics;
 using System.Globalization;
+using System.Threading;
+using Microsoft.Reporting.WinForms;
+using Microsoft.Win32;
+using System.IO;
 
 namespace POS.View.reports
 {
@@ -43,6 +47,11 @@ namespace POS.View.reports
         List<InventoryClass> inventory;
         List<InventoryClass> falls;
         List<ItemTransferInvoice> Destroied;
+
+        // report
+        ReportCls reportclass = new ReportCls();
+        LocalReport rep = new LocalReport();
+        SaveFileDialog saveFileDialog = new SaveFileDialog();
 
         private static uc_storageReports _instance;
         public static uc_storageReports Instance
@@ -111,6 +120,7 @@ namespace POS.View.reports
             chk_externalAgentsOut.IsChecked = true;
             chk_externalItemsOut.IsChecked = true;
             dgStock.ItemsSource = fillList(storages, cb_branchesItem, cb_itemsItem, cb_unitsItem, dp_startDateItem, dp_endDateItem, chk_allBranchesItem, chk_allItemsItem, chk_allUnitsItem, chk_expireDateItem);
+            txt_count.Text = dgStock.Items.Count.ToString();
             fillPieChart();
             fillColumnChart();
 
@@ -230,7 +240,9 @@ namespace POS.View.reports
             btn_external.Opacity = 1;
             fillComboBranches(cb_externalItemsBranches);
             dgStock.ItemsSource = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
-            showSelectedTabColumn();
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                showSelectedTabColumn();
             fillExternalPieChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
@@ -270,8 +282,9 @@ namespace POS.View.reports
             fillComboBranches(cb_externalItemsBranches);
             showSelectedTabColumn();
             dgStock.ItemsSource = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
+                txt_count.Text = dgStock.Items.Count.ToString();
 
-            if (sender != null)
+                if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
         catch (Exception ex)
@@ -301,8 +314,9 @@ namespace POS.View.reports
             fillComboBranches(cb_externalAgentsBranches);
             showSelectedTabColumn();
             dgStock.ItemsSource = fillList(itemsTransfer, cb_externalAgentsBranches, cb_externalAgentsAgentsType, cb_externalAgentsCustomer, dp_externalAgentsStartDate, dp_externalAgentsEndDate, chk_externalAgentsAllBranches, chk_externalAgentsAllAgentsType, chk_externalAgentsAllCustomers, chk_externalAgentsIn, chk_externalAgentsOut);
+                txt_count.Text = dgStock.Items.Count.ToString();
 
-            if (sender != null)
+                if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
         catch (Exception ex)
@@ -343,7 +357,9 @@ namespace POS.View.reports
                               invType = s.FirstOrDefault().invType,
                               quantity = s.FirstOrDefault().quantity
                           });
-            showSelectedTabColumn();
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                showSelectedTabColumn();
 
             if (sender != null)
                 SectionData.EndAwait(grid_main);
@@ -528,7 +544,9 @@ namespace POS.View.reports
             chk_allUnitsItem.IsEnabled = false;
             fillComboItems(cb_branchesItem, cb_itemsItem);
             dgStock.ItemsSource = fillList(storages, cb_branchesItem, cb_itemsItem, cb_unitsItem, dp_startDateItem, dp_endDateItem, chk_allBranchesItem, chk_allItemsItem, chk_allUnitsItem, chk_expireDateItem);
-            fillPieChart();
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                fillPieChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
@@ -551,7 +569,9 @@ namespace POS.View.reports
             chk_allUnitsItem.IsEnabled = true;
             fillComboUnits(cb_itemsItem, cb_unitsItem);
             dgStock.ItemsSource = fillList(storages, cb_branchesItem, cb_itemsItem, cb_unitsItem, dp_startDateItem, dp_endDateItem, chk_allBranchesItem, chk_allItemsItem, chk_allUnitsItem, chk_expireDateItem);
-            fillPieChart();
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                fillPieChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
@@ -571,7 +591,9 @@ namespace POS.View.reports
                             SectionData.StartAwait(grid_main);
 
                         dgStock.ItemsSource = fillList(storages, cb_branchesItem, cb_itemsItem, cb_unitsItem, dp_startDateItem, dp_endDateItem, chk_allBranchesItem, chk_allItemsItem, chk_allUnitsItem, chk_expireDateItem);
-            fillPieChart();
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                fillPieChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
@@ -727,7 +749,9 @@ namespace POS.View.reports
                                                     dp_endDateItem.IsEnabled = true;
             dp_startDateItem.IsEnabled = true;
             dgStock.ItemsSource = fillList(storages, cb_branchesItem, cb_itemsItem, cb_unitsItem, dp_startDateItem, dp_endDateItem, chk_allBranchesItem, chk_allItemsItem, chk_allUnitsItem, chk_expireDateItem);
-            fillPieChart();
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                fillPieChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
@@ -749,7 +773,9 @@ namespace POS.View.reports
                                                         dp_endDateItem.IsEnabled = false;
             dp_startDateItem.IsEnabled = false;
             dgStock.ItemsSource = fillList(storages, cb_branchesItem, cb_itemsItem, cb_unitsItem, dp_startDateItem, dp_endDateItem, chk_allBranchesItem, chk_allItemsItem, chk_allUnitsItem, chk_expireDateItem);
-            fillPieChart();
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                fillPieChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
@@ -769,7 +795,9 @@ namespace POS.View.reports
                                                                 SectionData.StartAwait(grid_main);
 
                                                             dgStock.ItemsSource = fillList(storages, cb_branchesItem, cb_itemsItem, cb_unitsItem, dp_startDateItem, dp_endDateItem, chk_allBranchesItem, chk_allItemsItem, chk_allUnitsItem, chk_expireDateItem);
-            fillPieChart();
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                fillPieChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
@@ -789,7 +817,9 @@ namespace POS.View.reports
                                                                     SectionData.StartAwait(grid_main);
 
                                                                 dgStock.ItemsSource = fillList(storages, cb_branchesItem, cb_itemsItem, cb_unitsItem, dp_startDateItem, dp_endDateItem, chk_allBranchesItem, chk_allItemsItem, chk_allUnitsItem, chk_expireDateItem);
-            fillPieChart();
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                fillPieChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
@@ -819,7 +849,9 @@ namespace POS.View.reports
             chk_allLocationsLocation.IsEnabled = false;
             fillComboSection();
             dgStock.ItemsSource = fillList(storages, cb_branchesLocation, cb_sectionsLocation, cb_locationsLocation, dp_startDateLocation, dp_endDateLocation, chk_allBranchesLocation, chk_allSectionsLocation, chk_allLocationsLocation, chk_expireDateLocation);
-            fillPieChart();
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                fillPieChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
@@ -842,7 +874,9 @@ namespace POS.View.reports
             chk_allLocationsLocation.IsEnabled = true;
             fillComboLoaction();
             dgStock.ItemsSource = fillList(storages, cb_branchesLocation, cb_sectionsLocation, cb_locationsLocation, dp_startDateLocation, dp_endDateLocation, chk_allBranchesLocation, chk_allSectionsLocation, chk_allLocationsLocation, chk_expireDateLocation);
-            fillPieChart();
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                fillPieChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
@@ -862,7 +896,9 @@ namespace POS.View.reports
                                                                                 SectionData.StartAwait(grid_main);
 
                                                                             dgStock.ItemsSource = fillList(storages, cb_branchesLocation, cb_sectionsLocation, cb_locationsLocation, dp_startDateLocation, dp_endDateLocation, chk_allBranchesLocation, chk_allSectionsLocation, chk_allLocationsLocation, chk_expireDateLocation);
-            fillPieChart();
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                fillPieChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
@@ -1016,7 +1052,9 @@ namespace POS.View.reports
                                                                                                         dp_endDateLocation.IsEnabled = true;
             dp_startDateLocation.IsEnabled = true;
             dgStock.ItemsSource = fillList(storages, cb_branchesLocation, cb_sectionsLocation, cb_locationsLocation, dp_startDateLocation, dp_endDateLocation, chk_allBranchesLocation, chk_allSectionsLocation, chk_allLocationsLocation, chk_expireDateLocation);
-            fillPieChart();
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                fillPieChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
@@ -1038,7 +1076,9 @@ namespace POS.View.reports
                                                                                                             dp_endDateLocation.IsEnabled = false;
             dp_startDateLocation.IsEnabled = false;
             dgStock.ItemsSource = fillList(storages, cb_branchesLocation, cb_sectionsLocation, cb_locationsLocation, dp_startDateLocation, dp_endDateLocation, chk_allBranchesLocation, chk_allSectionsLocation, chk_allLocationsLocation, chk_expireDateLocation);
-            fillPieChart();
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                fillPieChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
@@ -1058,7 +1098,9 @@ namespace POS.View.reports
                                                                                                                     SectionData.StartAwait(grid_main);
 
                                                                                                                 dgStock.ItemsSource = fillList(storages, cb_branchesLocation, cb_sectionsLocation, cb_locationsLocation, dp_startDateLocation, dp_endDateLocation, chk_allBranchesLocation, chk_allSectionsLocation, chk_allLocationsLocation, chk_expireDateLocation);
-            fillPieChart();
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                fillPieChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
@@ -1078,7 +1120,9 @@ namespace POS.View.reports
                                                                                                                         SectionData.StartAwait(grid_main);
 
                                                                                                                     dgStock.ItemsSource = fillList(storages, cb_branchesLocation, cb_sectionsLocation, cb_locationsLocation, dp_startDateLocation, dp_endDateLocation, chk_allBranchesLocation, chk_allSectionsLocation, chk_allLocationsLocation, chk_expireDateLocation);
-            fillPieChart();
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                fillPieChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
@@ -1095,12 +1139,12 @@ namespace POS.View.reports
         #region
         private void cb_branchesCollect_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-                                                                                                                    try
-                                                                                                                    {
-                                                                                                                        if (sender != null)
-                                                                                                                            SectionData.StartAwait(grid_main);
+        try
+        {
+            if (sender != null)
+                SectionData.StartAwait(grid_main);
 
-                                                                                                                        cb_itemsCollect.IsEnabled = true;
+            cb_itemsCollect.IsEnabled = true;
             chk_allItemsCollect.IsEnabled = true;
             cb_unitsCollect.IsEnabled = false;
             cb_unitsCollect.SelectedItem = null;
@@ -1124,7 +1168,10 @@ namespace POS.View.reports
                               minUnitName = s.FirstOrDefault().minUnitName + s.FirstOrDefault().min,
                               maxUnitName = s.FirstOrDefault().maxUnitName + s.FirstOrDefault().max
                           });
-            fillPieChart();
+
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                fillPieChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
@@ -1163,7 +1210,10 @@ namespace POS.View.reports
                               minUnitName = s.FirstOrDefault().minUnitName + s.FirstOrDefault().min,
                               maxUnitName = s.FirstOrDefault().maxUnitName + s.FirstOrDefault().max
                           });
-            fillPieChart();
+
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                fillPieChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
@@ -1177,12 +1227,12 @@ namespace POS.View.reports
 
         private void cb_unitsCollect_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-                                                                                                                            try
-                                                                                                                            {
-                                                                                                                                if (sender != null)
-                                                                                                                                    SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
-                                                                                                                                dgStock.ItemsSource = fillList(storages, cb_branchesCollect, cb_itemsCollect, cb_unitsCollect, null, null, chk_allBranchesCollect, chk_allItemsCollect, chk_allUnitsCollect, null).GroupBy(x => new { x.branchId, x.itemUnitId })
+                dgStock.ItemsSource = fillList(storages, cb_branchesCollect, cb_itemsCollect, cb_unitsCollect, null, null, chk_allBranchesCollect, chk_allItemsCollect, chk_allUnitsCollect, null).GroupBy(x => new { x.branchId, x.itemUnitId })
                           .Select(s => new Storage
                           {
                               branchId = s.FirstOrDefault().branchId,
@@ -1199,7 +1249,9 @@ namespace POS.View.reports
                               minUnitName = s.FirstOrDefault().minUnitName + s.FirstOrDefault().min,
                               maxUnitName = s.FirstOrDefault().maxUnitName + s.FirstOrDefault().max
                           });
-            fillPieChart();
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                fillPieChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
@@ -1362,7 +1414,9 @@ namespace POS.View.reports
             txt_byItem.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
             path_byItem.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
             dgStock.ItemsSource = fillList(storages, cb_branchesItem, cb_itemsItem, cb_unitsItem, dp_startDateItem, dp_endDateItem, chk_allBranchesItem, chk_allItemsItem, chk_allUnitsItem, chk_expireDateItem);
-            showSelectedTabColumn();
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                showSelectedTabColumn();
             fillPieChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
@@ -1395,7 +1449,9 @@ namespace POS.View.reports
             showSelectedTabColumn();
 
             dgStock.ItemsSource = fillList(storages, cb_branchesLocation, cb_sectionsLocation, cb_locationsLocation, dp_startDateLocation, dp_endDateLocation, chk_allBranchesLocation, chk_allSectionsLocation, chk_allLocationsLocation, chk_expireDateLocation);
-            fillPieChart();
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                fillPieChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
@@ -1444,7 +1500,9 @@ namespace POS.View.reports
                     minUnitName = s.FirstOrDefault().minUnitName + s.FirstOrDefault().min,
                     maxUnitName = s.FirstOrDefault().maxUnitName + s.FirstOrDefault().max
                 });
-            fillPieChart();
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                fillPieChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
@@ -1475,7 +1533,9 @@ namespace POS.View.reports
             btn_stock.Opacity = 1;
             showSelectedTabColumn();
             dgStock.ItemsSource = fillList(storages, cb_branchesItem, cb_itemsItem, cb_unitsItem, dp_startDateItem, dp_endDateItem, chk_allBranchesItem, chk_allItemsItem, chk_allUnitsItem, chk_expireDateItem);
-            fillPieChart();
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                fillPieChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
@@ -1953,7 +2013,9 @@ namespace POS.View.reports
             chk_externalItemsAllItems.IsEnabled = true;
             fillComboExternalItemsItems();
             dgStock.ItemsSource = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
-            fillExternalPieChart();
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                fillExternalPieChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
@@ -1978,7 +2040,9 @@ namespace POS.View.reports
             chk_externalItemsAllItems.IsEnabled = true;
             fillComboExternalItemsItems();
             dgStock.ItemsSource = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
-            fillExternalPieChart();
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                fillExternalPieChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
@@ -2003,7 +2067,9 @@ namespace POS.View.reports
             chk_externalItemsAllItems.IsEnabled = false;
             chk_externalItemsAllItems.IsChecked = false;
             dgStock.ItemsSource = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
-            fillExternalPieChart();
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                fillExternalPieChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
@@ -2017,13 +2083,15 @@ namespace POS.View.reports
 
         private void chk_externalItemsIn_Checked(object sender, RoutedEventArgs e)
         {
-                        try
-                        {
-                            if (sender != null)
-                                SectionData.StartAwait(grid_main);
+        try
+        {
+            if (sender != null)
+                SectionData.StartAwait(grid_main);
 
-                            dgStock.ItemsSource = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
-            fillExternalPieChart();
+            dgStock.ItemsSource = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                fillExternalPieChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
@@ -2037,13 +2105,15 @@ namespace POS.View.reports
 
         private void chk_externalItemsIn_Unchecked(object sender, RoutedEventArgs e)
         {
-                            try
-                            {
-                                if (sender != null)
-                                    SectionData.StartAwait(grid_main);
+        try
+        {
+            if (sender != null)
+                SectionData.StartAwait(grid_main);
 
-                                dgStock.ItemsSource = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
-            fillExternalPieChart();
+            dgStock.ItemsSource = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                fillExternalPieChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
@@ -2057,13 +2127,15 @@ namespace POS.View.reports
 
         private void chk_externalItemsOut_Checked(object sender, RoutedEventArgs e)
         {
-                                try
-                                {
-                                    if (sender != null)
-                                        SectionData.StartAwait(grid_main);
+        try
+        {
+            if (sender != null)
+                SectionData.StartAwait(grid_main);
 
-                                    dgStock.ItemsSource = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
-            fillExternalPieChart();
+            dgStock.ItemsSource = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                fillExternalPieChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
@@ -2077,13 +2149,15 @@ namespace POS.View.reports
 
         private void chk_externalItemsOut_Unchecked(object sender, RoutedEventArgs e)
         {
-                                    try
-                                    {
-                                        if (sender != null)
-                                            SectionData.StartAwait(grid_main);
+        try
+        {
+            if (sender != null)
+                SectionData.StartAwait(grid_main);
 
-                                        dgStock.ItemsSource = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
-            fillExternalPieChart();
+            dgStock.ItemsSource = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                fillExternalPieChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
@@ -2097,13 +2171,15 @@ namespace POS.View.reports
 
         private void dp_externalItemsEndDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-                                        try
-                                        {
-                                            if (sender != null)
-                                                SectionData.StartAwait(grid_main);
+        try
+        {
+            if (sender != null)
+                SectionData.StartAwait(grid_main);
 
-                                            dgStock.ItemsSource = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
-            fillExternalPieChart();
+            dgStock.ItemsSource = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                fillExternalPieChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
@@ -2117,13 +2193,15 @@ namespace POS.View.reports
 
         private void dp_externalItemsStartDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-                                            try
-                                            {
-                                                if (sender != null)
-                                                    SectionData.StartAwait(grid_main);
+        try
+        {
+            if (sender != null)
+                SectionData.StartAwait(grid_main);
 
-                                                dgStock.ItemsSource = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
-            fillExternalPieChart();
+            dgStock.ItemsSource = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                fillExternalPieChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
@@ -2137,16 +2215,18 @@ namespace POS.View.reports
 
         private void cb_externalItemsItems_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-                                                try
-                                                {
-                                                    if (sender != null)
-                                                        SectionData.StartAwait(grid_main);
+        try
+        {
+            if (sender != null)
+                SectionData.StartAwait(grid_main);
 
-                                                    cb_externalItemsUnits.IsEnabled = true;
+            cb_externalItemsUnits.IsEnabled = true;
             chk_externalItemsAllUnits.IsEnabled = true;
             fillComboExternalItemsUnits();
             dgStock.ItemsSource = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
-            fillExternalPieChart();
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                fillExternalPieChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
@@ -2206,13 +2286,15 @@ namespace POS.View.reports
 
         private void cb_externalItemsUnits_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-                                                            try
-                                                            {
-                                                                if (sender != null)
-                                                                    SectionData.StartAwait(grid_main);
+        try
+        {
+            if (sender != null)
+                SectionData.StartAwait(grid_main);
 
-                                                                dgStock.ItemsSource = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
-            fillExternalPieChart();
+            dgStock.ItemsSource = fillList(itemsTransfer, cb_externalItemsBranches, cb_externalItemsItems, cb_externalItemsUnits, dp_externalItemsStartDate, dp_externalItemsEndDate, chk_externalItemsAllBranches, chk_externalItemsAllItems, chk_externalItemsAllUnits, chk_externalItemsIn, chk_externalItemsOut);
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                fillExternalPieChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
@@ -2268,16 +2350,18 @@ namespace POS.View.reports
         #region
         private void cb_externalAgentsBranches_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-                                                                        try
-                                                                        {
-                                                                            if (sender != null)
-                                                                                SectionData.StartAwait(grid_main);
+        try
+        {
+            if (sender != null)
+                SectionData.StartAwait(grid_main);
 
-                                                                            cb_externalAgentsAgentsType.IsEnabled = true;
+            cb_externalAgentsAgentsType.IsEnabled = true;
             chk_externalAgentsAllAgentsType.IsEnabled = true;
             fillComboExternalAgentsAgentsType();
             dgStock.ItemsSource = fillList(itemsTransfer, cb_externalAgentsBranches, cb_externalAgentsAgentsType, cb_externalAgentsCustomer, dp_externalAgentsStartDate, dp_externalAgentsEndDate, chk_externalAgentsAllBranches, chk_externalAgentsAllAgentsType, chk_externalAgentsAllCustomers, chk_externalAgentsIn, chk_externalAgentsOut);
-            fillExternalPieChart();
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                fillExternalPieChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
@@ -2291,16 +2375,18 @@ namespace POS.View.reports
 
         private void cb_externalAgentsAgentsType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-                                                                            try
-                                                                            {
-                                                                                if (sender != null)
-                                                                                    SectionData.StartAwait(grid_main);
+        try
+        {
+            if (sender != null)
+                SectionData.StartAwait(grid_main);
 
-                                                                                cb_externalAgentsCustomer.IsEnabled = true;
+            cb_externalAgentsCustomer.IsEnabled = true;
             chk_externalAgentsAllCustomers.IsEnabled = true;
             fillComboExternalAgentsAgents();
             dgStock.ItemsSource = fillList(itemsTransfer, cb_externalAgentsBranches, cb_externalAgentsAgentsType, cb_externalAgentsCustomer, dp_externalAgentsStartDate, dp_externalAgentsEndDate, chk_externalAgentsAllBranches, chk_externalAgentsAllAgentsType, chk_externalAgentsAllCustomers, chk_externalAgentsIn, chk_externalAgentsOut);
-            fillExternalPieChart();
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                fillExternalPieChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
@@ -2314,13 +2400,15 @@ namespace POS.View.reports
 
         private void cb_externalAgentsCustomer_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-                                                                                try
-                                                                                {
-                                                                                    if (sender != null)
-                                                                                        SectionData.StartAwait(grid_main);
+        try
+        {
+            if (sender != null)
+                SectionData.StartAwait(grid_main);
 
-                                                                                    dgStock.ItemsSource = fillList(itemsTransfer, cb_externalAgentsBranches, cb_externalAgentsAgentsType, cb_externalAgentsCustomer, dp_externalAgentsStartDate, dp_externalAgentsEndDate, chk_externalAgentsAllBranches, chk_externalAgentsAllAgentsType, chk_externalAgentsAllCustomers, chk_externalAgentsIn, chk_externalAgentsOut);
-            fillExternalPieChart();
+            dgStock.ItemsSource = fillList(itemsTransfer, cb_externalAgentsBranches, cb_externalAgentsAgentsType, cb_externalAgentsCustomer, dp_externalAgentsStartDate, dp_externalAgentsEndDate, chk_externalAgentsAllBranches, chk_externalAgentsAllAgentsType, chk_externalAgentsAllCustomers, chk_externalAgentsIn, chk_externalAgentsOut);
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                fillExternalPieChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
@@ -2465,13 +2553,15 @@ namespace POS.View.reports
 
         private void chk_externalAgentsIn_Checked(object sender, RoutedEventArgs e)
         {
-                                                                                                            try
-                                                                                                            {
-                                                                                                                if (sender != null)
-                                                                                                                    SectionData.StartAwait(grid_main);
+        try
+        {
+            if (sender != null)
+                SectionData.StartAwait(grid_main);
 
-                                                                                                                dgStock.ItemsSource = fillList(itemsTransfer, cb_externalAgentsBranches, cb_externalAgentsAgentsType, cb_externalAgentsCustomer, dp_externalAgentsStartDate, dp_externalAgentsEndDate, chk_externalAgentsAllBranches, chk_externalAgentsAllAgentsType, chk_externalAgentsAllCustomers, chk_externalAgentsIn, chk_externalAgentsOut);
-            fillExternalPieChart();
+            dgStock.ItemsSource = fillList(itemsTransfer, cb_externalAgentsBranches, cb_externalAgentsAgentsType, cb_externalAgentsCustomer, dp_externalAgentsStartDate, dp_externalAgentsEndDate, chk_externalAgentsAllBranches, chk_externalAgentsAllAgentsType, chk_externalAgentsAllCustomers, chk_externalAgentsIn, chk_externalAgentsOut);
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                fillExternalPieChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
@@ -2485,13 +2575,15 @@ namespace POS.View.reports
 
         private void chk_externalAgentsIn_Unchecked(object sender, RoutedEventArgs e)
         {
-                                                                                                                try
-                                                                                                                {
-                                                                                                                    if (sender != null)
-                                                                                                                        SectionData.StartAwait(grid_main);
+        try
+        {
+            if (sender != null)
+                SectionData.StartAwait(grid_main);
 
-                                                                                                                    dgStock.ItemsSource = fillList(itemsTransfer, cb_externalAgentsBranches, cb_externalAgentsAgentsType, cb_externalAgentsCustomer, dp_externalAgentsStartDate, dp_externalAgentsEndDate, chk_externalAgentsAllBranches, chk_externalAgentsAllAgentsType, chk_externalAgentsAllCustomers, chk_externalAgentsIn, chk_externalAgentsOut);
-            fillExternalPieChart();
+            dgStock.ItemsSource = fillList(itemsTransfer, cb_externalAgentsBranches, cb_externalAgentsAgentsType, cb_externalAgentsCustomer, dp_externalAgentsStartDate, dp_externalAgentsEndDate, chk_externalAgentsAllBranches, chk_externalAgentsAllAgentsType, chk_externalAgentsAllCustomers, chk_externalAgentsIn, chk_externalAgentsOut);
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                fillExternalPieChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
@@ -2505,13 +2597,15 @@ namespace POS.View.reports
 
         private void chk_externalAgentsOut_Checked(object sender, RoutedEventArgs e)
         {
-                                                                                                                    try
-                                                                                                                    {
-                                                                                                                        if (sender != null)
-                                                                                                                            SectionData.StartAwait(grid_main);
+        try
+        {
+            if (sender != null)
+                SectionData.StartAwait(grid_main);
 
-                                                                                                                        dgStock.ItemsSource = fillList(itemsTransfer, cb_externalAgentsBranches, cb_externalAgentsAgentsType, cb_externalAgentsCustomer, dp_externalAgentsStartDate, dp_externalAgentsEndDate, chk_externalAgentsAllBranches, chk_externalAgentsAllAgentsType, chk_externalAgentsAllCustomers, chk_externalAgentsIn, chk_externalAgentsOut);
-            fillExternalPieChart();
+            dgStock.ItemsSource = fillList(itemsTransfer, cb_externalAgentsBranches, cb_externalAgentsAgentsType, cb_externalAgentsCustomer, dp_externalAgentsStartDate, dp_externalAgentsEndDate, chk_externalAgentsAllBranches, chk_externalAgentsAllAgentsType, chk_externalAgentsAllCustomers, chk_externalAgentsIn, chk_externalAgentsOut);
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                fillExternalPieChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
@@ -2525,13 +2619,15 @@ namespace POS.View.reports
 
         private void chk_externalAgentsOut_Unchecked(object sender, RoutedEventArgs e)
         {
-                                                                                                                        try
-                                                                                                                        {
-                                                                                                                            if (sender != null)
-                                                                                                                                SectionData.StartAwait(grid_main);
+        try
+        {
+            if (sender != null)
+                SectionData.StartAwait(grid_main);
 
-                                                                                                                            dgStock.ItemsSource = fillList(itemsTransfer, cb_externalAgentsBranches, cb_externalAgentsAgentsType, cb_externalAgentsCustomer, dp_externalAgentsStartDate, dp_externalAgentsEndDate, chk_externalAgentsAllBranches, chk_externalAgentsAllAgentsType, chk_externalAgentsAllCustomers, chk_externalAgentsIn, chk_externalAgentsOut);
-            fillExternalPieChart();
+            dgStock.ItemsSource = fillList(itemsTransfer, cb_externalAgentsBranches, cb_externalAgentsAgentsType, cb_externalAgentsCustomer, dp_externalAgentsStartDate, dp_externalAgentsEndDate, chk_externalAgentsAllBranches, chk_externalAgentsAllAgentsType, chk_externalAgentsAllCustomers, chk_externalAgentsIn, chk_externalAgentsOut);
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                fillExternalPieChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
@@ -2545,13 +2641,15 @@ namespace POS.View.reports
 
         private void dp_externalAgentsEndDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-                                                                                                                            try
-                                                                                                                            {
-                                                                                                                                if (sender != null)
-                                                                                                                                    SectionData.StartAwait(grid_main);
+        try
+        {
+            if (sender != null)
+                SectionData.StartAwait(grid_main);
 
-                                                                                                                                dgStock.ItemsSource = fillList(itemsTransfer, cb_externalAgentsBranches, cb_externalAgentsAgentsType, cb_externalAgentsCustomer, dp_externalAgentsStartDate, dp_externalAgentsEndDate, chk_externalAgentsAllBranches, chk_externalAgentsAllAgentsType, chk_externalAgentsAllCustomers, chk_externalAgentsIn, chk_externalAgentsOut);
-            fillExternalPieChart();
+            dgStock.ItemsSource = fillList(itemsTransfer, cb_externalAgentsBranches, cb_externalAgentsAgentsType, cb_externalAgentsCustomer, dp_externalAgentsStartDate, dp_externalAgentsEndDate, chk_externalAgentsAllBranches, chk_externalAgentsAllAgentsType, chk_externalAgentsAllCustomers, chk_externalAgentsIn, chk_externalAgentsOut);
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                fillExternalPieChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
@@ -2565,13 +2663,15 @@ namespace POS.View.reports
 
         private void dp_externalAgentsStartDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-                                                                                                                                try
-                                                                                                                                {
-                                                                                                                                    if (sender != null)
-                                                                                                                                        SectionData.StartAwait(grid_main);
+        try
+        {
+            if (sender != null)
+                SectionData.StartAwait(grid_main);
 
-                                                                                                                                    dgStock.ItemsSource = fillList(itemsTransfer, cb_externalAgentsBranches, cb_externalAgentsAgentsType, cb_externalAgentsCustomer, dp_externalAgentsStartDate, dp_externalAgentsEndDate, chk_externalAgentsAllBranches, chk_externalAgentsAllAgentsType, chk_externalAgentsAllCustomers, chk_externalAgentsIn, chk_externalAgentsOut);
-            fillExternalPieChart();
+            dgStock.ItemsSource = fillList(itemsTransfer, cb_externalAgentsBranches, cb_externalAgentsAgentsType, cb_externalAgentsCustomer, dp_externalAgentsStartDate, dp_externalAgentsEndDate, chk_externalAgentsAllBranches, chk_externalAgentsAllAgentsType, chk_externalAgentsAllCustomers, chk_externalAgentsIn, chk_externalAgentsOut);
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                fillExternalPieChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
@@ -2670,12 +2770,12 @@ namespace POS.View.reports
 
         private void dp_externalInvoicesEndDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-                                                                                                                                                try
-                                                                                                                                                {
-                                                                                                                                                    if (sender != null)
-                                                                                                                                                        SectionData.StartAwait(grid_main);
+        try
+        {
+            if (sender != null)
+                SectionData.StartAwait(grid_main);
 
-                                                                                                                                                    dgStock.ItemsSource = fillList(itemsTransfer, cb_externalInvoicesBranches, cb_externalInvoicesInvoiceType, cb_externalInvoicesInvoice, dp_externalInvoicesStartDate, dp_externalInvoicesEndDate, chk_externalInvoicesAllBranches, chk_externalInvoicesAllInvoicesType, chk_externalInvoicesALlInvoice, null, null).GroupBy(x => new { x.branchId, x.invoiceId })
+            dgStock.ItemsSource = fillList(itemsTransfer, cb_externalInvoicesBranches, cb_externalInvoicesInvoiceType, cb_externalInvoicesInvoice, dp_externalInvoicesStartDate, dp_externalInvoicesEndDate, chk_externalInvoicesAllBranches, chk_externalInvoicesAllInvoicesType, chk_externalInvoicesALlInvoice, null, null).GroupBy(x => new { x.branchId, x.invoiceId })
                           .Select(s => new ItemTransferInvoice
                           {
                               branchId = s.FirstOrDefault().branchId,
@@ -2687,7 +2787,10 @@ namespace POS.View.reports
                               invType = s.FirstOrDefault().invType,
                               quantity = s.FirstOrDefault().quantity
                           }); ;
-            fillExternalPieChart();
+
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                fillExternalPieChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
@@ -2701,12 +2804,12 @@ namespace POS.View.reports
 
         private void dp_externalInvoicesStartDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-                                                                                                                                                    try
-                                                                                                                                                    {
-                                                                                                                                                        if (sender != null)
-                                                                                                                                                            SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
-                                                                                                                                                        dgStock.ItemsSource = fillList(itemsTransfer, cb_externalInvoicesBranches, cb_externalInvoicesInvoiceType, cb_externalInvoicesInvoice, dp_externalInvoicesStartDate, dp_externalInvoicesEndDate, chk_externalInvoicesAllBranches, chk_externalInvoicesAllInvoicesType, chk_externalInvoicesALlInvoice, null, null).GroupBy(x => new { x.branchId, x.invoiceId })
+                dgStock.ItemsSource = fillList(itemsTransfer, cb_externalInvoicesBranches, cb_externalInvoicesInvoiceType, cb_externalInvoicesInvoice, dp_externalInvoicesStartDate, dp_externalInvoicesEndDate, chk_externalInvoicesAllBranches, chk_externalInvoicesAllInvoicesType, chk_externalInvoicesALlInvoice, null, null).GroupBy(x => new { x.branchId, x.invoiceId })
                           .Select(s => new ItemTransferInvoice
                           {
                               branchId = s.FirstOrDefault().branchId,
@@ -2718,7 +2821,9 @@ namespace POS.View.reports
                               invType = s.FirstOrDefault().invType,
                               quantity = s.FirstOrDefault().quantity
                           }); ;
-            fillExternalPieChart();
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                fillExternalPieChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
@@ -2731,13 +2836,13 @@ namespace POS.View.reports
     }
 
         private void cb_externalInvoicesInvoiceType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        try
         {
-                                                                                                                                                        try
-                                                                                                                                                        {
-                                                                                                                                                            if (sender != null)
-                                                                                                                                                                SectionData.StartAwait(grid_main);
+            if (sender != null)
+                SectionData.StartAwait(grid_main);
 
-                                                                                                                                                            cb_externalInvoicesInvoice.IsEnabled = true;
+            cb_externalInvoicesInvoice.IsEnabled = true;
             chk_externalInvoicesALlInvoice.IsEnabled = true;
             fillComboExternalInvoiceInvoice();
             dgStock.ItemsSource = fillList(itemsTransfer, cb_externalInvoicesBranches, cb_externalInvoicesInvoiceType, cb_externalInvoicesInvoice, dp_externalInvoicesStartDate, dp_externalInvoicesEndDate, chk_externalInvoicesAllBranches, chk_externalInvoicesAllInvoicesType, chk_externalInvoicesALlInvoice, null, null).GroupBy(x => new { x.branchId, x.invoiceId })
@@ -2752,7 +2857,9 @@ namespace POS.View.reports
                               invType = s.FirstOrDefault().invType,
                               quantity = s.FirstOrDefault().quantity
                           }); ;
-            fillExternalPieChart();
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                fillExternalPieChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
@@ -2812,12 +2919,12 @@ namespace POS.View.reports
 
         private void cb_externalInvoicesInvoice_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-                                                                                                                                                                    try
-                                                                                                                                                                    {
-                                                                                                                                                                        if (sender != null)
-                                                                                                                                                                            SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
-                                                                                                                                                                        dgStock.ItemsSource = fillList(itemsTransfer, cb_externalInvoicesBranches, cb_externalInvoicesInvoiceType, cb_externalInvoicesInvoice, dp_externalInvoicesStartDate, dp_externalInvoicesEndDate, chk_externalInvoicesAllBranches, chk_externalInvoicesAllInvoicesType, chk_externalInvoicesALlInvoice, null, null).GroupBy(x => new { x.branchId, x.invoiceId })
+                dgStock.ItemsSource = fillList(itemsTransfer, cb_externalInvoicesBranches, cb_externalInvoicesInvoiceType, cb_externalInvoicesInvoice, dp_externalInvoicesStartDate, dp_externalInvoicesEndDate, chk_externalInvoicesAllBranches, chk_externalInvoicesAllInvoicesType, chk_externalInvoicesALlInvoice, null, null).GroupBy(x => new { x.branchId, x.invoiceId })
                           .Select(s => new ItemTransferInvoice
                           {
                               branchId = s.FirstOrDefault().branchId,
@@ -2829,7 +2936,9 @@ namespace POS.View.reports
                               invType = s.FirstOrDefault().invType,
                               quantity = s.FirstOrDefault().quantity
                           }); ;
-            fillExternalPieChart();
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                fillExternalPieChart();
 
             if (sender != null)
                 SectionData.EndAwait(grid_main);
@@ -3315,7 +3424,9 @@ namespace POS.View.reports
             fillComboBranches(cb_internalItemsFromBranches);
             fillComboBranches(cb_internalItemsToBranches);
             dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
-            showSelectedTabColumn();
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                showSelectedTabColumn();
             fillInternalColumnChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
@@ -3350,7 +3461,9 @@ namespace POS.View.reports
             fillComboInternalOperatorType();
 
             dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
-            showSelectedTabColumn();
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                showSelectedTabColumn();
             fillInternalColumnChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
@@ -3374,7 +3487,9 @@ namespace POS.View.reports
 
                         fillComboInternalItemsUnits();
             dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
-            fillInternalColumnChart();
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                fillInternalColumnChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
@@ -3394,7 +3509,9 @@ namespace POS.View.reports
                                 SectionData.StartAwait(grid_main);
 
                             dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
-            cb_internalItemsItems.IsEnabled = false;
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                cb_internalItemsItems.IsEnabled = false;
             fillInternalColumnChart();
             cb_internalItemsItems.SelectedItem = null;
             if (sender != null)
@@ -3416,7 +3533,9 @@ namespace POS.View.reports
                                     SectionData.StartAwait(grid_main);
 
                                 dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
-            cb_internalItemsItems.IsEnabled = true;
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                cb_internalItemsItems.IsEnabled = true;
             fillInternalColumnChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
@@ -3457,7 +3576,9 @@ namespace POS.View.reports
                                             SectionData.StartAwait(grid_main);
 
                                         dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
-            cb_internalItemsUnits.IsEnabled = false;
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                cb_internalItemsUnits.IsEnabled = false;
             cb_internalItemsUnits.SelectedItem = null;
             fillInternalColumnChart();
             if (sender != null)
@@ -3479,7 +3600,9 @@ namespace POS.View.reports
                                                 SectionData.StartAwait(grid_main);
 
                                             dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
-            cb_internalItemsUnits.IsEnabled = true;
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                cb_internalItemsUnits.IsEnabled = true;
             fillInternalColumnChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
@@ -3494,13 +3617,15 @@ namespace POS.View.reports
 
         private void cb_internalItemsFromBranches_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-                                            try
-                                            {
-                                                if (sender != null)
-                                                    SectionData.StartAwait(grid_main);
+        try
+        {
+            if (sender != null)
+                SectionData.StartAwait(grid_main);
 
-                                                dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
-            fillInternalColumnChart();
+            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                fillInternalColumnChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
@@ -3534,12 +3659,14 @@ namespace POS.View.reports
 
         private void chk_internalItemsFromAllBranches_Checked(object sender, RoutedEventArgs e)
         {
-                                                    try
-                                                    {
-                                                        if (sender != null)
-                                                            SectionData.StartAwait(grid_main);
-                                                        dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
-            cb_internalItemsFromBranches.IsEnabled = false;
+        try
+        {
+            if (sender != null)
+                SectionData.StartAwait(grid_main);
+            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                cb_internalItemsFromBranches.IsEnabled = false;
             cb_internalItemsFromBranches.SelectedItem = null;
             fillInternalColumnChart();
             if (sender != null)
@@ -3555,13 +3682,15 @@ namespace POS.View.reports
 
         private void chk_internalItemsFromAllBranches_Unchecked(object sender, RoutedEventArgs e)
         {
-                                                        try
-                                                        {
-                                                            if (sender != null)
-                                                                SectionData.StartAwait(grid_main);
+        try
+        {
+            if (sender != null)
+                SectionData.StartAwait(grid_main);
 
-                                                            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
-            cb_internalItemsFromBranches.IsEnabled = true;
+            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                cb_internalItemsFromBranches.IsEnabled = true;
             fillInternalColumnChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
@@ -3576,13 +3705,15 @@ namespace POS.View.reports
 
         private void chk_internalItemsToAllBranches_Checked(object sender, RoutedEventArgs e)
         {
-                                                            try
-                                                            {
-                                                                if (sender != null)
-                                                                    SectionData.StartAwait(grid_main);
+        try
+        {
+            if (sender != null)
+                SectionData.StartAwait(grid_main);
 
-                                                                dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
-            cb_internalItemsToBranches.IsEnabled = false;
+            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                cb_internalItemsToBranches.IsEnabled = false;
             cb_internalItemsToBranches.SelectedItem = null;
             fillInternalColumnChart();
             if (sender != null)
@@ -3598,13 +3729,15 @@ namespace POS.View.reports
 
         private void chk_internalItemsToAllBranches_Unchecked(object sender, RoutedEventArgs e)
         {
-                                                                try
-                                                                {
-                                                                    if (sender != null)
-                                                                        SectionData.StartAwait(grid_main);
-                                                                    cb_internalItemsToBranches.IsEnabled = true;
+        try
+        {
+            if (sender != null)
+                SectionData.StartAwait(grid_main);
+            cb_internalItemsToBranches.IsEnabled = true;
             dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
-            fillInternalColumnChart();
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                fillInternalColumnChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
@@ -3618,13 +3751,15 @@ namespace POS.View.reports
 
         private void dp_internalItemsStartDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-                                                                    try
-                                                                    {
-                                                                        if (sender != null)
-                                                                            SectionData.StartAwait(grid_main);
+        try
+        {
+            if (sender != null)
+                SectionData.StartAwait(grid_main);
 
-                                                                        dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
-            fillInternalColumnChart();
+            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                fillInternalColumnChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
@@ -3638,13 +3773,15 @@ namespace POS.View.reports
 
         private void dp_InternalItemsEndDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-                                                                        try
-                                                                        {
-                                                                            if (sender != null)
-                                                                                SectionData.StartAwait(grid_main);
+        try
+        {
+            if (sender != null)
+                SectionData.StartAwait(grid_main);
 
-                                                                            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
-            fillInternalColumnChart();
+            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                fillInternalColumnChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
@@ -3667,13 +3804,15 @@ namespace POS.View.reports
 
         private void cb_internalOperaterFromBranches_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-                                                                            try
-                                                                            {
-                                                                                if (sender != null)
-                                                                                    SectionData.StartAwait(grid_main);
+        try
+        {
+            if (sender != null)
+                SectionData.StartAwait(grid_main);
 
-                                                                                dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
-            fillInternalColumnChart();
+            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                fillInternalColumnChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
@@ -3687,13 +3826,15 @@ namespace POS.View.reports
 
         private void chk_internalOperaterFromAllBranches_Checked(object sender, RoutedEventArgs e)
         {
-                                                                                try
-                                                                                {
-                                                                                    if (sender != null)
-                                                                                        SectionData.StartAwait(grid_main);
+        try
+        {
+            if (sender != null)
+                SectionData.StartAwait(grid_main);
 
-                                                                                    dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
-            cb_internalOperaterFromBranches.IsEnabled = false;
+            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                cb_internalOperaterFromBranches.IsEnabled = false;
             cb_internalOperaterFromBranches.SelectedItem = null;
             fillInternalColumnChart();
             if (sender != null)
@@ -3709,13 +3850,15 @@ namespace POS.View.reports
 
         private void chk_internalOperaterFromAllBranches_Unchecked(object sender, RoutedEventArgs e)
         {
-                                                                                    try
-                                                                                    {
-                                                                                        if (sender != null)
-                                                                                            SectionData.StartAwait(grid_main);
+        try
+        {
+            if (sender != null)
+                SectionData.StartAwait(grid_main);
 
-                                                                                        dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
-            cb_internalOperaterFromBranches.IsEnabled = true;
+            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                cb_internalOperaterFromBranches.IsEnabled = true;
             fillInternalColumnChart();
 
             if (sender != null)
@@ -3731,13 +3874,15 @@ namespace POS.View.reports
 
         private void cb_internalOperaterToBranches_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-                                                                                        try
-                                                                                        {
-                                                                                            if (sender != null)
-                                                                                                SectionData.StartAwait(grid_main);
+        try
+        {
+            if (sender != null)
+                SectionData.StartAwait(grid_main);
 
-                                                                                            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
-            fillInternalColumnChart();
+            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                fillInternalColumnChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
@@ -3751,12 +3896,14 @@ namespace POS.View.reports
 
         private void chk_internalOperaterToAllBranches_Checked(object sender, RoutedEventArgs e)
         {
-                                                                                            try
-                                                                                            {
-                                                                                                if (sender != null)
-                                                                                                    SectionData.StartAwait(grid_main);
-                                                                                                dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
-            fillInternalColumnChart();
+        try
+        {
+            if (sender != null)
+                SectionData.StartAwait(grid_main);
+            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                fillInternalColumnChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
@@ -3770,12 +3917,14 @@ namespace POS.View.reports
 
         private void chk_internalOperaterToAllBranches_Unchecked(object sender, RoutedEventArgs e)
         {
-                                                                                                try
-                                                                                                {
-                                                                                                    if (sender != null)
-                                                                                                        SectionData.StartAwait(grid_main);
-                                                                                                    dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
-            fillInternalColumnChart();
+        try
+        {
+            if (sender != null)
+                SectionData.StartAwait(grid_main);
+            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                fillInternalColumnChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
@@ -3789,12 +3938,14 @@ namespace POS.View.reports
 
         private void cb_internalOperaterType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-                                                                                                    try
-                                                                                                    {
-                                                                                                        if (sender != null)
-                                                                                                            SectionData.StartAwait(grid_main);
-                                                                                                        dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
-            fillInternalColumnChart();
+        try
+        {
+            if (sender != null)
+                SectionData.StartAwait(grid_main);
+            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                fillInternalColumnChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
@@ -3808,12 +3959,14 @@ namespace POS.View.reports
 
         private void chk_internalOperatorAllTypes_Checked(object sender, RoutedEventArgs e)
         {
-                                                                                                        try
-                                                                                                        {
-                                                                                                            if (sender != null)
-                                                                                                                SectionData.StartAwait(grid_main);
-                                                                                                            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
-            cb_internalOperaterType.IsEnabled = false;
+        try
+        {
+            if (sender != null)
+                SectionData.StartAwait(grid_main);
+            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                cb_internalOperaterType.IsEnabled = false;
             cb_internalOperaterType.SelectedItem = null;
             fillInternalColumnChart();
             if (sender != null)
@@ -3829,12 +3982,14 @@ namespace POS.View.reports
 
         private void chk_internalOperatorAllTypes_Unchecked(object sender, RoutedEventArgs e)
         {
-                                                                                                            try
-                                                                                                            {
-                                                                                                                if (sender != null)
-                                                                                                                    SectionData.StartAwait(grid_main);
-                                                                                                                dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
-            cb_internalOperaterType.IsEnabled = true;
+        try
+        {
+            if (sender != null)
+                SectionData.StartAwait(grid_main);
+            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                cb_internalOperaterType.IsEnabled = true;
             fillInternalColumnChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
@@ -3849,12 +4004,14 @@ namespace POS.View.reports
 
         private void cb_internalOperatorOperators_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-                                                                                                                try
-                                                                                                                {
-                                                                                                                    if (sender != null)
-                                                                                                                        SectionData.StartAwait(grid_main);
-                                                                                                                    dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
-            fillInternalColumnChart();
+        try
+        {
+            if (sender != null)
+                SectionData.StartAwait(grid_main);
+            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                fillInternalColumnChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
@@ -3868,13 +4025,15 @@ namespace POS.View.reports
 
         private void chk_internalOperatorAllOperators_Checked(object sender, RoutedEventArgs e)
         {
-                                                                                                                    try
-                                                                                                                    {
-                                                                                                                        if (sender != null)
-                                                                                                                            SectionData.StartAwait(grid_main);
+        try
+        {
+            if (sender != null)
+                SectionData.StartAwait(grid_main);
 
-                                                                                                                        dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
-            fillInternalColumnChart();
+            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                fillInternalColumnChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
@@ -3888,12 +4047,14 @@ namespace POS.View.reports
 
         private void chk_internalOperatorAllOperators_Unchecked(object sender, RoutedEventArgs e)
         {
-                                                                                                                        try
-                                                                                                                        {
-                                                                                                                            if (sender != null)
-                                                                                                                                SectionData.StartAwait(grid_main);
-                                                                                                                            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
-            fillInternalColumnChart();
+    try
+    {
+        if (sender != null)
+            SectionData.StartAwait(grid_main);
+        dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                fillInternalColumnChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
@@ -3907,13 +4068,15 @@ namespace POS.View.reports
 
         private void dp_InternalOperatorEndDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-                                                                                                                            try
-                                                                                                                            {
-                                                                                                                                if (sender != null)
-                                                                                                                                    SectionData.StartAwait(grid_main);
+        try
+        {
+            if (sender != null)
+                SectionData.StartAwait(grid_main);
 
-                                                                                                                                dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
-            fillInternalColumnChart();
+            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                fillInternalColumnChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
@@ -3927,13 +4090,15 @@ namespace POS.View.reports
 
         private void dp_internalOperatorStartDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-                                                                                                                                try
-                                                                                                                                {
-                                                                                                                                    if (sender != null)
-                                                                                                                                        SectionData.StartAwait(grid_main);
+        try
+        {
+            if (sender != null)
+                SectionData.StartAwait(grid_main);
 
-                                                                                                                                    dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
-            fillInternalColumnChart();
+            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                fillInternalColumnChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
@@ -3970,7 +4135,9 @@ namespace POS.View.reports
             fillComboInternalItemsItems();
             fillComboInternalItemsUnits();
             dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
-            showSelectedTabColumn();
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                showSelectedTabColumn();
             fillInternalColumnChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
@@ -4152,12 +4319,14 @@ namespace POS.View.reports
 
         private void Chk_internalItemsTwoWay_Checked(object sender, RoutedEventArgs e)
         {
-                                                                                                                                                try
-                                                                                                                                                {
-                                                                                                                                                    if (sender != null)
-                                                                                                                                                        SectionData.StartAwait(grid_main);
-                                                                                                                                                    dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
-            fillInternalColumnChart();
+        try
+        {
+            if (sender != null)
+                SectionData.StartAwait(grid_main);
+            dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                fillInternalColumnChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
@@ -4171,12 +4340,14 @@ namespace POS.View.reports
 
         private void Chk_internalItemsTwoWay_Unchecked(object sender, RoutedEventArgs e)
         {
-                                                                                                                                                    try
-                                                                                                                                                    {
-                                                                                                                                                        if (sender != null)
-                                                                                                                                                            SectionData.StartAwait(grid_main);
-                                                                                                                                                        dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
-            fillInternalColumnChart();
+    try
+    {
+        if (sender != null)
+            SectionData.StartAwait(grid_main);
+        dgStock.ItemsSource = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+                fillInternalColumnChart();
             if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
@@ -4572,6 +4743,8 @@ namespace POS.View.reports
         private void fillSocktakingEvents()
         {
             dgStock.ItemsSource = fillListStockTaking(cb_stocktakingArchivedBranch, cb_stocktakingArchivedType, dp_stocktakingArchivedStartDate, dp_stocktakingArchivedEndDate);
+            txt_count.Text = dgStock.Items.Count.ToString();
+
             fillStocktakingColumnChart();
             fillStocktakingPieChart();
             fillStocktakingRowChart();
@@ -5090,6 +5263,8 @@ new StackedColumnSeries
         private void fillDestroidEvents()
         {
             dgStock.ItemsSource = fillListDestroied(cb_destroiedBranch, cb_destroiedItemsUnits, dp_destroiedStartDate, dp_destroiedEndDate);
+            txt_count.Text = dgStock.Items.Count.ToString();
+
             fillDestroyColumnChart();
             fillDestroyRowChart();
             fillDestroyPieChart();
@@ -5644,6 +5819,7 @@ new StackedColumnSeries
         private void fillShortFallsEvents()
         {
             dgStock.ItemsSource = fillListshortFalls(cb_stocktakingFalseBranch, cb_stocktakingFalseType, dp_stocktakingFalseStartDate, dp_stocktakingFalseEndDate);
+            txt_count.Text = dgStock.Items.Count.ToString();
 
             fillFalsColumnChart();
             fillFalsRowChart();
@@ -5651,8 +5827,115 @@ new StackedColumnSeries
         }
 
         private void Btn_preview_Click(object sender, RoutedEventArgs e)
-        {
+        {//preview
 
+        }
+
+        private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
+        {//excel
+
+        }
+
+        private void Btn_print_Click(object sender, RoutedEventArgs e)
+        {//print
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                    /////////////////////////////////////
+                    Thread t1 = new Thread(() =>
+                    {
+                        printStorage();
+                    });
+                    t1.Start();
+                    //////////////////////////////////////
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+
+        private void printStorage()
+        {
+            BuildReport();
+
+            this.Dispatcher.Invoke(() =>
+            {
+                LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.rep_printer_name, short.Parse(MainWindow.rep_print_count));
+            });
+        }
+
+        private void Btn_pdf_Click(object sender, RoutedEventArgs e)
+        {//pdf
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                /////////////////////////////////////
+                Thread t1 = new Thread(() =>
+                {
+                    pdfStorage();
+                });
+                t1.Start();
+                //////////////////////////////////////
+                
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+
+        private void pdfStorage()
+        {
+            BuildReport();
+
+            this.Dispatcher.Invoke(() =>
+            {
+                saveFileDialog.Filter = "PDF|*.pdf;";
+
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    string filepath = saveFileDialog.FileName;
+                    LocalReportExtensions.ExportToPDF(rep, filepath);
+                }
+            });
+        }
+
+        private void BuildReport()
+        {
+            List<ReportParameter> paramarr = new List<ReportParameter>();
+
+            string addpath = "";
+            bool isArabic = ReportCls.checkLang();
+            if (isArabic)
+            {
+                //addpath = @"\Reports\Sale\Ar\PackageReport.rdlc";////????????????????
+            }
+            else
+                //addpath = @"\Reports\Sale\En\PackageReport.rdlc";
+            //string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+            ReportCls.checkLang();
+
+            ///clsReports.packageReport(itemsQuery, rep, reppath, paramarr);////????????????????
+            clsReports.setReportLanguage(paramarr);
+            clsReports.Header(paramarr);
+
+            rep.SetParameters(paramarr);
+
+            rep.Refresh();
         }
     }
 }

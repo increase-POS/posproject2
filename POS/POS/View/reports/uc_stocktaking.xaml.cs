@@ -23,6 +23,11 @@ using MaterialDesignThemes.Wpf;
 using System.Collections.ObjectModel;
 using static POS.Classes.Statistics;
 using System.Globalization;
+using System.IO;
+using Microsoft.Reporting.WinForms;
+using Microsoft.Win32;
+using System.Threading;
+
 
 namespace POS.View.reports
 {
@@ -43,6 +48,11 @@ namespace POS.View.reports
         List<InventoryClass> inventory;
         List<ItemTransferInvoice> falls;
         List<ItemTransferInvoice> Destroied;
+
+        // report
+        ReportCls reportclass = new ReportCls();
+        LocalReport rep = new LocalReport();
+        SaveFileDialog saveFileDialog = new SaveFileDialog();
 
         private static uc_storageReports _instance;
         public static uc_storageReports Instance
@@ -449,6 +459,7 @@ namespace POS.View.reports
         private void fillSocktakingEvents()
         {
             dgStock.ItemsSource = fillListStockTaking(cb_stocktakingArchivedBranch, cb_stocktakingArchivedType, dp_stocktakingArchivedStartDate, dp_stocktakingArchivedEndDate);
+            txt_count.Text = dgStock.Items.Count.ToString();
             fillStocktakingColumnChart();
             fillStocktakingPieChart();
             fillStocktakingRowChart();
@@ -1122,7 +1133,7 @@ new StackedColumnSeries
         private void fillShortFallsEvents()
         {
             dgStock.ItemsSource = fillListshortFalls(cb_stocktakingFalseBranch, cb_stocktakingFalseType, dp_stocktakingFalseStartDate, dp_stocktakingFalseEndDate);
-
+            txt_count.Text = dgStock.Items.Count.ToString();
             //fillFalsColumnChart();
             //fillFalsRowChart();
             //fillFalsPieChart();
@@ -1199,8 +1210,198 @@ new StackedColumnSeries
         }
 
         private void Btn_preview_Click(object sender, RoutedEventArgs e)
-        {
+        {//preview
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
+                #region
+                Window.GetWindow(this).Opacity = 0.2;
+                /////////////////////
+                string pdfpath = "";
+                pdfpath = @"\Thumb\report\temp.pdf";
+                pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
+                BuildReport();
+                LocalReportExtensions.ExportToPDF(rep, pdfpath);
+                ///////////////////
+                wd_previewPdf w = new wd_previewPdf();
+                w.pdfPath = pdfpath;
+                if (!string.IsNullOrEmpty(w.pdfPath))
+                {
+                    w.ShowDialog();
+                    w.wb_pdfWebViewer.Dispose();
+                }
+                Window.GetWindow(this).Opacity = 1;
+                #endregion
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+
+        private void BuildReport()
+        {
+            List<ReportParameter> paramarr = new List<ReportParameter>();
+
+            string addpath = "";
+            bool isArabic = ReportCls.checkLang();
+            if (isArabic)
+            {
+                //if (selectedTab == 0)
+                //{
+                //    addpath = @"\Reports\StatisticReport\Accounts\Recipient\Ar\ArVendor.rdlc";////////?????????
+                //}
+                //else if (selectedTab == 1)
+                //{
+                //    addpath = @"\Reports\StatisticReport\Accounts\Recipient\Ar\ArCustomer.rdlc";/////////?????????
+                //}
+            }
+            else
+            {
+                //if (selectedTab == 0)
+                //{
+                //    addpath = @"\Reports\StatisticReport\Accounts\Recipient\En\Vendor.rdlc";//////////////????????????
+                //}
+                //else if (selectedTab == 1)
+                //{
+                //    addpath = @"\Reports\StatisticReport\Accounts\Recipient\En\Customer.rdlc";//////////////????????????
+                //}
+            }
+            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+            ReportCls.checkLang();
+
+            //clsReports.packageReport(temp , rep, reppath, paramarr);/////////////////????????????????
+            clsReports.setReportLanguage(paramarr);
+            clsReports.Header(paramarr);
+
+            rep.SetParameters(paramarr);
+
+            rep.Refresh();
+        }
+
+        private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
+        {//excel
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                Thread t1 = new Thread(() =>
+                {
+                    ExcelStocktaking();
+                });
+                t1.Start();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+
+        private void ExcelStocktaking()
+        {
+            BuildReport();
+
+            this.Dispatcher.Invoke(() =>
+            {
+                saveFileDialog.Filter = "EXCEL|*.xls;";
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    string filepath = saveFileDialog.FileName;
+                    LocalReportExtensions.ExportToExcel(rep, filepath);
+                }
+            });
+        }
+
+        private void Btn_print_Click(object sender, RoutedEventArgs e)
+        {//print
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                /////////////////////////////////////
+                Thread t1 = new Thread(() =>
+                {
+                    printStocktaking();
+                });
+                t1.Start();
+                //////////////////////////////////////
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+
+        private void printStocktaking()
+        {
+            BuildReport();
+
+            this.Dispatcher.Invoke(() =>
+            {
+                LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.rep_printer_name, short.Parse(MainWindow.rep_print_count));
+            });
+        }
+
+        private void Btn_pdf_Click(object sender, RoutedEventArgs e)
+        {//pdf
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                /////////////////////////////////////
+                Thread t1 = new Thread(() =>
+                {
+                    pdfStocktaking();
+                });
+                t1.Start();
+                //////////////////////////////////////
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+
+        private void pdfStocktaking()
+        {
+            BuildReport();
+
+            this.Dispatcher.Invoke(() =>
+            {
+                saveFileDialog.Filter = "PDF|*.pdf;";
+
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    string filepath = saveFileDialog.FileName;
+                    LocalReportExtensions.ExportToPDF(rep, filepath);
+                }
+            });
         }
     }
 }

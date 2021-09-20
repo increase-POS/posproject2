@@ -1221,6 +1221,8 @@ namespace POS.View.reports
         {
             temp = fillList(payments, cb_vendors, cb_vendorPayType, cb_vendorAccountant, dp_vendorStartDate, dp_vendorEndDate).Where(x => x.side == "v" || x.side == "b");
             dgPayments.ItemsSource = temp;
+            txt_count.Text = dgPayments.Items.Count.ToString();
+
             fillPieChart();
             fillColumnChart();
             fillRowChart();
@@ -1230,6 +1232,8 @@ namespace POS.View.reports
         {
             temp = fillList(payments, cb_customer, cb_customerPayType, cb_customerAccountant, dp_customerStartDate, dp_customerEndDate).Where(x => x.side == "c" || x.side == "b");
             dgPayments.ItemsSource = temp;
+            txt_count.Text = dgPayments.Items.Count.ToString();
+
             fillPieChart();
             fillColumnChart();
             fillRowChart();
@@ -1239,6 +1243,8 @@ namespace POS.View.reports
         {
             temp = fillList(payments, cb_users, cb_userPayType, cb_userAccountant, dp_userStartDate, dp_userEndDate).Where(x => x.side == "u");
             dgPayments.ItemsSource = temp;
+            txt_count.Text = dgPayments.Items.Count.ToString();
+
             fillPieChart();
             fillColumnChart();
             fillRowChart();
@@ -1248,6 +1254,8 @@ namespace POS.View.reports
         {
             temp = fillList(payments, cb_shipping, cb_shippingPayType, cb_shippingAccountant, dp_shippingStartDate, dp_shippingEndDate).Where(x => x.side == "sh");
             dgPayments.ItemsSource = temp;
+            txt_count.Text = dgPayments.Items.Count.ToString();
+
             fillPieChart();
             fillColumnChart();
             fillRowChart();
@@ -1638,11 +1646,11 @@ namespace POS.View.reports
 
         private void Txt_search_TextChanged(object sender, TextChangedEventArgs e)
         {
-         try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
-					     if (selectedTab == 0)
+            try
+		    {
+			    if (sender != null)
+			    SectionData.StartAwait(grid_main);
+				    if (selectedTab == 0)
             {
                 var temp = fillList(payments, cb_vendors, cb_vendorPayType, cb_vendorAccountant, dp_vendorStartDate, dp_vendorEndDate).Where(x => x.side == "v" || x.side == "b");
                 dgPayments.ItemsSource = temp.Where(obj => (
@@ -1685,8 +1693,10 @@ namespace POS.View.reports
                    obj.shippingCompanyName.Contains(txt_search.Text)
                    ));
             }
-       
-			  if (sender != null)
+
+                txt_count.Text = dgPayments.Items.Count.ToString();
+
+                if (sender != null)
 			  SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
@@ -1701,10 +1711,11 @@ namespace POS.View.reports
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {//pdf
            try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
-					  
+			{
+				if (sender != null)
+				SectionData.StartAwait(grid_main);
+
+                #region
                 List<ReportParameter> paramarr = new List<ReportParameter>();
 
                 string addpath = "";
@@ -1713,7 +1724,7 @@ namespace POS.View.reports
                 {
                     if (selectedTab == 0)
                     {
-                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArVendor.rdlc";
+                        addpath = @"\Reports\StatisticReport\Accounts\Recipient\Ar\ArVendor.rdlc";
                     }
                     else if (selectedTab == 1)
                     {
@@ -1750,11 +1761,7 @@ namespace POS.View.reports
                 string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                 ReportCls.checkLang();
-                foreach (var r in temp)
-                {
-                    r.updateDate = DateTime.Parse(SectionData.DateToString(r.updateDate));
-                    r.cash = decimal.Parse(SectionData.DecTostring(r.cash));
-                }
+              
                 clsReports.cashTransferSts(temp, rep, reppath);
                 clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);
@@ -1770,10 +1777,11 @@ namespace POS.View.reports
                     string filepath = saveFileDialog.FileName;
                     LocalReportExtensions.ExportToPDF(rep, filepath);
                 }
-            
-       
-			  if (sender != null)
-			  SectionData.EndAwait(grid_main);
+
+                #endregion
+
+                if (sender != null)
+			      SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
@@ -1785,10 +1793,11 @@ namespace POS.View.reports
         private void Btn_print_Click(object sender, RoutedEventArgs e)
         {//print
             try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
-					  
+			{
+				if (sender != null)
+				SectionData.StartAwait(grid_main);
+
+                #region
                 List<ReportParameter> paramarr = new List<ReportParameter>();
 
                 string addpath = "";
@@ -1797,7 +1806,7 @@ namespace POS.View.reports
                 {
                     if (selectedTab == 0)
                     {
-                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArVendor.rdlc";
+                        addpath = @"\Reports\StatisticReport\Accounts\Recipient\Ar\ArVendor.rdlc";
                     }
                     else if (selectedTab == 1)
                     {
@@ -1834,11 +1843,7 @@ namespace POS.View.reports
                 string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                 ReportCls.checkLang();
-                foreach (var r in temp)
-                {
-                    r.updateDate = DateTime.Parse(SectionData.DateToString(r.updateDate));
-                    r.cash = decimal.Parse(SectionData.DecTostring(r.cash));
-                }
+               
                 clsReports.cashTransferSts(temp, rep, reppath);
                 clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);
@@ -1846,17 +1851,19 @@ namespace POS.View.reports
                 rep.SetParameters(paramarr);
                 rep.Refresh();
                 LocalReportExtensions.PrintToPrinter(rep);
-             
-       
-			  if (sender != null)
-			  SectionData.EndAwait(grid_main);
+
+                #endregion
+
+                if (sender != null)
+			      SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
 				if (sender != null)
 				SectionData.EndAwait(grid_main);
 				SectionData.ExceptionMessage(ex, this);
-            } }
+            }
+        }
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {//excel
@@ -1864,7 +1871,9 @@ namespace POS.View.reports
 		    {
 			    if (sender != null)
 			    SectionData.StartAwait(grid_main);
-			    Thread t1 = new Thread(() =>
+
+                #region
+                Thread t1 = new Thread(() =>
             {
                 List<ReportParameter> paramarr = new List<ReportParameter>();
 
@@ -1874,7 +1883,7 @@ namespace POS.View.reports
                 {
                     if (selectedTab == 0)
                     {
-                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArVendor.rdlc";
+                        addpath = @"\Reports\StatisticReport\Accounts\Recipient\Ar\ArVendor.rdlc";
                     }
                     else if (selectedTab == 1)
                     {
@@ -1911,11 +1920,7 @@ namespace POS.View.reports
                 string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                 ReportCls.checkLang();
-                foreach (var r in temp)
-                {
-                    r.updateDate = DateTime.Parse(SectionData.DateToString(r.updateDate));
-                    r.cash = decimal.Parse(SectionData.DecTostring(r.cash));
-                }
+                
                 clsReports.cashTransferSts(temp, rep, reppath);
                 clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);
@@ -1936,9 +1941,11 @@ namespace POS.View.reports
 
             });
             t1.Start();
-       
-			  if (sender != null)
-			  SectionData.EndAwait(grid_main);
+
+                #endregion
+
+                if (sender != null)
+			      SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
@@ -1953,88 +1960,83 @@ namespace POS.View.reports
 			{
 				if (sender != null)
 				SectionData.StartAwait(grid_main);
-				Window.GetWindow(this).Opacity = 0.2;
-            string pdfpath = "";
 
-            List<ReportParameter> paramarr = new List<ReportParameter>();
+                #region
+                Window.GetWindow(this).Opacity = 0.2;
+                string pdfpath = "";
 
+                List<ReportParameter> paramarr = new List<ReportParameter>();
 
-            //
-            pdfpath = @"\Thumb\report\temp.pdf";
-            pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
+                pdfpath = @"\Thumb\report\temp.pdf";
+                pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
 
-            string addpath = "";
-            bool isArabic = ReportCls.checkLang();
-            if (isArabic)
-            {
-                if (selectedTab == 0)
+                string addpath = "";
+                bool isArabic = ReportCls.checkLang();
+                if (isArabic)
                 {
-                    addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArVendor.rdlc";
+                    if (selectedTab == 0)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Recipient\Ar\ArVendor.rdlc";
+                    }
+                    else if (selectedTab == 1)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Recipient\Ar\ArCustomer.rdlc";
+                    }
+                    else if (selectedTab == 2)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Recipient\Ar\ArUser.rdlc";
+                    }
+                    else if (selectedTab == 6)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Recipient\Ar\ArShipping.rdlc";
+                    }
                 }
-                else if (selectedTab == 1)
+                else
                 {
-                    addpath = @"\Reports\StatisticReport\Accounts\Recipient\Ar\ArCustomer.rdlc";
+                    if (selectedTab == 0)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Recipient\En\Vendor.rdlc";
+                    }
+                    else if (selectedTab == 1)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Recipient\En\Customer.rdlc";
+                    }
+                    else if (selectedTab == 2)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Recipient\En\User.rdlc";
+                    }
+                    else if (selectedTab == 6)
+                    {
+                        addpath = @"\Reports\StatisticReport\Accounts\Recipient\En\Shipping.rdlc";
+                    }
                 }
-                else if (selectedTab == 2)
-                {
-                    addpath = @"\Reports\StatisticReport\Accounts\Recipient\Ar\ArUser.rdlc";
-                }
-                else if (selectedTab == 6)
-                {
-                    addpath = @"\Reports\StatisticReport\Accounts\Recipient\Ar\ArShipping.rdlc";
-                }
-            }
-            else
-            {
-                if (selectedTab == 0)
-                {
-                    addpath = @"\Reports\StatisticReport\Accounts\Recipient\En\Vendor.rdlc";
-                }
-                else if (selectedTab == 1)
-                {
-                    addpath = @"\Reports\StatisticReport\Accounts\Recipient\En\Customer.rdlc";
-                }
-                else if (selectedTab == 2)
-                {
-                    addpath = @"\Reports\StatisticReport\Accounts\Recipient\En\User.rdlc";
-                }
-                else if (selectedTab == 6)
-                {
-                    addpath = @"\Reports\StatisticReport\Accounts\Recipient\En\Shipping.rdlc";
-                }
-            }
-            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
-            ReportCls.checkLang();
-                foreach (var r in temp)
-                {
-                    r.updateDate = DateTime.Parse(SectionData.DateToString(r.updateDate));
-                    r.cash = decimal.Parse(SectionData.DecTostring(r.cash));
-                }
+                ReportCls.checkLang();
+               
                 clsReports.cashTransferSts(temp, rep, reppath);
-
          
-            clsReports.setReportLanguage(paramarr);
-            clsReports.Header(paramarr);
+                clsReports.setReportLanguage(paramarr);
+                clsReports.Header(paramarr);
 
-            rep.SetParameters(paramarr);
+                rep.SetParameters(paramarr);
 
-            rep.Refresh();
+                rep.Refresh();
 
-            LocalReportExtensions.ExportToPDF(rep, pdfpath);
-            wd_previewPdf w = new wd_previewPdf();
-            w.pdfPath = pdfpath;
-            if (!string.IsNullOrEmpty(w.pdfPath))
-            {
-                w.ShowDialog();
-                w.wb_pdfWebViewer.Dispose();
+                LocalReportExtensions.ExportToPDF(rep, pdfpath);
+                wd_previewPdf w = new wd_previewPdf();
+                w.pdfPath = pdfpath;
+                if (!string.IsNullOrEmpty(w.pdfPath))
+                {
+                    w.ShowDialog();
+                    w.wb_pdfWebViewer.Dispose();
+                }
+                Window.GetWindow(this).Opacity = 1;
 
+                #endregion
 
-            }
-            Window.GetWindow(this).Opacity = 1;
-        
-			  if (sender != null)
-			  SectionData.EndAwait(grid_main);
+                if (sender != null)
+			      SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
