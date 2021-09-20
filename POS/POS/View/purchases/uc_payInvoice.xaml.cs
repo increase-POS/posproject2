@@ -2062,7 +2062,13 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-       
+        private void Dg_billDetails_BeginningEdit(object sender, DataGridBeginningEditEventArgs e)
+        {
+            if (invoice.invoiceId != 0 && e.Column.DisplayIndex == 3)
+                e.Cancel = true;
+
+            //e.Column.IsReadOnly = true;
+        }
         private void Dg_billDetails_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
             try
@@ -2916,12 +2922,6 @@ namespace POS.View
             refrishBillDetails();
         }
 
-        private void Dg_billDetails_BeginningEdit(object sender, DataGridBeginningEditEventArgs e)
-        {
-            if(invoice.invoiceId == 0 && e.Column.DisplayIndex == 3)
-            e.Cancel = true;
-
-            //e.Column.IsReadOnly = true;
-        }
+       
     }
 }
