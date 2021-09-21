@@ -1328,28 +1328,14 @@ namespace POS.View.purchases
             try
             {
                 //billDetails
-                //if (billDetails.Count == 1)
-                //{
                 var cmb = sender as ComboBox;
-                //cmb.SelectedValue = (int)billDetails[0].itemUnitId;
-
-
-                if (dg_billDetails.SelectedIndex != -1 && cmb != null)
-                    billDetails[dg_billDetails.SelectedIndex].itemUnitId = (int)cmb.SelectedValue;
                 cmb.SelectedValue = (int)billDetails[0].itemUnitId;
 
-                if (invoice.invoiceId == 0)
-                {
-                    cmb.IsEnabled = true;
-                    cmb.IsReadOnly = true;
-                }
-                else
-                {
+                if (billDetails[0].OrderId != 0)
                     cmb.IsEnabled = false;
-                    cmb.IsReadOnly = false;
+                else
+                    cmb.IsEnabled = true;
 
-                }
-                //}
             }
             catch (Exception ex)
             {
@@ -1362,18 +1348,22 @@ namespace POS.View.purchases
             {
                 var cmb = sender as ComboBox;
 
-                if (dg_billDetails.SelectedIndex != -1 && cmb != null)
+                if (dg_billDetails.SelectedIndex != -1 && cmb.SelectedValue != null)
+                {
                     billDetails[dg_billDetails.SelectedIndex].itemUnitId = (int)cmb.SelectedValue;
+                    if (billDetails[dg_billDetails.SelectedIndex].OrderId != 0)
+                        cmb.IsEnabled = false;
+                    else
+                        cmb.IsEnabled = true;
+                }
 
-               
             }
             catch (Exception ex)
             {
                 SectionData.ExceptionMessage(ex, this);
+                //return;
             }
         }
-
-
         private void DataGrid_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             try
@@ -1393,19 +1383,29 @@ namespace POS.View.purchases
                                 var combo = (ComboBox)cp.ContentTemplate.FindName("cbm_unitItemDetails", cp);
                                 //var combo = (combo)cell.Content;
                                 combo.SelectedValue = (int)item.itemUnitId;
-                                count++;
+
+                                if (item.OrderId != 0)
+                                    combo.IsEnabled = false;
+                                else
+                                    combo.IsEnabled = true;
                             }
                         }
-
                     }
+                    count++;
                 }
-
             }
             catch (Exception ex)
             {
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+        private void Dg_billDetails_BeginningEdit(object sender, DataGridBeginningEditEventArgs e)
+        {
+            if (dg_billDetails.SelectedIndex != -1)
+                if (billDetails[dg_billDetails.SelectedIndex].OrderId != 0)
+                    e.Cancel = true;
+        }
+
 
         private void Dg_billDetails_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
@@ -1418,7 +1418,7 @@ namespace POS.View.purchases
                 var columnName = e.Column.Header.ToString();
 
                 BillDetails row = e.Row.Item as BillDetails;
-                int index = billDetails.IndexOf(billDetails.Where(p => p.itemUnitId == row.itemUnitId ).FirstOrDefault());
+                int index = billDetails.IndexOf(billDetails.Where(p => p.itemUnitId == row.itemUnitId && p.OrderId == row.OrderId).FirstOrDefault());
 
                 TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
                 if (elapsed.TotalMilliseconds < 100)
@@ -1439,9 +1439,9 @@ namespace POS.View.purchases
 
                     oldCount = row.Count;
 
-                    if (_InvoiceType == "pbd" || _InvoiceType == "pbw")
+                    if (_InvoiceType == "pbd" || _InvoiceType == "pbw" || row.OrderId != 0)
                     {
-                        ItemTransfer item = mainInvoiceItems.ToList().Find(i => i.itemUnitId == row.itemUnitId);
+                        ItemTransfer item = mainInvoiceItems.ToList().Find(i => i.itemUnitId == row.itemUnitId && i.invoiceId == row.OrderId);
                         if (newCount > item.quantity)
                         {
                             // return old value 
@@ -1457,10 +1457,10 @@ namespace POS.View.purchases
                     _Count += newCount;
                     tb_total.Text = _Count.ToString();
 
-                    
+
                     // update item in billdetails           
                     billDetails[index].Count = (int)newCount;
-                    
+
                 }
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -1472,7 +1472,6 @@ namespace POS.View.purchases
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
 
         private void moveControlToBarcode(object sender, KeyEventArgs e)
         {
@@ -2021,13 +2020,14 @@ namespace POS.View.purchases
 
         private async void Btn_shortageInvoice_Click(object sender, RoutedEventArgs e)
         {
-            _InvoiceType = "pod";// shortage purchase invoice
+            if(invoice.invoiceId != 0)
             await buildShortageInvoiceDetails();
         }
         private async Task buildShortageInvoiceDetails()
         {
             //get invoice items
             invoiceItems = await invoice.getShortageItems(MainWindow.branchID.Value);
+            mainInvoiceItems = invoiceItems;
             // build invoice details grid
             _SequenceNum = 0;
             billDetails.Clear();

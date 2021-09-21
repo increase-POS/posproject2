@@ -51,19 +51,21 @@ namespace POS.View
             InitializeComponent();
             timerAnimation();
         }
+        int NumberDaysInMonth { get; set; }
         DispatcherTimer threadtimer;
-        public static int secondTimer15 = 15;
+        public static int secondTimer10 = 10;
+        public static int secondTimer30 = 30;
         int Skip = 0;
         bool firstLoad = true;
         string branchesPermission = "dashboard_branches";
         Dash dash = new Dash();
         User user = new User();
-        List<User> users = new List<User>();
+        //List<User> users = new List<User>();
         ImageBrush brush = new ImageBrush();
-        public SeriesCollection SeriesCollection { get; set; }
-        public string[] Labels { get; set; }
-        public Func<double, string> YFormatter { get; set; }
+        
         public List<BestSeller> listBestSeller { get; set; }
+        public List<TotalPurSale> listMonthlyInvoice { get; set; }
+        public List<IUStorage> listIUStorage { get; set; }
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
@@ -80,6 +82,7 @@ namespace POS.View
             //paginationBestSeller(listBestSeller, Skip);
 
             #region Purchase and Sales
+            /*
             double[] ArrayS = new double[30];
             double[] ArrayP = new double[30];
             string[] ArrayCount = new string[30];
@@ -109,7 +112,7 @@ namespace POS.View
             Labels = ArrayCount;
             YFormatter = value => value.ToString("C");
             DataContext = this;
-
+            */
             #endregion
             #region user online 
             //SeriesCollection seriesUser = new SeriesCollection();
@@ -186,6 +189,7 @@ namespace POS.View
             //#endregion
             #endregion
             #region Branch 
+            /*
             SeriesCollection seriesBranch = new SeriesCollection();
             seriesBranch.Add(
                  new PieSeries
@@ -206,9 +210,10 @@ namespace POS.View
                  }
              );
             pch_branch.Series = seriesBranch;
+            */
             #endregion
             #region DailyPurchaseInvoice
-            SeriesCollection seriesDailyPurchaseInvoice = new SeriesCollection();
+            /*SeriesCollection seriesDailyPurchaseInvoice = new SeriesCollection();
             seriesDailyPurchaseInvoice.Add(
                  new PieSeries
                  {
@@ -228,9 +233,10 @@ namespace POS.View
                  }
              );
             pch_dailyPurchaseInvoice.Series = seriesDailyPurchaseInvoice;
-            #endregion
+           */
+           #endregion
             #region DailySalesInvoice
-            SeriesCollection seriesDailySalesInvoice = new SeriesCollection();
+            /*SeriesCollection seriesDailySalesInvoice = new SeriesCollection();
             seriesDailySalesInvoice.Add(
                  new PieSeries
                  {
@@ -250,19 +256,27 @@ namespace POS.View
                  }
              );
             pch_dailySalesInvoice.Series = seriesDailySalesInvoice;
+            */
             #endregion
 
-
-            //thread
+            CalculateNumberDaysInMonth calculate = new CalculateNumberDaysInMonth();
+            NumberDaysInMonth = calculate.getdays(DateTime.Now);
+            //thread 30
             threadtimer = new DispatcherTimer();
-            threadtimer.Interval = TimeSpan.FromSeconds(secondTimer15);
-            threadtimer.Tick += timer_Thread;
+            threadtimer.Interval = TimeSpan.FromSeconds(secondTimer30);
+            threadtimer.Tick += timer_Thread30;
             threadtimer.Start();
-
+            ////////////////////
+            /// //thread 10
+            threadtimer = new DispatcherTimer();
+            threadtimer.Interval = TimeSpan.FromSeconds(secondTimer10);
+            threadtimer.Tick += timer_Thread10;
+            threadtimer.Start();
+            ////////////////////
             await refreshView();
 
         }
-        void timer_Thread(object sendert, EventArgs et)
+        void timer_Thread30(object sendert, EventArgs et)
         {
             try
             {
@@ -272,28 +286,68 @@ namespace POS.View
             {
                 SectionData.ExceptionMessage(ex, this);
             }
+        }
+        void timer_Thread10(object sendert, EventArgs et)
+        {
+            try
+            {
+                #region BestSeller
+                if (!firstLoad)
+                {
+                    if (listBestSeller.Count < 4 || Skip == 2)
+                        Skip = 0;
+                    else if (listBestSeller.Count < 7 && Skip < 1)
+                        Skip++;
+                    else if (listBestSeller.Count < 10 && Skip < 2)
+                        Skip++;
+                }
+                paginationBestSeller(listBestSeller, Skip);
+                firstLoad = false;
 
-
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
         async Task refreshView()
         {
-           await AllSalPur();
+            await AllSalPur();
+            await CountMonthlySalPur();
+            await DailySalPur();
             await AgentCount();
             await UserOnline();
             await BranchOnline();
-            #region
+            #region BestSeller
             await BestSeller();
-            if(!firstLoad)
-            if (listBestSeller.Count < 4 || Skip == 2)
-                Skip = 0;
-            else if (listBestSeller.Count < 7 && Skip < 1)
-                Skip++;
-            else if (listBestSeller.Count < 10 && Skip < 2)
-                Skip++;
+        //    if (!firstLoad)
+        //    {
+        //        if (listBestSeller.Count < 4 || Skip == 2)
+        //            Skip = 0;
+        //        else if (listBestSeller.Count < 7 && Skip < 1)
+        //            Skip++;
+        //        else if (listBestSeller.Count < 10 && Skip < 2)
+        //            Skip++;
+        //}
             paginationBestSeller(listBestSeller, Skip);
+                //firstLoad = false;
+            #endregion
+            #region IUStorage
+            /*
+            await IUStorage();
+            if (!firstLoad)
+                if (listIUStorage.Count < 4 || Skip == 2)
+                    Skip = 0;
+                else if (listIUStorage.Count < 7 && Skip < 1)
+                    Skip++;
+                else if (listIUStorage.Count < 10 && Skip < 2)
+                    Skip++;
+            paginationIUStorage(listIUStorage, Skip);
+            */
             #endregion
             await UserOnlinePic();
-
+            await AmountMonthlySalPur();
 
 
 
@@ -326,6 +380,69 @@ namespace POS.View
                         else
                             dash.countAllPurchase = dash.countAllSalesValue = "0";
                     }
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+        async Task CountMonthlySalPur()
+        {
+            try
+            {
+                List<TotalPurSale> listSalPur = await dash.GetTotalPurSale();
+                if (cb_branch.SelectedValue != null)
+                    if ((int)cb_branch.SelectedValue == 0)
+                    {
+                        dash.countMonthlyPurchase = listSalPur.Sum(x => x.countPur).ToString();
+                        dash.countMonthlySales = listSalPur.Sum(x => x.countSale).ToString();
+                    }
+                    else
+                    {
+                        var newSalPur = listSalPur.Where(s => s.branchCreatorId == (int)cb_branch.SelectedValue).FirstOrDefault();
+                        if (newSalPur != null)
+                        {
+                            dash.countMonthlyPurchase = newSalPur.countPur.ToString();
+                            dash.countMonthlySales = newSalPur.countSale.ToString();
+                        }
+                        else
+                            dash.countMonthlyPurchase = dash.countMonthlySales = "0";
+                    }
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+        async Task DailySalPur()
+        {
+            try
+            {
+                List<InvoiceCount> listSalPur = await dash.GetdashsalpurDay();
+                if (cb_branch.SelectedValue != null)
+                    if ((int)cb_branch.SelectedValue == 0)
+                    {
+                        dash.countDailyPurchase = listSalPur.Sum(x => x.purCount).ToString();
+                        dash.countDailySales = listSalPur.Sum(x => x.saleCount).ToString();
+                    }
+                    else
+                    {
+                        var newSalPur = listSalPur.Where(s => s.branchCreatorId == (int)cb_branch.SelectedValue).FirstOrDefault();
+                        if (newSalPur != null)
+                        {
+                            dash.countDailyPurchase = newSalPur.purCount.ToString();
+                            dash.countDailySales = newSalPur.saleCount.ToString();
+                        }
+                        else
+                            dash.countDailyPurchase = dash.countDailySales = "0";
+                    }
+                InitializePieChart(pch_dailyPurchaseInvoice,
+                    int.Parse(dash.countDailyPurchase),
+                    (int.Parse(dash.countDailyPurchase) + int.Parse(dash.countMonthlyPurchase)));
+
+                InitializePieChart(pch_dailySalesInvoice,
+                    int.Parse(dash.countDailySales),
+                    (int.Parse(dash.countDailySales) + int.Parse(dash.countMonthlySales)));
             }
             catch (Exception ex)
             {
@@ -468,6 +585,7 @@ namespace POS.View
         }
         void InitializeNoUserOnlinePic()
         {
+            grid_userImages.Children.Clear();
             Grid grid = new Grid();
             grid.Margin = new Thickness(-5, 0, -5, 0);
             Grid.SetColumn(grid, 4);
@@ -516,9 +634,9 @@ namespace POS.View
             }
         }
 
-       
 
-        async  Task BestSeller()
+        #region BestSeller
+        async Task BestSeller()
         {
             try
             {
@@ -531,7 +649,7 @@ namespace POS.View
                             itemName = s.FirstOrDefault().itemName,
                             unitName = s.FirstOrDefault().unitName,
                             quantity = s.Sum(g => g.quantity),
-                            subTotal = s.Sum(g => g.subTotal),
+                            //subTotal = s.Sum(g => g.subTotal),
                         }).ToList();
                         //paginationBestSeller(dash.listBestSeller);
                     }
@@ -545,7 +663,7 @@ namespace POS.View
                                 itemName = s.FirstOrDefault().itemName,
                                 unitName = s.FirstOrDefault().unitName,
                                 quantity = s.Sum(g => g.quantity),
-                                subTotal = s.Sum(g => g.subTotal),
+                                //subTotal = s.Sum(g => g.subTotal),
                             }).ToList();
                             //paginationBestSeller(dash.listBestSeller);
                         }
@@ -558,7 +676,7 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-        void paginationBestSeller(List<BestSeller> listBestSeller, int skip = 0)
+        void paginationBestSeller(List<BestSeller> listBestSeller, int skip )
         {
             grid_bestSeller.Children.Clear();
             int order = (skip*3)+1;
@@ -567,7 +685,7 @@ namespace POS.View
             foreach (var item in listBestSeller)
             {
                 InitializeBestSellerRow(order.ToString(), item.itemName + "-" + item.unitName,
-                  item.quantity.ToString(), item.subTotal.ToString(), row);
+                  item.quantity.ToString(), row);
                 order++;
                 row += 2;
             }
@@ -597,7 +715,7 @@ namespace POS.View
 
 
         }
-        void InitializeBestSellerRow(string No,string item, string count,string amount , int row )
+        void InitializeBestSellerRow(string No,string item, string count, int row )
         {
             #region   itemNo
             var itemNo = new TextBlock();
@@ -659,6 +777,7 @@ namespace POS.View
             Grid.SetRow(countItem, row);
             Grid.SetColumn(countItem, 4);
             #endregion
+            /*
             #region   amountTitle
             var amountTitle = new TextBlock();
             amountTitle.Text = "Amount:";
@@ -695,17 +814,289 @@ namespace POS.View
             amountStackPanel.Children.Add(amountValue);
             amountStackPanel.Children.Add(amountSympol);
             #endregion
+             */
             grid_bestSeller.Children.Add(itemNo);
             grid_bestSeller.Children.Add(itemTitle);
             grid_bestSeller.Children.Add(itemName);
             grid_bestSeller.Children.Add(countTitle);
             grid_bestSeller.Children.Add(countItem);
-            grid_bestSeller.Children.Add(amountTitle);
-            grid_bestSeller.Children.Add(amountStackPanel);
+            //grid_bestSeller.Children.Add(amountTitle);
+            //grid_bestSeller.Children.Add(amountStackPanel);
         }
-        async Task DailyPurchase()
+        #endregion
+        #region IUStorage
+        private void Btn_storageSetting_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+        async Task IUStorage()
+        {
+            try
+            {
+                /*
+                List<IUStorage> listAllIUStorage = await dash.GetIUStorage();
+                if (cb_branch.SelectedValue != null)
+                    if ((int)cb_branch.SelectedValue == 0)
+                    {
+                        listIUStorage = listAllIUStorage.GroupBy(x => new { x.itemName, x.unitName }).Select(s => new IUStorage
+                        {
+                            itemName = s.FirstOrDefault().itemName,
+                            unitName = s.FirstOrDefault().unitName,
+                            quantity = s.Sum(g => g.quantity),
+                            //subTotal = s.Sum(g => g.subTotal),
+                        }).ToList();
+                        //paginationIUStorage(dash.listIUStorage);
+                    }
+                    else
+                    {
+                        listIUStorage = listAllIUStorage.Where(s => s.branchId == (int)cb_branch.SelectedValue).ToList();
+                        if (listIUStorage != null)
+                        {
+                            listIUStorage = listIUStorage.GroupBy(x => new { x.itemName, x.unitName }).Select(s => new IUStorage
+                            {
+                                itemName = s.FirstOrDefault().itemName,
+                                unitName = s.FirstOrDefault().unitName,
+                                quantity = s.Sum(g => g.quantity),
+                                //subTotal = s.Sum(g => g.subTotal),
+                            }).ToList();
+                            //paginationIUStorage(dash.listIUStorage);
+                        }
+                        else
+                            listIUStorage = new List<IUStorage>();
+                    }
+                */
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+        void paginationIUStorage(List<IUStorage> listIUStorage, int skip = 0)
+        {
+            grid_IUStorage.Children.Clear();
+            int order = (skip * 3) + 1;
+            int row = 1;
+            listIUStorage = listIUStorage.Skip(skip * 3).Take(3).ToList();
+            foreach (var item in listIUStorage)
+            {
+                InitializeIUStorageRow(order.ToString(), item.itemName + "-" + item.unitName,
+                  item.quantity.ToString(), row);
+                order++;
+                row += 2;
+            }
+
+            #region Border
+            #region   firstBorder 
+            var firstBorder = new Border();
+            firstBorder.Margin = new Thickness(10, 2.5, 10, 2.5);
+            firstBorder.Height = 1;
+            firstBorder.BorderThickness = new Thickness(0, 0, 0, 0);
+            firstBorder.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#BC80EF"));
+            Grid.SetRow(firstBorder, 2);
+            Grid.SetColumnSpan(firstBorder, 7);
+            #endregion
+            #region   firstBorder 
+            var secondBorder = new Border();
+            secondBorder.Margin = new Thickness(10, 2.5, 10, 2.5);
+            secondBorder.Height = 1;
+            secondBorder.BorderThickness = new Thickness(0, 0, 0, 0);
+            secondBorder.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#BC80EF"));
+            Grid.SetRow(secondBorder, 4);
+            Grid.SetColumnSpan(secondBorder, 7);
+            #endregion
+            grid_IUStorage.Children.Add(firstBorder);
+            grid_IUStorage.Children.Add(secondBorder);
+            #endregion
+
+
+        }
+        void InitializeIUStorageRow(string No, string item, string count, int row)
+        {
+            #region   itemNo
+            var itemNo = new TextBlock();
+            itemNo.Text = "#" + No;
+            itemNo.Tag = "itemTitle";
+            itemNo.VerticalAlignment = VerticalAlignment.Center;
+            itemNo.HorizontalAlignment = HorizontalAlignment.Center;
+            itemNo.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#1D75B8"));
+            itemNo.FontSize = 16;
+            itemNo.Margin = new Thickness(2.5, 1, 2.5, 1);
+            Grid.SetRow(itemNo, row);
+            Grid.SetColumn(itemNo, 0);
+            #endregion
+            #region   itemTitle
+            var itemTitle = new TextBlock();
+            itemTitle.Text = "Item:";
+            itemTitle.Tag = "itemTitle";
+            itemTitle.VerticalAlignment = VerticalAlignment.Center;
+            itemTitle.HorizontalAlignment = HorizontalAlignment.Center;
+            itemTitle.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#707070"));
+            itemTitle.FontSize = 16;
+            itemTitle.Margin = new Thickness(5, 1, 5, 1);
+            Grid.SetRow(itemTitle, row);
+            Grid.SetColumn(itemTitle, 1);
+            #endregion
+            #region   itemName
+            var itemName = new TextBlock();
+            itemName.Text = item;
+            itemName.Tag = "itemName";
+            itemName.VerticalAlignment = VerticalAlignment.Center;
+            itemName.HorizontalAlignment = HorizontalAlignment.Left;
+            itemName.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#707070"));
+            itemName.FontSize = 16;
+            itemName.Margin = new Thickness(5, 1, 5, 1);
+            Grid.SetRow(itemName, row);
+            Grid.SetColumn(itemName, 2);
+            #endregion
+            #region   countTitle
+            var countTitle = new TextBlock();
+            countTitle.Text = "Count:";
+            countTitle.Tag = "countTitle";
+            countTitle.VerticalAlignment = VerticalAlignment.Center;
+            countTitle.HorizontalAlignment = HorizontalAlignment.Center;
+            countTitle.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#707070"));
+            countTitle.FontSize = 16;
+            countTitle.Margin = new Thickness(5, 1, 5, 1);
+            Grid.SetRow(countTitle, row);
+            Grid.SetColumn(countTitle, 3);
+            #endregion
+            #region   countItem
+            var countItem = new TextBlock();
+            countItem.Text = count;
+            countItem.Tag = "itemName";
+            countItem.VerticalAlignment = VerticalAlignment.Center;
+            countItem.HorizontalAlignment = HorizontalAlignment.Left;
+            countItem.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#1D75B8"));
+            countItem.FontSize = 16;
+            countItem.Margin = new Thickness(5, 1, 5, 1);
+            Grid.SetRow(countItem, row);
+            Grid.SetColumn(countItem, 4);
+            #endregion
+            /*
+            #region   amountTitle
+            var amountTitle = new TextBlock();
+            amountTitle.Text = "Amount:";
+            amountTitle.Tag = "amountTitle";
+            amountTitle.VerticalAlignment = VerticalAlignment.Center;
+            amountTitle.HorizontalAlignment = HorizontalAlignment.Center;
+            amountTitle.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#707070"));
+            amountTitle.FontSize = 16;
+            amountTitle.Margin = new Thickness(5, 1, 5, 1);
+            Grid.SetRow(amountTitle, row);
+            Grid.SetColumn(amountTitle, 5);
+            #endregion
+            #region amountStackPanel
+            var amountStackPanel = new StackPanel();
+            amountStackPanel.Orientation = Orientation.Horizontal;
+            amountStackPanel.VerticalAlignment = VerticalAlignment.Center;
+            amountStackPanel.HorizontalAlignment = HorizontalAlignment.Right;
+            amountStackPanel.Margin = new Thickness(5, 1, 5, 1);
+            Grid.SetRow(amountStackPanel, row);
+            Grid.SetColumn(amountStackPanel, 6);
+            #region   amountValue
+            var amountValue = new TextBlock();
+            amountValue.Text = amount;
+            amountValue.FontSize = 16;
+            amountValue.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#008A1C"));
+            amountTitle.Margin = new Thickness(0, 0, 5, 0);
+            #endregion
+            #region   amountSympol
+            var amountSympol = new TextBlock();
+            amountSympol.Text = "$";
+            amountSympol.FontSize = 16;
+            amountSympol.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#008A1C"));
+            #endregion
+            amountStackPanel.Children.Add(amountValue);
+            amountStackPanel.Children.Add(amountSympol);
+            #endregion
+             */
+            grid_IUStorage.Children.Add(itemNo);
+            grid_IUStorage.Children.Add(itemTitle);
+            grid_IUStorage.Children.Add(itemName);
+            grid_IUStorage.Children.Add(countTitle);
+            grid_IUStorage.Children.Add(countItem);
+            //grid_IUStorage.Children.Add(amountTitle);
+            //grid_IUStorage.Children.Add(amountStackPanel);
+        }
+        #endregion
+
+        async Task AmountMonthlySalPur()
+        {
+            try
+            {
+                double[] ArrayS = new double[NumberDaysInMonth];
+                double[] ArrayP = new double[NumberDaysInMonth];
+                string[] ArrayCount = new string[NumberDaysInMonth];
+                List<TotalPurSale> listAllBestSeller = await dash.GetTotalPurSale();
+                if (cb_branch.SelectedValue != null)
+                    if ((int)cb_branch.SelectedValue == 0)
+                    {
+                        listMonthlyInvoice = listAllBestSeller.GroupBy(x => new { x.day }).Select(s => new TotalPurSale
+                        {
+                            branchCreatorId = s.FirstOrDefault().branchCreatorId,
+                            branchCreatorName = s.FirstOrDefault().branchCreatorName,
+                            day = s.FirstOrDefault().day,
+                            totalPur = s.Sum(g => g.totalPur),
+                            totalSale = s.Sum(g => g.totalSale),
+                            countPur = s.Sum(g => g.countPur),
+                            countSale = s.Sum(g => g.countSale)
+                        }).ToList();
+                    }
+                    else
+                    {
+                        listMonthlyInvoice = listAllBestSeller.Where(s => s.branchCreatorId == (int)cb_branch.SelectedValue).ToList();
+                        if (listMonthlyInvoice != null)
+                        {
+                            listMonthlyInvoice = listMonthlyInvoice.GroupBy(x => new { x.day }).Select(s => new TotalPurSale
+                            {
+                                branchCreatorId = s.FirstOrDefault().branchCreatorId,
+                                branchCreatorName = s.FirstOrDefault().branchCreatorName,
+                                day = s.FirstOrDefault().day,
+                                totalPur = s.Sum(g => g.totalPur),
+                                totalSale = s.Sum(g => g.totalSale),
+                                countPur = s.Sum(g => g.countPur),
+                                countSale = s.Sum(g => g.countSale)
+                            }).ToList();
+                        }
+                        else
+                            listMonthlyInvoice = new List<TotalPurSale>();
+                    }
+
+                int count = 0;
+                foreach (var item in listMonthlyInvoice)
+                {
+                    ArrayS[count] = double.Parse(item.totalPur.ToString());
+                    ArrayP[count] = double.Parse(item.totalSale.ToString()) ;
+                    ArrayCount[count] = count.ToString();
+                    count++;
+                }
+                dash.SeriesCollection = new SeriesCollection
+            {
+                new LineSeries
+                {
+                    Title = "المبيعات",
+                    Values = ArrayS.AsChartValues()
+                },
+                 new LineSeries
+                {
+                    Title = "المشتريات",
+                    Values = ArrayP.AsChartValues()
+                }
+            };
+
+                axs_AxisY.Title = "الإجمالي";
+                axs_AxisX.Title = "اليوم";
+                dash.Labels = ArrayCount;
+                dash.YFormatter = value => value.ToString("C");
+                //DataContext = this;
+
+
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+           
         }
         void InitializePieChart(PieChart pieChart ,int partial=0, int all=0)
         {
@@ -822,5 +1213,7 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+
+        
     }
 }

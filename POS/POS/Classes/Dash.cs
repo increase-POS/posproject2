@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using LiveCharts;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using POS;
 using System;
@@ -44,7 +45,6 @@ namespace POS.Classes
         public int offlineUsers { get; set; }
 
     }
-
     public class userOnlineInfo
     {
         public Nullable<int> branchId { get; set; }
@@ -111,6 +111,8 @@ namespace POS.Classes
         public string branchCreatorName { get; set; }
         public Nullable<decimal> totalPur { get; set; }
         public Nullable<decimal> totalSale { get; set; }
+        public int countPur { get; set; }
+        public int countSale { get; set; }
         public int day { get; set; }
 
     }
@@ -133,6 +135,13 @@ namespace POS.Classes
         public string countDailyPurchase { get; set; }
         public string countDailySales { get; set; }
 
+        public string countMonthlyPurchase { get; set; }
+        public string countMonthlySales { get; set; }
+
+
+        public SeriesCollection SeriesCollection { get; set; }
+        public string[] Labels { get; set; }
+        public Func<double, string> YFormatter { get; set; }
 
 
         // عدد فواتير المبيعات ومرتجع المبيعات والمشتريات ومرتجع المشتريات حسب الفرع

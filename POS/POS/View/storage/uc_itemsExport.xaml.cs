@@ -1434,7 +1434,7 @@ namespace POS.View.storage
                 var columnName = e.Column.Header.ToString();
 
                 BillDetails row = e.Row.Item as BillDetails;
-                int index = billDetails.IndexOf(billDetails.Where(p => p.itemUnitId == row.itemUnitId).FirstOrDefault());
+                int index = billDetails.IndexOf(billDetails.Where(p => p.itemUnitId == row.itemUnitId && p.OrderId == row.OrderId).FirstOrDefault());
 
                 TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
                 if (elapsed.TotalMilliseconds < 100)
@@ -1803,7 +1803,8 @@ namespace POS.View.storage
 
         private async void Btn_shortageInvoice_Click(object sender, RoutedEventArgs e)
         {
-            clearProcess();
+            if(invoice.invoiceId != 0)
+                clearProcess();
             cb_processType.SelectedIndex = 0;
             cb_processType.IsEnabled = false;
             await buildShortageInvoiceDetails();

@@ -110,7 +110,14 @@ namespace POS.View.windows
                 txt_Invoices.Text = title;
                 translat();
                 #endregion
-
+                #region hide Total column in grid if invoice is import/export order
+                string[] invTypeArray = new string[] { "imd" ,"exd","im","ex" ,"exw" };
+                var impExpTypes = invTypeArray.ToList();
+                List<string> invTypeL = invoiceType.Split(',').ToList();
+                var inCommen = invTypeL.Any(s => impExpTypes.Contains(s));
+                if(inCommen)
+                    dg_Invoice.Columns[2].Visibility = Visibility.Collapsed; //make total column unvisible
+                #endregion
                 await refreshInvoices();
                 Txb_search_TextChanged(null, null);
 

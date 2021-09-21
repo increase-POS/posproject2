@@ -25,7 +25,7 @@ namespace POS.View.windows
         public int itemId = 0 , itemUnitId = 0;
 
         public bool isActive;
-
+        public string CallerName;
         ItemUnit itemUnit = new ItemUnit();
         ItemUnit itemUnitModel = new ItemUnit();
         List<ItemUnit> allItemUnitsSource = new List<ItemUnit>();
@@ -53,7 +53,6 @@ namespace POS.View.windows
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
         private void HandleKeyPress(object sender, KeyEventArgs e)
         {
             try
@@ -301,7 +300,8 @@ namespace POS.View.windows
 
                 await package.UpdatePackByParentId(itemUnitId , allPackages , MainWindow.userID.Value);
 
-                isActive = false;
+
+                isActive = true;
                 this.Close();
 
                 if (sender != null)

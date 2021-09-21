@@ -674,6 +674,21 @@ namespace POS.Classes
             combo.DisplayMemberPath = "name";
             combo.SelectedIndex = -1;
         }
+        static public async Task fillBranchesWithoutCurrent(ComboBox combo,int currentBranchId, string type = "")
+        {
+            if (isAdminPermision())
+                branches = await branchModel.GetAll();
+            else
+                branches = await branchModel.BranchesByBranchandUser(MainWindow.branchID.Value, MainWindow.userLogin.userId);
+
+            branchModel = branches.Where(s => s.branchId == currentBranchId).FirstOrDefault<Branch>();
+            branches.Remove(branchModel);
+
+            combo.ItemsSource = branches.Where(b => b.type != type && b.branchId != 1);
+            combo.SelectedValuePath = "branchId";
+            combo.DisplayMemberPath = "name";
+            combo.SelectedIndex = -1;
+        }
         static public async Task fillBranchesWithAll(ComboBox combo, string type = "")
         {
             if (isAdminPermision())

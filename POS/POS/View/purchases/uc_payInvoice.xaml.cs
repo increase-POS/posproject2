@@ -249,7 +249,7 @@ namespace POS.View
                 setTimer();
                 await RefrishItems();
                 configureDiscountType();
-                await SectionData.fillBranches(cb_branch, "bs");
+                await SectionData.fillBranchesWithoutCurrent(cb_branch,MainWindow.branchID.Value, "bs");
                 await RefrishVendors();
                 await fillBarcodeList();
                 setNotifications();
@@ -704,7 +704,7 @@ namespace POS.View
 
                 invoice.createUserId = MainWindow.userID;
                 invoice.updateUserId = MainWindow.userID;
-                if (invType == "pw")
+                if (invType == "pw" || invType == "p")
                     invoice.invNumber = await invoice.generateInvNumber("pi");
 
                 // save invoice in DB
@@ -772,7 +772,7 @@ namespace POS.View
         private void validateInvoiceValues()
         {
             //bool isValid = true;
-            SectionData.validateEmptyComboBox(cb_branch, p_errorBranch, tt_errorBranch, "trEmptyBranchToolTip");
+            //SectionData.validateEmptyComboBox(cb_branch, p_errorBranch, tt_errorBranch, "trEmptyBranchToolTip");
             SectionData.validateEmptyComboBox(cb_vendor, p_errorVendor, tt_errorVendor, "trErrorEmptyVendorToolTip");
             SectionData.validateEmptyTextBox(tb_invoiceNumber, p_errorInvoiceNumber, tt_errorInvoiceNumber, "trErrorEmptyInvNumToolTip");
             SectionData.validateEmptyDatePicker(dp_desrvedDate, p_errorDesrvedDate, tt_errorDesrvedDate, "trErrorEmptyDeservedDate");
@@ -818,7 +818,7 @@ namespace POS.View
                         validateInvoiceValues();
                         bool valid = validateItemUnits();
                         TextBox tb = (TextBox)dp_desrvedDate.Template.FindName("PART_TextBox", dp_desrvedDate);
-                        if (cb_branch.SelectedIndex != -1 && cb_vendor.SelectedIndex != -1 && !tb_invoiceNumber.Equals("") && billDetails.Count > 0
+                        if ( cb_vendor.SelectedIndex != -1 && !tb_invoiceNumber.Equals("") && billDetails.Count > 0
                             && !tb.Text.Trim().Equals("") && decimal.Parse(tb_total.Text) > 0 && valid)
                         {
                             branchModel = await branchModel.getBranchById(MainWindow.branchID.Value);
@@ -853,20 +853,40 @@ namespace POS.View
                             //    await addInvoice("pw", "pi");
                             //}
                             else//pw  waiting purchase invoice
-                            {
-                                #region notification Object
-                                Notification not = new Notification()
+                            {                               
+                                
+                                if(cb_branch.SelectedIndex == -1) // reciept invoice directly
                                 {
-                                    title = "trPurchaseInvoiceAlertTilte",
-                                    ncontent = "trPurchaseInvoiceAlertContent",
-                                    msgType = "alert",
-                                    createUserId = MainWindow.userID.Value,
-                                    updateUserId = MainWindow.userID.Value,
-                                };
-                                await not.Save(not, (int)cb_branch.SelectedValue, "storageAlerts_ctreatePurchaseInvoice", branchModel.name);
-                                #endregion
-
-                                await addInvoice("pw", "pi");
+                                    await addInvoice("p", "pi");
+                                    #region notification Object
+                                    Notification not = new Notification()
+                                    {
+                                        title = "trExceedMaxLimitAlertTilte",
+                                        ncontent = "trExceedMaxLimitAlertContent",
+                                        msgType = "alert",
+                                        //createDate = DateTime.Now,
+                                        // updateDate = DateTime.Now,
+                                        createUserId = MainWindow.userID.Value,
+                                        updateUserId = MainWindow.userID.Value,
+                                    };
+                                    #endregion
+                                    await itemLocationModel.recieptInvoice(invoiceItems, MainWindow.branchID.Value, MainWindow.userID.Value, "storageAlerts_minMaxItem", not); // increase item quantity in DB
+                                }
+                                else
+                                {
+                                    await addInvoice("pw", "pi");
+                                    #region notification Object
+                                    Notification not = new Notification()
+                                    {
+                                        title = "trPurchaseInvoiceAlertTilte",
+                                        ncontent = "trPurchaseInvoiceAlertContent",
+                                        msgType = "alert",
+                                        createUserId = MainWindow.userID.Value,
+                                        updateUserId = MainWindow.userID.Value,
+                                    };
+                                    await not.Save(not, (int)cb_branch.SelectedValue, "storageAlerts_ctreatePurchaseInvoice", branchModel.name);
+                                    #endregion
+                                }
                                 clearInvoice();
                                 await refreshDraftNotification();
                             }
@@ -1129,8 +1149,8 @@ namespace POS.View
                 // purchase orders
                 string invoiceType = "po";
                 w.invoiceType = invoiceType;
-                w.userId = MainWindow.userLogin.userId;
-
+                // w.userId = MainWindow.userLogin.userId;
+                w.branchCreatorId = MainWindow.branchID.Value;
                 w.title = MainWindow.resourcemanager.GetString("trOrders");
 
                 if (w.ShowDialog() == true)
@@ -1844,83 +1864,19 @@ namespace POS.View
             try
             {
                 //billDetails
-                //if (billDetails.Count == 1)
-                //{
                 var cmb = sender as ComboBox;
                 cmb.SelectedValue = (int)billDetails[0].itemUnitId;
-                //if (dg_billDetails.SelectedIndex != -1 && cmb != null)
-                //{
-                //    billDetails[dg_billDetails.SelectedIndex].itemUnitId = (int)cmb.SelectedValue;
-                //    cmb.SelectedValue = (int)billDetails[dg_billDetails.SelectedIndex].itemUnitId;
-                //}
-                if (invoice.invoiceId == 0)
-                {
-                    cmb.IsEnabled = true;
-                    cmb.IsReadOnly = true;
-                    cmb.IsDropDownOpen = true;
-                    cmb.IsEditable = true;
-                    cmb.IsTextSearchEnabled = true;
-                    cmb.AllowDrop = true;
 
-                }
-                else
-                {
+                if (billDetails[0].OrderId != 0)
                     cmb.IsEnabled = false;
-                    cmb.IsReadOnly = false;
-                    cmb.IsDropDownOpen = false;
-                    cmb.IsEditable = false;
-                    cmb.IsTextSearchEnabled = false;
-                    cmb.AllowDrop = false;
-                    
-                }
-                //}
-                //else
-                //{
-                //for (int i = 0; i < billDetails.Count; i++)
-                //{
-                //    var cmb = sender as ComboBox;
-                //    cmb.SelectedValue = (int)billDetails[i].itemUnitId;
-                //    if (invoice.invoiceId == 0)
-                //    {
-                //        cmb.IsEnabled = true;
-                //        cmb.IsReadOnly = true;
-                //    }
-                //    else
-                //    {
-                //        cmb.IsEnabled = false;
-                //        cmb.IsReadOnly = false;
-                //    }
-                //}
-                //}
+                else
+                    cmb.IsEnabled = true;
 
             }
             catch (Exception ex)
             {
                 SectionData.ExceptionMessage(ex, this);
             }
-        }
-        public static DependencyObject FindChild(DependencyObject parent, Func<DependencyObject, bool> predicate)
-        {
-            if (parent == null) return null;
-
-            int childrenCount = VisualTreeHelper.GetChildrenCount(parent);
-            for (int i = 0; i < childrenCount; i++)
-            {
-                var child = VisualTreeHelper.GetChild(parent, i);
-
-                if (predicate(child))
-                {
-                    return child;
-                }
-                else
-                {
-                    var foundChild = FindChild(child, predicate);
-                    if (foundChild != null)
-                        return foundChild;
-                }
-            }
-
-            return null;
         }
         private void Cbm_unitItemDetails_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -1929,42 +1885,14 @@ namespace POS.View
                 var cmb = sender as ComboBox;
 
                 if (dg_billDetails.SelectedIndex != -1 && cmb.SelectedValue != null)
+                {
                     billDetails[dg_billDetails.SelectedIndex].itemUnitId = (int)cmb.SelectedValue;
-
-                if (invoice.invoiceId == 0)
-                {
-                    cmb.IsEnabled = true;
-                    cmb.IsReadOnly = true;
-                    cmb.IsDropDownOpen = true;
-                    cmb.IsEditable = true;
-                    cmb.IsTextSearchEnabled = true;
-                    cmb.AllowDrop = true;
+                    if (billDetails[dg_billDetails.SelectedIndex].OrderId != 0)
+                        cmb.IsEnabled = false;
+                    else
+                        cmb.IsEnabled = true;
                 }
-                else
-                {
-                    cmb.IsEnabled = false;
-                    cmb.IsReadOnly = false;
-                    cmb.IsDropDownOpen = false;
-                    cmb.IsEditable = false;
-                    cmb.IsTextSearchEnabled = false;
-                    cmb.AllowDrop = false;
-                }
-
-                
-                //var dataGridRow = FindChild(dg_billDetails, x =>
-                //{
-                //    var element = x as DataGridRow;
-                //    if (element != null && element.Item == System.Windows.Data.CollectionView.NewItemPlaceholder)
-                //        return true;
-                //    else
-                //        return false;
-                //}) as DataGridRow;
-                //var combo = FindChild(dataGridRow, x =>
-                //{
-                //    return x is ComboBox;
-                //}) as ComboBox;
-                //combo.IsEnabled = false;
-
+                   
             }
             catch (Exception ex)
             {
@@ -1976,9 +1904,6 @@ namespace POS.View
         {
             try
             {
-                //if (sender != null)
-                //    SectionData.StartAwait(grid_main);
-
                 //billDetails
                 int count = 0;
                 foreach (var item in billDetails)
@@ -1995,80 +1920,29 @@ namespace POS.View
                                 //var combo = (combo)cell.Content;
                                 combo.SelectedValue = (int)item.itemUnitId;
 
-                                if (invoice.invoiceId == 0)
-                                {
-                                    combo.IsEnabled = true;
-                                    combo.IsReadOnly = true;
-                                    combo.AllowDrop = true;
-                                    combo.IsDropDownOpen = true;
-                                    combo.IsEditable = true;
-                                    combo.IsTextSearchEnabled = true;
-                                }
-                                else
-                                {
-                                    combo.IsEnabled = false;
-                                    combo.IsReadOnly = false;
-                                    combo.AllowDrop = false;
-                                    combo.IsDropDownOpen = false;
-                                    combo.IsEditable = false;
-                                    combo.IsTextSearchEnabled = false;
-                                }
+                                    if (item.OrderId != 0)
+                                        combo.IsEnabled = false;
+                                    else
+                                        combo.IsEnabled = true;
                             }
                         }
                     }
                     count++;
                 }
-
-
-
-                //for (int i = 0; i < billDetails.Count; i++)
-                //{
-                //    //var cmb = sender as ComboBox;
-                //    //cmb.SelectedValue = (int)billDetails[i].itemUnitId;
-                //    var cell = DataGridHelper.GetCell(dg_billDetails, i, 3);
-                //    if (cell != null)
-                //    {
-                //        var cp = (ContentPresenter)cell.Content;
-                //        var cmb = (ComboBox)cp.ContentTemplate.FindName("cbm_unitItemDetails", cp);
-                //        cmb.SelectedValue = (int)item.itemUnitId;
-                //        if (invoice.invoiceId == 0)
-                //        {
-                //            cmb.IsEnabled = true;
-                //            cmb.IsReadOnly = true;
-                //        }
-                //        else
-                //        {
-                //            cmb.IsEnabled = false;
-                //            cmb.IsReadOnly = false;
-                //        }
-                //    }
-                //}
-
-
-
-
-
-                    
-
-
-
-                //if (sender != null)
-                //    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                //if (sender != null)
-                //    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this);
             }
         }
         private void Dg_billDetails_BeginningEdit(object sender, DataGridBeginningEditEventArgs e)
         {
-            if (invoice.invoiceId != 0 && e.Column.DisplayIndex == 3)
-                e.Cancel = true;
-
-            //e.Column.IsReadOnly = true;
+            if (dg_billDetails.SelectedIndex != -1)
+                if (billDetails[dg_billDetails.SelectedIndex].OrderId != 0)
+                    e.Cancel = true;
         }
+
+
         private void Dg_billDetails_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
             try
@@ -2093,7 +1967,6 @@ namespace POS.View
                         if (columnName == MainWindow.resourcemanager.GetString("trQuantity"))
                             t.Text = billDetails[index].Count.ToString();
                         else if (columnName == MainWindow.resourcemanager.GetString("trPrice"))
-                            // t.Text = billDetails[index].Price.ToString();
                             t.Text = SectionData.DecTostring(billDetails[index].Price);
 
                     }
@@ -2112,9 +1985,9 @@ namespace POS.View
 
                         oldCount = row.Count;
 
-                        if (_InvoiceType == "pbd" || _InvoiceType == "pbw")
+                        if (_InvoiceType == "pbd" || _InvoiceType == "pbw" || row.OrderId != 0)
                         {
-                            ItemTransfer item = mainInvoiceItems.ToList().Find(i => i.itemUnitId == row.itemUnitId);
+                            ItemTransfer item = mainInvoiceItems.ToList().Find(i => i.itemUnitId == row.itemUnitId && i.invoiceId == row.OrderId);
                             if (newCount > item.quantity)
                             {
                                 // return old value 
@@ -2142,7 +2015,6 @@ namespace POS.View
 
                         //refresh total cell
                         TextBlock tb = dg_billDetails.Columns[6].GetCellContent(dg_billDetails.Items[index]) as TextBlock;
-                        //tb.Text = total.ToString();
                         tb.Text = SectionData.DecTostring(total);
 
                         //  refresh sum and total text box
@@ -2889,13 +2761,15 @@ namespace POS.View
 
         private async void Btn_shortageInvoice_Click(object sender, RoutedEventArgs e)
         {
-            _InvoiceType = "pd"; // shortage purchase invoice
+            if (invoice.invoiceId != 0)
+                clearInvoice();
             await buildShortageInvoiceDetails();
         }
         private async Task buildShortageInvoiceDetails()
         {
             //get invoice items
             invoiceItems = await invoice.getShortageItems(MainWindow.branchID.Value);
+            mainInvoiceItems = invoiceItems;
             // build invoice details grid
             _SequenceNum = 0;
             billDetails.Clear();

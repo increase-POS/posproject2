@@ -335,10 +335,11 @@ namespace POS.View.storage
             txt_inventoryDate.Text = "";
             txt_inventoryNum.Text = "";
             md_docImage.Badge = "";
+            invItemsLocations.Clear();
             txt_titleDataGrid.Text = MainWindow.resourcemanager.GetString("trInventoryDraft");
             dg_items.ItemsSource = null;
+            btn_deleteInventory.Visibility = Visibility.Collapsed;
             await inputEditable();
-            // await fillInventoryDetails();
         }
         private async Task addInventory(string invType)
         {
@@ -445,6 +446,7 @@ namespace POS.View.storage
                     _InventoryType = "n";
                     await refreshDocCount(inventory.inventoryId);
                     await fillInventoryDetails();
+                    btn_deleteInventory.Visibility = Visibility.Visible;
                 }
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -700,5 +702,44 @@ namespace POS.View.storage
             }
         }
 
+        private async void Btn_deleteInventory_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                if (inventory.inventoryId != 0)
+                {
+                    #region
+                    Window.GetWindow(this).Opacity = 0.2;
+                    wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                    w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDelete");
+                    w.ShowDialog();
+                    Window.GetWindow(this).Opacity = 1;
+                    #endregion
+                    if (w.isOk)
+                    {
+                        string res = await inventory.deleteInventory(inventory.inventoryId);
+                        if (res.Equals("1"))
+                        {
+                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
+
+                            clearInventory();
+                        }
+                        else
+                            Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    }
+                }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
     }
 }
