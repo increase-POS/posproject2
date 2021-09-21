@@ -15,6 +15,7 @@
             <converters:discountTypeConverter x:Key="discountTypeConverter"/>
             <converters:invoiceStatusConverter x:Key="invoiceStatusConverter"/>
             <converters:invoiceTypeConverter x:Key="invoiceTypeConverter"/>
+            <converters:invoiceTypeConverter x:Key="inventoryTypeConverter"/>
             <converters:invoiceTypeVisibilityConverter x:Key="invoiceTypeVisibilityConverter"/>
             <converters:levelGroupConverter x:Key="levelGroupConverter"/>
             <converters:LocationFreeZoneConverter x:Key="LocationFreeZoneConverter"/>

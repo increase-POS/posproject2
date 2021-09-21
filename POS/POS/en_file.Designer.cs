@@ -313,6 +313,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Archived.
+        /// </summary>
+        internal static string trArchived {
+            get {
+                return ResourceManager.GetString("trArchived", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to +963.
         /// </summary>
         internal static string trAreaHint {
@@ -3166,6 +3175,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invoice.
+        /// </summary>
+        internal static string trInv {
+            get {
+                return ResourceManager.GetString("trInv", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Inventory.
         /// </summary>
         internal static string trInventory {
@@ -5395,6 +5413,15 @@ namespace POS {
         internal static string trSave {
             get {
                 return ResourceManager.GetString("trSave", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Saved.
+        /// </summary>
+        internal static string trSaved {
+            get {
+                return ResourceManager.GetString("trSaved", resourceCulture);
             }
         }
         

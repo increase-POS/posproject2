@@ -601,6 +601,12 @@ namespace POS.Classes
 
 
         }
+        public static void itemTransferInvoiceInternal(IEnumerable<ItemTransferInvoice> itemTransferInvoices, LocalReport rep, string reppath, List<ReportParameter> paramarr)
+        {
+            itemTransferInvTypeConv(paramarr);
+            itemTransferInvoice(itemTransferInvoices, rep, reppath);
+
+        }
         public static void itemTransferInvoiceDestroied(IEnumerable<ItemTransferInvoice> itemTransferInvoices, LocalReport rep, string reppath,List<ReportParameter> paramarr)
         {
            itemTransferInvoice(itemTransferInvoices, rep, reppath);

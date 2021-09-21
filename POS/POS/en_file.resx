@@ -2437,4 +2437,13 @@ Please add Email in setting</value>
   <data name="trReceiptOfPurchasesBill" xml:space="preserve">
     <value>Receipt of Purchases Bill</value>
   </data>
+  <data name="trInv" xml:space="preserve">
+    <value>Invoice</value>
+  </data>
+  <data name="trArchived" xml:space="preserve">
+    <value>Archived</value>
+  </data>
+  <data name="trSaved" xml:space="preserve">
+    <value>Saved</value>
+  </data>
 </root>

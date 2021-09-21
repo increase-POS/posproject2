@@ -2422,4 +2422,13 @@
   <data name="trReceiptOfPurchasesBill" xml:space="preserve">
     <value>وصل فاتورة المشتريات</value>
   </data>
+  <data name="trInv" xml:space="preserve">
+    <value>فاتورة</value>
+  </data>
+  <data name="trArchived" xml:space="preserve">
+    <value>مؤرشفة</value>
+  </data>
+  <data name="trSaved" xml:space="preserve">
+    <value>محفوظة</value>
+  </data>
 </root>

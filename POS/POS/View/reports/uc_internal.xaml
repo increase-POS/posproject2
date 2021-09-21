@@ -21,8 +21,8 @@
 
                 <RowDefinition Height="auto"></RowDefinition>
                 <RowDefinition Height="45"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
-                <RowDefinition Height="45"/>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <Grid Margin="5,0,0,0">
                 <Grid.RowDefinitions>
@@ -124,7 +124,7 @@
                     <Border BorderThickness="15,0,15,0" x:Name="bdrMain" Height="auto" Background="Transparent">
                         <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto" >
                             <Grid>
-                           
+
                                 <Grid x:Name="grid_internal"
                                       Visibility="Visible">
 
@@ -349,7 +349,7 @@
                                         </Grid>
                                     </Border>
                                 </Grid>
-                              
+
 
                             </Grid>
                         </ScrollViewer>

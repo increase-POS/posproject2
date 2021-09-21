@@ -10,6 +10,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Resources;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -47,31 +49,46 @@ namespace POS.View.reports
         IEnumerable<AccountantCombo> accShippingCombo;
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {try
-					{
-						if (sender != null)
-					  SectionData.StartAwait(grid_main);
-					  
-            payments = await statisticModel.GetReceipt();
+        {
+            try
+			{
+				if (sender != null)
+				SectionData.StartAwait(grid_main);
 
-            vendorCombo = statisticModel.getVendorCombo(payments, "v");
-            customerCombo = statisticModel.getVendorCombo(payments, "c");
-            userCombo = statisticModel.getUserAcc(payments, "u");
-            ShippingCombo = statisticModel.getShippingCombo(payments);
+                #region translate
+                if (MainWindow.lang.Equals("en"))
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                    grid_main.FlowDirection = FlowDirection.LeftToRight;
+                }
+                else
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                    grid_main.FlowDirection = FlowDirection.RightToLeft;
+                }
+                translate();
+                #endregion
 
-            payCombo = statisticModel.getPaymentsTypeCombo(payments);
+                payments = await statisticModel.GetReceipt();
 
-            accCombo = statisticModel.getAccounantCombo(payments, "v");
-            accCustomerCombo = statisticModel.getAccounantCombo(payments, "c");
-            accUserCombo = statisticModel.getAccounantCombo(payments, "u");
-            accShippingCombo = statisticModel.getAccounantCombo(payments, "sh");
+                vendorCombo = statisticModel.getVendorCombo(payments, "v");
+                customerCombo = statisticModel.getVendorCombo(payments, "c");
+                userCombo = statisticModel.getUserAcc(payments, "u");
+                ShippingCombo = statisticModel.getShippingCombo(payments);
 
-            fillVendorCombo(vendorCombo, cb_vendors);
-            fillPaymentsTypeCombo(cb_vendorPayType);
-            fillAccCombo(accCombo, cb_vendorAccountant);
+                payCombo = statisticModel.getPaymentsTypeCombo(payments);
+                
+                accCombo = statisticModel.getAccounantCombo(payments, "v");
+                accCustomerCombo = statisticModel.getAccounantCombo(payments, "c");
+                accUserCombo = statisticModel.getAccounantCombo(payments, "u");
+                accShippingCombo = statisticModel.getAccounantCombo(payments, "sh");
 
-            fillVendorsEvents();
-            hideAllColumn();
+                fillVendorCombo(vendorCombo, cb_vendors);
+                fillPaymentsTypeCombo(cb_vendorPayType);
+                fillAccCombo(accCombo, cb_vendorAccountant);
+
+                fillVendorsEvents();
+                hideAllColumn();
        
 			  if (sender != null)
 			  SectionData.EndAwait(grid_main);
@@ -82,7 +99,15 @@ namespace POS.View.reports
 				SectionData.EndAwait(grid_main);
 				SectionData.ExceptionMessage(ex, this);
             } }
-        
+
+        private void translate()
+        {
+            //dgPayments.Columns[0].Header = MainWindow.resourcemanager.GetString("trTransferNumberTooltip");
+            //dgPayments.Columns[1].Header = MainWindow.resourcemanager.GetString("trRecepient");
+            //dgPayments.Columns[2].Header = MainWindow.resourcemanager.GetString("trPaymentTypeTooltip");
+            //dgPayments.Columns[3].Header = MainWindow.resourcemanager.GetString("trCashTooltip");
+        }
+
         private void fillVendorCombo(IEnumerable<VendorCombo> list, ComboBox cb)
         {
             cb.SelectedValuePath = "VendorId";
@@ -94,6 +119,20 @@ namespace POS.View.reports
         {
             cb.SelectedValuePath = "PaymentsTypeName";
             cb.DisplayMemberPath = "PaymentsTypeName";
+            foreach(var p in payCombo)
+            {
+                string Text = "";
+                switch(p.PaymentsTypeName)
+                {
+                    case "cash":   Text = MainWindow.resourcemanager.GetString("trCash");       break;
+                    case "doc":    Text = MainWindow.resourcemanager.GetString("trDocument");   break;
+                    case "cheque": Text = MainWindow.resourcemanager.GetString("trCheque");     break;
+                    case "card":   Text = MainWindow.resourcemanager.GetString("trCreditCard"); break;
+                    case "inv":    Text = MainWindow.resourcemanager.GetString("trInv");        break;
+                }
+
+                p.PaymentsTypeName = Text;
+            }
             cb.ItemsSource = payCombo;
         }
 

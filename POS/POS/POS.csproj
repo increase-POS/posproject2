@@ -1351,6 +1351,8 @@
     <Resource Include="pic\no-image-icon-90x90.png" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Reports\StatisticReport\Storage\Internal\Ar\" />
+    <Folder Include="Reports\StatisticReport\Storage\Internal\En\" />
     <Folder Include="Thumb\report\" />
   </ItemGroup>
   <ItemGroup>
