@@ -23,11 +23,7 @@ namespace POS.Classes
             Morocco,//15
             Libya,//16
             Somalia,//17
-            Turkey,//18
-
-
-
-
+            Turkey
         };
 
         #region Constructors
@@ -37,7 +33,7 @@ namespace POS.Classes
             switch (currency)
             {
                 case Currencies.Kuwait:
-                    CurrencyID = 3;
+                    CurrencyID = 0;
                     CurrencyCode = "KWD";
                     IsCurrencyNameFeminine = false;
                     EnglishCurrencyName = "Kuwaiti Dinar";
@@ -52,7 +48,7 @@ namespace POS.Classes
                     Arabic2CurrencyPartName = "فلسان";
                     Arabic310CurrencyPartName = "فلوس";
                     Arabic1199CurrencyPartName = "فلساً";
-                    PartPrecision = 2;
+                    PartPrecision = 3;
                     IsCurrencyPartNameFeminine = false;
                     break;
 
@@ -151,7 +147,7 @@ namespace POS.Classes
                     Arabic2CurrencyPartName = "بيستان";
                     Arabic310CurrencyPartName = "بيسات";
                     Arabic1199CurrencyPartName = "بيسة";
-                    PartPrecision = 2;
+                    PartPrecision = 3;
                     IsCurrencyPartNameFeminine = true;
                     break;
                 case Currencies.Qatar:
@@ -189,7 +185,7 @@ namespace POS.Classes
                     Arabic2CurrencyPartName = "فلسان";
                     Arabic310CurrencyPartName = "فلوس";
                     Arabic1199CurrencyPartName = "فلساً";
-                    PartPrecision = 2;
+                    PartPrecision = 3;
                     IsCurrencyPartNameFeminine = false;
                     break;
 
@@ -209,7 +205,7 @@ namespace POS.Classes
                     Arabic2CurrencyPartName = "فلسان";
                     Arabic310CurrencyPartName = "فلوس";
                     Arabic1199CurrencyPartName = "فلساً";
-                    PartPrecision = 2;
+                    PartPrecision = 3;
                     IsCurrencyPartNameFeminine = false;
                     break;
 
@@ -260,16 +256,16 @@ namespace POS.Classes
                     IsCurrencyNameFeminine = false;
                     EnglishCurrencyName = "Jordanian Dinar";
                     EnglishPluralCurrencyName = "Jordanian Dinar";
-                    EnglishCurrencyPartName = "Dirham";
-                    EnglishPluralCurrencyPartName = "Dirhams";
+                    EnglishCurrencyPartName = "Piaster";
+                    EnglishPluralCurrencyPartName = "Piasteres";
                     Arabic1CurrencyName = "دينار أردني";
                     Arabic2CurrencyName = "ديناران أردنيان";
                     Arabic310CurrencyName = "دنانير أردنية";
                     Arabic1199CurrencyName = "ديناراً أردنياً";
-                    Arabic1CurrencyPartName = "درهم";
-                    Arabic2CurrencyPartName = "درهمان";
-                    Arabic310CurrencyPartName = "دراهم";
-                    Arabic1199CurrencyPartName = "درهم";
+                    Arabic1CurrencyPartName = "قرش";
+                    Arabic2CurrencyPartName = "قرشان";
+                    Arabic310CurrencyPartName = "قروش";
+                    Arabic1199CurrencyPartName = "قرشاً";
                     PartPrecision = 2;
                     IsCurrencyPartNameFeminine = false;
                     break;
@@ -280,16 +276,16 @@ namespace POS.Classes
                     IsCurrencyNameFeminine = false;
                     EnglishCurrencyName = "Algerian Dinar";
                     EnglishPluralCurrencyName = "Algerian Dinars";
-                    EnglishCurrencyPartName = "Dirham";
-                    EnglishPluralCurrencyPartName = "Dirhams";
+                    EnglishCurrencyPartName = "Santeem";
+                    EnglishPluralCurrencyPartName = "Santeems";
                     Arabic1CurrencyName = "دينار جزائري";
                     Arabic2CurrencyName = "ديناران جزائريان";
                     Arabic310CurrencyName = "دنانير جزائرية";
                     Arabic1199CurrencyName = "ديناراً جزائرياً";
-                    Arabic1CurrencyPartName = "درهم";
-                    Arabic2CurrencyPartName = "درهمان";
-                    Arabic310CurrencyPartName = "دراهم";
-                    Arabic1199CurrencyPartName = "درهم";
+                    Arabic1CurrencyPartName = "سنتيم";
+                    Arabic2CurrencyPartName = "سنتيمان";
+                    Arabic310CurrencyPartName = "سنتيمات";
+                    Arabic1199CurrencyPartName = "سنتيم";
                     PartPrecision = 2;
                     IsCurrencyPartNameFeminine = false;
                     break;
@@ -370,7 +366,7 @@ namespace POS.Classes
                     Arabic2CurrencyPartName = "درهمان";
                     Arabic310CurrencyPartName = "دراهم";
                     Arabic1199CurrencyPartName = "درهم";
-                    PartPrecision = 2;
+                    PartPrecision = 3;
                     IsCurrencyPartNameFeminine = false;
                     break;
                 case Currencies.Somalia:

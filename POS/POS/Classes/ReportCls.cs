@@ -14,7 +14,7 @@ namespace POS.Classes
 {
     class ReportCls
     {
-
+        List<CurrencyInfo> currencies = new List<CurrencyInfo>();
         public static void clearFolder(string FolderName)
         {
             string filename = "";
@@ -32,6 +32,8 @@ namespace POS.Classes
 
 
         }
+
+
         public static bool FileIsLocked(string strFullFileName)
         {
             bool blnReturn = false;
@@ -54,8 +56,33 @@ namespace POS.Classes
             return blnReturn;
 
         }
+        public void Fillcurrency()
+        {
 
-        public string PathUp(string path, int levelnum, string addtopath)
+            currencies.Add(new CurrencyInfo(CurrencyInfo.Currencies.Kuwait));
+            currencies.Add(new CurrencyInfo(CurrencyInfo.Currencies.Saudi_Arabia));
+            currencies.Add(new CurrencyInfo(CurrencyInfo.Currencies.Oman));
+            currencies.Add(new CurrencyInfo(CurrencyInfo.Currencies.United_Arab_Emirates));
+            currencies.Add(new CurrencyInfo(CurrencyInfo.Currencies.Qatar));
+            currencies.Add(new CurrencyInfo(CurrencyInfo.Currencies.Bahrain));
+            currencies.Add(new CurrencyInfo(CurrencyInfo.Currencies.Iraq));
+            currencies.Add(new CurrencyInfo(CurrencyInfo.Currencies.Lebanon));
+            currencies.Add(new CurrencyInfo(CurrencyInfo.Currencies.Syria));
+            currencies.Add(new CurrencyInfo(CurrencyInfo.Currencies.Yemen));
+            currencies.Add(new CurrencyInfo(CurrencyInfo.Currencies.Jordan));
+            currencies.Add(new CurrencyInfo(CurrencyInfo.Currencies.Algeria));
+            currencies.Add(new CurrencyInfo(CurrencyInfo.Currencies.Egypt));
+            currencies.Add(new CurrencyInfo(CurrencyInfo.Currencies.Tunisia));
+            currencies.Add(new CurrencyInfo(CurrencyInfo.Currencies.Sudan));
+            currencies.Add(new CurrencyInfo(CurrencyInfo.Currencies.Morocco));
+            currencies.Add(new CurrencyInfo(CurrencyInfo.Currencies.Libya));
+            currencies.Add(new CurrencyInfo(CurrencyInfo.Currencies.Somalia));
+            currencies.Add(new CurrencyInfo(CurrencyInfo.Currencies.Turkey));
+
+
+        }
+
+            public string PathUp(string path, int levelnum, string addtopath)
         {
             int pos1 = 0;
             for (int i = 1; i <= levelnum; i++)
@@ -277,6 +304,7 @@ namespace POS.Classes
         public List<ReportParameter> fillPayReport(CashTransfer cashtrans)
         {
             bool isArabic = checkLang();
+            Fillcurrency();
             string title;
             if (cashtrans.transType == "p")
                 title = MainWindow.resourcemanagerreport.GetString("trPayVocher");
@@ -292,6 +320,7 @@ namespace POS.Classes
             //   string company_logo_img = GetLogoImagePath();
             //string amount = cashtrans.cash.ToString();
             string amount = DecTostring(cashtrans.cash);
+          
             string voucher_num = cashtrans.transNum.ToString();
             string type = "";
             string isCash = "0";
@@ -379,7 +408,30 @@ namespace POS.Classes
 
 
             }
+            /////
+            try
+            {
+               
+                int id =MainWindow.CurrencyId;
+                ToWord toWord = new ToWord(Convert.ToDecimal(amount), currencies[id]);
+                
+                if (isArabic)
+                {
+                    amount_in_words = toWord.ConvertToArabic();
+                    // cashtrans.cash
+                }
+                else
+                {
+                    amount_in_words = toWord.ConvertToEnglish(); ;
+                }
 
+            }
+            catch (Exception ex)
+            {
+                amount_in_words = String.Empty;
+               
+            }
+          
             //  rep.DataSources.Add(new ReportDataSource("DataSetBank", banksQuery));
 
             List<ReportParameter> paramarr = new List<ReportParameter>();
@@ -397,6 +449,8 @@ namespace POS.Classes
             paramarr.Add(new ReportParameter("check_num", check_num));
             paramarr.Add(new ReportParameter("date", date));
             paramarr.Add(new ReportParameter("from", from));
+
+
             paramarr.Add(new ReportParameter("amount_in_words", amount_in_words));
             paramarr.Add(new ReportParameter("purpose", purpose));
             paramarr.Add(new ReportParameter("recived_by", recived_by));
