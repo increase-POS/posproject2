@@ -118,9 +118,9 @@ namespace POS.View.reports
             }
         }
 
-       
-         
-     
+
+
+
         private List<ItemTransferInvoice> converter(List<ItemTransferInvoice> query)
         {
             foreach (var item in query)
@@ -835,7 +835,7 @@ fillColumnChart(cb_Items, selectedItemId);
             col_itQuantity.Visibility = Visibility.Hidden;
             col_price.Visibility = Visibility.Hidden;
             col_totalNet.Visibility = Visibility.Hidden;
-         
+
         }
         private void btn_branch_Click(object sender, RoutedEventArgs e)
         {
@@ -1001,7 +1001,7 @@ fillColumnChart(cb_Items, selectedItemId);
                 col_item.Visibility = Visibility.Visible;
                 col_itQuantity.Visibility = Visibility.Visible;
                 col_price.Visibility = Visibility.Visible;
-          
+
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -2721,20 +2721,14 @@ fillColumnChart(cb_Items, selectedItemId);
             }
         }
         List<ItemTransferInvoice> query = new List<ItemTransferInvoice>();
-        private void Btn_pdf_Click(object sender, RoutedEventArgs e)
-        {//pdf
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
+        public void BuildReport()
+        {
+  List<ReportParameter> paramarr = new List<ReportParameter>();
 
-                #region
-                List<ReportParameter> paramarr = new List<ReportParameter>();
+        query = converter(filltoprint());
 
-                query = converter(filltoprint());
-
-                string addpath = "";
-                bool isArabic = ReportCls.checkLang();
+        string addpath = "";
+        bool isArabic = ReportCls.checkLang();
                 if (isArabic)
                 {
                     if (selectedTab == 0)
@@ -2783,7 +2777,7 @@ fillColumnChart(cb_Items, selectedItemId);
 
                 string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
-                ReportCls.checkLang();
+ReportCls.checkLang();
                 //  getpuritemcount
               
                 clsReports.PurStsReport(query, rep, reppath);
@@ -2793,7 +2787,17 @@ fillColumnChart(cb_Items, selectedItemId);
                 rep.SetParameters(paramarr);
 
                 rep.Refresh();
+}
+        private void Btn_pdf_Click(object sender, RoutedEventArgs e)
+        {//pdf
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
+                #region
+
+                BuildReport();
                 saveFileDialog.Filter = "PDF|*.pdf;";
 
                 if (saveFileDialog.ShowDialog() == true)
@@ -2821,74 +2825,12 @@ fillColumnChart(cb_Items, selectedItemId);
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-
+ List<ItemTransferInvoice> query = new List<ItemTransferInvoice>();
                 #region
-                List<ReportParameter> paramarr = new List<ReportParameter>();
-                List<ItemTransferInvoice> query = new List<ItemTransferInvoice>();
-                query = converter(filltoprint());
+                BuildReport();
 
-                string addpath = "";
-                bool isArabic = ReportCls.checkLang();
-                if (isArabic)
-                {
-                    if (selectedTab == 0)
-                    {
-                        addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurSts.rdlc";
-                    }
-                    else if (selectedTab == 1)
-                    {
-                        addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurPosSts.rdlc";
-                    }
-                    else if (selectedTab == 2)
-                    {
-                        addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurVendorSts.rdlc";
-                    }
-                    else if (selectedTab == 3)
-                    {
-                        addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurUserSts.rdlc";
-                    }
-                    else
-                    {
-                        addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurItemSts.rdlc";
-                    }
-                }
-                else
-                {
-                    //english
-                    if (selectedTab == 0)
-                    { addpath = @"\Reports\StatisticReport\Purchase\En\EnPurSts.rdlc"; }
-                    else if (selectedTab == 1)
-                    {
-                        addpath = @"\Reports\StatisticReport\Purchase\En\EnPurPosSts.rdlc";
-                    }
-                    else if (selectedTab == 2)
-                    {
-                        addpath = @"\Reports\StatisticReport\Purchase\En\EnPurVendorSts.rdlc";
-                    }
-                    else if (selectedTab == 3)
-                    {
-                        addpath = @"\Reports\StatisticReport\Purchase\En\EnPurUserSts.rdlc";
-                    }
-                    else
-                    {
-                        addpath = @"\Reports\StatisticReport\Purchase\En\EnPurItemSts.rdlc";
-                    }
-                }
+                LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.rep_printer_name, short.Parse(MainWindow.rep_print_count));
 
-                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-                ReportCls.checkLang();
-                //  getpuritemcount
-              
-                clsReports.PurStsReport(query, rep, reppath);
-                clsReports.setReportLanguage(paramarr);
-                clsReports.Header(paramarr);
-
-                rep.SetParameters(paramarr);
-
-                rep.Refresh();
-
-                LocalReportExtensions.PrintToPrinter(rep);
                 #endregion
 
                 if (sender != null)
@@ -2985,71 +2927,9 @@ fillColumnChart(cb_Items, selectedItemId);
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-
+ List<ItemTransferInvoice> query = new List<ItemTransferInvoice>();
                 #region
-                List<ReportParameter> paramarr = new List<ReportParameter>();
-                List<ItemTransferInvoice> query = new List<ItemTransferInvoice>();
-                query = converter(filltoprint());
-                string addpath = "";
-                bool isArabic = ReportCls.checkLang();
-                if (isArabic)
-                {
-                    if (selectedTab == 0)
-                    {
-                        addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurSts.rdlc";
-                    }
-                    else if (selectedTab == 1)
-                    {
-                        addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurPosSts.rdlc";
-                    }
-                    else if (selectedTab == 2)
-                    {
-                        addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurVendorSts.rdlc";
-                    }
-                    else if (selectedTab == 3)
-                    {
-                        addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurUserSts.rdlc";
-                    }
-                    else
-                    {
-                        addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurItemSts.rdlc";
-                    }
-                }
-                else
-                {
-                    //english
-                    if (selectedTab == 0)
-                    { addpath = @"\Reports\StatisticReport\Purchase\En\EnPurSts.rdlc"; }
-                    else if (selectedTab == 1)
-                    {
-                        addpath = @"\Reports\StatisticReport\Purchase\En\EnPurPosSts.rdlc";
-                    }
-                    else if (selectedTab == 2)
-                    {
-                        addpath = @"\Reports\StatisticReport\Purchase\En\EnPurVendorSts.rdlc";
-                    }
-                    else if (selectedTab == 3)
-                    {
-                        addpath = @"\Reports\StatisticReport\Purchase\En\EnPurUserSts.rdlc";
-                    }
-                    else
-                    {
-                        addpath = @"\Reports\StatisticReport\Purchase\En\EnPurItemSts.rdlc";
-                    }
-                }
-
-                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-                ReportCls.checkLang();
-                //  getpuritemcount
-            
-                clsReports.PurStsReport(query, rep, reppath);
-                clsReports.setReportLanguage(paramarr);
-                clsReports.Header(paramarr);
-
-                rep.SetParameters(paramarr);
-
-                rep.Refresh();
+                BuildReport();
                 this.Dispatcher.Invoke(() =>
                 {
                     saveFileDialog.Filter = "EXCEL|*.xls;";
@@ -3082,73 +2962,11 @@ fillColumnChart(cb_Items, selectedItemId);
                 #region
                 Window.GetWindow(this).Opacity = 0.2;
                 string pdfpath = "";
-                query = converter(filltoprint());
-                List<ReportParameter> paramarr = new List<ReportParameter>();
 
                 pdfpath = @"\Thumb\report\temp.pdf";
                 pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
 
-                string addpath = "";
-                bool isArabic = ReportCls.checkLang();
-                if (isArabic)
-                {
-                    if (selectedTab == 0)
-                    {
-                        addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurSts.rdlc";
-                    }
-                    else if (selectedTab == 1)
-                    {
-                        addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurPosSts.rdlc";
-                    }
-                    else if (selectedTab == 2)
-                    {
-                        addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurVendorSts.rdlc";
-                    }
-                    else if (selectedTab == 3)
-                    {
-                        addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurUserSts.rdlc";
-                    }
-                    else
-                    {
-                        addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurItemSts.rdlc";
-                    }
-                }
-                else
-                {
-                    //english
-                    if (selectedTab == 0)
-                    { addpath = @"\Reports\StatisticReport\Purchase\En\EnPurSts.rdlc"; }
-                    else if (selectedTab == 1)
-                    {
-                        addpath = @"\Reports\StatisticReport\Purchase\En\EnPurPosSts.rdlc";
-                    }
-                    else if (selectedTab == 2)
-                    {
-                        addpath = @"\Reports\StatisticReport\Purchase\En\EnPurVendorSts.rdlc";
-                    }
-                    else if (selectedTab == 3)
-                    {
-                        addpath = @"\Reports\StatisticReport\Purchase\En\EnPurUserSts.rdlc";
-                    }
-                    else
-                    {
-                        addpath = @"\Reports\StatisticReport\Purchase\En\EnPurItemSts.rdlc";
-                    }
-
-                }
-
-                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-                ReportCls.checkLang();
-                //  getpuritemcount
-               
-                clsReports.PurStsReport(query, rep, reppath);
-                clsReports.setReportLanguage(paramarr);
-                clsReports.Header(paramarr);
-
-                rep.SetParameters(paramarr);
-
-                rep.Refresh();
+                BuildReport();
 
                 LocalReportExtensions.ExportToPDF(rep, pdfpath);
                 wd_previewPdf w = new wd_previewPdf();

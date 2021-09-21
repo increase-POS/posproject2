@@ -2622,7 +2622,90 @@ namespace POS.View.reports
         ReportCls reportclass = new ReportCls();
         LocalReport rep = new LocalReport();
         SaveFileDialog saveFileDialog = new SaveFileDialog();
-        private void Btn_pdf_Click(object sender, RoutedEventArgs e)
+
+        public void BuildReport()
+        {
+
+            List<ReportParameter> paramarr = new List<ReportParameter>();
+
+            string addpath = "";
+            bool isArabic = ReportCls.checkLang();
+            if (isArabic)
+            {
+                if (selectedTab == 0)
+                {
+                    addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArVendor.rdlc";
+                }
+                else if (selectedTab == 1)
+                {
+                    addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArCustomer.rdlc";
+                }
+                else if (selectedTab == 2)
+                {
+                    addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArUser.rdlc";
+                }
+                else if (selectedTab == 3)
+                {
+                    addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArSalary.rdlc";
+                }
+                else if (selectedTab == 4)
+                {
+                    addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArGeneralExpenses.rdlc";
+                }
+                else if (selectedTab == 5)
+                {
+                    addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArAdministrativePull.rdlc";
+                }
+                else if (selectedTab == 6)
+                {
+                    addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArShipping.rdlc";
+                }
+            }
+            else
+            {
+                if (selectedTab == 0)
+                {
+                    addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\Vendor.rdlc";
+                }
+                else if (selectedTab == 1)
+                {
+                    addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\Customer.rdlc";
+                }
+                else if (selectedTab == 2)
+                {
+                    addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\User.rdlc";
+                }
+                else if (selectedTab == 3)
+                {
+                    addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\Salary.rdlc";
+                }
+                else if (selectedTab == 4)
+                {
+                    addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\GeneralExpenses.rdlc";
+                }
+                else if (selectedTab == 5)
+                {
+                    addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\AdministrativePull.rdlc";
+                }
+                else if (selectedTab == 6)
+                {
+                    addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\Shipping.rdlc";
+                }
+            }
+            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+            ReportCls.checkLang();
+
+            clsReports.cashTransferStsPayment(temp, rep, reppath,paramarr);
+            clsReports.setReportLanguage(paramarr);
+            clsReports.Header(paramarr);
+
+            rep.SetParameters(paramarr);
+
+            rep.Refresh();
+
+        }
+            private void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {//pdf
            try
 			{
@@ -2630,83 +2713,7 @@ namespace POS.View.reports
 				SectionData.StartAwait(grid_main);
 
                 #region
-                List<ReportParameter> paramarr = new List<ReportParameter>();
-
-                string addpath = "";
-                bool isArabic = ReportCls.checkLang();
-                if (isArabic)
-                {
-                    if (selectedTab == 0)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArVendor.rdlc";
-                    }
-                    else if (selectedTab == 1)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArCustomer.rdlc";
-                    }
-                    else if (selectedTab == 2)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArUser.rdlc";
-                    }
-                    else if (selectedTab == 3)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArSalary.rdlc";
-                    }
-                    else if (selectedTab == 4)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArGeneralExpenses.rdlc";
-                    }
-                    else if (selectedTab == 5)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArAdministrativePull.rdlc";
-                    }
-                    else if (selectedTab == 6)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArShipping.rdlc";
-                    }
-                }
-                else
-                {
-                    if (selectedTab == 0)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\Vendor.rdlc";
-                    }
-                    else if (selectedTab == 1)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\Customer.rdlc";
-                    }
-                    else if (selectedTab == 2)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\User.rdlc";
-                    }
-                    else if (selectedTab == 3)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\Salary.rdlc";
-                    }
-                    else if (selectedTab == 4)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\GeneralExpenses.rdlc";
-                    }
-                    else if (selectedTab == 5)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\AdministrativePull.rdlc";
-                    }
-                    else if (selectedTab == 6)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\Shipping.rdlc";
-                    }
-                }
-                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-                ReportCls.checkLang();
-
-                clsReports.cashTransferSts(temp, rep, reppath);
-                clsReports.setReportLanguage(paramarr);
-                clsReports.Header(paramarr);
-
-                rep.SetParameters(paramarr);
-
-                rep.Refresh();
+                BuildReport();
 
                 saveFileDialog.Filter = "PDF|*.pdf;";
 
@@ -2737,83 +2744,9 @@ namespace POS.View.reports
 
                 #region
 
-                List<ReportParameter> paramarr = new List<ReportParameter>();
+                BuildReport();
+                LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.rep_printer_name, short.Parse(MainWindow.rep_print_count));
 
-                string addpath="";
-                bool isArabic = ReportCls.checkLang();
-                if (isArabic)
-                {
-                    if (selectedTab == 0)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArVendor.rdlc";
-                    }
-                    else if (selectedTab == 1)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArCustomer.rdlc";
-                    }
-                    else if (selectedTab == 2)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArUser.rdlc";
-                    }
-                    else if (selectedTab == 3)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArSalary.rdlc";
-                    }
-                    else if (selectedTab == 4)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArGeneralExpenses.rdlc";
-                    }
-                    else if (selectedTab == 5)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArAdministrativePull.rdlc";
-                    }
-                    else if (selectedTab == 6)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArShipping.rdlc";
-                    }
-                }
-                else
-                {
-                    if (selectedTab == 0)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\Vendor.rdlc";
-                    }
-                    else if (selectedTab == 1)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\Customer.rdlc";
-                    }
-                    else if (selectedTab == 2)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\User.rdlc";
-                    }
-                    else if (selectedTab == 3)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\Salary.rdlc";
-                    }
-                    else if (selectedTab == 4)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\GeneralExpenses.rdlc";
-                    }
-                    else if (selectedTab == 5)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\AdministrativePull.rdlc";
-                    }
-                    else if (selectedTab == 6)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\Shipping.rdlc";
-                    }
-                }
-                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-                ReportCls.checkLang();
-               
-                clsReports.cashTransferSts(temp, rep, reppath);
-                clsReports.setReportLanguage(paramarr);
-                clsReports.Header(paramarr);
-
-                rep.SetParameters(paramarr);
-                rep.Refresh();
-                LocalReportExtensions.PrintToPrinter(rep);
                 #endregion
 
                 if (sender != null)
@@ -2837,83 +2770,7 @@ namespace POS.View.reports
                 #region
                 Thread t1 = new Thread(() =>
             {
-                List<ReportParameter> paramarr = new List<ReportParameter>();
-
-                string addpath = "";
-                bool isArabic = ReportCls.checkLang();
-                if (isArabic)
-                {
-                    if (selectedTab == 0)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArVendor.rdlc";
-                    }
-                    else if (selectedTab == 1)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArCustomer.rdlc";
-                    }
-                    else if (selectedTab == 2)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArUser.rdlc";
-                    }
-                    else if (selectedTab == 3)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArSalary.rdlc";
-                    }
-                    else if (selectedTab == 4)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArGeneralExpenses.rdlc";
-                    }
-                    else if (selectedTab == 5)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArAdministrativePull.rdlc";
-                    }
-                    else if (selectedTab == 6)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArShipping.rdlc";
-                    }
-                }
-                else
-                {
-                    if (selectedTab == 0)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\Vendor.rdlc";
-                    }
-                    else if (selectedTab == 1)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\Customer.rdlc";
-                    }
-                    else if (selectedTab == 2)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\User.rdlc";
-                    }
-                    else if (selectedTab == 3)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\Salary.rdlc";
-                    }
-                    else if (selectedTab == 4)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\GeneralExpenses.rdlc";
-                    }
-                    else if (selectedTab == 5)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\AdministrativePull.rdlc";
-                    }
-                    else if (selectedTab == 6)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\Shipping.rdlc";
-                    }
-                }
-                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-                ReportCls.checkLang();
-               
-                clsReports.cashTransferSts(temp, rep, reppath);
-                clsReports.setReportLanguage(paramarr);
-                clsReports.Header(paramarr);
-
-                rep.SetParameters(paramarr);
-
-                rep.Refresh();
+                BuildReport();
                 this.Dispatcher.Invoke(() =>
                 {
                     saveFileDialog.Filter = "EXCEL|*.xls;";
@@ -2949,86 +2806,11 @@ namespace POS.View.reports
                 Window.GetWindow(this).Opacity = 0.2;
                 string pdfpath = "";
 
-                List<ReportParameter> paramarr = new List<ReportParameter>();
+              
 
                 pdfpath = @"\Thumb\report\temp.pdf";
                 pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
-
-                string addpath = "";
-                bool isArabic = ReportCls.checkLang();
-                if (isArabic)
-                {
-                    if (selectedTab == 0)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArVendor.rdlc";
-                    }
-                    else if (selectedTab == 1)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArCustomer.rdlc";
-                    }
-                    else if (selectedTab == 2)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArUser.rdlc";
-                    }
-                    else if (selectedTab == 3)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArSalary.rdlc";
-                    }
-                    else if (selectedTab == 4)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArGeneralExpenses.rdlc";
-                    }
-                    else if (selectedTab == 5)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArAdministrativePull.rdlc";
-                    }
-                    else if (selectedTab == 6)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArShipping.rdlc";
-                    }
-                }
-                else
-                {
-                    if (selectedTab == 0)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\Vendor.rdlc";
-                    }
-                    else if (selectedTab == 1)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\Customer.rdlc";
-                    }
-                    else if (selectedTab == 2)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\User.rdlc";
-                    }
-                    else if (selectedTab == 3)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\Salary.rdlc";
-                    }
-                    else if (selectedTab == 4)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\GeneralExpenses.rdlc";
-                    }
-                    else if (selectedTab == 5)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\AdministrativePull.rdlc";
-                    }
-                    else if (selectedTab == 6)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\Shipping.rdlc";
-                    }
-                }
-                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-                ReportCls.checkLang();
-                   
-                clsReports.cashTransferSts(temp, rep, reppath);
-                clsReports.setReportLanguage(paramarr);
-                clsReports.Header(paramarr);
-
-                rep.SetParameters(paramarr);
-
-                rep.Refresh();
+                BuildReport();
 
                 LocalReportExtensions.ExportToPDF(rep, pdfpath);
                 wd_previewPdf w = new wd_previewPdf();

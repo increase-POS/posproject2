@@ -770,7 +770,33 @@ namespace POS.View.reports
         ReportCls reportclass = new ReportCls();
         LocalReport rep = new LocalReport();
         SaveFileDialog saveFileDialog = new SaveFileDialog();
-        private void Btn_pdf_Click(object sender, RoutedEventArgs e)
+        public void BuildReport()
+        {
+            List<ReportParameter> paramarr = new List<ReportParameter>();
+
+            string addpath = "";
+            bool isArabic = ReportCls.checkLang();
+            if (isArabic)
+            {
+                addpath = @"\Reports\StatisticReport\Accounts\Pos\Ar\ArPos.rdlc";
+            }
+            else
+            {
+                addpath = @"\Reports\StatisticReport\Accounts\Pos\En\Pos.rdlc";
+            }
+            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+            ReportCls.checkLang();
+
+            clsReports.cashTransferStsPos(temp, rep, reppath, paramarr);
+            clsReports.setReportLanguage(paramarr);
+            clsReports.Header(paramarr);
+
+            rep.SetParameters(paramarr);
+
+            rep.Refresh();
+        }
+            private void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {//pdf
             try
             {
@@ -778,29 +804,7 @@ namespace POS.View.reports
                     SectionData.StartAwait(grid_main);
 
                 #region
-                List<ReportParameter> paramarr = new List<ReportParameter>();
-
-                string addpath = "";
-                bool isArabic = ReportCls.checkLang();
-                if (isArabic)
-                {
-                    addpath = @"\Reports\StatisticReport\Accounts\Pos\Ar\ArPos.rdlc";
-                }
-                else
-                {
-                    addpath = @"\Reports\StatisticReport\Accounts\Pos\En\Pos.rdlc";
-                }
-                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-                ReportCls.checkLang();
-               
-                clsReports.cashTransferSts(temp, rep, reppath);
-                clsReports.setReportLanguage(paramarr);
-                clsReports.Header(paramarr);
-
-                rep.SetParameters(paramarr);
-
-                rep.Refresh();
+                BuildReport();
 
                 saveFileDialog.Filter = "PDF|*.pdf;";
 
@@ -830,29 +834,9 @@ namespace POS.View.reports
                     SectionData.StartAwait(grid_main);
 
                 #region
-                List<ReportParameter> paramarr = new List<ReportParameter>();
+                BuildReport();
+                LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.rep_printer_name, short.Parse(MainWindow.rep_print_count));
 
-                string addpath = "";
-                bool isArabic = ReportCls.checkLang();
-                if (isArabic)
-                {
-                    addpath = @"\Reports\StatisticReport\Accounts\Pos\Ar\ArPos.rdlc";
-                }
-                else
-                {
-                    addpath = @"\Reports\StatisticReport\Accounts\Pos\En\Pos.rdlc";
-                }
-                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-                ReportCls.checkLang();
-               
-                clsReports.cashTransferSts(temp, rep, reppath);
-                clsReports.setReportLanguage(paramarr);
-                clsReports.Header(paramarr);
-
-                rep.SetParameters(paramarr);
-                rep.Refresh();
-                LocalReportExtensions.PrintToPrinter(rep);
                 #endregion
 
                 if (sender != null)
@@ -876,29 +860,9 @@ namespace POS.View.reports
                 #region
                 Thread t1 = new Thread(() =>
             {
-                List<ReportParameter> paramarr = new List<ReportParameter>();
-
-                string addpath = "";
-                bool isArabic = ReportCls.checkLang();
-                if (isArabic)
-                {
-                    addpath = @"\Reports\StatisticReport\Accounts\Pos\Ar\ArPos.rdlc";
-                }
-                else
-                {
-                    addpath = @"\Reports\StatisticReport\Accounts\Pos\En\Pos.rdlc";
-                }
-                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-                ReportCls.checkLang();
               
-                clsReports.cashTransferSts(temp, rep, reppath);
-                clsReports.setReportLanguage(paramarr);
-                clsReports.Header(paramarr);
 
-                rep.SetParameters(paramarr);
-
-                rep.Refresh();
+                BuildReport();
                 this.Dispatcher.Invoke(() =>
                 {
                     saveFileDialog.Filter = "EXCEL|*.xls;";
@@ -935,32 +899,12 @@ namespace POS.View.reports
                 Window.GetWindow(this).Opacity = 0.2;
                 string pdfpath = "";
 
-                List<ReportParameter> paramarr = new List<ReportParameter>();
+               
 
                 pdfpath = @"\Thumb\report\temp.pdf";
                 pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
 
-                string addpath = "";
-                bool isArabic = ReportCls.checkLang();
-                if (isArabic)
-                {
-                    addpath = @"\Reports\StatisticReport\Accounts\Pos\Ar\ArPos.rdlc";
-                }
-                else
-                {
-                    addpath = @"\Reports\StatisticReport\Accounts\Pos\En\Pos.rdlc";
-                }
-                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-                ReportCls.checkLang();
-              
-                clsReports.cashTransferSts(temp, rep, reppath);
-                clsReports.setReportLanguage(paramarr);
-                clsReports.Header(paramarr);
-
-                rep.SetParameters(paramarr);
-
-                rep.Refresh();
+                BuildReport();
 
                 LocalReportExtensions.ExportToPDF(rep, pdfpath);
                 wd_previewPdf w = new wd_previewPdf();

@@ -45,7 +45,7 @@ namespace POS.Classes
             rep.DataSources.Clear();
             rep.DataSources.Add(new ReportDataSource("DataSetBond", bondsQuery));
             paramarr.Add(new ReportParameter("dateForm", MainWindow.dateFormat));
-          
+
             paramarr.Add(new ReportParameter("trVendor", MainWindow.resourcemanagerreport.GetString("trVendor")));
             paramarr.Add(new ReportParameter("trCustomer", MainWindow.resourcemanagerreport.GetString("trCustomer")));
             paramarr.Add(new ReportParameter("trUser", MainWindow.resourcemanagerreport.GetString("trUser")));
@@ -56,7 +56,7 @@ namespace POS.Classes
 
             paramarr.Add(new ReportParameter("trAdministrativePull", MainWindow.resourcemanagerreport.GetString("trAdministrativePull")));
             paramarr.Add(new ReportParameter("trShippingCompany", MainWindow.resourcemanagerreport.GetString("trShippingCompany")));
-      
+
             paramarr.Add(new ReportParameter("trPull", MainWindow.resourcemanagerreport.GetString("trPull")));
             paramarr.Add(new ReportParameter("trDeposit", MainWindow.resourcemanagerreport.GetString("trDeposit")));
 
@@ -105,22 +105,22 @@ namespace POS.Classes
             rep.ReportPath = reppath;
             rep.EnableExternalImages = true;
             rep.DataSources.Clear();
-           
+
             foreach (var c in cash)
             {
                 ///////////////////
                 c.cash = decimal.Parse(SectionData.DecTostring(c.cash));
-                string s ;
+                string s;
                 switch (c.processType)
                 {
                     case "cash": s = MainWindow.resourcemanagerreport.GetString("trCash");
-                    break;
+                        break;
                     case "doc": s = MainWindow.resourcemanagerreport.GetString("trDocument");
-                    break;
+                        break;
                     case "cheque": s = MainWindow.resourcemanagerreport.GetString("trCheque");
-                    break;
+                        break;
                     case "balance": s = MainWindow.resourcemanagerreport.GetString("trCredit");
-                    break;
+                        break;
                     default: s = c.processType;
                         break;
                 }
@@ -194,8 +194,8 @@ namespace POS.Classes
             //            s = c.processType;
             //            break;
             //    }
-              
-               
+
+
             //}
 
             paramarr.Add(new ReportParameter("dateForm", MainWindow.dateFormat));
@@ -226,7 +226,7 @@ namespace POS.Classes
 
         public static void receivedAccReport(IEnumerable<CashTransfer> cash, LocalReport rep, string reppath, List<ReportParameter> paramarr)
         {
-            
+
             rep.ReportPath = reppath;
             rep.EnableExternalImages = true;
             rep.DataSources.Clear();
@@ -274,7 +274,7 @@ namespace POS.Classes
             rep.ReportPath = reppath;
             rep.EnableExternalImages = true;
             rep.DataSources.Clear();
-            
+
             rep.DataSources.Add(new ReportDataSource("DataSetInvItemLocation", itemLocations));
             paramarr.Add(new ReportParameter("dateForm", MainWindow.dateFormat));
         }
@@ -499,16 +499,31 @@ namespace POS.Classes
             paramarr.Add(new ReportParameter("trPull", MainWindow.resourcemanagerreport.GetString("trPull")));
             paramarr.Add(new ReportParameter("trDeposit", MainWindow.resourcemanagerreport.GetString("trDeposit")));
 
-         
+
         }
 
         public static void cashTransferStsStatement(IEnumerable<CashTransferSts> cashTransfers, LocalReport rep, string reppath, List<ReportParameter> paramarr)
         {
             cashTransferSts(cashTransfers, rep, reppath);
-            
+
             paramarr.Add(new ReportParameter("dateForm", MainWindow.dateFormat));
+
+
+        }
+        public static void cashTransferStsPayment(IEnumerable<CashTransferSts> cashTransfers, LocalReport rep, string reppath, List<ReportParameter> paramarr)
+        {
+            cashTransferSts(cashTransfers, rep, reppath);
            
-           
+            cashTransferProcessTypeConv( paramarr);
+            DateFormConv(paramarr);
+
+        }
+        public static void cashTransferStsPos(IEnumerable<CashTransferSts> cashTransfers, LocalReport rep, string reppath, List<ReportParameter> paramarr)
+        {
+            cashTransferSts(cashTransfers, rep, reppath);
+            cashTransTypeConv(paramarr);
+            DateFormConv(paramarr);
+
         }
 
         public static void cashTransferSts(IEnumerable<CashTransferSts> cashTransfers, LocalReport rep, string reppath)
@@ -530,6 +545,27 @@ namespace POS.Classes
             rep.DataSources.Clear();
             rep.DataSources.Add(new ReportDataSource("DataSetItemTransferInvoice", itemTransferInvoices));
 
+        }
+        public static void DateFormConv(List<ReportParameter> paramarr)
+        {
+
+            paramarr.Add(new ReportParameter("dateForm", MainWindow.dateFormat));
+        }
+        public static void cashTransTypeConv(List<ReportParameter> paramarr)
+        {
+
+            paramarr.Add(new ReportParameter("trPull", MainWindow.resourcemanagerreport.GetString("trPull")));
+            paramarr.Add(new ReportParameter("trDeposit", MainWindow.resourcemanagerreport.GetString("trDeposit")));
+
+        }
+
+        public static void cashTransferProcessTypeConv(List<ReportParameter> paramarr)
+        {
+            paramarr.Add(new ReportParameter("trCash", MainWindow.resourcemanagerreport.GetString("trCash")));
+            paramarr.Add(new ReportParameter("trDocument", MainWindow.resourcemanagerreport.GetString("trDocument")));
+            paramarr.Add(new ReportParameter("trCheque", MainWindow.resourcemanagerreport.GetString("trCheque")));
+            paramarr.Add(new ReportParameter("trCredit", MainWindow.resourcemanagerreport.GetString("trCredit")));
+            paramarr.Add(new ReportParameter("trInv", MainWindow.resourcemanagerreport.GetString("trInv")));
         }
         public static void itemTransferInvTypeConv(List<ReportParameter> paramarr)
         {
