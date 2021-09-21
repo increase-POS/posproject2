@@ -24,5 +24,30 @@ namespace POS_Server.Classes
 
             return DateTime.Parse(sdate);
         }
+
+       public int getdays(DateTime date)
+        {
+            int year;
+            int month;
+            int days;
+
+            year = date.Year;
+            month = date.Month;
+
+            days = getdays(year, month);
+
+
+
+          //  int days = DateTime.DaysInMonth(year, month);
+
+            return days;
+        }
+       public int getdays(int year, int month)
+        {
+            int days = DateTime.DaysInMonth(year, month);
+
+            return days;
+        }
+
     }
 }

@@ -735,19 +735,6 @@ namespace POS_Server.Controllers
                                         })
                     .ToList();
 
-                    //List<string> lstStr = new List<string>();
-                    // lstStr.AddRange(myStrings);
-                    // bool hasMatch = invTypeL.Any(lstStr.Contains);
-                    //bool hasMatch = new string[] { "pd", "pbd", "sd", "sbd", "qd", "ord", "or" }.Any(s => invTypeL.Contains(s));
-                    //if (hasMatch)
-                    //{
-                    //    int sequence = 0;
-                    //    for (int i = 0; i < invoicesList.Count; i++)
-                    //    {
-                    //        sequence++;
-                    //        invoicesList[i].invNumber = sequence.ToString();
-                    //    }
-                    //}
                     if (invoicesList != null)
                     {
                         for (int i = 0; i < invoicesList.Count; i++)
@@ -947,76 +934,80 @@ namespace POS_Server.Controllers
 
             if (valid) // APIKey is valid
             {
-                string[] invTypeArray = invType.Split(',');
-                List<string> invTypeL = new List<string>();
-                foreach (string s in invTypeArray)
-                    invTypeL.Add(s.Trim());
+                var invoicesList = getUnhandeledOrdersList(invType,branchCreatorId,branchId);
 
-                using (incposdbEntities entity = new incposdbEntities())
-                {
-                    var searchPredicate = PredicateBuilder.New<invoices>();
-                    if (branchCreatorId != 0)
-                        searchPredicate = searchPredicate.And(inv => inv.branchCreatorId == branchCreatorId && inv.isActive == true && invTypeL.Contains(inv.invType));
-                    // searchPredicate = searchPredicate.And(inv => invTypeL.Contains(inv.invType));
-                    if (branchId != 0)
-                        searchPredicate = searchPredicate.Or(inv => inv.branchId == branchId && inv.isActive == true && invTypeL.Contains(inv.invType));
-                    var invoicesList = (from b in entity.invoices.Where(searchPredicate)
-                                        join l in entity.branches on b.branchId equals l.branchId into lj
-                                        from x in lj.DefaultIfEmpty()
-                                        where !entity.invoices.Any(y => y.invoiceMainId == b.invoiceId)
-                                        select new InvoiceModel()
-                                        {
-                                            invoiceId = b.invoiceId,
-                                            invNumber = b.invNumber,
-                                            agentId = b.agentId,
-                                            invType = b.invType,
-                                            total = b.total,
-                                            totalNet = b.totalNet,
-                                            paid = b.paid,
-                                            deserved = b.deserved,
-                                            deservedDate = b.deservedDate,
-                                            invDate = b.invDate,
-                                            invoiceMainId = b.invoiceMainId,
-                                            invCase = b.invCase,
-                                            invTime = b.invTime,
-                                            notes = b.notes,
-                                            vendorInvNum = b.vendorInvNum,
-                                            vendorInvDate = b.vendorInvDate,
-                                            createUserId = b.createUserId,
-                                            updateDate = b.updateDate,
-                                            updateUserId = b.updateUserId,
-                                            branchId = b.branchId,
-                                            discountValue = b.discountValue,
-                                            discountType = b.discountType,
-                                            tax = b.tax,
-                                            taxtype = b.taxtype,
-                                            name = b.name,
-                                            isApproved = b.isApproved,
-                                            branchName = x.name,
-                                            branchCreatorId = b.branchCreatorId,
-                                            shippingCompanyId = b.shippingCompanyId,
-                                            shipUserId = b.shipUserId,
-                                            userId = b.userId,
-                                            manualDiscountType = b.manualDiscountType,
-                                            manualDiscountValue = b.manualDiscountValue,
-                                        })
-                    .ToList();
-                    if (invoicesList != null)
-                    {
-                        for (int i = 0; i < invoicesList.Count; i++)
-                        {
-                            int invoiceId = invoicesList[i].invoiceId;
-                            int itemCount = entity.itemsTransfer.Where(x => x.invoiceId == invoiceId).Select(x => x.itemsTransId).ToList().Count;
-                            invoicesList[i].itemsCount = itemCount;
-                        }
-                    }
-                    if (invoicesList == null)
-                        return NotFound();
-                    else
-                        return Ok(invoicesList);
-                }
+                return Ok(invoicesList);
+                //}
             }
             return NotFound();
+        }
+        public List<InvoiceModel> getUnhandeledOrdersList(string invType, int branchCreatorId, int branchId)
+        {
+            string[] invTypeArray = invType.Split(',');
+            List<string> invTypeL = new List<string>();
+            foreach (string s in invTypeArray)
+                invTypeL.Add(s.Trim());
+
+            using (incposdbEntities entity = new incposdbEntities())
+            {
+                var searchPredicate = PredicateBuilder.New<invoices>();
+                if (branchCreatorId != 0)
+                    searchPredicate = searchPredicate.And(inv => inv.branchCreatorId == branchCreatorId && inv.isActive == true && invTypeL.Contains(inv.invType));
+                // searchPredicate = searchPredicate.And(inv => invTypeL.Contains(inv.invType));
+                if (branchId != 0)
+                    searchPredicate = searchPredicate.Or(inv => inv.branchId == branchId && inv.isActive == true && invTypeL.Contains(inv.invType));
+                var invoicesList = (from b in entity.invoices.Where(searchPredicate)
+                                    join l in entity.branches on b.branchId equals l.branchId into lj
+                                    from x in lj.DefaultIfEmpty()
+                                    where !entity.invoices.Any(y => y.invoiceMainId == b.invoiceId)
+                                    select new InvoiceModel()
+                                    {
+                                        invoiceId = b.invoiceId,
+                                        invNumber = b.invNumber,
+                                        agentId = b.agentId,
+                                        invType = b.invType,
+                                        total = b.total,
+                                        totalNet = b.totalNet,
+                                        paid = b.paid,
+                                        deserved = b.deserved,
+                                        deservedDate = b.deservedDate,
+                                        invDate = b.invDate,
+                                        invoiceMainId = b.invoiceMainId,
+                                        invCase = b.invCase,
+                                        invTime = b.invTime,
+                                        notes = b.notes,
+                                        vendorInvNum = b.vendorInvNum,
+                                        vendorInvDate = b.vendorInvDate,
+                                        createUserId = b.createUserId,
+                                        updateDate = b.updateDate,
+                                        updateUserId = b.updateUserId,
+                                        branchId = b.branchId,
+                                        discountValue = b.discountValue,
+                                        discountType = b.discountType,
+                                        tax = b.tax,
+                                        taxtype = b.taxtype,
+                                        name = b.name,
+                                        isApproved = b.isApproved,
+                                        branchName = x.name,
+                                        branchCreatorId = b.branchCreatorId,
+                                        shippingCompanyId = b.shippingCompanyId,
+                                        shipUserId = b.shipUserId,
+                                        userId = b.userId,
+                                        manualDiscountType = b.manualDiscountType,
+                                        manualDiscountValue = b.manualDiscountValue,
+                                    })
+                .ToList();
+                if (invoicesList != null)
+                {
+                    for (int i = 0; i < invoicesList.Count; i++)
+                    {
+                        int invoiceId = invoicesList[i].invoiceId;
+                        int itemCount = entity.itemsTransfer.Where(x => x.invoiceId == invoiceId).Select(x => x.itemsTransId).ToList().Count;
+                        invoicesList[i].itemsCount = itemCount;
+                    }
+                }
+                return invoicesList;
+            }
         }
         [HttpGet]
         [Route("GetCountUnHandeledOrders")]

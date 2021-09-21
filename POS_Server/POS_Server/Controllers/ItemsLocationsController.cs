@@ -480,8 +480,10 @@ namespace POS_Server.Controllers
                         var itemId = entity.itemsUnits.Where(x => x.itemUnitId == item.itemUnitId).Select(x => x.itemId).Single();
                         var itemV = entity.items.Find(itemId);
 
+                        if (item.invoiceId == 0 || item.invoiceId == null)
                         increaseItemQuantity(item.itemUnitId.Value, freeZoneLocation, (int)item.quantity,userId);
-
+                        else//for order
+                            increaseLockedItem(item.itemUnitId.Value, freeZoneLocation, (int)item.quantity,(int)item.invoiceId, userId);
                        bool isExcedded = isExceddMaxQuantity((int)item.itemUnitId,branchId ,userId );
                         if (isExcedded == true) //add notification
                         {
@@ -615,7 +617,7 @@ namespace POS_Server.Controllers
 
         [HttpPost]
         [Route("receiptOrder")]
-        public IHttpActionResult receiptOrder(string itemLocationObject, int toBranch, int userId)
+        public IHttpActionResult receiptOrder(string itemLocationObject,string orderList, int toBranch, int userId, string objectName, string notificationObj)
         {
             var re = Request;
             var headers = re.Headers;
@@ -630,9 +632,14 @@ namespace POS_Server.Controllers
             itemLocationObject = itemLocationObject.Replace("\\", string.Empty);
             itemLocationObject = itemLocationObject.Trim('"');
 
+            orderList = orderList.Replace("\\", string.Empty);
+            orderList = orderList.Trim('"');
+
             if (valid)
             {
                 List<itemsLocations> itemList = JsonConvert.DeserializeObject<List<itemsLocations>>(itemLocationObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+                List<itemsTransfer> items = JsonConvert.DeserializeObject<List<itemsTransfer>>(orderList, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+                
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var freeZoneLocation = (from s in entity.sections.Where(x => x.branchId == toBranch && x.isFreeZone == 1)
@@ -647,9 +654,40 @@ namespace POS_Server.Controllers
                         itemL.updateDate = DateTime.Now;
                         itemL.updateUserId = userId;
                         entity.SaveChanges();
-                       // decreaseItemQuantity(item.itemUnitId.Value,item.itemsLocId,(int)item.quantity,userId);
-                        //decreaseItemQuantity(item.itemUnitId.Value, fromBranch, (int)item.quantity, userId);
-                        increaseItemQuantity(item.itemUnitId.Value, freeZoneLocation, (int)item.quantity, userId);
+
+                        var itemId = entity.itemsUnits.Where(x => x.itemUnitId == item.itemUnitId).Select(x => x.itemId).Single();
+                       
+                        var itemV = entity.items.Find(itemId);
+                        int quantity = (int)item.quantity;
+                        foreach(itemsTransfer it in items)
+                        {
+                            if (it.itemUnitId == item.itemUnitId && it.invoiceId != 0 && it.invoiceId != null)//for order
+                            {
+                                int itemQuantity = 0;
+                                if (quantity >= item.quantity)
+                                {
+                                    itemQuantity = (int)item.quantity;
+                                    quantity -= (int)item.quantity;
+                                    item.quantity = quantity;
+                                    it.quantity = 0;
+                                }
+                                else
+                                {
+                                    itemQuantity = quantity;
+                                    quantity = 0;
+                                    it.quantity -= quantity;
+                                }
+                                increaseLockedItem(item.itemUnitId.Value, freeZoneLocation, itemQuantity, (int)it.invoiceId, userId);
+                            }
+                        }
+                        if(quantity != 0)
+                        increaseItemQuantity(item.itemUnitId.Value, freeZoneLocation, quantity, userId);
+       
+                        bool isExcedded = isExceddMaxQuantity((int)item.itemUnitId, toBranch, userId);
+                        if (isExcedded == true) //add notification
+                        {
+                            notificationController.addNotifications(objectName, notificationObj, toBranch, itemV.name);
+                        }
                     }
                 }
             }
@@ -1680,7 +1718,7 @@ namespace POS_Server.Controllers
                                     where il.itemUnitId == itemUnitId && il.invoiceId == null
                                     join l in entity.locations on il.locationId equals l.locationId
                                     join s in entity.sections on l.sectionId equals s.sectionId
-                                    where s.branchId == branchId
+                                    where s.branchId == branchId 
                                     select new
                                     {
                                         il.itemsLocId,
@@ -1695,7 +1733,7 @@ namespace POS_Server.Controllers
                         {
                             var locations = entity.locations.Where(x => x.branchId == branchId && x.isActive == 1).Select(x => new { x.locationId }).OrderBy(x => x.locationId).ToList();
                             locationId = dic["locationId"];
-                            if (locationId == 0 && locations.Count > 1)
+                            if ((locationId == 0 && locationId == null) && locations.Count > 1)
                                 locationId = locations[0].locationId; // free zoon
                             itemsLocations itemL = new itemsLocations();
                             itemL.itemUnitId = itemUnitId;
@@ -1705,20 +1743,21 @@ namespace POS_Server.Controllers
                             itemL.updateDate = DateTime.Now;
                             itemL.createUserId = userId;
                             itemL.updateUserId = userId;
+                            itemL.invoiceId = null;
 
                             entity.itemsLocations.Add(itemL);
                             entity.SaveChanges();
                         }
                     }
-                    //return Ok(dic["lockedQuantity"] +":"+ requiredAmount);
+                   // return Ok(dic["lockedQuantity"] +":"+ dic["remainQuantity"]+ ":"+ dic["requiredQuantity"]);
                     // reserve items
                     if (dic["lockedQuantity"] > 0)
                     {
+                        int lockedQuantity = dic["lockedQuantity"] ;
+                        if (lockedQuantity > requiredAmount)
+                            lockedQuantity = requiredAmount;
                         var item = (from il in entity.itemsLocations
                                     where il.itemUnitId == itemUnitId && il.invoiceId == invoiceId
-                                    join l in entity.locations on il.locationId equals l.locationId
-                                    join s in entity.sections on l.sectionId equals s.sectionId
-                                    where s.branchId == branchId
                                     select new
                                     {
                                         il.itemsLocId,
@@ -1735,7 +1774,8 @@ namespace POS_Server.Controllers
                             if (locationId == 0 && locations.Count > 1)
                                 locationId = locations[0].locationId; // free zoon
                         }
-                        increaseLockedItem(itemUnitId, locationId, dic["lockedQuantity"], invoiceId, userId);
+                        
+                        increaseLockedItem(itemUnitId, locationId, lockedQuantity, invoiceId, userId);
                     }
                     //return Ok(dic["requiredQuantity"]);
                     if (dic["requiredQuantity"] > 0)
@@ -1864,17 +1904,19 @@ namespace POS_Server.Controllers
             dic.Add("requiredQuantity", 0);
             dic.Add("lockedQuantity", 0);
             dic.Add("isConsumed", 0);
+
             int remainQuantity = 0;
             int firstRequir = requiredAmount;
             decimal newQuant = 0;
             int lockedAmount = 0;
+            int isConsumed = 0;
 
             using (incposdbEntities entity = new incposdbEntities())
             {
-                var unit = entity.itemsUnits.Where(x => x.itemUnitId == itemUnitId).Select(x => new { x.unitId, x.itemId }).FirstOrDefault();
+                var unit = entity.itemsUnits.Where(x => x.itemUnitId == itemUnitId).Select(x => new { x.unitId, x.itemId,x.unitValue }).FirstOrDefault();
                 var upperUnit = entity.itemsUnits.Where(x => x.subUnitId == unit.unitId && x.itemId == unit.itemId).Select(x => new { x.unitValue, x.itemUnitId }).FirstOrDefault();
 
-                if (upperUnit != null)
+                if (upperUnit != null )
                 {
                     decimal unitValue = (decimal)upperUnit.unitValue;
                     int breakNum = (int)Math.Ceiling(requiredAmount / unitValue);
@@ -1897,6 +1939,7 @@ namespace POS_Server.Controllers
                     for (int i = 0; i < itemInLocs.Count; i++)
                     {
                         dic["isConsumed"] = 1;
+                        isConsumed = 1;
                         var itemL = entity.itemsLocations.Find(itemInLocs[i].itemsLocId);
 
                         if (breakNum <= itemInLocs[i].quantity)
@@ -1904,15 +1947,17 @@ namespace POS_Server.Controllers
                             itemL.quantity = itemInLocs[i].quantity - breakNum;
                             entity.SaveChanges();
                             remainQuantity = (int)newQuant - firstRequir;
+                            
+                            // lockedAmount += breakNum * (int)upperUnit.unitValue;
+                            //lockedAmount = breakNum ;
+                            lockedAmount = firstRequir  ;
                             requiredAmount = 0;
-                            lockedAmount = breakNum;
-
                             // return remainQuantity;
                             dic["remainQuantity"] = remainQuantity;
                             dic["locationId"] = (int)itemInLocs[i].locationId;
                             dic["requiredQuantity"] = 0;
-                            dic["lockedQuantity"] += lockedAmount * (int)upperUnit.unitValue;
-                            //dic["lockedQuantity"] += lockedAmount  ;
+                            //dic["lockedQuantity"] += lockedAmount * (int)upperUnit.unitValue;
+                            dic["lockedQuantity"] += lockedAmount;
 
                             return dic;
                         }
@@ -1920,13 +1965,13 @@ namespace POS_Server.Controllers
                         {
                             itemL.quantity = 0;
                             breakNum = (int)(breakNum - itemInLocs[i].quantity);
-                            lockedAmount += (int)itemInLocs[i].quantity * (int)upperUnit.unitValue;
+                            lockedAmount += (int)itemInLocs[i].quantity ;
+                          // lockedAmount = (int)itemInLocs[i].quantity;
                             requiredAmount = requiredAmount - ((int)itemInLocs[i].quantity * (int)upperUnit.unitValue);
                             entity.SaveChanges();
                             dic["locationId"] = (int)itemInLocs[i].locationId;
-                            dic["requiredQuantity"] = requiredAmount - ((int)itemInLocs[i].quantity * (int)upperUnit.unitValue);
+                            dic["requiredQuantity"] = requiredAmount;
                            // dic["lockedQuantity"] += lockedAmount ;
-                            dic["lockedQuantity"] += dic["requiredQuantity"] * (int)upperUnit.unitValue;
 
 
                         }
@@ -1938,16 +1983,27 @@ namespace POS_Server.Controllers
                         dic = new Dictionary<string, int>();
                         dic = lockUpperUnit(upperUnit.itemUnitId, branchId, breakNum, userId);
 
-                        var item = (from s in entity.sections
-                                    where s.branchId == branchId
-                                    join l in entity.locations on s.sectionId equals l.sectionId
-                                    join il in entity.itemsLocations on l.locationId equals il.locationId
-                                    where il.itemUnitId == upperUnit.itemUnitId && il.invoiceId == null
-                                    select new
-                                    {
-                                        il.itemsLocId,
-                                    }).FirstOrDefault();
 
+                        //if (dic["isConsumed"] == 1)
+                        //{
+                        int locationId = dic["locationId"];
+                        if (locationId == 0)
+                        {
+                            var locations = entity.locations.Where(x => x.branchId == branchId && x.isActive == 1).Select(x => new { x.locationId }).OrderBy(x => x.locationId).ToList();
+
+                            if (locationId == 0 && locations.Count >= 1)
+                                locationId = locations[0].locationId; // free zoon
+                        }
+                        var item = (from s in entity.sections
+                                        where s.branchId == branchId
+                                        join l in entity.locations on s.sectionId equals l.sectionId
+                                        join il in entity.itemsLocations on l.locationId equals il.locationId
+                                        where il.itemUnitId == upperUnit.itemUnitId && il.invoiceId == null
+                                        && il.locationId == locationId
+                                        select new
+                                        {
+                                            il.itemsLocId,
+                                        }).FirstOrDefault();
                             if (item != null)
                             {
                                 var itemloc = entity.itemsLocations.Find(item.itemsLocId);
@@ -1956,14 +2012,7 @@ namespace POS_Server.Controllers
                             }
                             else
                             {
-                                int locationId = dic["locationId"];
-                                if (locationId == 0)
-                                {
-                                    var locations = entity.locations.Where(x => x.branchId == branchId && x.isActive == 1).Select(x => new { x.locationId }).OrderBy(x => x.locationId).ToList();
-
-                                    if (locationId == 0 && locations.Count >= 1)
-                                        locationId = locations[0].locationId; // free zoon
-                                }
+                               
                                 itemsLocations itemL = new itemsLocations();
                                 itemL.itemUnitId = upperUnit.itemUnitId;
                                 itemL.locationId = locationId;
@@ -1977,24 +2026,35 @@ namespace POS_Server.Controllers
                                 entity.SaveChanges();
 
                             }
-
+                        //}
                         //dic["remainQuantity"] = (int)newQuant - firstRequir;
-                       // dic["lockedQuantity"] += ((int)newQuant - firstRequir) * (int)upperUnit.unitValue;
-                        if (dic["isConsumed"] == 0)
+                        // dic["lockedQuantity"] += ((int)newQuant - firstRequir) * (int)upperUnit.unitValue;
+                        dic["locationId"] = locationId;
+                       if (dic["lockedQuantity"] > 0)
+                        {
+                            isConsumed = 1;
+                            //int locked = dic["lockedQuantity"] ;
+                            //if(locked >= breakNum)
+                            //    dic["lockedQuantity"] = (int)upperUnit.unitValue * lockedAmount + breakNum ;
+                            //else
+                            //    dic["lockedQuantity"] = (int)upperUnit.unitValue * lockedAmount + locked;
+                            lockedAmount += dic["lockedQuantity"] * (int)upperUnit.unitValue;
+                            dic["lockedQuantity"] = lockedAmount;
+                        }
+                       //else
+                       //     dic["lockedQuantity"] = dic["lockedQuantity"] * (int)upperUnit.unitValue;
+                       // isConsumed = dic["isConsumed"];
+                        if (isConsumed == 0)
                         {
                             dic["requiredQuantity"] = requiredAmount;
-                            dic["lockedQuantity"] = 0;
                             dic["remainQuantity"] = 0;
                         }
                         else
                         {
                             dic["remainQuantity"] = (int)newQuant - firstRequir;
-                            dic["requiredQuantity"] = breakNum * (int)upperUnit.unitValue;
-                            dic["lockedQuantity"] += ((int)newQuant - firstRequir) * (int)upperUnit.unitValue;
-                        }
-                        //dic["lockedQuantity"] += lockedAmount * (int)upperUnit.unitValue;
-                       
-
+                           // dic["requiredQuantity"] = breakNum * (int)upperUnit.unitValue;
+                            dic["requiredQuantity"] = dic["requiredQuantity"] * (int)upperUnit.unitValue;
+                        }                     
                         return dic;
                     }
                 }
@@ -2246,6 +2306,72 @@ namespace POS_Server.Controllers
                 }
             }
             //else
+            return NotFound();
+        }
+        [HttpGet]
+        [Route("getShortageItems")]
+        public IHttpActionResult getShortageItems(int branchId)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                InvoicesController c = new InvoicesController();
+                var orders = c.getUnhandeledOrdersList("or",0,branchId);
+
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    List<ItemTransferModel> requiredTransfers = new List<ItemTransferModel>();
+                    foreach (InvoiceModel invoice in orders)
+                    {
+                        var itemsTransfer = entity.itemsTransfer.Where(x => x.invoiceId == invoice.invoiceId).ToList();
+                        foreach(itemsTransfer tr in itemsTransfer)
+                        {
+                            var lockedQuantity = entity.itemsLocations
+                                .Where(x => x.invoiceId == invoice.invoiceId && x.itemUnitId == tr.itemUnitId)
+                                .Select(x => x.quantity).Sum();
+                            var availableAmount = getAmountInBranch((int)tr.itemUnitId,branchId);
+                            var item = (from i in entity.items
+                                        join u in entity.itemsUnits on i.itemId equals u.itemId
+                                        where u.itemUnitId == tr.itemUnitId
+                                        select new ItemModel()
+                                        {
+                                            itemId = i.itemId,
+                                            name = i.name,
+                                            unitName = u.units.name,
+                                        }).FirstOrDefault();
+                            if (lockedQuantity == null)
+                                lockedQuantity = 0;
+                            if((lockedQuantity + availableAmount) < tr.quantity) // there is a shortage in order amount
+                            {
+                                long requiredQuantity = (long)tr.quantity - ((long)lockedQuantity + (long) availableAmount);
+                                ItemTransferModel transfer = new ItemTransferModel()
+                                {
+                                    invNumber = invoice.invNumber,
+                                    invoiceId = invoice.invoiceId,
+                                    price = 0,
+                                    quantity = requiredQuantity,
+                                    itemUnitId = tr.itemUnitId,
+                                    itemId = item.itemId,
+                                    itemName = item.name,
+                                    unitName = item.unitName,
+                                };
+                                requiredTransfers.Add(transfer);
+                            }
+                            
+                        }
+                    }
+                    return Ok(requiredTransfers);
+                }
+            }
             return NotFound();
         }
         [HttpPost]

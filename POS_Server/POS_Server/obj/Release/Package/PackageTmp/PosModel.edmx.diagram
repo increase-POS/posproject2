@@ -262,6 +262,7 @@
         <EntityTypeShape EntityType="incposdbModel.invoiceOrder" Width="1.5" PointX="18.75" PointY="78.75" />
         <AssociationConnector Association="incposdbModel.FK_invoiceOrder_invoices" />
         <AssociationConnector Association="incposdbModel.FK_invoiceOrder_invoices1" />
+        <AssociationConnector Association="incposdbModel.FK_invoiceOrder_itemsTransfer" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

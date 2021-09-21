@@ -287,6 +287,7 @@
     <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
     <Property Name="isDefault" Type="Byte" Nullable="false" />
     <NavigationProperty Name="cities" Relationship="Self.FK_cities_countriesCodes" FromRole="countriesCodes" ToRole="cities" />
+    <Property Name="currencyId" Type="Int32" Nullable="false" />
   </EntityType>
   <EntityType Name="coupons">
     <Key>
@@ -679,6 +680,7 @@
     <NavigationProperty Name="locations" Relationship="Self.FK_itemsTransfer_locations" FromRole="itemsTransfer" ToRole="locations" />
     <NavigationProperty Name="locations1" Relationship="Self.FK_itemsTransfer_locations1" FromRole="itemsTransfer" ToRole="locations" />
     <NavigationProperty Name="itemTransferOffer" Relationship="Self.FK_itemTransferOffer_itemsTransfer" FromRole="itemsTransfer" ToRole="itemTransferOffer" />
+    <NavigationProperty Name="invoiceOrder" Relationship="incposdbModel.FK_invoiceOrder_itemsTransfer" FromRole="itemsTransfer" ToRole="invoiceOrder" />
   </EntityType>
   <EntityType Name="itemsUnits">
     <Key>
@@ -4366,6 +4368,10 @@
       <End Role="invoices" EntitySet="invoices" />
       <End Role="invoiceOrder" EntitySet="invoiceOrder" />
     </AssociationSet>
+    <AssociationSet Name="FK_invoiceOrder_itemsTransfer" Association="incposdbModel.FK_invoiceOrder_itemsTransfer">
+      <End Role="itemsTransfer" EntitySet="itemsTransfer" />
+      <End Role="invoiceOrder" EntitySet="invoiceOrder" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="paperSize">
     <Key>
@@ -4549,6 +4555,9 @@
     <Property Name="orderId" Type="Int32" />
     <NavigationProperty Name="invoices" Relationship="incposdbModel.FK_invoiceOrder_invoices" FromRole="invoiceOrder" ToRole="invoices" />
     <NavigationProperty Name="invoices1" Relationship="incposdbModel.FK_invoiceOrder_invoices1" FromRole="invoiceOrder" ToRole="invoices" />
+    <Property Name="quantity" Type="Int32" />
+    <Property Name="itemsTransferId" Type="Int32" />
+    <NavigationProperty Name="itemsTransfer" Relationship="incposdbModel.FK_invoiceOrder_itemsTransfer" FromRole="invoiceOrder" ToRole="itemsTransfer" />
   </EntityType>
   <Association Name="FK_invoiceOrder_invoices">
     <End Type="incposdbModel.invoices" Role="invoices" Multiplicity="0..1" />
@@ -4571,6 +4580,18 @@
       </Principal>
       <Dependent Role="invoiceOrder">
         <PropertyRef Name="orderId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_invoiceOrder_itemsTransfer">
+    <End Type="incposdbModel.itemsTransfer" Role="itemsTransfer" Multiplicity="0..1" />
+    <End Type="incposdbModel.invoiceOrder" Role="invoiceOrder" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="itemsTransfer">
+        <PropertyRef Name="itemsTransId" />
+      </Principal>
+      <Dependent Role="invoiceOrder">
+        <PropertyRef Name="itemsTransferId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

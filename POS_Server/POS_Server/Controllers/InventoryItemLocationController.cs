@@ -55,7 +55,7 @@ namespace POS_Server.Controllers
                                     canDelete = true,
                                     itemName = u.items.name,
                                     section = lo.sections.name,
-                                    location = lo.x + "-" + lo.y + "-" + lo.z,
+                                    location = lo.x + lo.y +  lo.z,
                                     unitName = un.name,
                                     
 

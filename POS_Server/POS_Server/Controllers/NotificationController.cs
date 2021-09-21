@@ -158,11 +158,11 @@ namespace POS_Server.Controllers
             notificationObj = notificationObj.Replace("\\", string.Empty);
             notificationObj = notificationObj.Trim('"');
             notification Object = JsonConvert.DeserializeObject<notification>(notificationObj, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
-            try
-            {
+            //try
+            //{
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    var users = (from u in entity.users.Where(x => x.isActive == 1)
+                    var users = (from u in entity.users.Where(x => x.isActive == 1 && x.userId != 1 && x.userId !=2)
                                  join b in entity.branchesUsers on u.userId equals b.userId
                                  where b.branchId == branchId
                                  select new UserModel()
@@ -176,8 +176,10 @@ namespace POS_Server.Controllers
 
                     var notEntity = entity.Set<notification>();
                     notification not = notEntity.Add(Object);
+                   
                     entity.SaveChanges();
-
+                    notificationUser notUser;
+                    var notUserEntity = entity.Set<notificationUser>();
                     foreach (UserModel user in users)
                     {
                         var groupObjects = (from GO in entity.groupObject
@@ -211,11 +213,11 @@ namespace POS_Server.Controllers
                                             }).ToList();
                      
                         var element = groupObjects.Where(X => X.ObjectName == objectName).FirstOrDefault();
+                    if(element != null)
                         if (element.showOb == 1)
                         {
                             // add notification to users
-                            var notUserEntity = entity.Set<notificationUser>();
-                            notificationUser notUser = new notificationUser()
+                            notUser = new notificationUser()
                             {
                                 notId = not.notId,
                                 userId = user.userId,
@@ -228,13 +230,36 @@ namespace POS_Server.Controllers
                             notUserEntity.Add(notUser);
                         }
                     }
+
+                    notUser = new notificationUser()
+                    {
+                        notId = not.notId,
+                        userId = 1,
+                        isRead = false,
+                        createDate = DateTime.Now,
+                        updateDate = DateTime.Now,
+                        createUserId = Object.createUserId,
+                        updateUserId = Object.createUserId,
+                    };
+                    notUserEntity.Add(notUser);
+                    notUser = new notificationUser()
+                    {
+                        notId = not.notId,
+                        userId = 2,
+                        isRead = false,
+                        createDate = DateTime.Now,
+                        updateDate = DateTime.Now,
+                        createUserId = Object.createUserId,
+                        updateUserId = Object.createUserId,
+                    };
+                    notUserEntity.Add(notUser);
                     entity.SaveChanges();
                 }
-            }
-            catch
-            {
+            //}
+            //catch
+            //{
 
-            }
+            //}
         }
        
     }

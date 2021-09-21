@@ -17,8 +17,11 @@ namespace POS_Server
         public int id { get; set; }
         public Nullable<int> invoiceId { get; set; }
         public Nullable<int> orderId { get; set; }
+        public Nullable<int> quantity { get; set; }
+        public Nullable<int> itemsTransferId { get; set; }
     
         public virtual invoices invoices { get; set; }
         public virtual invoices invoices1 { get; set; }
+        public virtual itemsTransfer itemsTransfer { get; set; }
     }
 }

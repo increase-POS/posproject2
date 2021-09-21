@@ -42,7 +42,7 @@ namespace POS_Server.Controllers
                                             itemId = i.itemId,
                                             itemName = i.name,
                                             quantity = t.quantity,
-                                            invoiceId = t.invoiceId,
+                                            invoiceId = entity.invoiceOrder.Where(x=> x.itemsTransferId == t.itemsTransId).Select(x=> x.orderId).FirstOrDefault(),
                                             invNumber = inv.invNumber,
                                             locationIdNew = t.locationIdNew,
                                             locationIdOld = t.locationIdOld,
@@ -96,17 +96,17 @@ namespace POS_Server.Controllers
                 // delete old invoice items
                 using (incposdbEntities entity = new incposdbEntities())
                 {
+                    List<invoiceOrder> iol = entity.invoiceOrder.Where(x => x.invoiceId == invoiceId).ToList();
+                    entity.invoiceOrder.RemoveRange(iol);
+                    entity.SaveChanges();
+ 
                     List<itemsTransfer> items = entity.itemsTransfer.Where(x => x.invoiceId == invoiceId).ToList();
                     entity.itemsTransfer.RemoveRange(items);
-                    try { entity.SaveChanges(); }
-                    catch { }
+                    entity.SaveChanges(); 
 
-                }
-     
-                using (incposdbEntities entity = new incposdbEntities())
-                {
                     for (int i = 0; i < transferObj.Count; i++)
                     {
+                        itemsTransfer t;
                         if (transferObj[i].updateUserId == 0 || transferObj[i].updateUserId == null)
                         {
                             Nullable<int> id = null;
@@ -121,24 +121,35 @@ namespace POS_Server.Controllers
                             transferObj[i].itemSerial = "";
 
                         var transferEntity = entity.Set<itemsTransfer>();
-
+                        int orderId = (int)transferObj[i].invoiceId;
                         transferObj[i].invoiceId = invoiceId;
                         transferObj[i].createDate = DateTime.Now;
                         transferObj[i].updateDate = DateTime.Now;
                         transferObj[i].updateUserId = transferObj[i].createUserId;
 
-                        entity.itemsTransfer.Add(transferObj[i]);
-                     
-                    }
-                    try
-                    {
+                       t = entity.itemsTransfer.Add(transferObj[i]);
                         entity.SaveChanges();
+                        if ( orderId != 0)
+                            {
+                                invoiceOrder invoiceOrder = new invoiceOrder()
+                                {
+                                    invoiceId = invoiceId,
+                                    orderId = orderId,
+                                    quantity = (int)transferObj[i].quantity,
+                                    itemsTransferId = t.itemsTransId,
+                                };
+                                entity.invoiceOrder.Add(invoiceOrder);
+                            }
                     }
+                    //try
+                    //{
+                        entity.SaveChanges();
+                    //}
 
-                    catch
-                    {
-                        return false;
-                    }
+                    //catch
+                    //{
+                    //    return false;
+                    //}
                 }
 
             }

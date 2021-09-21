@@ -18,6 +18,7 @@ namespace POS_Server
         public itemsTransfer()
         {
             this.itemTransferOffer = new HashSet<itemTransferOffer>();
+            this.invoiceOrder = new HashSet<invoiceOrder>();
         }
     
         public int itemsTransId { get; set; }
@@ -42,5 +43,7 @@ namespace POS_Server
         public virtual locations locations1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<itemTransferOffer> itemTransferOffer { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<invoiceOrder> invoiceOrder { get; set; }
     }
 }

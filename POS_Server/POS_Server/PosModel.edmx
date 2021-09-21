@@ -224,6 +224,7 @@
           <Property Name="currency" Type="nvarchar" MaxLength="50" />
           <Property Name="name" Type="nvarchar" MaxLength="100" />
           <Property Name="isDefault" Type="tinyint" Nullable="false" />
+          <Property Name="currencyId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="coupons">
           <Key>
@@ -383,6 +384,8 @@
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="invoiceId" Type="int" />
           <Property Name="orderId" Type="int" />
+          <Property Name="quantity" Type="int" />
+          <Property Name="itemsTransferId" Type="int" />
         </EntityType>
         <EntityType Name="invoices">
           <Key>
@@ -1895,6 +1898,18 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
             </Principal>
             <Dependent Role="invoiceOrder">
               <PropertyRef Name="orderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_invoiceOrder_itemsTransfer">
+          <End Role="itemsTransfer" Type="Self.itemsTransfer" Multiplicity="0..1" />
+          <End Role="invoiceOrder" Type="Self.invoiceOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="itemsTransfer">
+              <PropertyRef Name="itemsTransId" />
+            </Principal>
+            <Dependent Role="invoiceOrder">
+              <PropertyRef Name="itemsTransferId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3724,6 +3739,10 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
             <End Role="invoices" EntitySet="invoices" />
             <End Role="invoiceOrder" EntitySet="invoiceOrder" />
           </AssociationSet>
+          <AssociationSet Name="FK_invoiceOrder_itemsTransfer" Association="Self.FK_invoiceOrder_itemsTransfer">
+            <End Role="itemsTransfer" EntitySet="itemsTransfer" />
+            <End Role="invoiceOrder" EntitySet="invoiceOrder" />
+          </AssociationSet>
           <AssociationSet Name="FK_invoices_agents" Association="Self.FK_invoices_agents">
             <End Role="agents" EntitySet="agents" />
             <End Role="invoices" EntitySet="invoices" />
@@ -4504,6 +4523,7 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="isDefault" Type="Byte" Nullable="false" />
           <NavigationProperty Name="cities" Relationship="Self.FK_cities_countriesCodes" FromRole="countriesCodes" ToRole="cities" />
+          <Property Name="currencyId" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="coupons">
           <Key>
@@ -4896,6 +4916,7 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <NavigationProperty Name="locations" Relationship="Self.FK_itemsTransfer_locations" FromRole="itemsTransfer" ToRole="locations" />
           <NavigationProperty Name="locations1" Relationship="Self.FK_itemsTransfer_locations1" FromRole="itemsTransfer" ToRole="locations" />
           <NavigationProperty Name="itemTransferOffer" Relationship="Self.FK_itemTransferOffer_itemsTransfer" FromRole="itemsTransfer" ToRole="itemTransferOffer" />
+          <NavigationProperty Name="invoiceOrder" Relationship="incposdbModel.FK_invoiceOrder_itemsTransfer" FromRole="itemsTransfer" ToRole="invoiceOrder" />
         </EntityType>
         <EntityType Name="itemsUnits">
           <Key>
@@ -8583,6 +8604,10 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
             <End Role="invoices" EntitySet="invoices" />
             <End Role="invoiceOrder" EntitySet="invoiceOrder" />
           </AssociationSet>
+          <AssociationSet Name="FK_invoiceOrder_itemsTransfer" Association="incposdbModel.FK_invoiceOrder_itemsTransfer">
+            <End Role="itemsTransfer" EntitySet="itemsTransfer" />
+            <End Role="invoiceOrder" EntitySet="invoiceOrder" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="paperSize">
           <Key>
@@ -8766,6 +8791,9 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <Property Name="orderId" Type="Int32" />
           <NavigationProperty Name="invoices" Relationship="incposdbModel.FK_invoiceOrder_invoices" FromRole="invoiceOrder" ToRole="invoices" />
           <NavigationProperty Name="invoices1" Relationship="incposdbModel.FK_invoiceOrder_invoices1" FromRole="invoiceOrder" ToRole="invoices" />
+          <Property Name="quantity" Type="Int32" />
+          <Property Name="itemsTransferId" Type="Int32" />
+          <NavigationProperty Name="itemsTransfer" Relationship="incposdbModel.FK_invoiceOrder_itemsTransfer" FromRole="invoiceOrder" ToRole="itemsTransfer" />
         </EntityType>
         <Association Name="FK_invoiceOrder_invoices">
           <End Type="incposdbModel.invoices" Role="invoices" Multiplicity="0..1" />
@@ -8788,6 +8816,18 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
             </Principal>
             <Dependent Role="invoiceOrder">
               <PropertyRef Name="orderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_invoiceOrder_itemsTransfer">
+          <End Type="incposdbModel.itemsTransfer" Role="itemsTransfer" Multiplicity="0..1" />
+          <End Type="incposdbModel.invoiceOrder" Role="invoiceOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="itemsTransfer">
+              <PropertyRef Name="itemsTransId" />
+            </Principal>
+            <Dependent Role="invoiceOrder">
+              <PropertyRef Name="itemsTransferId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -9022,6 +9062,7 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <EntitySetMapping Name="countriesCodes">
             <EntityTypeMapping TypeName="incposdbModel.countriesCodes">
               <MappingFragment StoreEntitySet="countriesCodes">
+                <ScalarProperty Name="currencyId" ColumnName="currencyId" />
                 <ScalarProperty Name="countryId" ColumnName="countryId" />
                 <ScalarProperty Name="code" ColumnName="code" />
                 <ScalarProperty Name="currency" ColumnName="currency" />
@@ -9900,6 +9941,8 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <EntitySetMapping Name="invoiceOrder">
             <EntityTypeMapping TypeName="incposdbModel.invoiceOrder">
               <MappingFragment StoreEntitySet="invoiceOrder">
+                <ScalarProperty Name="itemsTransferId" ColumnName="itemsTransferId" />
+                <ScalarProperty Name="quantity" ColumnName="quantity" />
                 <ScalarProperty Name="orderId" ColumnName="orderId" />
                 <ScalarProperty Name="invoiceId" ColumnName="invoiceId" />
                 <ScalarProperty Name="id" ColumnName="id" />

@@ -219,6 +219,7 @@
     <Property Name="currency" Type="nvarchar" MaxLength="50" />
     <Property Name="name" Type="nvarchar" MaxLength="100" />
     <Property Name="isDefault" Type="tinyint" Nullable="false" />
+    <Property Name="currencyId" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="coupons">
     <Key>
@@ -378,6 +379,8 @@
     <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="invoiceId" Type="int" />
     <Property Name="orderId" Type="int" />
+    <Property Name="quantity" Type="int" />
+    <Property Name="itemsTransferId" Type="int" />
   </EntityType>
   <EntityType Name="invoices">
     <Key>
@@ -1890,6 +1893,18 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
       </Principal>
       <Dependent Role="invoiceOrder">
         <PropertyRef Name="orderId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_invoiceOrder_itemsTransfer">
+    <End Role="itemsTransfer" Type="Self.itemsTransfer" Multiplicity="0..1" />
+    <End Role="invoiceOrder" Type="Self.invoiceOrder" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="itemsTransfer">
+        <PropertyRef Name="itemsTransId" />
+      </Principal>
+      <Dependent Role="invoiceOrder">
+        <PropertyRef Name="itemsTransferId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -3717,6 +3732,10 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
     </AssociationSet>
     <AssociationSet Name="FK_invoiceOrder_invoices1" Association="Self.FK_invoiceOrder_invoices1">
       <End Role="invoices" EntitySet="invoices" />
+      <End Role="invoiceOrder" EntitySet="invoiceOrder" />
+    </AssociationSet>
+    <AssociationSet Name="FK_invoiceOrder_itemsTransfer" Association="Self.FK_invoiceOrder_itemsTransfer">
+      <End Role="itemsTransfer" EntitySet="itemsTransfer" />
       <End Role="invoiceOrder" EntitySet="invoiceOrder" />
     </AssociationSet>
     <AssociationSet Name="FK_invoices_agents" Association="Self.FK_invoices_agents">

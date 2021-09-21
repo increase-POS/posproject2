@@ -25,6 +25,7 @@ namespace POS_Server
         public string currency { get; set; }
         public string name { get; set; }
         public byte isDefault { get; set; }
+        public int currencyId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<cities> cities { get; set; }
