@@ -65,7 +65,7 @@ namespace POS.View.reports
         LocalReport rep = new LocalReport();
         SaveFileDialog saveFileDialog = new SaveFileDialog();
         IEnumerable<ItemTransferInvoice> temp ;
-
+      
         public uc_saleItems()
         {
             InitializeComponent();
@@ -1076,29 +1076,29 @@ namespace POS.View.reports
             {
                 if (selectedTab == 0)
                 {
-                    addpath = @"\Reports\StatisticReport\Accounts\Recipient\Ar\ArVendor.rdlc";////////?????????
+                    addpath = @"\Reports\StatisticReport\Sale\Item\Ar\ArItem.rdlc";////////?????????
                 }
                 else if (selectedTab == 1)
                 {
-                    addpath = @"\Reports\StatisticReport\Accounts\Recipient\Ar\ArCustomer.rdlc";/////////?????????
+                    addpath = @"\Reports\StatisticReport\Sale\Item\Ar\ArBestSel.rdlc";/////////?????????
                 }
             }
             else
             {
                 if (selectedTab == 0)
                 {
-                    addpath = @"\Reports\StatisticReport\Accounts\Recipient\En\Vendor.rdlc";//////////////????????????
+                    addpath = @"\Reports\StatisticReport\Sale\Item\En\EnItem.rdlc";////////?????????
                 }
                 else if (selectedTab == 1)
                 {
-                    addpath = @"\Reports\StatisticReport\Accounts\Recipient\En\Customer.rdlc";//////////////????????????
+                    addpath = @"\Reports\StatisticReport\Sale\Item\En\EnBestSel.rdlc";//////////////????????????
                 }
             }
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
             ReportCls.checkLang();
 
-            //clsReports.packageReport(temp , rep, reppath, paramarr);/////////////////????????????????
+            clsReports.PurStsReport(temp, rep, reppath);
             clsReports.setReportLanguage(paramarr);
             clsReports.Header(paramarr);
 

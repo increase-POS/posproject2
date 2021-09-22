@@ -92,8 +92,6 @@ namespace POS.View.reports
                 comboExternalInvType = statisticModel.GetExternalInvoiceTypeCombos(itemsTransfer);
                 comboExternalInvoiceInvoice = statisticModel.GetExternalInvoiceCombos(itemsTransfer);
 
-
-
                 fillComboBranches(cb_branchesItem);
                 fillComboItems(cb_branchesItem, cb_itemsItem);
                 fillComboUnits(cb_itemsItem, cb_unitsItem);
@@ -1818,7 +1816,57 @@ namespace POS.View.reports
         ReportCls reportclass = new ReportCls();
         LocalReport rep = new LocalReport();
         SaveFileDialog saveFileDialog = new SaveFileDialog();
-        private void Btn_pdf_Click(object sender, RoutedEventArgs e)
+
+        public void BuildReport()
+        {
+            List<ReportParameter> paramarr = new List<ReportParameter>();
+
+            string addpath = "";
+            bool isArabic = ReportCls.checkLang();
+            if (isArabic)
+            {
+                if (selectedStockTab == 0)
+                {
+                    addpath = @"\Reports\StatisticReport\Storage\Stock\Ar\ArItem.rdlc";
+                }
+                else if (selectedStockTab == 1)
+                {
+                    addpath = @"\Reports\StatisticReport\Storage\Stock\Ar\ArLocation.rdlc";
+                }
+                else if (selectedStockTab == 2)
+                {
+                    addpath = @"\Reports\StatisticReport\Storage\Stock\Ar\ArCollect.rdlc";
+                }
+            }
+            else
+            {
+                if (selectedStockTab == 0)
+                {
+                    addpath = @"\Reports\StatisticReport\Storage\Stock\En\Item.rdlc";
+                }
+                else if (selectedStockTab == 1)
+                {
+                    addpath = @"\Reports\StatisticReport\Storage\Stock\En\Location.rdlc";
+                }
+                else if (selectedStockTab == 2)
+                {
+                    addpath = @"\Reports\StatisticReport\Storage\Stock\En\Collect.rdlc";
+                }
+            }
+            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+            ReportCls.checkLang();
+
+            clsReports.storage(temp, rep, reppath);
+            clsReports.setReportLanguage(paramarr);
+            clsReports.Header(paramarr);
+
+            rep.SetParameters(paramarr);
+
+            rep.Refresh();
+
+        }
+            private void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {//pdf
             try
             {
@@ -1826,52 +1874,8 @@ namespace POS.View.reports
                     SectionData.StartAwait(grid_main);
 
                 #region
-                List<ReportParameter> paramarr = new List<ReportParameter>();
 
-                string addpath = "";
-                bool isArabic = ReportCls.checkLang();
-                if (isArabic)
-                {
-                    if (selectedStockTab == 0)
-                    {
-                        addpath = @"\Reports\StatisticReport\Storage\Stock\Ar\ArItem.rdlc";
-                    }
-                    else if (selectedStockTab == 1)
-                    {
-                        addpath = @"\Reports\StatisticReport\Storage\Stock\Ar\ArLocation.rdlc";
-                    }
-                    else if (selectedStockTab == 2)
-                    {
-                        addpath = @"\Reports\StatisticReport\Storage\Stock\Ar\ArCollect.rdlc";
-                    }
-                }
-                else
-                {
-                    if (selectedStockTab == 0)
-                    {
-                        addpath = @"\Reports\StatisticReport\Storage\Stock\En\Item.rdlc";
-                    }
-                    else if (selectedStockTab == 1)
-                    {
-                        addpath = @"\Reports\StatisticReport\Storage\Stock\En\Location.rdlc";
-                    }
-                    else if (selectedStockTab == 2)
-                    {
-                        addpath = @"\Reports\StatisticReport\Storage\Stock\En\Collect.rdlc";
-                    }
-                }
-                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-                ReportCls.checkLang();
-             
-                clsReports.storage(temp, rep, reppath);
-                clsReports.setReportLanguage(paramarr);
-                clsReports.Header(paramarr);
-
-                rep.SetParameters(paramarr);
-
-                rep.Refresh();
-
+                BuildReport();
                 saveFileDialog.Filter = "PDF|*.pdf;";
 
                 if (saveFileDialog.ShowDialog() == true)
@@ -1900,51 +1904,8 @@ namespace POS.View.reports
                     SectionData.StartAwait(grid_main);
 
                 #region
-                List<ReportParameter> paramarr = new List<ReportParameter>();
-
-                string addpath = "";
-                bool isArabic = ReportCls.checkLang();
-                if (isArabic)
-                {
-                    if (selectedStockTab == 0)
-                    {
-                        addpath = @"\Reports\StatisticReport\Storage\Stock\Ar\ArItem.rdlc";
-                    }
-                    else if (selectedStockTab == 1)
-                    {
-                        addpath = @"\Reports\StatisticReport\Storage\Stock\Ar\ArLocation.rdlc";
-                    }
-                    else if (selectedStockTab == 2)
-                    {
-                        addpath = @"\Reports\StatisticReport\Storage\Stock\Ar\ArCollect.rdlc";
-                    }
-                }
-                else
-                {
-                    if (selectedStockTab == 0)
-                    {
-                        addpath = @"\Reports\StatisticReport\Storage\Stock\En\Item.rdlc";
-                    }
-                    else if (selectedStockTab == 1)
-                    {
-                        addpath = @"\Reports\StatisticReport\Storage\Stock\En\Location.rdlc";
-                    }
-                    else if (selectedStockTab == 2)
-                    {
-                        addpath = @"\Reports\StatisticReport\Storage\Stock\En\Collect.rdlc";
-                    }
-                }
-                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-                ReportCls.checkLang();
-              
-                clsReports.storage(temp, rep, reppath);
-                clsReports.setReportLanguage(paramarr);
-                clsReports.Header(paramarr);
-
-                rep.SetParameters(paramarr);
-                rep.Refresh();
-                LocalReportExtensions.PrintToPrinter(rep);
+                BuildReport();
+                LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.rep_printer_name, short.Parse(MainWindow.rep_print_count));
                 #endregion
 
                 if (sender != null)
@@ -1967,53 +1928,9 @@ namespace POS.View.reports
 
                 #region
                 Thread t1 = new Thread(() =>
-{
-    List<ReportParameter> paramarr = new List<ReportParameter>();
-
-    string addpath = "";
-    bool isArabic = ReportCls.checkLang();
-    if (isArabic)
-    {
-        if (selectedStockTab == 0)
-        {
-            addpath = @"\Reports\StatisticReport\Storage\Stock\Ar\ArItem.rdlc";
-        }
-        else if (selectedStockTab == 1)
-        {
-            addpath = @"\Reports\StatisticReport\Storage\Stock\Ar\ArLocation.rdlc";
-        }
-        else if (selectedStockTab == 2)
-        {
-            addpath = @"\Reports\StatisticReport\Storage\Stock\Ar\ArCollect.rdlc";
-        }
-    }
-    else
-    {
-        if (selectedStockTab == 0)
-        {
-            addpath = @"\Reports\StatisticReport\Storage\Stock\En\Item.rdlc";
-        }
-        else if (selectedStockTab == 1)
-        {
-            addpath = @"\Reports\StatisticReport\Storage\Stock\En\Location.rdlc";
-        }
-        else if (selectedStockTab == 2)
-        {
-            addpath = @"\Reports\StatisticReport\Storage\Stock\En\Collect.rdlc";
-        }
-    }
-    string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-    ReportCls.checkLang();
-   
-    clsReports.storage(temp, rep, reppath);
-    clsReports.setReportLanguage(paramarr);
-    clsReports.Header(paramarr);
-
-    rep.SetParameters(paramarr);
-
-    rep.Refresh();
-    this.Dispatcher.Invoke(() =>
+                {
+                    BuildReport();
+                    this.Dispatcher.Invoke(() =>
     {
         saveFileDialog.Filter = "EXCEL|*.xls;";
         if (saveFileDialog.ShowDialog() == true)
@@ -2050,54 +1967,12 @@ namespace POS.View.reports
                 Window.GetWindow(this).Opacity = 0.2;
                 string pdfpath = "";
 
-                List<ReportParameter> paramarr = new List<ReportParameter>();
+         
 
                 pdfpath = @"\Thumb\report\temp.pdf";
                 pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
 
-                string addpath = "";
-                bool isArabic = ReportCls.checkLang();
-                if (isArabic)
-                {
-                    if (selectedStockTab == 0)
-                    {
-                        addpath = @"\Reports\StatisticReport\Storage\Stock\Ar\ArItem.rdlc";
-                    }
-                    else if (selectedStockTab == 1)
-                    {
-                        addpath = @"\Reports\StatisticReport\Storage\Stock\Ar\ArLocation.rdlc";
-                    }
-                    else if (selectedStockTab == 2)
-                    {
-                        addpath = @"\Reports\StatisticReport\Storage\Stock\Ar\ArCollect.rdlc";
-                    }
-                }
-                else
-                {
-                    if (selectedStockTab == 0)
-                    {
-                        addpath = @"\Reports\StatisticReport\Storage\Stock\En\Item.rdlc";
-                    }
-                    else if (selectedStockTab == 1)
-                    {
-                        addpath = @"\Reports\StatisticReport\Storage\Stock\En\Location.rdlc";
-                    }
-                    else if (selectedStockTab == 2)
-                    {
-                        addpath = @"\Reports\StatisticReport\Storage\Stock\En\Collect.rdlc";
-                    }
-                }
-                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-                ReportCls.checkLang();
-             
-                clsReports.storage(temp, rep, reppath);
-                clsReports.setReportLanguage(paramarr);
-                clsReports.Header(paramarr);
-
-                rep.SetParameters(paramarr);
-
-                rep.Refresh();
+                BuildReport();
 
                 LocalReportExtensions.ExportToPDF(rep, pdfpath);
                 wd_previewPdf w = new wd_previewPdf();

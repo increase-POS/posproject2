@@ -2778,9 +2778,9 @@ fillColumnChart(cb_Items, selectedItemId);
                 string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
 ReportCls.checkLang();
-                //  getpuritemcount
-              
-                clsReports.PurStsReport(query, rep, reppath);
+            //  getpuritemcount
+            clsReports.PurOrderStsReport(query, rep, reppath, paramarr);
+        
                 clsReports.setReportLanguage(paramarr);
                 clsReports.Header(paramarr);
 

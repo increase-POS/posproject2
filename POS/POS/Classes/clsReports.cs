@@ -409,11 +409,34 @@ namespace POS.Classes
                 r.ITprice = decimal.Parse(SectionData.DecTostring(r.ITprice));
                 r.subTotal = decimal.Parse(SectionData.DecTostring(r.subTotal));
                 r.totalNet = decimal.Parse(SectionData.DecTostring(r.totalNet));
-            }
+                r.discountValue= decimal.Parse(SectionData.DecTostring(r.discountValue));
+                r.tax = decimal.Parse(SectionData.DecTostring(r.tax));
+                if (r.itemAvg != null)
+                {
+ r.itemAvg = double.Parse(SectionData.DecTostring(decimal.Parse(r.itemAvg.ToString())));
+          
+                }
+                 }
             rep.DataSources.Add(new ReportDataSource("DataSetITinvoice", tempquery));
         }
 
-        public static void posReport(IEnumerable<Pos> possQuery, LocalReport rep, string reppath)
+
+        public static void PurInvStsReport(IEnumerable<ItemTransferInvoice> tempquery, LocalReport rep, string reppath, List<ReportParameter> paramarr)
+        {
+            PurStsReport(tempquery, rep, reppath);
+            itemTransferInvTypeConv(paramarr);
+
+
+        }
+
+        public static void PurOrderStsReport(IEnumerable<ItemTransferInvoice> tempquery, LocalReport rep, string reppath, List<ReportParameter> paramarr)
+        {
+            PurStsReport(tempquery, rep,reppath);
+            itemTransferInvTypeConv(paramarr);
+
+        }
+
+            public static void posReport(IEnumerable<Pos> possQuery, LocalReport rep, string reppath)
         {
             rep.ReportPath = reppath;
             rep.EnableExternalImages = true;
@@ -537,6 +560,15 @@ namespace POS.Classes
                 r.cash = decimal.Parse(SectionData.DecTostring(r.cash));
             }
             rep.DataSources.Add(new ReportDataSource("DataSetCashTransferSts", cashTransfers));
+        }
+
+        public static void cashTransferStsRecipient(IEnumerable<CashTransferSts> cashTransfers, LocalReport rep, string reppath, List<ReportParameter> paramarr)
+        {
+            cashTransferSts(cashTransfers, rep, reppath);
+
+            cashTransferProcessTypeConv(paramarr);
+            DateFormConv(paramarr);
+
         }
         public static void itemTransferInvoice(IEnumerable<ItemTransferInvoice> itemTransferInvoices, LocalReport rep, string reppath)
         {
