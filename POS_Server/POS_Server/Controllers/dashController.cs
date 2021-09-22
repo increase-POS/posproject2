@@ -959,6 +959,8 @@ namespace POS_Server.Controllers
                         totalAllBranchRow.day = i;
                         totalAllBranchRow.totalPur =0;
                         totalAllBranchRow.totalSale = 0;
+                        totalAllBranchRow.countPur = 0;
+                        totalAllBranchRow.countSale = 0;
                         totalAllBranch.Add(totalAllBranchRow);
 
                     }
@@ -974,6 +976,8 @@ namespace POS_Server.Controllers
                     {
                         rowinv.totalPur = totalRowtemp.totalPur;
                         rowinv.totalSale = totalRowtemp.totalSale;
+                        rowinv.countPur = totalRowtemp.countPur;
+                        rowinv.countSale = totalRowtemp.countSale;
                     }
 
                 }
@@ -1035,6 +1039,8 @@ namespace POS_Server.Controllers
                     branchCreatorName = g.FirstOrDefault().branchCreatorName,
                     totalPur = g.Where(i => (i.invType == "p" || i.invType == "pw")).Sum(s => s.totalNet),
                     totalSale = g.Where(i => i.invType == "s").Sum(s => s.totalNet),
+                    countPur = g.Where(i => (i.invType == "p" || i.invType == "pw")).Count(),
+                    countSale = g.Where(i => i.invType == "s").Count(),
                     //  purBackCount = g.Where(i => (i.invType == "pbw" || i.invType == "pb")).Count(),
                     // saleBackCount = g.Where(i => i.invType == "sb").Count(),
                     day = number,

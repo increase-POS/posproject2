@@ -263,6 +263,11 @@
         <AssociationConnector Association="incposdbModel.FK_invoiceOrder_invoices" />
         <AssociationConnector Association="incposdbModel.FK_invoiceOrder_invoices1" />
         <AssociationConnector Association="incposdbModel.FK_invoiceOrder_itemsTransfer" />
+        <EntityTypeShape EntityType="incposdbModel.itemUnitUser" Width="1.5" PointX="12.75" PointY="100.125" />
+        <AssociationConnector Association="incposdbModel.FK_itemUnitUser_itemsUnits" />
+        <AssociationConnector Association="incposdbModel.FK_itemUnitUser_users" />
+        <AssociationConnector Association="incposdbModel.FK_itemUnitUser_users1" />
+        <AssociationConnector Association="incposdbModel.FK_itemUnitUser_users2" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

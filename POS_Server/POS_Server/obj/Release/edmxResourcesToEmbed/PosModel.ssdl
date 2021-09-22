@@ -567,6 +567,20 @@
     <Property Name="createUserId" Type="int" />
     <Property Name="updateUserId" Type="int" />
   </EntityType>
+  <EntityType Name="itemUnitUser">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="itemUnitId" Type="int" />
+    <Property Name="userId" Type="int" />
+    <Property Name="notes" Type="ntext" />
+    <Property Name="createDate" Type="datetime2" Precision="7" />
+    <Property Name="updateDate" Type="datetime2" Precision="7" />
+    <Property Name="createUserId" Type="int" />
+    <Property Name="updateUserId" Type="int" />
+    <Property Name="isActive" Type="tinyint" />
+  </EntityType>
   <EntityType Name="locations">
     <Key>
       <PropertyRef Name="locationId" />
@@ -2556,6 +2570,54 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_itemUnitUser_itemsUnits">
+    <End Role="itemsUnits" Type="Self.itemsUnits" Multiplicity="0..1" />
+    <End Role="itemUnitUser" Type="Self.itemUnitUser" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="itemsUnits">
+        <PropertyRef Name="itemUnitId" />
+      </Principal>
+      <Dependent Role="itemUnitUser">
+        <PropertyRef Name="itemUnitId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_itemUnitUser_users">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="itemUnitUser" Type="Self.itemUnitUser" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="itemUnitUser">
+        <PropertyRef Name="userId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_itemUnitUser_users1">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="itemUnitUser" Type="Self.itemUnitUser" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="itemUnitUser">
+        <PropertyRef Name="createUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_itemUnitUser_users2">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="itemUnitUser" Type="Self.itemUnitUser" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="itemUnitUser">
+        <PropertyRef Name="updateUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_locations_branches1">
     <End Role="branches" Type="Self.branches" Multiplicity="0..1" />
     <End Role="locations" Type="Self.locations" Multiplicity="*" />
@@ -3406,6 +3468,7 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
     <EntitySet Name="itemsTransfer" EntityType="Self.itemsTransfer" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="itemsUnits" EntityType="Self.itemsUnits" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="itemTransferOffer" EntityType="Self.itemTransferOffer" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="itemUnitUser" EntityType="Self.itemUnitUser" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="locations" EntityType="Self.locations" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="medalAgent" EntityType="Self.medalAgent" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="medals" EntityType="Self.medals" Schema="dbo" store:Type="Tables" />
@@ -3953,6 +4016,22 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
     <AssociationSet Name="FK_itemTransferOffer_users1" Association="Self.FK_itemTransferOffer_users1">
       <End Role="users" EntitySet="users" />
       <End Role="itemTransferOffer" EntitySet="itemTransferOffer" />
+    </AssociationSet>
+    <AssociationSet Name="FK_itemUnitUser_itemsUnits" Association="Self.FK_itemUnitUser_itemsUnits">
+      <End Role="itemsUnits" EntitySet="itemsUnits" />
+      <End Role="itemUnitUser" EntitySet="itemUnitUser" />
+    </AssociationSet>
+    <AssociationSet Name="FK_itemUnitUser_users" Association="Self.FK_itemUnitUser_users">
+      <End Role="users" EntitySet="users" />
+      <End Role="itemUnitUser" EntitySet="itemUnitUser" />
+    </AssociationSet>
+    <AssociationSet Name="FK_itemUnitUser_users1" Association="Self.FK_itemUnitUser_users1">
+      <End Role="users" EntitySet="users" />
+      <End Role="itemUnitUser" EntitySet="itemUnitUser" />
+    </AssociationSet>
+    <AssociationSet Name="FK_itemUnitUser_users2" Association="Self.FK_itemUnitUser_users2">
+      <End Role="users" EntitySet="users" />
+      <End Role="itemUnitUser" EntitySet="itemUnitUser" />
     </AssociationSet>
     <AssociationSet Name="FK_locations_branches1" Association="Self.FK_locations_branches1">
       <End Role="branches" EntitySet="branches" />

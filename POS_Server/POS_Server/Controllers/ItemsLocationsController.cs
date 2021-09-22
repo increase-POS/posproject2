@@ -841,8 +841,9 @@ namespace POS_Server.Controllers
                                       il.quantity,
                                       il.itemUnitId,
                                       il.locationId,
+                                      il.updateDate,
                                       s.sectionId,
-                                  }).ToList();
+                                  }).ToList().OrderBy(x=> x.updateDate).ToList();
                 for (int i = 0; i < itemInLocs.Count; i++)
                 {
                     int availableAmount = (int)itemInLocs[i].quantity;
@@ -954,8 +955,9 @@ namespace POS_Server.Controllers
                                           il.quantity,
                                           il.itemUnitId,
                                           il.locationId,
+                                          il.updateDate,
                                           s.sectionId,
-                                      }).ToList();
+                                      }).ToList().OrderBy(x => x.updateDate).ToList();
 
                     for (int i = 0; i < itemInLocs.Count; i++)
                     {
@@ -1087,8 +1089,9 @@ namespace POS_Server.Controllers
                                            il.quantity,
                                            il.itemUnitId,
                                            il.locationId,
+                                           il.updateDate,
                                            s.sectionId,
-                                       }).ToList();
+                                       }).ToList().OrderBy(x => x.updateDate).ToList();
 
                     for (int i = 0; i < itemInLocs.Count; i++)
                     {
@@ -1677,8 +1680,9 @@ namespace POS_Server.Controllers
                                       il.quantity,
                                       il.itemUnitId,
                                       il.locationId,
+                                      il.updateDate,
                                       s.sectionId,
-                                  }).ToList();
+                                  }).ToList().OrderBy(x => x.updateDate).ToList();
                 for (int i = 0; i < itemInLocs.Count; i++)
                 {
                     int availableAmount = (int)itemInLocs[i].quantity;
@@ -1845,15 +1849,14 @@ namespace POS_Server.Controllers
                                           il.quantity,
                                           il.itemUnitId,
                                           il.locationId,
+                                          il.updateDate,
                                           s.sectionId,
-                                      }).ToList();
+                                      }).ToList().OrderBy(x => x.updateDate).ToList();
 
                     for (int i = 0; i < itemInLocs.Count; i++)
                     {
 
                         var itemL = entity.itemsLocations.Find(itemInLocs[i].itemsLocId);
-                        //var smallUnitLocId = entity.itemsLocations.Where(x => x.itemUnitId == itemUnitId && x.invoiceId == null).
-                        //    Select(x => x.itemsLocId).FirstOrDefault();
 
                         if (breakNum <= (int) itemInLocs[i].quantity)
                         {
@@ -1933,8 +1936,9 @@ namespace POS_Server.Controllers
                                           il.quantity,
                                           il.itemUnitId,
                                           il.locationId,
+                                          il.updateDate,
                                           s.sectionId,
-                                      }).ToList();
+                                      }).ToList().OrderBy(x => x.updateDate).ToList();
 
                     for (int i = 0; i < itemInLocs.Count; i++)
                     {

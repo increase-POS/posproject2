@@ -270,6 +270,7 @@
     <Compile Include="Controllers\itemsPropController.cs" />
     <Compile Include="Controllers\ItemsTransferController.cs" />
     <Compile Include="Controllers\ItemsUnitsController.cs" />
+    <Compile Include="Controllers\ItemUnitUserController.cs" />
     <Compile Include="Controllers\MedalAgentController.cs" />
     <Compile Include="Controllers\MembershipsController.cs" />
     <Compile Include="Controllers\NotificationController.cs" />
@@ -364,6 +365,9 @@
     <Compile Include="itemTransferOffer.cs">
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="itemUnitUser.cs">
+      <DependentUpon>PosModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="locations.cs">
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>
@@ -401,6 +405,7 @@
     <Compile Include="Models\ItemModel.cs" />
     <Compile Include="Models\ItemTransferModel.cs" />
     <Compile Include="Models\ItemUnitModel.cs" />
+    <Compile Include="Models\ItemUnitUserModel.cs" />
     <Compile Include="Models\MedalAgentModel.cs" />
     <Compile Include="Models\MedalModel.cs" />
     <Compile Include="Models\MembershipsModel.cs" />

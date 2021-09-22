@@ -126,7 +126,7 @@ namespace POS_Server.Controllers
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var List = entity.Inventory 
-                  .Where(c => c.inventoryType.Contains(inventoryType) && c.createUserId == userId)
+                  .Where(c => c.inventoryType.Contains(inventoryType) && c.createUserId == userId && c.isActive == 1)
                    .Select(c => new InventoryModel
                    {
                        inventoryId = c.inventoryId,
@@ -169,7 +169,7 @@ namespace POS_Server.Controllers
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var List = entity.Inventory
-                  .Where(c => c.inventoryType.Contains(inventoryType) && c.branchId == branchId)
+                  .Where(c => c.inventoryType.Contains(inventoryType) && c.branchId == branchId && c.isActive == 1)
                    .Select(c => new InventoryModel
                    {
                        inventoryId = c.inventoryId,
@@ -267,7 +267,7 @@ namespace POS_Server.Controllers
                Inventory Object = JsonConvert.DeserializeObject<Inventory>(newObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
                 try
                 {
-                    
+
                     if (Object.updateUserId == 0 || Object.updateUserId == null)
                     {
                         Nullable<int> id = null;
@@ -286,36 +286,29 @@ namespace POS_Server.Controllers
                             Object.createDate = DateTime.Now;
                             Object.updateDate = DateTime.Now;
                             Object.updateUserId = Object.createUserId;
-                    
-
+                            Object.isActive = 1;
 
                             entity.Inventory.Add(Object);
-                             
                             entity.SaveChanges();
                             message = Object.inventoryId.ToString();
                         }
                         else
                         {
-
                             var tmps = entity.Inventory.Where(p => p.inventoryId == Object.inventoryId).FirstOrDefault();
                             tmps.inventoryId = Object.inventoryId;
-
                             tmps.num = Object.num;
                             tmps.notes = Object.notes;
                             tmps.inventoryType = Object.inventoryType;
                             tmps.isActive = Object.isActive;
-                            tmps.createDate=Object.createDate;
+                            tmps.createDate = Object.createDate;
                             tmps.updateDate = DateTime.Now;// server current date
                             tmps.updateUserId = Object.updateUserId;
                             entity.SaveChanges();
                             message = tmps.inventoryId.ToString();
                         }
-                       
-                       
                     }
                     return message; ;
                 }
-
                 catch
                 {
                     return "-1";
@@ -324,7 +317,39 @@ namespace POS_Server.Controllers
             else
                 return "-1";
         }
+        [HttpPost]
+        [Route("delete")]
+        public IHttpActionResult delete(int inventoryId)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
 
+            if (valid)
+            {
+                try
+                {
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+                        var inv = entity.Inventory.Find(inventoryId);
+                        inv.isActive = 0;
+                        entity.SaveChanges();
+                        return Ok(1);
+                    }
+                }
+                catch
+                {
+                    return Ok(0);
+                }
+            }
+            return NotFound();
+        }
         [HttpPost]
         [Route("Delete")]
         public IHttpActionResult Delete(int inventoryId, int userId, bool final)

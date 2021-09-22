@@ -17,6 +17,8 @@ namespace POS_Server.Models
         public string branchCreatorName { get; set; }
         public Nullable<decimal> totalPur { get; set; }
         public Nullable<decimal> totalSale { get; set; }
+        public int countPur { get; set; }
+        public int countSale { get; set; }
         public int day { get; set; }
 
     }

@@ -120,6 +120,9 @@ namespace POS_Server
             this.usersLogs = new HashSet<usersLogs>();
             this.printers = new HashSet<printers>();
             this.printers1 = new HashSet<printers>();
+            this.itemUnitUser = new HashSet<itemUnitUser>();
+            this.itemUnitUser1 = new HashSet<itemUnitUser>();
+            this.itemUnitUser2 = new HashSet<itemUnitUser>();
         }
     
         public int userId { get; set; }
@@ -353,5 +356,11 @@ namespace POS_Server
         public virtual ICollection<printers> printers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<printers> printers1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<itemUnitUser> itemUnitUser { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<itemUnitUser> itemUnitUser1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<itemUnitUser> itemUnitUser2 { get; set; }
     }
 }
