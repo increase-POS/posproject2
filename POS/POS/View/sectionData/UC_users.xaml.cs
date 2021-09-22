@@ -161,7 +161,8 @@ namespace POS.View
 
         private async Task fillJobCombo()
         {
-                if (users == null) users = await userModel.GetUsersAsync();
+                if (users == null)
+                users = await userModel.GetUsersAsync();
                 usersQuery = users.Where(s => s.isActive == 1);
                 List<User> userList = new List<User>();
                 userList.AddRange(usersQuery.ToList());

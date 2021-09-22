@@ -29,6 +29,7 @@
             <converters:accuracyConverter x:Key="accuracyConverter"/>
             <converters:notificationsTitleConverter x:Key="notificationsTitleConverter"/>
             <converters:notificationsContentConverter x:Key="notificationsContentConverter"/>
+            <converters:TaxVisibilityConverter x:Key="TaxVisibilityConverter"/>
             <!--#region Fonts-->
             <FontFamily x:Key="BarcodeFont" >IDAHC39M Code 39 Barcode, /POS;component/fonts/#IDAHC39M Code 39 Barcode, Arial</FontFamily>
 

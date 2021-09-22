@@ -2,6 +2,7 @@
 using LiveCharts.Helpers;
 using LiveCharts.Wpf;
 using POS.Classes;
+using POS.View.windows;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -825,8 +826,45 @@ namespace POS.View
         }
         #endregion
         #region IUStorage
+        List<ItemUnitUser> ItemUnitsUser = new List<ItemUnitUser>();
         private void Btn_storageSetting_Click(object sender, RoutedEventArgs e)
-        {
+        {//settings
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                //items
+                //if (MainWindow.groupObject.HasPermissionAction(itemsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+                //{
+                //    SectionData.clearValidate(tb_code, p_errorCode);
+
+                    Window.GetWindow(this).Opacity = 0.2;
+
+                    wd_itemsUnitList w = new wd_itemsUnitList();
+
+                    w.itemId = 0;
+                    w.itemUnitId = 0;
+                    w.CallerName = "IUList";
+
+                    w.ShowDialog();
+                    if (w.isActive)
+                    {
+                        ItemUnitsUser =  w.selectedItemUnits;
+                    }
+
+                    Window.GetWindow(this).Opacity = 1;
+                //}
+                //else
+                //    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
 
         }
         async Task IUStorage()

@@ -25,7 +25,8 @@ namespace POS.View.windows
         public int itemId = 0 , itemUnitId = 0;
 
         public bool isActive;
-        public string CallerName;
+        public string CallerName;//"IUList"
+
         ItemUnit itemUnit = new ItemUnit();
         ItemUnit itemUnitModel = new ItemUnit();
         List<ItemUnit> allItemUnitsSource = new List<ItemUnit>();
@@ -35,6 +36,11 @@ namespace POS.View.windows
         Package packageModel = new Package();
         List<Package> allIPackagesSource = new List<Package>();
         List<Package> allPackages = new List<Package>();
+
+        ItemUnitUser itemUnitUser = new ItemUnitUser();
+        ItemUnitUser itemUnitUserModel = new ItemUnitUser();
+        List<ItemUnitUser> selectedItemUnitsSource = new List<ItemUnitUser>();
+        public List<ItemUnitUser> selectedItemUnits = new List<ItemUnitUser>();
 
         string searchText = "";
 
@@ -83,48 +89,80 @@ namespace POS.View.windows
 
                 translat();
                 #endregion
-           
+
                 allItemUnitsSource = await itemUnitModel.Getall();
-                allIPackagesSource = await packageModel.GetChildsByParentId(itemUnitId);
                 allItemUnits.AddRange(allItemUnitsSource);
-                for(int i = 0; i < allItemUnits.Count; i++)
+                for (int i = 0; i < allItemUnits.Count; i++)
                 {
                     //remove parent package itemunit
                     if (allItemUnits[i].itemUnitId == itemUnitId)
-                    { allItemUnits.Remove(allItemUnits[i]);  break; }
-                
+                    { allItemUnits.Remove(allItemUnits[i]); break; }
+
                 }
                 foreach (var iu in allItemUnits)
                 {
                     iu.itemName = iu.itemName + "-" + iu.unitName;
                 }
-                //remove selected itemunits from source itemunits
-                foreach (var p in allIPackagesSource)
+
+                if (CallerName.Equals("IUList"))
                 {
-                    for (int i = 0; i < allItemUnits.Count; i++)
+                    selectedItemUnitsSource = await itemUnitUserModel.GetByUserId(MainWindow.userID.Value);
+
+                    //remove selected itemunits from source itemunits
+                    foreach (var p in selectedItemUnitsSource)
                     {
-                        //remove saved itemunits
-                        if (p.childIUId == allItemUnits[i].itemUnitId)
+                        for (int i = 0; i < allItemUnits.Count; i++)
                         {
-                            allItemUnits.Remove(allItemUnits[i]);
+                            //remove saved itemunits
+                            if (p.itemUnitId == allItemUnits[i].itemUnitId)
+                            {
+                                allItemUnits.Remove(allItemUnits[i]);
+                            }
                         }
                     }
-                }
-                allPackages.AddRange(allIPackagesSource);
-                foreach(var p in allPackages)
-                {
-                    foreach (var iu in allItemUnits)
-                        if (p.parentIUId == iu.itemUnitId)
-                            p.notes = iu.itemName + "-" + iu.unitName;
-                }
+                    selectedItemUnits.AddRange(selectedItemUnitsSource);
+                    foreach (var p in selectedItemUnits)
+                    {
+                        foreach (var iu in allItemUnits)
+                            if (p.itemUnitId == iu.itemUnitId)
+                                p.notes = iu.itemName + "-" + iu.unitName;
+                    }
 
+                    dg_selectedItems.ItemsSource = selectedItemUnits;
+                    dg_allItems.SelectedValuePath = "id";
+                    dg_allItems.DisplayMemberPath = "notes";
+                }
+                else
+                {
+                    allIPackagesSource = await packageModel.GetChildsByParentId(itemUnitId);
+
+                    //remove selected itemunits from source itemunits
+                    foreach (var p in allIPackagesSource)
+                    {
+                        for (int i = 0; i < allItemUnits.Count; i++)
+                        {
+                            //remove saved itemunits
+                            if (p.childIUId == allItemUnits[i].itemUnitId)
+                            {
+                                allItemUnits.Remove(allItemUnits[i]);
+                            }
+                        }
+                    }
+                    allPackages.AddRange(allIPackagesSource);
+                    foreach (var p in allPackages)
+                    {
+                        foreach (var iu in allItemUnits)
+                            if (p.parentIUId == iu.itemUnitId)
+                                p.notes = iu.itemName + "-" + iu.unitName;
+                    }
+
+                    dg_selectedItems.ItemsSource = allPackages;
+                    dg_allItems.SelectedValuePath = "packageId";
+                    dg_allItems.DisplayMemberPath = "notes";
+                }
                 dg_allItems.ItemsSource = allItemUnits;
                 dg_allItems.SelectedValuePath = "itemUnitId";
                 dg_allItems.DisplayMemberPath = "itemName";
-
-                dg_selectedItems.ItemsSource = allPackages;
-                dg_allItems.SelectedValuePath = "packageId";
-                dg_allItems.DisplayMemberPath = "notes";
 
                 if (sender != null)
                     SectionData.EndAwait(grid_offerList);
@@ -217,20 +255,42 @@ namespace POS.View.windows
                 itemUnit = dg_allItems.SelectedItem as ItemUnit;
                 if (itemUnit != null)
                 {
-                    Package p = new Package();
+                    if (CallerName.Equals(""))
+                    {
+                        Package p = new Package();
 
-                    p.parentIUId = itemUnitId;
-                    p.childIUId = itemUnit.itemUnitId;
-                    p.quantity = 1;
-                    p.isActive = 1;
-                    p.notes = itemUnit.itemName;
-                    p.createUserId = MainWindow.userID;
+                        p.parentIUId = itemUnitId;
+                        p.childIUId = itemUnit.itemUnitId;
+                        p.quantity = 1;
+                        p.isActive = 1;
+                        p.notes = itemUnit.itemName;
+                        p.createUserId = MainWindow.userID;
 
-                    allItemUnits.Remove(itemUnit);
-                    allPackages.Add(p);
+                        allItemUnits.Remove(itemUnit);
+                        allPackages.Add(p);
 
-                    dg_allItems.ItemsSource = allItemUnits;
-                    dg_selectedItems.ItemsSource = allPackages;
+                        dg_allItems.ItemsSource = allItemUnits;
+                        dg_selectedItems.ItemsSource = allPackages;
+
+                    }
+                    else
+                    {
+                        ItemUnitUser iu = new ItemUnitUser();
+
+                        iu.itemUnitId = itemUnit.itemUnitId;
+                        iu.userId = MainWindow.userID;
+                        iu.isActive = 1;
+                        iu.notes = itemUnit.itemName;
+                        iu.createUserId = MainWindow.userID;
+
+                        allItemUnits.Remove(itemUnit);
+                        selectedItemUnits.Add(iu);
+
+                        dg_allItems.ItemsSource = allItemUnits;
+                        dg_selectedItems.ItemsSource = selectedItemUnits;
+
+                        
+                    }
 
                     dg_allItems.Items.Refresh();
                     dg_selectedItems.Items.Refresh();
@@ -246,27 +306,48 @@ namespace POS.View.windows
         {//unselect one
             try
             {
-                package = dg_selectedItems.SelectedItem as Package;
                 ItemUnit i = new ItemUnit();
-                if (package != null)
+
+                if (CallerName.Equals(""))
                 {
-                    i = allItemUnitsSource.Where(s => s.itemUnitId == package.childIUId.Value).FirstOrDefault();
+                    package = dg_selectedItems.SelectedItem as Package;
+                    if (package != null)
+                    {
+                        i = allItemUnitsSource.Where(s => s.itemUnitId == package.childIUId.Value).FirstOrDefault();
 
-                    allItemUnits.Add(i);
+                        allItemUnits.Add(i);
 
-                    allPackages.Remove(package);
+                        allPackages.Remove(package);
 
-                    dg_allItems.ItemsSource = allItemUnits;
-                    dg_selectedItems.ItemsSource = allPackages;
+                        dg_selectedItems.ItemsSource = allPackages;
 
 
-                    dg_allItems.Items.Refresh();
-                    // for solve problem
-                    //this.dg_selectedItems.CancelEdit();
-                    //this.dg_selectedItems.CancelEdit();
-                    ////////////
-                    dg_selectedItems.Items.Refresh();
+                      
+                    }
                 }
+                else
+                {
+                    itemUnitUser = dg_selectedItems.SelectedItem as ItemUnitUser;
+                    if(itemUnitUser != null)
+                    {
+                        i = allItemUnitsSource.Where(s => s.itemUnitId == itemUnitUser.itemUnitId.Value).FirstOrDefault();
+
+                        allItemUnits.Add(i);
+
+                        selectedItemUnits.Remove(itemUnitUser);
+
+                        dg_selectedItems.ItemsSource = selectedItemUnits;
+                    }
+                }
+
+                dg_allItems.ItemsSource = allItemUnits;
+
+                dg_allItems.Items.Refresh();
+                // for solve problem
+                //this.dg_selectedItems.CancelEdit();
+                //this.dg_selectedItems.CancelEdit();
+                ////////////
+                dg_selectedItems.Items.Refresh();
             }
             catch (Exception ex)
             {
@@ -278,7 +359,11 @@ namespace POS.View.windows
         {//unselect all
             try
             {
-                int x = allPackages.Count;
+                int x = 0;
+                if (CallerName.Equals(""))
+                    x = allPackages.Count;
+                else
+                    x = selectedItemUnits.Count;
                 for (int i = 0; i < x; i++)
                 {
                     dg_selectedItems.SelectedIndex = 0;
@@ -298,8 +383,14 @@ namespace POS.View.windows
                 if (sender != null)
                     SectionData.StartAwait(grid_offerList);
 
-                await package.UpdatePackByParentId(itemUnitId , allPackages , MainWindow.userID.Value);
-
+                if (CallerName.Equals("IUList"))
+                { 
+                    foreach(var x in selectedItemUnits)
+                    { x.id = 0; }
+                    await itemUnitUserModel.UpdateList(selectedItemUnits, MainWindow.userID.Value);
+                }
+                else
+                    await package.UpdatePackByParentId(itemUnitId, allPackages, MainWindow.userID.Value);
 
                 isActive = true;
                 this.Close();

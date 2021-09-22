@@ -61,7 +61,7 @@ namespace POS
         internal static User userLogin;
         internal static int? userLogInID;
         internal static Pos posLogIn = new Pos();
-        internal static int? posID = 2;
+        internal static int? posID = 9;
         internal static int? branchID;
         bool isHome = false;
         internal static int? isInvTax;
@@ -86,7 +86,7 @@ namespace POS
 
         public static DispatcherTimer timer;
         DispatcherTimer idletimer;//  logout timer
-       // DispatcherTimer threadtimer;//  repeat timer for check other login
+        DispatcherTimer threadtimer;//  repeat timer for check other login
         DispatcherTimer notTimer;//  repeat timer for notifications
                                  // print setting
         public static string sale_copy_count;
@@ -226,15 +226,14 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
                 idletimer = new DispatcherTimer();
                 idletimer.Interval = TimeSpan.FromMinutes(Idletime);
                 idletimer.Tick += timer_Idle;
-                idletimer.Tick += timer_Thread;
                 idletimer.Start();
 
 
                 //thread
-                //threadtimer = new DispatcherTimer();
-                //threadtimer.Interval = TimeSpan.FromSeconds(threadtime);
-                //threadtimer.Tick += timer_Thread;
-                //threadtimer.Start();
+                threadtimer = new DispatcherTimer();
+                threadtimer.Interval = TimeSpan.FromSeconds(threadtime);
+                threadtimer.Tick += timer_Thread;
+                threadtimer.Start();
 
 
 
@@ -412,6 +411,13 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
                 btn_reports.Visibility = Visibility.Visible;
                 //grid_mainWindow.IsEnabled = true;
 
+
+
+
+
+              
+
+                //SelectAllText
                 EventManager.RegisterClassHandler(typeof(System.Windows.Controls.TextBox), System.Windows.Controls.TextBox.GotKeyboardFocusEvent, new RoutedEventHandler(SelectAllText));
 
                 if (sender != null)
@@ -501,7 +507,6 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
                 if (!loadWindow)
                 BTN_Home_Click(BTN_home, null);
         }
-
         #region notifications
         private void setTimer()
         {
@@ -520,6 +525,9 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             {
                 SectionData.ExceptionMessage(ex, this );
             }
+
+
+
         }
         private async void setNotifications()
         {
@@ -574,19 +582,20 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
                 if (thrlog.sOutDate != null)
                 {
                     BTN_logOut_Click(null, null);
-                    //threadtimer.Stop();
+                    threadtimer.Stop();
                 }
             }
             catch (Exception ex)
             {
                 SectionData.ExceptionMessage(ex, this );
             }
+
+
             try
             {
                 posLogIn = await posLogIn.getPosById(posID.Value);
-                //txt_cashValue.Text = posLogIn.balance.ToString();
                 txt_cashValue.Text = SectionData.DecTostring(posLogIn.balance);
-
+                txt_cashSympol.Text = MainWindow.Currency;
             }
             catch (Exception ex)
             {
@@ -666,7 +675,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             await updateLogninRecord();
             timer.Stop();
             idletimer.Stop();
-            //threadtimer.Stop();
+            threadtimer.Stop();
         }
         private async void BTN_Close_Click(object sender, RoutedEventArgs e)
         {
@@ -1331,6 +1340,20 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             }
         }
 
+        private void Btn_userImage_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Window.GetWindow(this).Opacity = 0.2;
+                wd_userInfo w = new wd_userInfo();
+                w.ShowDialog();
+                Window.GetWindow(this).Opacity = 1;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
 
         private void clearImg()
         {

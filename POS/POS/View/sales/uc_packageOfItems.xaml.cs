@@ -1544,6 +1544,7 @@ namespace POS.View
 
                     w.itemId = item.itemId;
                     w.itemUnitId = itemUnitId;
+                    w.CallerName = "";
                     w.ShowDialog();
                     if (w.isActive)
                     {

@@ -161,7 +161,7 @@ namespace POS.View
             txt_sum.Text = MainWindow.resourcemanager.GetString("trSum");
             txt_total.Text = MainWindow.resourcemanager.GetString("trTotal");
             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesInvoice");
-            txt_barcode.Text = MainWindow.resourcemanager.GetString("trBarcode");
+            //txt_barcode.Text = MainWindow.resourcemanager.GetString("trBarcode");
             txt_coupon.Text = MainWindow.resourcemanager.GetString("trCoupon");
             txt_customer.Text = MainWindow.resourcemanager.GetString("trCustomer");
             txt_delivery.Text = MainWindow.resourcemanager.GetString("trDelivery");
@@ -197,7 +197,7 @@ namespace POS.View
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_discount, MainWindow.resourcemanager.GetString("trDiscountHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_typeDiscount, MainWindow.resourcemanager.GetString("trDiscountTypeHint"));
 
-            btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
+            btn_save.Content = MainWindow.resourcemanager.GetString("trPay");
 
         }
 
@@ -288,8 +288,13 @@ namespace POS.View
                 #endregion
 
                 //tb_taxValue.Text = MainWindow.tax.ToString();
+                if (MainWindow.tax == 0)
+                    sp_tax.Visibility = Visibility.Collapsed;
+                else
+                {
                 tb_taxValue.Text = SectionData.DecTostring(MainWindow.tax);
-
+                sp_tax.Visibility = Visibility.Visible;
+                }
                 tb_barcode.Focus();
                 #region datagridChange
                 CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(dg_billDetails.Items);
@@ -3793,5 +3798,7 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+
+       
     }
 }

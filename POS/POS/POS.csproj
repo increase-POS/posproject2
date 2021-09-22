@@ -202,6 +202,7 @@
     <Compile Include="Classes\ItemsProp.cs" />
     <Compile Include="Classes\ItemUnit.cs" />
     <Compile Include="Classes\ItemUnitOffer.cs" />
+    <Compile Include="Classes\ItemUnitUser.cs" />
     <Compile Include="Classes\LocalReportExtensions.cs" />
     <Compile Include="Classes\Location.cs" />
     <Compile Include="Classes\Md5Encription.cs" />
@@ -256,6 +257,7 @@
     <Compile Include="converters\depositorTypeConverter.cs" />
     <Compile Include="converters\discountTypeConverter.cs" />
     <Compile Include="converters\enabledCouponConverter.cs" />
+    <Compile Include="converters\inventoryTypeConverter.cs" />
     <Compile Include="converters\invoiceStatusConverter.cs" />
     <Compile Include="converters\invoiceTypeConverter.cs" />
     <Compile Include="converters\invoiceTypeVisibilityConverter.cs" />
@@ -267,6 +269,7 @@
     <Compile Include="converters\processTypeConverter.cs" />
     <Compile Include="converters\SectionFreeZoneConverter.cs" />
     <Compile Include="converters\SectionLocationFreeZoneConverter.cs" />
+    <Compile Include="converters\TaxVisibilityConverter.cs" />
     <Compile Include="converters\transTypeConverter.cs" />
     <Compile Include="converters\unitItemsListConverter.cs" />
     <Compile Include="Keyboard\AnimationHelper.cs" />
@@ -636,6 +639,9 @@
     </Compile>
     <Compile Include="View\windows\wd_uploadImage.xaml.cs">
       <DependentUpon>wd_uploadImage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\windows\wd_userInfo.xaml.cs">
+      <DependentUpon>wd_userInfo.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\windows\wd_userPath.xaml.cs">
       <DependentUpon>wd_userPath.xaml</DependentUpon>
@@ -1162,6 +1168,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\windows\wd_uploadImage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\windows\wd_userInfo.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

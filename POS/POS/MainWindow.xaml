@@ -214,6 +214,12 @@
                                 <materialDesign:PackIcon Foreground="White" Kind="MenuDown" 
                                          Width="25" Height="25"/>
                             </MenuItem.Header>
+                            <!--<Separator />
+                            <StackPanel HorizontalAlignment="Left">
+                                <TextBlock Margin="5,2.5" Foreground="White" Text="فرع الجميلية"  FontSize="10"  ></TextBlock>
+                                <TextBlock Margin="5,2.5"  Foreground="White" Text="POS-013" FontSize="10" ></TextBlock>
+                            </StackPanel>-->
+                            <!--<Separator />-->
                             <MenuItem x:Name="mi_changePassword"  Foreground="White"  BorderThickness="0,1,0,0" BorderBrush="#DEDEDE"
                               Header="Change Password" Click="Mi_changePassword_Click"
                               Icon="{materialDesign:PackIcon Kind=Password}"></MenuItem>
@@ -267,13 +273,17 @@
                 <!--
                 </MenuItem>
             </Menu>-->
-                <Ellipse Grid.Column="8" Margin="5,5,5,5" x:Name="img_userLogin"
+                <Button Grid.Column="8" Margin="5,5,5,5" Padding="0" Background="{x:Null}" BorderBrush="{x:Null}"
+                   Height="40" Width="40"      materialDesign:ButtonAssist.CornerRadius="90"  FlowDirection="LeftToRight" 
+                        x:Name="btn_userImage" Click="Btn_userImage_Click">
+                    <Ellipse  x:Name="img_userLogin"
                 HorizontalAlignment="Center" VerticalAlignment="Center"   
                      Height="40" Width="40">
-                    <Ellipse.Fill >
-                        <ImageBrush Stretch="UniformToFill"  x:Name="IMG_userPic" ImageSource="pic/no-image-icon-40x40.png"   />
-                    </Ellipse.Fill>
-                </Ellipse>
+                        <Ellipse.Fill >
+                            <ImageBrush Stretch="UniformToFill"  x:Name="IMG_userPic" ImageSource="pic/no-image-icon-40x40.png"   />
+                        </Ellipse.Fill>
+                    </Ellipse>
+                </Button>
                 <StackPanel VerticalAlignment="Center" Orientation="Vertical" Grid.Column="9" Margin="5,5,5,5">
                     <TextBlock x:Name="txt_userName"  Text="" FontSize="12" Foreground="White" HorizontalAlignment="Center" />
                     <TextBlock x:Name="txt_userJob"  Text=""   FontSize="12" FontWeight="Light" Foreground="#E8E8E8" HorizontalAlignment="Left" />

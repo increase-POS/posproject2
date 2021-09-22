@@ -2989,3 +2989,5 @@ E:\GitHub\posproject2\POS\POS\obj\Debug\View\sales\win_lvcSales.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\sales\win_lvcSales.baml
 D:\myproj\posproject2\POS\POS\obj\Debug\View\sales\win_lvcSales.g.cs
 D:\myproj\posproject2\POS\POS\obj\Debug\View\sales\win_lvcSales.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_userInfo.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_userInfo.baml
