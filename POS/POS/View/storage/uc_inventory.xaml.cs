@@ -40,6 +40,7 @@ namespace POS.View.storage
 
         Inventory inventory = new Inventory();
         private static DispatcherTimer timer;
+        bool firstTimeForDatagrid = true;
 
         string _InventoryType = "d";
         string createInventoryPermission = "inventory_createInventory";
@@ -226,6 +227,12 @@ namespace POS.View.storage
                 }
                 await inputEditable();
                 dg_items.ItemsSource = invItemsLocations.ToList();
+                if (firstTimeForDatagrid)
+                {
+                    await Task.Delay(1000);
+                    dg_items.Items.Refresh();
+                    firstTimeForDatagrid = false;
+                }
             }
             else
             {
@@ -271,6 +278,12 @@ namespace POS.View.storage
             }
             await inputEditable();
             dg_items.ItemsSource = invItemsLocations.ToList();
+            if (firstTimeForDatagrid)
+            {
+                await Task.Delay(1000);
+                dg_items.Items.Refresh();
+                firstTimeForDatagrid = false;
+            }
         }
         private async Task inputEditable()
         {

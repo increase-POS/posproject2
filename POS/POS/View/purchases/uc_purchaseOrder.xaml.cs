@@ -1077,10 +1077,19 @@ namespace POS.View.purchases
 
 
         #region billdetails
-        void refrishBillDetails()
+        bool firstTimeForDatagrid = true;
+       async void refrishBillDetails()
         {
             dg_billDetails.ItemsSource = null;
             dg_billDetails.ItemsSource = billDetails;
+
+            if (firstTimeForDatagrid)
+            {
+                await Task.Delay(1000);
+                dg_billDetails.Items.Refresh();
+                firstTimeForDatagrid = false;
+            }
+
             tb_total.Text = _Count.ToString();
             //tb_sum.Text = _Sum.ToString();
             if (_Sum != 0)

@@ -649,6 +649,9 @@
     <Compile Include="View\windows\wd_usersList.xaml.cs">
       <DependentUpon>wd_usersList.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\windows\wd_usersOnline.xaml.cs">
+      <DependentUpon>wd_usersOnline.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\windows\winControlPanel.xaml.cs">
       <DependentUpon>winControlPanel.xaml</DependentUpon>
     </Compile>
@@ -1180,6 +1183,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\windows\wd_usersList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\windows\wd_usersOnline.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

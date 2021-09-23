@@ -173,7 +173,8 @@
 
 
 
-                <materialDesign:Badged       Height="auto" Grid.Column="6"  Name="md_notificationCount" Margin="10,10,10,10" VerticalAlignment="Center"   
+                <materialDesign:Badged     Height="auto" Grid.Column="6"  Name="md_notificationCount" Margin="10,10,10,10"
+                                           VerticalAlignment="Center"   
                       BadgeBackground="{StaticResource MainColorRed}"  BadgeForeground="White"  >
                     <Button Grid.Column="5" x:Name="BTN_notifications"
                     Background="{x:Null}" BorderBrush="{x:Null}" Width="25" Height="25" Click="BTN_notifications_Click"

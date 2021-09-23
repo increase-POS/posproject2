@@ -861,8 +861,9 @@ namespace POS.View.sales
         }
         #endregion
         #region billdetails
+        bool firstTimeForDatagrid = true;
 
-        void refrishBillDetails()
+       async void refrishBillDetails()
         {
             dg_billDetails.ItemsSource = null;
             if (billDetails.Count == 1)
@@ -874,6 +875,13 @@ namespace POS.View.sales
             }
             else
                 dg_billDetails.ItemsSource = billDetails;
+
+            if (firstTimeForDatagrid)
+            {
+                await Task.Delay(1000);
+                dg_billDetails.Items.Refresh();
+                firstTimeForDatagrid = false;
+            }
 
             // tb_sum.Text = _Sum.ToString();
             if (_Sum != 0)

@@ -23,6 +23,7 @@ using Microsoft.Reporting.WinForms;
 using Microsoft.Win32;
 using POS.View.windows;
 using POS.View.sectionData.Charts;
+using System.Windows.Resources;
 
 namespace POS.View.sectionData
 {
@@ -48,6 +49,12 @@ namespace POS.View.sectionData
 
         string basicsPermission = "cards_basics";
         private static uc_card _instance;
+
+        bool isImgPressed = false;
+        OpenFileDialog openFileDialog = new OpenFileDialog();
+        string imgFileName = "pic/no-image-icon-125x125.png";
+        ImageBrush brush = new ImageBrush();
+
         public static uc_card Instance
         {
             get
@@ -199,7 +206,12 @@ namespace POS.View.sectionData
                     SectionData.StartAwait(grid_main);
                 tb_name.Clear();
                 tb_notes.Clear();
-
+                //clear img
+                Uri resourceUri = new Uri("pic/no-image-icon-125x125.png", UriKind.Relative);
+                StreamResourceInfo streamInfo = Application.GetResourceStream(resourceUri);
+                BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
+                brush.ImageSource = temp;
+                img_card.Background = brush;
                 p_errorName.Visibility = Visibility.Collapsed;
 
                 tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
@@ -247,9 +259,20 @@ namespace POS.View.sectionData
 
                             string s = await cardModel.Save(card);
 
-                            if (s.Equals("true"))
+                            //if (s.Equals("true"))
+                            if (!s.Equals(""))
                             {
                                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+
+                                if (isImgPressed)
+                                {
+                                    int cardId = int.Parse(s);
+                                    string b = await cardModel.uploadImage(imgFileName,
+                                        Md5Encription.MD5Hash("Inc-m" + cardId.ToString()), cardId);
+                                    card.image = b;
+                                    isImgPressed = false;
+                                }
+
                                 Btn_clear_Click(null, null);
                             }
                             else
@@ -305,9 +328,27 @@ namespace POS.View.sectionData
 
                             string s = await cardModel.Save(card);
 
-                            if (s.Equals("true")) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));
+                            //if (s.Equals("true"))
+                            if (!s.Equals(""))
+                            {
                                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
-                            else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                                if (isImgPressed)
+                                {
+                                    int cardId = int.Parse(s);
+                                    string b = await cardModel.uploadImage(imgFileName, Md5Encription.MD5Hash("Inc-m" + cardId.ToString()), cardId);
+                                    card.image = b;
+                                    isImgPressed = false;
+                                    if (!b.Equals(""))
+                                    {
+                                        getImg();
+                                    }
+                                    else
+                                    {
+                                        SectionData.clearImg(img_card);
+                                    }
+                                }
+                            }
+                            else 
                                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
                             await RefreshCardsList();
@@ -413,7 +454,7 @@ namespace POS.View.sectionData
 
         }
         private void Dg_card_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
+        {//selection
             try
             {
                 if (sender != null)
@@ -430,6 +471,8 @@ namespace POS.View.sectionData
 
                 if (card != null)
                 {
+                    getImg();
+
                     #region delete
                     if (card.canDelete)
                     {
@@ -877,5 +920,68 @@ namespace POS.View.sectionData
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+
+        private void Img_card_Click(object sender, RoutedEventArgs e)
+        {//select image
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                isImgPressed = true;
+                openFileDialog.Filter = "Images|*.png;*.jpg;*.bmp;*.jpeg;*.jfif";
+                if (openFileDialog.ShowDialog() == true)
+                {
+                    brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
+                    img_card.Background = brush;
+                    imgFileName = openFileDialog.FileName;
+                }
+                else
+                { }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+
+        private async void getImg()
+        {
+
+            if (string.IsNullOrEmpty(card.image))
+            {
+                SectionData.clearImg(img_card);
+            }
+            else
+            {
+                byte[] imageBuffer = await cardModel.downloadImage(card.image);
+
+                var bitmapImage = new BitmapImage();
+                if (imageBuffer != null)
+                {
+                    using (var memoryStream = new MemoryStream(imageBuffer))
+                    {
+                        bitmapImage.BeginInit();
+                        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmapImage.StreamSource = memoryStream;
+                        bitmapImage.EndInit();
+                    }
+
+                    img_card.Background = new ImageBrush(bitmapImage);
+                    // configure trmporary path
+                    string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+                    string tmpPath = System.IO.Path.Combine(dir, Global.TMPAgentsFolder);
+                    tmpPath = System.IO.Path.Combine(tmpPath, card.image);
+                    openFileDialog.FileName = tmpPath;
+                }
+                else
+                    SectionData.clearImg(img_card);
+            }
+        }
+
     }
+
 }

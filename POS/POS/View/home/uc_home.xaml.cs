@@ -56,7 +56,8 @@ namespace POS.View
         DispatcherTimer threadtimer;
         public static int secondTimer10 = 10;
         public static int secondTimer30 = 30;
-        int Skip = 0;
+        int SkipBestSeller = 0;
+        int SkipIUStorage = 0;
         bool firstLoad = true;
         string branchesPermission = "dashboard_branches";
         Dash dash = new Dash();
@@ -67,7 +68,7 @@ namespace POS.View
         public List<BestSeller> listBestSeller { get; set; }
         public List<TotalPurSale> listMonthlyInvoice { get; set; }
         public List<IUStorage> listIUStorage { get; set; }
-
+        public List<ItemUnit> IUList = new List<ItemUnit>();
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             await SectionData.fillBranchesWithAll(cb_branch);
@@ -77,7 +78,8 @@ namespace POS.View
             else cb_branch.IsEnabled = false;
 
 
-            Skip = 0;
+            SkipBestSeller = 0;
+            SkipIUStorage = 0;
             firstLoad = true;
             //await BestSeller();
             //paginationBestSeller(listBestSeller, Skip);
@@ -235,7 +237,7 @@ namespace POS.View
              );
             pch_dailyPurchaseInvoice.Series = seriesDailyPurchaseInvoice;
            */
-           #endregion
+            #endregion
             #region DailySalesInvoice
             /*SeriesCollection seriesDailySalesInvoice = new SeriesCollection();
             seriesDailySalesInvoice.Add(
@@ -259,6 +261,12 @@ namespace POS.View
             pch_dailySalesInvoice.Series = seriesDailySalesInvoice;
             */
             #endregion
+
+
+            refrishIUList(MainWindow.itemUnitsUsers);
+
+
+
 
             CalculateNumberDaysInMonth calculate = new CalculateNumberDaysInMonth();
             NumberDaysInMonth = calculate.getdays(DateTime.Now);
@@ -295,17 +303,28 @@ namespace POS.View
                 #region BestSeller
                 if (!firstLoad)
                 {
-                    if (listBestSeller.Count < 4 || Skip == 2)
-                        Skip = 0;
-                    else if (listBestSeller.Count < 7 && Skip < 1)
-                        Skip++;
-                    else if (listBestSeller.Count < 10 && Skip < 2)
-                        Skip++;
+                    if (listBestSeller.Count < 4 || SkipBestSeller == 2)
+                        SkipBestSeller = 0;
+                    else if (listBestSeller.Count < 7 && SkipBestSeller < 1)
+                        SkipBestSeller++;
+                    else if (listBestSeller.Count < 10 && SkipBestSeller < 2)
+                        SkipBestSeller++;
                 }
-                paginationBestSeller(listBestSeller, Skip);
+                paginationBestSeller(listBestSeller, SkipBestSeller);
+                #endregion
+                #region IUStorage
+                if (!firstLoad)
+                    if (listIUStorage.Count < 4 || SkipIUStorage == 2)
+                        SkipIUStorage = 0;
+                    else if (listIUStorage.Count < 7 && SkipIUStorage < 1)
+                        SkipIUStorage++;
+                    else if (listIUStorage.Count < 10 && SkipIUStorage < 2)
+                        SkipIUStorage++;
+                paginationIUStorage(listIUStorage, SkipIUStorage);
+                #endregion
+
                 firstLoad = false;
 
-                #endregion
             }
             catch (Exception ex)
             {
@@ -331,21 +350,12 @@ namespace POS.View
         //        else if (listBestSeller.Count < 10 && Skip < 2)
         //            Skip++;
         //}
-            paginationBestSeller(listBestSeller, Skip);
-                //firstLoad = false;
+            paginationBestSeller(listBestSeller, SkipBestSeller);
+            //firstLoad = false;
             #endregion
             #region IUStorage
-            /*
             await IUStorage();
-            if (!firstLoad)
-                if (listIUStorage.Count < 4 || Skip == 2)
-                    Skip = 0;
-                else if (listIUStorage.Count < 7 && Skip < 1)
-                    Skip++;
-                else if (listIUStorage.Count < 10 && Skip < 2)
-                    Skip++;
-            paginationIUStorage(listIUStorage, Skip);
-            */
+            paginationIUStorage(listIUStorage, SkipIUStorage);
             #endregion
             await UserOnlinePic();
             await AmountMonthlySalPur();
@@ -506,15 +516,15 @@ namespace POS.View
         {
             try
             {
-                List<userOnlineInfo> listUserOnline = await dash.GetuseronlineInfo();
+                dash.listUserOnline = await dash.GetuseronlineInfo();
                 if (cb_branch.SelectedValue != null)
                     if ((int)cb_branch.SelectedValue == 0)
                     {
-                        InitializeUserOnlinePic(listUserOnline);
+                        InitializeUserOnlinePic(dash.listUserOnline);
                     }
                     else
                     {
-                        List<userOnlineInfo> newUserOnline = listUserOnline.Where(s => s.branchId == (int)cb_branch.SelectedValue).ToList();
+                        List<userOnlineInfo> newUserOnline = dash.listUserOnline.Where(s => s.branchId == (int)cb_branch.SelectedValue).ToList();
                         if (newUserOnline != null && newUserOnline.Count != 0)
                         {
                         InitializeUserOnlinePic(newUserOnline);
@@ -539,10 +549,22 @@ namespace POS.View
             foreach (var item in users)
             {
                 if (userCount > 4)
+                //if (true)
                 {
+                    #region Button
+                    Button button = new Button();
+                    button.Padding =  new Thickness(0,0,0,0);
+                    button.Margin = new Thickness(-5, 0, -5, 0);
+                    button.Background = null;
+                    button.BorderBrush = null;
+                    button.Height = 40;
+                    button.Width = 40;
+                    button.Click += userOnlineListWindow;
+                    Grid.SetColumn(button, 4);
+                    #region grid
                     Grid grid = new Grid();
-                    grid.Margin = new Thickness(-5, 0, -5, 0);
-                    Grid.SetColumn(grid, 4);
+                    //grid.Margin = new Thickness(-5, 0, -5, 0);
+                    //Grid.SetColumn(grid, 4);
                     #region rectangle
                     Rectangle rectangle = new Rectangle();
                     rectangle.Fill = Application.Current.Resources["Orange"] as SolidColorBrush;
@@ -554,7 +576,7 @@ namespace POS.View
                     rectangle.Stroke = Application.Current.Resources["White"] as SolidColorBrush; ;
                     grid.Children.Add(rectangle);
                     #endregion
-                    #region rectangle
+                    #region Text
                     TextBlock textBlock = new TextBlock();
                     textBlock.Text = "+" + (users.Count() - 4).ToString();
                     textBlock.HorizontalAlignment = HorizontalAlignment.Center;
@@ -563,7 +585,12 @@ namespace POS.View
                     textBlock.Foreground = Application.Current.Resources["White"] as SolidColorBrush;
                     grid.Children.Add(textBlock);
                     #endregion
-                    grid_userImages.Children.Add(grid);
+                    #endregion
+                    button.Content = grid;
+                    #endregion
+
+
+                    grid_userImages.Children.Add(button);
                     break;
                 }
                 else
@@ -634,7 +661,15 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
+        void userOnlineListWindow(object sender, RoutedEventArgs e)
+        {
+            
+                 Window.GetWindow(this).Opacity = 0.2;
+            wd_usersOnline w = new wd_usersOnline();
+            w.usersOnline = dash.listUserOnline;
+            w.ShowDialog();
+            Window.GetWindow(this).Opacity = 1;
+        }
 
         #region BestSeller
         async Task BestSeller()
@@ -826,7 +861,6 @@ namespace POS.View
         }
         #endregion
         #region IUStorage
-        List<ItemUnitUser> ItemUnitsUser = new List<ItemUnitUser>();
         private void Btn_storageSetting_Click(object sender, RoutedEventArgs e)
         {//settings
             try
@@ -841,15 +875,16 @@ namespace POS.View
                     Window.GetWindow(this).Opacity = 0.2;
 
                     wd_itemsUnitList w = new wd_itemsUnitList();
-
                     w.itemId = 0;
                     w.itemUnitId = 0;
                     w.CallerName = "IUList";
-
+                    //w.selectedItemUnits = MainWindow.itemUnitsUsers;
                     w.ShowDialog();
                     if (w.isActive)
                     {
-                        ItemUnitsUser =  w.selectedItemUnits;
+                      MainWindow.itemUnitsUsers =  w.selectedItemUnits;
+                    refrishIUList(MainWindow.itemUnitsUsers);
+                    refreshView();
                     }
 
                     Window.GetWindow(this).Opacity = 1;
@@ -867,12 +902,28 @@ namespace POS.View
             }
 
         }
+        void refrishIUList(List<ItemUnitUser> itemUnitsUsers)
+        {
+            try
+            {
+                IUList.Clear();
+            foreach (var item in itemUnitsUsers)
+            {
+                var itemUnit = new ItemUnit();
+                itemUnit.itemUnitId = item.itemUnitId.Value;
+                IUList.Add(itemUnit);
+            }
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
         async Task IUStorage()
         {
             try
             {
-                /*
-                List<IUStorage> listAllIUStorage = await dash.GetIUStorage();
+                List<IUStorage> listAllIUStorage = await dash.GetIUStorage(IUList);
                 if (cb_branch.SelectedValue != null)
                     if ((int)cb_branch.SelectedValue == 0)
                     {
@@ -902,7 +953,6 @@ namespace POS.View
                         else
                             listIUStorage = new List<IUStorage>();
                     }
-                */
             }
             catch (Exception ex)
             {
@@ -1231,7 +1281,6 @@ namespace POS.View
         private void UserControl_TouchLeave(object sender, TouchEventArgs e)
         {
             MessageBox.Show("hey i'm here in TouchLeave");
-
         }
         private async void Cb_branch_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

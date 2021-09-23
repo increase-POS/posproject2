@@ -61,7 +61,7 @@ namespace POS
         internal static User userLogin;
         internal static int? userLogInID;
         internal static Pos posLogIn = new Pos();
-        internal static int? posID = 9;
+        internal static int? posID = 2;
         internal static int? branchID;
         bool isHome = false;
         internal static int? isInvTax;
@@ -72,6 +72,8 @@ namespace POS
         public static int Idletime = 5;
         public static int threadtime = 5;
         public static string menuIsOpen = "close";
+        public static List<ItemUnitUser> itemUnitsUsers = new List<ItemUnitUser>();
+        public static ItemUnitUser itemUnitsUser = new ItemUnitUser();
 
         static public GroupObject groupObject = new GroupObject();
         static public List<GroupObject> groupObjects = new List<GroupObject>();
@@ -357,6 +359,9 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
                     logoImage = setV.value;
                     await setV.getImg(logoImage);
                 }
+
+
+                itemUnitsUsers = await itemUnitsUser.GetByUserId(userLogin.userId);
                 #endregion
 
 

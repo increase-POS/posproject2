@@ -787,10 +787,18 @@ namespace POS.View.storage
 
             refrishBillDetails();
         }
-        void refrishBillDetails()
+        bool firstTimeForDatagrid = true;
+        async void refrishBillDetails()
         {
+            
             dg_billDetails.ItemsSource = null;
             dg_billDetails.ItemsSource = billDetails;
+            if (firstTimeForDatagrid)
+            {
+                await Task.Delay(1000);
+                dg_billDetails.Items.Refresh();
+                firstTimeForDatagrid = false;
+            }
         }
         private void inputEditable()
         {

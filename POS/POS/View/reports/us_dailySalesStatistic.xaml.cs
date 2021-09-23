@@ -19,9 +19,7 @@ using System.Windows.Shapes;
 
 namespace POS.View.reports
 {
-    /// <summary>
-    /// Interaction logic for us_dailySalesStatistic.xaml
-    /// </summary>
+
     public partial class us_dailySalesStatistic : UserControl
     {
          

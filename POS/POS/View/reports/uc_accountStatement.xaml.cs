@@ -1134,12 +1134,12 @@ namespace POS.View.reports
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                Thread t1 = new Thread(() =>
-                {
+                //Thread t1 = new Thread(() =>
+                //{
                     sendEmail();
-                });
-                t1.Start();
-                //
+                //});
+                //t1.Start();
+
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -1156,158 +1156,167 @@ namespace POS.View.reports
 
         private async void sendEmail()
         {
-            if (txt_for.Text == "Required")
+            //if (txt_for.Text == "Required")
+            if (txt_for.Text == MainWindow.resourcemanager.GetString("trRequired"))
             {
-                string total = txt_total.Text;
-                SysEmails email = new SysEmails();
-                EmailClass mailtosend = new EmailClass();
+                    string total = txt_total.Text;
+                    SysEmails email = new SysEmails();
+                    EmailClass mailtosend = new EmailClass();
 
-                Agent toAgent = new Agent();
-                User toUser = new User();
-                ShippingCompanies toShipCompanies = new ShippingCompanies();
-                string emailto = "";
-                bool toemailexist = false;
-                email = await email.GetByBranchIdandSide((int)MainWindow.branchID, "mg");
-                switch (selectedTab)
-                {
-                    case 0:
-                        //vendor
-                        var objct0 = cb_vendors.SelectedItem as VendorCombo;
-
-                        int agentId = (int)objct0.VendorId;
-                        toAgent = await toAgent.getAgentById(agentId);
-                        emailto = toAgent.email;
-
-                        if (emailto is null || emailto == "")
-                        {
-                            toemailexist = false;
-
-                            this.Dispatcher.Invoke(() =>
-                            {
-                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trTheVendorHasNoEmail"), animation: ToasterAnimation.FadeIn);
-                            });
-                        }
-                        else
-                        {
-                            toemailexist = true;
-                        }
-
-                        break;
-
-                    case 1:
-                        var objct1 = cb_customer.SelectedItem as VendorCombo;
-                        agentId = (int)objct1.VendorId;
-                        toAgent = await toAgent.getAgentById(agentId);
-                        emailto = toAgent.email;
-
-                        if (emailto is null || emailto == "")
-                        {
-                            toemailexist = false;
-                            this.Dispatcher.Invoke(() =>
-                            {
-                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trTheCustomerHasNoEmail"), animation: ToasterAnimation.FadeIn);
-                            });
-                        }
-                        else
-                        {
-                            toemailexist = true;
-                        }
-                        break;
-                    case 2:
-                        var objct2 = cb_users.SelectedItem as VendorCombo;
-                        int userId = (int)objct2.UserId;
-                        toUser = await toUser.getUserById(userId);
-                        emailto = toUser.email;
-
-                        if (emailto is null || emailto == "")
-                        {
-                            toemailexist = false;
-                            this.Dispatcher.Invoke(() =>
-                            {
-                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trTheUserHasNoEmail"), animation: ToasterAnimation.FadeIn);
-                            });
-                        }
-                        else
-                        {
-                            toemailexist = true;
-                        }
-                        break;
-                    case 6:
-                        var objct3 = cb_shipping.SelectedItem as ShippingCombo;
-                        int shipId = (int)objct3.ShippingId;
-
-                        toShipCompanies = await toShipCompanies.GetByID(shipId);
-                        emailto = toShipCompanies.email;
-
-                        if (emailto is null || emailto == "")
-                        {
-                            toemailexist = false;
-                            this.Dispatcher.Invoke(() =>
-                            {
-                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trTheShippingCompaniesHasNoEmail"), animation: ToasterAnimation.FadeIn);
-                            });
-                        }
-                        else
-                        {
-                            toemailexist = true;
-                        }
-
-                        break;
-
-                }
-
-                if (email != null)
-                {
-                    if (email.emailId == 0)
+                    Agent toAgent = new Agent();
+                    User toUser = new User();
+                    ShippingCompanies toShipCompanies = new ShippingCompanies();
+                    string emailto = "";
+                    bool toemailexist = false;
+                    email = await email.GetByBranchIdandSide((int)MainWindow.branchID, "mg");
+                    switch (selectedTab)
                     {
-                        this.Dispatcher.Invoke(() =>
-                        {
-                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoEmailForThisDept"), animation: ToasterAnimation.FadeIn);
-                        });
-                    }
-                    else
-                    {
-                        if (toemailexist)
-                        {
-                            SetValues setvmodel = new SetValues();
+                        case 0:
+                            //vendor
+                            var objct0 = cb_vendors.SelectedItem as VendorCombo;
 
-                            List<SetValues> setvlist = new List<SetValues>();
+                            int agentId = (int)objct0.VendorId;
+                            toAgent = await toAgent.getAgentById(agentId);
+                            emailto = toAgent.email;
 
-                            setvlist = await setvmodel.GetBySetName("required_email_temp");
-
-                            mailtosend = mailtosend.fillRequirdTempData(total, emailto, email, setvlist);
-
-                            string msg = "";
-                            msg = mailtosend.Sendmail();// temp comment
-                            if (msg == "Failure sending mail.")
+                            if (emailto is null || emailto == "")
                             {
+                                toemailexist = false;
+
                                 this.Dispatcher.Invoke(() =>
                                 {
-                                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoInternetConnection"), animation: ToasterAnimation.FadeIn);
-                                });
-                            }
-                            else if (msg == "mailsent")
-                            {
-                                this.Dispatcher.Invoke(() =>
-                                {
-                                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trMailSent"), animation: ToasterAnimation.FadeIn);
+                                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trTheVendorHasNoEmail"), animation: ToasterAnimation.FadeIn);
                                 });
                             }
                             else
                             {
-                                this.Dispatcher.Invoke(() =>
-                                {
-                                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trMailNotSent"), animation: ToasterAnimation.FadeIn);
-                                });
+                                toemailexist = true;
                             }
 
+                            break;
+
+                        case 1:
+                            var objct1 = cb_customer.SelectedItem as VendorCombo;
+                            agentId = (int)objct1.VendorId;
+                            toAgent = await toAgent.getAgentById(agentId);
+                            emailto = toAgent.email;
+
+                            if (emailto is null || emailto == "")
+                            {
+                                toemailexist = false;
+                                this.Dispatcher.Invoke(() =>
+                                {
+                                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trTheCustomerHasNoEmail"), animation: ToasterAnimation.FadeIn);
+                                });
+                            }
+                            else
+                            {
+                                toemailexist = true;
+                            }
+                            break;
+                        case 2:
+                            var objct2 = cb_users.SelectedItem as VendorCombo;
+                            int userId = (int)objct2.UserId;
+                            toUser = await toUser.getUserById(userId);
+                            emailto = toUser.email;
+
+                            if (emailto is null || emailto == "")
+                            {
+                                toemailexist = false;
+                                this.Dispatcher.Invoke(() =>
+                                {
+                                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trTheUserHasNoEmail"), animation: ToasterAnimation.FadeIn);
+                                });
+                            }
+                            else
+                            {
+                                toemailexist = true;
+                            }
+                            break;
+                        case 6:
+                            var objct3 = cb_shipping.SelectedItem as ShippingCombo;
+                            int shipId = (int)objct3.ShippingId;
+
+                            toShipCompanies = await toShipCompanies.GetByID(shipId);
+                            emailto = toShipCompanies.email;
+
+                            if (emailto is null || emailto == "")
+                            {
+                                toemailexist = false;
+                                this.Dispatcher.Invoke(() =>
+                                {
+                                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trTheShippingCompaniesHasNoEmail"), animation: ToasterAnimation.FadeIn);
+                                });
+                            }
+                            else
+                            {
+                                toemailexist = true;
+                            }
+
+                            break;
+
+                    }
+
+                    if (email != null)
+                    {
+                        if (email.emailId == 0)
+                        {
+                            this.Dispatcher.Invoke(() =>
+                            {
+                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoEmailForThisDept"), animation: ToasterAnimation.FadeIn);
+                            });
+                        }
+                        else
+                        {
+                            if (toemailexist)
+                            {
+                                SetValues setvmodel = new SetValues();
+
+                                List<SetValues> setvlist = new List<SetValues>();
+
+                                setvlist = await setvmodel.GetBySetName("required_email_temp");
+
+                                mailtosend = mailtosend.fillRequirdTempData(total, emailto, email, setvlist);
+
+                                string msg = "";
+                            Thread t1 = new Thread(() =>
+                            {
+                                msg = mailtosend.Sendmail();// temp comment
+                                if (msg == "Failure sending mail.")
+                                {
+                                    this.Dispatcher.Invoke(() =>
+                                    {
+                                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoInternetConnection"), animation: ToasterAnimation.FadeIn);
+                                    });
+                                }
+                                else if (msg == "mailsent")
+                                {
+                                
+                                        this.Dispatcher.Invoke(() =>
+                                        {
+                                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trMailSent"), animation: ToasterAnimation.FadeIn);
+                                        });
+                               
+                                }
+                                else
+                                {
+                                    this.Dispatcher.Invoke(() =>
+                                    {
+                                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trMailNotSent"), animation: ToasterAnimation.FadeIn);
+                                    });
+                                }
+                            });
+                            t1.Start();
+                        }
                         }
                     }
-                }
             }
-            //else
-            //{
-            //}
+            else
+            {
+                this.Dispatcher.Invoke(() =>
+                {
+                });
+            }
         }
 
         private void Btn_preview_Click(object sender, RoutedEventArgs e)

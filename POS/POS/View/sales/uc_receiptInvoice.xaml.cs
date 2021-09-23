@@ -166,6 +166,7 @@ namespace POS.View
             txt_customer.Text = MainWindow.resourcemanager.GetString("trCustomer");
             txt_delivery.Text = MainWindow.resourcemanager.GetString("trDelivery");
             txt_discount.Text = MainWindow.resourcemanager.GetString("trDiscount");
+            txt_totalDescount.Text = MainWindow.resourcemanager.GetString("trDiscount");
 
 
             txt_printInvoice.Text = MainWindow.resourcemanager.GetString("trPrint");
@@ -198,7 +199,6 @@ namespace POS.View
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_typeDiscount, MainWindow.resourcemanager.GetString("trDiscountTypeHint"));
 
             btn_save.Content = MainWindow.resourcemanager.GetString("trPay");
-
         }
 
         private async void UserControl_Unloaded(object sender, RoutedEventArgs e)
@@ -699,8 +699,11 @@ namespace POS.View
                         SectionData.clearComboBoxValidate(cb_customer, p_errorCustomer);
                         break;
                     case 1:
-                        SectionData.validateEmptyComboBox(cb_customer, p_errorCustomer, tt_errorCustomer, "trEmptyCustomerToolTip");
-                        break;
+                        {
+                            SectionData.validateEmptyComboBox(cb_customer, p_errorCustomer, tt_errorCustomer, "trEmptyCustomerToolTip");
+                            exp_customer.IsExpanded = true;
+                            break;
+                        }
                     case 2:
                         SectionData.clearComboBoxValidate(cb_customer, p_errorCustomer);
                         SectionData.validateEmptyTextBox(tb_processNum, p_errorProcessNum, tt_errorProcessNum, "trEmptyProcessNumToolTip");
@@ -803,7 +806,11 @@ namespace POS.View
                 if (name == "ComboBox")
                 {
                     if ((sender as ComboBox).Name == "cb_customer")
+                    {
                         SectionData.validateEmptyComboBox((ComboBox)sender, p_errorCustomer, tt_errorCustomer, "trEmptyCustomerToolTip");
+                        exp_customer.IsExpanded = true;
+
+                    }
                     if ((sender as ComboBox).Name == "cb_paymentProcessType")
                         SectionData.validateEmptyComboBox((ComboBox)sender, p_errorpaymentProcessType, tt_errorpaymentProcessType, "trErrorEmptyPaymentTypeToolTip");
                     if ((sender as ComboBox).Name == "cb_card")
@@ -1082,24 +1089,22 @@ namespace POS.View
             }
         }
 
-        bool logInProcessing = true;
-        void awaitSaveBtn(bool isAwait)
-        {
-            if (isAwait == true)
-            {
-                btn_save.IsEnabled = false;
-                wait_saveBtn.Visibility = Visibility.Visible;
-                wait_saveBtn.IsIndeterminate = true;
-            }
-            else
-            {
-                btn_save.IsEnabled = true;
-                wait_saveBtn.Visibility = Visibility.Collapsed;
-                wait_saveBtn.IsIndeterminate = false;
-            }
-
-
-        }
+        //bool logInProcessing = true;
+        //void awaitSaveBtn(bool isAwait)
+        //{
+        //    if (isAwait == true)
+        //    {
+        //        btn_save.IsEnabled = false;
+        //        wait_saveBtn.Visibility = Visibility.Visible;
+        //        wait_saveBtn.IsIndeterminate = true;
+        //    }
+        //    else
+        //    {
+        //        btn_save.IsEnabled = true;
+        //        wait_saveBtn.Visibility = Visibility.Collapsed;
+        //        wait_saveBtn.IsIndeterminate = false;
+        //    }
+        //}
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {//save
             try
@@ -1266,6 +1271,8 @@ namespace POS.View
             gd_card.Visibility = Visibility.Collapsed;
             btn_deleteInvoice.Visibility = Visibility.Collapsed;
             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesInvoice");
+            txt_payInvoice.Foreground = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
+                            btn_save.Content = MainWindow.resourcemanager.GetString("trPay");
             SectionData.clearComboBoxValidate(cb_paymentProcessType, p_errorpaymentProcessType);
             SectionData.clearComboBoxValidate(cb_card, p_errorCard);
             SectionData.clearComboBoxValidate(cb_user, p_errorUser);
@@ -1273,7 +1280,7 @@ namespace POS.View
             refrishBillDetails();
             tb_barcode.Focus();
             inputEditable();
-            brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
+            //brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
             btn_next.Visibility = Visibility.Collapsed;
             btn_previous.Visibility = Visibility.Collapsed;
             await fillCouponsList();
@@ -1315,16 +1322,22 @@ namespace POS.View
                         {
                             mainInvoiceItems = invoiceItems;
                             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesDraft");
-                            brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D22A17"));
+                            txt_payInvoice.Foreground = Application.Current.Resources["MainColorRed"] as SolidColorBrush;
+                            btn_save.Content = MainWindow.resourcemanager.GetString("trReturn");
+                            //brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D22A17"));
                         }
                         if (_InvoiceType == "sbd")
                         {
                             mainInvoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceMainId.Value);
                             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trDraftBounceBill");
-                            brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
+                            txt_payInvoice.Foreground = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
+                            btn_save.Content = MainWindow.resourcemanager.GetString("trPay");
+                            //brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
                         }
                         // orange #FFA926 red #D22A17
-                        brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
+                        txt_payInvoice.Foreground = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
+                            btn_save.Content = MainWindow.resourcemanager.GetString("trPay");
+                        //brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
 
 
                     }
@@ -1383,8 +1396,14 @@ namespace POS.View
 
                         // set title to bill
                         txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesInvoice");
+                        txt_payInvoice.Foreground = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
+                            btn_save.Content = MainWindow.resourcemanager.GetString("trPay");
                         // orange #FFA926 red #D22A17
-                        brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
+                        //brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
+                        //txt_totalDescount.Foreground = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
+                        //txt_total.Foreground = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
+
+
                         await fillInvoiceInputs(invoice);
                         invoices = await invoice.GetInvoicesByCreator(invoiceType, MainWindow.userID.Value, duration);
                         navigateBtnActivate();
@@ -1439,8 +1458,12 @@ namespace POS.View
 
                             // set title to bill
                             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSaleOrder");
+                            txt_payInvoice.Foreground = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
+                            btn_save.Content = MainWindow.resourcemanager.GetString("trPay");
                             // orange #FFA926 red #D22A17
-                            brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
+                            //brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
+                            //txt_totalDescount.Foreground = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
+                            //txt_total.Foreground = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
                             await fillInvoiceInputs(invoice);
                             invoices = await invoice.getUnHandeldOrders(invoiceType, 0, MainWindow.branchID.Value);
                             navigateBtnActivate();
@@ -1586,8 +1609,13 @@ namespace POS.View
                             navigateBtnActivate();
                             mainInvoiceItems = invoiceItems;
                             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesReturnInvoice");
+                            txt_payInvoice.Foreground = Application.Current.Resources["MainColorRed"] as SolidColorBrush;
+                            btn_save.Content = MainWindow.resourcemanager.GetString("trReturn");
                             // orange #FFA926 red #D22A17
-                            brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D22A17"));
+                            //brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D22A17"));
+                            //txt_totalDescount.Foreground = Application.Current.Resources["mediumRed"] as SolidColorBrush;
+                            //txt_total.Foreground = Application.Current.Resources["mediumRed"] as SolidColorBrush;
+
                             md_payments.Badge = "";
                             await refreshDocCount(invoice.invoiceId);
 
@@ -1979,7 +2007,8 @@ namespace POS.View
         }
         #region billdetails
 
-        void refrishBillDetails()
+        bool firstTimeForDatagrid = true;
+       async void refrishBillDetails()
         {
             dg_billDetails.ItemsSource = null;
             if (billDetails.Count == 1)
@@ -1991,6 +2020,12 @@ namespace POS.View
             }
             else
                 dg_billDetails.ItemsSource = billDetails;
+            if (firstTimeForDatagrid)
+            {
+                await Task.Delay(1000);
+                dg_billDetails.Items.Refresh();
+                firstTimeForDatagrid = false;
+            }
 
             //tb_sum.Text = _Sum.ToString();
             if (_Sum != 0)
@@ -2106,23 +2141,31 @@ namespace POS.View
                         if (_InvoiceType == "sd")
                         {
                             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesDraft");
-                            brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
+                            txt_payInvoice.Foreground = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
+                            btn_save.Content = MainWindow.resourcemanager.GetString("trPay");
+                            //brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
                         }
                         else if (_InvoiceType == "s")
                         {
                             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesInvoice");
-                            brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
+                            txt_payInvoice.Foreground = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
+                            btn_save.Content = MainWindow.resourcemanager.GetString("trPay");
+                            //brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
                         }
                         else if (_InvoiceType == "sbd")
                         {
                             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesReturnDraft");
-                            brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D22A17"));
+                            txt_payInvoice.Foreground = Application.Current.Resources["MainColorRed"] as SolidColorBrush;
+                            btn_save.Content = MainWindow.resourcemanager.GetString("trReturn");
+                            //brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D22A17"));
                         }
                         else if (_InvoiceType == "sb")
                         {
                             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesReturnInvoice");
+                            txt_payInvoice.Foreground = Application.Current.Resources["MainColorRed"] as SolidColorBrush;
+                            btn_save.Content = MainWindow.resourcemanager.GetString("trReturn");
                             // orange #FFA926 red #D22A17
-                            brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D22A17"));
+                            //brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D22A17"));
                         }
 
                         await fillInvoiceInputs(invoice);
@@ -2305,6 +2348,8 @@ namespace POS.View
                 {
                     int itemUnitId = (int)cmb.SelectedValue;
                     billDetails[dg_billDetails.SelectedIndex].itemUnitId = (int)cmb.SelectedValue;
+                   
+                    #region Dina
                     //var unit = itemUnits.ToList().Find(x => x.itemUnitId == (int)cmb.SelectedValue);
                     var unit = await itemUnitModel.GetById((int)cmb.SelectedValue);
                     //int availableAmount = await itemLocationModel.getAmountInBranch(itemUnitId, MainWindow.branchID.Value);
@@ -2370,6 +2415,7 @@ namespace POS.View
                     billDetails[dg_billDetails.SelectedIndex].Price = newPrice;
                     billDetails[dg_billDetails.SelectedIndex].Total = total;
                     refrishBillDetails();
+#endregion
                 }
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -2381,6 +2427,7 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+       
         private void Cbm_unitItemDetails_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             try
@@ -2397,6 +2444,53 @@ namespace POS.View
             {
                 SectionData.ExceptionMessage(ex, this);
             }
+        }
+        private void DataGrid_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                //billDetails
+                int count = 0;
+                foreach (var item in billDetails)
+                {
+                    if (dg_billDetails.Items.Count != 0)
+                    {
+                        if (dg_billDetails.Items.Count > 1)
+                        {
+                            var cell = DataGridHelper.GetCell(dg_billDetails, count, 3);
+                            if (cell != null)
+                            {
+                                var cp = (ContentPresenter)cell.Content;
+                                var combo = (ComboBox)cp.ContentTemplate.FindName("cbm_unitItemDetails", cp);
+                                //var combo = (combo)cell.Content;
+                                combo.SelectedValue = (int)item.itemUnitId;
+                                count++;
+                            }
+                        }
+
+                    }
+                }
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+
+        private void Dg_billDetails_BeginningEdit(object sender, DataGridBeginningEditEventArgs e)
+        {
+            if (_InvoiceType == "sbd" || _InvoiceType == "s" || _InvoiceType == "q")
+             e.Cancel = false;  
+            else if (_InvoiceType == "sd" || _InvoiceType == "or")
+                e.Cancel = true;
         }
         #region
         public DataGridCell GetDataGridCell(DataGridCellInfo cellInfo)
@@ -2446,46 +2540,7 @@ namespace POS.View
         }
 
         #endregion
-        private void DataGrid_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-
-                //billDetails
-                int count = 0;
-                foreach (var item in billDetails)
-                {
-                    if (dg_billDetails.Items.Count != 0)
-                    {
-                        if (dg_billDetails.Items.Count > 1)
-                        {
-                            var cell = DataGridHelper.GetCell(dg_billDetails, count, 3);
-                            if (cell != null)
-                            {
-                                var cp = (ContentPresenter)cell.Content;
-                                var combo = (ComboBox)cp.ContentTemplate.FindName("cbm_unitItemDetails", cp);
-                                //var combo = (combo)cell.Content;
-                                combo.SelectedValue = (int)item.itemUnitId;
-                                count++;
-                            }
-                        }
-
-                    }
-                }
-
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
+        
         private async void Dg_billDetails_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
             try
@@ -3344,8 +3399,10 @@ namespace POS.View
                             _invoiceId = invoice.invoiceId;
                             // set title to bill
                             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trQuotations");
+                            txt_payInvoice.Foreground = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
+                            btn_save.Content = MainWindow.resourcemanager.GetString("trPay");
                             // orange #FFA926 red #D22A17
-                            brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
+                            //brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
                             await fillInvoiceInputs(invoice);
                             invoices = await invoice.getUnHandeldOrders(invoiceType, MainWindow.branchID.Value, 0);
                             navigateBtnActivate();
@@ -3799,6 +3856,32 @@ namespace POS.View
             }
         }
 
-       
+        private void Exp_payment_Expanded(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Expander_Expanded(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                    var Sender = sender as Expander;
+                
+                foreach (var control in FindControls.FindVisualChildren<Expander>(this))
+            {
+
+                    var expander = control as Expander;
+                if (expander.Tag != null && Sender.Tag != null)
+                        if (expander.Tag.ToString() != Sender.Tag.ToString())
+                            expander.IsExpanded = false;
+            }
+        }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+        }
+    }
+
+        
     }
 }

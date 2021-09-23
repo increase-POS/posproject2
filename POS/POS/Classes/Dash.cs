@@ -46,7 +46,7 @@ namespace POS.Classes
 
     }
     public class userOnlineInfo
-    {
+    { 
         public Nullable<int> branchId { get; set; }
         public string branchName { get; set; }
         public Nullable<byte> branchisActive { get; set; }
@@ -137,6 +137,8 @@ namespace POS.Classes
 
         public string countMonthlyPurchase { get; set; }
         public string countMonthlySales { get; set; }
+
+        public List<userOnlineInfo> listUserOnline;
 
 
         public SeriesCollection SeriesCollection { get; set; }

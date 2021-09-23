@@ -2991,3 +2991,5 @@ D:\myproj\posproject2\POS\POS\obj\Debug\View\sales\win_lvcSales.g.cs
 D:\myproj\posproject2\POS\POS\obj\Debug\View\sales\win_lvcSales.baml
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_userInfo.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_userInfo.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_usersOnline.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_usersOnline.baml

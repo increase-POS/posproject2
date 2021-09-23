@@ -42,7 +42,6 @@ namespace POS.View.windows
 
         Branch branch = new Branch();
         BranchesUsers branchUser = new BranchesUsers();
-        BranchesUserstable branchUserTable = new BranchesUserstable();
         BranchStore branchStore = new BranchStore();
 
         IEnumerable<Branch> storeQuery;
@@ -233,7 +232,7 @@ namespace POS.View.windows
                 {
                     BranchStore bs = new BranchStore();
                     bs.id = 0;
-                    bs.branchId = Id;
+                    bs.branchId = branch.branchId;
                     bs.storeId = branch.branchId;
                     bs.createUserId = MainWindow.userID;
                     bs.sname = branch.name;
@@ -280,12 +279,13 @@ namespace POS.View.windows
             }
         }
 
-        private void Btn_unSelectedStore_Click(object sender, RoutedEventArgs e)
+        private async void Btn_unSelectedStore_Click(object sender, RoutedEventArgs e)
         {//unselect one
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_branchList);
+
                 if (userOrBranch == 'u')
                 {
                     branchUser = dg_selectedStores.SelectedItem as BranchesUsers;
@@ -293,6 +293,7 @@ namespace POS.View.windows
                     if (branchUser != null)
                     {
                         branch = allStoresSource.Where(s => s.branchId == branchUser.branchId.Value).FirstOrDefault();
+                        //branch = await branchModel.getBranchById(branchUser.branchId.Value);
 
                         selectedStoresByUser.Remove(branchUser);
 
@@ -302,10 +303,11 @@ namespace POS.View.windows
                 else
                 {
                     branchStore = dg_selectedStores.SelectedItem as BranchStore;
-                    if(branchStore != null)
+
+                    if (branchStore != null)
                     {
                         branch = allStoresSource.Where(s => s.branchId == branchStore.branchId.Value).FirstOrDefault();
-
+                        //branch = await branchModel.getBranchById(branchStore.branchId.Value);
                         selectedStoresByBranch.Remove(branchStore);
 
                         dg_selectedStores.ItemsSource = selectedStoresByBranch;
@@ -317,6 +319,7 @@ namespace POS.View.windows
                 dg_allStores.ItemsSource = allStores;
                 dg_allStores.Items.Refresh();
                 dg_selectedStores.Items.Refresh();
+
                 if (sender != null)
                     SectionData.EndAwait(grid_branchList);
             }
@@ -359,7 +362,7 @@ namespace POS.View.windows
                         BranchStoretable bst = new BranchStoretable();
                         bst.id = v.id;
                         bst.branchId = v.branchId;
-                        bst.storeId = v.storeId;
+                        bst.storeId = v.branchId;
                         bst.createDate = v.createDate;
                         bst.updateDate = v.updateDate;
                         bst.createUserId = v.createUserId;

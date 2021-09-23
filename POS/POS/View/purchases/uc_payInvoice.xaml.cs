@@ -1610,9 +1610,7 @@ namespace POS.View
             dg_billDetails.ItemsSource = billDetails;
             if (firstTimeForDatagrid)
             {
-                await Task.Delay(0500);
-                //dg_billDetails.ItemsSource = null;
-                //dg_billDetails.ItemsSource = billDetails;
+                await Task.Delay(1000);
                 dg_billDetails.Items.Refresh();
                 firstTimeForDatagrid = false;
             }

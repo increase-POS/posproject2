@@ -106,6 +106,8 @@ namespace POS.View.windows
 
                 if (CallerName.Equals("IUList"))
                 {
+                    dg_selectedItems.Columns[1].Visibility = Visibility.Collapsed;
+
                     selectedItemUnitsSource = await itemUnitUserModel.GetByUserId(MainWindow.userID.Value);
 
                     //remove selected itemunits from source itemunits

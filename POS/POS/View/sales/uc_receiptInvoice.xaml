@@ -408,7 +408,7 @@
                         </Grid>
                         <!--#endregion-->
                         <!--#region  Coupon-->
-                        <Expander   Margin="5" Background="White" Foreground="#178DD2" >
+                        <Expander x:Name="exp_coupon"  Tag="coupon" Expanded="Expander_Expanded" Margin="5" Background="White" Foreground="#178DD2" >
                             <Expander.Header>
                                     <TextBlock  Text="Coupon" x:Name="txt_coupon" Foreground="#178DD2" 
                                                 FontWeight="Bold" FontSize="12"  
@@ -475,7 +475,7 @@
                         <!--#endregion-->
                         <Separator Margin="5,2.5" Grid.Row="3"  Background="#DFDFDF" VerticalAlignment="Center" Width="auto" />
                         <!--#region  Discount-->
-                        <Expander Margin="5" Background="White" Foreground="#178DD2" >
+                        <Expander x:Name="exp_discount" Tag="discount" Expanded="Expander_Expanded" Margin="5" Background="White" Foreground="#178DD2" >
                             <Expander.Header>
                                 <TextBlock  Text="Discount" x:Name="txt_discount" Foreground="#178DD2" 
                                                 FontWeight="Bold" FontSize="12"  
@@ -536,7 +536,7 @@
                         <!--#endregion-->
                         <Separator Margin="5,2.5" Grid.Row="3"  Background="#DFDFDF" VerticalAlignment="Center" Width="auto" />
                         <!--#region  Customer-->
-                        <Expander Margin="5" Background="White" Foreground="#178DD2" >
+                        <Expander  x:Name="exp_customer" Tag="customer" Expanded="Expander_Expanded" Margin="5" Background="White" Foreground="#178DD2" >
                             <Expander.Header>
                                 <TextBlock  Text="Customer" x:Name="txt_customer" Foreground="#178DD2" 
                                                 FontWeight="Bold" FontSize="12"  
@@ -566,7 +566,7 @@
                                   BorderBrush="#737373" BorderThickness="0"
                                   KeyUp="Cb_customer_KeyUp" IsEditable="True" 
                                   LostFocus="input_LostFocus" SelectionChanged="Cb_customer_SelectionChanged"/>
-                                        <Path Fill="#E81123" Stretch="Fill" Margin="5,5,45,5"
+                                        <Path Fill="#E81123" Stretch="Fill" Margin="5,5,25,5"
                                           Name="p_errorCustomer"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
@@ -647,7 +647,7 @@
                         <!--#endregion-->
                         <Separator Margin="5,2.5" Grid.Row="3"  Background="#DFDFDF" VerticalAlignment="Center" Width="auto" />
                         <!--#region  Delivery-->
-                        <Expander Margin="5" Background="White" Foreground="#178DD2" >
+                        <Expander  x:Name="exp_delivery" Tag="delivery"  Expanded="Expander_Expanded" Margin="5" Background="White" Foreground="#178DD2" >
                             <Expander.Header>
                                 <TextBlock  Text="Delivery" x:Name="txt_delivery" Foreground="#178DD2" 
                                                 FontWeight="Bold" FontSize="12"  
@@ -710,7 +710,7 @@
                         <!--#endregion-->
                         <Separator Margin="5,2.5" Grid.Row="3"  Background="#DFDFDF" VerticalAlignment="Center" Width="auto" />
                         <!--#region  Payment-->
-                        <Expander Margin="5"  Background="White" Foreground="#178DD2" >
+                        <Expander  x:Name="exp_payment" Tag="payment" Expanded="Expander_Expanded"  Margin="5"  Background="White" Foreground="#178DD2" >
                             <Expander.Header>
                                 <TextBlock  Text="Payment" x:Name="txt_payment" Foreground="#178DD2" 
                                                 FontWeight="Bold" FontSize="12"  
@@ -1005,8 +1005,8 @@
                                        HorizontalAlignment="Right">
                             <TextBlock  VerticalAlignment="Center"   Text="" x:Name="txt_invNumber"  Foreground="#4E4E4E" 
                                    FontWeight="SemiBold" FontSize="14"/>
-                            <Button Grid.Column="5" BorderBrush="{x:Null}" Padding="0"   Margin="0" Height="auto"
-                    Background="{x:Null}" Visibility="Collapsed"
+                            <Button Grid.Column="5" BorderBrush="{x:Null}" Padding="0"   Margin="5,0" Height="auto"
+                    Background="{x:Null}" Visibility="Collapsed" 
                                     x:Name="btn_deleteInvoice"  Click="Btn_deleteInvoice_Click" >
                                 <materialDesign:PackIcon Foreground="{StaticResource mediumRed}" Kind="ClearCircle"  
                                 HorizontalAlignment="Center" Grid.Column="0"  
@@ -1016,7 +1016,7 @@
                         
                         <DataGrid x:Name="dg_billDetails"  Margin="5,5" Grid.Row="1"   Grid.ColumnSpan="2"    Background="White"
                       materialDesign:DataGridAssist.CornerRadius="5" Visibility="Visible"
-                         IsReadOnly="False" CanUserAddRows="False"  
+                         IsReadOnly="False" CanUserAddRows="False"   BeginningEdit="Dg_billDetails_BeginningEdit"
                         AutoGenerateColumns="False" CellEditEnding="Dg_billDetails_CellEditEnding"
                         ColumnWidth="SizeToHeader">
                             <DataGrid.Resources>
@@ -1170,7 +1170,7 @@
                     CornerRadius="7" BorderBrush="Black" Background="White" Padding="0" x:Name="brd_totalDescount">
                     <StackPanel Orientation="Horizontal" Margin="5,0" VerticalAlignment="Center" >
 
-                            <TextBlock Text="Descount" x:Name="txt_totalDescount" Foreground="{StaticResource MainColorBlue}" FontWeight="Bold" 
+                            <TextBlock Text="Discount" x:Name="txt_totalDescount" Foreground="{StaticResource MainColorBlue}" FontWeight="Bold" 
                                        VerticalAlignment="Bottom" HorizontalAlignment="Left" 
                                Margin="2,0,5,0" FontSize="22"/>
                         <TextBlock  Grid.Column="1" Margin="5,0,0,0" FontWeight="Bold" FontSize="18"  VerticalAlignment="Bottom"
