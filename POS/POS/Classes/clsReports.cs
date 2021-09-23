@@ -503,8 +503,10 @@ namespace POS.Classes
             rep.DataSources.Clear();
             foreach (var r in storageQuery)
             {
+                if (r.startDate!=null)
                 r.startDate = DateTime.Parse(SectionData.DateToString(r.startDate));//
-                r.endDate = DateTime.Parse(SectionData.DateToString(r.endDate));
+                if (r.endDate != null)
+                    r.endDate = DateTime.Parse(SectionData.DateToString(r.endDate));
                 //r.inventoryDate = DateTime.Parse(SectionData.DateToString(r.inventoryDate));
                 //r.IupdateDate = DateTime.Parse(SectionData.DateToString(r.IupdateDate));
 
@@ -514,6 +516,75 @@ namespace POS.Classes
             rep.DataSources.Add(new ReportDataSource("DataSetStorage", storageQuery));
         }
 
+        /* free zone
+         =iif((Fields!section.Value="FreeZone")And(Fields!location.Value="0-0-0"),
+"-",Fields!section.Value+"-"+Fields!location.Value)
+         * */
+
+        public static void storageStock(IEnumerable<Storage> storageQuery, LocalReport rep, string reppath, List<ReportParameter> paramarr)
+        {
+        storage(storageQuery, rep, reppath);
+            DateFormConv(paramarr);
+
+
+        }
+        // stocktaking
+        public static void StocktakingArchivesReport(IEnumerable<InventoryClass> Query, LocalReport rep, string reppath, List<ReportParameter> paramarr)
+        {
+            rep.ReportPath = reppath;
+            rep.EnableExternalImages = true;
+            rep.DataSources.Clear();
+
+            foreach (var r in Query)
+            {
+          
+                //r.inventoryDate = DateTime.Parse(SectionData.DateToString(r.inventoryDate));
+                //r.IupdateDate = DateTime.Parse(SectionData.DateToString(r.IupdateDate));
+           
+               r.diffPercentage = decimal.Parse(SectionData.DecTostring(r.diffPercentage));
+                //r.storageCostValue = decimal.Parse(SectionData.DecTostring(r.storageCostValue));
+            }
+
+
+            rep.DataSources.Add(new ReportDataSource("DataSetInventoryClass", Query));
+            DateFormConv(paramarr);
+            InventoryTypeConv(paramarr);
+        }
+
+        public static void StocktakingShortfallsReport(IEnumerable<ItemTransferInvoice> Query, LocalReport rep, string reppath, List<ReportParameter> paramarr)
+        {
+            rep.ReportPath = reppath;
+            rep.EnableExternalImages = true;
+            rep.DataSources.Clear();
+
+            //foreach (var r in Query)
+            //{
+            //    //if (r.startDate != null)
+            //    //    r.startDate = DateTime.Parse(SectionData.DateToString(r.startDate));//
+            //    //if (r.endDate != null)
+            //    //    r.endDate = DateTime.Parse(SectionData.DateToString(r.endDate));
+
+            //    //r.inventoryDate = DateTime.Parse(SectionData.DateToString(r.inventoryDate));
+            //    //r.IupdateDate = DateTime.Parse(SectionData.DateToString(r.IupdateDate));
+
+            //    //r.diffPercentage = decimal.Parse(SectionData.DecTostring(r.diffPercentage));
+            //    //r.storageCostValue = decimal.Parse(SectionData.DecTostring(r.storageCostValue));
+            //}
+
+
+            rep.DataSources.Add(new ReportDataSource("DataSetItemTransferInvoice", Query));
+            DateFormConv(paramarr);
+            InventoryTypeConv(paramarr);
+
+        }
+        /*
+        = Switch(Fields!inventoryType.Value="a",Parameters!trArchived.Value
+,Fields!inventoryType.Value="n",Parameters!trSaved.Value
+,Fields!inventoryType.Value="d",Parameters!trDraft.Value
+)
+
+         * */
+        //
 
         public static void cashTransferStsBank(IEnumerable<CashTransferSts> cashTransfers, LocalReport rep, string reppath, List<ReportParameter> paramarr)
         {
@@ -582,6 +653,14 @@ namespace POS.Classes
         {
 
             paramarr.Add(new ReportParameter("dateForm", MainWindow.dateFormat));
+        }
+
+        public static void InventoryTypeConv(List<ReportParameter> paramarr)
+        {
+
+            paramarr.Add(new ReportParameter("trArchived", MainWindow.resourcemanagerreport.GetString("trArchived")));
+            paramarr.Add(new ReportParameter("trSaved", MainWindow.resourcemanagerreport.GetString("trSaved")));
+            paramarr.Add(new ReportParameter("trDraft", MainWindow.resourcemanagerreport.GetString("trDraft")));
         }
         public static void cashTransTypeConv(List<ReportParameter> paramarr)
         {

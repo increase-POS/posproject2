@@ -46,6 +46,7 @@ namespace POS.View.reports
         IEnumerable<InventoryClass> archiveCount;
 
         List<InventoryClass> inventory;
+
         List<ItemTransferInvoice> falls;
         List<ItemTransferInvoice> Destroied;
 
@@ -53,6 +54,8 @@ namespace POS.View.reports
         ReportCls reportclass = new ReportCls();
         LocalReport rep = new LocalReport();
         SaveFileDialog saveFileDialog = new SaveFileDialog();
+        IEnumerable<InventoryClass> RepInventory;
+        IEnumerable<ItemTransferInvoice> RepItemtrans;
 
         private static uc_storageReports _instance;
         public static uc_storageReports Instance
@@ -443,6 +446,10 @@ namespace POS.View.reports
                     }).ToList();
             }
         }
+
+       
+        /// ////////////
+     
         private IEnumerable<InventoryClass> fillListStockTaking(ComboBox branch, ComboBox cb, DatePicker startDate, DatePicker endDate)
         {
             var selectedBranch = branch.SelectedItem as Branch;
@@ -458,7 +465,9 @@ namespace POS.View.reports
         }
         private void fillSocktakingEvents()
         {
-            dgStock.ItemsSource = fillListStockTaking(cb_stocktakingArchivedBranch, cb_stocktakingArchivedType, dp_stocktakingArchivedStartDate, dp_stocktakingArchivedEndDate);
+           // dgStock.ItemsSource = fillListStockTaking(cb_stocktakingArchivedBranch, cb_stocktakingArchivedType, dp_stocktakingArchivedStartDate, dp_stocktakingArchivedEndDate);
+            RepInventory = fillListStockTaking(cb_stocktakingArchivedBranch, cb_stocktakingArchivedType, dp_stocktakingArchivedStartDate, dp_stocktakingArchivedEndDate);
+            dgStock.ItemsSource = RepInventory;
             txt_count.Text = dgStock.Items.Count.ToString();
             fillStocktakingColumnChart();
             fillStocktakingPieChart();
@@ -1132,7 +1141,9 @@ new StackedColumnSeries
 
         private void fillShortFallsEvents()
         {
-            dgStock.ItemsSource = fillListshortFalls(cb_stocktakingFalseBranch, cb_stocktakingFalseType, dp_stocktakingFalseStartDate, dp_stocktakingFalseEndDate);
+          //  dgStock.ItemsSource = fillListshortFalls(cb_stocktakingFalseBranch, cb_stocktakingFalseType, dp_stocktakingFalseStartDate, dp_stocktakingFalseEndDate);
+            RepItemtrans=  fillListshortFalls(cb_stocktakingFalseBranch, cb_stocktakingFalseType, dp_stocktakingFalseStartDate, dp_stocktakingFalseEndDate);
+            dgStock.ItemsSource = RepItemtrans;
             txt_count.Text = dgStock.Items.Count.ToString();
             //fillFalsColumnChart();
             //fillFalsRowChart();
@@ -1254,31 +1265,40 @@ new StackedColumnSeries
             bool isArabic = ReportCls.checkLang();
             if (isArabic)
             {
-                //if (selectedTab == 0)
-                //{
-                //    addpath = @"\Reports\StatisticReport\Accounts\Recipient\Ar\ArVendor.rdlc";////////?????????
-                //}
-                //else if (selectedTab == 1)
-                //{
-                //    addpath = @"\Reports\StatisticReport\Accounts\Recipient\Ar\ArCustomer.rdlc";/////////?????????
-                //}
+                // //StatisticReport\Storage\Stocktaking
+                if (selectedStocktakingTab == 0)
+                {
+                    addpath = @"\Reports\StatisticReport\Storage\Stocktaking\Ar\ArArchives.rdlc";////////?????????
+                }
+                else if (selectedStocktakingTab == 1)
+                {
+                    addpath = @"\Reports\StatisticReport\Storage\Stocktaking\Ar\ArShortfalls.rdlc";/////////?????????
+                }
             }
             else
             {
-                //if (selectedTab == 0)
-                //{
-                //    addpath = @"\Reports\StatisticReport\Accounts\Recipient\En\Vendor.rdlc";//////////////????????????
-                //}
-                //else if (selectedTab == 1)
-                //{
-                //    addpath = @"\Reports\StatisticReport\Accounts\Recipient\En\Customer.rdlc";//////////////????????????
-                //}
+                if (selectedStocktakingTab == 0)
+                {
+                    addpath = @"\Reports\StatisticReport\Storage\Stocktaking\En\Archives.rdlc";//////////////????????????
+                }
+                else if (selectedStocktakingTab == 1)
+                {
+                    addpath = @"\Reports\StatisticReport\Storage\Stocktaking\En\Shortfalls.rdlc";//////////////????????????
+                }
             }
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
             ReportCls.checkLang();
-
-            //clsReports.packageReport(temp , rep, reppath, paramarr);/////////////////????????????????
+            if (selectedStocktakingTab == 0)
+            {
+                 clsReports.StocktakingArchivesReport(RepInventory , rep, reppath, paramarr);
+            }
+            else if (selectedStocktakingTab == 1)
+            {
+                clsReports.StocktakingShortfallsReport(RepItemtrans, rep, reppath, paramarr);
+            }
+            //   clsReports.StocktakingArchivesReport(RepInventory , rep, reppath, paramarr);
+            // clsReports.StocktakingShortfallsReport(RepItemtrans, rep, reppath, paramarr);
             clsReports.setReportLanguage(paramarr);
             clsReports.Header(paramarr);
 
@@ -1370,11 +1390,11 @@ new StackedColumnSeries
                     SectionData.StartAwait(grid_main);
 
                 /////////////////////////////////////
-                Thread t1 = new Thread(() =>
-                {
-                    pdfStocktaking();
-                });
-                t1.Start();
+              //  Thread t1 = new Thread(() =>
+              //  {
+                   pdfStocktaking();
+              //  });
+              //  t1.Start();
                 //////////////////////////////////////
 
                 if (sender != null)
@@ -1392,8 +1412,8 @@ new StackedColumnSeries
         {
             BuildReport();
 
-            this.Dispatcher.Invoke(() =>
-            {
+            //this.Dispatcher.Invoke(() =>
+            //{
                 saveFileDialog.Filter = "PDF|*.pdf;";
 
                 if (saveFileDialog.ShowDialog() == true)
@@ -1401,7 +1421,7 @@ new StackedColumnSeries
                     string filepath = saveFileDialog.FileName;
                     LocalReportExtensions.ExportToPDF(rep, filepath);
                 }
-            });
+          //  });
         }
     }
 }

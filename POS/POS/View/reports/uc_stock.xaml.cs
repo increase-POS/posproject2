@@ -1857,7 +1857,7 @@ namespace POS.View.reports
 
             ReportCls.checkLang();
 
-            clsReports.storage(temp, rep, reppath);
+            clsReports.storageStock(temp, rep, reppath, paramarr);
             clsReports.setReportLanguage(paramarr);
             clsReports.Header(paramarr);
 
