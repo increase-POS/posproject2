@@ -379,7 +379,7 @@ namespace POS.View.Settings
                                 List<CountryCode> c = await countryModel.GetAllRegion();
                                 MainWindow.Region = c.Where(r => r.countryId == int.Parse(s)).FirstOrDefault<CountryCode>();
                                 MainWindow.Currency = MainWindow.Region.currency;
-
+                                MainWindow.CurrencyId = MainWindow.Region.currencyId;
                                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
                             }
                             else
