@@ -1,31 +1,20 @@
 ﻿using LiveCharts;
-using LiveCharts.Wpf;
-using POS.Classes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Data.SqlClient;
-
 using LiveCharts.Helpers;
-using POS.View.windows;
+using LiveCharts.Wpf;
 using MaterialDesignThemes.Wpf;
-using System.Collections.ObjectModel;
-using System.IO;
 using Microsoft.Reporting.WinForms;
 using Microsoft.Win32;
-using System.Threading;
+using POS.Classes;
+using POS.View.windows;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
 
 namespace POS.View.purchases
 {
@@ -72,7 +61,7 @@ namespace POS.View.purchases
         ObservableCollection<Agent> dynamicComboVendors;
         ObservableCollection<User> dynamicComboUsers;
         ObservableCollection<ItemUnitCombo> dynamicComboItem;
-
+        IEnumerable<ItemTransferInvoice> reportQuery ;
         Branch branchModel = new Branch();
         Pos posModel = new Pos();
         Agent agentModel = new Agent();
@@ -756,7 +745,9 @@ fillColumnChart(cb_Items, selectedItemId);
         IEnumerable<ItemTransferInvoice> itemTransfers = null;
         public void fillBranchEvent()
         {
-            dgInvoice.ItemsSource = filltoprint();
+           // dgInvoice.ItemsSource = filltoprint();
+            reportQuery = filltoprint();
+            dgInvoice.ItemsSource = reportQuery;
             txt_count.Text = dgInvoice.Items.Count.ToString();
             fillPieChart(cb_branches, selectedBranchId);
             fillColumnChart(cb_branches, selectedBranchId);
@@ -765,7 +756,9 @@ fillColumnChart(cb_Items, selectedItemId);
 
         public void fillPosEvent()
         {
-            dgInvoice.ItemsSource = filltoprint();
+          //  dgInvoice.ItemsSource = filltoprint();
+            reportQuery = filltoprint();
+            dgInvoice.ItemsSource = reportQuery;
             txt_count.Text = dgInvoice.Items.Count.ToString();
             fillRowChart(cb_pos, selectedPosId);
             fillPieChart(cb_pos, selectedPosId);
@@ -774,7 +767,9 @@ fillColumnChart(cb_Items, selectedItemId);
 
         public void fillVendorsEvent()
         {
-            dgInvoice.ItemsSource = filltoprint();
+            // dgInvoice.ItemsSource = filltoprint();
+            reportQuery = filltoprint();
+            dgInvoice.ItemsSource = reportQuery;
             txt_count.Text = dgInvoice.Items.Count.ToString();
             fillPieChart(cb_vendors, selectedVendorsId);
             fillColumnChart(cb_vendors, selectedVendorsId);
@@ -783,7 +778,9 @@ fillColumnChart(cb_Items, selectedItemId);
 
         public void fillUsersEvent()
         {
-            dgInvoice.ItemsSource = filltoprint();
+         //   dgInvoice.ItemsSource = filltoprint();
+            reportQuery = filltoprint();
+            dgInvoice.ItemsSource = reportQuery;
             txt_count.Text = dgInvoice.Items.Count.ToString();
             fillPieChart(cb_users, selectedUserId);
             fillColumnChart(cb_users, selectedUserId);
@@ -793,6 +790,8 @@ fillColumnChart(cb_Items, selectedItemId);
         public void fillItemsEvent()
         {
             itemTransfers = fillList(Items, chk_itemInvoice, chk_itemReturn, chk_itemDrafs, dp_ItemStartDate, dp_ItemEndDate, dt_itemStartTime, dt_ItemEndTime);
+            reportQuery = itemTransfers;
+         
             dgInvoice.ItemsSource = itemTransfers;
             txt_count.Text = dgInvoice.Items.Count.ToString();
             fillPieChart(cb_Items, selectedItemId);
@@ -2758,8 +2757,8 @@ fillColumnChart(cb_Items, selectedItemId);
         {
             List<ReportParameter> paramarr = new List<ReportParameter>();
 
-            query = converter(filltoprint());
-
+            // query = converter(filltoprint());
+ //           query = converter(filltoprint());
             string addpath = "";
             bool isArabic = ReportCls.checkLang();
             if (isArabic)
@@ -2815,7 +2814,7 @@ fillColumnChart(cb_Items, selectedItemId);
             ReportCls.checkLang();
             //  getpuritemcount
 
-            clsReports.PurInvStsReport(query, rep, reppath, paramarr);
+            clsReports.PurInvStsReport(reportQuery, rep, reppath, paramarr);
             clsReports.setReportLanguage(paramarr);
             clsReports.Header(paramarr);
 
@@ -2888,34 +2887,38 @@ fillColumnChart(cb_Items, selectedItemId);
                     itemTransfers = fillList(Invoices, chk_invoice, chk_return, chk_drafs, dp_startDate, dp_endDate, dt_startTime, dt_endTime)
                         .Where(j => (selectedBranchId.Count != 0 ? selectedBranchId.Contains((int)j.branchCreatorId) : true));
 
-                    dgInvoice.ItemsSource = itemTransfers
+                    reportQuery= itemTransfers
                         .Where(s => (s.branchCreatorName.Contains(txt_search.Text) ||
           s.invNumber.Contains(txt_search.Text)
           ));
+                    dgInvoice.ItemsSource = reportQuery;
                 }
                 else if (selectedTab == 1)
                 {
                     itemTransfers = fillList(Invoices, chk_posInvoice, chk_posReturn, chk_posDraft, dp_posStartDate, dp_posEndDate, dt_posStartTime, dt_posEndTime)
                         .Where(j => (selectedPosId.Count != 0 ? selectedPosId.Contains((int)j.posId) : true));
 
-                    dgInvoice.ItemsSource = itemTransfers
+                    reportQuery = itemTransfers
                         .Where(s => (s.branchCreatorName.Contains(txt_search.Text) ||
                        s.posName.Contains(txt_search.Text) ||
           s.invNumber.Contains(txt_search.Text)
           ));
+                    dgInvoice.ItemsSource = reportQuery;
                 }
 
                 else if (selectedTab == 2)
                 {
+
                     itemTransfers = fillList(Invoices, chk_vendorsInvoice, chk_vendorsReturn, chk_vendorsDraft, dp_vendorsStartDate, dp_vendorsEndDate, dt_vendorsStartTime, dt_vendorsEndTime)
                     .Where(j => (selectedVendorsId.Count != 0 ? selectedVendorsId.Contains((int)j.agentId) : true));
 
-                    dgInvoice.ItemsSource = itemTransfers
+                    reportQuery = itemTransfers
                         .Where(s => (s.branchCreatorName.Contains(txt_search.Text) ||
                        s.agentName.Contains(txt_search.Text) ||
                        s.agentCompany.Contains(txt_search.Text) ||
           s.invNumber.Contains(txt_search.Text)
           ));
+                    dgInvoice.ItemsSource = reportQuery;
                 }
 
                 else if (selectedTab == 3)
@@ -2923,23 +2926,25 @@ fillColumnChart(cb_Items, selectedItemId);
                     itemTransfers = fillList(Invoices, chk_usersInvoice, chk_usersReturn, chk_usersDraft, dp_usersStartDate, dp_usersEndDate, dt_usersStartTime, dt_usersEndTime)
                     .Where(j => (selectedUserId.Count != 0 ? selectedUserId.Contains((int)j.updateUserId) : true));
 
-                    dgInvoice.ItemsSource = itemTransfers
+                 reportQuery= itemTransfers
                         .Where(s => (s.branchCreatorName.Contains(txt_search.Text) ||
                        s.posName.Contains(txt_search.Text) ||
                        s.uUserAccName.Contains(txt_search.Text) ||
           s.invNumber.Contains(txt_search.Text)
           ));
+                    dgInvoice.ItemsSource = reportQuery;
                 }
                 else if (selectedTab == 4)
                 {
                     itemTransfers = fillList(Items, chk_itemInvoice, chk_itemReturn, chk_itemDrafs, dp_ItemStartDate, dp_ItemEndDate, dt_itemStartTime, dt_ItemEndTime)
                     .Where(j => (selectedItemId.Count != 0 ? selectedItemId.Contains((int)j.ITitemUnitId) : true));
 
-                    dgInvoice.ItemsSource = itemTransfers
+                    reportQuery = itemTransfers
                         .Where(s => (s.ITitemName.Contains(txt_search.Text) ||
                        s.ITitemUnitName1.Contains(txt_search.Text) ||
           s.invNumber.Contains(txt_search.Text)
           ));
+                    dgInvoice.ItemsSource = reportQuery;
                 }
 
                 txt_count.Text = dgInvoice.Items.Count.ToString();

@@ -846,7 +846,7 @@ fillColumnChart(cb_Items, selectedItemId);
             col_count.Visibility = Visibility.Hidden;
             col_itQuantity.Visibility = Visibility.Hidden;
             col_price.Visibility = Visibility.Hidden;
-            col_totalNet.Visibility = Visibility.Hidden;
+          //  col_totalNet.Visibility = Visibility.Hidden;
 
         }
         private void btn_branch_Click(object sender, RoutedEventArgs e)
@@ -870,7 +870,7 @@ fillColumnChart(cb_Items, selectedItemId);
                 hideAllColumn();
                 col_branch.Visibility = Visibility.Visible;
                 col_count.Visibility = Visibility.Visible;
-                col_totalNet.Visibility = Visibility.Visible;
+              // col_totalNet.Visibility = Visibility.Visible;
 
 
 
@@ -907,7 +907,7 @@ fillColumnChart(cb_Items, selectedItemId);
                 col_branch.Visibility = Visibility.Visible;
                 col_count.Visibility = Visibility.Visible;
                 col_pos.Visibility = Visibility.Visible;
-                col_totalNet.Visibility = Visibility.Visible;
+             //   col_totalNet.Visibility = Visibility.Visible;
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -943,7 +943,7 @@ fillColumnChart(cb_Items, selectedItemId);
                 col_vendor.Visibility = Visibility.Visible;
                 col_agentCompany.Visibility = Visibility.Visible;
                 col_count.Visibility = Visibility.Visible;
-                col_totalNet.Visibility = Visibility.Visible;
+                //col_totalNet.Visibility = Visibility.Visible;
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -978,7 +978,7 @@ fillColumnChart(cb_Items, selectedItemId);
                 col_branch.Visibility = Visibility.Visible;
                 col_pos.Visibility = Visibility.Visible;
                 col_user.Visibility = Visibility.Visible;
-                col_totalNet.Visibility = Visibility.Visible;
+                //col_totalNet.Visibility = Visibility.Visible;
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);

@@ -639,7 +639,7 @@
                         <DataGridTextColumn x:Name="col_total" Width="*" Header="Total" Binding="{Binding subTotal ,Converter={StaticResource accuracyConverter}}" Visibility="Hidden"/>
 
                         <!--<DataGridTextColumn x:Name="col_totalNet" Width="*" Header="Total" Binding="{Binding totalNet}" Visibility="Visible"/>-->
-                        <DataGridTextColumn x:Name="col_totalNet" Width="*" Header="Total" Binding="{Binding totalNet ,Converter={StaticResource accuracyConverter}}" Visibility="Visible"/>
+                        <!--<DataGridTextColumn x:Name="col_totalNet" Width="*" Header="Total2" Binding="{Binding totalNet ,Converter={StaticResource accuracyConverter}}" Visibility="Visible"/>-->
 
                     </DataGrid.Columns>
                 </DataGrid>

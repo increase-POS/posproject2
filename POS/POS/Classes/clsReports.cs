@@ -420,8 +420,16 @@ namespace POS.Classes
             rep.DataSources.Add(new ReportDataSource("DataSetITinvoice", tempquery));
         }
 
+        //clsReports.SaleInvoiceStsReport(itemTransfers, rep, reppath, paramarr);
 
-        public static void PurInvStsReport(IEnumerable<ItemTransferInvoice> tempquery, LocalReport rep, string reppath, List<ReportParameter> paramarr)
+        public static void SaleInvoiceStsReport(IEnumerable<ItemTransferInvoice> tempquery, LocalReport rep, string reppath, List<ReportParameter> paramarr)
+        {
+            PurStsReport(tempquery, rep, reppath);
+
+            itemTransferInvTypeConv(paramarr);
+
+        }
+            public static void PurInvStsReport(IEnumerable<ItemTransferInvoice> tempquery, LocalReport rep, string reppath, List<ReportParameter> paramarr)
         {
             PurStsReport(tempquery, rep, reppath);
             itemTransferInvTypeConv(paramarr);
