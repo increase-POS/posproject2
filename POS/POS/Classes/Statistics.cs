@@ -324,12 +324,9 @@ namespace POS.Classes
         public string unitName { get; set; }
         public int itemsTransId { get; set; }
         public Nullable<int> itemUnitId { get; set; }
-
         public Nullable<int> itemId { get; set; }
         public Nullable<int> unitId { get; set; }
         public Nullable<long> quantity { get; set; }
-
-
         public Nullable<decimal> price { get; set; }
         public string barcode { get; set; }
 
@@ -417,7 +414,8 @@ namespace POS.Classes
         public string uuserLast { get; set; }
         public string uUserAccName { get; set; }
         private string agentTypeAgent;
-        public string AgentTypeAgent { get => agentType == "v" ? agentTypeAgent = "Vendor" + "-" + agentName : agentTypeAgent = "Customer" + "-" + agentName; set => agentTypeAgent = value; }
+        //public string AgentTypeAgent { get => agentType == "v" ? agentTypeAgent = "Vendor" + "-" + agentName : agentTypeAgent = "Customer" + "-" + agentName; set => agentTypeAgent = value; }
+        public string AgentTypeAgent { get => agentType == "v" ? agentTypeAgent = MainWindow.resourcemanager.GetString("trVendor") + "-" + agentName : agentTypeAgent = MainWindow.resourcemanager.GetString("trCustomer") + "-" + agentName; set => agentTypeAgent = value; }
         public int countPb { get; set; }
         public int countD { get; set; }
         public Nullable<decimal> totalPb { get; set; }

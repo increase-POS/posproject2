@@ -28,6 +28,7 @@ using Microsoft.Win32;
 using System.Globalization;
 using System.Windows.Threading;
 using System.Threading;
+using System.Windows.Resources;
 
 namespace POS.View
 {
@@ -184,7 +185,7 @@ namespace POS.View
 
             tt_error_previous.Content = MainWindow.resourcemanager.GetString("trPrevious");
             tt_error_next.Content = MainWindow.resourcemanager.GetString("trNext");
-
+            txt_cardTitle.Text = MainWindow.resourcemanager.GetString("tr_Card") + ":";
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_barcode, MainWindow.resourcemanager.GetString("trBarcodeHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_coupon, MainWindow.resourcemanager.GetString("trCoponHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_customer, MainWindow.resourcemanager.GetString("trCustomerHint"));
@@ -193,7 +194,7 @@ namespace POS.View
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_company, MainWindow.resourcemanager.GetString("trCompanyHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_user, MainWindow.resourcemanager.GetString("trUserHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_paymentProcessType, MainWindow.resourcemanager.GetString("trPaymentProcessTypeHint"));
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_card, MainWindow.resourcemanager.GetString("trCardHint"));
+            //MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_card, MainWindow.resourcemanager.GetString("trCardHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_processNum, MainWindow.resourcemanager.GetString("trProcessNumHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_discount, MainWindow.resourcemanager.GetString("trDiscountHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_typeDiscount, MainWindow.resourcemanager.GetString("trDiscountTypeHint"));
@@ -278,22 +279,23 @@ namespace POS.View
                 await fillUsers();
                 #region fill card combo
                 cards = await cardModel.GetAll();
-                cb_card.ItemsSource = cards;
-                cb_card.DisplayMemberPath = "name";
-                cb_card.SelectedValuePath = "cardId";
-                cb_card.SelectedIndex = -1;
+                //cb_card.ItemsSource = cards;
+                //cb_card.DisplayMemberPath = "name";
+                //cb_card.SelectedValuePath = "cardId";
+                //cb_card.SelectedIndex = -1;
+                InitializeCardsPic(cards);
+
                 #endregion
                 #region Style Date
                 SectionData.defaultDatePickerStyle(dp_desrvedDate);
                 #endregion
-
                 //tb_taxValue.Text = MainWindow.tax.ToString();
                 if (MainWindow.tax == 0)
                     sp_tax.Visibility = Visibility.Collapsed;
                 else
                 {
-                tb_taxValue.Text = SectionData.DecTostring(MainWindow.tax);
-                sp_tax.Visibility = Visibility.Visible;
+                    tb_taxValue.Text = SectionData.DecTostring(MainWindow.tax);
+                    sp_tax.Visibility = Visibility.Visible;
                 }
                 tb_barcode.Focus();
                 #region datagridChange
@@ -707,7 +709,7 @@ namespace POS.View
                     case 2:
                         SectionData.clearComboBoxValidate(cb_customer, p_errorCustomer);
                         SectionData.validateEmptyTextBox(tb_processNum, p_errorProcessNum, tt_errorProcessNum, "trEmptyProcessNumToolTip");
-                        SectionData.validateEmptyComboBox(cb_card, p_errorCard, tt_errorCard, "trEmptyCardTooltip");
+                        SectionData.validateEmptyTextBlock(txt_card, p_errorCard, tt_errorCard, "trEmptyCardTooltip");
                         break;
                 }
             }
@@ -738,7 +740,7 @@ namespace POS.View
             #endregion
             if (billDetails.Count > 0 && available && ((cb_paymentProcessType.SelectedIndex == 1 && cb_customer.SelectedIndex != -1)
             || (cb_paymentProcessType.SelectedIndex == 0)
-            || (cb_paymentProcessType.SelectedIndex == 2 && !tb_processNum.Text.Equals("") && cb_card.SelectedIndex != -1)))
+            || (cb_paymentProcessType.SelectedIndex == 2 && !tb_processNum.Text.Equals("") && _SelectedCard != -1)))
                 valid = true;
             else
                 valid = false;
@@ -813,8 +815,13 @@ namespace POS.View
                     }
                     if ((sender as ComboBox).Name == "cb_paymentProcessType")
                         SectionData.validateEmptyComboBox((ComboBox)sender, p_errorpaymentProcessType, tt_errorpaymentProcessType, "trErrorEmptyPaymentTypeToolTip");
-                    if ((sender as ComboBox).Name == "cb_card")
-                        SectionData.validateEmptyComboBox((ComboBox)sender, p_errorCard, tt_errorCard, "trEmptyCardTooltip");
+                    
+                }
+                if (name == "TextBlock")
+                {
+                   
+                   if ((sender as TextBlock).Name == "txt_card")
+                        SectionData.validateEmptyTextBlock((TextBlock)sender, p_errorCard, tt_errorCard, "trSelectCreditCard");
                 }
 
             }
@@ -1008,7 +1015,7 @@ namespace POS.View
                                 cashTrasnfer.processType = cb_paymentProcessType.SelectedValue.ToString();
                                 if (cb_paymentProcessType.SelectedValue.ToString().Equals("card"))
                                 {
-                                    cashTrasnfer.cardId = Convert.ToInt32(cb_card.SelectedValue);
+                                    cashTrasnfer.cardId = _SelectedCard;
                                     cashTrasnfer.docNum = tb_processNum.Text;
                                 }
                                 cashTrasnfer.createUserId = MainWindow.userID;
@@ -1057,7 +1064,7 @@ namespace POS.View
                                 cashTrasnfer.processType = cb_paymentProcessType.SelectedValue.ToString();
                                 if (cb_paymentProcessType.SelectedValue.ToString().Equals("card"))
                                 {
-                                    cashTrasnfer.cardId = Convert.ToInt32(cb_card.SelectedValue);
+                                    cashTrasnfer.cardId = _SelectedCard;
                                     cashTrasnfer.docNum = tb_processNum.Text;
                                 }
                                 //  cashTrasnfer
@@ -1167,7 +1174,7 @@ namespace POS.View
                                 });
                                 t1.Start();
                             }
-                        }       
+                        }
                         prinvoiceId = 0;
                     }
                     //awaitSaveBtn(false);
@@ -1258,7 +1265,7 @@ namespace POS.View
             tb_sum.Text = "0";
             tb_discount.Clear();
             cb_typeDiscount.SelectedIndex = 0;
-            cb_card.SelectedIndex = -1;
+            _SelectedCard = -1;
             cb_company.SelectedIndex = -1;
             cb_user.SelectedIndex = -1;
             tb_processNum.Clear();
@@ -1272,9 +1279,9 @@ namespace POS.View
             btn_deleteInvoice.Visibility = Visibility.Collapsed;
             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesInvoice");
             txt_payInvoice.Foreground = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
-                            btn_save.Content = MainWindow.resourcemanager.GetString("trPay");
+            btn_save.Content = MainWindow.resourcemanager.GetString("trPay");
             SectionData.clearComboBoxValidate(cb_paymentProcessType, p_errorpaymentProcessType);
-            SectionData.clearComboBoxValidate(cb_card, p_errorCard);
+            SectionData.clearTextBlockValidate(txt_card, p_errorCard);
             SectionData.clearComboBoxValidate(cb_user, p_errorUser);
             SectionData.clearValidate(tb_processNum, p_errorProcessNum);
             refrishBillDetails();
@@ -1336,7 +1343,7 @@ namespace POS.View
                         }
                         // orange #FFA926 red #D22A17
                         txt_payInvoice.Foreground = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
-                            btn_save.Content = MainWindow.resourcemanager.GetString("trPay");
+                        btn_save.Content = MainWindow.resourcemanager.GetString("trPay");
                         //brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
 
 
@@ -1397,7 +1404,7 @@ namespace POS.View
                         // set title to bill
                         txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesInvoice");
                         txt_payInvoice.Foreground = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
-                            btn_save.Content = MainWindow.resourcemanager.GetString("trPay");
+                        btn_save.Content = MainWindow.resourcemanager.GetString("trPay");
                         // orange #FFA926 red #D22A17
                         //brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
                         //txt_totalDescount.Foreground = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
@@ -1559,12 +1566,13 @@ namespace POS.View
                     case "cash":
                     case "balance":
                         gd_card.Visibility = Visibility.Collapsed;
-                        cb_card.SelectedIndex = -1;
+                       _SelectedCard = -1;
+                        txt_card.Text = "";
                         tb_processNum.Clear();
                         break;
                     case "card":
                         gd_card.Visibility = Visibility.Visible;
-                        cb_card.SelectedValue = cashTrasnfer.cardId.Value;
+                        _SelectedCard = cashTrasnfer.cardId.Value;
                         tb_processNum.Text = cashTrasnfer.docNum;
                         break;
                 }
@@ -1692,7 +1700,7 @@ namespace POS.View
                     tb_discountCoupon.IsEnabled = false;
                     btn_save.IsEnabled = true;
                     cb_paymentProcessType.IsEnabled = true;
-                    cb_card.IsEnabled = false;
+                    dkp_cards.IsEnabled = false;
                     cb_company.IsEnabled = false;
                     cb_user.IsEnabled = false;
                     tb_processNum.IsEnabled = false;
@@ -1713,7 +1721,7 @@ namespace POS.View
                     tb_barcode.IsEnabled = true;
                     tb_discountCoupon.IsEnabled = true;
                     btn_save.IsEnabled = true;
-                    cb_card.IsEnabled = true;
+                    dkp_cards.IsEnabled = true;
                     cb_company.IsEnabled = true;
                     cb_user.IsEnabled = true;
                     tb_processNum.IsEnabled = true;
@@ -1743,7 +1751,7 @@ namespace POS.View
                     tb_barcode.IsEnabled = true;
                     tb_discountCoupon.IsEnabled = true;
                     btn_save.IsEnabled = true;
-                    cb_card.IsEnabled = true;
+                    dkp_cards.IsEnabled = true;
                     cb_company.IsEnabled = true;
                     cb_user.IsEnabled = true;
                     tb_processNum.IsEnabled = true;
@@ -1774,7 +1782,7 @@ namespace POS.View
                     tb_discountCoupon.IsEnabled = false;
                     btn_save.IsEnabled = false;
                     cb_paymentProcessType.IsEnabled = false;
-                    cb_card.IsEnabled = false;
+                    dkp_cards.IsEnabled = false;
                     cb_company.IsEnabled = false;
                     cb_user.IsEnabled = false;
                     tb_processNum.IsEnabled = false;
@@ -1796,7 +1804,7 @@ namespace POS.View
                     tb_discountCoupon.IsEnabled = false;
                     btn_save.IsEnabled = true;
                     cb_paymentProcessType.IsEnabled = false;
-                    cb_card.IsEnabled = false;
+                    dkp_cards.IsEnabled = false;
                     cb_company.IsEnabled = false;
                     cb_user.IsEnabled = false;
                     tb_processNum.IsEnabled = false;
@@ -2008,7 +2016,7 @@ namespace POS.View
         #region billdetails
 
         bool firstTimeForDatagrid = true;
-       async void refrishBillDetails()
+        async void refrishBillDetails()
         {
             dg_billDetails.ItemsSource = null;
             if (billDetails.Count == 1)
@@ -2348,7 +2356,7 @@ namespace POS.View
                 {
                     int itemUnitId = (int)cmb.SelectedValue;
                     billDetails[dg_billDetails.SelectedIndex].itemUnitId = (int)cmb.SelectedValue;
-                   
+
                     #region Dina
                     //var unit = itemUnits.ToList().Find(x => x.itemUnitId == (int)cmb.SelectedValue);
                     var unit = await itemUnitModel.GetById((int)cmb.SelectedValue);
@@ -2368,7 +2376,7 @@ namespace POS.View
                     decimal newPrice = price;
 
                     //"tb_amont"
-                   
+
 
                     oldCount = billDetails[dg_billDetails.SelectedIndex].Count;
                     oldPrice = billDetails[dg_billDetails.SelectedIndex].Price;
@@ -2415,7 +2423,7 @@ namespace POS.View
                     billDetails[dg_billDetails.SelectedIndex].Price = newPrice;
                     billDetails[dg_billDetails.SelectedIndex].Total = total;
                     refrishBillDetails();
-#endregion
+                    #endregion
                 }
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -2427,7 +2435,7 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-       
+
         private void Cbm_unitItemDetails_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             try
@@ -2488,7 +2496,7 @@ namespace POS.View
         private void Dg_billDetails_BeginningEdit(object sender, DataGridBeginningEditEventArgs e)
         {
             if (_InvoiceType == "sbd" || _InvoiceType == "s" || _InvoiceType == "q")
-             e.Cancel = false;  
+                e.Cancel = false;
             else if (_InvoiceType == "sd" || _InvoiceType == "or")
                 e.Cancel = true;
         }
@@ -2540,7 +2548,7 @@ namespace POS.View
         }
 
         #endregion
-        
+
         private async void Dg_billDetails_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
             try
@@ -2595,7 +2603,7 @@ namespace POS.View
                     }
                     else
                     {
-                        int availableAmount = await getAvailableAmount(row.itemId, row.itemUnitId, MainWindow.branchID.Value,row.ID);
+                        int availableAmount = await getAvailableAmount(row.itemId, row.itemUnitId, MainWindow.branchID.Value, row.ID);
                         if (availableAmount < newCount)
                         {
                             Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountNotAvailableToolTip"), animation: ToasterAnimation.FadeIn);
@@ -2745,12 +2753,12 @@ namespace POS.View
 
                     pdfpath = @"\Thumb\report\File" + DateTime.Now.ToFileTime().ToString() + ".pdf";
                     pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
-                   
+
                     User employ = new User();
                     employ = await userModel.getUserById((int)prInvoice.updateUserId);
                     prInvoice.uuserName = employ.name;
                     prInvoice.uuserLast = employ.lastname;
-               
+
                     if (prInvoice.agentId != null)
                     {
                         Agent agentinv = new Agent();
@@ -2840,7 +2848,7 @@ namespace POS.View
                     employ = await userModel.getUserById((int)invoice.updateUserId);
                     invoice.uuserName = employ.name;
                     invoice.uuserLast = employ.lastname;
-                  
+
                     if (invoice.agentId != null)
                     {
                         Agent agentinv = new Agent();
@@ -2950,20 +2958,20 @@ namespace POS.View
                     }
 
                     ReportCls.checkLang();
-               
+
                     foreach (var i in invoiceItems)
                     {
                         i.price = decimal.Parse(SectionData.DecTostring(i.price));
                     }
                     clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
-                   
+
                     clsReports.setReportLanguage(paramarr);
                     clsReports.Header(paramarr);
                     paramarr = reportclass.fillSaleInvReport(prInvoice, paramarr);
 
                     rep.SetParameters(paramarr);
                     rep.Refresh();
-                 
+
                     this.Dispatcher.Invoke(() =>
                     {
                         if (MainWindow.salePaperSize == "A4")
@@ -3251,7 +3259,7 @@ namespace POS.View
                                         string msg = "";
                                         this.Dispatcher.Invoke(() =>
                                         {
-                                          msg = mailtosend.Sendmail();// temp comment
+                                            msg = mailtosend.Sendmail();// temp comment
                                             if (msg == "Failure sending mail.")
                                             {
                                                 // msg = "No Internet connection";
@@ -3448,17 +3456,22 @@ namespace POS.View
                     case 0://cash
                         gd_card.Visibility = Visibility.Collapsed;
                         tb_processNum.Clear();
-                        cb_card.SelectedIndex = -1;
+                        //cb_card.SelectedIndex = -1;
+                        _SelectedCard = -1;
+                        txt_card.Text = "";
                         dp_desrvedDate.IsEnabled = false;
                         SectionData.clearComboBoxValidate(cb_customer, p_errorCustomer);
-                        SectionData.clearComboBoxValidate(cb_card, p_errorCard);
+                        SectionData.clearTextBlockValidate(txt_card, p_errorCard);
                         break;
                     case 1:// balance
                         gd_card.Visibility = Visibility.Collapsed;
                         dp_desrvedDate.IsEnabled = true;
                         tb_processNum.Clear();
-                        cb_card.SelectedIndex = -1;
-                        SectionData.clearComboBoxValidate(cb_card, p_errorCard);
+                        //cb_card.SelectedIndex = -1;
+                        _SelectedCard = -1;
+                        txt_card.Text = "";
+                        //SectionData.clearComboBoxValidate(cb_card, p_errorCard);
+                        SectionData.clearTextBlockValidate(txt_card, p_errorCard);
                         break;
                     case 2://card
                         dp_desrvedDate.IsEnabled = false;
@@ -3475,6 +3488,94 @@ namespace POS.View
                     SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this);
             }
+        }
+        void InitializeCardsPic(IEnumerable<Card> cards)
+        {
+            #region cardImageLoad
+            dkp_cards.Children.Clear();
+            int userCount = 0;
+            foreach (var item in cards)
+            {
+                    #region Button
+                    Button button = new Button();
+                    button.Name = item.name;
+                    button.Tag = item.cardId;
+                    button.Padding = new Thickness(0, 0, 0, 0);
+                    button.Margin = new Thickness(2.5, 5, 2.5, 5);
+                    button.Background = null;
+                    button.BorderBrush = null;
+                    button.Height = 35;
+                    button.Width = 35;
+                    button.Click += card_Click;
+                    //Grid.SetColumn(button, 4);
+                    #region grid
+                    Grid grid = new Grid();
+                    #region 
+                    Ellipse ellipse = new Ellipse();
+                    //ellipse.Margin = new Thickness(-5, 0, -5, 0);
+                    ellipse.StrokeThickness = 1;
+                    ellipse.Stroke = Application.Current.Resources["MainColorOrange"] as SolidColorBrush;
+                    ellipse.Height = 35;
+                    ellipse.Width = 35;
+                    ellipse.FlowDirection = FlowDirection.LeftToRight;
+                    ellipse.ToolTip = item.name;
+                    userImageLoad(ellipse, item.image);
+                    Grid.SetColumn(ellipse, userCount);
+                    grid.Children.Add(ellipse);
+                    #endregion
+                    #endregion
+                    button.Content = grid;
+                    #endregion
+                    dkp_cards.Children.Add(button);
+               
+            }
+            #endregion
+        }
+        void card_Click(object sender, RoutedEventArgs e)
+        {
+            var button = sender as Button;
+            _SelectedCard = int.Parse(button.Tag.ToString());
+            txt_card.Text = button.Name.ToString();
+            //MessageBox.Show("Hey you Click me! I'm Card: " + _SelectedCard);
+        }
+        ImageBrush brush = new ImageBrush();
+
+        async void userImageLoad(Ellipse ellipse, string image)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(image))
+                {
+                    clearImg(ellipse);
+
+                    byte[] imageBuffer = await cardModel.downloadImage(image); // read this as BLOB from your DB
+                    var bitmapImage = new BitmapImage();
+                    using (var memoryStream = new System.IO.MemoryStream(imageBuffer))
+                    {
+                        bitmapImage.BeginInit();
+                        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmapImage.StreamSource = memoryStream;
+                        bitmapImage.EndInit();
+                    }
+                    ellipse.Fill = new ImageBrush(bitmapImage);
+                }
+                else
+                {
+                    clearImg(ellipse);
+                }
+            }
+            catch
+            {
+                clearImg(ellipse);
+            }
+        }
+        private void clearImg(Ellipse ellipse)
+        {
+            Uri resourceUri = new Uri("pic/no-image-icon-90x90.png", UriKind.Relative);
+            StreamResourceInfo streamInfo = Application.GetResourceStream(resourceUri);
+            BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
+            brush.ImageSource = temp;
+            ellipse.Fill = brush;
         }
         private void PreventSpaces(object sender, KeyEventArgs e)
         {
@@ -3512,25 +3613,25 @@ namespace POS.View
             }
         }
 
-        private void Cb_card_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            try
-            {
-                TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
-                if (elapsed.TotalMilliseconds > 100 && cb_card.SelectedIndex != -1)
-                {
-                    _SelectedCard = (int)cb_card.SelectedValue;
-                }
-                else
-                {
-                    cb_card.SelectedValue = _SelectedCard;
-                }
-            }
-            catch (Exception ex)
-            {
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
+        //private void Cb_card_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        //{
+        //    try
+        //    {
+        //        TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
+        //        if (elapsed.TotalMilliseconds > 100 && cb_card.SelectedIndex != -1)
+        //        {
+        //            _SelectedCard = (int)cb_card.SelectedValue;
+        //        }
+        //        else
+        //        {
+        //            cb_card.SelectedValue = _SelectedCard;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        SectionData.ExceptionMessage(ex, this);
+        //    }
+        //}
 
         private async void Tb_coupon_KeyDown(object sender, KeyEventArgs e)
         {
@@ -3865,23 +3966,23 @@ namespace POS.View
         {
             try
             {
-                    var Sender = sender as Expander;
-                
+                var Sender = sender as Expander;
+
                 foreach (var control in FindControls.FindVisualChildren<Expander>(this))
-            {
+                {
 
                     var expander = control as Expander;
-                if (expander.Tag != null && Sender.Tag != null)
+                    if (expander.Tag != null && Sender.Tag != null)
                         if (expander.Tag.ToString() != Sender.Tag.ToString())
                             expander.IsExpanded = false;
+                }
             }
-        }
             catch (Exception ex)
             {
                 SectionData.ExceptionMessage(ex, this);
+            }
         }
-    }
 
-        
+
     }
 }

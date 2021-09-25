@@ -46,7 +46,7 @@ namespace POS.View
                 return _instance;
             }
         }
-       
+
         public uc_home()
         {
             InitializeComponent();
@@ -64,225 +64,239 @@ namespace POS.View
         User user = new User();
         //List<User> users = new List<User>();
         ImageBrush brush = new ImageBrush();
-        
+
         public List<BestSeller> listBestSeller { get; set; }
         public List<TotalPurSale> listMonthlyInvoice { get; set; }
         public List<IUStorage> listIUStorage { get; set; }
         public List<ItemUnit> IUList = new List<ItemUnit>();
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            await SectionData.fillBranchesWithAll(cb_branch);
-            cb_branch.SelectedValue = MainWindow.branchID;
-            if (MainWindow.groupObject.HasPermissionAction(branchesPermission, MainWindow.groupObjects, "one"))
-            cb_branch.IsEnabled = true;
-            else cb_branch.IsEnabled = false;
-
-
-            SkipBestSeller = 0;
-            SkipIUStorage = 0;
-            firstLoad = true;
-            //await BestSeller();
-            //paginationBestSeller(listBestSeller, Skip);
-
-            #region Purchase and Sales
-            /*
-            double[] ArrayS = new double[30];
-            double[] ArrayP = new double[30];
-            string[] ArrayCount = new string[30];
-            Random rnd = new Random();
-
-            for (int i = 0; i < 30; i++)
+            try
             {
-                ArrayS[i] = rnd.Next(1800, 2500);
-                ArrayP[i] = rnd.Next(1500, int.Parse(ArrayS[i].ToString()));
-                ArrayCount[i] = i.ToString();
-            }
-            SeriesCollection = new SeriesCollection
-            {
-                new LineSeries
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                await SectionData.fillBranchesWithAll(cb_branch);
+                cb_branch.SelectedValue = MainWindow.branchID;
+                if (MainWindow.groupObject.HasPermissionAction(branchesPermission, MainWindow.groupObjects, "one"))
+                    cb_branch.IsEnabled = true;
+                else cb_branch.IsEnabled = false;
+
+
+                SkipBestSeller = 0;
+                SkipIUStorage = 0;
+                firstLoad = true;
+                //await BestSeller();
+                //paginationBestSeller(listBestSeller, Skip);
+
+                #region Purchase and Sales
+                /*
+                double[] ArrayS = new double[30];
+                double[] ArrayP = new double[30];
+                string[] ArrayCount = new string[30];
+                Random rnd = new Random();
+
+                for (int i = 0; i < 30; i++)
                 {
-                    Title = "المبيعات",
-                    Values = ArrayS.AsChartValues()
-                },
-                 new LineSeries
-                {
-                    Title = "المشتريات",
-                    Values = ArrayP.AsChartValues()
+                    ArrayS[i] = rnd.Next(1800, 2500);
+                    ArrayP[i] = rnd.Next(1500, int.Parse(ArrayS[i].ToString()));
+                    ArrayCount[i] = i.ToString();
                 }
-            };
+                SeriesCollection = new SeriesCollection
+                {
+                    new LineSeries
+                    {
+                        Title = "المبيعات",
+                        Values = ArrayS.AsChartValues()
+                    },
+                     new LineSeries
+                    {
+                        Title = "المشتريات",
+                        Values = ArrayP.AsChartValues()
+                    }
+                };
 
 
-            Labels = ArrayCount;
-            YFormatter = value => value.ToString("C");
-            DataContext = this;
-            */
-            #endregion
-            #region user online 
-            //SeriesCollection seriesUser = new SeriesCollection();
-            //seriesUser.Add(
-            //     new PieSeries
-            //     {
-            //         Values = new ChartValues<int> { 5 },
-            //         Title = "",
-            //         DataLabels = false,
-            //         Fill = Application.Current.Resources["mediumGreen"] as SolidColorBrush
-            //     }
-            // );
-            //seriesUser.Add(
-            //     new PieSeries
-            //     {
-            //         Values = new ChartValues<int> { 15 - 5 },
-            //         Title = "",
-            //         DataLabels = false,
-            //         Fill = Application.Current.Resources["MainColorlightGrey"] as SolidColorBrush
-            //     }
-            // );
-            //pch_userOnline.Series = seriesUser;
+                Labels = ArrayCount;
+                YFormatter = value => value.ToString("C");
+                DataContext = this;
+                */
+                #endregion
+                #region user online 
+                //SeriesCollection seriesUser = new SeriesCollection();
+                //seriesUser.Add(
+                //     new PieSeries
+                //     {
+                //         Values = new ChartValues<int> { 5 },
+                //         Title = "",
+                //         DataLabels = false,
+                //         Fill = Application.Current.Resources["mediumGreen"] as SolidColorBrush
+                //     }
+                // );
+                //seriesUser.Add(
+                //     new PieSeries
+                //     {
+                //         Values = new ChartValues<int> { 15 - 5 },
+                //         Title = "",
+                //         DataLabels = false,
+                //         Fill = Application.Current.Resources["MainColorlightGrey"] as SolidColorBrush
+                //     }
+                // );
+                //pch_userOnline.Series = seriesUser;
 
-            //#region userImageLoad
-            //grid_userImages.Children.Clear();
-            //users = await user.GetUsersActive();
-            //int userCount = 0;
-            //foreach (var item in users)
-            //{
-            //    if (userCount > 4)
-            //    {
-            //        Grid grid = new Grid();
-            //        grid.Margin = new Thickness(-5, 0, -5, 0);
-            //        Grid.SetColumn(grid, 4);
-            //        #region rectangle
-            //        Rectangle rectangle = new Rectangle();
-            //        rectangle.Fill = Application.Current.Resources["Orange"] as SolidColorBrush;
-            //        rectangle.RadiusX = 90;
-            //        rectangle.RadiusY = 90;
-            //        rectangle.Height = 40;
-            //        rectangle.Width = 40;
-            //        rectangle.StrokeThickness = 1;
-            //        rectangle.Stroke = Application.Current.Resources["White"] as SolidColorBrush; ;
-            //        grid.Children.Add(rectangle);
-            //        #endregion
-            //        #region rectangle
-            //        TextBlock textBlock = new TextBlock();
-            //        textBlock.Text = "+"+ (users.Count() - 4).ToString();
-            //        textBlock.HorizontalAlignment = HorizontalAlignment.Center;
-            //        textBlock.VerticalAlignment = VerticalAlignment.Center;
-            //        textBlock.FontWeight = FontWeights.Bold;
-            //        textBlock.Foreground = Application.Current.Resources["White"] as SolidColorBrush;
-            //        grid.Children.Add(textBlock);
-            //        #endregion
-            //        grid_userImages.Children.Add(grid);
-            //        break;
-            //    }
-            //    else
-            //    {
-            //        Ellipse ellipse = new Ellipse();
-            //        ellipse.Margin = new Thickness(-5, 0, -5, 0);
-            //        ellipse.StrokeThickness = 1;
-            //        ellipse.Stroke = Application.Current.Resources["White"] as SolidColorBrush;
-            //        ellipse.Height = 40;
-            //        ellipse.Width = 40;
-            //        ellipse.FlowDirection = FlowDirection.LeftToRight;
-            //        ellipse.ToolTip = item.username;
-            //        userImageLoad(ellipse, item.image);
-            //        Grid.SetColumn(ellipse, userCount);
-            //        grid_userImages.Children.Add(ellipse);
-            //        userCount++;
-            //    }
-            //}
-            //#endregion
-            #endregion
-            #region Branch 
-            /*
-            SeriesCollection seriesBranch = new SeriesCollection();
-            seriesBranch.Add(
-                 new PieSeries
-                 {
-                     Values = new ChartValues<int> { 2 },
-                     Title = "",
-                     DataLabels = false,
-                     Fill = Application.Current.Resources["mediumGreen"] as SolidColorBrush
-                 }
-             );
-            seriesBranch.Add(
-                 new PieSeries
-                 {
-                     Values = new ChartValues<int> { 10 - 2 },
-                     Title = "",
-                     DataLabels = false,
-                     Fill = Application.Current.Resources["MainColorlightGrey"] as SolidColorBrush
-                 }
-             );
-            pch_branch.Series = seriesBranch;
-            */
-            #endregion
-            #region DailyPurchaseInvoice
-            /*SeriesCollection seriesDailyPurchaseInvoice = new SeriesCollection();
-            seriesDailyPurchaseInvoice.Add(
-                 new PieSeries
-                 {
-                     Values = new ChartValues<int> { 43 },
-                     Title = "",
-                     DataLabels = false,
-                     Fill = Application.Current.Resources["mediumGreen"] as SolidColorBrush
-                 }
-             );
-            seriesDailyPurchaseInvoice.Add(
-                 new PieSeries
-                 {
-                     Values = new ChartValues<int> { 1165 - 43 },
-                     Title = "",
-                     DataLabels = false,
-                     Fill = Application.Current.Resources["MainColorlightGrey"] as SolidColorBrush
-                 }
-             );
-            pch_dailyPurchaseInvoice.Series = seriesDailyPurchaseInvoice;
-           */
-            #endregion
-            #region DailySalesInvoice
-            /*SeriesCollection seriesDailySalesInvoice = new SeriesCollection();
-            seriesDailySalesInvoice.Add(
-                 new PieSeries
-                 {
-                     Values = new ChartValues<int> { 257 },
-                     Title = "",
-                     DataLabels = false,
-                     Fill = Application.Current.Resources["mediumGreen"] as SolidColorBrush
-                 }
-             );
-            seriesDailySalesInvoice.Add(
-                 new PieSeries
-                 {
-                     Values = new ChartValues<int> { 7258 - 257 },
-                     Title = "",
-                     DataLabels = false,
-                     Fill = Application.Current.Resources["MainColorlightGrey"] as SolidColorBrush
-                 }
-             );
-            pch_dailySalesInvoice.Series = seriesDailySalesInvoice;
-            */
-            #endregion
-
-
-            refrishIUList(MainWindow.itemUnitsUsers);
+                //#region userImageLoad
+                //grid_userImages.Children.Clear();
+                //users = await user.GetUsersActive();
+                //int userCount = 0;
+                //foreach (var item in users)
+                //{
+                //    if (userCount > 4)
+                //    {
+                //        Grid grid = new Grid();
+                //        grid.Margin = new Thickness(-5, 0, -5, 0);
+                //        Grid.SetColumn(grid, 4);
+                //        #region rectangle
+                //        Rectangle rectangle = new Rectangle();
+                //        rectangle.Fill = Application.Current.Resources["Orange"] as SolidColorBrush;
+                //        rectangle.RadiusX = 90;
+                //        rectangle.RadiusY = 90;
+                //        rectangle.Height = 40;
+                //        rectangle.Width = 40;
+                //        rectangle.StrokeThickness = 1;
+                //        rectangle.Stroke = Application.Current.Resources["White"] as SolidColorBrush; ;
+                //        grid.Children.Add(rectangle);
+                //        #endregion
+                //        #region rectangle
+                //        TextBlock textBlock = new TextBlock();
+                //        textBlock.Text = "+"+ (users.Count() - 4).ToString();
+                //        textBlock.HorizontalAlignment = HorizontalAlignment.Center;
+                //        textBlock.VerticalAlignment = VerticalAlignment.Center;
+                //        textBlock.FontWeight = FontWeights.Bold;
+                //        textBlock.Foreground = Application.Current.Resources["White"] as SolidColorBrush;
+                //        grid.Children.Add(textBlock);
+                //        #endregion
+                //        grid_userImages.Children.Add(grid);
+                //        break;
+                //    }
+                //    else
+                //    {
+                //        Ellipse ellipse = new Ellipse();
+                //        ellipse.Margin = new Thickness(-5, 0, -5, 0);
+                //        ellipse.StrokeThickness = 1;
+                //        ellipse.Stroke = Application.Current.Resources["White"] as SolidColorBrush;
+                //        ellipse.Height = 40;
+                //        ellipse.Width = 40;
+                //        ellipse.FlowDirection = FlowDirection.LeftToRight;
+                //        ellipse.ToolTip = item.username;
+                //        userImageLoad(ellipse, item.image);
+                //        Grid.SetColumn(ellipse, userCount);
+                //        grid_userImages.Children.Add(ellipse);
+                //        userCount++;
+                //    }
+                //}
+                //#endregion
+                #endregion
+                #region Branch 
+                /*
+                SeriesCollection seriesBranch = new SeriesCollection();
+                seriesBranch.Add(
+                     new PieSeries
+                     {
+                         Values = new ChartValues<int> { 2 },
+                         Title = "",
+                         DataLabels = false,
+                         Fill = Application.Current.Resources["mediumGreen"] as SolidColorBrush
+                     }
+                 );
+                seriesBranch.Add(
+                     new PieSeries
+                     {
+                         Values = new ChartValues<int> { 10 - 2 },
+                         Title = "",
+                         DataLabels = false,
+                         Fill = Application.Current.Resources["MainColorlightGrey"] as SolidColorBrush
+                     }
+                 );
+                pch_branch.Series = seriesBranch;
+                */
+                #endregion
+                #region DailyPurchaseInvoice
+                /*SeriesCollection seriesDailyPurchaseInvoice = new SeriesCollection();
+                seriesDailyPurchaseInvoice.Add(
+                     new PieSeries
+                     {
+                         Values = new ChartValues<int> { 43 },
+                         Title = "",
+                         DataLabels = false,
+                         Fill = Application.Current.Resources["mediumGreen"] as SolidColorBrush
+                     }
+                 );
+                seriesDailyPurchaseInvoice.Add(
+                     new PieSeries
+                     {
+                         Values = new ChartValues<int> { 1165 - 43 },
+                         Title = "",
+                         DataLabels = false,
+                         Fill = Application.Current.Resources["MainColorlightGrey"] as SolidColorBrush
+                     }
+                 );
+                pch_dailyPurchaseInvoice.Series = seriesDailyPurchaseInvoice;
+               */
+                #endregion
+                #region DailySalesInvoice
+                /*SeriesCollection seriesDailySalesInvoice = new SeriesCollection();
+                seriesDailySalesInvoice.Add(
+                     new PieSeries
+                     {
+                         Values = new ChartValues<int> { 257 },
+                         Title = "",
+                         DataLabels = false,
+                         Fill = Application.Current.Resources["mediumGreen"] as SolidColorBrush
+                     }
+                 );
+                seriesDailySalesInvoice.Add(
+                     new PieSeries
+                     {
+                         Values = new ChartValues<int> { 7258 - 257 },
+                         Title = "",
+                         DataLabels = false,
+                         Fill = Application.Current.Resources["MainColorlightGrey"] as SolidColorBrush
+                     }
+                 );
+                pch_dailySalesInvoice.Series = seriesDailySalesInvoice;
+                */
+                #endregion
 
 
+                refrishIUList(MainWindow.itemUnitsUsers);
 
 
-            CalculateNumberDaysInMonth calculate = new CalculateNumberDaysInMonth();
-            NumberDaysInMonth = calculate.getdays(DateTime.Now);
-            //thread 30
-            threadtimer = new DispatcherTimer();
-            threadtimer.Interval = TimeSpan.FromSeconds(secondTimer30);
-            threadtimer.Tick += timer_Thread30;
-            threadtimer.Start();
-            ////////////////////
-            /// //thread 10
-            threadtimer = new DispatcherTimer();
-            threadtimer.Interval = TimeSpan.FromSeconds(secondTimer10);
-            threadtimer.Tick += timer_Thread10;
-            threadtimer.Start();
-            ////////////////////
-            await refreshView();
+
+
+                CalculateNumberDaysInMonth calculate = new CalculateNumberDaysInMonth();
+                NumberDaysInMonth = calculate.getdays(DateTime.Now);
+                //thread 30
+                threadtimer = new DispatcherTimer();
+                threadtimer.Interval = TimeSpan.FromSeconds(secondTimer30);
+                threadtimer.Tick += timer_Thread30;
+                threadtimer.Start();
+                ////////////////////
+                /// //thread 10
+                threadtimer = new DispatcherTimer();
+                threadtimer.Interval = TimeSpan.FromSeconds(secondTimer10);
+                threadtimer.Tick += timer_Thread10;
+                threadtimer.Start();
+                ////////////////////
+                await refreshViewTask();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
 
         }
         void timer_Thread30(object sendert, EventArgs et)
@@ -303,7 +317,9 @@ namespace POS.View
                 #region BestSeller
                 if (!firstLoad)
                 {
-                    if (listBestSeller.Count < 4 || SkipBestSeller == 2)
+                    if ((listBestSeller.Count < 4 || SkipBestSeller == 2) || (listBestSeller.Count == 3)
+                      || (listBestSeller.Count == 6 && SkipBestSeller == 1)
+                      || (listBestSeller.Count == 9 && SkipBestSeller == 2))
                         SkipBestSeller = 0;
                     else if (listBestSeller.Count < 7 && SkipBestSeller < 1)
                         SkipBestSeller++;
@@ -314,12 +330,16 @@ namespace POS.View
                 #endregion
                 #region IUStorage
                 if (!firstLoad)
-                    if (listIUStorage.Count < 4 || SkipIUStorage == 2)
+                {
+                    if ((listIUStorage.Count < 4 || SkipIUStorage == 2) || (listIUStorage.Count == 3)
+                      || (listIUStorage.Count == 6 && SkipIUStorage == 1)
+                      || (listIUStorage.Count == 9 && SkipIUStorage == 2))
                         SkipIUStorage = 0;
                     else if (listIUStorage.Count < 7 && SkipIUStorage < 1)
                         SkipIUStorage++;
                     else if (listIUStorage.Count < 10 && SkipIUStorage < 2)
                         SkipIUStorage++;
+                }
                 paginationIUStorage(listIUStorage, SkipIUStorage);
                 #endregion
 
@@ -331,7 +351,7 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-        async Task refreshView()
+        async Task refreshViewTask()
         {
             await AllSalPur();
             await CountMonthlySalPur();
@@ -341,15 +361,15 @@ namespace POS.View
             await BranchOnline();
             #region BestSeller
             await BestSeller();
-        //    if (!firstLoad)
-        //    {
-        //        if (listBestSeller.Count < 4 || Skip == 2)
-        //            Skip = 0;
-        //        else if (listBestSeller.Count < 7 && Skip < 1)
-        //            Skip++;
-        //        else if (listBestSeller.Count < 10 && Skip < 2)
-        //            Skip++;
-        //}
+            //    if (!firstLoad)
+            //    {
+            //        if (listBestSeller.Count < 4 || Skip == 2)
+            //            Skip = 0;
+            //        else if (listBestSeller.Count < 7 && Skip < 1)
+            //            Skip++;
+            //        else if (listBestSeller.Count < 10 && Skip < 2)
+            //            Skip++;
+            //}
             paginationBestSeller(listBestSeller, SkipBestSeller);
             //firstLoad = false;
             #endregion
@@ -364,6 +384,29 @@ namespace POS.View
 
 
 
+
+            this.DataContext = new Dash();
+            this.DataContext = dash;
+
+        }
+        void refreshView()
+        {
+            AllSalPur();
+            CountMonthlySalPur();
+            DailySalPur();
+            AgentCount();
+            UserOnline();
+            BranchOnline();
+            #region BestSeller
+            BestSeller();
+            paginationBestSeller(listBestSeller, SkipBestSeller);
+            #endregion
+            #region IUStorage
+            IUStorage();
+            paginationIUStorage(listIUStorage, SkipIUStorage);
+            #endregion
+            UserOnlinePic();
+            AmountMonthlySalPur();
 
             this.DataContext = new Dash();
             this.DataContext = dash;
@@ -466,15 +509,15 @@ namespace POS.View
             {
                 List<AgentsCount> listAgentCount = await dash.GetAgentCount();
                 var newAgentCount = listAgentCount.FirstOrDefault();
-                        if (newAgentCount != null)
-                        {
-                            dash.customerCount = newAgentCount.customerCount.ToString();
-                            dash.vendorCount = newAgentCount.vendorCount.ToString();
-                        }
-                        else
-                        {
-                            dash.customerCount = dash.vendorCount = "0";
-                        }
+                if (newAgentCount != null)
+                {
+                    dash.customerCount = newAgentCount.customerCount.ToString();
+                    dash.vendorCount = newAgentCount.vendorCount.ToString();
+                }
+                else
+                {
+                    dash.customerCount = dash.vendorCount = "0";
+                }
             }
             catch (Exception ex)
             {
@@ -486,7 +529,7 @@ namespace POS.View
             try
             {
                 List<UserOnlineCount> listUserOnline = await dash.Getuseronline();
-                    if (cb_branch.SelectedValue != null)
+                if (cb_branch.SelectedValue != null)
                     if ((int)cb_branch.SelectedValue == 0)
                     {
                         dash.userOnline = listUserOnline.Sum(x => x.userOnlineCount).ToString();
@@ -494,7 +537,7 @@ namespace POS.View
                     }
                     else
                     {
-                    var newUserOnline = listUserOnline.Where(s => s.branchId == (int)cb_branch.SelectedValue).FirstOrDefault();
+                        var newUserOnline = listUserOnline.Where(s => s.branchId == (int)cb_branch.SelectedValue).FirstOrDefault();
                         if (newUserOnline != null)
                         {
                             dash.userOnline = newUserOnline.userOnlineCount.ToString();
@@ -503,9 +546,9 @@ namespace POS.View
                         else
                             dash.userOnline = dash.userOffline = "0";
                     }
-                    InitializePieChart(pch_userOnline, 
-                    int.Parse(dash.userOnline),
-                    (int.Parse(dash.userOnline) + int.Parse(dash.userOffline)));
+                InitializePieChart(pch_userOnline,
+                int.Parse(dash.userOnline),
+                (int.Parse(dash.userOnline) + int.Parse(dash.userOffline)));
             }
             catch (Exception ex)
             {
@@ -527,7 +570,7 @@ namespace POS.View
                         List<userOnlineInfo> newUserOnline = dash.listUserOnline.Where(s => s.branchId == (int)cb_branch.SelectedValue).ToList();
                         if (newUserOnline != null && newUserOnline.Count != 0)
                         {
-                        InitializeUserOnlinePic(newUserOnline);
+                            InitializeUserOnlinePic(newUserOnline);
                         }
                         else
                             InitializeNoUserOnlinePic();
@@ -553,7 +596,7 @@ namespace POS.View
                 {
                     #region Button
                     Button button = new Button();
-                    button.Padding =  new Thickness(0,0,0,0);
+                    button.Padding = new Thickness(0, 0, 0, 0);
                     button.Margin = new Thickness(-5, 0, -5, 0);
                     button.Background = null;
                     button.BorderBrush = null;
@@ -651,7 +694,7 @@ namespace POS.View
                     dash.branchOffline = newBranchOnline.branchOffline.ToString();
                 }
                 else
-                    dash.branchOnline = dash.branchOffline  = "0";
+                    dash.branchOnline = dash.branchOffline = "0";
                 InitializePieChart(pch_branch,
                     int.Parse(dash.branchOnline),
                     (int.Parse(dash.branchOnline) + int.Parse(dash.branchOffline)));
@@ -663,12 +706,18 @@ namespace POS.View
         }
         void userOnlineListWindow(object sender, RoutedEventArgs e)
         {
-            
-                 Window.GetWindow(this).Opacity = 0.2;
-            wd_usersOnline w = new wd_usersOnline();
-            w.usersOnline = dash.listUserOnline;
-            w.ShowDialog();
-            Window.GetWindow(this).Opacity = 1;
+            try
+            {
+                Window.GetWindow(this).Opacity = 0.2;
+                wd_usersOnline w = new wd_usersOnline();
+                w.usersOnline = dash.listUserOnline;
+                w.ShowDialog();
+                Window.GetWindow(this).Opacity = 1;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         #region BestSeller
@@ -704,7 +753,7 @@ namespace POS.View
                             //paginationBestSeller(dash.listBestSeller);
                         }
                         else
-                            listBestSeller =new List<BestSeller>();
+                            listBestSeller = new List<BestSeller>();
                     }
             }
             catch (Exception ex)
@@ -712,10 +761,10 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-        void paginationBestSeller(List<BestSeller> listBestSeller, int skip )
+        void paginationBestSeller(List<BestSeller> listBestSeller, int skip)
         {
             grid_bestSeller.Children.Clear();
-            int order = (skip*3)+1;
+            int order = (skip * 3) + 1;
             int row = 1;
             listBestSeller = listBestSeller.Skip(skip * 3).Take(3).ToList();
             foreach (var item in listBestSeller)
@@ -751,7 +800,7 @@ namespace POS.View
 
 
         }
-        void InitializeBestSellerRow(string No,string item, string count, int row )
+        void InitializeBestSellerRow(string No, string item, string count, int row)
         {
             #region   itemNo
             var itemNo = new TextBlock();
@@ -872,22 +921,22 @@ namespace POS.View
                 //{
                 //    SectionData.clearValidate(tb_code, p_errorCode);
 
-                    Window.GetWindow(this).Opacity = 0.2;
+                Window.GetWindow(this).Opacity = 0.2;
 
-                    wd_itemsUnitList w = new wd_itemsUnitList();
-                    w.itemId = 0;
-                    w.itemUnitId = 0;
-                    w.CallerName = "IUList";
-                    //w.selectedItemUnits = MainWindow.itemUnitsUsers;
-                    w.ShowDialog();
-                    if (w.isActive)
-                    {
-                      MainWindow.itemUnitsUsers =  w.selectedItemUnits;
+                wd_itemsUnitList w = new wd_itemsUnitList();
+                w.itemId = 0;
+                w.itemUnitId = 0;
+                w.CallerName = "IUList";
+                //w.selectedItemUnits = MainWindow.itemUnitsUsers;
+                w.ShowDialog();
+                if (w.isActive)
+                {
+                    MainWindow.itemUnitsUsers = w.selectedItemUnits;
                     refrishIUList(MainWindow.itemUnitsUsers);
                     refreshView();
-                    }
+                }
 
-                    Window.GetWindow(this).Opacity = 1;
+                Window.GetWindow(this).Opacity = 1;
                 //}
                 //else
                 //    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -907,12 +956,14 @@ namespace POS.View
             try
             {
                 IUList.Clear();
-            foreach (var item in itemUnitsUsers)
-            {
-                var itemUnit = new ItemUnit();
-                itemUnit.itemUnitId = item.itemUnitId.Value;
-                IUList.Add(itemUnit);
-            }
+                foreach (var item in itemUnitsUsers)
+                {
+                    var itemUnit = new ItemUnit();
+                    itemUnit.itemUnitId = item.itemUnitId.Value;
+                    itemUnit.itemId = item.itemId;
+                    itemUnit.unitId = item.unitId;
+                    IUList.Add(itemUnit);
+                }
             }
             catch (Exception ex)
             {
@@ -923,6 +974,12 @@ namespace POS.View
         {
             try
             {
+                //List<ItemUnit> iulist = new List<ItemUnit>();
+                //ItemUnit iumodel = new ItemUnit();
+                //iulist = await iumodel.Getall();
+                //iulist = iulist.Take(10).ToList();
+                //List<IUStorage> listAllIUStorage = await dash.GetIUStorage(iulist);
+
                 List<IUStorage> listAllIUStorage = await dash.GetIUStorage(IUList);
                 if (cb_branch.SelectedValue != null)
                     if ((int)cb_branch.SelectedValue == 0)
@@ -1154,7 +1211,7 @@ namespace POS.View
                 foreach (var item in listMonthlyInvoice)
                 {
                     ArrayS[count] = double.Parse(item.totalPur.ToString());
-                    ArrayP[count] = double.Parse(item.totalSale.ToString()) ;
+                    ArrayP[count] = double.Parse(item.totalSale.ToString());
                     ArrayCount[count] = count.ToString();
                     count++;
                 }
@@ -1184,9 +1241,9 @@ namespace POS.View
             {
                 SectionData.ExceptionMessage(ex, this);
             }
-           
+
         }
-        void InitializePieChart(PieChart pieChart ,int partial=0, int all=0)
+        void InitializePieChart(PieChart pieChart, int partial = 0, int all = 0)
         {
             SeriesCollection series = new SeriesCollection();
             series.Add(
@@ -1287,9 +1344,9 @@ namespace POS.View
             try
             {
                 if (sender != null)
-                SectionData.StartAwait(grid_main);
+                    SectionData.StartAwait(grid_main);
 
-            await refreshView();
+                await refreshViewTask();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -1301,6 +1358,6 @@ namespace POS.View
             }
         }
 
-        
+
     }
 }

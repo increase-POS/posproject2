@@ -159,6 +159,7 @@ namespace POS.View.reports
         private List<CashTransferSts> fillList(List<CashTransferSts> payments, ComboBox vendor, ComboBox payType, ComboBox accountant
            , DatePicker startDate, DatePicker endDate)
         {
+
             var selectedItem1 = vendor.SelectedItem as VendorCombo;
             var selectedItem2 = payType.SelectedItem as PaymentsTypeCombo;
             var selectedItem3 = accountant.SelectedItem as AccountantCombo;
@@ -182,12 +183,13 @@ namespace POS.View.reports
             }
             if (selectedTab == 6)
             {
-                result = payments.Where(x => (
-             (vendor.SelectedItem != null ? x.shippingCompanyId == selectedItem5.ShippingId : true)
-                       && (payType.SelectedItem != null ? x.processType == selectedItem2.PaymentsTypeName : true)
-                       && (accountant.SelectedItem != null ? x.updateUserAcc == selectedItem3.Accountant : true)
-                       && (startDate.SelectedDate != null ? x.updateDate >= startDate.SelectedDate : true)
-                       && (endDate.SelectedDate != null ? x.updateDate <= endDate.SelectedDate : true)));
+                if(selectedItem5 != null)
+                    result = payments.Where(x => (
+                 (vendor.SelectedItem != null ? x.shippingCompanyId == selectedItem5.ShippingId : true)
+                           && (payType.SelectedItem != null    ? x.processType == selectedItem2.PaymentsTypeName : true)
+                           && (accountant.SelectedItem != null ? x.updateUserAcc == selectedItem3.Accountant : true)
+                           && (startDate.SelectedDate != null  ? x.updateDate >= startDate.SelectedDate : true)
+                           && (endDate.SelectedDate != null    ? x.updateDate <= endDate.SelectedDate : true)));
             }
             return result.ToList();
         }
@@ -1276,14 +1278,15 @@ namespace POS.View.reports
             }
         }
 
-        private void Btn_shipping_Click(object sender, RoutedEventArgs e)
-        {
+        private async void Btn_shipping_Click(object sender, RoutedEventArgs e)
+        {//shipping
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
                 selectedTab = 6;
-                paint();
+
+            paint();
                 bdr_shipping.Background = Brushes.White;
                 path_shipping.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
                 grid_shipping.Visibility = Visibility.Visible;

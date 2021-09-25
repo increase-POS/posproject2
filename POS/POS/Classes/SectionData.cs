@@ -261,7 +261,23 @@ namespace POS.Classes
             tt_error.Content = MainWindow.resourcemanager.GetString(tr);
             c.Background = (Brush)bc.ConvertFrom("#15FF0000");
         }
-
+        public static bool validateEmptyTextBlock(TextBlock txt, Path p_error, ToolTip tt_error, string tr)
+        {
+            bool isValid = true;
+            if (txt.Text.Equals(""))
+            {
+                p_error.Visibility = Visibility.Visible;
+                tt_error.Content = MainWindow.resourcemanager.GetString(tr);
+                txt.Background = (Brush)bc.ConvertFrom("#15FF0000");
+                isValid = false;
+            }
+            else
+            {
+                txt.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                p_error.Visibility = Visibility.Collapsed;
+            }
+            return isValid;
+        }
         public static bool validateEmptyTextBox(TextBox tb, Path p_error, ToolTip tt_error, string tr)
         {
             bool isValid = true;
@@ -374,6 +390,11 @@ namespace POS.Classes
         public static void clearPasswordValidate(PasswordBox pb, Path p_error)
         {
             pb.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            p_error.Visibility = Visibility.Collapsed;
+        }
+        public static void clearTextBlockValidate(TextBlock txt, Path p_error)
+        {
+            txt.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             p_error.Visibility = Visibility.Collapsed;
         }
         public static void clearComboBoxValidate(ComboBox cb, Path p_error)

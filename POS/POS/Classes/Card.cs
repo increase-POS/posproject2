@@ -214,11 +214,9 @@ namespace POS.Classes
         }
 
         public async Task<string> uploadImage(string imagePath, string imageName, int cardId)
-        //public async Task<Boolean> uploadImage(string imagePath, int userId)
         {
             if (imagePath != "")
             {
-                //string imageName = userId.ToString();
                 MultipartFormDataContent form = new MultipartFormDataContent();
                 // get file extension
                 var ext = imagePath.Substring(imagePath.LastIndexOf('.'));
@@ -258,7 +256,7 @@ namespace POS.Classes
                         };
                         form.Add(content, "fileToUpload");
 
-                        var response = await client.PostAsync(@"cards/PostCardImage", form);/////////////////////??????????????????????????
+                        var response = await client.PostAsync(@"cards/PostCardImage", form);
                         if (response.IsSuccessStatusCode)
                         {
                             // save image name in DB

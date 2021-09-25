@@ -2446,4 +2446,7 @@ Please add Email in setting</value>
   <data name="trSaved" xml:space="preserve">
     <value>Saved</value>
   </data>
+  <data name="trSelectCreditCard" xml:space="preserve">
+    <value>Select Credit Card</value>
+  </data>
 </root>

@@ -150,7 +150,7 @@ namespace POS.View.reports
 
         }
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
+        {//load
             try
             {
                 if (sender != null)
@@ -692,18 +692,30 @@ fillColumnChart(cb_Items, selectedItemId);
             {
                 var temp = fillRowChartList(Invoices, chk_invoice, chk_return, chk_drafs, dp_startDate, dp_endDate, dt_startTime, dt_endTime);
                 temp = temp.Where(j => (selectedBranchId.Count != 0 ? stackedButton.Contains((int)j.branchCreatorId) : true));
+                foreach(var t in temp)
+                {
+                    t.totalNet = 1000;
+                }
                 list = temp.ToList();
             }
             else if (selectedTab == 1)
             {
                 var temp = fillRowChartList(Invoices, chk_posInvoice, chk_posReturn, chk_posDraft, dp_posStartDate, dp_posEndDate, dt_posStartTime, dt_posEndTime);
                 temp = temp.Where(j => (selectedPosId.Count != 0 ? stackedButton.Contains((int)j.posId) : true));
+                foreach (var t in temp)
+                {
+                    t.totalNet = 2000;
+                }
                 list = temp.ToList();
             }
             else if (selectedTab == 2)
             {
                 var temp = fillRowChartList(Invoices, chk_vendorsInvoice, chk_vendorsReturn, chk_vendorsDraft, dp_vendorsStartDate, dp_vendorsEndDate, dt_vendorsStartTime, dt_vendorsEndTime);
                 temp = temp.Where(j => (selectedVendorsId.Count != 0 ? stackedButton.Contains((int)j.agentId) : true));
+                foreach (var t in temp)
+                {
+                    t.totalNet = 3000;
+                }
                 list = temp.ToList();
             }
             else if (selectedTab == 3)

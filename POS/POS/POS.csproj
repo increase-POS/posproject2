@@ -250,6 +250,7 @@
     </Compile>
     <Compile Include="Classes\ValidatorExtensions.cs" />
     <Compile Include="converters\accuracyConverter.cs" />
+    <Compile Include="converters\agentTypeConverter.cs" />
     <Compile Include="converters\dateFrameConverter.cs" />
     <Compile Include="converters\deliveryTypeConverter.cs" />
     <Compile Include="converters\depositorBondeConverter.cs" />
@@ -1347,6 +1348,7 @@
     <None Include="EmailTemplates\temp3.tmp" />
     <None Include="EmailTemplates\temp3table.tmp" />
     <Fakes Include="Fakes\LiveCharts.fakes" />
+    <Resource Include="fonts\cairo-font\Cairo Regular 400.ttf" />
     <None Include="packages.config" />
     <None Include="Properties\DataSources\POS.Classes.Agent.datasource" />
     <None Include="Properties\DataSources\POS.Classes.Coupon.datasource" />

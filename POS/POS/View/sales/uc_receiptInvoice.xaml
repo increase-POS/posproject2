@@ -81,7 +81,6 @@
                         <StackPanel>
 
                             <Path Fill="#4E4E4E" Stretch="Fill" Height="30" Width="30" x:Name="path_newDraft"
-                            
                           Data="M406.87,122.88c-.75,21.08-6.3,37.9-18.63,51.9-14.76,16.76-33.28,24.79-55.74,21.13-22.91-3.74-38.67-17.49-47.94-38.11-12.33-27.41-10.73-54.58,5.95-79.81C303.78,57.92,323,48,347.37,49.75c14.09,1,26.28,7.08,36.35,16.87C400.22,82.69,406.93,102.76,406.87,122.88Zm-76.44,12.06v30.35h21.95V134.84h26.7V110.31h-3.34c-6.62,0-13.24-.07-19.86,0-2.12,0-2.85-.6-2.82-2.77.12-7.1.05-14.2.05-21.3,0-2.09,0-4.18,0-6.63-7.32,0-14.3,0-21.28.09-.48,0-1.32,1.27-1.36,2-.15,3.07-.07,6.14-.07,9.21v19.37H303.67v24.65Z"  />
                             <TextBlock Text="new" x:Name="txt_newDraft" Foreground="#178DD2" 
                                            FontWeight="Regular" FontSize="8" TextAlignment="Center" Width="35"
@@ -384,7 +383,7 @@
                 <Border  BorderThickness="0"   Grid.Column="0" Grid.Row="0"    Margin="5,10,10,10"
                     CornerRadius="7" BorderBrush="Black" Background="White" Padding="0">
                     <ScrollViewer>
-                    <StackPanel   Margin="0,10,0,0" >
+                    <StackPanel   Margin="0,10,0,10" >
                         
                         <!--#region  Barcode-->
                         <Grid  Margin="5" Grid.Row="3"   >
@@ -741,7 +740,14 @@
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <ComboBox x:Name="cb_card"   Grid.Column="0"
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    <DockPanel x:Name="dkp_cards" Grid.ColumnSpan="2" LastChildFill="False" HorizontalAlignment="Center">
+                                       
+                                    </DockPanel>
+                                    <!--<ComboBox x:Name="cb_card"   Grid.Column="0"
                                   Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
                                   materialDesign:HintAssist.Hint="Card..."  
                                   TextBlock.FontSize="12"   Background="#f8f8f8"
@@ -755,18 +761,58 @@
                                         <Path.ToolTip>
                                             <ToolTip x:Name="tt_errorCard" Content="Card Not Validate"  Style="{StaticResource ToolTipError}"/>
                                         </Path.ToolTip>
-                                    </Path>
-                                    <TextBox x:Name="tb_processNum" MaxLength="20" 
+                                    </Path>-->
+                                    <Grid Grid.Row="1" Grid.Column="0" >
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Row="1" Grid.Column="0"   x:Name="txt_cardTitle"  Margin="5" 
+                       Foreground="#4E4E4E" Text="Card:"
+                        HorizontalAlignment="Left" VerticalAlignment="Center" />
+                                        <TextBlock Grid.Row="1" Grid.Column="1"  x:Name="txt_card"  Margin="2.5" 
+                       Foreground="#4E4E4E" Text=""
+                        HorizontalAlignment="Left" VerticalAlignment="Center" />
+                                        <Path Grid.Row="1"  Grid.Column="2"  x:Name="p_errorCard" Fill="#E81123" Stretch="Fill"
+                                              Margin="2.5"
+                              HorizontalAlignment="Right"  Visibility="Collapsed"   
+                         VerticalAlignment="Center" Width="15"  Height="15"
+                              Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
+                                            <Path.ToolTip>
+                                                <ToolTip x:Name="tt_errorCard"   Style="{StaticResource ToolTipError}"/>
+                                            </Path.ToolTip>
+                                        </Path>
+                                    </Grid>
+                                   
+                                    <!--<TextBox Grid.Row="1" Grid.Column="0" x:Name="tb_card" MaxLength="20" 
                                  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                 Text="{Binding test, Mode=OneWay}" 
+                                 Text="{Binding test, Mode=OneWay}" Margin="5"
                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                 Grid.Column="1" Padding="10,0,5,0" Height="40"
+                                   Padding="10,0,5,0" Height="40" IsReadOnly="True"
+                                 BorderThickness="1" TextChanged="Tb_textBox_TextChanged"
+                                 materialDesign:HintAssist.Hint="Card Name..."  
+                                 Foreground="#4E4E4E"  TextBlock.FontSize="12"
+                                 Background="#f8f8f8" BorderBrush="#f8f8f8" />
+                                    <Path Grid.Row="1"  Grid.Column="0" x:Name="p_errorCard" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                              HorizontalAlignment="Right"   Visibility="Collapsed"   
+                         VerticalAlignment="Center" Width="15"  Height="15"
+                              Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
+                                        <Path.ToolTip>
+                                            <ToolTip x:Name="tt_errorCard" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                        </Path.ToolTip>
+                                    </Path>-->
+                                    <TextBox Grid.Row="1" x:Name="tb_processNum" MaxLength="20" 
+                                 materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                 Text="{Binding test, Mode=OneWay}" Margin="5"
+                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                 Grid.Column="2" Padding="10,0,5,0" Height="40"
                                  BorderThickness="1" TextChanged="Tb_textBox_TextChanged"
                                  materialDesign:HintAssist.Hint="Process Number..."  
                                  Foreground="#4E4E4E"  TextBlock.FontSize="12"
                                  Background="#f8f8f8" BorderBrush="#f8f8f8" />
-                                    <Path x:Name="p_errorProcessNum" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
-                              HorizontalAlignment="Right" Grid.Column="1"  Visibility="Collapsed"   
+                                    <Path Grid.Row="1" x:Name="p_errorProcessNum" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                              HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
                                         <Path.ToolTip>
@@ -1187,7 +1233,7 @@
                             <TextBlock  Grid.Column="1" Margin="5,0,0,0" FontWeight="Bold" FontSize="18"  VerticalAlignment="Bottom"
                                    TextAlignment="Center" Name="tb_total" Foreground="#4E4E4E" HorizontalAlignment="Right" 
                                       Text="0"          />
-                            <TextBlock   Foreground="White" FontWeight="Bold" VerticalAlignment="Bottom" HorizontalAlignment="Center" 
+                        <TextBlock   Foreground="#4E4E4E" FontWeight="Bold" VerticalAlignment="Bottom" HorizontalAlignment="Center" 
                                Margin="5,0,0,0" FontSize="18"
                             Grid.Row="1"   x:Name="tb_moneyIconTotal" Grid.Column="1"  
                       Text="{Binding Path=MainWindow.Currency,  Mode=OneWay}"/>

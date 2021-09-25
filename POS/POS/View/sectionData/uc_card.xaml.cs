@@ -444,9 +444,9 @@ namespace POS.View.sectionData
 
                 string s = await cardModel.Save(card);
 
-                if (s.Equals("true")) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopActive"));
+                if (s.Equals("true")) 
                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
-                else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                else 
                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
                 await RefreshCardsList();
@@ -665,13 +665,15 @@ namespace POS.View.sectionData
             bool b = false;
           
                 List<Card> cards = await cardModel.GetAll();
-                Card card1 = new Card();
-                for (int i = 0; i < cards.Count(); i++)
-                {
-                    card1 = cards[i];
-                    if ((card1.name.Equals(tb_name.Text.Trim())))
-                    { b = true; break; }
-                }
+            if(cards.Any(c => c.name == tb_name.Text && c.cardId != card.cardId))
+             b = true; 
+            //Card card1 = new Card();
+            //for (int i = 0; i < cards.Count(); i++)
+            //{
+            //    card1 = cards[i];
+            //    if ((card1.name.Equals(tb_name.Text.Trim())))
+            //    { b = true; break; }
+            //}
             return b;
         }
 

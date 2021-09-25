@@ -2431,4 +2431,7 @@
   <data name="trSaved" xml:space="preserve">
     <value>محفوظة</value>
   </data>
+  <data name="trSelectCreditCard" xml:space="preserve">
+    <value>اختر بطاقة الائتمان</value>
+  </data>
 </root>
