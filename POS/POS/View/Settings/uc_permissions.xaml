@@ -1519,7 +1519,7 @@
                                     </DockPanel>
 
                                 </Button>-->
-                                <!--<Button x:Name="btn_salesStatistic" Grid.Column="0" Grid.Row="2" Tag="salesStatistic"
+                                <Button x:Name="btn_salesStatistic" Grid.Column="4" Grid.Row="1" Tag="salesStatistic"
                                         BorderBrush="{x:Null}" Padding="0" Margin="5,0"  Height="auto"
                     Background="{x:Null}"   HorizontalContentAlignment="Stretch" Click="btn_secondLevelClick">
                                     <DockPanel LastChildFill="True" >
@@ -1541,7 +1541,7 @@
                                             VerticalAlignment="Bottom" FontSize="14" Foreground="#67686d"   />
                                     </DockPanel>
                                    
-                                </Button>-->
+                                </Button>
 
 
                             </Grid>

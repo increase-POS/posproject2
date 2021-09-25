@@ -1024,7 +1024,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Credit.
+        ///   Looks up a localized string similar to on Credit.
         /// </summary>
         internal static string trCredit {
             get {
@@ -1033,7 +1033,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Card.
+        ///   Looks up a localized string similar to Credit Card.
         /// </summary>
         internal static string trCreditCard {
             get {

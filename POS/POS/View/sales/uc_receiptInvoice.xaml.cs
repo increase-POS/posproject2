@@ -303,6 +303,48 @@ namespace POS.View
                 ((INotifyCollectionChanged)myCollectionView).CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
                 #endregion
 
+
+                #region Permision
+ 
+                if (MainWindow.groupObject.HasPermissionAction(returnPermission, MainWindow.groupObjects, "one"))
+                    btn_returnInvoice.Visibility = Visibility.Visible;
+                else
+                    btn_returnInvoice.Visibility = Visibility.Collapsed;
+
+                if (MainWindow.groupObject.HasPermissionAction(paymentsPermission, MainWindow.groupObjects, "one"))
+                {
+                    md_payments.Visibility = Visibility.Visible;
+                    bdr_payments.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    md_payments.Visibility = Visibility.Collapsed;
+                    bdr_payments.Visibility = Visibility.Collapsed;
+                }
+
+                if (MainWindow.groupObject.HasPermissionAction(executeOrderPermission, MainWindow.groupObjects, "one"))
+                    md_ordersWait.Visibility = Visibility.Visible;
+                else
+                    md_ordersWait.Visibility = Visibility.Collapsed;
+
+                if (MainWindow.groupObject.HasPermissionAction(quotationPermission, MainWindow.groupObjects, "one"))
+                    md_quotations.Visibility = Visibility.Visible;
+                else
+                    md_quotations.Visibility = Visibility.Collapsed;
+
+                if (MainWindow.groupObject.HasPermissionAction(sendEmailPermission, MainWindow.groupObjects, "one"))
+                {
+                    btn_emailMessage.Visibility = Visibility.Visible;
+                    bdr_emailMessage.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    btn_emailMessage.Visibility = Visibility.Collapsed;
+                    bdr_emailMessage.Visibility = Visibility.Collapsed;
+                }
+
+                #endregion
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -1699,6 +1741,7 @@ namespace POS.View
                     tb_barcode.IsEnabled = false;
                     tb_discountCoupon.IsEnabled = false;
                     btn_save.IsEnabled = true;
+                    bdr_paymentDetails.IsEnabled = true;
                     cb_paymentProcessType.IsEnabled = true;
                     dkp_cards.IsEnabled = false;
                     cb_company.IsEnabled = false;
@@ -1721,6 +1764,7 @@ namespace POS.View
                     tb_barcode.IsEnabled = true;
                     tb_discountCoupon.IsEnabled = true;
                     btn_save.IsEnabled = true;
+                    bdr_paymentDetails.IsEnabled = true;
                     dkp_cards.IsEnabled = true;
                     cb_company.IsEnabled = true;
                     cb_user.IsEnabled = true;
@@ -1751,6 +1795,7 @@ namespace POS.View
                     tb_barcode.IsEnabled = true;
                     tb_discountCoupon.IsEnabled = true;
                     btn_save.IsEnabled = true;
+                    bdr_paymentDetails.IsEnabled = true;
                     dkp_cards.IsEnabled = true;
                     cb_company.IsEnabled = true;
                     cb_user.IsEnabled = true;
@@ -1781,6 +1826,7 @@ namespace POS.View
                     tb_barcode.IsEnabled = false;
                     tb_discountCoupon.IsEnabled = false;
                     btn_save.IsEnabled = false;
+                    bdr_paymentDetails.IsEnabled = false;
                     cb_paymentProcessType.IsEnabled = false;
                     dkp_cards.IsEnabled = false;
                     cb_company.IsEnabled = false;
@@ -1803,6 +1849,7 @@ namespace POS.View
                     tb_barcode.IsEnabled = false;
                     tb_discountCoupon.IsEnabled = false;
                     btn_save.IsEnabled = true;
+                    bdr_paymentDetails.IsEnabled = true;
                     cb_paymentProcessType.IsEnabled = false;
                     dkp_cards.IsEnabled = false;
                     cb_company.IsEnabled = false;

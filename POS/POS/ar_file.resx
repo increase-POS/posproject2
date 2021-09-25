@@ -589,7 +589,7 @@
     <value>مبلغ</value>
   </data>
   <data name="trCreditCard" xml:space="preserve">
-    <value>بطاقة</value>
+    <value>بطاقة ائتمان</value>
   </data>
   <data name="trDeservedDateHint" xml:space="preserve">
     <value>تاريخ الإستحقاق...</value>

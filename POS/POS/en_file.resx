@@ -598,7 +598,7 @@
     <value>Cash</value>
   </data>
   <data name="trCreditCard" xml:space="preserve">
-    <value>Card</value>
+    <value>Credit Card</value>
   </data>
   <data name="trDeservedDateHint" xml:space="preserve">
     <value> Deserved Date...</value>
@@ -1898,7 +1898,7 @@ Please add Email in setting</value>
     <value>Shortages</value>
   </data>
   <data name="trCredit" xml:space="preserve">
-    <value>Credit</value>
+    <value>on Credit</value>
   </data>
   <data name="trDepositor" xml:space="preserve">
     <value>Depositor</value>

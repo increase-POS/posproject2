@@ -212,7 +212,7 @@
 	c-0.3,0-0.6,0.2-0.6,0.6c0,0.3,0.2,0.6,0.6,0.6H28C28.3,22,28.6,21.8,28.6,21.4z M32,16C32,16,32,16,32,16C32,16,32,16,32,16
 	C32,16,32,16,32,16C32,16,32,16,32,16z M0,16C0,16,0,16,0,16C0,16,0,16,0,16C0,16,0,16,0,16C0,16,0,16,0,16z"/>
                     </Border>
-                    <Border x:Name="bdr_accountsStatistic" Height="87" Grid.Row="7" Tag="accountsStatistic" >
+                    <Border x:Name="bdr_accountsStatistic" Visibility="Collapsed" Height="87" Grid.Row="7" Tag="accountsStatistic" >
                         <Button x:Name="btn_accountsStatistic" Click="Btn_statistic_Click" Style="{StaticResource SmallButton}"   Grid.Row="7" Grid.Column="0"
                 Height="75" Width="75" Background="White" FlowDirection="LeftToRight"
                   Content="Statistic"    BorderBrush="#67686D"  Tag="accountsStatistic"

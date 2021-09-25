@@ -72,7 +72,7 @@
 	v-1c0-1.1-0.9-2-2-2h-1c-1.1,0-2,0.9-2,2v1h-2c-0.5,0-1,0.4-1,1v1C11.5,7.1,11.9,7.5,12.5,7.5z M17,3.5c0.3,0,0.5,0.2,0.5,0.5
 	S17.3,4.5,17,4.5S16.5,4.3,16.5,4S16.7,3.5,17,3.5z M4.1,16.8L4.1,16.8l0-0.7h0V16.8z M29.9,18.5L29.9,18.5l0-0.7h0V18.5z" />
                     </Border>
-                    <Border x:Name="bdr_purchaseStatistic"   Tag="purchaseStatistic" Height="87" Grid.Row="2" >
+                    <Border x:Name="bdr_purchaseStatistic" Visibility="Collapsed"  Tag="purchaseStatistic" Height="87" Grid.Row="2" >
                         <Button  Style="{StaticResource SmallButton}"   Grid.Row="2" Grid.Column="0"
                 Height="75" Width="75" Background="White" FlowDirection="LeftToRight"
                   Content="Statistic"  x:Name="btn_purchaseStatistic"  BorderBrush="#67686D"  Tag="purchaseStatistic"

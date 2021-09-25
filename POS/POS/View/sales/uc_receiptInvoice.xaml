@@ -131,9 +131,9 @@
                                            HorizontalAlignment="Center"/>
                         </StackPanel>
                     </Button>
-                    <materialDesign:Badged VerticalAlignment="Center" Margin="5,10,5,0"
+                    <materialDesign:Badged VerticalAlignment="Center" Margin="5,10,5,0" Visibility="Collapsed"
                      BadgeBackground="{StaticResource MainColorRed}"  BadgeForeground="White" Name="md_ordersWait" >
-                        <Button Grid.Column="4" BorderBrush="{x:Null}" Padding="0"  Height="auto"
+                        <Button Grid.Column="4" BorderBrush="{x:Null}" Padding="0"  Height="auto" 
                     Background="{x:Null}" x:Name="btn_ordersWait"  Click="Btn_ordersWait_Click" >
                             <StackPanel>
                                 <Path Fill="#4E4E4E" Stretch="Fill"  
@@ -157,7 +157,7 @@
                         </Button>
                     </materialDesign:Badged>
 
-                    <materialDesign:Badged VerticalAlignment="Center" Margin="5,10,5,0"
+                    <materialDesign:Badged VerticalAlignment="Center" Margin="5,10,5,0" Visibility="Collapsed"
                      BadgeBackground="{StaticResource MainColorRed}" BadgeForeground="White"  Name="md_quotations">
                         <Button Grid.Column="4" BorderBrush="{x:Null}" Padding="0"  Height="auto"
                     Background="{x:Null}" x:Name="btn_quotations"  Click="Btn_quotations_Click" >
@@ -195,7 +195,7 @@
                         </Button>
                     </materialDesign:Badged>
 
-                    <Button Grid.Column="5" BorderBrush="{x:Null}" Padding="0"   Margin="5,10,5,0" Height="auto"
+                    <Button Grid.Column="5" BorderBrush="{x:Null}" Padding="0"  Visibility="Collapsed"  Margin="5,10,5,0" Height="auto"
                     Background="{x:Null}" x:Name="btn_returnInvoice" Click="Btn_returnInvoice_Click"  >
                         <StackPanel>
                             <Path Fill="#4E4E4E" Stretch="Fill"  
@@ -208,8 +208,8 @@
                         </StackPanel>
                     </Button>
 
-                    <Border  DockPanel.Dock="Right"  Margin="7.5,10"   CornerRadius="0,0,0,0"  Width="2" BorderThickness="0" Background="#377EB8" />
-                    <materialDesign:Badged VerticalAlignment="Center" Margin="5,10,5,0"
+                    <Border x:Name="bdr_payments"  Visibility="Collapsed" DockPanel.Dock="Right"  Margin="7.5,10"   CornerRadius="0,0,0,0"  Width="2" BorderThickness="0" Background="#377EB8" />
+                    <materialDesign:Badged VerticalAlignment="Center" Margin="5,10,5,0" Visibility="Collapsed"
                       BadgeBackground="{StaticResource MainColorRed}"  BadgeForeground="White"  Name="md_payments">
                         <Button Grid.Column="7" BorderBrush="{x:Null}" Padding="0" Height="auto"
                     Background="{x:Null}" x:Name="btn_payments" Click="Btn_payments_Click"    >
@@ -230,8 +230,8 @@
                             </StackPanel>
                         </Button>
                     </materialDesign:Badged>
-                    <Border  DockPanel.Dock="Right"  Margin="7.5,10"   CornerRadius="0,0,0,0"  Width="2" BorderThickness="0" Background="#377EB8" />
-                    <Button Grid.Column="1" DockPanel.Dock="Right" BorderBrush="{x:Null}" Padding="0"   Margin="5,10,5,0" Height="auto"
+                    <Border x:Name="bdr_emailMessage" Visibility="Collapsed"  DockPanel.Dock="Right"  Margin="7.5,10"   CornerRadius="0,0,0,0"  Width="2" BorderThickness="0" Background="#377EB8" />
+                    <Button Grid.Column="1" Visibility="Collapsed"  DockPanel.Dock="Right" BorderBrush="{x:Null}" Padding="0"   Margin="5,10,5,0" Height="auto"
                     Background="{x:Null}" x:Name="btn_emailMessage" Click="Btn_emailMessage_Click"   >
                         <StackPanel>
                             <Path Fill="#4E4E4E" Stretch="Fill"  
@@ -380,7 +380,7 @@
                     <RowDefinition Height="1*" MinHeight="200"/>
                     <RowDefinition Height="auto" />
                 </Grid.RowDefinitions>
-                <Border  BorderThickness="0"   Grid.Column="0" Grid.Row="0"    Margin="5,10,10,10"
+                <Border  x:Name="bdr_paymentDetails" BorderThickness="0"   Grid.Column="0" Grid.Row="0"    Margin="5,10,10,10"
                     CornerRadius="7" BorderBrush="Black" Background="White" Padding="0">
                     <ScrollViewer>
                     <StackPanel   Margin="0,10,0,10" >
@@ -837,198 +837,7 @@
                
             </Grid>
 
-
-            <!--<Grid Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Margin="0,5,0,5">
-                <Grid.RowDefinitions >
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="2*"/>
-                    <RowDefinition Height="1.5*" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                --><!--<Border BorderThickness="0"   Grid.Column="0" Grid.Row="0"    Margin="5,10,5,5"
-                    CornerRadius="7" BorderBrush="Black" Background="White" Padding="0">
-                    <Grid   Margin="0" >
-                        <Grid.RowDefinitions >
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                        </Grid.RowDefinitions>
-                        <TextBlock Text="Barcode" x:Name="txt_barcode" Foreground="#178DD2" FontWeight="Bold" FontSize="18"  
-                                     VerticalAlignment="Center" 
-                                       HorizontalAlignment="Left" Margin="10,5,5,5"/>
-                        --><!--<Grid  Margin="5" Grid.Row="3"   >
-                            <TextBox x:Name="tb_barcode"  Text="{Binding discount, Mode=OneWay}"
-                                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                Grid.Row="2" Padding="10,0,5,0"
-                                materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                MaxLength="20" 
-                                BorderThickness="1"  materialDesign:HintAssist.Hint="Barcode..."  
-                                Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                                BorderBrush="#f8f8f8"
-                                Grid.Column="1"  Height="40" KeyDown="Tb_barcode_KeyDown" />
-                            <Path Fill="#E81123" Stretch="Fill" Margin="5,5,25,5"
-                                            HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
-                                            VerticalAlignment="Center" Width="15"  Height="15"
-                                            Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
-                                <Path.ToolTip>
-                                    <ToolTip  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
-                                </Path.ToolTip>
-                            </Path>
-                        </Grid>--><!--
-
-                    </Grid>
-                </Border>-->
-               <!--<Border BorderThickness="0"   Grid.Column="0" Grid.Row="1"      Margin="5,10,5,5"
-                    CornerRadius="7" BorderBrush="Black" Background="White" Padding="0">
-                    <Grid   Margin="0" >
-                        <Grid.RowDefinitions >
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-                        <TextBlock Grid.Row="0" Text="Coupon" x:Name="txt_coupon" Foreground="#178DD2" FontWeight="Bold" FontSize="18"  
-                                  VerticalAlignment="Center" 
-                                       HorizontalAlignment="Left" Margin="10,5,5,5"/>
-                        <Button x:Name="btn_clearCoupon"  Padding="0" HorizontalAlignment="Right"
-                                        Background="{x:Null}" BorderBrush="{x:Null}" 
-                                        Margin="5,1" ToolTip="clear" Click="Btn_clearCoupon_Click">
-                            <materialDesign:PackIcon Foreground="#178DD2" Kind="RefreshCircle"  
-                              HorizontalAlignment="Center" Grid.Column="0"  
-                         VerticalAlignment="Center" Width="20" Height="20"/>
-                        </Button>
-                        <Grid Grid.Row="1"  Margin="5" >
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid Grid.Column="1" >
-                                <ComboBox x:Name="cb_coupon" Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"  
-                                 materialDesign:HintAssist.Hint="Coupon..." 
-                                        Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                               TextBlock.FontSize="12" IsEditable="True"
-                                  Height="40"  
-                                      Background="#f8f8f8" 
-                               BorderBrush="#737373"       BorderThickness="0" 
-                                FontFamily="Segoe UI"   
-                                 Grid.Row="0" SelectionChanged="Cb_coupon_SelectionChanged"   />
-                                <Path Fill="#E81123" Stretch="Fill" Margin="5,5,25,5"
-                              HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
-                         VerticalAlignment="Center" Width="15"  Height="15"
-                              Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
-                                    <Path.ToolTip>
-                                        <ToolTip  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
-                                    </Path.ToolTip>
-                                </Path>
-                               
-                            </Grid>
-                        </Grid>
-                        <ListView Grid.Row="2" x:Name="lst_coupons"/>
-                        <Separator Margin="5,0" Grid.Row="3"  Background="#DFDFDF" VerticalAlignment="Center" Width="auto" />
-
-                        <StackPanel Grid.Row="4" Orientation="Horizontal"  Margin="5" HorizontalAlignment="Left" >
-                            <TextBlock Grid.Row="0"  Text="Discount" x:Name="txt_discountCoupon"  Foreground="#4E4E4E"  FontWeight="Regular" FontSize="14"  
-                                  VerticalAlignment="Center" 
-                                       HorizontalAlignment="Left" Margin="0,0,5,0"/>
-                            <TextBlock Grid.Row="1"   x:Name="tb_discountCoupon" Grid.Column="1"  
-                       Foreground="#4E4E4E" Text="0"
-                        HorizontalAlignment="Left" VerticalAlignment="Center"
-                                  FontWeight="Regular"  FontSize="12"/>
-                            <TextBlock Grid.Row="1"   x:Name="tb_discountCouponMoneyIcon" Grid.Column="1" 
-                       Foreground="#4E4E4E" Text="{Binding Path=MainWindow.Currency,Mode=OneWay}" Margin="5,0,0,0"
-                        HorizontalAlignment="Left" VerticalAlignment="Center"
-                                  FontWeight="Regular"  FontSize="12"/>
-                        </StackPanel>
-                    </Grid>
-                </Border>-->
-                <!--<Border BorderThickness="0"   Grid.Column="0" Grid.Row="2"      Margin="5,10,5,5"
-                    CornerRadius="7" BorderBrush="Black" Background="White" Padding="0">
-                    <Grid   Margin="0" >
-                        <Grid.RowDefinitions >
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-                        <TextBlock Grid.Row="0" Text="Discount" x:Name="txt_discount" Foreground="#178DD2" FontWeight="Bold" FontSize="18"  
-                                  VerticalAlignment="Center" 
-                                       HorizontalAlignment="Left" Margin="10,5,5,5"/>
-                        <Grid Grid.Row="1"  Margin="5" >
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid Grid.Column="1" >
-                                <TextBox x:Name="tb_discount"  Text="{Binding discountValue, Mode=OneWay}" Padding="10,0,5,0"
-                                           Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                            BorderThickness="1"  materialDesign:HintAssist.Hint="Discount..."  
-                                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                                            BorderBrush="#f8f8f8"
-                                            PreviewTextInput="DecimalValidationTextBox"  PreviewKeyDown="space_PreviewKeyDown"
-                                               Height="40"  
-                                             TextChanged="tb_discount_TextChanged"/>
-
-
-                                <Path Fill="#E81123" Stretch="Fill" Margin="5,5,25,5"
-                              HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
-                         VerticalAlignment="Center" Width="15"  Height="15"
-                              Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
-                                    <Path.ToolTip>
-                                        <ToolTip  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
-                                    </Path.ToolTip>
-                                </Path>
-                            </Grid>
-                        </Grid>
-                        <Grid   Grid.Row="2"  Grid.Column="0"  Margin="5"  >
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <ComboBox x:Name="cb_typeDiscount" Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"  
-                                           Text="{Binding test, Mode=OneWay}" 
-                                 materialDesign:HintAssist.Hint="type discount..." 
-                                        Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                               TextBlock.FontSize="12" 
-                                  Height="40"  
-                                      Background="#f8f8f8" 
-                               BorderBrush="#737373"       BorderThickness="0" 
-                                FontFamily="Segoe UI"   
-                                 Grid.Row="0" SelectionChanged="Cb_typeDiscount_SelectionChanged"   />
-                            <Path Fill="#E81123" Stretch="Fill" Margin="5,5,22,5"
-                                  HorizontalAlignment="Right" Grid.Column="0"  Visibility="Collapsed" 
-                             VerticalAlignment="Center" Width="15"  Height="15"
-                                  Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
-                                <Path.ToolTip>
-                                    <ToolTip    Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
-                                </Path.ToolTip>
-                            </Path>
-
-                        </Grid>
-                    </Grid>
-                </Border>-->
-
-                <!--<Border BorderThickness="0"   Grid.Column="0" Grid.Row="3"     Margin="5,10,5,10"
-                    CornerRadius="7" BorderBrush="Black" Background="White" Padding="0">
-                    <Grid   Margin="0" >
-                        <Grid.RowDefinitions >
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                        </Grid.RowDefinitions>
-                        --><!--<TextBlock Text="TAX" x:Name="txt_tax" Foreground="#178DD2" FontWeight="Bold" FontSize="18"  
-                                  VerticalAlignment="Center" 
-                                       HorizontalAlignment="Left" Margin="10,5,5,5"/>-->
-                        <!--<StackPanel Grid.Row="1" Orientation="Horizontal" >
-                            <TextBlock Grid.Row="1"   x:Name="tb_taxValue" Grid.Column="1" Margin="10,5,5,5" 
-                       Foreground="#4E4E4E" Text="{Binding tax, Mode=OneWay}"
-                        HorizontalAlignment="Left" VerticalAlignment="Center"
-                                  FontWeight="Bold"  FontSize="12"/>
-                            <TextBlock    Foreground="#4E4E4E" Text="%"
-                        HorizontalAlignment="Left" VerticalAlignment="Center"
-                                  FontWeight="Bold"  FontSize="12"/>
-                        </StackPanel>--><!--
-                       
-
-                    </Grid>
-                </Border>--><!--
-            </Grid>-->
+ 
 
             <Grid Grid.Column="0" Grid.Row="1" Grid.RowSpan="2" Margin="0,5,0,5">
                 <Grid.RowDefinitions >
@@ -1148,7 +957,7 @@
                                     <Path Fill="{StaticResource MainColorBlue}" Stretch="Fill" Height="25" Width="25" x:Name="path_previous"
                           Data="M275,150.15a122.58,122.58,0,0,0-16.83-62.72c-11.12-19.21-26.44-34.22-45.37-45.62a125.71,125.71,0,0,0-125.6,0A122.43,122.43,0,0,0,41.83,87.42a125.3,125.3,0,0,0,0,125.45A123.88,123.88,0,0,0,87.2,258.19C106.43,269.6,127.16,275,150,275a124.83,124.83,0,0,0,108.17-62.12C269.59,193.67,275,173,275,150.15Zm-82.93,50.42a10,10,0,0,1,3,7.5,10.44,10.44,0,0,1-3,7.51l-16.53,16.8a10.16,10.16,0,0,1-14.42,0L88.1,158a10.87,10.87,0,0,1,0-15l73-74.73a10.16,10.16,0,0,1,14.42,0L192.07,85a10,10,0,0,1,3,7.51,10.41,10.41,0,0,1-3,7.5l-49.58,50.12Z">
                                         <Path.ToolTip>
-                                            <ToolTip x:Name="tt_error_previous" Style="{StaticResource ToolTipError}"/>
+                                            <ToolTip x:Name="tt_error_previous"  />
                                         </Path.ToolTip>
                                     </Path>
                                 </StackPanel>
@@ -1166,7 +975,7 @@
 	                        s-0.9,5.4-3,7.5l-72.9,74.7c-2.1,2.1-4.5,3-7.2,3c-2.7,0-5.1-0.9-7.2-3L108,215.1c-2.1-2.1-3-4.5-3-7.5c0-2.7,0.9-5.4,3-7.5
 	                        l49.5-50.1L108,99.6z">
                                         <Path.ToolTip>
-                                            <ToolTip x:Name="tt_error_next" Style="{StaticResource ToolTipError}"/>
+                                            <ToolTip x:Name="tt_error_next"  />
                                         </Path.ToolTip>
                                     </Path>
                                 </StackPanel>
