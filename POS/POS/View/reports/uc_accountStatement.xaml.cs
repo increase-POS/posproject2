@@ -58,6 +58,7 @@ namespace POS.View.reports
         ReportCls reportclass = new ReportCls();
         LocalReport rep = new LocalReport();
         SaveFileDialog saveFileDialog = new SaveFileDialog();
+     public static   string repTrRequires = "";
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
 			try
@@ -675,6 +676,7 @@ namespace POS.View.reports
         /*Fill Events*/
         /*********************************************************************************/
         IEnumerable<CashTransferSts> temp = null;
+     
         private void fillVendorsEvents()
         {
             temp = statisticModel.getstate(fillList(statement, cb_vendors, cb_vendorsDate));
@@ -686,6 +688,8 @@ namespace POS.View.reports
                 txt_total.Text = SectionData.DecTostring(cashTotal);
                 //txt_for.Text = "Worthy";
                 txt_for.Text = MainWindow.resourcemanager.GetString("trWorthy");
+               
+                repTrRequires = "trWorthy"; 
                 tb_moneyIcon.Text = MainWindow.Currency;
 
                 bdr_email.Visibility = Visibility.Collapsed;
@@ -696,6 +700,8 @@ namespace POS.View.reports
                 txt_total.Text = cashTotal.ToString();
                 //txt_for.Text = "Required";
                 txt_for.Text = MainWindow.resourcemanager.GetString("trRequired");
+          
+                repTrRequires ="trRequired";
                 tb_moneyIcon.Text = MainWindow.Currency;
                 if (cb_vendors.SelectedItem != null)
                 {
@@ -722,6 +728,7 @@ namespace POS.View.reports
                 txt_total.Text = SectionData.DecTostring(cashTotal);
                 //txt_for.Text = "Worthy";
                 txt_for.Text = MainWindow.resourcemanager.GetString("trWorthy");
+                repTrRequires = "trWorthy";
                 bdr_email.Visibility = Visibility.Collapsed;
             }
             else
@@ -730,6 +737,7 @@ namespace POS.View.reports
                 txt_total.Text = SectionData.DecTostring(cashTotal);
                 //txt_for.Text = "Required";
                 txt_for.Text = MainWindow.resourcemanager.GetString("trRequired");
+                repTrRequires ="trRequired";
                 bdr_email.Visibility = Visibility.Visible;
                 if (cb_customer.SelectedItem != null)
                 {
@@ -756,6 +764,7 @@ namespace POS.View.reports
                 txt_total.Text = SectionData.DecTostring(cashTotal);
                 //txt_for.Text = "Worthy";
                 txt_for.Text = MainWindow.resourcemanager.GetString("trWorthy");
+                repTrRequires = "trWorthy";
                 bdr_email.Visibility = Visibility.Collapsed;
             }
             else
@@ -764,6 +773,7 @@ namespace POS.View.reports
                 txt_total.Text = cashTotal.ToString();
                 //txt_for.Text = "Required";
                 txt_for.Text = MainWindow.resourcemanager.GetString("trRequired");
+                repTrRequires = "trRequired";
                 bdr_email.Visibility = Visibility.Visible;
                 if (cb_users.SelectedItem != null)
                 {
@@ -792,6 +802,7 @@ namespace POS.View.reports
                 txt_total.Text = SectionData.DecTostring(cashTotal);
                 //txt_for.Text = "Worthy";
                 txt_for.Text = MainWindow.resourcemanager.GetString("trWorthy");
+                repTrRequires = "trWorthy";
                 bdr_email.Visibility = Visibility.Collapsed;
             }
             else
@@ -800,6 +811,7 @@ namespace POS.View.reports
                 txt_total.Text = SectionData.DecTostring(cashTotal);
                 //txt_for.Text = "Required";
                 txt_for.Text = MainWindow.resourcemanager.GetString("trRequired");
+                repTrRequires = "trRequired";
                 bdr_email.Visibility = Visibility.Visible;
                 if (cb_shipping.SelectedItem != null)
                 {
@@ -860,12 +872,14 @@ namespace POS.View.reports
                 {
                     //names.Add("Worthy");
                     names.Add(MainWindow.resourcemanager.GetString("trWorthy"));
+
                     btn_emailMessage.Visibility = Visibility.Collapsed;
                 }
                 else
                 {
                     //names.Add("Required");
                     names.Add(MainWindow.resourcemanager.GetString("trRequired"));
+
                     btn_emailMessage.Visibility = Visibility.Visible;
                 }
                 cash.Add(drawCash);
@@ -1375,6 +1389,16 @@ namespace POS.View.reports
             clsReports.cashTransferStsStatement(temp, rep, reppath, paramarr);
             clsReports.setReportLanguage(paramarr);
             clsReports.Header(paramarr);
+            if (repTrRequires == "trRequired"){
+                repTrRequires = MainWindow.resourcemanagerreport.GetString("trRequired");
+            }
+            else
+            {
+                repTrRequires = MainWindow.resourcemanagerreport.GetString("trWorthy");
+            }
+            paramarr.Add(new ReportParameter("trRequired", repTrRequires));
+            paramarr.Add(new ReportParameter("finalAccount", txt_total.Text));
+            paramarr.Add(new ReportParameter("Currency", MainWindow.Currency));
 
             rep.SetParameters(paramarr);
 
