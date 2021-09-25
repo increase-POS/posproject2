@@ -303,6 +303,48 @@ namespace POS.View
                 ((INotifyCollectionChanged)myCollectionView).CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
                 #endregion
 
+
+                #region Permision
+ 
+                if (MainWindow.groupObject.HasPermissionAction(returnPermission, MainWindow.groupObjects, "one"))
+                    btn_returnInvoice.Visibility = Visibility.Visible;
+                else
+                    btn_returnInvoice.Visibility = Visibility.Collapsed;
+
+                if (MainWindow.groupObject.HasPermissionAction(paymentsPermission, MainWindow.groupObjects, "one"))
+                {
+                    md_payments.Visibility = Visibility.Visible;
+                    bdr_payments.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    md_payments.Visibility = Visibility.Collapsed;
+                    bdr_payments.Visibility = Visibility.Collapsed;
+                }
+
+                if (MainWindow.groupObject.HasPermissionAction(executeOrderPermission, MainWindow.groupObjects, "one"))
+                    md_ordersWait.Visibility = Visibility.Visible;
+                else
+                    md_ordersWait.Visibility = Visibility.Collapsed;
+
+                if (MainWindow.groupObject.HasPermissionAction(quotationPermission, MainWindow.groupObjects, "one"))
+                    md_quotations.Visibility = Visibility.Visible;
+                else
+                    md_quotations.Visibility = Visibility.Collapsed;
+
+                if (MainWindow.groupObject.HasPermissionAction(sendEmailPermission, MainWindow.groupObjects, "one"))
+                {
+                    btn_emailMessage.Visibility = Visibility.Visible;
+                    bdr_emailMessage.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    btn_emailMessage.Visibility = Visibility.Collapsed;
+                    bdr_emailMessage.Visibility = Visibility.Collapsed;
+                }
+
+                #endregion
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -709,7 +751,7 @@ namespace POS.View
                     case 2:
                         SectionData.clearComboBoxValidate(cb_customer, p_errorCustomer);
                         SectionData.validateEmptyTextBox(tb_processNum, p_errorProcessNum, tt_errorProcessNum, "trEmptyProcessNumToolTip");
-                        SectionData.validateEmptyTextBlock(txt_card, p_errorCard, tt_errorCard, "trEmptyCardTooltip");
+                        SectionData.validateEmptyTextBlock(txt_card, p_errorCard, tt_errorCard, "trSelectCreditCard");
                         break;
                 }
             }
@@ -1699,6 +1741,7 @@ namespace POS.View
                     tb_barcode.IsEnabled = false;
                     tb_discountCoupon.IsEnabled = false;
                     btn_save.IsEnabled = true;
+                    bdr_paymentDetails.IsEnabled = true;
                     cb_paymentProcessType.IsEnabled = true;
                     dkp_cards.IsEnabled = false;
                     cb_company.IsEnabled = false;
@@ -1721,6 +1764,7 @@ namespace POS.View
                     tb_barcode.IsEnabled = true;
                     tb_discountCoupon.IsEnabled = true;
                     btn_save.IsEnabled = true;
+                    bdr_paymentDetails.IsEnabled = true;
                     dkp_cards.IsEnabled = true;
                     cb_company.IsEnabled = true;
                     cb_user.IsEnabled = true;
@@ -1751,6 +1795,7 @@ namespace POS.View
                     tb_barcode.IsEnabled = true;
                     tb_discountCoupon.IsEnabled = true;
                     btn_save.IsEnabled = true;
+                    bdr_paymentDetails.IsEnabled = true;
                     dkp_cards.IsEnabled = true;
                     cb_company.IsEnabled = true;
                     cb_user.IsEnabled = true;
@@ -1781,6 +1826,7 @@ namespace POS.View
                     tb_barcode.IsEnabled = false;
                     tb_discountCoupon.IsEnabled = false;
                     btn_save.IsEnabled = false;
+                    bdr_paymentDetails.IsEnabled = false;
                     cb_paymentProcessType.IsEnabled = false;
                     dkp_cards.IsEnabled = false;
                     cb_company.IsEnabled = false;
@@ -1803,6 +1849,7 @@ namespace POS.View
                     tb_barcode.IsEnabled = false;
                     tb_discountCoupon.IsEnabled = false;
                     btn_save.IsEnabled = true;
+                    bdr_paymentDetails.IsEnabled = true;
                     cb_paymentProcessType.IsEnabled = false;
                     dkp_cards.IsEnabled = false;
                     cb_company.IsEnabled = false;
@@ -3462,6 +3509,7 @@ namespace POS.View
                         dp_desrvedDate.IsEnabled = false;
                         SectionData.clearComboBoxValidate(cb_customer, p_errorCustomer);
                         SectionData.clearTextBlockValidate(txt_card, p_errorCard);
+                        SectionData.clearValidate(tb_processNum, p_errorCard);
                         break;
                     case 1:// balance
                         gd_card.Visibility = Visibility.Collapsed;
@@ -3472,6 +3520,7 @@ namespace POS.View
                         txt_card.Text = "";
                         //SectionData.clearComboBoxValidate(cb_card, p_errorCard);
                         SectionData.clearTextBlockValidate(txt_card, p_errorCard);
+                        SectionData.clearValidate(tb_processNum, p_errorCard);
                         break;
                     case 2://card
                         dp_desrvedDate.IsEnabled = false;
@@ -3498,7 +3547,7 @@ namespace POS.View
             {
                     #region Button
                     Button button = new Button();
-                    button.Name = item.name;
+                    button.DataContext = item.name;
                     button.Tag = item.cardId;
                     button.Padding = new Thickness(0, 0, 0, 0);
                     button.Margin = new Thickness(2.5, 5, 2.5, 5);
@@ -3535,7 +3584,7 @@ namespace POS.View
         {
             var button = sender as Button;
             _SelectedCard = int.Parse(button.Tag.ToString());
-            txt_card.Text = button.Name.ToString();
+            txt_card.Text = button.DataContext.ToString();
             //MessageBox.Show("Hey you Click me! I'm Card: " + _SelectedCard);
         }
         ImageBrush brush = new ImageBrush();

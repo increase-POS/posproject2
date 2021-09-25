@@ -1033,7 +1033,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to بطاقة.
+        ///   Looks up a localized string similar to بطاقة ائتمان.
         /// </summary>
         internal static string trCreditCard {
             get {

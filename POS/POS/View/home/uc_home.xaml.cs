@@ -81,199 +81,19 @@ namespace POS.View
                     cb_branch.IsEnabled = true;
                 else cb_branch.IsEnabled = false;
 
-
                 SkipBestSeller = 0;
                 SkipIUStorage = 0;
                 firstLoad = true;
-                //await BestSeller();
-                //paginationBestSeller(listBestSeller, Skip);
-
-                #region Purchase and Sales
-                /*
-                double[] ArrayS = new double[30];
-                double[] ArrayP = new double[30];
-                string[] ArrayCount = new string[30];
-                Random rnd = new Random();
-
-                for (int i = 0; i < 30; i++)
-                {
-                    ArrayS[i] = rnd.Next(1800, 2500);
-                    ArrayP[i] = rnd.Next(1500, int.Parse(ArrayS[i].ToString()));
-                    ArrayCount[i] = i.ToString();
-                }
-                SeriesCollection = new SeriesCollection
-                {
-                    new LineSeries
-                    {
-                        Title = "المبيعات",
-                        Values = ArrayS.AsChartValues()
-                    },
-                     new LineSeries
-                    {
-                        Title = "المشتريات",
-                        Values = ArrayP.AsChartValues()
-                    }
-                };
-
-
-                Labels = ArrayCount;
-                YFormatter = value => value.ToString("C");
-                DataContext = this;
-                */
-                #endregion
-                #region user online 
-                //SeriesCollection seriesUser = new SeriesCollection();
-                //seriesUser.Add(
-                //     new PieSeries
-                //     {
-                //         Values = new ChartValues<int> { 5 },
-                //         Title = "",
-                //         DataLabels = false,
-                //         Fill = Application.Current.Resources["mediumGreen"] as SolidColorBrush
-                //     }
-                // );
-                //seriesUser.Add(
-                //     new PieSeries
-                //     {
-                //         Values = new ChartValues<int> { 15 - 5 },
-                //         Title = "",
-                //         DataLabels = false,
-                //         Fill = Application.Current.Resources["MainColorlightGrey"] as SolidColorBrush
-                //     }
-                // );
-                //pch_userOnline.Series = seriesUser;
-
-                //#region userImageLoad
-                //grid_userImages.Children.Clear();
-                //users = await user.GetUsersActive();
-                //int userCount = 0;
-                //foreach (var item in users)
-                //{
-                //    if (userCount > 4)
-                //    {
-                //        Grid grid = new Grid();
-                //        grid.Margin = new Thickness(-5, 0, -5, 0);
-                //        Grid.SetColumn(grid, 4);
-                //        #region rectangle
-                //        Rectangle rectangle = new Rectangle();
-                //        rectangle.Fill = Application.Current.Resources["Orange"] as SolidColorBrush;
-                //        rectangle.RadiusX = 90;
-                //        rectangle.RadiusY = 90;
-                //        rectangle.Height = 40;
-                //        rectangle.Width = 40;
-                //        rectangle.StrokeThickness = 1;
-                //        rectangle.Stroke = Application.Current.Resources["White"] as SolidColorBrush; ;
-                //        grid.Children.Add(rectangle);
-                //        #endregion
-                //        #region rectangle
-                //        TextBlock textBlock = new TextBlock();
-                //        textBlock.Text = "+"+ (users.Count() - 4).ToString();
-                //        textBlock.HorizontalAlignment = HorizontalAlignment.Center;
-                //        textBlock.VerticalAlignment = VerticalAlignment.Center;
-                //        textBlock.FontWeight = FontWeights.Bold;
-                //        textBlock.Foreground = Application.Current.Resources["White"] as SolidColorBrush;
-                //        grid.Children.Add(textBlock);
-                //        #endregion
-                //        grid_userImages.Children.Add(grid);
-                //        break;
-                //    }
-                //    else
-                //    {
-                //        Ellipse ellipse = new Ellipse();
-                //        ellipse.Margin = new Thickness(-5, 0, -5, 0);
-                //        ellipse.StrokeThickness = 1;
-                //        ellipse.Stroke = Application.Current.Resources["White"] as SolidColorBrush;
-                //        ellipse.Height = 40;
-                //        ellipse.Width = 40;
-                //        ellipse.FlowDirection = FlowDirection.LeftToRight;
-                //        ellipse.ToolTip = item.username;
-                //        userImageLoad(ellipse, item.image);
-                //        Grid.SetColumn(ellipse, userCount);
-                //        grid_userImages.Children.Add(ellipse);
-                //        userCount++;
-                //    }
-                //}
-                //#endregion
-                #endregion
-                #region Branch 
-                /*
-                SeriesCollection seriesBranch = new SeriesCollection();
-                seriesBranch.Add(
-                     new PieSeries
-                     {
-                         Values = new ChartValues<int> { 2 },
-                         Title = "",
-                         DataLabels = false,
-                         Fill = Application.Current.Resources["mediumGreen"] as SolidColorBrush
-                     }
-                 );
-                seriesBranch.Add(
-                     new PieSeries
-                     {
-                         Values = new ChartValues<int> { 10 - 2 },
-                         Title = "",
-                         DataLabels = false,
-                         Fill = Application.Current.Resources["MainColorlightGrey"] as SolidColorBrush
-                     }
-                 );
-                pch_branch.Series = seriesBranch;
-                */
-                #endregion
-                #region DailyPurchaseInvoice
-                /*SeriesCollection seriesDailyPurchaseInvoice = new SeriesCollection();
-                seriesDailyPurchaseInvoice.Add(
-                     new PieSeries
-                     {
-                         Values = new ChartValues<int> { 43 },
-                         Title = "",
-                         DataLabels = false,
-                         Fill = Application.Current.Resources["mediumGreen"] as SolidColorBrush
-                     }
-                 );
-                seriesDailyPurchaseInvoice.Add(
-                     new PieSeries
-                     {
-                         Values = new ChartValues<int> { 1165 - 43 },
-                         Title = "",
-                         DataLabels = false,
-                         Fill = Application.Current.Resources["MainColorlightGrey"] as SolidColorBrush
-                     }
-                 );
-                pch_dailyPurchaseInvoice.Series = seriesDailyPurchaseInvoice;
-               */
-                #endregion
-                #region DailySalesInvoice
-                /*SeriesCollection seriesDailySalesInvoice = new SeriesCollection();
-                seriesDailySalesInvoice.Add(
-                     new PieSeries
-                     {
-                         Values = new ChartValues<int> { 257 },
-                         Title = "",
-                         DataLabels = false,
-                         Fill = Application.Current.Resources["mediumGreen"] as SolidColorBrush
-                     }
-                 );
-                seriesDailySalesInvoice.Add(
-                     new PieSeries
-                     {
-                         Values = new ChartValues<int> { 7258 - 257 },
-                         Title = "",
-                         DataLabels = false,
-                         Fill = Application.Current.Resources["MainColorlightGrey"] as SolidColorBrush
-                     }
-                 );
-                pch_dailySalesInvoice.Series = seriesDailySalesInvoice;
-                */
-                #endregion
-
 
                 refrishIUList(MainWindow.itemUnitsUsers);
 
 
-
-
                 CalculateNumberDaysInMonth calculate = new CalculateNumberDaysInMonth();
                 NumberDaysInMonth = calculate.getdays(DateTime.Now);
+
+                await refreshViewTask();
+
+
                 //thread 30
                 threadtimer = new DispatcherTimer();
                 threadtimer.Interval = TimeSpan.FromSeconds(secondTimer30);
@@ -286,7 +106,6 @@ namespace POS.View
                 threadtimer.Tick += timer_Thread10;
                 threadtimer.Start();
                 ////////////////////
-                await refreshViewTask();
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -734,9 +553,7 @@ namespace POS.View
                             itemName = s.FirstOrDefault().itemName,
                             unitName = s.FirstOrDefault().unitName,
                             quantity = s.Sum(g => g.quantity),
-                            //subTotal = s.Sum(g => g.subTotal),
                         }).ToList();
-                        //paginationBestSeller(dash.listBestSeller);
                     }
                     else
                     {
@@ -748,9 +565,7 @@ namespace POS.View
                                 itemName = s.FirstOrDefault().itemName,
                                 unitName = s.FirstOrDefault().unitName,
                                 quantity = s.Sum(g => g.quantity),
-                                //subTotal = s.Sum(g => g.subTotal),
                             }).ToList();
-                            //paginationBestSeller(dash.listBestSeller);
                         }
                         else
                             listBestSeller = new List<BestSeller>();
@@ -810,7 +625,7 @@ namespace POS.View
             itemNo.HorizontalAlignment = HorizontalAlignment.Center;
             itemNo.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#1D75B8"));
             itemNo.FontSize = 16;
-            itemNo.Margin = new Thickness(2.5, 1, 2.5, 1);
+            itemNo.Margin = new Thickness(5, 1, 2.5, 1);
             Grid.SetRow(itemNo, row);
             Grid.SetColumn(itemNo, 0);
             #endregion
@@ -862,51 +677,11 @@ namespace POS.View
             Grid.SetRow(countItem, row);
             Grid.SetColumn(countItem, 4);
             #endregion
-            /*
-            #region   amountTitle
-            var amountTitle = new TextBlock();
-            amountTitle.Text = "Amount:";
-            amountTitle.Tag = "amountTitle";
-            amountTitle.VerticalAlignment = VerticalAlignment.Center;
-            amountTitle.HorizontalAlignment = HorizontalAlignment.Center;
-            amountTitle.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#707070"));
-            amountTitle.FontSize = 16;
-            amountTitle.Margin = new Thickness(5, 1, 5, 1);
-            Grid.SetRow(amountTitle, row);
-            Grid.SetColumn(amountTitle, 5);
-            #endregion
-            #region amountStackPanel
-            var amountStackPanel = new StackPanel();
-            amountStackPanel.Orientation = Orientation.Horizontal;
-            amountStackPanel.VerticalAlignment = VerticalAlignment.Center;
-            amountStackPanel.HorizontalAlignment = HorizontalAlignment.Right;
-            amountStackPanel.Margin = new Thickness(5, 1, 5, 1);
-            Grid.SetRow(amountStackPanel, row);
-            Grid.SetColumn(amountStackPanel, 6);
-            #region   amountValue
-            var amountValue = new TextBlock();
-            amountValue.Text = amount;
-            amountValue.FontSize = 16;
-            amountValue.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#008A1C"));
-            amountTitle.Margin = new Thickness(0, 0, 5, 0);
-            #endregion
-            #region   amountSympol
-            var amountSympol = new TextBlock();
-            amountSympol.Text = "$";
-            amountSympol.FontSize = 16;
-            amountSympol.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#008A1C"));
-            #endregion
-            amountStackPanel.Children.Add(amountValue);
-            amountStackPanel.Children.Add(amountSympol);
-            #endregion
-             */
             grid_bestSeller.Children.Add(itemNo);
             grid_bestSeller.Children.Add(itemTitle);
             grid_bestSeller.Children.Add(itemName);
             grid_bestSeller.Children.Add(countTitle);
             grid_bestSeller.Children.Add(countItem);
-            //grid_bestSeller.Children.Add(amountTitle);
-            //grid_bestSeller.Children.Add(amountStackPanel);
         }
         #endregion
         #region IUStorage
@@ -916,18 +691,12 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                //items
-                //if (MainWindow.groupObject.HasPermissionAction(itemsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
-                //{
-                //    SectionData.clearValidate(tb_code, p_errorCode);
-
                 Window.GetWindow(this).Opacity = 0.2;
 
                 wd_itemsUnitList w = new wd_itemsUnitList();
                 w.itemId = 0;
                 w.itemUnitId = 0;
                 w.CallerName = "IUList";
-                //w.selectedItemUnits = MainWindow.itemUnitsUsers;
                 w.ShowDialog();
                 if (w.isActive)
                 {
@@ -935,11 +704,7 @@ namespace POS.View
                     refrishIUList(MainWindow.itemUnitsUsers);
                     refreshView();
                 }
-
                 Window.GetWindow(this).Opacity = 1;
-                //}
-                //else
-                //    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -974,12 +739,6 @@ namespace POS.View
         {
             try
             {
-                //List<ItemUnit> iulist = new List<ItemUnit>();
-                //ItemUnit iumodel = new ItemUnit();
-                //iulist = await iumodel.Getall();
-                //iulist = iulist.Take(10).ToList();
-                //List<IUStorage> listAllIUStorage = await dash.GetIUStorage(iulist);
-
                 List<IUStorage> listAllIUStorage = await dash.GetIUStorage(IUList);
                 if (cb_branch.SelectedValue != null)
                     if ((int)cb_branch.SelectedValue == 0)
@@ -989,9 +748,7 @@ namespace POS.View
                             itemName = s.FirstOrDefault().itemName,
                             unitName = s.FirstOrDefault().unitName,
                             quantity = s.Sum(g => g.quantity),
-                            //subTotal = s.Sum(g => g.subTotal),
                         }).ToList();
-                        //paginationIUStorage(dash.listIUStorage);
                     }
                     else
                     {
@@ -1003,9 +760,7 @@ namespace POS.View
                                 itemName = s.FirstOrDefault().itemName,
                                 unitName = s.FirstOrDefault().unitName,
                                 quantity = s.Sum(g => g.quantity),
-                                //subTotal = s.Sum(g => g.subTotal),
                             }).ToList();
-                            //paginationIUStorage(dash.listIUStorage);
                         }
                         else
                             listIUStorage = new List<IUStorage>();
@@ -1065,7 +820,7 @@ namespace POS.View
             itemNo.HorizontalAlignment = HorizontalAlignment.Center;
             itemNo.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#1D75B8"));
             itemNo.FontSize = 16;
-            itemNo.Margin = new Thickness(2.5, 1, 2.5, 1);
+            itemNo.Margin = new Thickness(5, 1, 2.5, 1);
             Grid.SetRow(itemNo, row);
             Grid.SetColumn(itemNo, 0);
             #endregion
@@ -1117,51 +872,11 @@ namespace POS.View
             Grid.SetRow(countItem, row);
             Grid.SetColumn(countItem, 4);
             #endregion
-            /*
-            #region   amountTitle
-            var amountTitle = new TextBlock();
-            amountTitle.Text = "Amount:";
-            amountTitle.Tag = "amountTitle";
-            amountTitle.VerticalAlignment = VerticalAlignment.Center;
-            amountTitle.HorizontalAlignment = HorizontalAlignment.Center;
-            amountTitle.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#707070"));
-            amountTitle.FontSize = 16;
-            amountTitle.Margin = new Thickness(5, 1, 5, 1);
-            Grid.SetRow(amountTitle, row);
-            Grid.SetColumn(amountTitle, 5);
-            #endregion
-            #region amountStackPanel
-            var amountStackPanel = new StackPanel();
-            amountStackPanel.Orientation = Orientation.Horizontal;
-            amountStackPanel.VerticalAlignment = VerticalAlignment.Center;
-            amountStackPanel.HorizontalAlignment = HorizontalAlignment.Right;
-            amountStackPanel.Margin = new Thickness(5, 1, 5, 1);
-            Grid.SetRow(amountStackPanel, row);
-            Grid.SetColumn(amountStackPanel, 6);
-            #region   amountValue
-            var amountValue = new TextBlock();
-            amountValue.Text = amount;
-            amountValue.FontSize = 16;
-            amountValue.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#008A1C"));
-            amountTitle.Margin = new Thickness(0, 0, 5, 0);
-            #endregion
-            #region   amountSympol
-            var amountSympol = new TextBlock();
-            amountSympol.Text = "$";
-            amountSympol.FontSize = 16;
-            amountSympol.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#008A1C"));
-            #endregion
-            amountStackPanel.Children.Add(amountValue);
-            amountStackPanel.Children.Add(amountSympol);
-            #endregion
-             */
             grid_IUStorage.Children.Add(itemNo);
             grid_IUStorage.Children.Add(itemTitle);
             grid_IUStorage.Children.Add(itemName);
             grid_IUStorage.Children.Add(countTitle);
             grid_IUStorage.Children.Add(countItem);
-            //grid_IUStorage.Children.Add(amountTitle);
-            //grid_IUStorage.Children.Add(amountStackPanel);
         }
         #endregion
 
@@ -1234,8 +949,6 @@ namespace POS.View
                 dash.Labels = ArrayCount;
                 dash.YFormatter = value => value.ToString("C");
                 //DataContext = this;
-
-
             }
             catch (Exception ex)
             {
