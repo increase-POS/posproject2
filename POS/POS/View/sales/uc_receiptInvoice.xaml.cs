@@ -709,7 +709,7 @@ namespace POS.View
                     case 2:
                         SectionData.clearComboBoxValidate(cb_customer, p_errorCustomer);
                         SectionData.validateEmptyTextBox(tb_processNum, p_errorProcessNum, tt_errorProcessNum, "trEmptyProcessNumToolTip");
-                        SectionData.validateEmptyTextBlock(txt_card, p_errorCard, tt_errorCard, "trEmptyCardTooltip");
+                        SectionData.validateEmptyTextBlock(txt_card, p_errorCard, tt_errorCard, "trSelectCreditCard");
                         break;
                 }
             }
@@ -3462,6 +3462,7 @@ namespace POS.View
                         dp_desrvedDate.IsEnabled = false;
                         SectionData.clearComboBoxValidate(cb_customer, p_errorCustomer);
                         SectionData.clearTextBlockValidate(txt_card, p_errorCard);
+                        SectionData.clearValidate(tb_processNum, p_errorCard);
                         break;
                     case 1:// balance
                         gd_card.Visibility = Visibility.Collapsed;
@@ -3472,6 +3473,7 @@ namespace POS.View
                         txt_card.Text = "";
                         //SectionData.clearComboBoxValidate(cb_card, p_errorCard);
                         SectionData.clearTextBlockValidate(txt_card, p_errorCard);
+                        SectionData.clearValidate(tb_processNum, p_errorCard);
                         break;
                     case 2://card
                         dp_desrvedDate.IsEnabled = false;
@@ -3498,7 +3500,7 @@ namespace POS.View
             {
                     #region Button
                     Button button = new Button();
-                    button.Name = item.name;
+                    button.DataContext = item.name;
                     button.Tag = item.cardId;
                     button.Padding = new Thickness(0, 0, 0, 0);
                     button.Margin = new Thickness(2.5, 5, 2.5, 5);
@@ -3535,7 +3537,7 @@ namespace POS.View
         {
             var button = sender as Button;
             _SelectedCard = int.Parse(button.Tag.ToString());
-            txt_card.Text = button.Name.ToString();
+            txt_card.Text = button.DataContext.ToString();
             //MessageBox.Show("Hey you Click me! I'm Card: " + _SelectedCard);
         }
         ImageBrush brush = new ImageBrush();
