@@ -790,6 +790,8 @@ namespace POS_Server.Controllers
                     foreach (itemsUnits row in newiuObj)
                     {
 
+
+
                         foreach (branches branchRow in brlist)
                         {
                             IUStorage newrow = new IUStorage();
@@ -797,10 +799,10 @@ namespace POS_Server.Controllers
                             newrow.quantity = 0;
                             newrow.branchId = branchRow.branchId;
                             newrow.branchName = branchRow.name;
-                            newrow.itemId = row.itemId;
-                            newrow.unitId = row.unitId;
-                            newrow.itemName = entity1.items.Find(row.itemId).name;
-                           newrow.unitName = entity1.units.Find(row.unitId).name;
+                            newrow.itemId = entity1.itemsUnits.Find(row.itemUnitId).itemId;
+                            newrow.unitId = entity1.itemsUnits.Find(row.itemUnitId).unitId; ;
+                            newrow.itemName = entity1.itemsUnits.Find(row.itemUnitId).items.name;
+                           newrow.unitName = entity1.itemsUnits.Find(row.itemUnitId).units.name;
 
                             newlist.Add(newrow);
                            

@@ -4166,6 +4166,7 @@ notes
                                     join cr in entity.cards on C.cardId equals cr.cardId into jcr
                                     join bo in entity.bondes on C.bondId equals bo.bondId into jbo
                                     join sh in entity.shippingCompanies on C.shippingCompanyId equals sh.shippingCompanyId into jsh
+                                    join inv in entity.invoices on C.invId equals inv.invoiceId into jinv//yasmine
                                     from jbb in jb.DefaultIfEmpty()
                                     from jaa in ja.DefaultIfEmpty()
                                     from jpp in jp.DefaultIfEmpty()
@@ -4175,6 +4176,7 @@ notes
                                     from jcrd in jcr.DefaultIfEmpty()
                                     from jbbo in jbo.DefaultIfEmpty()
                                     from jshh in jsh.DefaultIfEmpty()
+                                    from jinvv in jinv.DefaultIfEmpty()//yasmine
                                     where (C.side == "c" || C.side == "v" || C.side == "b" || C.side == "u" || C.side == "sh")//( C.transType == "p" && C.side==Side)
                                     select new
                                     {
@@ -4229,6 +4231,9 @@ notes
                                         shippingBalance = (decimal?)jshh.balance,
 
                                         shippingCompaniesBType = jshh.balanceType,
+
+                                        invNumber = jinvv.invNumber,//yasmine
+                                        bondNumber = jbbo.number//yasmine
 
                                     }).ToList();
                     /*
