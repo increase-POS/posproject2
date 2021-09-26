@@ -139,6 +139,7 @@
     <Property Name="createUserId" Type="int" />
     <Property Name="updateUserId" Type="int" />
     <Property Name="isActive" Type="tinyint" />
+    <Property Name="image" Type="ntext" />
   </EntityType>
   <EntityType Name="cashTransfer">
     <Key>

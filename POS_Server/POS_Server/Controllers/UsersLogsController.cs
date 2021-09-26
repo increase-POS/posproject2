@@ -10,10 +10,6 @@ using System.Web.Http;
 namespace POS_Server.Controllers
 {
 
-
-
-
-
     [RoutePrefix("api/UsersLogs")]
     public class UsersLogsController : ApiController
     {
@@ -243,6 +239,7 @@ canDelete
         [Route("Save")]
         public string Save(string Object)
         {
+        
             var re = Request;
             var headers = re.Headers;
             string token = "";
@@ -287,7 +284,28 @@ canDelete
                             locationEntity.Add(newObject);
                             entity.SaveChanges();
                             message = newObject.logId.ToString();
-                        }
+                            //sign out old user
+
+                            using (incposdbEntities entity2 = new incposdbEntities())
+                            {
+                                List<usersLogs> ul = new List<usersLogs>();
+                                List<usersLogs>  locationE = entity2.usersLogs.ToList();
+                                ul = locationE.Where(s => s.sOutDate == null &&
+                               ( (DateTime.Now-(DateTime)s.sInDate).TotalHours>=24)).ToList();
+                                if (ul != null)
+                                {
+                                    foreach(usersLogs row in ul)
+                                    {
+                                        row.sOutDate = DateTime.Now;
+                                        entity2.SaveChanges();
+                                    }
+                                }
+                            }
+
+                            }
+
+
+
                         else
                         {//signOut
                             var tmpObject = entity.usersLogs.Where(p => p.logId == newObject.logId).FirstOrDefault();

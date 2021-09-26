@@ -138,6 +138,7 @@
     <EntitySetMapping Name="cards">
       <EntityTypeMapping TypeName="incposdbModel.cards">
         <MappingFragment StoreEntitySet="cards">
+          <ScalarProperty Name="image" ColumnName="image" />
           <ScalarProperty Name="cardId" ColumnName="cardId" />
           <ScalarProperty Name="name" ColumnName="name" />
           <ScalarProperty Name="notes" ColumnName="notes" />

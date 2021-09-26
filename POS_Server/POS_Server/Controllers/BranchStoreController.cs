@@ -445,7 +445,7 @@ namespace POS_Server.Controllers
                         newListObj[i].createDate = DateTime.Now;
                         newListObj[i].updateDate = DateTime.Now;
                         newListObj[i].updateUserId = newListObj[i].createUserId;
-
+                        newListObj[i].branchId = branchId;
                         branchEntity.Add(newListObj[i]);
 
                     }

@@ -31,7 +31,7 @@ namespace POS_Server.Models
 
         public int allPos { get; set; }
         public int offlineUsers { get; set; }
-     //   public List<userOnlineInfo> userOnlinelist = new List<userOnlineInfo>();
+        //   public List<userOnlineInfo> userOnlinelist = new List<userOnlineInfo>();
     }
 
     public class userOnlineInfo
@@ -62,6 +62,23 @@ namespace POS_Server.Models
         public int branchOnline { get; set; }
         public int branchAll { get; set; }
         public int branchOffline { get; set; }
+
+
+    }
+
+    public class IUStorage
+    {
+
+
+        public string itemName { get; set; }
+        public string unitName { get; set; }
+        public int itemUnitId { get; set; }
+        public Nullable<int> itemId { get; set; }
+        public Nullable<int> unitId { get; set; }
+        public string branchName { get; set; }
+        public Nullable<int> branchId { get; set; }
+        public Nullable<long> quantity { get; set; }
+
 
 
     }

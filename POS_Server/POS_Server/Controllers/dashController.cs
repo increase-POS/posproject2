@@ -769,13 +769,53 @@ namespace POS_Server.Controllers
             IUList = IUList.Replace("\\", string.Empty);
             IUList = IUList.Trim('"');
             List<itemsUnits> newiuObj = JsonConvert.DeserializeObject<List<itemsUnits>>(IUList, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
-            List<int> iuIds = new List<int>();
-            foreach (itemsUnits row in newiuObj)
-            {
-                iuIds.Add(row.itemUnitId);
-            }
+          
             if (valid) // APIKey is valid
             {
+
+                List<int> iuIds = new List<int>();
+                List<IUStorage> newlist = new List<IUStorage>();
+                List<branches> brlist = new List<branches>();
+                using (incposdbEntities entity1 = new incposdbEntities())
+                {
+                    // get branches
+                    brlist = entity1.branches.ToList();
+                    brlist = brlist.Where(x => (x.branchId != 1 && x.isActive == 1)).Select(b => new branches
+                    {
+                        branchId = b.branchId,
+                        name = b.name,
+                        isActive = b.isActive,
+                    }).ToList();
+                    // prepare new list with all branches and all iu.
+                    foreach (itemsUnits row in newiuObj)
+                    {
+
+                        foreach (branches branchRow in brlist)
+                        {
+                            IUStorage newrow = new IUStorage();
+                            newrow.itemUnitId = row.itemUnitId;
+                            newrow.quantity = 0;
+                            newrow.branchId = branchRow.branchId;
+                            newrow.branchName = branchRow.name;
+                            newrow.itemId = row.itemId;
+                            newrow.unitId = row.unitId;
+                            newrow.itemName = entity1.items.Find(row.itemId).name;
+                           newrow.unitName = entity1.units.Find(row.unitId).name;
+
+                            newlist.Add(newrow);
+                           
+
+                        }
+
+                        //newrow. = 0;
+                        iuIds.Add(row.itemUnitId);
+
+                    }
+
+                }
+
+
+           
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     // storageCost storageCostsr = new storageCost();
@@ -867,8 +907,8 @@ namespace POS_Server.Controllers
 
                                         }).ToList();
 
-                    var invListm = invListmtemp.GroupBy(g => new { g.branchId, g.itemUnitId })
-                        .Select(s => new
+                  List<IUStorage> invListm = invListmtemp.GroupBy(g => new  { g.branchId, g.itemUnitId })
+                        .Select(s => new IUStorage
                         {
                             itemName = s.FirstOrDefault().itemName,
                             unitName = s.FirstOrDefault().unitName,
@@ -880,14 +920,24 @@ namespace POS_Server.Controllers
                             branchId = s.FirstOrDefault().branchId,
                             quantity = s.Sum(q => q.quantity),
 
-                        }).ToList();
+                        }).OrderByDescending(x=>x.quantity).ToList();
+                    // merge two list
+                    foreach (IUStorage finalrow in newlist)
+                    {
+                        IUStorage temp = new IUStorage();
+                        temp = invListm.Where(x=>(x.branchId== finalrow.branchId && x.itemUnitId== finalrow.itemUnitId)).FirstOrDefault();
+                        if (temp != null)
+                        {
+                            finalrow.quantity = temp.quantity;
+                        }
+                       
+                    }
 
 
-
-                    if (invListm == null)
+                    if (newlist == null)
                         return NotFound();
                     else
-                        return Ok(invListm);
+                        return Ok(newlist.OrderByDescending(x=>x.quantity));
                 }
 
             }

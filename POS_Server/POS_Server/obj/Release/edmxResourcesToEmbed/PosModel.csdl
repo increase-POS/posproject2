@@ -181,6 +181,7 @@
     <NavigationProperty Name="users" Relationship="Self.FK_cards_users" FromRole="cards" ToRole="users" />
     <NavigationProperty Name="users1" Relationship="Self.FK_cards_users1" FromRole="cards" ToRole="users" />
     <NavigationProperty Name="cashTransfer" Relationship="Self.FK_cashTransfer_cards" FromRole="cards" ToRole="cashTransfer" />
+    <Property Name="image" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="cashTransfer">
     <Key>

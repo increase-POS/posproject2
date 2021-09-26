@@ -133,6 +133,54 @@ isActive
                 return NotFound();
         }
 
+
+        // GET api/<controller>
+        [HttpGet]
+        [Route("GetByUserId")]
+        public IHttpActionResult GetByUserId(int userId)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid)
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var row = entity.itemUnitUser
+                   .Where(u => u.userId == userId)
+                   .Select(S => new
+                   {
+                       S.id,
+                       S.itemUnitId,
+                       S.userId,
+                       S.notes,
+                       S.createDate,
+                       S.updateDate,
+                       S.createUserId,
+                       S.updateUserId,
+                       S.isActive,
+
+
+                   })
+                   .ToList();
+
+                    if (row == null)
+                        return NotFound();
+                    else
+                        return Ok(row);
+                }
+            }
+            else
+                return NotFound();
+        }
+
         // add or update location
         [HttpPost]
         [Route("Save")]
@@ -151,6 +199,9 @@ isActive
 
             if (valid)
             {
+
+
+
                 Object = Object.Replace("\\", string.Empty);
                 Object = Object.Trim('"');
                 itemUnitUser newObject = JsonConvert.DeserializeObject<itemUnitUser>(Object, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
@@ -246,7 +297,7 @@ isActive
             {
                 userId = Convert.ToInt32(headers.GetValues("userId").First());
             }
-           
+
             Validation validation = new Validation();
             bool valid = validation.CheckApiKey(token);
             newlist = newlist.Replace("\\", string.Empty);
@@ -255,9 +306,23 @@ isActive
             int count = 0;
             if (valid)
             {
-                
-              
-                foreach(itemUnitUser newrow in newitofObj)
+
+                using (incposdbEntities entityd = new incposdbEntities())
+                {
+                    List<itemUnitUser> objectDelete = entityd.itemUnitUser.ToList();
+                    objectDelete = objectDelete.Where(d => d.userId == userId).ToList();
+                    if (objectDelete != null)
+                    {
+                        entityd.itemUnitUser.RemoveRange(objectDelete);
+                        message = entityd.SaveChanges().ToString();
+                    }
+
+
+
+                }
+
+
+                foreach (itemUnitUser newrow in newitofObj)
                 {
                     message = saveRow(newrow, userId);
                     if (int.Parse(message) > 0)
@@ -269,11 +334,11 @@ isActive
             }
             return count.ToString();
         }
-    
 
-                public string saveRow(itemUnitUser newObject,int userId)
+
+        public string saveRow(itemUnitUser newObject, int userId)
         {
-            string message="";
+            string message = "";
             if (newObject.updateUserId == 0 || newObject.updateUserId == null)
             {
                 Nullable<int> id = null;
@@ -361,24 +426,24 @@ isActive
             bool valid = validation.CheckApiKey(token);
             if (valid)
             {
-                
-                    try
-                    {
-                        using (incposdbEntities entity = new incposdbEntities())
-                        {
-                            itemUnitUser objectDelete = entity.itemUnitUser.Find(id);
 
-                            entity.itemUnitUser.Remove(objectDelete);
-                            message = entity.SaveChanges();
-
-                            return message.ToString();
-                        }
-                    }
-                    catch
+                try
+                {
+                    using (incposdbEntities entity = new incposdbEntities())
                     {
-                        return "-1";
+                        itemUnitUser objectDelete = entity.itemUnitUser.Find(id);
+
+                        entity.itemUnitUser.Remove(objectDelete);
+                        message = entity.SaveChanges();
+
+                        return message.ToString();
                     }
-              
+                }
+                catch
+                {
+                    return "-1";
+                }
+
             }
             else
                 return "-3";

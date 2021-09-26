@@ -2,9 +2,11 @@
 using POS_Server.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using System.Web.Http;
 
 namespace POS_Server.Controllers
@@ -42,7 +44,8 @@ namespace POS_Server.Controllers
                    updateDate = c.updateDate,
                    createUserId = c.createUserId,
                    updateUserId=  c.updateUserId,
-                    isActive=c.isActive,  
+                    isActive=c.isActive, 
+                    image = c.image
                 })
                    .ToList();
 
@@ -111,6 +114,7 @@ namespace POS_Server.Controllers
                      c.createUserId,
                      c.updateUserId,
                        c.isActive,
+                       c.image
                       
                    })
                    .FirstOrDefault();
@@ -161,6 +165,7 @@ namespace POS_Server.Controllers
                        c.createUserId,
                        c.updateUserId,
                        c.isActive,
+                       c.image
                    })
                    .ToList();
 
@@ -178,11 +183,12 @@ namespace POS_Server.Controllers
         // add or update card 
         [HttpPost]
         [Route("Save")]
-        public bool Save(string cardObject)
+        public string Save(string cardObject)
         {
             var re = Request;
             var headers = re.Headers;
             string token = "";
+            string message = "";
             
             if (headers.Contains("APIKey"))
             {
@@ -208,13 +214,13 @@ namespace POS_Server.Controllers
                             Object.updateDate = DateTime.Now;
                             Object.updateUserId = Object.createUserId;
                             cardEntity.Add(Object);
-                          //  message = "card Is Added Successfully";
+                            entity.SaveChanges();
+                            message = Object.cardId.ToString();
                         }
                         else
                         {
 
                             var tmpcard = entity.cards.Where(p => p.cardId == Object.cardId).FirstOrDefault();
-
                           
                             tmpcard.cardId = Object.cardId;
                             tmpcard.name = Object.name;
@@ -226,23 +232,27 @@ namespace POS_Server.Controllers
                             tmpcard.isActive = Object.isActive;
                             tmpcard.updateDate = DateTime.Now;// server current date;
                             tmpcard.updateUserId = Object.updateUserId;
-                            
+                            tmpcard.image = Object.image;
 
+                            entity.SaveChanges();
 
-                            //message = "card Is Updated Successfully";
+                            message = tmpcard.cardId.ToString();
                         }
-                        entity.SaveChanges();
+                        
                     }
-                    return true;
+                    //return true;
+                    return message;
                 }
 
                 catch
                 {
-                    return false;
+                    //return false;
+                    return "";
                 }
             }
             else
-                return false;
+                //return false;
+                return "";
         }
 
         [HttpPost]
@@ -305,5 +315,148 @@ namespace POS_Server.Controllers
             else
                 return NotFound();
         }
+
+        [HttpGet]
+        [Route("GetImage")]
+        public HttpResponseMessage GetImage(string imageName)
+        {
+            if (String.IsNullOrEmpty(imageName))
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+
+            string localFilePath;
+
+            localFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.MapPath("~\\images\\card"), imageName);
+
+            HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
+            response.Content = new StreamContent(new FileStream(localFilePath, FileMode.Open, FileAccess.Read));
+            response.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
+            response.Content.Headers.ContentDisposition.FileName = imageName;
+
+            return response;
+        }
+
+        [HttpPost]
+        [Route("UpdateImage")]
+        public int UpdateImage(string cardObject)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            cardObject = cardObject.Replace("\\", string.Empty);
+            cardObject = cardObject.Trim('"');
+
+            cards cardObj = JsonConvert.DeserializeObject<cards>(cardObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+            if (cardObj.updateUserId == 0 || cardObj.updateUserId == null)
+            {
+                Nullable<int> id = null;
+                cardObj.updateUserId = id;
+            }
+            if (cardObj.createUserId == 0 || cardObj.createUserId == null)
+            {
+                Nullable<int> id = null;
+                cardObj.createUserId = id;
+            }
+            if (valid)
+            {
+                try
+                {
+                    cards card;
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+                        var userEntity = entity.Set<cards>();
+                        card = entity.cards.Where(p => p.cardId == cardObj.cardId).First();
+                        card.image = cardObj.image;
+                        entity.SaveChanges();
+                    }
+                    return card.cardId;
+                }
+
+                catch
+                {
+                    return 0;
+                }
+            }
+            else
+                return 0;
+        }
+
+        [Route("PostCardImage")]
+        public IHttpActionResult PostCardImage()
+        {
+
+            try
+            {
+                var httpRequest = HttpContext.Current.Request;
+
+                foreach (string file in httpRequest.Files)
+                {
+
+                    HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created);
+
+                    var postedFile = httpRequest.Files[file];
+                    string imageName = postedFile.FileName;
+                    string imageWithNoExt = Path.GetFileNameWithoutExtension(postedFile.FileName);
+
+                    if (postedFile != null && postedFile.ContentLength > 0)
+                    {
+
+                        int MaxContentLength = 1024 * 1024 * 1; //Size = 1 MB
+
+                        IList<string> AllowedFileExtensions = new List<string> { ".jpg", ".gif", ".png", ".bmp", ".jpeg", ".tiff", ".jfif" };
+                        var ext = postedFile.FileName.Substring(postedFile.FileName.LastIndexOf('.'));
+                        var extension = ext.ToLower();
+
+                        if (!AllowedFileExtensions.Contains(extension))
+                        {
+
+                            var message = string.Format("Please Upload image of type .jpg,.gif,.png, .jfif, .bmp , .jpeg ,.tiff");
+                            return Ok(message);
+                        }
+                        else if (postedFile.ContentLength > MaxContentLength)
+                        {
+
+                            var message = string.Format("Please Upload a file upto 1 mb.");
+
+                            return Ok(message);
+                        }
+                        else
+                        {
+                            //  check if image exist
+                            var pathCheck = Path.Combine(System.Web.Hosting.HostingEnvironment.MapPath("~\\images\\card"), imageWithNoExt);
+                            var files = Directory.GetFiles(System.Web.Hosting.HostingEnvironment.MapPath("~\\images\\card"), imageWithNoExt + ".*");
+                            if (files.Length > 0)
+                            {
+                                File.Delete(files[0]);
+                            }
+
+                            //Userimage myfolder name where i want to save my image
+                            var filePath = Path.Combine(System.Web.Hosting.HostingEnvironment.MapPath("~\\images\\card"), imageName);
+                            postedFile.SaveAs(filePath);
+
+                        }
+                    }
+
+                    var message1 = string.Format("Image Updated Successfully.");
+                    return Ok(message1);
+                }
+                var res = string.Format("Please Upload a image.");
+
+                return Ok(res);
+            }
+            catch (Exception ex)
+            {
+                var res = string.Format("some Message");
+
+                return Ok(res);
+            }
+        }
+
     }
 }

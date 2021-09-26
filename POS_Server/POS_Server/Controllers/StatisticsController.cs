@@ -3983,13 +3983,10 @@ notes
             var headers = re.Headers;
             string token = "";
 
-
             if (headers.Contains("APIKey"))
             {
                 token = headers.GetValues("APIKey").First();
             }
-
-
 
             Validation validation = new Validation();
             bool valid = validation.CheckApiKey(token);
