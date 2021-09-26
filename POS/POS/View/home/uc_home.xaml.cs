@@ -73,8 +73,8 @@ namespace POS.View
         {
             try
             {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
+                //if (sender != null)
+                //    SectionData.StartAwait(grid_main);
                 await SectionData.fillBranchesWithAll(cb_branch);
                 cb_branch.SelectedValue = MainWindow.branchID;
                 if (MainWindow.groupObject.HasPermissionAction(branchesPermission, MainWindow.groupObjects, "one"))
@@ -107,13 +107,13 @@ namespace POS.View
                 threadtimer.Start();
                 ////////////////////
 
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
+                //if (sender != null)
+                //    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
+                //if (sender != null)
+                //    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this);
             }
 
@@ -151,8 +151,8 @@ namespace POS.View
                 if (!firstLoad)
                 {
                     if ((listIUStorage.Count < 4 || SkipIUStorage == 2) || (listIUStorage.Count == 3)
-                      || (listIUStorage.Count == 6 && SkipIUStorage == 1)
-                      || (listIUStorage.Count == 9 && SkipIUStorage == 2))
+                      || (listIUStorage.Count >= 4 && listIUStorage.Count <= 6 && SkipIUStorage == 1)
+                      || (listIUStorage.Count >= 7 && listIUStorage.Count <= 9 && SkipIUStorage == 2))
                         SkipIUStorage = 0;
                     else if (listIUStorage.Count < 7 && SkipIUStorage < 1)
                         SkipIUStorage++;
@@ -685,12 +685,12 @@ namespace POS.View
         }
         #endregion
         #region IUStorage
-        private void Btn_storageSetting_Click(object sender, RoutedEventArgs e)
+        private async void Btn_storageSetting_Click(object sender, RoutedEventArgs e)
         {//settings
             try
             {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
+                //if (sender != null)
+                //    SectionData.StartAwait(grid_main);
                 Window.GetWindow(this).Opacity = 0.2;
 
                 wd_itemsUnitList w = new wd_itemsUnitList();
@@ -701,17 +701,20 @@ namespace POS.View
                 if (w.isActive)
                 {
                     MainWindow.itemUnitsUsers = w.selectedItemUnits;
+
                     refrishIUList(MainWindow.itemUnitsUsers);
-                    refreshView();
+                    await IUStorage();
+                    //SkipIUStorage = 0;
+                    //refreshView();
                 }
                 Window.GetWindow(this).Opacity = 1;
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
+                //if (sender != null)
+                //    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
+                //if (sender != null)
+                //    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this);
             }
 
@@ -764,6 +767,11 @@ namespace POS.View
                         }
                         else
                             listIUStorage = new List<IUStorage>();
+
+                        if (listIUStorage.Count >9)
+                        {
+                            listIUStorage = listIUStorage.Take(9).ToList();
+                        }
                     }
             }
             catch (Exception ex)

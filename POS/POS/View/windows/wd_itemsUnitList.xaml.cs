@@ -322,9 +322,6 @@ namespace POS.View.windows
                         allPackages.Remove(package);
 
                         dg_selectedItems.ItemsSource = allPackages;
-
-
-                      
                     }
                 }
                 else
@@ -388,7 +385,13 @@ namespace POS.View.windows
                 if (CallerName.Equals("IUList"))
                 { 
                     foreach(var x in selectedItemUnits)
-                    { x.id = 0; }
+                    {
+                        x.id = 0;
+                        ItemUnit iu = new ItemUnit();
+                        iu = await itemUnitModel.GetById(x.itemUnitId.Value);
+                        x.itemId = iu.itemId;
+                        x.unitId = iu.unitId;
+                    }
                     await itemUnitUserModel.UpdateList(selectedItemUnits, MainWindow.userID.Value);
                 }
                 else

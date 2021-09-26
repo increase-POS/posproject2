@@ -229,7 +229,7 @@
                         <StackPanel Grid.Column="3" Orientation="Vertical" VerticalAlignment="Center">
                             <TextBlock x:Name="txt_countAllCustomer"  Text="Customer" FontSize="16" HorizontalAlignment="Center" 
                                 FontWeight="Regular" Foreground="#707070" />
-                            <TextBlock  Text="{Binding customerCount, Mode=OneWay}" FontWeight="Bold" FontSize="16" HorizontalAlignment="Center"  Foreground="#707070" />
+                            <TextBlock   Text="{Binding customerCount, Mode=OneWay}" FontWeight="Bold" FontSize="16" HorizontalAlignment="Center"  Foreground="#707070" />
                         </StackPanel>
                     </Grid>
                 </Border>
@@ -294,8 +294,8 @@
                             CornerRadius="7,7,0,0"/>
                         <TextBlock  x:Name="storageTitle" Text="Storage" FontWeight="Bold" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" 
                           Grid.ColumnSpan="6"  Foreground="White" />
-                        <Button  Background="{x:Null}"     Grid.ColumnSpan="6"
-                                  HorizontalAlignment="Right" VerticalAlignment="Center" Margin="7.5,0,7.5,0"
+                        <Button  Background="{x:Null}"
+                                  HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5"
                              x:Name="btn_storageSetting"  Click="Btn_storageSetting_Click"
                           BorderBrush="{x:Null}"  Padding="0" Height="15" >
                             <Path Fill="White" Stretch="Fill"

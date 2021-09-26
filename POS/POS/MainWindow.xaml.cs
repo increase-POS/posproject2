@@ -536,7 +536,14 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
         }
         private async void setNotifications()
         {
-            await refreshNotificationCount();
+            try
+            {
+                await refreshNotificationCount();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
         private async Task refreshNotificationCount()
         {

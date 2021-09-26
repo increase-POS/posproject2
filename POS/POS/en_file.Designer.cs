@@ -70,6 +70,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Num.
+        /// </summary>
+        internal static string Num__ {
+            get {
+                return ResourceManager.GetString("Num :", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Balance.
         /// </summary>
         internal static string tr_Balance {
@@ -457,6 +466,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bond.
+        /// </summary>
+        internal static string trBond {
+            get {
+                return ResourceManager.GetString("trBond", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bonds.
         /// </summary>
         internal static string trBonds {
@@ -552,6 +570,15 @@ namespace POS {
         internal static string trBrannchesHint {
             get {
                 return ResourceManager.GetString("trBrannchesHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Buy.
+        /// </summary>
+        internal static string trBuy {
+            get {
+                return ResourceManager.GetString("trBuy", resourceCulture);
             }
         }
         
@@ -1024,7 +1051,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to on Credit.
+        ///   Looks up a localized string similar to Credit.
         /// </summary>
         internal static string trCredit {
             get {
@@ -1033,7 +1060,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Credit Card.
+        ///   Looks up a localized string similar to Card.
         /// </summary>
         internal static string trCreditCard {
             get {
@@ -4078,9 +4105,9 @@ namespace POS {
         /// <summary>
         ///   Looks up a localized string similar to Num.
         /// </summary>
-        internal static string trNum {
+        internal static string trNum_ {
             get {
-                return ResourceManager.GetString("trNum", resourceCulture);
+                return ResourceManager.GetString("trNum:", resourceCulture);
             }
         }
         
@@ -4342,6 +4369,15 @@ namespace POS {
         internal static string trPaymentProcessTypeHint {
             get {
                 return ResourceManager.GetString("trPaymentProcessTypeHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Payment receipt.
+        /// </summary>
+        internal static string trPaymentReceipt {
+            get {
+                return ResourceManager.GetString("trPaymentReceipt", resourceCulture);
             }
         }
         
@@ -5057,6 +5093,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Receipt.
+        /// </summary>
+        internal static string trReceipt {
+            get {
+                return ResourceManager.GetString("trReceipt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Receipt of Purchases Bill.
         /// </summary>
         internal static string trReceiptOfPurchasesBill {
@@ -5597,15 +5642,6 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select Credit Card.
-        /// </summary>
-        internal static string trSelectCreditCard {
-            get {
-                return ResourceManager.GetString("trSelectCreditCard", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Selected Branchs/Stores.
         /// </summary>
         internal static string trSelectedBranchs_Stores {
@@ -6142,6 +6178,15 @@ namespace POS {
         internal static string trStores {
             get {
                 return ResourceManager.GetString("trStores", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Submit.
+        /// </summary>
+        internal static string trSubmit {
+            get {
+                return ResourceManager.GetString("trSubmit", resourceCulture);
             }
         }
         

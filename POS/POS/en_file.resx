@@ -598,7 +598,7 @@
     <value>Cash</value>
   </data>
   <data name="trCreditCard" xml:space="preserve">
-    <value>Credit Card</value>
+    <value>Card</value>
   </data>
   <data name="trDeservedDateHint" xml:space="preserve">
     <value> Deserved Date...</value>
@@ -633,7 +633,7 @@
   <data name="trItem" xml:space="preserve">
     <value>Item</value>
   </data>
-  <data name="trNum" xml:space="preserve">
+  <data name="Num :" xml:space="preserve">
     <value>Num</value>
   </data>
   <data name="trPaidHint" xml:space="preserve">
@@ -1898,7 +1898,7 @@ Please add Email in setting</value>
     <value>Shortages</value>
   </data>
   <data name="trCredit" xml:space="preserve">
-    <value>on Credit</value>
+    <value>Credit</value>
   </data>
   <data name="trDepositor" xml:space="preserve">
     <value>Depositor</value>
@@ -2446,7 +2446,22 @@ Please add Email in setting</value>
   <data name="trSaved" xml:space="preserve">
     <value>Saved</value>
   </data>
-  <data name="trSelectCreditCard" xml:space="preserve">
-    <value>Select Credit Card</value>
+  <data name="trBond" xml:space="preserve">
+    <value>Bond</value>
+  </data>
+  <data name="trNum:" xml:space="preserve">
+    <value>Num</value>
+  </data>
+  <data name="trPaymentReceipt" xml:space="preserve">
+    <value>Payment receipt</value>
+  </data>
+  <data name="trReceipt" xml:space="preserve">
+    <value>Receipt</value>
+  </data>
+  <data name="trSubmit" xml:space="preserve">
+    <value>Submit</value>
+  </data>
+  <data name="trBuy" xml:space="preserve">
+    <value>Buy</value>
   </data>
 </root>

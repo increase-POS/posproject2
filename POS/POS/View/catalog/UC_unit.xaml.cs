@@ -471,6 +471,7 @@ namespace POS.View
         async Task<IEnumerable<Unit>> RefreshUnitsList()
         {
             units = await unitModel.GetUnitsAsync();
+            units = units.Where(u => u.name != "package");
             return units;
         }
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)

@@ -2191,6 +2191,7 @@ namespace POS.View
             if (category.categoryId == 0)
                 items = await itemModel.GetAllItems();
             else items = await itemModel.GetItemsInCategoryAndSub(category.categoryId);
+            items = items.Where(x => x.type != "p");
             return items;
 
         }
@@ -2234,7 +2235,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-
+                Btn_itemData_Click(null, null);
                 p_errorName.Visibility = Visibility.Collapsed;
                 p_errorCode.Visibility = Visibility.Collapsed;
                 var bc = new BrushConverter();

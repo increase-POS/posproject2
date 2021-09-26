@@ -347,7 +347,7 @@ namespace POS.Classes
 
                     // configure trmporery path
                     string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
-                    string tmpPath = Path.Combine(dir, Global.TMPUsersFolder);
+                    string tmpPath = Path.Combine(dir, Global.TMPCardsFolder);
                     if (!Directory.Exists(tmpPath))
                         Directory.CreateDirectory(tmpPath);
                     tmpPath = Path.Combine(tmpPath, imageName);

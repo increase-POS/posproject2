@@ -589,7 +589,7 @@
     <value>مبلغ</value>
   </data>
   <data name="trCreditCard" xml:space="preserve">
-    <value>بطاقة ائتمان</value>
+    <value>بطاقة</value>
   </data>
   <data name="trDeservedDateHint" xml:space="preserve">
     <value>تاريخ الإستحقاق...</value>
@@ -2431,7 +2431,22 @@
   <data name="trSaved" xml:space="preserve">
     <value>محفوظة</value>
   </data>
-  <data name="trSelectCreditCard" xml:space="preserve">
-    <value>اختر بطاقة الائتمان</value>
+  <data name="trBond" xml:space="preserve">
+    <value>وثيقة</value>
+  </data>
+  <data name="trNum:" xml:space="preserve">
+    <value>رقم</value>
+  </data>
+  <data name="trPaymentReceipt" xml:space="preserve">
+    <value>إيصال دفع</value>
+  </data>
+  <data name="trReceipt" xml:space="preserve">
+    <value>إيصال استلام</value>
+  </data>
+  <data name="trSubmit" xml:space="preserve">
+    <value>إرسال</value>
+  </data>
+  <data name="trBuy" xml:space="preserve">
+    <value>شراء</value>
   </data>
 </root>

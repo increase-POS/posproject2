@@ -148,7 +148,7 @@ namespace POS.View.sales
             txt_tax.Text = MainWindow.resourcemanager.GetString("trTax");
             txt_sum.Text = MainWindow.resourcemanager.GetString("trSum");
             txt_total.Text = MainWindow.resourcemanager.GetString("trTotal");
-            txt_barcode.Text = MainWindow.resourcemanager.GetString("trBarcode");
+            //txt_barcode.Text = MainWindow.resourcemanager.GetString("trBarcode");
             txt_coupon.Text = MainWindow.resourcemanager.GetString("trCoupon");
             txt_customer.Text = MainWindow.resourcemanager.GetString("trCustomer");
             txt_discount.Text = MainWindow.resourcemanager.GetString("trDiscount");
@@ -170,7 +170,7 @@ namespace POS.View.sales
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_coupon, MainWindow.resourcemanager.GetString("trCoponHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_typeDiscount, MainWindow.resourcemanager.GetString("trDiscountTypeHint"));
 
-            btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
+            btn_save.Content = MainWindow.resourcemanager.GetString("trSubmit");
 
 
 
@@ -214,7 +214,14 @@ namespace POS.View.sales
                 #endregion
 
                 //tb_taxValue.Text = MainWindow.tax.ToString();
-                tb_taxValue.Text = SectionData.DecTostring(MainWindow.tax);
+                //tb_taxValue.Text = SectionData.DecTostring(MainWindow.tax);
+                if (MainWindow.tax == 0)
+                    sp_tax.Visibility = Visibility.Collapsed;
+                else
+                {
+                    tb_taxValue.Text = SectionData.DecTostring(MainWindow.tax);
+                    sp_tax.Visibility = Visibility.Visible;
+                }
 
                 tb_barcode.Focus();
 
@@ -558,7 +565,8 @@ namespace POS.View.sales
         private   bool  validateInvoiceValues()
         {
             bool valid = true;
-            SectionData.validateEmptyComboBox(cb_customer, p_errorCustomer, tt_errorCustomer, "trEmptyCustomerToolTip");
+            if (!SectionData.validateEmptyComboBox(cb_customer, p_errorCustomer, tt_errorCustomer, "trEmptyCustomerToolTip"))
+                exp_customer.IsExpanded = true;
             if (billDetails.Count == 0)
                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trAddInvoiceWithoutItems"), animation: ToasterAnimation.FadeIn);
 
@@ -2203,6 +2211,114 @@ namespace POS.View.sales
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+        private void Expander_Expanded(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var Sender = sender as Expander;
+
+                foreach (var control in FindControls.FindVisualChildren<Expander>(this))
+                {
+
+                    var expander = control as Expander;
+                    if (expander.Tag != null && Sender.Tag != null)
+                        if (expander.Tag.ToString() != Sender.Tag.ToString())
+                            expander.IsExpanded = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+        private void Cb_customer_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
+                if (elapsed.TotalMilliseconds > 100 && cb_customer.SelectedIndex != -1)
+                {
+                    _SelectedCustomer = (int)cb_customer.SelectedValue;
+                }
+                else
+                {
+                    cb_customer.SelectedValue = _SelectedCustomer;
+                }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+
+        private void Btn_clearCustomer_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                _SelectedCustomer = -1;
+                cb_customer.SelectedIndex = -1;
+                //dp_desrvedDate.SelectedDate = null;
+                tb_note.Clear();
+
+                //btn_updateCustomer.IsEnabled = false;
+                SectionData.clearComboBoxValidate(cb_customer, p_errorCustomer);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+        private void Cb_customer_KeyUp(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                cb_customer.ItemsSource = customers.Where(x => x.name.Contains(cb_customer.Text));
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+        private void Tb_textBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            try
+            {
+                _Sender = sender;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+        private void DecimalValidationTextBox(object sender, TextCompositionEventArgs e)
+        {
+            try
+            {
+                var regex = new Regex(@"^[0-9]*(?:\.[0-9]*)?$");
+                if (regex.IsMatch(e.Text) && !(e.Text == "." && ((TextBox)sender).Text.Contains(e.Text)))
+                    e.Handled = false;
+
+                else
+                    e.Handled = true;
+            }
+            catch (Exception ex)
+            {
                 SectionData.ExceptionMessage(ex, this);
             }
         }

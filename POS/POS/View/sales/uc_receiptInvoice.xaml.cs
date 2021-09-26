@@ -1947,7 +1947,6 @@ namespace POS.View
         {
             try
             {
-
                 cb_customer.ItemsSource = customers.Where(x => x.name.Contains(cb_customer.Text));
             }
             catch (Exception ex)

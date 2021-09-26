@@ -130,19 +130,27 @@ namespace POS.Classes
         public Nullable<decimal> totalNet { get; set; }//
         public string Description
         {
-            get => processType == "cash" ? description = "Cash"
-                 : processType == "card" ? description = cardName + " Num : " + docNum
-                 : processType == "doc" ? description = "Bond" + " Num : " + bondNumber
-                 : processType == "cheque" ? description = "Cheque" + " Num : " + docNum
-                : "balance";
+            get => processType == "cash" ? description = MainWindow.resourcemanager.GetString("trCash")//"Cash"//
+                                                                                                       //: processType == "card" ? description = cardName + " Num : " + docNum
+                 : processType == "card" ? description = cardName + " " + MainWindow.resourcemanager.GetString("trNum:") + " : " + docNum
+                 //: processType == "doc" ? description = "Bond" + " Num : " + bondNumber
+                 : processType == "doc" ? description = MainWindow.resourcemanager.GetString("trBond") + " " + MainWindow.resourcemanager.GetString("trNum:") + " : " + bondNumber
+                 //: processType == "cheque" ? description = "Cheque" + " Num : " + docNum
+                 : processType == "cheque" ? description = MainWindow.resourcemanager.GetString("trCheque") + " " + MainWindow.resourcemanager.GetString("trNum:") + " : " + docNum
+                 : processType == "inv" ? description = MainWindow.resourcemanager.GetString("trInv")//yasmine
+                 //: "balance";
+                 : MainWindow.resourcemanager.GetString("trCredit");
 
             set => description = value;
         }
         public string Description1
-        {
-            get => description1 = (transType == "p" && processType != "inv") ? description1 = "ايصال دفع"
-                : description1 = (transType == "d" && processType != "inv") ? description1 = "ايصال قبض"
-                : invId > 0 && processType == "inv" ? description1 = "فاتورة رقم" + invNumber
+        {//
+            get => //description1 = (transType == "p" && processType != "inv") ? description1 = "ايصال دفع"
+                description1 = (transType == "p" && processType != "inv") ? description1 = MainWindow.resourcemanager.GetString("trPaymentReceipt")
+                //: description1 = (transType == "d" && processType != "inv") ? description1 = "ايصال قبض"
+                : description1 = (transType == "d" && processType != "inv") ? description1 = MainWindow.resourcemanager.GetString("trReceipt")
+                //: invId > 0 && processType == "inv" ? description1 = "فاتورة رقم" + invNumber
+                : invId > 0 && processType == "inv" ? description1 = MainWindow.resourcemanager.GetString("tr_Invoice")+ " " + MainWindow.resourcemanager.GetString("trNum:") + " : " + invNumber
                 : ""
                 ; set => description1 = value;
         }

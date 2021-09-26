@@ -147,7 +147,7 @@ namespace POS.View.sales
             txt_sum.Text = MainWindow.resourcemanager.GetString("trSum");
             txt_total.Text = MainWindow.resourcemanager.GetString("trTotal");
             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSaleOrder");
-            txt_barcode.Text = MainWindow.resourcemanager.GetString("trBarcode");
+            //txt_barcode.Text = MainWindow.resourcemanager.GetString("trBarcode");
             txt_store.Text = MainWindow.resourcemanager.GetString("trStore/Branch");
             txt_coupon.Text = MainWindow.resourcemanager.GetString("trCoupon");
             txt_customer.Text = MainWindow.resourcemanager.GetString("trCustomer");
@@ -176,7 +176,7 @@ namespace POS.View.sales
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_discount, MainWindow.resourcemanager.GetString("trDiscountHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_typeDiscount, MainWindow.resourcemanager.GetString("trDiscountTypeHint"));
 
-            btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
+            btn_save.Content = MainWindow.resourcemanager.GetString("trSubmit");
         }
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
@@ -224,11 +224,29 @@ namespace POS.View.sales
 
                 tb_barcode.Focus();
                 //tb_taxValue.Text = MainWindow.tax.ToString();
-                tb_taxValue.Text = SectionData.DecTostring(MainWindow.tax);
+                //tb_taxValue.Text = SectionData.DecTostring(MainWindow.tax);
+                if (MainWindow.tax == 0)
+                    sp_tax.Visibility = Visibility.Collapsed;
+                else
+                {
+                    tb_taxValue.Text = SectionData.DecTostring(MainWindow.tax);
+                    sp_tax.Visibility = Visibility.Visible;
+                }
 
                 #region datagridChange
                 CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(dg_billDetails.Items);
                 ((INotifyCollectionChanged)myCollectionView).CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
+                #endregion
+
+
+
+
+                #region Permision
+                if (MainWindow.groupObject.HasPermissionAction(deliveryPermission, MainWindow.groupObjects, "one"))
+                    md_ordersWait.Visibility = Visibility.Visible;
+                else
+                    md_ordersWait.Visibility = Visibility.Collapsed;
+
                 #endregion
 
                 if (sender != null)
@@ -617,8 +635,10 @@ namespace POS.View.sales
         private bool validateInvoiceValues()
         {
             bool valid = true;
-            SectionData.validateEmptyComboBox(cb_customer, p_errorCustomer, tt_errorCustomer, "trEmptyCustomerToolTip");
-            SectionData.validateEmptyComboBox(cb_branch, p_errorBranch, tt_errorBranch, "trEmptyBranchToolTip");
+            if (!SectionData.validateEmptyComboBox(cb_customer, p_errorCustomer, tt_errorCustomer, "trEmptyCustomerToolTip"))
+               exp_customer.IsExpanded = true;
+            if (!SectionData.validateEmptyComboBox(cb_branch, p_errorBranch, tt_errorBranch, "trEmptyBranchToolTip"))
+                exp_store.IsExpanded = true;
             if (billDetails.Count == 0)
                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trAddInvoiceWithoutItems"), animation: ToasterAnimation.FadeIn);
 
@@ -2435,6 +2455,87 @@ SectionData.isAdminPermision())
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+        private void Expander_Expanded(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var Sender = sender as Expander;
+
+                foreach (var control in FindControls.FindVisualChildren<Expander>(this))
+                {
+
+                    var expander = control as Expander;
+                    if (expander.Tag != null && Sender.Tag != null)
+                        if (expander.Tag.ToString() != Sender.Tag.ToString())
+                            expander.IsExpanded = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+        private void Btn_clearCustomer_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                _SelectedCustomer = -1;
+                cb_customer.SelectedIndex = -1;
+                //dp_desrvedDate.SelectedDate = null;
+                tb_note.Clear();
+
+                //btn_updateCustomer.IsEnabled = false;
+                SectionData.clearComboBoxValidate(cb_customer, p_errorCustomer);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+        private void Cb_customer_KeyUp(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                cb_customer.ItemsSource = customers.Where(x => x.name.Contains(cb_customer.Text));
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+        private void Tb_textBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            try
+            {
+                _Sender = sender;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+        private void DecimalValidationTextBox(object sender, TextCompositionEventArgs e)
+        {
+            try
+            {
+                var regex = new Regex(@"^[0-9]*(?:\.[0-9]*)?$");
+                if (regex.IsMatch(e.Text) && !(e.Text == "." && ((TextBox)sender).Text.Contains(e.Text)))
+                    e.Handled = false;
+
+                else
+                    e.Handled = true;
+            }
+            catch (Exception ex)
+            {
                 SectionData.ExceptionMessage(ex, this);
             }
         }

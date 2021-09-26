@@ -22,6 +22,7 @@ namespace POS
         public const string TMPAgentsFolder = "Thumb/agents"; // folder to save agents photos locally 
         public const string TMPUsersFolder = "Thumb/users"; // folder to save users photos locally 
         public const string TMPSettingFolder = "Thumb/setting"; // folder to save Logo photos locally 
+        public const string TMPCardsFolder = "Thumb/cards"; // folder to save Logo photos locally 
 
     }
 }

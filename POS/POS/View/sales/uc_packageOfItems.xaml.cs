@@ -55,6 +55,35 @@ namespace POS.View
             try
             {
                 InitializeComponent();
+                if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1440)
+                {
+                    txt_deleteButton.Visibility = Visibility.Visible;
+                    txt_addButton.Visibility = Visibility.Visible;
+                    txt_updateButton.Visibility = Visibility.Visible;
+                    txt_add_Icon.Visibility = Visibility.Visible;
+                    txt_update_Icon.Visibility = Visibility.Visible;
+                    txt_delete_Icon.Visibility = Visibility.Visible;
+                }
+                else if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1360)
+                {
+                    txt_add_Icon.Visibility = Visibility.Collapsed;
+                    txt_update_Icon.Visibility = Visibility.Collapsed;
+                    txt_delete_Icon.Visibility = Visibility.Collapsed;
+                    txt_deleteButton.Visibility = Visibility.Visible;
+                    txt_addButton.Visibility = Visibility.Visible;
+                    txt_updateButton.Visibility = Visibility.Visible;
+
+                }
+                else
+                {
+                    txt_deleteButton.Visibility = Visibility.Collapsed;
+                    txt_addButton.Visibility = Visibility.Collapsed;
+                    txt_updateButton.Visibility = Visibility.Collapsed;
+                    txt_add_Icon.Visibility = Visibility.Visible;
+                    txt_update_Icon.Visibility = Visibility.Visible;
+                    txt_delete_Icon.Visibility = Visibility.Visible;
+
+                }
             }
             catch (Exception ex)
             {

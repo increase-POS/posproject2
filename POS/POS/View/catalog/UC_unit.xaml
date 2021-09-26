@@ -13,8 +13,6 @@ xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
             <ColumnDefinition Width="2.54*"/>
             <ColumnDefinition x:Name="gridWidth" Width="*" MinWidth="225"/>
         </Grid.ColumnDefinitions>
-
-
         <!--Left Section Grid-->
         <!--#region -->
         <Grid Margin="0,15,10,15" Grid.Column="0">

@@ -39,6 +39,10 @@ namespace POS.View
         string invoicePermission = "payInvoice_invoice";
         string returnPermission = "payInvoice_return";
         string paymentsPermission = "payInvoice_payments";
+        string sendEmailPermission = "payInvoice_sendEmail";
+        string openOrderPermission = "payInvoice_openOrder";
+        string initializeShortagePermission = "payInvoice_initializeShortage";
+
         private static uc_payInvoice _instance;
         public static uc_payInvoice Instance
         {
@@ -142,7 +146,7 @@ namespace POS.View
             txt_total.Text = MainWindow.resourcemanager.GetString("trTotal");
             txt_tax.Text = MainWindow.resourcemanager.GetString("trTax");
             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaseBill");
-            txt_barcode.Text = MainWindow.resourcemanager.GetString("trBarcode");
+            //txt_barcode.Text = MainWindow.resourcemanager.GetString("trBarcode");
             txt_store.Text = MainWindow.resourcemanager.GetString("trStore/Branch");
             txt_vendor.Text = MainWindow.resourcemanager.GetString("trVendor");
             txt_vendorIvoiceDetails.Text = MainWindow.resourcemanager.GetString("trVendorDetails");
@@ -163,7 +167,7 @@ namespace POS.View
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_discount, MainWindow.resourcemanager.GetString("trDiscountHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_typeDiscount, MainWindow.resourcemanager.GetString("trDiscountTypeHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_branch, MainWindow.resourcemanager.GetString("trStore/BranchHint"));
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_taxValue, MainWindow.resourcemanager.GetString("trTaxHint"));
+            //MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_taxValue, MainWindow.resourcemanager.GetString("trTaxHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_vendor, MainWindow.resourcemanager.GetString("trVendorHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_desrvedDate, MainWindow.resourcemanager.GetString("trDeservedDateHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_invoiceNumber, MainWindow.resourcemanager.GetString("trInvoiceNumberHint"));
@@ -173,7 +177,7 @@ namespace POS.View
             tt_error_previous.Content = MainWindow.resourcemanager.GetString("trPrevious");
             tt_error_next.Content = MainWindow.resourcemanager.GetString("trNext");
 
-            btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
+            btn_save.Content = MainWindow.resourcemanager.GetString("trBuy");
         }
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
@@ -261,6 +265,55 @@ namespace POS.View
                 #region datagridChange
                 CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(dg_billDetails.Items);
                 ((INotifyCollectionChanged)myCollectionView).CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
+                #endregion
+
+
+                #region Permision
+
+                if (MainWindow.groupObject.HasPermissionAction(openOrderPermission, MainWindow.groupObjects, "one"))
+                    md_orders.Visibility = Visibility.Visible;
+                else
+                    md_orders.Visibility = Visibility.Collapsed;
+
+                if (MainWindow.groupObject.HasPermissionAction(returnPermission, MainWindow.groupObjects, "one"))
+                    btn_returnInvoice.Visibility = Visibility.Visible;
+                else
+                    btn_returnInvoice.Visibility = Visibility.Collapsed;
+
+                if (MainWindow.groupObject.HasPermissionAction(paymentsPermission, MainWindow.groupObjects, "one"))
+                {
+                    md_payments.Visibility = Visibility.Visible;
+                    bdr_payments.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    md_payments.Visibility = Visibility.Collapsed;
+                    bdr_payments.Visibility = Visibility.Collapsed;
+                }
+
+                if (MainWindow.groupObject.HasPermissionAction(sendEmailPermission, MainWindow.groupObjects, "one"))
+                {
+                    btn_emailMessage.Visibility = Visibility.Visible;
+                    bdr_emailMessage.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    btn_emailMessage.Visibility = Visibility.Collapsed;
+                    bdr_emailMessage.Visibility = Visibility.Collapsed;
+                }
+
+
+                if (MainWindow.groupObject.HasPermissionAction(initializeShortagePermission, MainWindow.groupObjects, "one"))
+                {
+                    btn_shortageInvoice.Visibility = Visibility.Visible;
+                    bdr_shortageInvoice.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    btn_shortageInvoice.Visibility = Visibility.Collapsed;
+                    bdr_shortageInvoice.Visibility = Visibility.Collapsed;
+                }
+
                 #endregion
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -782,24 +835,7 @@ namespace POS.View
             //SectionData.validateSmalThanDateNowDatePicker(dp_desrvedDate, p_errorDesrvedDate, tt_errorDesrvedDate, "trErrorEmptyDeservedDate");
             //return isValid;
         }
-        bool logInProcessing = true;
-        void awaitSaveBtn(bool isAwait)
-        {
-            if (isAwait == true)
-            {
-                btn_save.IsEnabled = false;
-                wait_saveBtn.Visibility = Visibility.Visible;
-                wait_saveBtn.IsIndeterminate = true;
-            }
-            else
-            {
-                btn_save.IsEnabled = true;
-                wait_saveBtn.Visibility = Visibility.Collapsed;
-                wait_saveBtn.IsIndeterminate = false;
-            }
-
-
-        }
+      
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {//save
             try
@@ -809,11 +845,7 @@ namespace POS.View
                 if (MainWindow.groupObject.HasPermissionAction(invoicePermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
 
                 {
-                    if (logInProcessing)
-                    {
-                        logInProcessing = false;
-                        awaitSaveBtn(true);
-
+                   
                         //check mandatory inputs
                         validateInvoiceValues();
                         bool valid = validateItemUnits();
@@ -926,9 +958,7 @@ namespace POS.View
                                 }
                            
                             /////////////////////////////////////////
-                        }
-                        awaitSaveBtn(false);
-                        logInProcessing = true;
+                        
                     }
                 }
                 else
@@ -1022,8 +1052,7 @@ namespace POS.View
 
             TextBox tbStartDate = (TextBox)dp_desrvedDate.Template.FindName("PART_TextBox", dp_desrvedDate);
             SectionData.clearValidate(tbStartDate, p_errorDesrvedDate);
-            brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
-
+            txt_payInvoice.Foreground = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaseBill");
             refrishBillDetails();
             inputEditable();
@@ -1064,13 +1093,13 @@ namespace POS.View
                         {
                             mainInvoiceItems = invoiceItems;
                             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trDraftPurchaseBill");
-                            brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
+                            txt_payInvoice.Foreground = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
                         }
                         if (_InvoiceType == "pbd")
                         {
                             mainInvoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceMainId.Value);
                             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trDraftBounceBill");
-                            brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D22A17"));
+                            txt_payInvoice.Foreground = Application.Current.Resources["MainColorRed"] as SolidColorBrush;
 
                         }
                     }
@@ -1119,7 +1148,7 @@ namespace POS.View
                             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaseInvoice");
                         else
                             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trReturnedInvoice");
-                        brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
+                        txt_payInvoice.Foreground = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
 
                         await fillInvoiceInputs(invoice);
                         invoices = await invoice.GetInvoicesByCreator(invoiceType, MainWindow.userID.Value, duration);
@@ -1168,7 +1197,7 @@ namespace POS.View
 
                         // set title to bill
                         txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaseOrder");
-                        brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
+                        txt_payInvoice.Foreground = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
                         await fillInvoiceInputs(invoice);
                         invoices = await invoice.GetInvoicesByCreator(invoiceType, MainWindow.userID.Value, 0);
                         navigateBtnActivate();
@@ -1261,8 +1290,8 @@ namespace POS.View
                             mainInvoiceItems = invoiceItems;
                             
                             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trReturnedInvoice");
-                            brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D22A17"));
-                        }
+                            txt_payInvoice.Foreground = Application.Current.Resources["MainColorRed"] as SolidColorBrush;  
+                         }
                     }
                     Window.GetWindow(this).Opacity = 1;
                 }
@@ -1739,23 +1768,22 @@ namespace POS.View
                         if (_InvoiceType == "pd")
                         {
                             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trDraftPurchaseBill");
-                            brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
+                            txt_payInvoice.Foreground = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
                         }
                         else if (_InvoiceType == "p")
                         {
                             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaseBill");
-                            brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
+                            txt_payInvoice.Foreground = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
                         }
                         else if (_InvoiceType == "pbd")
                         {
                             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trDraftBounceBill");
-                            brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D22A17"));
+                            txt_payInvoice.Foreground = Application.Current.Resources["MainColorRed"] as SolidColorBrush;
                         }
                         else if (_InvoiceType == "pb")
                         {
-                            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trReturnedInvoice");
-                            // orange #FFA926 red #D22A17
-                            brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D22A17"));
+                           txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trReturnedInvoice");
+                            txt_payInvoice.Foreground = Application.Current.Resources["MainColorRed"] as SolidColorBrush;
                         }
 
                         await fillInvoiceInputs(invoice);
@@ -2793,7 +2821,26 @@ namespace POS.View
 
             refrishBillDetails();
         }
+        private void Expander_Expanded(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var Sender = sender as Expander;
 
-       
+                foreach (var control in FindControls.FindVisualChildren<Expander>(this))
+                {
+
+                    var expander = control as Expander;
+                    if (expander.Tag != null && Sender.Tag != null)
+                        if (expander.Tag.ToString() != Sender.Tag.ToString())
+                            expander.IsExpanded = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+
     }
 }
