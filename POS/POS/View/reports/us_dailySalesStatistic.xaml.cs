@@ -16,13 +16,22 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
+using System.IO;
+using Microsoft.Reporting.WinForms;
+using Microsoft.Win32;
+using System.Threading;
+using POS.View.windows;
 namespace POS.View.reports
 {
 
     public partial class us_dailySalesStatistic : UserControl
     {
-         
+
+
+        //prin & pdf
+        ReportCls reportclass = new ReportCls();
+        LocalReport rep = new LocalReport();
+        SaveFileDialog saveFileDialog = new SaveFileDialog();
 
         private int selectedTab = 0;
 
@@ -31,7 +40,7 @@ namespace POS.View.reports
         private List<ItemTransferInvoice> itemTransferInvoices = new List<ItemTransferInvoice>();
 
         private static us_dailySalesStatistic _instance;
-
+        IEnumerable<ItemTransferInvoice> ReportQuery;
         public static us_dailySalesStatistic Instance
         {
             get
@@ -58,13 +67,14 @@ namespace POS.View.reports
             chk_invoice.IsChecked = true;
             chk_orderInvoice.IsChecked = true;
             chk_quotationInvoice.IsChecked = true;
-
-            dgInvoice.ItemsSource = fillList();
+            ReportQuery=fillList();
+            dgInvoice.ItemsSource = ReportQuery;
         }
 
         private void FillEvents()
         {
-            dgInvoice.ItemsSource = fillList();
+            ReportQuery = fillList();
+            dgInvoice.ItemsSource = ReportQuery;
             fillColumnChart();
             fillRowChart();
             fillPieChart();
@@ -470,6 +480,190 @@ namespace POS.View.reports
             //    SectionData.ExceptionMessage(ex, this);
             //}
         }
+        private void BuildReport()
+        {
+            List<ReportParameter> paramarr = new List<ReportParameter>();
+            //    List<ItemTransferInvoice> query = new List<ItemTransferInvoice>();
+            //  query = converter(filltoprint());
 
+            string addpath = "";
+            bool isArabic = ReportCls.checkLang();
+            if (isArabic)
+            {
+                if (selectedTab == 0)
+                {
+                    addpath = @"\Reports\StatisticReport\Sale\Daily\Ar\ArPurSts.rdlc";
+                }
+                else if (selectedTab == 1)
+                {
+                    addpath = @"\Reports\StatisticReport\Sale\Daily\Ar\ArPurPosSts.rdlc";
+                }
+                else
+                {
+                    addpath = @"\Reports\StatisticReport\Sale\Daily\Ar\ArPurVendorSts.rdlc";
+                }
+               
+
+            }
+            else
+            {
+                //english
+                if (selectedTab == 0)
+                {
+                    addpath = @"\Reports\StatisticReport\Sale\Daily\En\EnPurSts.rdlc";
+                }
+                else if (selectedTab == 1)
+                {
+                    addpath = @"\Reports\StatisticReport\Sale\Daily\En\EnPurPosSts.rdlc";
+                }
+                else 
+                {
+                    addpath = @"\Reports\StatisticReport\Sale\Daily\En\EnPurVendorSts.rdlc";
+                }
+              
+
+            }
+
+            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+            ReportCls.checkLang();
+            clsReports.SaleInvoiceStsReport(ReportQuery, rep, reppath, paramarr);
+
+            clsReports.setReportLanguage(paramarr);
+            clsReports.Header(paramarr);
+
+            rep.SetParameters(paramarr);
+
+            rep.Refresh();
+        }
+        private void Btn_pdf_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                #region
+                BuildReport();
+
+                saveFileDialog.Filter = "PDF|*.pdf;";
+
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    string filepath = saveFileDialog.FileName;
+                    LocalReportExtensions.ExportToPDF(rep, filepath);
+                }
+                #endregion
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+
+        private void Btn_print_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                #region
+                BuildReport();
+
+                LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.rep_printer_name, short.Parse(MainWindow.rep_print_count));
+                #endregion
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+
+        private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                #region
+                Thread t1 = new Thread(() =>
+                {
+                    BuildReport();
+                    this.Dispatcher.Invoke(() =>
+                    {
+                        saveFileDialog.Filter = "EXCEL|*.xls;";
+                        if (saveFileDialog.ShowDialog() == true)
+                        {
+                            string filepath = saveFileDialog.FileName;
+                            LocalReportExtensions.ExportToExcel(rep, filepath);
+                        }
+                    });
+                });
+                t1.Start();
+                #endregion
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+
+        private void Btn_preview_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                #region
+                Window.GetWindow(this).Opacity = 0.2;
+                string pdfpath = "";
+
+
+
+                pdfpath = @"\Thumb\report\temp.pdf";
+                pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
+
+                BuildReport();
+
+                LocalReportExtensions.ExportToPDF(rep, pdfpath);
+                wd_previewPdf w = new wd_previewPdf();
+                w.pdfPath = pdfpath;
+
+                if (!string.IsNullOrEmpty(w.pdfPath))
+                {
+                    w.ShowDialog();
+                    w.wb_pdfWebViewer.Dispose();
+                }
+                Window.GetWindow(this).Opacity = 1;
+                #endregion
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
     }
 }

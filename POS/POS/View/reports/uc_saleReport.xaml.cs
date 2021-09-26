@@ -3615,14 +3615,21 @@ fillColumnChart(cb_Items, selectedItemId);
                 {
                     addpath = @"\Reports\StatisticReport\Sale\Ar\ArPurVendorSts.rdlc";
                 }
-                else if (selectedTab == 3)
+                else // if (selectedTab == 3)
                 {
                     addpath = @"\Reports\StatisticReport\Sale\Ar\ArPurUserSts.rdlc";
                 }
-                else
-                {
-                    addpath = @"\Reports\StatisticReport\Sale\Ar\ArPurItemSts.rdlc";
-                }
+               
+
+                //   else if (selectedTab == 3)
+                //{
+                //    addpath = @"\Reports\StatisticReport\Sale\Ar\ArPurUserSts.rdlc";
+                //}
+                //else
+                //{
+                //    addpath = @"\Reports\StatisticReport\Sale\Ar\ArPurItemSts.rdlc";
+                //}
+
             }
             else
             {
@@ -3637,14 +3644,21 @@ fillColumnChart(cb_Items, selectedItemId);
                 {
                     addpath = @"\Reports\StatisticReport\Sale\En\EnPurVendorSts.rdlc";
                 }
-                else if (selectedTab == 3)
+                else //  if (selectedTab == 3)
                 {
                     addpath = @"\Reports\StatisticReport\Sale\En\EnPurUserSts.rdlc";
                 }
-                else
-                {
-                    addpath = @"\Reports\StatisticReport\Sale\En\EnPurItemSts.rdlc";
-                }
+
+                //else if (selectedTab == 3)
+                //{
+                //    addpath = @"\Reports\StatisticReport\Sale\En\EnPurUserSts.rdlc";
+                //}
+                //else
+                //{
+                //    addpath = @"\Reports\StatisticReport\Sale\En\EnPurItemSts.rdlc";
+                //}
+
+
             }
 
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);

@@ -420,6 +420,29 @@ namespace POS.Classes
             rep.DataSources.Add(new ReportDataSource("DataSetITinvoice", tempquery));
         }
 
+
+      
+        public static void SalePromoStsReport(IEnumerable<ItemTransferInvoice> tempquery, LocalReport rep, string reppath, List<ReportParameter> paramarr)
+        {
+            PurStsReport(tempquery, rep, reppath);
+
+            itemTransferDiscountTypeConv(paramarr);
+            /*
+             =IIF(Fields!CopdiscountType.Value="2",
+Parameters!trPercentageDiscount.Value,
+Parameters!trValueDiscount.Value)
+             * */
+        }
+        public static void itemTransferDiscountTypeConv(List<ReportParameter> paramarr)
+        {
+            
+            paramarr.Add(new ReportParameter("trValueDiscount", MainWindow.resourcemanagerreport.GetString("trValueDiscount")));
+            paramarr.Add(new ReportParameter("trPercentageDiscount", MainWindow.resourcemanagerreport.GetString("trPercentageDiscount")));
+
+
+
+
+        }
         //clsReports.SaleInvoiceStsReport(itemTransfers, rep, reppath, paramarr);
 
         public static void SaleInvoiceStsReport(IEnumerable<ItemTransferInvoice> tempquery, LocalReport rep, string reppath, List<ReportParameter> paramarr)
