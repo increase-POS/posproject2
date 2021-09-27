@@ -60,7 +60,7 @@ namespace POS.View.reports
         }
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
+        {//load
             try
             {
                 if (sender != null)
@@ -73,7 +73,6 @@ namespace POS.View.reports
                 itemsTransfer = await statisticModel.GetExternalMov();
                 itemsInternalTransfer = await statisticModel.GetInternalMov();
                 comboBranches = await branchModel.GetAllWithoutMain("all");
-
 
                 comboItems = statisticModel.getItemCombo(storages);
                 comboUnits = statisticModel.getUnitCombo(storages);
@@ -99,7 +98,6 @@ namespace POS.View.reports
                 fillComboLoaction();
                 fillComboItems(cb_branchesCollect, cb_itemsCollect);
                 fillComboUnits(cb_itemsCollect, cb_unitsCollect);
-
 
                 temp = fillList(storages, cb_branchesItem, cb_itemsItem, cb_unitsItem, dp_startDateItem, dp_endDateItem, chk_allBranchesItem, chk_allItemsItem, chk_allUnitsItem, chk_expireDateItem);
                 dgStock.ItemsSource = temp;
@@ -128,9 +126,6 @@ namespace POS.View.reports
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
-
-
 
 
         public void paint()

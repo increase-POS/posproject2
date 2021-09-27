@@ -37,6 +37,7 @@ namespace POS.View.storage
         string reportsPermission = "importExport_reports";
         string packagePermission = "importExport_package";
         string unitConversionPermission = "importExport_unitConversion";
+        string initializeShortagePermission = "importExport_initializeShortage";
         private static uc_itemsExport _instance;
         public static uc_itemsExport Instance
         {
@@ -203,6 +204,44 @@ namespace POS.View.storage
                 CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(dg_billDetails.Items);
                 ((INotifyCollectionChanged)myCollectionView).CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
                 #endregion
+
+
+                #region Permision
+
+                
+                if (MainWindow.groupObject.HasPermissionAction(exportPermission, MainWindow.groupObjects, "one"))
+                    md_orderWaitCount.Visibility = Visibility.Visible;
+                else
+                    md_orderWaitCount.Visibility = Visibility.Collapsed;
+
+                if (MainWindow.groupObject.HasPermissionAction(initializeShortagePermission, MainWindow.groupObjects, "one"))
+                {
+                    btn_shortageInvoice.Visibility = Visibility.Visible;
+                    bdr_shortageInvoice.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    btn_shortageInvoice.Visibility = Visibility.Collapsed;
+                    bdr_shortageInvoice.Visibility = Visibility.Collapsed;
+                }
+
+                if (MainWindow.groupObject.HasPermissionAction(packagePermission, MainWindow.groupObjects, "one"))
+                    btn_package.Visibility = Visibility.Visible;
+                else
+                    btn_package.Visibility = Visibility.Collapsed;
+
+                if (MainWindow.groupObject.HasPermissionAction(unitConversionPermission, MainWindow.groupObjects, "one"))
+                    btn_unitConversion.Visibility = Visibility.Visible;
+                else
+                    btn_unitConversion.Visibility = Visibility.Collapsed;
+
+                if (!MainWindow.groupObject.HasPermissionAction(packagePermission, MainWindow.groupObjects, "one")
+                    && !MainWindow.groupObject.HasPermissionAction(unitConversionPermission, MainWindow.groupObjects, "one"))
+                    bdr_package_converter.Visibility = Visibility.Collapsed;
+                
+
+                #endregion
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -236,8 +275,15 @@ namespace POS.View.storage
         #region notifications
         private async void setNotifications()
         {
-             refreshDraftNotification();
+            try
+            {
+                refreshDraftNotification();
              refreshOrderWaitNotification();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
         private async void refreshDraftNotification()
         {
@@ -264,25 +310,32 @@ namespace POS.View.storage
         }
         private async void refreshOrderWaitNotification()
         {
-            string invoiceType = "exw";
-            
-            int waitedOrdersCount = await invoice.GetCountBranchInvoices(invoiceType, 0, MainWindow.branchID.Value);
-            if (invoice.invType == "exw")
-                waitedOrdersCount--;
-
-            int previouseCount = 0;
-            if (md_orderWaitCount.Badge != null && md_orderWaitCount.Badge.ToString() != "") previouseCount = int.Parse(md_orderWaitCount.Badge.ToString());
-
-            if (waitedOrdersCount != previouseCount)
+            try
             {
-                if (waitedOrdersCount > 9)
+                string invoiceType = "exw";
+
+                int waitedOrdersCount = await invoice.GetCountBranchInvoices(invoiceType, 0, MainWindow.branchID.Value);
+                if (invoice.invType == "exw")
+                    waitedOrdersCount--;
+
+                int previouseCount = 0;
+                if (md_orderWaitCount.Badge != null && md_orderWaitCount.Badge.ToString() != "") previouseCount = int.Parse(md_orderWaitCount.Badge.ToString());
+
+                if (waitedOrdersCount != previouseCount)
                 {
-                    waitedOrdersCount = 9;
-                    md_orderWaitCount.Badge = "+" + waitedOrdersCount.ToString();
+                    if (waitedOrdersCount > 9)
+                    {
+                        waitedOrdersCount = 9;
+                        md_orderWaitCount.Badge = "+" + waitedOrdersCount.ToString();
+                    }
+                    else if (waitedOrdersCount == 0) md_orderWaitCount.Badge = "";
+                    else
+                        md_orderWaitCount.Badge = waitedOrdersCount.ToString();
                 }
-                else if (waitedOrdersCount == 0) md_orderWaitCount.Badge = "";
-                else
-                    md_orderWaitCount.Badge = waitedOrdersCount.ToString();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -865,8 +918,12 @@ namespace POS.View.storage
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                await saveDraft();
-                setNotifications();
+                if (billDetails.Count != 0)
+                {
+                    await saveDraft();
+                    setNotifications();
+                }
+               
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -1299,10 +1356,13 @@ namespace POS.View.storage
             bool valid = true;
             if (cb_branch.SelectedIndex == -1 || billDetails.Count == 0)
                 valid = false;
+
             if (billDetails.Count == 0)
                 clearProcess();
             else
-                SectionData.validateEmptyComboBox(cb_branch, p_errorBranch, tt_errorBranch, MainWindow.resourcemanager.GetString("trEmptyBranchToolTip"));
+                if (!SectionData.validateEmptyComboBox(cb_branch, p_errorBranch, tt_errorBranch, MainWindow.resourcemanager.GetString("trEmptyBranchToolTip")))
+                exp_store.IsExpanded = true;
+
             return valid;
         }
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
@@ -1313,12 +1373,12 @@ namespace POS.View.storage
                     SectionData.StartAwait(grid_main);
 
                 if (
-((_ProcessType == "im" || _ProcessType == "imd")
-&& (MainWindow.groupObject.HasPermissionAction(importPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision()))
-||
-((_ProcessType == "ex" || _ProcessType == "exd")
-&& (MainWindow.groupObject.HasPermissionAction(exportPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision()))
-)
+                        ((_ProcessType == "im" || _ProcessType == "imd")
+                        && (MainWindow.groupObject.HasPermissionAction(importPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision()))
+                        ||
+                        ((_ProcessType == "ex" || _ProcessType == "exd")
+                        && (MainWindow.groupObject.HasPermissionAction(exportPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision()))
+                        )
                 {
                     bool valid = validateOrder();
                     if (valid)
@@ -1475,7 +1535,8 @@ namespace POS.View.storage
 
                     // update item in billdetails           
                     billDetails[index].Count = (int)newCount;
-                    if (invoiceItems != null) invoiceItems[index].quantity = (int)newCount;
+                    if (invoiceItems != null)
+                        invoiceItems[index].quantity = (int)newCount;
                 }
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -1839,5 +1900,101 @@ namespace POS.View.storage
 
             refrishBillDetails();
         }
+        private void Expander_Expanded(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var Sender = sender as Expander;
+
+                foreach (var control in FindControls.FindVisualChildren<Expander>(this))
+                {
+
+                    var expander = control as Expander;
+                    if (expander.Tag != null && Sender.Tag != null)
+                        if (expander.Tag.ToString() != Sender.Tag.ToString())
+                            expander.IsExpanded = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+        private void Cb_company_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            /*
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
+                if (elapsed.TotalMilliseconds > 100 && cb_company.SelectedIndex != -1)
+                {
+                    _SelectedCompany = (int)cb_company.SelectedValue;
+                    companyModel = companies.Find(c => c.shippingCompanyId == (int)cb_company.SelectedValue);
+                    _DeliveryCost = (decimal)companyModel.deliveryCost;
+                    refreshTotalValue();
+
+                    if (companyModel.deliveryType == "local")
+                    {
+                        cb_user.Visibility = Visibility.Visible;
+                    }
+                    else
+                    {
+                        cb_user.SelectedIndex = -1;
+                        cb_user.Visibility = Visibility.Collapsed;
+                    }
+                }
+                else if (cb_company.SelectedIndex == -1)
+                {
+                    cb_company.SelectedItem = "";
+                }
+                else
+                    cb_company.SelectedValue = _SelectedCompany;
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+            */
+        }
+        private void Cb_user_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            /*
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
+                if (elapsed.TotalMilliseconds > 100 && cb_customer.SelectedIndex != -1)
+                {
+                    _SelectedUser = (int)cb_user.SelectedValue;
+                }
+                else if (cb_customer.SelectedIndex == -1)
+                    cb_user.SelectedItem = "";
+                else
+                {
+                    cb_user.SelectedValue = _SelectedUser;
+                }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+            */
+        }
+
+
     }
 }

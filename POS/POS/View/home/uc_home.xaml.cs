@@ -49,8 +49,15 @@ namespace POS.View
 
         public uc_home()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
             timerAnimation();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
         int NumberDaysInMonth { get; set; }
         DispatcherTimer threadtimer;
@@ -172,7 +179,9 @@ namespace POS.View
         }
         async Task refreshViewTask()
         {
-            await AllSalPur();
+            try
+            {
+                await AllSalPur();
             await CountMonthlySalPur();
             await DailySalPur();
             await AgentCount();
@@ -206,11 +215,17 @@ namespace POS.View
 
             this.DataContext = new Dash();
             this.DataContext = dash;
-
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
         void refreshView()
         {
-            AllSalPur();
+            try
+            {
+                AllSalPur();
             CountMonthlySalPur();
             DailySalPur();
             AgentCount();
@@ -229,8 +244,12 @@ namespace POS.View
 
             this.DataContext = new Dash();
             this.DataContext = dash;
-
         }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+        }
+    }
         async Task AllSalPur()
         {
             try
@@ -1039,9 +1058,10 @@ namespace POS.View
         }
         void timer_Tick(object sender, EventArgs e)
         {
+            try
+            {
 
-
-            x += 86;
+                x += 86;
             y += 74;
             z += 65;
 
@@ -1054,6 +1074,11 @@ namespace POS.View
                 //tb_purchase.Text = Convert.ToString(value_purchase);
                 //tb_sales.Text = Convert.ToString(value_sales);
                 timer.Stop();
+            }
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void UserControl_TouchLeave(object sender, TouchEventArgs e)

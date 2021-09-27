@@ -693,7 +693,8 @@ Data="M110.2,2.4H17.8c-2.4,0-4.3,1.9-4.3,4.3v114.6c0,2.4,1.9,4.3,4.3,4.3c1.1,0,2
                         <DataGridTextColumn x:Name="col_branch" Width="*" Header="Brnach" Binding="{Binding branchName}"/>
                         <DataGridTextColumn x:Name="col_branchFrom" Width="*" Header="From Brnach" Visibility="Hidden" Binding="{Binding exportBranch}"/>
                         <DataGridTextColumn x:Name="col_branchTo" Width="*" Header="To Brnach" Visibility="Hidden" Binding="{Binding importBranch}"/>
-                        <DataGridTextColumn x:Name="col_agentType" Visibility="Hidden" Width="*" Header="Agent Type" Binding="{Binding agentType}"/>
+                        <!--<DataGridTextColumn x:Name="col_agentType" Visibility="Hidden" Width="*" Header="Agent Type" Binding="{Binding agentType}"/>-->
+                        <DataGridTextColumn x:Name="col_agentType" Visibility="Hidden" Width="*" Header="Agent Type" Binding="{Binding agentType , Converter={StaticResource agentTypeConverter}}"/>
 
                         <DataGridTextColumn x:Name="col_agent" Visibility="Hidden" Width="*" Header="Agent Name" Binding="{Binding agentName}"/>
                         <DataGridTextColumn x:Name="col_invType" Visibility="Hidden" Width="*" Header="Invoice Type" Binding="{Binding invType,Converter={StaticResource invoiceTypeConverter }}" />

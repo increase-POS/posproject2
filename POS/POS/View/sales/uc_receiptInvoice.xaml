@@ -908,7 +908,7 @@
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
-                                <DataGridTextColumn IsReadOnly="True" Width="*"  Header="Num"  Binding="{Binding Path=ID}"/>
+                                <DataGridTextColumn IsReadOnly="True"  Header="Num"  Binding="{Binding Path=ID}"/>
                                 <DataGridTextColumn IsReadOnly="True"  Width="*"   Header="Item" Binding="{Binding Path=Product}"/>
                                 <DataGridTemplateColumn Header="Unit"  Width="*" >
                                     <DataGridTemplateColumn.CellTemplate>

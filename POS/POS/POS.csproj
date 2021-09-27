@@ -264,11 +264,13 @@
     <Compile Include="converters\invoiceTypeVisibilityConverter.cs" />
     <Compile Include="converters\levelGroupConverter.cs" />
     <Compile Include="converters\LocationFreeZoneConverter.cs" />
+    <Compile Include="converters\locationFreeZoneStorageReportConverter.cs" />
     <Compile Include="converters\notificationsContentConverter.cs" />
     <Compile Include="converters\notificationsTitleConverter.cs" />
     <Compile Include="converters\permissionsNameConverter.cs" />
     <Compile Include="converters\processTypeConverter.cs" />
     <Compile Include="converters\SectionFreeZoneConverter.cs" />
+    <Compile Include="converters\sectionFreeZoneStorageReportConverter.cs" />
     <Compile Include="converters\SectionLocationFreeZoneConverter.cs" />
     <Compile Include="converters\TaxVisibilityConverter.cs" />
     <Compile Include="converters\transTypeConverter.cs" />

@@ -106,6 +106,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sales.
+        /// </summary>
+        internal static string tr_Sales {
+            get {
+                return ResourceManager.GetString("tr_Sales", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Account Number.
         /// </summary>
         internal static string trAccNumber {
@@ -3949,6 +3958,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Net Sales.
+        /// </summary>
+        internal static string trNetSales {
+            get {
+                return ResourceManager.GetString("trNetSales", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New.
         /// </summary>
         internal static string trNew {
@@ -4099,6 +4117,15 @@ namespace POS {
         internal static string trNotifications {
             get {
                 return ResourceManager.GetString("trNotifications", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Num.
+        /// </summary>
+        internal static string trNum {
+            get {
+                return ResourceManager.GetString("trNum", resourceCulture);
             }
         }
         
@@ -6394,6 +6421,24 @@ namespace POS {
         internal static string trTotalNet {
             get {
                 return ResourceManager.GetString("trTotalNet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total Return.
+        /// </summary>
+        internal static string trTotalReturn {
+            get {
+                return ResourceManager.GetString("trTotalReturn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total Sales.
+        /// </summary>
+        internal static string trTotalSales {
+            get {
+                return ResourceManager.GetString("trTotalSales", resourceCulture);
             }
         }
         

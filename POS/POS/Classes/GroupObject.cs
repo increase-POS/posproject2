@@ -423,6 +423,7 @@ namespace POS.Classes
             bool hasPermission = false;
            
             GroupObject groupObject =  GetGObjByObjName(objectname, GOList);
+            if (groupObject != null)
             if (type == "add" && groupObject.addOb == 1)
                      hasPermission = true;
             else if (type == "update" && groupObject.updateOb == 1)

@@ -63,6 +63,7 @@ namespace POS.View.purchases
         string createPermission = "purchaseOrder_create";
         string reportsPermission = "purchaseOrder_reports";
         string sendEmailPermission = "purchaseOrder_sendEmail";
+        string initializeShortagePermission = "purchaseOrder_initializeShortage";
 
         ObservableCollection<BillDetails> billDetails = new ObservableCollection<BillDetails>();
 
@@ -132,9 +133,9 @@ namespace POS.View.purchases
             dg_billDetails.Columns[4].Header = MainWindow.resourcemanager.GetString("trQuantity");
 
             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaceOrder");
-            txt_barcode.Text = MainWindow.resourcemanager.GetString("trBarcode");
+            //txt_barcode.Text = MainWindow.resourcemanager.GetString("trBarcode");
             txt_vendor.Text = MainWindow.resourcemanager.GetString("trVendor");
-            txt_sum.Text = MainWindow.resourcemanager.GetString("trSum");
+            //txt_sum.Text = MainWindow.resourcemanager.GetString("trSum");
             tb_count.Text = MainWindow.resourcemanager.GetString("trCount:");
 
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_barcode, MainWindow.resourcemanager.GetString("trBarcodeHint"));
@@ -248,7 +249,7 @@ namespace POS.View.purchases
 
                 // for pagination
                 MainWindow.mainWindow.KeyDown += HandleKeyPress;
-                tb_moneyIcon.Text = MainWindow.Currency;
+                //tb_moneyIcon.Text = MainWindow.Currency;
                 if (MainWindow.lang.Equals("en"))
                 {
                     MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
@@ -272,6 +273,35 @@ namespace POS.View.purchases
                 CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(dg_billDetails.Items);
                 ((INotifyCollectionChanged)myCollectionView).CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
                 #endregion
+
+                #region Permision
+                 
+
+                if (MainWindow.groupObject.HasPermissionAction(sendEmailPermission, MainWindow.groupObjects, "one"))
+                {
+                    btn_emailMessage.Visibility = Visibility.Visible;
+                    bdr_emailMessage.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    btn_emailMessage.Visibility = Visibility.Collapsed;
+                    bdr_emailMessage.Visibility = Visibility.Collapsed;
+                }
+
+
+                if (MainWindow.groupObject.HasPermissionAction(initializeShortagePermission, MainWindow.groupObjects, "one"))
+                {
+                    btn_shortageInvoice.Visibility = Visibility.Visible;
+                    bdr_shortageInvoice.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    btn_shortageInvoice.Visibility = Visibility.Collapsed;
+                    bdr_shortageInvoice.Visibility = Visibility.Collapsed;
+                }
+
+                #endregion
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -641,7 +671,8 @@ namespace POS.View.purchases
         private bool validateInvoiceValues()
         {
             bool valid = true;
-            SectionData.validateEmptyComboBox(cb_vendor, p_errorVendor, tt_errorVendor, "trErrorEmptyVendorToolTip");
+            if (!SectionData.validateEmptyComboBox(cb_vendor, p_errorVendor, tt_errorVendor, "trErrorEmptyVendorToolTip"))
+                exp_vendor.IsExpanded = true;
             if (billDetails.Count == 0)
                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trAddInvoiceWithoutItems"), animation: ToasterAnimation.FadeIn);
 
@@ -653,24 +684,6 @@ namespace POS.View.purchases
                 valid = validateItemUnits();
             return valid;
         }
-        bool logInProcessing = true;
-        void awaitSaveBtn(bool isAwait)
-        {
-            if (isAwait == true)
-            {
-                btn_save.IsEnabled = false;
-                wait_saveBtn.Visibility = Visibility.Visible;
-                wait_saveBtn.IsIndeterminate = true;
-            }
-            else
-            {
-                btn_save.IsEnabled = true;
-                wait_saveBtn.Visibility = Visibility.Collapsed;
-                wait_saveBtn.IsIndeterminate = false;
-            }
-
-
-        }
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {//save
             try
@@ -679,11 +692,6 @@ namespace POS.View.purchases
                     SectionData.StartAwait(grid_main);
                 if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
-                    if (logInProcessing)
-                    {
-                        logInProcessing = false;
-                        awaitSaveBtn(true);
-
                         //check mandatory inputs
                         bool valid = validateInvoiceValues();
                         if (valid)
@@ -692,9 +700,6 @@ namespace POS.View.purchases
 
                             clearInvoice();
                         }
-                        awaitSaveBtn(false);
-                        logInProcessing = true;
-                    }
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -763,7 +768,7 @@ namespace POS.View.purchases
             tb_note.Clear();
             billDetails.Clear();
             tb_total.Text = "";
-            tb_sum.Text = null;
+            //tb_sum.Text = null;
             btn_updateVendor.IsEnabled = false;
             md_docImage.Badge = "";
             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaseOrder");
@@ -1067,11 +1072,11 @@ namespace POS.View.purchases
             if (total != 0)
                 taxValue = SectionData.calcPercentage(total, taxInputVal);
 
-            //tb_sum.Text = _Sum.ToString();
-            if (_Sum != 0)
-                tb_sum.Text = SectionData.DecTostring(_Sum);
-            else
-                tb_sum.Text = "0";
+            ////tb_sum.Text = _Sum.ToString();
+            //if (_Sum != 0)
+            //    tb_sum.Text = SectionData.DecTostring(_Sum);
+            //else
+            //    tb_sum.Text = "0";
 
         }
 
@@ -1091,11 +1096,11 @@ namespace POS.View.purchases
             }
 
             tb_total.Text = _Count.ToString();
-            //tb_sum.Text = _Sum.ToString();
-            if (_Sum != 0)
-                tb_sum.Text = SectionData.DecTostring(_Sum);
-            else
-                tb_sum.Text = "0";
+            ////tb_sum.Text = _Sum.ToString();
+            //if (_Sum != 0)
+            //    tb_sum.Text = SectionData.DecTostring(_Sum);
+            //else
+            //    tb_sum.Text = "0";
 
         }
 
@@ -2061,6 +2066,26 @@ namespace POS.View.purchases
             tb_barcode.Focus();
 
             refrishBillDetails();
+        }
+        private void Expander_Expanded(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var Sender = sender as Expander;
+
+                foreach (var control in FindControls.FindVisualChildren<Expander>(this))
+                {
+
+                    var expander = control as Expander;
+                    if (expander.Tag != null && Sender.Tag != null)
+                        if (expander.Tag.ToString() != Sender.Tag.ToString())
+                            expander.IsExpanded = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
     }
 }

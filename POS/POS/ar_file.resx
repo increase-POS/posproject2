@@ -2449,4 +2449,16 @@
   <data name="trBuy" xml:space="preserve">
     <value>شراء</value>
   </data>
+  <data name="trNetSales" xml:space="preserve">
+    <value>صافي المبيعات</value>
+  </data>
+  <data name="trTotalReturn" xml:space="preserve">
+    <value>إجمالي المرتجع</value>
+  </data>
+  <data name="trTotalSales" xml:space="preserve">
+    <value>إجمالي المبيعات</value>
+  </data>
+  <data name="tr_Sales" xml:space="preserve">
+    <value>مبيعات</value>
+  </data>
 </root>

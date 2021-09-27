@@ -1270,6 +1270,8 @@ namespace POS.View
                         item.type = "p";
                         item.image = "";
                         item.taxes = tax;
+                        item.min = 0;
+                        item.max = 0;
                         item.isActive = 1;
                         item.categoryId = Convert.ToInt32(cb_categorie.SelectedValue);
                         item.createUserId = MainWindow.userID;
@@ -1293,7 +1295,9 @@ namespace POS.View
                         itemUnit.itemId = itemId;
                         itemUnit.unitId = unitpackageId;
                         itemUnit.price = price;
+                        itemUnit.defaultPurchase = 1;
                         itemUnit.defaultSale = 1;
+                        itemUnit.unitValue = 0;
                         itemUnit.barcode = tb_barcode.Text;
                         itemUnit.createUserId = MainWindow.userID;
 
@@ -1408,7 +1412,7 @@ namespace POS.View
             }
         }
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
-        {
+        {//delete
             try
             {
                 if (sender != null)

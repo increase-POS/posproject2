@@ -197,14 +197,14 @@ namespace POS.View.windows
         }
         private void Dg_selectedItems_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            try
-            {
-                Btn_unSelectedItem_Click(null, null);
-            }
-            catch (Exception ex)
-            {
-                SectionData.ExceptionMessage(ex, this);
-            }
+            //try
+            //{
+            //    Btn_unSelectedItem_Click(null, null);
+            //}
+            //catch (Exception ex)
+            //{
+            //    SectionData.ExceptionMessage(ex, this);
+            //}
         }
         private   void Btn_selectedAll_Click(object sender, RoutedEventArgs e)
         {//select all
@@ -334,7 +334,7 @@ namespace POS.View.windows
         {
             //// Have to do this in the unusual case where the border of the cell gets selected.
             //// and causes a crash 'EditItem is not allowed'
-            e.Cancel = true;
+            //e.Cancel = true;
         }
     }
 }

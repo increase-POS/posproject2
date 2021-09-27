@@ -43,7 +43,7 @@ namespace POS.View.storage
         bool firstTimeForDatagrid = true;
 
         string _InventoryType = "d";
-        string createInventoryPermission = "inventory_createInventory";
+        string createInventoryPermission = "inventory_create";
         string archivingPermission = "inventory_archiving";
         string reportsPermission = "inventory_reports";
 

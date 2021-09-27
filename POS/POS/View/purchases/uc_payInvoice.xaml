@@ -468,7 +468,7 @@
                                 <Grid  x:Name="grid_vendor" Visibility="Visible"   >
                                     <Grid.RowDefinitions >
                                         <RowDefinition Height="auto"/>
-                                        <RowDefinition Height="45"/>
+                                    <RowDefinition Height="auto"/>
                                         <RowDefinition Height="45"/>
                                         <RowDefinition Height="auto"/>
                                         <RowDefinition Height="80"/>
@@ -734,7 +734,7 @@
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
-                                <DataGridTextColumn IsReadOnly="True" Width="*"  Header="Num"  Binding="{Binding Path=ID}"/>
+                            <DataGridTextColumn IsReadOnly="True" Header="Num"  Binding="{Binding Path=ID}"/>
                                 <DataGridTextColumn IsReadOnly="True"  Width="*"   Header="Item" Binding="{Binding Path=Product}"/>
                                 <DataGridTemplateColumn Header="Unit"  Width="*" >
                                     <DataGridTemplateColumn.CellTemplate>

@@ -439,8 +439,10 @@
 
                         <DataGridTextColumn x:Name="col_invNumber" Visibility="Hidden" Width="*" Header="Invoice Number" Binding="{Binding invNumber}"/>
 
-                        <DataGridTextColumn x:Name="col_section" Visibility="Hidden" Width="*" Header="Section" Binding="{Binding Secname}" />
-                        <DataGridTextColumn x:Name="col_location" Visibility="Hidden" Width="*" Header="Location" Binding="{Binding LoactionName}" />
+                        <!--<DataGridTextColumn x:Name="col_section" Visibility="Hidden" Width="*" Header="Section" Binding="{Binding Secname}" />-->
+                        <DataGridTextColumn x:Name="col_section" Visibility="Hidden" Width="*" Header="Section" Binding="{Binding .,Converter={StaticResource sectionFreeZoneStorageReportConverter}}" />
+                        <!--<DataGridTextColumn x:Name="col_location" Visibility="Hidden" Width="*" Header="Location" Binding="{Binding LoactionName}" />-->
+                        <DataGridTextColumn x:Name="col_location" Visibility="Hidden" Width="*" Header="Location" Binding="{Binding . ,Converter={StaticResource locationFreeZoneStorageReportConverter}}" />
                         <DataGridTextColumn x:Name="col_itemUnits" Visibility="Hidden" Width="*" Header="Items - Units" Binding="{Binding ItemUnits}"/>
                         <DataGridTextColumn x:Name="col_item" Width="*" Header="Item" Binding="{Binding itemName}"/>
                         <DataGridTextColumn x:Name="col_unit" Width="*" Header="Unit" Binding="{Binding unitName}"/>

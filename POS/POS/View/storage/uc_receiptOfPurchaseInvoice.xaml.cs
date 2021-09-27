@@ -137,7 +137,7 @@ namespace POS.View.storage
                 }
 
                 translate();
-                tb_barcode.Focus();
+                //tb_barcode.Focus();
                 setNotifications();
                 setTimer();
                 await RefrishVendors();
@@ -146,6 +146,20 @@ namespace POS.View.storage
                 CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(dg_billDetails.Items);
                 ((INotifyCollectionChanged)myCollectionView).CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
                 #endregion
+
+
+                #region Permision
+                if (MainWindow.groupObject.HasPermissionAction(reciptPermission, MainWindow.groupObjects, "one"))
+                    md_invoiceCount.Visibility = Visibility.Visible;
+                else
+                    md_invoiceCount.Visibility = Visibility.Collapsed;
+
+                if (MainWindow.groupObject.HasPermissionAction(returnPermission, MainWindow.groupObjects, "one"))
+                    md_returnsCount.Visibility = Visibility.Visible;
+                else
+                    md_returnsCount.Visibility = Visibility.Collapsed;
+                #endregion
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -275,6 +289,7 @@ namespace POS.View.storage
         }
         private async void HandleKeyPress(object sender, KeyEventArgs e)
         {
+            /*
             try
             {
                 if (sender != null)
@@ -359,6 +374,7 @@ namespace POS.View.storage
                     SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this);
             }
+            */
         }
         private async Task dealWithBarcode(string barcode)
         {
@@ -380,14 +396,14 @@ namespace POS.View.storage
                         if (_InvoiceType == "p")
                         {
                             txt_titleDataGridInvoice.Text = MainWindow.resourcemanager.GetString("trReturnedInvoice");
-                            brd_count.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D22A17"));
+                            txt_titleDataGridInvoice.Foreground = Application.Current.Resources["MainColorRed"] as SolidColorBrush;
                             _InvoiceType = "pbw";
                         }
                         else if (_InvoiceType == "pw")
                         {
                             txt_titleDataGridInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaseBill");
+                            txt_titleDataGridInvoice.Foreground = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
                             _InvoiceType = "p";
-                            brd_count.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
                         }
 
 
@@ -401,7 +417,7 @@ namespace POS.View.storage
                     if (_InvoiceType == "pbw")
                     {
                         txt_titleDataGridInvoice.Text = MainWindow.resourcemanager.GetString("trDraftBounceBill");
-                        brd_count.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D22A17"));
+                        txt_titleDataGridInvoice.Foreground = Application.Current.Resources["MainColorRed"] as SolidColorBrush;
                     }
 
                     break;
@@ -410,7 +426,7 @@ namespace POS.View.storage
                     break;
             }
 
-            tb_barcode.Clear();
+            //tb_barcode.Clear();
         }
         #region Button In DataGrid
         void deleteRowFromInvoiceItems(object sender, RoutedEventArgs e)
@@ -489,7 +505,7 @@ namespace POS.View.storage
                             txt_titleDataGridInvoice.Text = MainWindow.resourcemanager.GetString("trReturnedInvoice");
                             btn_save.Content = MainWindow.resourcemanager.GetString("trReturn");
                             // orange #FFA926 red #D22A17
-                            brd_count.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D22A17"));
+                            txt_titleDataGridInvoice.Foreground = Application.Current.Resources["MainColorRed"] as SolidColorBrush;
                             await fillInvoiceInputs(invoice);
                             mainInvoiceItems = invoiceItems;
                             invoices = await invoice.getBranchInvoices(invoiceType, 0, MainWindow.branchID.Value);
@@ -723,10 +739,8 @@ namespace POS.View.storage
                             setNotifications();
                             // set title to bill
                             txt_titleDataGridInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaseInvoice");
+                            txt_titleDataGridInvoice.Foreground = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
                             btn_save.Content = MainWindow.resourcemanager.GetString("trStoreBtn");
-
-                            // orange #FFA926 red #D22A17
-                            brd_count.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
                             await fillInvoiceInputs(invoice);
                             invoices = await invoice.getBranchInvoices(invoiceType,0, MainWindow.branchID.Value);
                             navigateBtnActivate();
@@ -783,7 +797,7 @@ namespace POS.View.storage
             }
 
             tb_count.Text = _Count.ToString();
-            tb_barcode.Focus();
+            //tb_barcode.Focus();
 
             refrishBillDetails();
         }
