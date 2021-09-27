@@ -1390,5 +1390,48 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+        public void buildbarcodereport()
+        {
+            List<ReportParameter> paramarr = new List<ReportParameter>();
+
+            string addpath;
+            bool isArabic = ReportCls.checkLang();
+
+            addpath = @"\Reports\Sale\coupon\coupExport.rdlc";
+
+            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+            ReportCls.checkLang();
+
+            clsReports.couponExportReport(rep, reppath, paramarr, tb_barcode.Text);
+
+
+
+            rep.SetParameters(paramarr);
+
+            rep.Refresh();
+
+
+
+        }
+        private void Btn_printBarcode_Click(object sender, RoutedEventArgs e)
+        {
+            if (tb_barcode.Text != null && tb_barcode.Text != "")
+            {
+                buildbarcodereport();
+                saveFileDialog.Filter = "PDF|*.pdf;";
+
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    string filepath = saveFileDialog.FileName;
+                    LocalReportExtensions.ExportToPDF(rep, filepath);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Code is empty");
+               // SectionData.validateEmptyTextBox((TextBox)sender, p_errorCode, tt_errorCode, "trEmptyCodeToolTip");
+            }
+        }
     }
 }

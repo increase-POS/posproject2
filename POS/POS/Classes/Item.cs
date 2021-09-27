@@ -96,8 +96,9 @@ namespace POS.Classes
         }
 
        
-        public async Task<Boolean> deleteItem(int itemId, int userId,Boolean final)
+        public async Task<bool> deleteItem(int itemId, int userId,Boolean final)
         {
+            string message = "false";
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
 
@@ -118,9 +119,13 @@ namespace POS.Classes
 
                 if (response.IsSuccessStatusCode)
                 {
-                    return true;
+                    message = await response.Content.ReadAsStringAsync();
+                    message = JsonConvert.DeserializeObject<string>(message);
+                 bool   res = bool.Parse(message);
+
+                    return res;
                 }
-                return false;
+                return bool.Parse(message);
             }
         }
 

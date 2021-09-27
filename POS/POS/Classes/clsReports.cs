@@ -342,6 +342,20 @@ namespace POS.Classes
             paramarr.Add(new ReportParameter("trEndDate", MainWindow.resourcemanagerreport.GetString("trvalidity")));
 
         }
+        public static void couponExportReport( LocalReport rep, string reppath, List<ReportParameter> paramarr,string barcode)
+        {
+
+            rep.ReportPath = reppath;
+            rep.EnableExternalImages = true;
+            rep.DataSources.Clear();
+
+            ReportCls repcls = new ReportCls();
+
+
+            paramarr.Add(new ReportParameter("invNumber", barcode));
+            paramarr.Add(new ReportParameter("barcodeimage", "file:\\" + repcls.BarcodeToImage(barcode, "barcode")));
+
+        }
 
         public static void packageReport(IEnumerable<Item> packageQuery, LocalReport rep, string reppath, List<ReportParameter> paramarr)
         {
