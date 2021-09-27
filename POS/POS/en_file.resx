@@ -1231,7 +1231,7 @@
     <value>Add Range</value>
   </data>
   <data name="trLocation" xml:space="preserve">
-    <value>Storage Locations</value>
+    <value>Location</value>
   </data>
   <data name="trSection" xml:space="preserve">
     <value>Section</value>
@@ -2045,7 +2045,7 @@ Please add Email in setting</value>
     <value>Send email</value>
   </data>
   <data name="trStore/Branch" xml:space="preserve">
-    <value>Stroe/Branch</value>
+    <value>Store/Branch</value>
   </data>
   <data name="trStore/BranchHint" xml:space="preserve">
     <value>Stroe/Branch...</value>
@@ -2413,9 +2413,6 @@ Please add Email in setting</value>
   <data name="trPrevious" xml:space="preserve">
     <value>Previous</value>
   </data>
-  <data name="trLocationt" xml:space="preserve">
-    <value>Location</value>
-  </data>
   <data name="trUnlock" xml:space="preserve">
     <value>Unlock</value>
   </data>
@@ -2478,5 +2475,14 @@ Please add Email in setting</value>
   </data>
   <data name="trNum" xml:space="preserve">
     <value>Num</value>
+  </data>
+  <data name="trLocationt" xml:space="preserve">
+    <value>Location</value>
+  </data>
+  <data name="trDaily" xml:space="preserve">
+    <value>Daily</value>
+  </data>
+  <data name="trPrintBarcode" xml:space="preserve">
+    <value>Print Barcode</value>
   </data>
 </root>

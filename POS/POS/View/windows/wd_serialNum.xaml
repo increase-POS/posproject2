@@ -52,11 +52,17 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
-                <TextBox x:Name="tb_serialNum"  Grid.Row="0"
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox x:Name="tb_serialNum"  Grid.Row="0"
                                   Padding="10,10,5,0"  TextBlock.Foreground="#4E4E4E"
                                   materialDesign:HintAssist.Hint="serial Num..."  
                                   TextBlock.FontSize="12"   Background="#f8f8f8"
-                                  Grid.Column="0" Height="40"  Margin="10,10,10,5"
+                                  Grid.Column="0" Height="40"  Margin="10,10,5,5"
                                   BorderBrush="#737373" BorderThickness="0" 
                                   PreviewKeyDown="space_PreviewKeyDown"
                                 KeyDown="Tb_serialNum_KeyDown">
@@ -68,7 +74,7 @@
                                                           VerticalOffset="20"/>
                         </TextBox.ToolTip>
                     </TextBox>
-                <Path Fill="#E81123" x:Name="p_errorSerialNum" Stretch="Fill" Margin="5,5,15,5"
+                    <Path Fill="#E81123" x:Name="p_errorSerialNum" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Row="0" Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
@@ -76,20 +82,34 @@
                             <ToolTip x:Name="tt_errorSerialNum" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                         </Path.ToolTip>
                     </Path>
-                <Button x:Name="btn_clearCoupon"  Padding="0" HorizontalAlignment="Right"
+                    <Button Grid.Column="1" x:Name="btn_enter"  Padding="0"  
                                         Background="{x:Null}" BorderBrush="{x:Null}" 
-                                        Margin="5,1,15,1" Click="Btn_clearSerial_Click">
+                                        Margin="2.5,1" Click="Btn_enter_Click">
+                        <Path Fill="#4E4E4E"  Stretch="Fill" 
+                              Width="25" Height="20"
+                         VerticalAlignment="Center" 
+                              Data="M250,144.07c-4,0-8,0-12,0-3.61,0-5.66-1.45-5.63-5.32,0-8.34,0-16.68,0-25,0-3.3,1.74-5,4.93-5,8.49-.06,17-.27,25.47.18,1.69.09,4.56,2.77,4.64,4.37.47,8.65.29,17.34.2,26,0,3.23-1.89,4.79-5.14,4.76C258.32,144.05,254.16,144.07,250,144.07Zm.17-7.49,9.17-9.63-9.22-10.49-1,5.26-7.14.62v8.15l7.22.64Z"/>
+
+                    </Button>
+                    
+                    
+                    <Button Grid.Column="2" x:Name="btn_clearCoupon"  Padding="0"  
+                                        Background="{x:Null}" BorderBrush="{x:Null}" 
+                                        Margin="2.5,1" Click="Btn_clearSerial_Click">
                         <materialDesign:PackIcon Foreground="#178DD2" Kind="RefreshCircle"  
                               HorizontalAlignment="Center" Grid.Column="0"  
-                         VerticalAlignment="Center" Width="20" Height="20"/>
-                    <Button.ToolTip>
-                        <ToolTip x:Name="tt_clear" Content="Clear"
+                         VerticalAlignment="Center" Width="25" Height="25"/>
+                        <Button.ToolTip>
+                            <ToolTip x:Name="tt_clear" Content="Clear"
                                               Placement="left" 
                                               HorizontalOffset="15"
                                               PlacementRectangle="50,0,0,0"
                                               VerticalOffset="25"/>
-                    </Button.ToolTip>
-                </Button>
+                        </Button.ToolTip>
+                    </Button>
+
+                </Grid>
+               
                 <Separator Margin="5,0" Grid.Row="1"  Background="#DFDFDF" VerticalAlignment="Center" Width="auto" />
                 <ListView Grid.Row="2" x:Name="lst_serials"/>
 

@@ -339,7 +339,7 @@
                                         Margin="5,1" ToolTip="clear" Click="Btn_clearCoupon_Click">
                                             <materialDesign:PackIcon Foreground="#178DD2" Kind="RefreshCircle"  
                               HorizontalAlignment="Center"  
-                         VerticalAlignment="Center" Width="20" Height="20"/>
+                         VerticalAlignment="Center" Width="25" Height="25"/>
                                         </Button>
                                     </Grid>
                                     <ListView Grid.Row="2" x:Name="lst_coupons"/>

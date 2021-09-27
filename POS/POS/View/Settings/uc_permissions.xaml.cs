@@ -948,20 +948,20 @@ t1.Start();
                 path_offer.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
                 path_package.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
                 path_quotation.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-                //path_medals.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-                //path_salesStatistic.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-                //path_membership.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-                path_salesOrders.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+            //path_medals.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+            path_salesStatistic.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+            //path_membership.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+            path_salesOrders.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
 
                 txt_reciptInvoice.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
                 txt_coupon.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
                 txt_offer.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
                 txt_package.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
                 txt_quotation.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-                //txt_medals.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-                //txt_salesStatistic.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-                //txt_membership.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-                txt_salesOrders.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+            //txt_medals.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+            txt_salesStatistic.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+            //txt_membership.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+            txt_salesOrders.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
             }
             public void paintAccounts()
             {
@@ -1082,12 +1082,12 @@ t1.Start();
                 txt_bonds.Text = MainWindow.resourcemanager.GetString("trBonds");
 
                 txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trInvoice");
-                //txt_storageStatistic.Text = MainWindow.resourcemanager.GetString("trStatistic");
-                //txt_purchaseStatistic.Text = MainWindow.resourcemanager.GetString("trStatistic");
-                //txt_salesStatistic.Text = MainWindow.resourcemanager.GetString("trStatistic");
-                //txt_accountsStatistic.Text = MainWindow.resourcemanager.GetString("trStatistic");
+            //txt_storageStatistic.Text = MainWindow.resourcemanager.GetString("trStatistic");
+            //txt_purchaseStatistic.Text = MainWindow.resourcemanager.GetString("trStatistic");
+            txt_salesStatistic.Text = MainWindow.resourcemanager.GetString("trStatistic");
+            //txt_accountsStatistic.Text = MainWindow.resourcemanager.GetString("trStatistic");
 
-                txt_reciptInvoice.Text = MainWindow.resourcemanager.GetString("trInvoice");
+            txt_reciptInvoice.Text = MainWindow.resourcemanager.GetString("trInvoice");
                 txt_coupon.Text = MainWindow.resourcemanager.GetString("trCoupon");
                 txt_offer.Text = MainWindow.resourcemanager.GetString("trOffer");
 

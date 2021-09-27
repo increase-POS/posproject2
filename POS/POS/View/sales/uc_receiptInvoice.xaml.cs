@@ -392,9 +392,16 @@ namespace POS.View
         #region notifications
         private async void setNotifications()
         {
-            await refreshDraftNotification();
-            await refreshOrdersWaitNotification();
-            await refreshQuotationNotification();
+            try
+            {
+                await refreshDraftNotification();
+                await refreshOrdersWaitNotification();
+                await refreshQuotationNotification();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
         private async Task refreshDraftNotification()
         {
@@ -2699,6 +2706,7 @@ namespace POS.View
                     billDetails[index].Price = newPrice;
                     billDetails[index].Total = total;
                 }
+                dg_billDetails.Items.Refresh();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }

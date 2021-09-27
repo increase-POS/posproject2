@@ -2461,4 +2461,10 @@
   <data name="tr_Sales" xml:space="preserve">
     <value>مبيعات</value>
   </data>
+  <data name="trDaily" xml:space="preserve">
+    <value>يومي</value>
+  </data>
+  <data name="trPrintBarcode" xml:space="preserve">
+    <value>طباعة باركود</value>
+  </data>
 </root>

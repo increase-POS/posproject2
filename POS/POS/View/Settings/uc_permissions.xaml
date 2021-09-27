@@ -1226,7 +1226,7 @@
                             <!--***********************************************************-->
                             <!--grid sales-->
 
-                            <Grid Name="grid_sales" Margin="10,10,10,10" MinHeight="80" Visibility="Collapsed">
+                            <Grid Name="grid_sales" Margin="10,10,10,10" MinHeight="80" Visibility="Visible">
 
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"></ColumnDefinition>

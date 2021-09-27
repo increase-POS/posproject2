@@ -1105,6 +1105,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to يومي.
+        /// </summary>
+        internal static string trDaily {
+            get {
+                return ResourceManager.GetString("trDaily", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to لوحة التحكم.
         /// </summary>
         internal static string trDashBoard {
@@ -4765,6 +4774,15 @@ namespace POS {
         internal static string trPrint {
             get {
                 return ResourceManager.GetString("trPrint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to طباعة باركود.
+        /// </summary>
+        internal static string trPrintBarcode {
+            get {
+                return ResourceManager.GetString("trPrintBarcode", resourceCulture);
             }
         }
         

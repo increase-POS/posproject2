@@ -353,8 +353,12 @@ namespace POS.View
             tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
             tt_pieChart.Content = MainWindow.resourcemanager.GetString("trPieChart");
             tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
+
+            btn_printBarcode.Content = MainWindow.resourcemanager.GetString("trPrintBarcode");
+
+
         }
-       
+
 
         private  string genBarCode(string code)
         {

@@ -214,24 +214,7 @@ namespace POS.View.windows
 
                 if (e.Key == Key.Return)
                 {
-                    string s = tb_serialNum.Text;
-                    if (!s.Equals(""))
-                    {
-                        int found = lst_serials.Items.IndexOf(s);
-                        if (_serialCount == itemCount)
-                        {
-                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trWarningItemCountIs:") + " " + itemCount, animation: ToasterAnimation.FadeIn);
-                        }
-                        else if (found == -1)
-                        {
-                            lst_serials.Items.Add(tb_serialNum.Text);
-                            _serialCount++;
-                        }
-                        else
-                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trWarningSerialExists") , animation: ToasterAnimation.FadeIn);
-
-                    }
-                    tb_serialNum.Clear();
+                    keyEnterProcess();
                 }
                 if (sender != null)
                     SectionData.EndAwait(grid_serialNum);
@@ -243,7 +226,27 @@ namespace POS.View.windows
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+        void keyEnterProcess()
+        {
+            string s = tb_serialNum.Text;
+            if (!s.Equals(""))
+            {
+                int found = lst_serials.Items.IndexOf(s);
+                if (_serialCount == itemCount)
+                {
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trWarningItemCountIs:") + " " + itemCount, animation: ToasterAnimation.FadeIn);
+                }
+                else if (found == -1)
+                {
+                    lst_serials.Items.Add(tb_serialNum.Text);
+                    _serialCount++;
+                }
+                else
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trWarningSerialExists"), animation: ToasterAnimation.FadeIn);
 
+            }
+            tb_serialNum.Clear();
+        }
         private void Btn_clearSerial_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -255,6 +258,11 @@ namespace POS.View.windows
             {
                 SectionData.ExceptionMessage(ex, this);
             }
+        }
+
+        private void Btn_enter_Click(object sender, RoutedEventArgs e)
+        {
+            keyEnterProcess();
         }
     }
 }

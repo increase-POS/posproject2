@@ -48,7 +48,7 @@ namespace POS.View
         private void translate()
         {
             btn_reciptInvoice.Content = MainWindow.resourcemanager.GetString("trInvoice");
-            btn_salesStatistic.Content = MainWindow.resourcemanager.GetString("trStatistic");
+            btn_salesStatistic.Content = MainWindow.resourcemanager.GetString("trDaily");
             btn_coupon.Content = MainWindow.resourcemanager.GetString("trCoupon");
             btn_offer.Content = MainWindow.resourcemanager.GetString("trOffer");
             btn_medals.Content = MainWindow.resourcemanager.GetString("trMedals");

@@ -1114,6 +1114,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Daily.
+        /// </summary>
+        internal static string trDaily {
+            get {
+                return ResourceManager.GetString("trDaily", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Dashboard.
         /// </summary>
         internal static string trDashBoard {
@@ -3580,7 +3589,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Storage Locations.
+        ///   Looks up a localized string similar to Location.
         /// </summary>
         internal static string trLocation {
             get {
@@ -4810,6 +4819,15 @@ namespace POS {
         internal static string trPrint {
             get {
                 return ResourceManager.GetString("trPrint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Print Barcode.
+        /// </summary>
+        internal static string trPrintBarcode {
+            get {
+                return ResourceManager.GetString("trPrintBarcode", resourceCulture);
             }
         }
         
@@ -6146,7 +6164,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Stroe/Branch.
+        ///   Looks up a localized string similar to Store/Branch.
         /// </summary>
         internal static string trStore_Branch {
             get {
