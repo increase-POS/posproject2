@@ -55,7 +55,7 @@ namespace POS.View.accounts
         SaveFileDialog saveFileDialog = new SaveFileDialog();
 
         string searchText = "";
-        string  createPermission = "received_create";
+        string createPermission = "received_create";
         string reportsPermission = "received_reports";
         public static uc_receivedAccounts Instance
         {
@@ -72,7 +72,7 @@ namespace POS.View.accounts
             {
                 InitializeComponent();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             { SectionData.ExceptionMessage(ex, this); }
         }
         private void Btn_confirm_Click(object sender, RoutedEventArgs e)
@@ -89,18 +89,18 @@ namespace POS.View.accounts
 
                 #region translate
                 if (MainWindow.lang.Equals("en"))
-            {
-                MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
-                grid_ucReceivedAccounts.FlowDirection = FlowDirection.LeftToRight;
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                    grid_ucReceivedAccounts.FlowDirection = FlowDirection.LeftToRight;
 
-            }
-            else
-            {
-                MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
-                grid_ucReceivedAccounts.FlowDirection = FlowDirection.RightToLeft;
+                }
+                else
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                    grid_ucReceivedAccounts.FlowDirection = FlowDirection.RightToLeft;
 
-            }
-            translate();
+                }
+                translate();
                 #endregion
 
                 #region Style Date
@@ -190,8 +190,8 @@ namespace POS.View.accounts
             catch (Exception ex)
             {
                 if (sender != null)
-                SectionData.EndAwait(grid_ucReceivedAccounts);
-                SectionData.ExceptionMessage(ex,this);
+                    SectionData.EndAwait(grid_ucReceivedAccounts);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private async void dp_SelectedStartDateChanged(object sender, SelectionChangedEventArgs e)
@@ -275,76 +275,76 @@ namespace POS.View.accounts
         }
         private void Dg_receivedAccounts_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//selection
-            //try
-            //{
-            //    if (sender != null)
-            //        SectionData.StartAwait(grid_ucReceivedAccounts);
-                SectionData.clearComboBoxValidate(cb_depositFrom, p_errorDepositFrom);
-                SectionData.clearComboBoxValidate(cb_depositorV, p_errordepositor);
-                SectionData.clearComboBoxValidate(cb_depositorC, p_errordepositor);
-                SectionData.clearComboBoxValidate(cb_depositorU, p_errordepositor);
-                SectionData.clearComboBoxValidate(cb_depositorSh, p_errordepositor);
+         //try
+         //{
+         //    if (sender != null)
+         //        SectionData.StartAwait(grid_ucReceivedAccounts);
+            SectionData.clearComboBoxValidate(cb_depositFrom, p_errorDepositFrom);
+            SectionData.clearComboBoxValidate(cb_depositorV, p_errordepositor);
+            SectionData.clearComboBoxValidate(cb_depositorC, p_errordepositor);
+            SectionData.clearComboBoxValidate(cb_depositorU, p_errordepositor);
+            SectionData.clearComboBoxValidate(cb_depositorSh, p_errordepositor);
 
-                SectionData.clearComboBoxValidate(cb_paymentProcessType, p_errorpaymentProcessType);
-                SectionData.clearComboBoxValidate(cb_card, p_errorpaymentProcessType);
-                TextBox tbDocDate = (TextBox)dp_docDate.Template.FindName("PART_TextBox", dp_docDate);
-                SectionData.clearValidate(tb_docNum, p_errorDocNum);
-                SectionData.clearValidate(tb_cash, p_errorCash);
+            SectionData.clearComboBoxValidate(cb_paymentProcessType, p_errorpaymentProcessType);
+            SectionData.clearComboBoxValidate(cb_card, p_errorpaymentProcessType);
+            TextBox tbDocDate = (TextBox)dp_docDate.Template.FindName("PART_TextBox", dp_docDate);
+            SectionData.clearValidate(tb_docNum, p_errorDocNum);
+            SectionData.clearValidate(tb_cash, p_errorCash);
 
-                if (dg_receivedAccounts.SelectedIndex != -1)
+            if (dg_receivedAccounts.SelectedIndex != -1)
+            {
+                cashtrans = dg_receivedAccounts.SelectedItem as CashTransfer;
+                this.DataContext = cashtrans;
+                if (cashtrans != null)
                 {
-                    cashtrans = dg_receivedAccounts.SelectedItem as CashTransfer;
-                    this.DataContext = cashtrans;
-                    if (cashtrans != null)
+                    btn_image.IsEnabled = true;
+                    ///////////////////////////
+                    btn_add.IsEnabled = false;
+                    cb_depositFrom.IsEnabled = false;
+                    cb_depositorV.IsEnabled = false;
+                    cb_depositorC.IsEnabled = false;
+                    cb_depositorU.IsEnabled = false;
+                    cb_depositorSh.IsEnabled = false;
+                    btn_invoices.IsEnabled = false;
+                    cb_paymentProcessType.IsEnabled = false;
+                    cb_card.IsEnabled = false;
+                    tb_docNum.IsEnabled = false;
+                    dp_docDate.IsEnabled = false;
+                    tb_docNumCheque.IsEnabled = false;
+                    tb_docNumCard.IsEnabled = false;
+                    dp_docDateCheque.IsEnabled = false;
+                    tb_cash.IsEnabled = false;
+                    tb_note.IsEnabled = false;
+                    //////////////////////////
+                    tb_transNum.Text = cashtrans.transNum;
+
+                    tb_cash.Text = SectionData.DecTostring(cashtrans.cash);
+
+                    cb_depositFrom.SelectedValue = "m";
+
+                    switch (cb_depositFrom.SelectedValue.ToString())
                     {
-                        btn_image.IsEnabled = true;
-                        ///////////////////////////
-                        btn_add.IsEnabled = false;
-                        cb_depositFrom.IsEnabled = false;
-                        cb_depositorV.IsEnabled = false;
-                        cb_depositorC.IsEnabled = false;
-                        cb_depositorU.IsEnabled = false;
-                        cb_depositorSh.IsEnabled = false;
-                        btn_invoices.IsEnabled = false;
-                        cb_paymentProcessType.IsEnabled = false;
-                        cb_card.IsEnabled = false;
-                        tb_docNum.IsEnabled = false;
-                        dp_docDate.IsEnabled = false;
-                        tb_docNumCheque.IsEnabled = false;
-                        tb_docNumCard.IsEnabled = false;
-                        dp_docDateCheque.IsEnabled = false;
-                        tb_cash.IsEnabled = false;
-                        tb_note.IsEnabled = false;
-                        //////////////////////////
-                        tb_transNum.Text = cashtrans.transNum;
-
-                        tb_cash.Text = SectionData.DecTostring(cashtrans.cash);
-
-                        cb_depositFrom.SelectedValue = "m";
-
-                        switch (cb_depositFrom.SelectedValue.ToString())
-                        {
-                            case "v":
-                                cb_depositorV.SelectedValue = cashtrans.agentId.Value;
-                                break;
-                            case "c":
-                                cb_depositorC.SelectedValue = cashtrans.agentId.Value;
-                                break;
-                            case "u":
-                                cb_depositorU.SelectedValue = cashtrans.userId.Value;
-                                break;
-                            case "sh":
-                                cb_depositorSh.SelectedValue = cashtrans.shippingCompanyId.Value;
-                                break;
-                            case "m":
-                                break;
-                        }
-
-                        cb_paymentProcessType.SelectedValue = cashtrans.processType;
-
-                        cb_card.SelectedValue = cashtrans.cardId;
+                        case "v":
+                            cb_depositorV.SelectedValue = cashtrans.agentId.Value;
+                            break;
+                        case "c":
+                            cb_depositorC.SelectedValue = cashtrans.agentId.Value;
+                            break;
+                        case "u":
+                            cb_depositorU.SelectedValue = cashtrans.userId.Value;
+                            break;
+                        case "sh":
+                            cb_depositorSh.SelectedValue = cashtrans.shippingCompanyId.Value;
+                            break;
+                        case "m":
+                            break;
                     }
+
+                    cb_paymentProcessType.SelectedValue = cashtrans.processType;
+
+                    cb_card.SelectedValue = cashtrans.cardId;
                 }
+            }
             //    if (sender != null)
             //        SectionData.EndAwait(grid_ucReceivedAccounts);
             //}
@@ -432,7 +432,7 @@ namespace POS.View.accounts
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_ucReceivedAccounts);
-                string s = "0" , s1 = "";
+                string s = "0", s1 = "";
 
                 if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
@@ -441,26 +441,26 @@ namespace POS.View.accounts
                     //chk empty cash
                     SectionData.validateEmptyTextBox(tb_cash, p_errorCash, tt_errorCash, "trEmptyCashToolTip");
 
-                //chk empty doc num
-                if (grid_doc.IsVisible)
-                {
-                    TextBox dpDate = (TextBox)dp_docDate.Template.FindName("PART_TextBox", dp_docDate);
+                    //chk empty doc num
+                    if (grid_doc.IsVisible)
+                    {
+                        TextBox dpDate = (TextBox)dp_docDate.Template.FindName("PART_TextBox", dp_docDate);
 
-                    SectionData.validateEmptyTextBox(tb_docNum, p_errorDocNum, tt_errorDocNum, "trEmptyDocNumToolTip");
-                    SectionData.validateEmptyTextBox(dpDate, p_errorDocDate, tt_errorDocDate, "trEmptyDocDateToolTip");
-                }
-                else
-                {
-                }
+                        SectionData.validateEmptyTextBox(tb_docNum, p_errorDocNum, tt_errorDocNum, "trEmptyDocNumToolTip");
+                        SectionData.validateEmptyTextBox(dpDate, p_errorDocDate, tt_errorDocDate, "trEmptyDocDateToolTip");
+                    }
+                    else
+                    {
+                    }
 
-                //chk empty cheque num
-                if (grid_cheque.IsVisible)
-                {
-                    SectionData.validateEmptyTextBox(tb_docNumCheque, p_errorDocNumCheque, tt_errorDocNumCheque, "trEmptyDocNumToolTip");
-                }
-                else
-                {
-                }
+                    //chk empty cheque num
+                    if (grid_cheque.IsVisible)
+                    {
+                        SectionData.validateEmptyTextBox(tb_docNumCheque, p_errorDocNumCheque, tt_errorDocNumCheque, "trEmptyDocNumToolTip");
+                    }
+                    else
+                    {
+                    }
                     //chk empty process num
                     if (tb_docNumCard.IsVisible)
                     {
@@ -473,32 +473,32 @@ namespace POS.View.accounts
                     //chk empty deposit from
                     SectionData.validateEmptyComboBox(cb_depositFrom, p_errorDepositFrom, tt_errorDepositFrom, "trErrorEmptyDepositFromToolTip");
 
-                //chk empty depositor
-                if (cb_depositorV.IsVisible)
-                    SectionData.validateEmptyComboBox(cb_depositorV, p_errordepositor, tt_errordepositor, "trErrorEmptyDepositorToolTip");
-                else
-                    SectionData.clearComboBoxValidate(cb_depositorV, p_errordepositor);
-                if (cb_depositorC.IsVisible)
-                    SectionData.validateEmptyComboBox(cb_depositorC, p_errordepositor, tt_errordepositor, "trErrorEmptyDepositorToolTip");
-                else
-                    SectionData.clearComboBoxValidate(cb_depositorC, p_errordepositor);
-                if (cb_depositorU.IsVisible)
-                    SectionData.validateEmptyComboBox(cb_depositorU, p_errordepositor, tt_errordepositor, "trErrorEmptyDepositorToolTip");
-                else
-                    SectionData.clearComboBoxValidate(cb_depositorU, p_errordepositor);
+                    //chk empty depositor
+                    if (cb_depositorV.IsVisible)
+                        SectionData.validateEmptyComboBox(cb_depositorV, p_errordepositor, tt_errordepositor, "trErrorEmptyDepositorToolTip");
+                    else
+                        SectionData.clearComboBoxValidate(cb_depositorV, p_errordepositor);
+                    if (cb_depositorC.IsVisible)
+                        SectionData.validateEmptyComboBox(cb_depositorC, p_errordepositor, tt_errordepositor, "trErrorEmptyDepositorToolTip");
+                    else
+                        SectionData.clearComboBoxValidate(cb_depositorC, p_errordepositor);
+                    if (cb_depositorU.IsVisible)
+                        SectionData.validateEmptyComboBox(cb_depositorU, p_errordepositor, tt_errordepositor, "trErrorEmptyDepositorToolTip");
+                    else
+                        SectionData.clearComboBoxValidate(cb_depositorU, p_errordepositor);
                     if (cb_depositorSh.IsVisible)
                         SectionData.validateEmptyComboBox(cb_depositorSh, p_errordepositor, tt_errordepositor, "trErrorEmptyDepositorToolTip");
                     else
                         SectionData.clearComboBoxValidate(cb_depositorU, p_errordepositor);
 
-                //chk empty payment type
-                SectionData.validateEmptyComboBox(cb_paymentProcessType, p_errorpaymentProcessType, tt_errorpaymentProcessType, "trErrorEmptyPaymentTypeToolTip");
+                    //chk empty payment type
+                    SectionData.validateEmptyComboBox(cb_paymentProcessType, p_errorpaymentProcessType, tt_errorpaymentProcessType, "trErrorEmptyPaymentTypeToolTip");
 
-                //chk empty card 
-                if (cb_card.IsVisible)
-                    SectionData.validateEmptyComboBox(cb_card, p_errorCard, tt_errorCard, "trEmptyCardTooltip");
-                else
-                    SectionData.clearComboBoxValidate(cb_card, p_errorCard);
+                    //chk empty card 
+                    if (cb_card.IsVisible)
+                        SectionData.validateEmptyComboBox(cb_card, p_errorCard, tt_errorCard, "trEmptyCardTooltip");
+                    else
+                        SectionData.clearComboBoxValidate(cb_card, p_errorCard);
                     #endregion
 
                     #region save
@@ -512,88 +512,88 @@ namespace POS.View.accounts
                     (((tb_docNumCard.IsVisible) && (!tb_docNumCard.Text.Equals(""))) || (!tb_docNumCard.IsVisible)) &&
                     (((cb_card.IsVisible) && (!cb_card.Text.Equals(""))) || (!cb_card.IsVisible))
                     )
-                {
-                    string depositor = cb_depositFrom.SelectedValue.ToString();
-                    int agentid = 0;
-
-                    CashTransfer cash = new CashTransfer();
-
-                    cash.transType = "d";
-                    cash.posId = MainWindow.posID.Value;
-                    cash.transNum = await cashModel.generateCashNumber(cash.transType + cb_depositFrom.SelectedValue.ToString());
-                    cash.cash = decimal.Parse(tb_cash.Text);
-                    cash.notes = tb_note.Text;
-                    cash.createUserId = MainWindow.userID;
-                    cash.side = cb_depositFrom.SelectedValue.ToString();
-                    cash.processType = cb_paymentProcessType.SelectedValue.ToString();
-
-                    if (cb_depositorV.IsVisible)
-                    { cash.agentId = Convert.ToInt32(cb_depositorV.SelectedValue); agentid = Convert.ToInt32(cb_depositorV.SelectedValue); }
-
-                    if (cb_depositorC.IsVisible)
-                    { cash.agentId = Convert.ToInt32(cb_depositorC.SelectedValue); agentid = Convert.ToInt32(cb_depositorC.SelectedValue); }
-
-                    if (cb_depositorU.IsVisible)
-                        cash.userId = Convert.ToInt32(cb_depositorU.SelectedValue);
-
-                    if (cb_depositorSh.IsVisible)
-                        cash.shippingCompanyId = Convert.ToInt32(cb_depositorSh.SelectedValue);
-
-                    if (cb_paymentProcessType.SelectedValue.ToString().Equals("card"))
                     {
-                        cash.cardId = Convert.ToInt32(cb_card.SelectedValue);
-                        cash.docNum = tb_docNumCard.Text;
-                    }
+                        string depositor = cb_depositFrom.SelectedValue.ToString();
+                        int agentid = 0;
 
-                    if (cb_paymentProcessType.SelectedValue.ToString().Equals("doc"))
-                        cash.docNum = tb_docNum.Text;
+                        CashTransfer cash = new CashTransfer();
 
-                    if (cb_paymentProcessType.SelectedValue.ToString().Equals("cheque"))
-                        cash.docNum = tb_docNumCheque.Text;
+                        cash.transType = "d";
+                        cash.posId = MainWindow.posID.Value;
+                        cash.transNum = await cashModel.generateCashNumber(cash.transType + cb_depositFrom.SelectedValue.ToString());
+                        cash.cash = decimal.Parse(tb_cash.Text);
+                        cash.notes = tb_note.Text;
+                        cash.createUserId = MainWindow.userID;
+                        cash.side = cb_depositFrom.SelectedValue.ToString();
+                        cash.processType = cb_paymentProcessType.SelectedValue.ToString();
 
-                    if (cb_paymentProcessType.SelectedValue.ToString().Equals("doc"))
-                    {
-                        string res = await saveBond(cash.docNum, cash.cash.Value, dp_docDate.SelectedDate.Value, "d");
-                        cash.bondId = int.Parse(res);
-                    }
+                        if (cb_depositorV.IsVisible)
+                        { cash.agentId = Convert.ToInt32(cb_depositorV.SelectedValue); agentid = Convert.ToInt32(cb_depositorV.SelectedValue); }
 
-                    if (cb_depositorV.IsVisible || cb_depositorC.IsVisible)
-                    {
-                        if (tb_cash.IsReadOnly)
-                            s1 = await cashModel.PayListOfInvoices(cash.agentId.Value, invoicesLst, "feed", cash); 
+                        if (cb_depositorC.IsVisible)
+                        { cash.agentId = Convert.ToInt32(cb_depositorC.SelectedValue); agentid = Convert.ToInt32(cb_depositorC.SelectedValue); }
+
+                        if (cb_depositorU.IsVisible)
+                            cash.userId = Convert.ToInt32(cb_depositorU.SelectedValue);
+
+                        if (cb_depositorSh.IsVisible)
+                            cash.shippingCompanyId = Convert.ToInt32(cb_depositorSh.SelectedValue);
+
+                        if (cb_paymentProcessType.SelectedValue.ToString().Equals("card"))
+                        {
+                            cash.cardId = Convert.ToInt32(cb_card.SelectedValue);
+                            cash.docNum = tb_docNumCard.Text;
+                        }
+
+                        if (cb_paymentProcessType.SelectedValue.ToString().Equals("doc"))
+                            cash.docNum = tb_docNum.Text;
+
+                        if (cb_paymentProcessType.SelectedValue.ToString().Equals("cheque"))
+                            cash.docNum = tb_docNumCheque.Text;
+
+                        if (cb_paymentProcessType.SelectedValue.ToString().Equals("doc"))
+                        {
+                            string res = await saveBond(cash.docNum, cash.cash.Value, dp_docDate.SelectedDate.Value, "d");
+                            cash.bondId = int.Parse(res);
+                        }
+
+                        if (cb_depositorV.IsVisible || cb_depositorC.IsVisible)
+                        {
+                            if (tb_cash.IsReadOnly)
+                                s1 = await cashModel.PayListOfInvoices(cash.agentId.Value, invoicesLst, "feed", cash);
+                            else
+                                s1 = await cashModel.PayByAmmount(cash.agentId.Value, decimal.Parse(tb_cash.Text), "feed", cash);
+                        }
+                        else if (cb_depositorU.IsVisible)
+                        {
+                            if (tb_cash.IsReadOnly)
+                                s1 = await cashModel.PayUserListOfInvoices(cash.userId.Value, invoicesLst, "feed", cash);
+                            else
+                                s1 = await cashModel.PayUserByAmmount(cash.userId.Value, decimal.Parse(tb_cash.Text), "feed", cash);
+                        }
+                        else if (cb_depositorSh.IsVisible)
+                        {
+                            if (tb_cash.IsReadOnly)
+                                s1 = await cashModel.PayShippingCompanyListOfInvoices(cash.shippingCompanyId.Value, invoicesLst, "feed", cash);
+                            else
+                                s1 = await cashModel.payShippingCompanyByAmount(cash.shippingCompanyId.Value, decimal.Parse(tb_cash.Text), "feed", cash);
+                        }
                         else
-                            s1 = await cashModel.PayByAmmount(cash.agentId.Value, decimal.Parse(tb_cash.Text), "feed", cash);
-                    }
-                    else if (cb_depositorU.IsVisible)
-                    {
-                        if (tb_cash.IsReadOnly)
-                            s1 = await cashModel.PayUserListOfInvoices(cash.userId.Value, invoicesLst, "feed", cash);
+                            s = await cashModel.Save(cash);
+
+                        if ((!s.Equals("0")) || (!s1.Equals("")) || (s1.Equals("-1")))
+                        {
+                            if (cb_paymentProcessType.SelectedValue.ToString().Equals("cash"))
+                                await calcBalance(cash.cash.Value, depositor, agentid);
+
+                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                            Btn_clear_Click(null, null);
+
+                            await RefreshCashesList();
+                            Tb_search_TextChanged(null, null);
+                        }
                         else
-                            s1 = await cashModel.PayUserByAmmount(cash.userId.Value, decimal.Parse(tb_cash.Text), "feed", cash);
-                    }
-                    else if (cb_depositorSh.IsVisible)
-                    {
-                        if (tb_cash.IsReadOnly)
-                            s1 = await cashModel.PayShippingCompanyListOfInvoices(cash.shippingCompanyId.Value, invoicesLst, "feed", cash);
-                        else
-                            s1 = await cashModel.payShippingCompanyByAmount(cash.shippingCompanyId.Value, decimal.Parse(tb_cash.Text), "feed", cash);
-                    }
-                    else
-                    s = await cashModel.Save(cash);
-
-                    if ((!s.Equals("0")) || (!s1.Equals("")) || (s1.Equals("-1")))
-                    {
-                        if (cb_paymentProcessType.SelectedValue.ToString().Equals("cash"))
-                          await  calcBalance(cash.cash.Value, depositor, agentid);
-
-                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
-                        Btn_clear_Click(null, null);
-
-                        await RefreshCashesList();
-                        Tb_search_TextChanged(null, null);
-                    }
-                    else
-                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                     }
                     #endregion
 
@@ -627,13 +627,13 @@ namespace POS.View.accounts
             return s;
         }
 
-        private async Task calcBalance(decimal ammount , string depositor , int agentid)
+        private async Task calcBalance(decimal ammount, string depositor, int agentid)
         {
             int s = 0;
             //increase pos balance
             Pos pos = await posModel.getPosById(MainWindow.posID.Value);
             pos.balance += ammount;
-           
+
             s = await pos.savePos(pos);
         }
 
@@ -641,7 +641,7 @@ namespace POS.View.accounts
         {//balance for user
             User user = await userModel.getUserById(userId);
 
-            if(user.balanceType == 0)
+            if (user.balanceType == 0)
                 user.balance += value;
             else
             {
@@ -690,7 +690,7 @@ namespace POS.View.accounts
 
         }
 
-        private  void Btn_clear_Click(object sender, RoutedEventArgs e)
+        private void Btn_clear_Click(object sender, RoutedEventArgs e)
         {//clear
             try
             {
@@ -734,7 +734,7 @@ namespace POS.View.accounts
                 }
                 cb_depositFrom.SelectedIndex = -1;
                 cb_depositorV.Visibility = Visibility.Collapsed;
-                cb_depositorC.Visibility = Visibility.Collapsed ;
+                cb_depositorC.Visibility = Visibility.Collapsed;
                 cb_depositorU.Visibility = Visibility.Collapsed;
                 cb_depositorSh.Visibility = Visibility.Collapsed;
                 cb_card.Visibility = Visibility.Collapsed;
@@ -750,15 +750,15 @@ namespace POS.View.accounts
                 tb_docNumCard.Visibility = Visibility.Collapsed;
                 grid_cheque.Visibility = Visibility.Collapsed;
                 SectionData.clearValidate(tb_cash, p_errorCash);
-                SectionData.clearComboBoxValidate(cb_depositFrom , p_errorDepositFrom);
-                SectionData.clearComboBoxValidate(cb_depositorV,    p_errordepositor);
+                SectionData.clearComboBoxValidate(cb_depositFrom, p_errorDepositFrom);
+                SectionData.clearComboBoxValidate(cb_depositorV, p_errordepositor);
                 SectionData.clearComboBoxValidate(cb_depositorC, p_errordepositor);
                 SectionData.clearComboBoxValidate(cb_depositorU, p_errordepositor);
                 SectionData.clearComboBoxValidate(cb_depositorSh, p_errordepositor);
                 SectionData.clearComboBoxValidate(cb_paymentProcessType, p_errorpaymentProcessType);
-                SectionData.clearComboBoxValidate(cb_card , p_errorCard);
+                SectionData.clearComboBoxValidate(cb_card, p_errorCard);
                 SectionData.clearValidate(tb_docNumCard, p_errorDocCard);
-                SectionData.clearValidate(tb_docNum , p_errorDocNum);
+                SectionData.clearValidate(tb_docNum, p_errorDocNum);
                 SectionData.clearValidate(tb_docNum, p_errorDocNum);
                 SectionData.clearValidate(tb_docNumCheque, p_errorDocNumCheque);
 
@@ -796,8 +796,8 @@ namespace POS.View.accounts
                         string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                         ReportCls.checkLang();
-                       
-                         clsReports.receivedAccReport(cashesQuery, rep, reppath,paramarr);
+
+                        clsReports.receivedAccReport(cashesQuery, rep, reppath, paramarr);
                         clsReports.setReportLanguage(paramarr);
                         clsReports.Header(paramarr);
 
@@ -821,8 +821,8 @@ namespace POS.View.accounts
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-                    if (sender != null)
-                        SectionData.EndAwait(grid_ucReceivedAccounts);
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucReceivedAccounts);
             }
             catch (Exception ex)
             {
@@ -998,10 +998,10 @@ namespace POS.View.accounts
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this);
+                SectionData.ExceptionMessage(ex, this);
             }
 
-         }
+        }
 
         private void Cb_paymentProcessType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//type selection
@@ -1049,9 +1049,9 @@ namespace POS.View.accounts
                         break;
 
                     case 2://cheque
-                        grid_doc.Visibility    = Visibility.Collapsed;
+                        grid_doc.Visibility = Visibility.Collapsed;
                         grid_cheque.Visibility = Visibility.Visible;
-                        cb_card.Visibility     = Visibility.Collapsed;
+                        cb_card.Visibility = Visibility.Collapsed;
                         tb_docNumCard.Visibility = Visibility.Collapsed;
                         SectionData.clearValidate(tb_docNumCard, p_errorDocCard);
                         SectionData.clearValidate(tb_docNum, p_errorDocNum);
@@ -1096,62 +1096,62 @@ namespace POS.View.accounts
 
         private void Cb_depositFrom_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//deposit selection
-            //try
-            //{
-            //    if (sender != null)
-            //        SectionData.StartAwait(grid_ucReceivedAccounts);
+         //try
+         //{
+         //    if (sender != null)
+         //        SectionData.StartAwait(grid_ucReceivedAccounts);
 
-                btn_invoices.IsEnabled = false;
-                switch (cb_depositFrom.SelectedIndex)
-                {
-                    case 0://vendor
-                        cb_depositorV.SelectedIndex = -1;
-                        cb_depositorV.Visibility  = Visibility.Visible;
-                        cb_depositorC.Visibility  = Visibility.Collapsed;
-                        btn_invoices.Visibility   = Visibility.Visible;
-                        cb_depositorU.Visibility  = Visibility.Collapsed;
-                        cb_depositorSh.Visibility = Visibility.Collapsed;
-                        break;
-                    case 1://customer
-                        cb_depositorC.SelectedIndex = -1;
-                        cb_depositorV.Visibility = Visibility.Collapsed;
-                        cb_depositorC.Visibility = Visibility.Visible;
-                        btn_invoices.Visibility  = Visibility.Visible;
-                        cb_depositorU.Visibility = Visibility.Collapsed;
-                        cb_depositorSh.Visibility = Visibility.Collapsed;
-                        break;
-                    case 2://user
-                        cb_depositorU.SelectedIndex = -1;
-                        cb_depositorV.Visibility = Visibility.Collapsed;
-                        cb_depositorC.Visibility = Visibility.Collapsed;
-                        btn_invoices.Visibility = Visibility.Visible;
-                        cb_depositorU.Visibility = Visibility.Visible;
-                        cb_depositorSh.Visibility = Visibility.Collapsed;
-                        break;
-                    case 3://other
-                        cb_depositorV.Visibility = Visibility.Collapsed;
-                        cb_depositorC.Visibility = Visibility.Collapsed;
-                        btn_invoices.Visibility = Visibility.Collapsed;
-                        cb_depositorU.Visibility = Visibility.Collapsed;
-                        cb_depositorSh.Visibility = Visibility.Collapsed;
-                        SectionData.clearComboBoxValidate(cb_depositorV, p_errordepositor);
-                        SectionData.clearComboBoxValidate(cb_depositorC, p_errordepositor);
-                        SectionData.clearComboBoxValidate(cb_depositorU, p_errordepositor);
-                        SectionData.clearComboBoxValidate(cb_depositorSh, p_errordepositor);
-                        cb_depositorV.Text = "";
-                        cb_depositorC.Text = "";
-                        cb_depositorU.Text = "";
-                        cb_depositorSh.Text = "";
-                        break;
-                    case 4://shipping company
-                        cb_depositorU.SelectedIndex = -1;
-                        cb_depositorV.Visibility  = Visibility.Collapsed;
-                        cb_depositorC.Visibility  = Visibility.Collapsed;
-                        btn_invoices.Visibility   = Visibility.Visible;
-                        cb_depositorU.Visibility  = Visibility.Collapsed;
-                        cb_depositorSh.Visibility = Visibility.Visible;
-                        break;
-                }
+            btn_invoices.IsEnabled = false;
+            switch (cb_depositFrom.SelectedIndex)
+            {
+                case 0://vendor
+                    cb_depositorV.SelectedIndex = -1;
+                    cb_depositorV.Visibility = Visibility.Visible;
+                    cb_depositorC.Visibility = Visibility.Collapsed;
+                    btn_invoices.Visibility = Visibility.Visible;
+                    cb_depositorU.Visibility = Visibility.Collapsed;
+                    cb_depositorSh.Visibility = Visibility.Collapsed;
+                    break;
+                case 1://customer
+                    cb_depositorC.SelectedIndex = -1;
+                    cb_depositorV.Visibility = Visibility.Collapsed;
+                    cb_depositorC.Visibility = Visibility.Visible;
+                    btn_invoices.Visibility = Visibility.Visible;
+                    cb_depositorU.Visibility = Visibility.Collapsed;
+                    cb_depositorSh.Visibility = Visibility.Collapsed;
+                    break;
+                case 2://user
+                    cb_depositorU.SelectedIndex = -1;
+                    cb_depositorV.Visibility = Visibility.Collapsed;
+                    cb_depositorC.Visibility = Visibility.Collapsed;
+                    btn_invoices.Visibility = Visibility.Visible;
+                    cb_depositorU.Visibility = Visibility.Visible;
+                    cb_depositorSh.Visibility = Visibility.Collapsed;
+                    break;
+                case 3://other
+                    cb_depositorV.Visibility = Visibility.Collapsed;
+                    cb_depositorC.Visibility = Visibility.Collapsed;
+                    btn_invoices.Visibility = Visibility.Collapsed;
+                    cb_depositorU.Visibility = Visibility.Collapsed;
+                    cb_depositorSh.Visibility = Visibility.Collapsed;
+                    SectionData.clearComboBoxValidate(cb_depositorV, p_errordepositor);
+                    SectionData.clearComboBoxValidate(cb_depositorC, p_errordepositor);
+                    SectionData.clearComboBoxValidate(cb_depositorU, p_errordepositor);
+                    SectionData.clearComboBoxValidate(cb_depositorSh, p_errordepositor);
+                    cb_depositorV.Text = "";
+                    cb_depositorC.Text = "";
+                    cb_depositorU.Text = "";
+                    cb_depositorSh.Text = "";
+                    break;
+                case 4://shipping company
+                    cb_depositorU.SelectedIndex = -1;
+                    cb_depositorV.Visibility = Visibility.Collapsed;
+                    cb_depositorC.Visibility = Visibility.Collapsed;
+                    btn_invoices.Visibility = Visibility.Visible;
+                    cb_depositorU.Visibility = Visibility.Collapsed;
+                    cb_depositorSh.Visibility = Visibility.Visible;
+                    break;
+            }
 
             //    if (sender != null)
             //        SectionData.EndAwait(grid_ucReceivedAccounts);
@@ -1200,7 +1200,7 @@ namespace POS.View.accounts
             cb_depositorSh.SelectedValuePath = "shippingCompanyId";
         }
 
-        private  void Btn_printInvoice_Click(object sender, RoutedEventArgs e)
+        private void Btn_printInvoice_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -1212,27 +1212,9 @@ namespace POS.View.accounts
 
                     if (cashtrans.cashTransId > 0)
                     {
-                        string addpath;
-                        bool isArabic = ReportCls.checkLang();
-                        if (isArabic)
-                        {
-                            addpath = @"\Reports\Account\Ar\ArReciveReport.rdlc";
-                        }
-                        else
-                        {
-                            addpath = @"\Reports\Account\En\ReciveReport.rdlc";
-                        }
-
-                        string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-                        rep.ReportPath = reppath;
-                        rep.DataSources.Clear();
-                        rep.EnableExternalImages = true;
-                        rep.SetParameters(reportclass.fillPayReport(cashtrans));
-
-                        rep.Refresh();
-
+                        BuildvoucherReport();
                         LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.rep_printer_name, short.Parse(MainWindow.rep_print_count));
-                   
+
                     }
                 }
                 else
@@ -1288,7 +1270,44 @@ namespace POS.View.accounts
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+        public void BuildvoucherReport()
+        {
+            string addpath;
+            bool isArabic = ReportCls.checkLang();
+            if (isArabic)
+            {
 
+                if (MainWindow.docPapersize == "A4")
+                {
+                    addpath = @"\Reports\Account\Ar\ArReciveReportA4.rdlc";
+                }
+                else
+                {
+                    addpath = @"\Reports\Account\Ar\ArReciveReport.rdlc";
+                }
+            }
+            else
+            {
+                if (MainWindow.docPapersize == "A4")
+                {
+                    addpath = @"\Reports\Account\En\ReciveReportA4.rdlc";
+                }
+                else
+                {
+                    addpath = @"\Reports\Account\En\ReciveReport.rdlc";
+                }
+
+
+            }
+
+            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+            rep.ReportPath = reppath;
+            rep.DataSources.Clear();
+            rep.EnableExternalImages = true;
+            rep.SetParameters(reportclass.fillPayReport(cashtrans));
+
+            rep.Refresh();
+        }
         private void Btn_preview_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -1310,24 +1329,7 @@ namespace POS.View.accounts
                     //
                     if (cashtrans.cashTransId > 0)
                     {
-                        string addpath;
-                        bool isArabic = ReportCls.checkLang();
-                        if (isArabic)
-                        {
-                            addpath = @"\Reports\Account\Ar\ArReciveReport.rdlc";
-                        }
-                        else
-                        {
-                            addpath = @"\Reports\Account\En\ReciveReport.rdlc";
-                        }
-
-                        string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-                        rep.ReportPath = reppath;
-                        rep.DataSources.Clear();
-                        rep.EnableExternalImages = true;
-                        rep.SetParameters(reportclass.fillPayReport(cashtrans));
-
-                        rep.Refresh();
+                        BuildvoucherReport();
 
                         LocalReportExtensions.ExportToPDF(rep, pdfpath);
                         wd_previewPdf w = new wd_previewPdf();
@@ -1370,24 +1372,7 @@ namespace POS.View.accounts
 
                     if (cashtrans.cashTransId > 0)
                     {
-                        string addpath;
-                        bool isArabic = ReportCls.checkLang();
-                        if (isArabic)
-                        {
-                            addpath = @"\Reports\Account\Ar\ArReciveReport.rdlc";
-                        }
-                        else
-                        {
-                            addpath = @"\Reports\Account\En\ReciveReport.rdlc";
-                        }
-
-                        string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-                        rep.ReportPath = reppath;
-                        rep.DataSources.Clear();
-                        rep.EnableExternalImages = true;
-                        rep.SetParameters(reportclass.fillPayReport(cashtrans));
-
-                        rep.Refresh();
+                        BuildvoucherReport();
 
                         saveFileDialog.Filter = "PDF|*.pdf;";
 
@@ -1395,7 +1380,7 @@ namespace POS.View.accounts
                         {
                             string filepath = saveFileDialog.FileName;
 
-                            LocalReportExtensions.ExportToPDF(rep, filepath); 
+                            LocalReportExtensions.ExportToPDF(rep, filepath);
 
                         }
                     }
@@ -1487,33 +1472,33 @@ namespace POS.View.accounts
                     #region
                     List<ReportParameter> paramarr = new List<ReportParameter>();
 
-                string addpath;
-                bool isArabic = ReportCls.checkLang();
-                if (isArabic)
-                {
-                    addpath = @"\Reports\Account\Ar\ArReceiptAccReport.rdlc";
-                }
-                else addpath = @"\Reports\Account\En\ReceiptAccReport.rdlc";
-                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+                    string addpath;
+                    bool isArabic = ReportCls.checkLang();
+                    if (isArabic)
+                    {
+                        addpath = @"\Reports\Account\Ar\ArReceiptAccReport.rdlc";
+                    }
+                    else addpath = @"\Reports\Account\En\ReceiptAccReport.rdlc";
+                    string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
-                ReportCls.checkLang();
-              
-                clsReports.receivedAccReport(cashesQuery, rep, reppath,paramarr);
-                clsReports.setReportLanguage(paramarr);
-                clsReports.Header(paramarr);
-                clsReports.bankdg(paramarr);
+                    ReportCls.checkLang();
 
-                rep.SetParameters(paramarr);
+                    clsReports.receivedAccReport(cashesQuery, rep, reppath, paramarr);
+                    clsReports.setReportLanguage(paramarr);
+                    clsReports.Header(paramarr);
+                    clsReports.bankdg(paramarr);
 
-                rep.Refresh();
+                    rep.SetParameters(paramarr);
 
-                saveFileDialog.Filter = "PDF|*.pdf;";
+                    rep.Refresh();
 
-                if (saveFileDialog.ShowDialog() == true)
-                {
-                    string filepath = saveFileDialog.FileName;
-                    LocalReportExtensions.ExportToPDF(rep, filepath);
-                }
+                    saveFileDialog.Filter = "PDF|*.pdf;";
+
+                    if (saveFileDialog.ShowDialog() == true)
+                    {
+                        string filepath = saveFileDialog.FileName;
+                        LocalReportExtensions.ExportToPDF(rep, filepath);
+                    }
                     #endregion
                 }
                 else
@@ -1552,7 +1537,7 @@ namespace POS.View.accounts
 
                     ReportCls.checkLang();
 
-                     clsReports.receivedAccReport(cashesQuery, rep, reppath,paramarr);
+                    clsReports.receivedAccReport(cashesQuery, rep, reppath, paramarr);
                     clsReports.setReportLanguage(paramarr);
                     clsReports.Header(paramarr);
 
@@ -1585,43 +1570,43 @@ namespace POS.View.accounts
                 {
                     #region
                     Window.GetWindow(this).Opacity = 0.2;
-                string pdfpath = "";
+                    string pdfpath = "";
 
-                List<ReportParameter> paramarr = new List<ReportParameter>();
+                    List<ReportParameter> paramarr = new List<ReportParameter>();
 
 
-                //
-                pdfpath = @"\Thumb\report\temp.pdf";
-                pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
+                    //
+                    pdfpath = @"\Thumb\report\temp.pdf";
+                    pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
 
-                string addpath = "";
-                bool isArabic = ReportCls.checkLang();
-                if (isArabic)
-                {
-                    addpath = @"\Reports\Account\Ar\ArReceiptAccReport.rdlc";
-                }
-                else addpath = @"\Reports\Account\En\ReceiptAccReport.rdlc";
-                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+                    string addpath = "";
+                    bool isArabic = ReportCls.checkLang();
+                    if (isArabic)
+                    {
+                        addpath = @"\Reports\Account\Ar\ArReceiptAccReport.rdlc";
+                    }
+                    else addpath = @"\Reports\Account\En\ReceiptAccReport.rdlc";
+                    string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
-                ReportCls.checkLang();
+                    ReportCls.checkLang();
 
-                 clsReports.receivedAccReport(cashesQuery, rep, reppath,paramarr);
-                clsReports.setReportLanguage(paramarr);
-                clsReports.Header(paramarr);
+                    clsReports.receivedAccReport(cashesQuery, rep, reppath, paramarr);
+                    clsReports.setReportLanguage(paramarr);
+                    clsReports.Header(paramarr);
 
-                rep.SetParameters(paramarr);
+                    rep.SetParameters(paramarr);
 
-                rep.Refresh();
+                    rep.Refresh();
 
-                LocalReportExtensions.ExportToPDF(rep, pdfpath);
-                wd_previewPdf w = new wd_previewPdf();
-                w.pdfPath = pdfpath;
-                if (!string.IsNullOrEmpty(w.pdfPath))
-                {
-                    w.ShowDialog();
-                    w.wb_pdfWebViewer.Dispose();
-                }
-                Window.GetWindow(this).Opacity = 1;
+                    LocalReportExtensions.ExportToPDF(rep, pdfpath);
+                    wd_previewPdf w = new wd_previewPdf();
+                    w.pdfPath = pdfpath;
+                    if (!string.IsNullOrEmpty(w.pdfPath))
+                    {
+                        w.ShowDialog();
+                        w.wb_pdfWebViewer.Dispose();
+                    }
+                    Window.GetWindow(this).Opacity = 1;
                     #endregion
                 }
                 else

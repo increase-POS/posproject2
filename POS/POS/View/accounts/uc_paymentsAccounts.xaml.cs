@@ -56,7 +56,7 @@ namespace POS.View.accounts
 
         public List<Invoice> invoicesLst = new List<Invoice>();
 
-        string  createPermission = "payments_create";
+        string createPermission = "payments_create";
         string reportsPermission = "payments_reports";
         private static uc_paymentsAccounts _instance;
         public static uc_paymentsAccounts Instance
@@ -156,43 +156,43 @@ namespace POS.View.accounts
 
                 #region translate
                 if (MainWindow.lang.Equals("en"))
-            {
-                MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
-                grid_ucPaymentsAccounts.FlowDirection = FlowDirection.LeftToRight;
-            }
-            else
-            {
-                MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
-                grid_ucPaymentsAccounts.FlowDirection = FlowDirection.RightToLeft;
-            }
-            translate();
-            #endregion
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                    grid_ucPaymentsAccounts.FlowDirection = FlowDirection.LeftToRight;
+                }
+                else
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                    grid_ucPaymentsAccounts.FlowDirection = FlowDirection.RightToLeft;
+                }
+                translate();
+                #endregion
 
                 #region Style Date
-            /////////////////////////////////////////////////////////////
-            dp_startSearchDate.Loaded += delegate
-            {
-
-                var textBox1 = (TextBox)dp_startSearchDate.Template.FindName("PART_TextBox", dp_startSearchDate);
-                if (textBox1 != null)
+                /////////////////////////////////////////////////////////////
+                dp_startSearchDate.Loaded += delegate
                 {
-                    textBox1.Background = dp_startSearchDate.Background;
-                    textBox1.BorderThickness = dp_startSearchDate.BorderThickness;
-                }
-            };
-            /////////////////////////////////////////////////////////////
-            dp_endSearchDate.Loaded += delegate
-            {
 
-                var textBox1 = (TextBox)dp_endSearchDate.Template.FindName("PART_TextBox", dp_endSearchDate);
-                if (textBox1 != null)
+                    var textBox1 = (TextBox)dp_startSearchDate.Template.FindName("PART_TextBox", dp_startSearchDate);
+                    if (textBox1 != null)
+                    {
+                        textBox1.Background = dp_startSearchDate.Background;
+                        textBox1.BorderThickness = dp_startSearchDate.BorderThickness;
+                    }
+                };
+                /////////////////////////////////////////////////////////////
+                dp_endSearchDate.Loaded += delegate
                 {
-                    textBox1.Background = dp_endSearchDate.Background;
-                    textBox1.BorderThickness = dp_endSearchDate.BorderThickness;
-                }
-            };
-            /////////////////////////////////////////////////////////////
-            #endregion
+
+                    var textBox1 = (TextBox)dp_endSearchDate.Template.FindName("PART_TextBox", dp_endSearchDate);
+                    if (textBox1 != null)
+                    {
+                        textBox1.Background = dp_endSearchDate.Background;
+                        textBox1.BorderThickness = dp_endSearchDate.BorderThickness;
+                    }
+                };
+                /////////////////////////////////////////////////////////////
+                #endregion
 
                 dp_endSearchDate.SelectedDate = DateTime.Now;
                 dp_startSearchDate.SelectedDate = DateTime.Now;
@@ -301,7 +301,7 @@ namespace POS.View.accounts
             }
         }
 
-        private  void Dg_paymentsAccounts_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Dg_paymentsAccounts_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//selection
             try
             {
@@ -412,7 +412,7 @@ namespace POS.View.accounts
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-   
+
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
         {//search
             try
@@ -454,7 +454,7 @@ namespace POS.View.accounts
                     }
                     else
                     {
-                 
+
                     }
                     //chk empty doc num
                     if (grid_cheque.IsVisible)
@@ -468,11 +468,11 @@ namespace POS.View.accounts
                     //chk empty process num
                     if (tb_docNumCard.IsVisible)
                     {
-                        SectionData.validateEmptyTextBox(tb_docNumCard, p_errorDocCard, tt_docNumCard , "trEmptyProcessNumToolTip");
+                        SectionData.validateEmptyTextBox(tb_docNumCard, p_errorDocCard, tt_docNumCard, "trEmptyProcessNumToolTip");
                     }
                     else
                     {
-                        SectionData.clearValidate(tb_docNumCard , p_errorDocCard);
+                        SectionData.clearValidate(tb_docNumCard, p_errorDocCard);
                     }
                     //chk empty deposit to
                     SectionData.validateEmptyComboBox(cb_depositTo, p_errorDepositTo, tt_errorDepositTo, "trErrorEmptyDepositToToolTip");
@@ -516,7 +516,7 @@ namespace POS.View.accounts
                         (!await chkEnoughBalance(decimal.Parse(tb_cash.Text))))
                     {
                         enoughMoney = false;
-                        SectionData.showTextBoxValidate(tb_cash, p_errorCash , tt_errorCash, "trPopNotEnoughBalance");
+                        SectionData.showTextBoxValidate(tb_cash, p_errorCash, tt_errorCash, "trPopNotEnoughBalance");
                     }
                     #endregion
 
@@ -541,7 +541,7 @@ namespace POS.View.accounts
 
                         cash.transType = "p";
                         cash.posId = MainWindow.posID.Value;
-                        cash.transNum = await cashModel.generateCashNumber(cash.transType+ cb_depositTo.SelectedValue.ToString());
+                        cash.transNum = await cashModel.generateCashNumber(cash.transType + cb_depositTo.SelectedValue.ToString());
                         cash.cash = decimal.Parse(tb_cash.Text);
                         cash.notes = tb_note.Text;
                         cash.createUserId = MainWindow.userID;
@@ -589,8 +589,8 @@ namespace POS.View.accounts
 
                         if ((!s.Equals("0")) || (!s1.Equals("")) || (s1.Equals("-1")))
                         {
-                            if(cb_paymentProcessType.SelectedValue.ToString().Equals("cash"))
-                              await  calcBalance(cash.cash.Value, recipient, agentid);
+                            if (cb_paymentProcessType.SelectedValue.ToString().Equals("cash"))
+                                await calcBalance(cash.cash.Value, recipient, agentid);
 
                             if ((cb_recipientU.IsVisible) && (cash.side == "u"))
                                 await calcUserBalance(Convert.ToSingle(cash.cash.Value), cash.userId.Value);
@@ -632,7 +632,7 @@ namespace POS.View.accounts
             else { return false; }
         }
 
-        private async Task<string> saveBond(string num, decimal ammount, Nullable <DateTime> date, string type)
+        private async Task<string> saveBond(string num, decimal ammount, Nullable<DateTime> date, string type)
         {
             Bonds bond = new Bonds();
             bond.number = num;
@@ -705,16 +705,16 @@ namespace POS.View.accounts
             string s = await shCompanyModel.Save(shCom);
         }
 
-        private  void Btn_update_Click(object sender, RoutedEventArgs e)
+        private void Btn_update_Click(object sender, RoutedEventArgs e)
         {//update
-          
+
         }
 
-        private  void Btn_delete_Click(object sender, RoutedEventArgs e)
+        private void Btn_delete_Click(object sender, RoutedEventArgs e)
         {//delete
         }
 
-        private  void Btn_clear_Click(object sender, RoutedEventArgs e)
+        private void Btn_clear_Click(object sender, RoutedEventArgs e)
         {//clear
             try
             {
@@ -746,7 +746,7 @@ namespace POS.View.accounts
                     TextBox dpDate = (TextBox)dp_docDate.Template.FindName("PART_TextBox", dp_docDate);
                     SectionData.clearValidate(dpDate, p_errorDocDate);
                 }
-                grid_document.Visibility = Visibility.Collapsed ;
+                grid_document.Visibility = Visibility.Collapsed;
                 grid_cheque.Visibility = Visibility.Collapsed;
                 SectionData.clearValidate(tb_docNum, p_errorDocNum);
                 SectionData.clearValidate(tb_cash, p_errorCash);
@@ -777,7 +777,7 @@ namespace POS.View.accounts
                 tb_note.IsEnabled = true;
                 /////////////////////////
                 if (sender != null)
-                SectionData.EndAwait(grid_ucPaymentsAccounts);
+                    SectionData.EndAwait(grid_ucPaymentsAccounts);
             }
             catch (Exception ex)
             {
@@ -792,7 +792,7 @@ namespace POS.View.accounts
             cashes = await cashModel.GetCashTransferAsync("p", "all");
             cashes = cashes.Where(x => x.processType != "balance");
             return cashes;
-            
+
         }
 
         void RefreshCashView()
@@ -986,7 +986,7 @@ namespace POS.View.accounts
                         SectionData.clearValidate(tb_docNum, p_errorDocNum);
                         SectionData.clearValidate(tb_docNumCard, p_errorDocCard);
                         SectionData.clearValidate(tb_docNumCheque, p_errorDocNumCheque);
-                        SectionData.clearComboBoxValidate(cb_card , p_errorCard);
+                        SectionData.clearComboBoxValidate(cb_card, p_errorCard);
                         break;
 
                     case 1://doc
@@ -1014,7 +1014,7 @@ namespace POS.View.accounts
                         SectionData.clearValidate(tb_docNumCard, p_errorDocCard);
                         SectionData.clearComboBoxValidate(cb_card, p_errorCard);
                         break;
-                   
+
                     case 3://card
                         grid_document.Visibility = Visibility.Collapsed;
                         tb_docNum.Clear();
@@ -1022,7 +1022,7 @@ namespace POS.View.accounts
                         grid_cheque.Visibility = Visibility.Collapsed;
                         tb_docNum.Clear();
                         dp_docDate.SelectedDate = null;
-                        cb_card.Visibility = Visibility.Visible ;
+                        cb_card.Visibility = Visibility.Visible;
                         tb_docNumCard.Visibility = Visibility.Visible;
                         SectionData.clearValidate(tb_docNum, p_errorDocNum);
                         SectionData.clearValidate(tb_docNumCheque, p_errorDocNumCheque);
@@ -1105,7 +1105,7 @@ namespace POS.View.accounts
                         cb_recipientU.Visibility = Visibility.Collapsed;
                         cb_recipientSh.Visibility = Visibility.Collapsed;
                         cb_recipientV.Text = ""; cb_recipientC.Text = ""; cb_recipientU.Text = ""; cb_recipientSh.Text = "";
-                        SectionData.clearComboBoxValidate(cb_recipientV , p_errorRecipient);
+                        SectionData.clearComboBoxValidate(cb_recipientV, p_errorRecipient);
                         SectionData.clearComboBoxValidate(cb_recipientC, p_errorRecipient);
                         SectionData.clearComboBoxValidate(cb_recipientU, p_errorRecipient);
                         SectionData.clearComboBoxValidate(cb_recipientSh, p_errorRecipient);
@@ -1190,7 +1190,7 @@ namespace POS.View.accounts
         private void Tb_validateEmptyLostFocus(object sender, RoutedEventArgs e)
         {
             try
-            { 
+            {
                 string name = sender.GetType().Name;
                 validateEmpty(name, sender);
             }
@@ -1230,7 +1230,7 @@ namespace POS.View.accounts
                     SectionData.validateEmptyComboBox((ComboBox)sender, p_errorpaymentProcessType, tt_errorpaymentProcessType, "trErrorEmptyPaymentTypeToolTip");
                 else if ((sender as ComboBox).Name == "cb_card")
                     SectionData.validateEmptyComboBox((ComboBox)sender, p_errorCard, tt_errorCard, "trEmptyCardTooltip");
-               
+
             }
             else if (name == "DatePicker")
             {
@@ -1261,8 +1261,8 @@ namespace POS.View.accounts
             Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
         }
-         
-        private  void Btn_pdf_Click(object sender, RoutedEventArgs e)
+
+        private void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -1273,25 +1273,7 @@ namespace POS.View.accounts
                 {
                     if (cashtrans.cashTransId > 0)
                     {
-                        string addpath;
-                        bool isArabic = ReportCls.checkLang();
-                        if (isArabic)
-                        {
-                            addpath = @"\Reports\Account\Ar\ArPayReport.rdlc";
-                        }
-                        else
-                        {
-                            addpath = @"\Reports\Account\En\PayReport.rdlc";
-                        }
-
-                        string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-                        int cashId = Int32.Parse(s);
-                        rep.ReportPath = reppath;
-                        rep.DataSources.Clear();
-                        rep.EnableExternalImages = true;
-                        rep.SetParameters(reportclass.fillPayReport(cashtrans));
-
-                        rep.Refresh();
+                        BuildVoucherReport();
 
                         saveFileDialog.Filter = "PDF|*.pdf;";
 
@@ -1329,31 +1311,14 @@ namespace POS.View.accounts
                 if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
                     if (cashtrans.cashTransId > 0)
-                     {
-                        string addpath;
-                        bool isArabic = ReportCls.checkLang();
-                        if (isArabic)
-                        {
-                            addpath = @"\Reports\Account\Ar\ArPayReport.rdlc";
-                        }
-                        else
-                        {
-                            addpath = @"\Reports\Account\En\PayReport.rdlc";
-                        }
-
-                        string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-                        int cashId = Int32.Parse(s);
-                        rep.ReportPath = reppath;
-                        rep.DataSources.Clear();
-                        rep.EnableExternalImages = true;
-                        rep.SetParameters(reportclass.fillPayReport(cashtrans));
-                
-                        rep.Refresh();
+                    {
+                        BuildVoucherReport();
 
                         LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.rep_printer_name, short.Parse(MainWindow.rep_print_count));
                     }
-                } else
-                Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
 
                 if (sender != null)
                     SectionData.EndAwait(grid_ucPaymentsAccounts);
@@ -1365,8 +1330,44 @@ namespace POS.View.accounts
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+        public void BuildVoucherReport()
+        {
+            string addpath;
+            bool isArabic = ReportCls.checkLang();
+            if (isArabic)
+            {
+                if (MainWindow.docPapersize == "A4")
+                {
+                    addpath = @"\Reports\Account\Ar\ArPayReportA4.rdlc";
+                }
+                else //A5
+                {
+                    addpath = @"\Reports\Account\Ar\ArPayReport.rdlc";
+                }
 
-        private  void Btn_preview_Click(object sender, RoutedEventArgs e)
+            }
+            else
+            {
+                if (MainWindow.docPapersize == "A4")
+                {
+                    addpath = @"\Reports\Account\En\PayReportA4.rdlc";
+                }
+                else //A5
+                {
+                    addpath = @"\Reports\Account\En\PayReport.rdlc";
+                }
+
+            }
+
+            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+            rep.ReportPath = reppath;
+            rep.DataSources.Clear();
+            rep.EnableExternalImages = true;
+            rep.SetParameters(reportclass.fillPayReport(cashtrans));
+
+            rep.Refresh();
+        }
+        private void Btn_preview_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -1383,25 +1384,8 @@ namespace POS.View.accounts
 
                     if (cashtrans.cashTransId > 0)
                     {
-                        string addpath;
-                        bool isArabic = ReportCls.checkLang();
-                        if (isArabic)
-                        {
-                            addpath = @"\Reports\Account\Ar\ArPayReport.rdlc";
-                        }
-                        else
-                        {
-                            addpath = @"\Reports\Account\En\PayReport.rdlc";
-                        }
 
-                        string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-                        rep.ReportPath = reppath;
-                        rep.DataSources.Clear();
-                        rep.EnableExternalImages = true;
-                        rep.SetParameters(reportclass.fillPayReport(cashtrans));
-
-                        rep.Refresh();
-
+                        BuildVoucherReport();
                         LocalReportExtensions.ExportToPDF(rep, pdfpath);
                         wd_previewPdf w = new wd_previewPdf();
                         w.pdfPath = pdfpath;
@@ -1432,7 +1416,7 @@ namespace POS.View.accounts
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-       
+
         private void Btn_invoices_Click(object sender, RoutedEventArgs e)
         {//invoices
             try
@@ -1598,7 +1582,7 @@ namespace POS.View.accounts
                         w.wb_pdfWebViewer.Dispose();
                     }
                     Window.GetWindow(this).Opacity = 1;
-                     #endregion
+                    #endregion
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -1703,4 +1687,3 @@ namespace POS.View.accounts
     }
 }
 
-        
