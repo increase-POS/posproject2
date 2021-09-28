@@ -589,7 +589,7 @@
     <value>مبلغ</value>
   </data>
   <data name="trCreditCard" xml:space="preserve">
-    <value>بطاقة</value>
+    <value>بطاقة إئتمان</value>
   </data>
   <data name="trDeservedDateHint" xml:space="preserve">
     <value>تاريخ الإستحقاق...</value>
@@ -2466,5 +2466,8 @@
   </data>
   <data name="trPrintBarcode" xml:space="preserve">
     <value>طباعة باركود</value>
+  </data>
+  <data name="trSerialNumbersEqualItemsNumber" xml:space="preserve">
+    <value>يجب أن يتساوى عدد السيريال مع عدد العناصر</value>
   </data>
 </root>
