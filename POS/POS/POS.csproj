@@ -261,6 +261,7 @@
     <Compile Include="converters\inventoryTypeConverter.cs" />
     <Compile Include="converters\invoiceStatusConverter.cs" />
     <Compile Include="converters\invoiceTypeConverter.cs" />
+    <Compile Include="converters\invoiceTypeNumberConverter.cs" />
     <Compile Include="converters\invoiceTypeVisibilityConverter.cs" />
     <Compile Include="converters\levelGroupConverter.cs" />
     <Compile Include="converters\LocationFreeZoneConverter.cs" />

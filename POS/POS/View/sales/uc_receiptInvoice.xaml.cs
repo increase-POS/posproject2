@@ -697,8 +697,8 @@ namespace POS.View
                     if (item.type == "sn")
                         valid = false;
                     addRowToBill(item.name, itemId, null, 0, 1, 0, 0, (decimal)item.taxes, item.type, valid);
-                    refreshTotalValue();
-                    refrishBillDetails();
+                    //refreshTotalValue();
+                    //refrishBillDetails();
                 }
             }
         }
@@ -2286,7 +2286,8 @@ namespace POS.View
                             if (unit1.itemId != 0)
                             {
                                 await addItemToBill(itemId, unit1.itemUnitId, unit1.mainUnit, (decimal)unit1.price, false);
-
+                                refreshTotalValue();
+                                refrishBillDetails();
                             }
                         }
                         else
@@ -2337,8 +2338,8 @@ namespace POS.View
 
             }
 
-            refreshTotalValue();
-            refrishBillDetails();
+            //refreshTotalValue();
+            //refrishBillDetails();
         }
 
         private async void Tb_barcode_KeyDown(object sender, KeyEventArgs e)
@@ -2721,6 +2722,8 @@ namespace POS.View
                 //dg_billDetails.CancelEdit();
                 //dg_billDetails.CancelEdit();
                 //dg_billDetails.Items.Refresh();
+
+                //dg_billDetails.CommitEdit();
                 //dg_billDetails.Items.Refresh();
 
                 if (sender != null)
@@ -3413,6 +3416,8 @@ namespace POS.View
                         int itemId = w.selectedItems[i];
                         await ChangeItemIdEvent(itemId);
                     }
+                    refreshTotalValue();
+                    refrishBillDetails();
                 }
 
                 Window.GetWindow(this).Opacity = 1;
