@@ -598,7 +598,7 @@
     <value>Cash</value>
   </data>
   <data name="trCreditCard" xml:space="preserve">
-    <value>Card</value>
+    <value>Credit Card</value>
   </data>
   <data name="trDeservedDateHint" xml:space="preserve">
     <value> Deserved Date...</value>
@@ -1898,7 +1898,7 @@ Please add Email in setting</value>
     <value>Shortages</value>
   </data>
   <data name="trCredit" xml:space="preserve">
-    <value>Credit</value>
+    <value>On Credit</value>
   </data>
   <data name="trDepositor" xml:space="preserve">
     <value>Depositor</value>
@@ -2484,5 +2484,8 @@ Please add Email in setting</value>
   </data>
   <data name="trPrintBarcode" xml:space="preserve">
     <value>Print Barcode</value>
+  </data>
+  <data name="trSerialNumbersEqualItemsNumber" xml:space="preserve">
+    <value>The number of serials must be equal to the number of elements</value>
   </data>
 </root>

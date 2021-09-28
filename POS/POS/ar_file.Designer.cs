@@ -1060,7 +1060,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to بطاقة.
+        ///   Looks up a localized string similar to بطاقة إئتمان.
         /// </summary>
         internal static string trCreditCard {
             get {
@@ -5836,6 +5836,15 @@ namespace POS {
         internal static string trSerialNum {
             get {
                 return ResourceManager.GetString("trSerialNum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to يجب أن يتساوى عدد السيريال مع عدد العناصر.
+        /// </summary>
+        internal static string trSerialNumbersEqualItemsNumber {
+            get {
+                return ResourceManager.GetString("trSerialNumbersEqualItemsNumber", resourceCulture);
             }
         }
         

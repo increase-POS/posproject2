@@ -135,11 +135,12 @@ namespace POS.View.reports
         }
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
+        {//load
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
                 Invoices = await statisticModel.GetSaleitemcount();
                 rowChartInvoice = await statisticModel.GetSaleitemcount();
 
@@ -3080,13 +3081,17 @@ fillColumnChart(cb_Items, selectedItemId);
             }
         }
 
-
+        bool isClicked = false;
         private void chk_allCoupon_Click(object sender, RoutedEventArgs e)
-        {
+        {//all coupons
             try
             {
                 if (sender != null)
-                    SectionData.StartAwait(grid_main); if (cb_Coupons.IsEnabled == true)
+                    SectionData.StartAwait(grid_main);
+
+                if (cb_Coupons.IsEnabled == true)
+
+               // if(!isClicked)
                 {
                     cb_Coupons.SelectedItem = null;
                     cb_Coupons.IsEnabled = false;
@@ -3097,10 +3102,12 @@ fillColumnChart(cb_Items, selectedItemId);
                     comboCouponTemp.Clear();
                     stk_tagsCoupons.Children.Clear();
                     selectedcouponId.Clear();
+                 //   isClicked = true;
                 }
                 else
                 {
                     cb_Coupons.IsEnabled = true;
+                   // isClicked = false;
                 }
 
                 fillCouponsEvent();
@@ -3868,5 +3875,7 @@ fillColumnChart(cb_Items, selectedItemId);
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+
+     
     }
 }

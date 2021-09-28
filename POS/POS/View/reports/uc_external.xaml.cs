@@ -74,7 +74,6 @@ namespace POS.View.reports
                 itemsInternalTransfer = await statisticModel.GetInternalMov();
                 comboBranches = await branchModel.GetAllWithoutMain("all");
 
-
                 comboItems = statisticModel.getItemCombo(storages);
                 comboUnits = statisticModel.getUnitCombo(storages);
                 comboSection = statisticModel.getSectionCombo(storages);
@@ -91,9 +90,6 @@ namespace POS.View.reports
                 comboExternalAgentsAgents = statisticModel.GetExternalAgentCombos(itemsTransfer);
                 comboExternalInvType = statisticModel.GetExternalInvoiceTypeCombos(itemsTransfer);
                 comboExternalInvoiceInvoice = statisticModel.GetExternalInvoiceCombos(itemsTransfer);
-
-
-
 
 
                 fillComboExternalAgentsAgentsType();
@@ -184,11 +180,12 @@ namespace POS.View.reports
 
         }
         private void btn_externalItems_Click(object sender, RoutedEventArgs e)
-        {
+        {//items
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
                 selectedExternalTab = 0;
                 txt_search.Text = "";
                 paintExternlaChilds();
@@ -218,7 +215,7 @@ namespace POS.View.reports
         }
 
         private void btn_externalAgents_Click(object sender, RoutedEventArgs e)
-        {
+        {//agents
             try
             {
                 if (sender != null)
@@ -254,11 +251,12 @@ namespace POS.View.reports
         }
 
         private void btn_externalInvoices_Click(object sender, RoutedEventArgs e)
-        {
+        {//invoices
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
                 selectedExternalTab = 2;
                 txt_search.Text = "";
                 paintExternlaChilds();
@@ -275,13 +273,13 @@ namespace POS.View.reports
                                {
                                    branchId = s.FirstOrDefault().branchId,
                                    branchName = s.FirstOrDefault().branchName,
+                                   agentName = s.FirstOrDefault().agentName,
                                    AgentTypeAgent = s.FirstOrDefault().AgentTypeAgent,
-                                   ItemUnits = s.FirstOrDefault().ItemUnits
-                                 ,
+                                   ItemUnits = s.FirstOrDefault().ItemUnits,
                                    invNumber = s.FirstOrDefault().invNumber,
                                    invType = s.FirstOrDefault().invType,
                                    quantity = s.FirstOrDefault().quantity
-                               });
+                               }); ;
                 showSelectedTabColumn();
                 dgStock.ItemsSource = temp;
                 txt_count.Text = temp.Count().ToString();

@@ -299,13 +299,12 @@ namespace POS.View
                 }
                 tb_barcode.Focus();
                 #region datagridChange
-                CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(dg_billDetails.Items);
-                ((INotifyCollectionChanged)myCollectionView).CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
+                //CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(dg_billDetails.Items);
+                //((INotifyCollectionChanged)myCollectionView).CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
                 #endregion
 
-
                 #region Permision
- 
+
                 if (MainWindow.groupObject.HasPermissionAction(returnPermission, MainWindow.groupObjects, "one"))
                     btn_returnInvoice.Visibility = Visibility.Visible;
                 else
@@ -2087,6 +2086,8 @@ namespace POS.View
                 dg_billDetails.Items.Refresh();
                 firstTimeForDatagrid = false;
             }
+            DataGrid_CollectionChanged(dg_billDetails, null);
+
 
             //tb_sum.Text = _Sum.ToString();
             if (_Sum != 0)
@@ -2488,7 +2489,6 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
         private void Cbm_unitItemDetails_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             try
@@ -2521,18 +2521,27 @@ namespace POS.View
                     {
                         if (dg_billDetails.Items.Count > 1)
                         {
-                            var cell = DataGridHelper.GetCell(dg_billDetails, count, 3);
+                            DataGridCell cell = null;
+                            
+                            try
+                            {
+                                cell = DataGridHelper.GetCell(dg_billDetails, count, 3);
+                            }
+                            catch
+                            {
+
+                            }
+                           
                             if (cell != null)
                             {
                                 var cp = (ContentPresenter)cell.Content;
                                 var combo = (ComboBox)cp.ContentTemplate.FindName("cbm_unitItemDetails", cp);
                                 //var combo = (combo)cell.Content;
                                 combo.SelectedValue = (int)item.itemUnitId;
-                                count++;
                             }
                         }
-
                     }
+                    count++;
                 }
 
                 if (sender != null)
@@ -2542,17 +2551,19 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
+                //if (ex.HResult != -2146233079)
                 SectionData.ExceptionMessage(ex, this);
             }
         }
 
         private void Dg_billDetails_BeginningEdit(object sender, DataGridBeginningEditEventArgs e)
         {
-            if (_InvoiceType == "sbd" || _InvoiceType == "s" || _InvoiceType == "q")
+            if (_InvoiceType == "sbd"  || _InvoiceType == "sd" || _InvoiceType == "or" || _InvoiceType == "q")
                 e.Cancel = false;
-            else if (_InvoiceType == "sd" || _InvoiceType == "or")
+            else if (  _InvoiceType == "s" || _InvoiceType == "sb")
                 e.Cancel = true;
         }
+     
         #region
         public DataGridCell GetDataGridCell(DataGridCellInfo cellInfo)
         {
@@ -2705,8 +2716,13 @@ namespace POS.View
                     billDetails[index].Count = (int)newCount;
                     billDetails[index].Price = newPrice;
                     billDetails[index].Total = total;
+
                 }
-                dg_billDetails.Items.Refresh();
+                //dg_billDetails.CancelEdit();
+                //dg_billDetails.CancelEdit();
+                //dg_billDetails.Items.Refresh();
+                //dg_billDetails.Items.Refresh();
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -4039,6 +4055,6 @@ namespace POS.View
             }
         }
 
-
+      
     }
 }

@@ -129,9 +129,9 @@ namespace POS.View.windows
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_serialNum);
-                if (_serialCount <= itemCount)
-                {
-                    if (lst_serials.Items.Count > 0)
+                if (_serialCount <= itemCount) 
+                    {
+                    if (lst_serials.Items.Count == itemCount)
                     {
                         serialList = new List<string>();
                         for (int i = 0; i < lst_serials.Items.Count; i++)
@@ -143,7 +143,8 @@ namespace POS.View.windows
                         this.Close();
                     }
                     else
-                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trShouldInputOneSerialNumberAtLeast"), animation: ToasterAnimation.FadeIn);
+                        //Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trShouldInputOneSerialNumberAtLeast"), animation: ToasterAnimation.FadeIn);
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trSerialNumbersEqualItemsNumber"), animation: ToasterAnimation.FadeIn);
                 }
                 else
                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorSerialMoreItemCountToolTip"), animation: ToasterAnimation.FadeIn);

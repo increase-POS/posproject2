@@ -440,7 +440,7 @@
                                       materialDesign:HintAssist.Hint="Branch ...."
                                     Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" BorderBrush="AliceBlue" BorderThickness="0,0,0,2" 
                                     Height="40" Margin="10,5,10,5" Padding="10,0,5,0" Grid.Row="1"></ComboBox>
-                                    <CheckBox  Background="{StaticResource MainColorBlue}" x:Name="chk_allBranches" Click="chk_allBranches_Click" Grid.Row="1" Grid.Column="1" Content="All Branches" Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}"></CheckBox>
+                                    <CheckBox  Background="{StaticResource MainColorBlue}" x:Name="chk_allBranches" Click="chk_allBranches_Click" Grid.Row="1" Grid.Column="1" Content="All" Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}"></CheckBox>
                                     <DockPanel  Grid.Row="1" Grid.Column="2" LastChildFill="False">
                                         <materialDesign:TimePicker  SelectedTimeChanged="dp_endTime_SelectedTimeChanged" Name="dt_endTime" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" Width="100" DockPanel.Dock="Right"  BorderBrush="#737373"  BorderThickness="0" 
                                        Style="{StaticResource MaterialDesignFloatingHintTimePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
@@ -489,7 +489,7 @@
                                       materialDesign:HintAssist.Hint="Pos ...."
                                     Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" BorderBrush="AliceBlue" BorderThickness="0,0,0,2" 
                                     Height="40" Margin="10,5,10,5" Padding="10,0,5,0" Grid.Row="1"></ComboBox>
-                                    <CheckBox  Background="{StaticResource MainColorBlue}" x:Name="chk_allPos" Click="chk_allPos_Click" Grid.Row="1" Grid.Column="1" Content="All Pos" Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}"></CheckBox>
+                                    <CheckBox  Background="{StaticResource MainColorBlue}" x:Name="chk_allPos" Click="chk_allPos_Click" Grid.Row="1" Grid.Column="1" Content="All" Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}"></CheckBox>
                                     <DockPanel  Grid.Row="1" Grid.Column="2" LastChildFill="False">
                                         <materialDesign:TimePicker  SelectedTimeChanged="dt_posEndTime_SelectedTimeChanged" Name="dt_posEndTime" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" Width="100" DockPanel.Dock="Right"  BorderBrush="#737373"  BorderThickness="0" 
                                        Style="{StaticResource MaterialDesignFloatingHintTimePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
@@ -535,7 +535,7 @@
                                       materialDesign:HintAssist.Hint="Customer ...."
                                     Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" BorderBrush="AliceBlue" BorderThickness="0,0,0,2" 
                                     Height="40" Margin="10,5,10,5" Padding="10,0,5,0" Grid.Row="1"></ComboBox>
-                                    <CheckBox  Background="{StaticResource MainColorBlue}" x:Name="chk_allVendors" Click="chk_allVendors_Click" Grid.Row="1" Grid.Column="1" Content="All Vendors" Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}"></CheckBox>
+                                    <CheckBox  Background="{StaticResource MainColorBlue}" x:Name="chk_allVendors" Click="chk_allVendors_Click" Grid.Row="1" Grid.Column="1" Content="All" Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}"></CheckBox>
                                     <DockPanel  Grid.Row="1" Grid.Column="2" LastChildFill="False">
 
 
@@ -583,7 +583,7 @@
                                       materialDesign:HintAssist.Hint="User ...."
                                     Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" BorderBrush="AliceBlue" BorderThickness="0,0,0,2" 
                                     Height="40" Margin="10,5,10,5" Padding="10,0,5,0" Grid.Row="1"></ComboBox>
-                                    <CheckBox  Background="{StaticResource MainColorBlue}" x:Name="chk_allUsers" Click="chk_allUsers_Click" Grid.Row="1" Grid.Column="1" Content="All Users" Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}"></CheckBox>
+                                    <CheckBox  Background="{StaticResource MainColorBlue}" x:Name="chk_allUsers" Click="chk_allUsers_Click" Grid.Row="1" Grid.Column="1" Content="All" Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}"></CheckBox>
                                     <DockPanel  Grid.Row="1" Grid.Column="2" LastChildFill="False">
 
 
@@ -631,7 +631,7 @@
                                       materialDesign:HintAssist.Hint="Item ...."
                                     Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" BorderBrush="AliceBlue" BorderThickness="0,0,0,2" 
                                     Height="40" Margin="10,5,10,5" Padding="10,0,5,0" Grid.Row="1"></ComboBox>
-                                    <CheckBox  Background="{StaticResource MainColorBlue}" x:Name="chk_allItems" Click="chk_allItems_Click" Grid.Row="1" Grid.Column="1" Content="All Items" Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}"></CheckBox>
+                                    <CheckBox  Background="{StaticResource MainColorBlue}" x:Name="chk_allItems" Click="chk_allItems_Click" Grid.Row="1" Grid.Column="1" Content="All" Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}"></CheckBox>
                                     <DockPanel  Grid.Row="1" Grid.Column="2" LastChildFill="False">
                                         <materialDesign:TimePicker  SelectedTimeChanged="dt_ItemEndTime_SelectedTimeChanged" Name="dt_ItemEndTime" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" Width="100" DockPanel.Dock="Right"  BorderBrush="#737373"  BorderThickness="0" 
                                        Style="{StaticResource MaterialDesignFloatingHintTimePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
@@ -678,7 +678,7 @@
                                       materialDesign:HintAssist.Hint="Coupon ...."
                                     Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" BorderBrush="AliceBlue" BorderThickness="0,0,0,2" 
                                     Height="40" Margin="10,5,10,5" Padding="10,0,5,0" Grid.Row="1"></ComboBox>
-                                    <CheckBox  Background="{StaticResource MainColorBlue}" x:Name="chk_allCoupon" Click="chk_allCoupon_Click" Grid.Row="1" Grid.Column="1" Content="All Coupons" Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}"></CheckBox>
+                                    <CheckBox  Background="{StaticResource MainColorBlue}" x:Name="chk_allCoupon" Click="chk_allCoupon_Click" Grid.Row="1" Grid.Column="1" Content="All" Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}" ></CheckBox>
                                     <DockPanel  Grid.Row="1" Grid.Column="2" LastChildFill="False">
                                         <materialDesign:TimePicker  SelectedTimeChanged="dt_couponEndTime_SelectedTimeChanged" Name="dt_couponEndTime" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" Width="100" DockPanel.Dock="Right"  BorderBrush="#737373"  BorderThickness="0" 
                                        Style="{StaticResource MaterialDesignFloatingHintTimePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
@@ -726,7 +726,7 @@
                                       materialDesign:HintAssist.Hint="Offer ...."
                                     Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" BorderBrush="AliceBlue" BorderThickness="0,0,0,2" 
                                     Height="40" Margin="10,5,10,5" Padding="10,0,5,0" Grid.Row="1"></ComboBox>
-                                    <CheckBox  Background="{StaticResource MainColorBlue}" x:Name="chk_allOffers" Click="chk_allOffers_Click" Grid.Row="1" Grid.Column="1" Content="All Offers" Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}"></CheckBox>
+                                    <CheckBox  Background="{StaticResource MainColorBlue}" x:Name="chk_allOffers" Click="chk_allOffers_Click" Grid.Row="1" Grid.Column="1" Content="All" Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}"></CheckBox>
                                     <DockPanel  Grid.Row="1" Grid.Column="2" LastChildFill="False">
                                         <materialDesign:TimePicker  SelectedTimeChanged="dt_offersEndTime_SelectedTimeChanged" Name="dt_offersEndTime" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" Width="100" DockPanel.Dock="Right"  BorderBrush="#737373"  BorderThickness="0" 
                                        Style="{StaticResource MaterialDesignFloatingHintTimePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
@@ -822,7 +822,9 @@
                     </DataGrid.Resources>
                     <DataGrid.Columns>
                         <DataGridTextColumn x:Name="col_No" Width="*" Header="No." Binding="{Binding invNumber}"/>
-                        <DataGridTextColumn x:Name="col_coupon" Width="*" Header="Coupon" Binding="{Binding Copname}" Visibility="Hidden"/>
+                        <DataGridTextColumn x:Name="col_coupon" Width="*" Header="Name" Binding="{Binding Copname}" Visibility="Hidden"/>
+                        <DataGridTextColumn x:Name="col_code" Width="*" Header="Code" Binding="{Binding Copcode}" Visibility="Visible"/>
+
                         <DataGridTextColumn x:Name="col_couponType" Width="*" Header="Type" Binding="{Binding CopdiscountType,Converter={StaticResource discountTypeConverter }}" Visibility="Hidden"/>
                         <!--<DataGridTextColumn x:Name="col_coupoValue" Width="*" Header="Value" Binding="{Binding CopdiscountValue}" Visibility="Hidden"/>-->
                         <DataGridTextColumn x:Name="col_coupoValue" Width="*" Header="Value" Binding="{Binding CopdiscountValue ,Converter={StaticResource accuracyConverter}}" Visibility="Hidden"/>

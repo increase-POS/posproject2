@@ -32,6 +32,9 @@
             <converters:notificationsContentConverter x:Key="notificationsContentConverter"/>
             <converters:TaxVisibilityConverter x:Key="TaxVisibilityConverter"/>
             <converters:agentTypeConverter x:Key="agentTypeConverter"/>
+            <converters:sectionFreeZoneStorageReportConverter x:Key="sectionFreeZoneStorageReportConverter"/>
+            <converters:locationFreeZoneStorageReportConverter x:Key="locationFreeZoneStorageReportConverter"/>
+            <converters:invoiceTypeNumberConverter x:Key="invoiceTypeNumberConverter"/>
             <!--#region Fonts-->
             <FontFamily x:Key="BarcodeFont" >IDAHC39M Code 39 Barcode, /POS;component/fonts/#IDAHC39M Code 39 Barcode, Arial</FontFamily>
 

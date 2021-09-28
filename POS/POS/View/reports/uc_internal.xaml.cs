@@ -384,6 +384,7 @@ namespace POS.View.reports
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
                 selectedTab = 1;
                 txt_search.Text = "";
                 paint();
@@ -895,6 +896,7 @@ namespace POS.View.reports
                 dgStock.ItemsSource = lst;
                 txt_count.Text = lst.Count().ToString();
                 fillInternalColumnChart();
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -1190,13 +1192,23 @@ namespace POS.View.reports
         }
 
         private void fillComboInternalOperatorType()
-        {
+        {//type
             cb_internalOperaterType.SelectedValuePath = "InvType";
             cb_internalOperaterType.DisplayMemberPath = "InvType";
-            cb_internalOperaterType.ItemsSource = comboInternalOperatorType.Where(x => x.InvType == "im" || x.InvType == "ex").GroupBy(x => x.InvType).Select(g => new internalTypeCombo
+            //cb_internalOperaterType.ItemsSource = comboInternalOperatorType.Where(x => x.InvType == "im" || x.InvType == "ex").GroupBy(x => x.InvType).Select(g => new internalTypeCombo
+            //{
+            //    InvType = g.FirstOrDefault().InvType 
+            //});
+            var lst = comboInternalOperatorType.Where(x => x.InvType == "im" || x.InvType == "ex").GroupBy(x => x.InvType).Select(g => new internalTypeCombo
             {
                 InvType = g.FirstOrDefault().InvType
             });
+            foreach(var i in lst)
+            {
+                if (i.InvType.Equals("ex")) i.InvType = MainWindow.resourcemanager.GetString("trExport");
+                else if (i.InvType.Equals("im")) i.InvType = MainWindow.resourcemanager.GetString("trImport");
+            }
+            cb_internalOperaterType.ItemsSource = lst;
         }
 
         private IEnumerable<ItemTransferInvoice> fillListInternal(IEnumerable<ItemTransferInvoice> itemsTransfer, ComboBox comboFromBranch, ComboBox comboToBranch, ComboBox Items, ComboBox unit, DatePicker startDate, DatePicker endDate, CheckBox chkAllFromBranches, CheckBox chkAllToBranches, CheckBox chkAllItems, CheckBox chkAllUnits, CheckBox towWays)

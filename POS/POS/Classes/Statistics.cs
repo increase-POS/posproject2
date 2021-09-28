@@ -130,8 +130,8 @@ namespace POS.Classes
         public Nullable<decimal> totalNet { get; set; }//
         public string Description
         {
-            get => processType == "cash" ? description = MainWindow.resourcemanager.GetString("trCash")//"Cash"//
-                                                                                                       //: processType == "card" ? description = cardName + " Num : " + docNum
+            get => processType == "cash" ? description = MainWindow.resourcemanager.GetString("trCash")//
+                 //: processType == "card" ? description = cardName + " Num : " + docNum
                  : processType == "card" ? description = cardName + " " + MainWindow.resourcemanager.GetString("trNum:") + " : " + docNum
                  //: processType == "doc" ? description = "Bond" + " Num : " + bondNumber
                  : processType == "doc" ? description = MainWindow.resourcemanager.GetString("trBond") + " " + MainWindow.resourcemanager.GetString("trNum:") + " : " + bondNumber
@@ -398,9 +398,40 @@ namespace POS.Classes
         public Nullable<byte> isApproved { get; set; }
         public Nullable<int> branchCreatorId { get; set; }
         public string branchCreatorName { get; set; }
-        private string invTypeNumber;
-        public string InvTypeNumber { get => invTypeNumber = invType + "-" + invNumber; set => invTypeNumber = value; }
-        // for report
+        private string invTypeNumber;//number
+        //public string InvTypeNumber { get => invTypeNumber = invType + "-" + invNumber; set => invTypeNumber = value; }
+        public string InvTypeNumber
+        {
+            get => invType == "ex" ? invTypeNumber = MainWindow.resourcemanager.GetString("trExport") + "-" + invNumber
+                 : invType == "im" ? invTypeNumber = MainWindow.resourcemanager.GetString("trImport") + "-" + invNumber
+                 : invType == "p" ? invTypeNumber = MainWindow.resourcemanager.GetString("trPurchaseInvoice") + "-" + invNumber
+                 : invType == "pw" ? invTypeNumber = MainWindow.resourcemanager.GetString("trPurchaseInvoiceWaiting") + "-" + invNumber
+                 : invType == "s" ? invTypeNumber = MainWindow.resourcemanager.GetString("trSalesInvoice") + "-" + invNumber
+                 : invType == "sb" ? invTypeNumber = MainWindow.resourcemanager.GetString("trSalesReturnInvoice") + "-" + invNumber
+                 : invType == "pb" ? invTypeNumber = MainWindow.resourcemanager.GetString("trPurchaseReturnInvoice") + "-" + invNumber
+                 : invType == "pbw" ? invTypeNumber = MainWindow.resourcemanager.GetString("trPurchaseReturnInvoiceWaiting") + "-" + invNumber
+                 : invType == "pd" ? invTypeNumber = MainWindow.resourcemanager.GetString("trDraftPurchaseBill") + "-" + invNumber
+                 : invType == "sd" ? invTypeNumber = MainWindow.resourcemanager.GetString("trSalesDraft") + "-" + invNumber
+                 : invType == "sbd" ? invTypeNumber = MainWindow.resourcemanager.GetString("trSalesReturnDraft") + "-" + invNumber
+                 : invType == "pbd" ? invTypeNumber = MainWindow.resourcemanager.GetString("trPurchaseReturnDraft") + "-" + invNumber
+                 : invType == "ord" ? invTypeNumber = MainWindow.resourcemanager.GetString("trSaleOrderDraft") + "-" + invNumber
+                 : invType == "or" ? invTypeNumber = MainWindow.resourcemanager.GetString("trSaleOrder") + "-" + invNumber
+                 : invType == "pod" ? invTypeNumber = MainWindow.resourcemanager.GetString("trPurchaceOrderDraft") + "-" + invNumber
+                 : invType == "po" ? invTypeNumber = MainWindow.resourcemanager.GetString("trPurchaceOrder") + "-" + invNumber
+                 : invType == "qd" ? invTypeNumber = MainWindow.resourcemanager.GetString("trQuotationsDraft") + "-" + invNumber
+                 : invType == "q" ? invTypeNumber = MainWindow.resourcemanager.GetString("trQuotations") + "-" + invNumber
+                 : invType == "d" ? invTypeNumber = MainWindow.resourcemanager.GetString("trDestructive") + "-" + invNumber
+                 : invType == "sh" ? invTypeNumber = MainWindow.resourcemanager.GetString("trShortage") + "-" + invNumber
+                 : invType == "imd" ? invTypeNumber = MainWindow.resourcemanager.GetString("trImportDraft") + "-" + invNumber
+                 : invType == "imw" ? invTypeNumber = MainWindow.resourcemanager.GetString("trImportOrder") + "-" + invNumber
+                 : invType == "exd" ? invTypeNumber = MainWindow.resourcemanager.GetString("trExportDraft") + "-" + invNumber
+                 : invType == "exw" ? invTypeNumber = MainWindow.resourcemanager.GetString("trExportOrder") + "-" + invNumber
+
+                 : "";
+            set => invTypeNumber = value;
+        }
+
+            // for report
         public int countP { get; set; }
         public int countS { get; set; }
         public int count { get; set; }
@@ -2350,12 +2381,21 @@ namespace POS.Classes
 
         }
         public class internalTypeCombo
-        {
+        {//type
             private int? branchId;
-            private string invType;
+            private string invType ;
 
             public int? BranchId { get => branchId; set => branchId = value; }
             public string InvType { get => invType; set => invType = value; }
+
+            //public string InvType
+            //{
+            //    get => invType == "ex" ? invType = MainWindow.resourcemanager.GetString("trExport")
+            //         : invType == "im" ? invType = MainWindow.resourcemanager.GetString("trImport")
+            //         : "";
+
+            //    set => invType = value;
+            //}
         }
 
 
