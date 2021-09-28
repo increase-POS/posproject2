@@ -1194,21 +1194,40 @@ namespace POS.View.reports
         private void fillComboInternalOperatorType()
         {//type
             cb_internalOperaterType.SelectedValuePath = "InvType";
-            cb_internalOperaterType.DisplayMemberPath = "InvType";
+            cb_internalOperaterType.DisplayMemberPath = "trInvType";
             //cb_internalOperaterType.ItemsSource = comboInternalOperatorType.Where(x => x.InvType == "im" || x.InvType == "ex").GroupBy(x => x.InvType).Select(g => new internalTypeCombo
             //{
             //    InvType = g.FirstOrDefault().InvType 
             //});
             var lst = comboInternalOperatorType.Where(x => x.InvType == "im" || x.InvType == "ex").GroupBy(x => x.InvType).Select(g => new internalTypeCombo
             {
-                InvType = g.FirstOrDefault().InvType
+                InvType = g.FirstOrDefault().InvType,
+                   trInvType = g.FirstOrDefault().InvType
             });
-            foreach(var i in lst)
+            List<internalTypeCombo> listtemp = new List<internalTypeCombo>();
+            internalTypeCombo intertyp = new internalTypeCombo();
+    
+            foreach (var i in lst)
             {
-                if (i.InvType.Equals("ex")) i.InvType = MainWindow.resourcemanager.GetString("trExport");
-                else if (i.InvType.Equals("im")) i.InvType = MainWindow.resourcemanager.GetString("trImport");
+                intertyp = new internalTypeCombo();
+                intertyp.BranchId = i.BranchId;
+                intertyp.InvType = i.InvType;
+                if (i.InvType.Equals("ex"))
+                {
+         i.trInvType = MainWindow.resourcemanager.GetString("trExport");
+                intertyp.trInvType= MainWindow.resourcemanager.GetString("trExport");
+                }
+           
+                else if (i.InvType.Equals("im"))
+                {
+    i.trInvType = MainWindow.resourcemanager.GetString("trImport");
+                intertyp.trInvType = MainWindow.resourcemanager.GetString("trImport");
+                }
+                listtemp.Add(intertyp);
+
             }
-            cb_internalOperaterType.ItemsSource = lst;
+            //  cb_internalOperaterType.ItemsSource = lst;
+            cb_internalOperaterType.ItemsSource = listtemp;
         }
 
         private IEnumerable<ItemTransferInvoice> fillListInternal(IEnumerable<ItemTransferInvoice> itemsTransfer, ComboBox comboFromBranch, ComboBox comboToBranch, ComboBox Items, ComboBox unit, DatePicker startDate, DatePicker endDate, CheckBox chkAllFromBranches, CheckBox chkAllToBranches, CheckBox chkAllItems, CheckBox chkAllUnits, CheckBox towWays)

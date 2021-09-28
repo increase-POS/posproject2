@@ -52,7 +52,7 @@
             </Style>
           </Textbox>
         </ReportItems>
-        <Height>2.05cm</Height>
+        <Height>2.1cm</Height>
         <Style>
           <Border>
             <Style>None</Style>
@@ -61,7 +61,7 @@
       </Body>
       <Width>4.2cm</Width>
       <Page>
-        <PageHeight>2.05cm</PageHeight>
+        <PageHeight>2.2cm</PageHeight>
         <PageWidth>4.2cm</PageWidth>
         <InteractiveHeight>25cm</InteractiveHeight>
         <InteractiveWidth>10cm</InteractiveWidth>

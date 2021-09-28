@@ -3168,7 +3168,7 @@ namespace POS.View
                         rep.SetParameters(paramarr);
                         rep.Refresh();
 
-                        if (invoice.invType == "s")
+                        if (invoice.invType == "s" && MainWindow.salePaperSize!= "A4")
                         {
                             LocalReportExtensions.customExportToPDF(rep, pdfpath, width, height);
                         }

@@ -2386,8 +2386,9 @@ namespace POS.Classes
             private string invType ;
 
             public int? BranchId { get => branchId; set => branchId = value; }
+          //  public string InvType { get => invType; set => invType = value; }
             public string InvType { get => invType; set => invType = value; }
-
+        public string trInvType { get; set; }
             //public string InvType
             //{
             //    get => invType == "ex" ? invType = MainWindow.resourcemanager.GetString("trExport")

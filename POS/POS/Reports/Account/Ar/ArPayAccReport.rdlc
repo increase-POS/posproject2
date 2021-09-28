@@ -526,6 +526,7 @@ IIf(Fields!shippingCompanyName.Value&lt;&gt;"",Fields!shippingCompanyName.Value,
 ,Fields!processType.Value="doc",Parameters!trDocument.Value
 ,Fields!processType.Value="cheque",Parameters!trCheque.Value
 ,Fields!processType.Value="balance",Parameters!trCredit.Value
+,Fields!processType.Value="card",Parameters!trCard.Value
 )</Value>
                                   <Style>
                                     <FontFamily>Montserrat</FontFamily>
@@ -549,6 +550,7 @@ IIf(Fields!shippingCompanyName.Value&lt;&gt;"",Fields!shippingCompanyName.Value,
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
+                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>
@@ -1436,11 +1438,23 @@ IIf(Fields!shippingCompanyName.Value&lt;&gt;"",Fields!shippingCompanyName.Value,
       <AllowBlank>true</AllowBlank>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
+    <ReportParameter Name="trInv">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="trCard">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
   </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
       <NumberOfColumns>4</NumberOfColumns>
-      <NumberOfRows>8</NumberOfRows>
+      <NumberOfRows>9</NumberOfRows>
       <CellDefinitions>
         <CellDefinition>
           <ColumnIndex>0</ColumnIndex>
@@ -1596,6 +1610,16 @@ IIf(Fields!shippingCompanyName.Value&lt;&gt;"",Fields!shippingCompanyName.Value,
           <ColumnIndex>2</ColumnIndex>
           <RowIndex>7</RowIndex>
           <ParameterName>trCredit</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>3</ColumnIndex>
+          <RowIndex>7</RowIndex>
+          <ParameterName>trInv</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>8</RowIndex>
+          <ParameterName>trCard</ParameterName>
         </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>

@@ -722,6 +722,7 @@
 ,Fields!processType.Value="cheque",Parameters!trCheque.Value
 ,Fields!processType.Value="balance",Parameters!trCredit.Value
 ,Fields!processType.Value="inv",Parameters!trInv.Value
+,Fields!processType.Value="card",Parameters!trCard.Value
 )</Value>
                                   <Style>
                                     <FontWeight>Bold</FontWeight>
@@ -745,6 +746,7 @@
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
+                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>
@@ -1579,6 +1581,12 @@ IIf(Parameters!dateForm.Value="YearMonthPattern","MMMM yyyy","dd/MM/yyyy")))))</
       <AllowBlank>true</AllowBlank>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
+    <ReportParameter Name="trCard">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
   </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
@@ -1654,6 +1662,11 @@ IIf(Parameters!dateForm.Value="YearMonthPattern","MMMM yyyy","dd/MM/yyyy")))))</
           <ColumnIndex>0</ColumnIndex>
           <RowIndex>5</RowIndex>
           <ParameterName>dateForm</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>1</ColumnIndex>
+          <RowIndex>5</RowIndex>
+          <ParameterName>trCard</ParameterName>
         </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>
