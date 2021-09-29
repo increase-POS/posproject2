@@ -207,15 +207,30 @@ namespace POS_Server.Controllers
                         s.branchId,
                         s.posId,
                         s.isActive,
+                        s.branches.name,
                     }).ToList();
                     // get Active Pos count in every branch
                     var listposb = listPosinbranch.Where(x => x.isActive == 1).GroupBy(g => g.branchId).Select(g => new
                     {
                         posAll = g.Count(),
                         g.FirstOrDefault().branchId,
+                        g.FirstOrDefault().name,
 
                     }).ToList();
+                    List<UserOnlineCount> allbranchlist = new List<UserOnlineCount>();
+                    
+                    foreach (var row in listposb)
+                    {
+                        UserOnlineCount newrow = new UserOnlineCount();
+                        newrow.allPos = row.posAll;
+                        newrow.branchId = (int) row.branchId;
+                        newrow.branchName = row.name;
+                        newrow.offlineUsers = row.posAll;
+                        newrow.userOnlineCount = 0;
 
+                        allbranchlist.Add(newrow);
+
+                    }
 
                     var invListm = (from log in entity.usersLogs
                                     join p in entity.pos on log.posId equals p.posId
@@ -296,6 +311,18 @@ namespace POS_Server.Controllers
                      //   userOnlinelist = grouplist.ToList(),
                     }).ToList();
 
+                    foreach (UserOnlineCount finalrow in allbranchlist)
+                    {
+                        UserOnlineCount temp = new UserOnlineCount();
+                        temp = grop.Where(x => x.branchId == finalrow.branchId).FirstOrDefault();
+                        if (temp != null)
+                        {
+                            finalrow.offlineUsers = temp.offlineUsers;
+                            finalrow.userOnlineCount = temp.userOnlineCount;
+
+                        }
+                    }
+
                     /*
                     .GroupBy(s =>  s.branchCreatorId ).Select(s => new
                     {
@@ -317,10 +344,10 @@ namespace POS_Server.Controllers
             count = s.Count()
         });
                      * */
-                    if (grop == null)
+                    if (allbranchlist == null)
                         return NotFound();
                     else
-                        return Ok(grop);
+                        return Ok(allbranchlist);
                 }
 
             }

@@ -35,6 +35,7 @@ namespace POS_Server
         public Nullable<int> itemUnitId { get; set; }
         public string itemSerial { get; set; }
         public Nullable<int> inventoryItemLocId { get; set; }
+        public Nullable<int> offerId { get; set; }
     
         public virtual inventoryItemLocation inventoryItemLocation { get; set; }
         public virtual invoices invoices { get; set; }
@@ -45,5 +46,6 @@ namespace POS_Server
         public virtual ICollection<itemTransferOffer> itemTransferOffer { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<invoiceOrder> invoiceOrder { get; set; }
+        public virtual offers offers { get; set; }
     }
 }

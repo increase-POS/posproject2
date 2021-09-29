@@ -1177,8 +1177,9 @@ namespace POS_Server.Controllers
         }
         [HttpPost]
         [Route("Delete")]
-        public Boolean Delete(int itemId, int userId,Boolean final)
+        public bool Delete(int itemId, int userId,Boolean final)
         {
+            int msg = -1;
             var re = Request;
             var headers = re.Headers;
             string token = "";
@@ -1194,13 +1195,37 @@ namespace POS_Server.Controllers
                 {
                     try
                     {
+
                         using (incposdbEntities entity = new incposdbEntities())
                         {
                             var tmpItem = entity.items.Where(I => I.itemId == itemId).First();
+                            if (tmpItem.type == "p")
+                            {
+
+                                
+
+                                var iuitems = entity.itemsUnits.Where(x => x.itemId == tmpItem.itemId).ToList();
+                                // remove from itemunituser table
+                                foreach(var row in iuitems)
+                                {
+                                    var iuseritems = entity.itemUnitUser.Where(x => x.itemUnitId == row.itemUnitId).ToList();
+                                    entity.itemUnitUser.RemoveRange(iuseritems);
+                                    entity.SaveChanges();
+                                }
+
+                           // remove from itemunit table
+                                entity.itemsUnits.RemoveRange(iuitems);
+                                entity.SaveChanges();
+
+                            }
                             entity.items.Remove(tmpItem);                          
-                            entity.SaveChanges();
-                            return true;
+                         msg=   entity.SaveChanges();
+                        
                         }
+                        if (msg > 0)
+                            return true;
+                            else
+                            return false;
                     }
                     catch
                     {
@@ -1218,14 +1243,20 @@ namespace POS_Server.Controllers
                             tmpItem.updateDate = DateTime.Now;
                             tmpItem.updateUserId = userId;
 
-                            entity.SaveChanges();
-                            return true;
+                         msg=   entity.SaveChanges();
+                            if (msg > 0)
+                                return true;
+                            else
+                                return false;
+
                         }
+                      
                     }
                     catch
                     {
                         return false;
                     }
+                  
                 }
             }
             else

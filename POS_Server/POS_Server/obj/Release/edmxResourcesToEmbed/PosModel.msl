@@ -536,6 +536,7 @@
     <EntitySetMapping Name="itemsTransfer">
       <EntityTypeMapping TypeName="incposdbModel.itemsTransfer">
         <MappingFragment StoreEntitySet="itemsTransfer">
+          <ScalarProperty Name="offerId" ColumnName="offerId" />
           <ScalarProperty Name="itemsTransId" ColumnName="itemsTransId" />
           <ScalarProperty Name="quantity" ColumnName="quantity" />
           <ScalarProperty Name="invoiceId" ColumnName="invoiceId" />

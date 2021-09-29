@@ -682,6 +682,8 @@
     <NavigationProperty Name="locations1" Relationship="Self.FK_itemsTransfer_locations1" FromRole="itemsTransfer" ToRole="locations" />
     <NavigationProperty Name="itemTransferOffer" Relationship="Self.FK_itemTransferOffer_itemsTransfer" FromRole="itemsTransfer" ToRole="itemTransferOffer" />
     <NavigationProperty Name="invoiceOrder" Relationship="incposdbModel.FK_invoiceOrder_itemsTransfer" FromRole="itemsTransfer" ToRole="invoiceOrder" />
+    <Property Name="offerId" Type="Int32" />
+    <NavigationProperty Name="offers" Relationship="incposdbModel.FK_itemsTransfer_offers" FromRole="itemsTransfer" ToRole="offers" />
   </EntityType>
   <EntityType Name="itemsUnits">
     <Key>
@@ -894,6 +896,7 @@
     <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="itemsOffers" Relationship="Self.FK_itemsOffers_offers" FromRole="offers" ToRole="itemsOffers" />
     <NavigationProperty Name="itemTransferOffer" Relationship="Self.FK_itemTransferOffer_offers" FromRole="offers" ToRole="itemTransferOffer" />
+    <NavigationProperty Name="itemsTransfer" Relationship="incposdbModel.FK_itemsTransfer_offers" FromRole="offers" ToRole="itemsTransfer" />
   </EntityType>
   <EntityType Name="packages">
     <Key>
@@ -4394,6 +4397,10 @@
       <End Role="users" EntitySet="users" />
       <End Role="itemUnitUser" EntitySet="itemUnitUser" />
     </AssociationSet>
+    <AssociationSet Name="FK_itemsTransfer_offers" Association="incposdbModel.FK_itemsTransfer_offers">
+      <End Role="offers" EntitySet="offers" />
+      <End Role="itemsTransfer" EntitySet="itemsTransfer" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="paperSize">
     <Key>
@@ -4680,6 +4687,18 @@
       </Principal>
       <Dependent Role="itemUnitUser">
         <PropertyRef Name="updateUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_itemsTransfer_offers">
+    <End Type="incposdbModel.offers" Role="offers" Multiplicity="0..1" />
+    <End Type="incposdbModel.itemsTransfer" Role="itemsTransfer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="offers">
+        <PropertyRef Name="offerId" />
+      </Principal>
+      <Dependent Role="itemsTransfer">
+        <PropertyRef Name="offerId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

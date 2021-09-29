@@ -531,6 +531,7 @@
     <Property Name="itemUnitId" Type="int" />
     <Property Name="itemSerial" Type="nvarchar" MaxLength="200" Nullable="false" />
     <Property Name="inventoryItemLocId" Type="int" />
+    <Property Name="offerId" Type="int" />
   </EntityType>
   <EntityType Name="itemsUnits">
     <Key>
@@ -2463,6 +2464,18 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_itemsTransfer_offers">
+    <End Role="offers" Type="Self.offers" Multiplicity="0..1" />
+    <End Role="itemsTransfer" Type="Self.itemsTransfer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="offers">
+        <PropertyRef Name="offerId" />
+      </Principal>
+      <Dependent Role="itemsTransfer">
+        <PropertyRef Name="offerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_itemsUnits_items">
     <End Role="items" Type="Self.items" Multiplicity="0..1" />
     <End Role="itemsUnits" Type="Self.itemsUnits" Multiplicity="*" />
@@ -3980,6 +3993,10 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
     </AssociationSet>
     <AssociationSet Name="FK_itemsTransfer_locations1" Association="Self.FK_itemsTransfer_locations1">
       <End Role="locations" EntitySet="locations" />
+      <End Role="itemsTransfer" EntitySet="itemsTransfer" />
+    </AssociationSet>
+    <AssociationSet Name="FK_itemsTransfer_offers" Association="Self.FK_itemsTransfer_offers">
+      <End Role="offers" EntitySet="offers" />
       <End Role="itemsTransfer" EntitySet="itemsTransfer" />
     </AssociationSet>
     <AssociationSet Name="FK_itemsUnits_items" Association="Self.FK_itemsUnits_items">
