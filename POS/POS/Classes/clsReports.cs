@@ -55,6 +55,19 @@ namespace POS.Classes
             cashTransTypeConv(paramarr);
         
         }
+
+        public static void bondsDocReport(LocalReport rep, string reppath, List<ReportParameter> paramarr)
+        {
+            rep.ReportPath = reppath;
+            rep.EnableExternalImages = true;
+            rep.DataSources.Clear();
+          
+          
+
+            DateFormConv(paramarr);
+     
+
+        }
         //public static void orderReport(IEnumerable<Invoice> invoiceQuery, LocalReport rep, string reppath)
         //{
         //    rep.ReportPath = reppath;
