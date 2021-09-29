@@ -954,7 +954,7 @@ namespace POS.View
                 {
                     ArrayS[count] = double.Parse(item.totalPur.ToString());
                     ArrayP[count] = double.Parse(item.totalSale.ToString());
-                    ArrayCount[count] = count.ToString();
+                    ArrayCount[count] = (count+1).ToString();
                     count++;
                 }
                 dash.SeriesCollection = new SeriesCollection

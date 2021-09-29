@@ -226,8 +226,8 @@ namespace POS.View.sales
                 tb_barcode.Focus();
 
                 #region datagridChange
-                CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(dg_billDetails.Items);
-                ((INotifyCollectionChanged)myCollectionView).CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
+                //CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(dg_billDetails.Items);
+                //((INotifyCollectionChanged)myCollectionView).CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
                 #endregion
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -890,7 +890,7 @@ namespace POS.View.sales
                 dg_billDetails.Items.Refresh();
                 firstTimeForDatagrid = false;
             }
-
+            DataGrid_CollectionChanged(dg_billDetails, null);
             // tb_sum.Text = _Sum.ToString();
             if (_Sum != 0)
                 tb_sum.Text = SectionData.DecTostring(_Sum);
@@ -1352,18 +1352,24 @@ namespace POS.View.sales
                     {
                         if (dg_billDetails.Items.Count > 1)
                         {
-                            var cell = DataGridHelper.GetCell(dg_billDetails, count, 3);
+                            DataGridCell cell = null;
+                            try
+                            {
+                                cell = DataGridHelper.GetCell(dg_billDetails, count, 3);
+                            }
+                            catch
+                            { }
                             if (cell != null)
                             {
                                 var cp = (ContentPresenter)cell.Content;
                                 var combo = (ComboBox)cp.ContentTemplate.FindName("cbm_unitItemDetails", cp);
                                 //var combo = (combo)cell.Content;
                                 combo.SelectedValue = (int)item.itemUnitId;
-                                count++;
                             }
                         }
 
                     }
+                count++;
                 }
 
                 if (sender != null)

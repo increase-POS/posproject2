@@ -711,7 +711,9 @@
                       materialDesign:DataGridAssist.CornerRadius="5" Visibility="Visible"
                          IsReadOnly="False" CanUserAddRows="False"   BeginningEdit="Dg_billDetails_BeginningEdit"
                         AutoGenerateColumns="False" CellEditEnding="Dg_billDetails_CellEditEnding"
-                        ColumnWidth="SizeToHeader"   >
+                        ColumnWidth="SizeToHeader"   
+                                  VirtualizingStackPanel.IsVirtualizing="False"  
+                                  EnableRowVirtualization="True" EnableColumnVirtualization="True">
                             <DataGrid.Resources>
                                 <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"></SolidColorBrush>
                                 <Style BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" TargetType="{x:Type DataGridColumnHeader}">

@@ -12,7 +12,7 @@ namespace POS
         //public const string APIUri = "http://localhost:44370/api/";
         //public const string APIUri = "http://192.168.1.4:44370/api/";
         //public const string APIUri = "http://192.168.1.37:44370/api/";
-        ////public const string APIUri = "http://192.168.1.6:44370/api/";
+        //public const string APIUri = "http://192.168.1.6:44370/api/";
         //public const string APIUri = "http://141.95.1.58:44370/api/";
         public const string APIUri = "http://141.95.1.58:44/api/";
 

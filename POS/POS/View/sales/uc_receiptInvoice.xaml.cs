@@ -2525,13 +2525,9 @@ namespace POS.View
                             DataGridCell cell = null;
                             
                             try
-                            {
                                 cell = DataGridHelper.GetCell(dg_billDetails, count, 3);
-                            }
                             catch
-                            {
-
-                            }
+                            {}
                            
                             if (cell != null)
                             {

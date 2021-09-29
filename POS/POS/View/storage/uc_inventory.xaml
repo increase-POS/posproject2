@@ -242,7 +242,9 @@
                       materialDesign:DataGridAssist.CornerRadius="5" Visibility="Visible"
                          IsReadOnly="False" CanUserAddRows="False"  
                         AutoGenerateColumns="False" CellEditEnding="Dg_items_CellEditEnding"  
-                        ColumnWidth="SizeToHeader">
+                        ColumnWidth="SizeToHeader"
+                                  VirtualizingStackPanel.IsVirtualizing="False"  
+                                  EnableRowVirtualization="True" EnableColumnVirtualization="True">
                             <DataGrid.Resources>
                                 <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"></SolidColorBrush>
                                 <Style BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" TargetType="{x:Type DataGridColumnHeader}">
