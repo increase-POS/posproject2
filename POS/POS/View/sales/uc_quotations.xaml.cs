@@ -812,8 +812,8 @@ namespace POS.View.sales
                 {
                       addRowToBill(item.name, itemId, null, 0, 1, 0, 0, (decimal)item.taxes);
                 }
-                refreshTotalValue();
-                refrishBillDetails();
+                //refreshTotalValue();
+                //refrishBillDetails();
             }
         }
         private void refreshTotalValue()
@@ -901,7 +901,12 @@ namespace POS.View.sales
             //    tb_taxValue.Text = SectionData.DecTostring(_Tax);
 
         }
-
+        void refrishDataGridItems()
+        {
+            dg_billDetails.ItemsSource = null;
+            dg_billDetails.ItemsSource = billDetails;
+            dg_billDetails.Items.Refresh();
+        }
 
         // read item from barcode
         private async void HandleKeyPress(object sender, KeyEventArgs e)
@@ -1456,6 +1461,7 @@ namespace POS.View.sales
                     billDetails[index].Count = (int)newCount;
                     billDetails[index].Price = newPrice;
                     billDetails[index].Total = total;
+                refrishDataGridItems();
                 }
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -1590,6 +1596,8 @@ namespace POS.View.sales
                             int itemId = w.selectedItems[i];
                             await ChangeItemIdEvent(itemId);
                         }
+                        refreshTotalValue();
+                        refrishBillDetails();
                     }
 
                     Window.GetWindow(this).Opacity = 1;

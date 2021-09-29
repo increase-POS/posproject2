@@ -199,15 +199,16 @@
                     <TextBlock  x:Name="txt_inventoryDate" Foreground="#4E4E4E" FontWeight="Regular" FontSize="18"  
                                   VerticalAlignment="Center" Grid.Row="2"
                                        HorizontalAlignment="Left" Margin="10,5,5,5"/>
+                  
 
                 </Grid>
             </Border>
 
 
             <Border BorderThickness="0"  Grid.Column="0" Height="50" Grid.ColumnSpan="1" Grid.Row="3"   
-               Margin="5,5,10,10"
-                    CornerRadius="7" BorderBrush="Black" Background="{StaticResource mediumRed}" Padding="0">
-                <Button Content="Archiving" Height="auto" BorderBrush="{x:Null}"  FontSize="14" x:Name="btn_archive"
+               Margin="5,5,10,10" x:Name="bdr_archive"
+                    CornerRadius="7" BorderBrush="Black" Background="{StaticResource MainColorBlue}" Padding="0">
+                <Button Content="Save" Height="auto" BorderBrush="{x:Null}"  FontSize="14" x:Name="btn_archive"
                     Background="{x:Null}" Click="Btn_archive_Click"  />
             </Border>
 
@@ -320,11 +321,46 @@
                         </DataGrid>
                     </Grid>
                 </Border>
-            <Border BorderThickness="0"  Grid.Column="0" Grid.Row="1"  Height="50"   Margin="10,10,5,10"
-                    CornerRadius="7" BorderBrush="Black" Background="#178DD2" Padding="0">
-                    <Button Content="Save" Height="auto" BorderBrush="{x:Null}"  FontSize="14" x:Name="btn_save"
-                    Background="{x:Null}" Click="Btn_save_Click"  />
+            <Grid Grid.Row="2" Margin="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Border BorderThickness="0"  Grid.Column="0" Grid.ColumnSpan="1" Grid.Row="2"   Height="50" Margin="10,10,5,10"
+                    CornerRadius="7" BorderBrush="Black" Background="White" Padding="0" x:Name="brd_totalDescount">
+                    <StackPanel Orientation="Horizontal" Margin="5,0" VerticalAlignment="Center" >
+
+                        <TextBlock Text="Shortage" x:Name="txt_shortageTitle" Foreground="{StaticResource MainColorBlue}" FontWeight="Bold" 
+                                       VerticalAlignment="Center" HorizontalAlignment="Left" 
+                               Margin="2,0,5,0" FontSize="22"/>
+                        <TextBlock  Grid.Column="1" Margin="5,0,0,0" FontWeight="Bold" FontSize="18"  VerticalAlignment="Center"
+                                   TextAlignment="Center" Name="tb_shortage" Foreground="#4E4E4E" HorizontalAlignment="Right" 
+                                      Text="0"/>
+                    </StackPanel>
                 </Border>
+                <Border BorderThickness="0"  Grid.Column="1" Grid.ColumnSpan="1" Grid.Row="2"   Height="50" Margin="5,10,5,10"
+                    CornerRadius="7" BorderBrush="Black" Background="White" Padding="0" x:Name="brd_total">
+                    <StackPanel Orientation="Horizontal" Margin="5,0" VerticalAlignment="Center" >
+                        <TextBlock Text="Destructive" x:Name="txt_destroyTitle" Foreground="{StaticResource MainColorBlue}" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Left" 
+                               Margin="2,0,5,0" FontSize="22"/>
+                        <TextBlock  Grid.Column="1" Margin="5,0,0,0" FontWeight="Bold" FontSize="18"  VerticalAlignment="Center"
+                                   TextAlignment="Center" Name="tb_destroy" Foreground="#4E4E4E" HorizontalAlignment="Right" 
+                                      Text="0"/>
+                    </StackPanel>
+                </Border>
+                <!--<TextBox Visibility="Visible" x:Name="tb_shortage" Grid.Row="4" Text="{Binding amount, Mode=OneWay}" Padding="10,0,5,0"                             
+                                     BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Amount Shortageed..."    
+                                     Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
+                                    BorderBrush="AliceBlue"    Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                    MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                    Height="40"   Margin="10,5,10,5" Grid.ColumnSpan="2"  />-->
+                <!--<TextBox Visibility="Visible" x:Name="tb_destroy" Grid.Row="5" Text="{Binding amount, Mode=OneWay}" Padding="10,0,5,0"                             
+                                     BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Amount Shortageed..."    
+                                     Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
+                                    BorderBrush="AliceBlue"    Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                    MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                    Height="40"   Margin="10,5,10,5" Grid.ColumnSpan="2"  />-->
             </Grid>
+        </Grid>
         </Grid>
 </UserControl>

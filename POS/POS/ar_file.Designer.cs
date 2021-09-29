@@ -97,6 +97,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to مشتريات.
+        /// </summary>
+        internal static string tr_Purchases {
+            get {
+                return ResourceManager.GetString("tr_Purchases", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to مبيعات.
         /// </summary>
         internal static string tr_Sales {
@@ -1407,6 +1416,15 @@ namespace POS {
         internal static string trDestructive {
             get {
                 return ResourceManager.GetString("trDestructive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to التوالف.
+        /// </summary>
+        internal static string trDestructives {
+            get {
+                return ResourceManager.GetString("trDestructives", resourceCulture);
             }
         }
         
@@ -3940,6 +3958,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to صافي المشتريات.
+        /// </summary>
+        internal static string trNetPurchases {
+            get {
+                return ResourceManager.GetString("trNetPurchases", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to صافي المبيعات.
         /// </summary>
         internal static string trNetSales {
@@ -6403,6 +6430,15 @@ namespace POS {
         internal static string trTotalNet {
             get {
                 return ResourceManager.GetString("trTotalNet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to إجمالي المشتريات.
+        /// </summary>
+        internal static string trTotalPurchases {
+            get {
+                return ResourceManager.GetString("trTotalPurchases", resourceCulture);
             }
         }
         

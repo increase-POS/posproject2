@@ -270,8 +270,8 @@ namespace POS.View.purchases
                 refreshDraftNotification();
                 tb_barcode.Focus();
                 #region datagridChange
-                CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(dg_billDetails.Items);
-                ((INotifyCollectionChanged)myCollectionView).CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
+                //CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(dg_billDetails.Items);
+                //((INotifyCollectionChanged)myCollectionView).CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
                 #endregion
 
                 #region Permision
@@ -544,13 +544,13 @@ namespace POS.View.purchases
                         _Count += billDetails[index].Count;
                         _Sum += billDetails[index].Price;
                     }
-                    refreshTotalValue();
-                    refrishBillDetails();
+                    //refreshTotalValue();
+                    //refrishBillDetails();
                 }
                 else
                 {
                       addRowToBill(item.name, itemId, null, 0, 1, 0, 0);
-                    refrishBillDetails();
+                    //refrishBillDetails();
                 }
             }
             tb_total.Text = _Count.ToString();
@@ -1094,7 +1094,7 @@ namespace POS.View.purchases
                 dg_billDetails.Items.Refresh();
                 firstTimeForDatagrid = false;
             }
-
+            DataGrid_CollectionChanged(dg_billDetails, null);
             tb_total.Text = _Count.ToString();
             ////tb_sum.Text = _Sum.ToString();
             //if (_Sum != 0)
@@ -1103,7 +1103,12 @@ namespace POS.View.purchases
             //    tb_sum.Text = "0";
 
         }
-
+        void refrishDataGridItems()
+        {
+            dg_billDetails.ItemsSource = null;
+            dg_billDetails.ItemsSource = billDetails;
+            dg_billDetails.Items.Refresh();
+        }
 
         // read item from barcode
         private async void HandleKeyPress(object sender, KeyEventArgs e)
@@ -1390,7 +1395,13 @@ namespace POS.View.purchases
                     {
                         if (dg_billDetails.Items.Count > 1)
                         {
-                            var cell = DataGridHelper.GetCell(dg_billDetails, count, 3);
+                            DataGridCell cell = null;
+                            try
+                            {
+                                cell = DataGridHelper.GetCell(dg_billDetails, count, 3);
+                            }
+                            catch
+                            { }
                             if (cell != null)
                             {
                                 var cp = (ContentPresenter)cell.Content;
@@ -1475,6 +1486,7 @@ namespace POS.View.purchases
                     // update item in billdetails           
                     billDetails[index].Count = (int)newCount;
 
+                refrishDataGridItems();
                 }
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -1773,6 +1785,8 @@ namespace POS.View.purchases
                         int itemId = w.selectedItems[i];
                         await ChangeItemIdEvent(itemId);
                     }
+                    refreshTotalValue();
+                    refrishBillDetails();
                 }
 
                 Window.GetWindow(this).Opacity = 1;

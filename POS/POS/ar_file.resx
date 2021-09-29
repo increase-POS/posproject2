@@ -2470,4 +2470,16 @@
   <data name="trSerialNumbersEqualItemsNumber" xml:space="preserve">
     <value>يجب أن يتساوى عدد السيريال مع عدد العناصر</value>
   </data>
+  <data name="trNetPurchases" xml:space="preserve">
+    <value>صافي المشتريات</value>
+  </data>
+  <data name="trTotalPurchases" xml:space="preserve">
+    <value>إجمالي المشتريات</value>
+  </data>
+  <data name="tr_Purchases" xml:space="preserve">
+    <value>مشتريات</value>
+  </data>
+  <data name="trDestructives" xml:space="preserve">
+    <value>التوالف</value>
+  </data>
 </root>

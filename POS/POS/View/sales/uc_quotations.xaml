@@ -24,7 +24,7 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Border BorderThickness="0"  Height="auto"  Grid.Column="0"  Margin="10,0,0,0"
-                    CornerRadius="7" BorderBrush="Black" Background="#4E4E4E" Padding="0">
+                    CornerRadius="7" BorderBrush="Black" Background="#4E4E4E" Padding="0" HorizontalAlignment="Left" Width="60">
                     <Button Grid.Column="8" BorderBrush="{x:Null}"     Margin="5,10,5,0" Height="auto" Click="Btn_items_Click"
                     Background="{x:Null}" x:Name="btn_items" Padding="0"    >
                         <StackPanel>
@@ -580,7 +580,7 @@
                       materialDesign:DataGridAssist.CornerRadius="5" Visibility="Visible"
                          IsReadOnly="False" CanUserAddRows="False"  
                         AutoGenerateColumns="False" CellEditEnding="Dg_billDetails_CellEditEnding"
-                        ColumnWidth="SizeToHeader"     
+                        ColumnWidth="SizeToHeader"     CanUserSortColumns="False"
                         VirtualizingStackPanel.IsVirtualizing="False"  
                         EnableRowVirtualization="True" EnableColumnVirtualization="True">
                             <DataGrid.Resources>

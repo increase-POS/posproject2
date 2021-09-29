@@ -2488,4 +2488,16 @@ Please add Email in setting</value>
   <data name="trSerialNumbersEqualItemsNumber" xml:space="preserve">
     <value>The number of serials must be equal to the number of elements</value>
   </data>
+  <data name="trNetPurchases" xml:space="preserve">
+    <value>Net Purchases</value>
+  </data>
+  <data name="trTotalPurchases" xml:space="preserve">
+    <value>Total Purchases</value>
+  </data>
+  <data name="tr_Purchases" xml:space="preserve">
+    <value>Purchases</value>
+  </data>
+  <data name="trDestructives" xml:space="preserve">
+    <value>Destructives</value>
+  </data>
 </root>

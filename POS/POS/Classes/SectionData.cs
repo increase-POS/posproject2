@@ -352,20 +352,24 @@ namespace POS.Classes
             }
             return isValid;
         }
-        public static void validateEmptyDatePicker(DatePicker dp, Path p_error, ToolTip tt_error, string tr)
+        public static bool validateEmptyDatePicker(DatePicker dp, Path p_error, ToolTip tt_error, string tr)
         {
+            bool isValid = true;
             TextBox tb = (TextBox)dp.Template.FindName("PART_TextBox", dp);
             if (tb.Text.Trim().Equals(""))
             {
                 p_error.Visibility = Visibility.Visible;
                 tt_error.Content = MainWindow.resourcemanager.GetString(tr);
                 tb.Background = (Brush)bc.ConvertFrom("#15FF0000");
+                isValid = false;
             }
             else
             {
                 tb.Background = (Brush)bc.ConvertFrom("#f8f8f8");
                 p_error.Visibility = Visibility.Collapsed;
             }
+            return isValid;
+
         }
         public static void validateSmalThanDateNowDatePicker(DatePicker dp, Path p_error, ToolTip tt_error, string tr)
         {

@@ -184,8 +184,8 @@
                                                           Grid.Column="1"
                                                           Content="All"
                                                           Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}"
-                                               Checked="Chk_stocktakingArchivedAllBranches_Checked"
-                                                           Unchecked="Chk_stocktakingArchivedAllBranches_Unchecked"
+                                                          Checked="Chk_stocktakingArchivedAllBranches_Checked"
+                                                          Unchecked="Chk_stocktakingArchivedAllBranches_Unchecked"
                                                            ></CheckBox>
 
                                                 <ComboBox Name="cb_stocktakingArchivedType"
@@ -209,7 +209,7 @@
                                                           Grid.Column="1"
                                                           Content="All"
                                                           Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}"
-                                                      Checked="Chk_stocktakingArchivedAllTypes_Checked"
+                                                          Checked="Chk_stocktakingArchivedAllTypes_Checked"
                                                           Unchecked="Chk_stocktakingArchivedAllTypes_Unchecked"
                                                           ></CheckBox>
 
@@ -263,8 +263,8 @@
                                                           Grid.Column="1"
                                                           Content="All"
                                                           Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}"
-                                               Checked="Chk_stocktakingFalseAllBranches_Checked"
-                                                           Unchecked="Chk_stocktakingFalseAllBranches_Unchecked"
+                                                          Checked="Chk_stocktakingFalseAllBranches_Checked"
+                                                          Unchecked="Chk_stocktakingFalseAllBranches_Unchecked"
                                                            ></CheckBox>
 
                                                 <ComboBox Name="cb_stocktakingFalseType"

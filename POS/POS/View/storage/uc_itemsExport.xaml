@@ -573,7 +573,7 @@
                       materialDesign:DataGridAssist.CornerRadius="5" Visibility="Visible"
                          IsReadOnly="False" CanUserAddRows="False"  
                         AutoGenerateColumns="False" CellEditEnding="Dg_billDetails_CellEditEnding"
-                        ColumnWidth="SizeToHeader" 
+                        ColumnWidth="SizeToHeader" CanUserSortColumns="False"
                                   VirtualizingStackPanel.IsVirtualizing="False"  
                                   EnableRowVirtualization="True" EnableColumnVirtualization="True"  >
                             <DataGrid.Resources>

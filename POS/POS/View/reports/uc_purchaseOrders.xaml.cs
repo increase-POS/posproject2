@@ -515,16 +515,19 @@ fillColumnChart(cb_Items, selectedItemId);
             List<int> cD = new List<int>();
             List<string> titles = new List<string>()
             {
-                "مبيعات","مرتجع","مسودة"
-            };
+                //"مبيعات","مرتجع","مسودة"
+                MainWindow.resourcemanager.GetString("tr_Purchases"),
+                MainWindow.resourcemanager.GetString("trReturned"),
+                MainWindow.resourcemanager.GetString("trDraft")
+        };
             for (int i = 0; i < x.Count(); i++)
             {
                 cP.Add(x.ToList().Skip(i).FirstOrDefault());
                 cPb.Add(y.ToList().Skip(i).FirstOrDefault());
                 cD.Add(z.ToList().Skip(i).FirstOrDefault());
-                axcolumn.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
+                //axcolumn.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
             }
-
+            
             //3 فوق بعض
             columnChartData.Add(
             new StackedColumnSeries
@@ -533,10 +536,10 @@ fillColumnChart(cb_Items, selectedItemId);
                 Title = titles[0],
                 DataLabels = true,
             });
-
-
+       
             DataContext = this;
             cartesianChart.Series = columnChartData;
+           
         }
 
 
@@ -663,7 +666,10 @@ fillColumnChart(cb_Items, selectedItemId);
             List<decimal> sub = new List<decimal>();
             List<string> titles = new List<string>()
             {
-                "اجمالي المبيعات","اجمالي المرتجع","صافي المبيعات"
+                //"اجمالي المبيعات","اجمالي المرتجع","صافي المبيعات"
+                MainWindow.resourcemanager.GetString("trTotalPurchases"),
+                MainWindow.resourcemanager.GetString("trTotalReturn"),
+                MainWindow.resourcemanager.GetString("trNetPurchases")
             };
             for (int i = 0; i < pTemp.Count(); i++)
             {
@@ -2323,15 +2329,18 @@ fillColumnChart(cb_Items, selectedItemId);
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
+        bool isClickedAllBranches = false;
         private void chk_allBranches_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                if (cb_branches.IsEnabled == true)
+
+                if(!isClickedAllBranches)
+                //if (cb_branches.IsEnabled == true)
                 {
+                    isClickedAllBranches = true;
                     cb_branches.SelectedItem = null;
                     cb_branches.IsEnabled = false;
                     for (int i = 0; i < comboBrachTemp.Count; i++)
@@ -2345,6 +2354,7 @@ fillColumnChart(cb_Items, selectedItemId);
                 }
                 else
                 {
+                    isClickedAllBranches = false;
                     cb_branches.IsEnabled = true;
                 }
                 fillBranchEvent();
@@ -2359,15 +2369,18 @@ fillColumnChart(cb_Items, selectedItemId);
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
+        bool isClickedAllPos = false;
         private void chk_allPos_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                if (cb_pos.IsEnabled == true)
+
+                if(!isClickedAllPos)
+                //if (cb_pos.IsEnabled == true)
                 {
+                    isClickedAllPos = true;
                     cb_pos.SelectedItem = null;
                     cb_pos.IsEnabled = false;
                     for (int i = 0; i < comboPosTemp.Count; i++)
@@ -2380,6 +2393,7 @@ fillColumnChart(cb_Items, selectedItemId);
                 }
                 else
                 {
+                    isClickedAllPos = false;
                     cb_pos.IsEnabled = true;
                 }
 
@@ -2395,15 +2409,18 @@ fillColumnChart(cb_Items, selectedItemId);
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
+        bool isClickedAllVendors = false;
         private void chk_allVendors_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                if (cb_vendors.IsEnabled == true)
+
+                if(!isClickedAllVendors)
+                //if (cb_vendors.IsEnabled == true)
                 {
+                    isClickedAllVendors = true;
                     cb_vendors.SelectedItem = null;
                     cb_vendors.IsEnabled = false;
                     for (int i = 0; i < comboVendorTemp.Count; i++)
@@ -2416,6 +2433,7 @@ fillColumnChart(cb_Items, selectedItemId);
                 }
                 else
                 {
+                    isClickedAllVendors = false;
                     cb_vendors.IsEnabled = true;
                 }
 
@@ -2431,7 +2449,7 @@ fillColumnChart(cb_Items, selectedItemId);
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
+        bool isClickedAllUsers = false;
         private void chk_allUsers_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -2439,8 +2457,10 @@ fillColumnChart(cb_Items, selectedItemId);
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                if (cb_users.IsEnabled == true)
+                if(!isClickedAllUsers)
+                //if (cb_users.IsEnabled == true)
                 {
+                    isClickedAllUsers = true;
                     cb_users.SelectedItem = null;
                     cb_users.IsEnabled = false;
                     for (int i = 0; i < comboUserTemp.Count; i++)
@@ -2453,6 +2473,7 @@ fillColumnChart(cb_Items, selectedItemId);
                 }
                 else
                 {
+                    isClickedAllUsers = false;
                     cb_users.IsEnabled = true;
                 }
 
@@ -2468,15 +2489,18 @@ fillColumnChart(cb_Items, selectedItemId);
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
+        bool isClickedAllItems = false;
         private void chk_allItems_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                if (cb_Items.IsEnabled == true)
+
+                if(!isClickedAllItems)
+                //if (cb_Items.IsEnabled == true)
                 {
+                    isClickedAllItems = true;
                     cb_Items.SelectedItem = null;
                     cb_Items.IsEnabled = false;
                     for (int i = 0; i < comboItemTemp.Count; i++)
@@ -2489,6 +2513,7 @@ fillColumnChart(cb_Items, selectedItemId);
                 }
                 else
                 {
+                    isClickedAllItems = false;
                     cb_Items.IsEnabled = true;
                 }
 

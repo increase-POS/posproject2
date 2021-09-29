@@ -2487,14 +2487,18 @@ fillColumnChart(cb_Items, selectedItemId);
         }
 
 
-
+        bool isClickedAllBranches = false;
         private void chk_allBranches_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 if (sender != null)
-                    SectionData.StartAwait(grid_main); if (cb_branches.IsEnabled == true)
+                    SectionData.StartAwait(grid_main);
+
+                if(!isClickedAllBranches)
+                //if (cb_branches.IsEnabled == true)
                 {
+                    isClickedAllBranches = true;
                     cb_branches.SelectedItem = null;
                     cb_branches.IsEnabled = false;
                     for (int i = 0; i < comboBrachTemp.Count; i++)
@@ -2508,6 +2512,7 @@ fillColumnChart(cb_Items, selectedItemId);
                 }
                 else
                 {
+                    isClickedAllBranches = false;
                     cb_branches.IsEnabled = true;
                 }
                 fillBranchEvent();
@@ -2521,14 +2526,18 @@ fillColumnChart(cb_Items, selectedItemId);
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
+        bool isClickedAllPos = false;
         private void chk_allPos_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 if (sender != null)
-                    SectionData.StartAwait(grid_main); if (cb_pos.IsEnabled == true)
+                    SectionData.StartAwait(grid_main);
+
+                if(!isClickedAllPos)
+                //if (cb_pos.IsEnabled == true)
                 {
+                    isClickedAllPos = true;
                     cb_pos.SelectedItem = null;
                     cb_pos.IsEnabled = false;
                     for (int i = 0; i < comboPosTemp.Count; i++)
@@ -2541,6 +2550,7 @@ fillColumnChart(cb_Items, selectedItemId);
                 }
                 else
                 {
+                    isClickedAllPos = false;
                     cb_pos.IsEnabled = true;
                 }
 
@@ -2555,14 +2565,18 @@ fillColumnChart(cb_Items, selectedItemId);
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
+        bool isClickedAllVendors = false;
         private void chk_allVendors_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 if (sender != null)
-                    SectionData.StartAwait(grid_main); if (cb_vendors.IsEnabled == true)
+                    SectionData.StartAwait(grid_main);
+
+                //if (cb_vendors.IsEnabled == true)
+                if(!isClickedAllVendors)
                 {
+                    isClickedAllVendors = true;
                     cb_vendors.SelectedItem = null;
                     cb_vendors.IsEnabled = false;
                     for (int i = 0; i < comboVendorTemp.Count; i++)
@@ -2575,6 +2589,7 @@ fillColumnChart(cb_Items, selectedItemId);
                 }
                 else
                 {
+                    isClickedAllVendors = false;
                     cb_vendors.IsEnabled = true;
                 }
 
@@ -2589,14 +2604,18 @@ fillColumnChart(cb_Items, selectedItemId);
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
+        bool isClickedAllUsers = false;
         private void chk_allUsers_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 if (sender != null)
-                    SectionData.StartAwait(grid_main); if (cb_users.IsEnabled == true)
+                    SectionData.StartAwait(grid_main);
+
+                if(!isClickedAllUsers)
+                //if (cb_users.IsEnabled == true)
                 {
+                    isClickedAllUsers = true;
                     cb_users.SelectedItem = null;
                     cb_users.IsEnabled = false;
                     for (int i = 0; i < comboUserTemp.Count; i++)
@@ -2609,6 +2628,7 @@ fillColumnChart(cb_Items, selectedItemId);
                 }
                 else
                 {
+                    isClickedAllUsers = false;
                     cb_users.IsEnabled = true;
                 }
 
@@ -2660,14 +2680,18 @@ fillColumnChart(cb_Items, selectedItemId);
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
+        bool isClickedAllItems = false;
         private void chk_allItems_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 if (sender != null)
-                    SectionData.StartAwait(grid_main); if (cb_Items.IsEnabled == true)
+                    SectionData.StartAwait(grid_main);
+
+                if(!isClickedAllItems)
+                //if (cb_Items.IsEnabled == true)
                 {
+                    isClickedAllItems = true;
                     cb_Items.SelectedItem = null;
                     cb_Items.IsEnabled = false;
                     for (int i = 0; i < comboItemTemp.Count; i++)
@@ -2680,6 +2704,7 @@ fillColumnChart(cb_Items, selectedItemId);
                 }
                 else
                 {
+                    isClickedAllItems = false;
                     cb_Items.IsEnabled = true;
                 }
 
@@ -3078,14 +3103,18 @@ fillColumnChart(cb_Items, selectedItemId);
             }
         }
 
-
+        bool isClickedAllCoupons = false;
         private void chk_allCoupon_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 if (sender != null)
-                    SectionData.StartAwait(grid_main); if (cb_Coupons.IsEnabled == true)
+                    SectionData.StartAwait(grid_main);
+
+                if(!isClickedAllCoupons)
+                //if (cb_Coupons.IsEnabled == true)
                 {
+                    isClickedAllCoupons = true;
                     cb_Coupons.SelectedItem = null;
                     cb_Coupons.IsEnabled = false;
                     for (int i = 0; i < comboCouponTemp.Count; i++)
@@ -3098,6 +3127,7 @@ fillColumnChart(cb_Items, selectedItemId);
                 }
                 else
                 {
+                    isClickedAllCoupons = false;
                     cb_Coupons.IsEnabled = true;
                 }
 
@@ -3246,14 +3276,18 @@ fillColumnChart(cb_Items, selectedItemId);
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
+        bool isClickedAllOffers = false;
         private void chk_allOffers_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 if (sender != null)
-                    SectionData.StartAwait(grid_main); if (cb_offers.IsEnabled == true)
+                    SectionData.StartAwait(grid_main);
+
+                if(!isClickedAllOffers)
+                //if (cb_offers.IsEnabled == true)
                 {
+                    isClickedAllOffers = true;
                     cb_offers.SelectedItem = null;
                     cb_offers.IsEnabled = false;
                     for (int i = 0; i < comboOfferTemp.Count; i++)
@@ -3266,6 +3300,7 @@ fillColumnChart(cb_Items, selectedItemId);
                 }
                 else
                 {
+                    isClickedAllOffers = false;
                     cb_offers.IsEnabled = true;
                 }
 

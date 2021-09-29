@@ -2071,14 +2071,14 @@ namespace POS.View
         async void refrishBillDetails()
         {
             dg_billDetails.ItemsSource = null;
-            if (billDetails.Count == 1)
-            {
-                BillDetails bd = new BillDetails();
-                billDetails.Add(bd);
-                dg_billDetails.ItemsSource = billDetails;
-                billDetails.Remove(bd);
-            }
-            else
+            //if (billDetails.Count == 1)
+            //{
+            //    BillDetails bd = new BillDetails();
+            //    billDetails.Add(bd);
+            //    dg_billDetails.ItemsSource = billDetails;
+            //    billDetails.Remove(bd);
+            //}
+            //else
                 dg_billDetails.ItemsSource = billDetails;
             if (firstTimeForDatagrid)
             {
@@ -2086,6 +2086,7 @@ namespace POS.View
                 dg_billDetails.Items.Refresh();
                 firstTimeForDatagrid = false;
             }
+            //dg_billDetails.Items.Refresh();
             DataGrid_CollectionChanged(dg_billDetails, null);
 
 
@@ -2103,7 +2104,12 @@ namespace POS.View
             //    tb_taxValue.Text = "0";
             //}
         }
-
+        void refrishDataGridItems()
+        {
+            dg_billDetails.ItemsSource = null;
+            dg_billDetails.ItemsSource = billDetails;
+            dg_billDetails.Items.Refresh();
+        }
 
         // read item from barcode
         private async void HandleKeyPress(object sender, KeyEventArgs e)
@@ -2523,9 +2529,10 @@ namespace POS.View
                         if (dg_billDetails.Items.Count > 1)
                         {
                             DataGridCell cell = null;
-                            
                             try
+                            {
                                 cell = DataGridHelper.GetCell(dg_billDetails, count, 3);
+                            }
                             catch
                             {}
                            
@@ -2540,7 +2547,6 @@ namespace POS.View
                     }
                     count++;
                 }
-
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -2721,7 +2727,8 @@ namespace POS.View
 
                 //dg_billDetails.CommitEdit();
                 //dg_billDetails.Items.Refresh();
-
+                refrishDataGridItems();
+                //refrishBillDetails();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }

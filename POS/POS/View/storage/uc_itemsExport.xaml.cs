@@ -497,7 +497,6 @@ namespace POS.View.storage
                 Count = count,
             });
 
-            refrishBillDetails();
         }
         bool firstTimeForDatagrid = true;
         async void refrishBillDetails()
@@ -512,6 +511,12 @@ namespace POS.View.storage
             }
             DataGrid_CollectionChanged(dg_billDetails, null);
             tb_count.Text = _Count.ToString();
+        }
+        void refrishDataGridItems()
+        {
+            dg_billDetails.ItemsSource = null;
+            dg_billDetails.ItemsSource = billDetails;
+            dg_billDetails.Items.Refresh();
         }
         #region bill
 
@@ -793,6 +798,7 @@ namespace POS.View.storage
                         int itemId = w.selectedItems[i];
                         await ChangeItemIdEvent(itemId);
                     }
+                refrishBillDetails();
                 }
 
                 Window.GetWindow(this).Opacity = 1;
@@ -839,7 +845,6 @@ namespace POS.View.storage
                     addRowToBill(item.name, itemId, null, 0, 1);
                 }
                 _Count++;
-                refrishBillDetails();
             }
         }
 
@@ -1547,6 +1552,7 @@ namespace POS.View.storage
                 }
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
+                refrishDataGridItems();
             }
             catch (Exception ex)
             {

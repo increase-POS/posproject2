@@ -47,6 +47,8 @@ namespace POS.View.storage
         string archivingPermission = "inventory_archiving";
         string reportsPermission = "inventory_reports";
 
+        private static int _ShortageAmount = 0;
+        private static int _DestroyAmount = 0;
         public static uc_inventory Instance
         {
             get
@@ -144,16 +146,18 @@ namespace POS.View.storage
 
             txt_inventoryDetails.Text = MainWindow.resourcemanager.GetString("trStocktakingDetails");
             txt_titleDataGrid.Text = MainWindow.resourcemanager.GetString("trStocktakingItems");
-            btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
-            btn_archive.Content = MainWindow.resourcemanager.GetString("trArchive");
+            //btn_archive.Content = MainWindow.resourcemanager.GetString("trArchive");
+            btn_archive.Content = MainWindow.resourcemanager.GetString("trSave");
 
+            bdr_archive.Background = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
             txt_newDraft.Text = MainWindow.resourcemanager.GetString("trNew");
             txt_drafts.Text = MainWindow.resourcemanager.GetString("trDraft");
             txt_inventory.Text = MainWindow.resourcemanager.GetString("trInventory");
             txt_printInvoice.Text = MainWindow.resourcemanager.GetString("trPrint");
             txt_preview.Text = MainWindow.resourcemanager.GetString("trPreview");
             txt_invoiceImages.Text = MainWindow.resourcemanager.GetString("trImages");
-
+            txt_shortageTitle.Text = MainWindow.resourcemanager.GetString("trShortages");
+            txt_destroyTitle.Text = MainWindow.resourcemanager.GetString("trDestructives");
         }
         #region timer to refresh notifications
         private void setTimer()
@@ -291,19 +295,25 @@ namespace POS.View.storage
             {
                 dg_items.Columns[4].IsReadOnly = false;
                 dg_items.Columns[5].IsReadOnly = false;
-                btn_save.IsEnabled = true;
-                btn_archive.IsEnabled = false;
+                btn_archive.IsEnabled = true;
+                btn_deleteInventory.Visibility = Visibility.Collapsed;
+                btn_archive.Content = MainWindow.resourcemanager.GetString("trSave");
+                bdr_archive.Background = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
             }
             else if (_InventoryType == "n") // normal saved
             {
                 dg_items.Columns[4].IsReadOnly = true;
                 dg_items.Columns[5].IsReadOnly = true;
-                btn_save.IsEnabled = false;
+                btn_archive.Content = MainWindow.resourcemanager.GetString("trArchive");
+                bdr_archive.Background = Application.Current.Resources["mediumRed"] as SolidColorBrush;
+                if(SectionData.isAdminPermision())
+                btn_deleteInventory.Visibility = Visibility.Visible;
                 bool shortageManipulated = await inventory.shortageIsManipulated(inventory.inventoryId);
                 if (shortageManipulated)
                     btn_archive.IsEnabled = true;
                 else
                     btn_archive.IsEnabled = false;
+
             }
         }
         private void Dg_items_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
@@ -323,12 +333,16 @@ namespace POS.View.storage
                     if (t != null && columnName == MainWindow.resourcemanager.GetString("trDestoryCount"))
                     {
                         int destroyCount = int.Parse(t.Text);
+                        //int oldCount = e.Row.Item.
+                        int newCount = int.Parse(t.Text);
                         if (destroyCount > itemsLocations[index].quantity)
                         {
+                            
                             t.Text = "0";
                             Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorDistroyMoreQuanToolTip"), animation: ToasterAnimation.FadeIn);
                         }
-
+                        _DestroyAmount += newCount;
+                        refreshDestroyAmount();
                     }
                 }
                 if (sender != null)
@@ -340,6 +354,10 @@ namespace POS.View.storage
                     SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this);
             }
+        }
+        private static void refreshDestroyAmount()
+        {
+
         }
         private async void clearInventory()
         {
@@ -459,7 +477,6 @@ namespace POS.View.storage
                     _InventoryType = "n";
                     await refreshDocCount(inventory.inventoryId);
                     await fillInventoryDetails();
-                    btn_deleteInventory.Visibility = Visibility.Visible;
                 }
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -505,8 +522,19 @@ namespace POS.View.storage
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                if (MainWindow.groupObject.HasPermissionAction(archivingPermission, MainWindow.groupObjects, "one"))
-                    await addInventory("a"); // a:archived
+                if (MainWindow.groupObject.HasPermissionAction(archivingPermission, MainWindow.groupObjects, "one") || MainWindow.groupObject.HasPermissionAction(createInventoryPermission, MainWindow.groupObjects, "one"))
+                {
+                    if (_InventoryType == "n")
+                        await addInventory("a"); // a:archived
+                    else if (_InventoryType == "d")
+                    {
+                        var inv = await inventory.getByBranch("n", MainWindow.branchID.Value);
+                        if (inv.inventoryId == 0)
+                            await addInventory("n"); // n:normal
+                        else
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trWarningOneInventory"), animation: ToasterAnimation.FadeIn);
+                    }
+                }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
                 if (sender != null)
@@ -733,15 +761,15 @@ namespace POS.View.storage
                     #endregion
                     if (w.isOk)
                     {
-                        string res = await inventory.deleteInventory(inventory.inventoryId);
-                        if (res.Equals("1"))
-                        {
-                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
+                        //string res = await inventory.deleteInventory(inventory.inventoryId,MainWindow.userID.Value,false);
+                        //if (res.Equals("1"))
+                        //{
+                        //    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
 
-                            clearInventory();
-                        }
-                        else
-                            Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                        //    clearInventory();
+                        //}
+                        //else
+                        //    Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                     }
                 }
                 if (sender != null)

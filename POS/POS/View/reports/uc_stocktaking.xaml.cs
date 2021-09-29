@@ -69,7 +69,7 @@ namespace POS.View.reports
         }
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
+        {//load
             try
             {
                 if (sender != null)
@@ -499,8 +499,10 @@ namespace POS.View.reports
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
                 cb_stocktakingArchivedBranch.SelectedItem = null;
                 cb_stocktakingArchivedBranch.IsEnabled = false;
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -510,6 +512,7 @@ namespace POS.View.reports
                     SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this);
             }
+
         }
 
         private void Chk_stocktakingArchivedAllBranches_Unchecked(object sender, RoutedEventArgs e)
@@ -518,7 +521,9 @@ namespace POS.View.reports
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
                 cb_stocktakingArchivedBranch.IsEnabled = true;
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -554,8 +559,10 @@ namespace POS.View.reports
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
                 cb_stocktakingArchivedType.SelectedItem = null;
                 cb_stocktakingArchivedType.IsEnabled = false;
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -573,7 +580,9 @@ namespace POS.View.reports
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
                 cb_stocktakingArchivedType.IsEnabled = true;
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -699,7 +708,12 @@ namespace POS.View.reports
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
                 fillShortFallsEvents();
+
+                cb_stocktakingFalseType.SelectedIndex = -1;
+                cb_stocktakingFalseType.IsEnabled = false;
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -717,7 +731,11 @@ namespace POS.View.reports
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
                 fillShortFallsEvents();
+
+                cb_stocktakingFalseType.IsEnabled = true;
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -753,7 +771,9 @@ namespace POS.View.reports
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
                 fillShortFallsEvents();
+                cb_stocktakingFalseBranch.IsEnabled = true;
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -772,7 +792,12 @@ namespace POS.View.reports
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
                 fillShortFallsEvents();
+
+                cb_stocktakingFalseBranch.SelectedIndex = -1;
+                cb_stocktakingFalseBranch.IsEnabled = false;
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }

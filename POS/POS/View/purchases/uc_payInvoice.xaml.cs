@@ -263,8 +263,8 @@ namespace POS.View
                 #endregion
                 tb_barcode.Focus();
                 #region datagridChange
-                CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(dg_billDetails.Items);
-                ((INotifyCollectionChanged)myCollectionView).CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
+                //CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(dg_billDetails.Items);
+                //((INotifyCollectionChanged)myCollectionView).CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
                 #endregion
 
 
@@ -618,13 +618,13 @@ namespace POS.View
 
                         _Sum += billDetails[index].Price;
                     }
-                    refreshTotalValue();
-                    refrishBillDetails();
+                    //refreshTotalValue();
+                    //refrishBillDetails();
                 }
                 else
                 {
                       addRowToBill(item.name, itemId, null, 0, 1, 0, 0);
-                    refrishBillDetails();
+                    //refrishBillDetails();
                 }
 
             }
@@ -826,9 +826,13 @@ namespace POS.View
         {
             //bool isValid = true;
             //SectionData.validateEmptyComboBox(cb_branch, p_errorBranch, tt_errorBranch, "trEmptyBranchToolTip");
-            SectionData.validateEmptyComboBox(cb_vendor, p_errorVendor, tt_errorVendor, "trErrorEmptyVendorToolTip");
-            SectionData.validateEmptyTextBox(tb_invoiceNumber, p_errorInvoiceNumber, tt_errorInvoiceNumber, "trErrorEmptyInvNumToolTip");
-            SectionData.validateEmptyDatePicker(dp_desrvedDate, p_errorDesrvedDate, tt_errorDesrvedDate, "trErrorEmptyDeservedDate");
+            if (!SectionData.validateEmptyComboBox(cb_vendor, p_errorVendor, tt_errorVendor, "trErrorEmptyVendorToolTip"))
+                exp_vendor.IsExpanded = true;
+            if (!SectionData.validateEmptyTextBox(tb_invoiceNumber, p_errorInvoiceNumber, tt_errorInvoiceNumber, "trErrorEmptyInvNumToolTip"))
+                exp_vendor.IsExpanded = true;
+            if (!SectionData.validateEmptyDatePicker(dp_desrvedDate, p_errorDesrvedDate, tt_errorDesrvedDate, "trErrorEmptyDeservedDate"))
+                exp_vendor.IsExpanded = true;
+
             if (decimal.Parse(tb_total.Text) == 0)
                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorTotalIsZeroToolTip"), animation: ToasterAnimation.FadeIn);
 
@@ -1643,7 +1647,7 @@ namespace POS.View
                 dg_billDetails.Items.Refresh();
                 firstTimeForDatagrid = false;
             }
-           
+            DataGrid_CollectionChanged(dg_billDetails, null);
             //tb_sum.Text = _Sum.ToString();
             if (_Sum != 0)
                 tb_sum.Text = SectionData.DecTostring(_Sum);
@@ -1651,7 +1655,12 @@ namespace POS.View
                 tb_sum.Text = "0";
 
         }
-
+        void refrishDataGridItems()
+        {
+            dg_billDetails.ItemsSource = null;
+            dg_billDetails.ItemsSource = billDetails;
+            dg_billDetails.Items.Refresh();
+        }
 
         // read item from barcode
         private async void HandleKeyPress(object sender, KeyEventArgs e)
@@ -1938,7 +1947,13 @@ namespace POS.View
                     {
                         if (dg_billDetails.Items.Count > 1)
                         {
-                            var cell = DataGridHelper.GetCell(dg_billDetails, count, 3);
+                            DataGridCell cell = null;
+                            try
+                            {
+                                cell = DataGridHelper.GetCell(dg_billDetails, count, 3);
+                            }
+                            catch
+                            { }
                             if (cell != null)
                             {
                                 var cp = (ContentPresenter)cell.Content;
@@ -1973,15 +1988,15 @@ namespace POS.View
         {
             try
             {
-                //if (sender != null)
-                //    SectionData.StartAwait(grid_main);
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
                 //if (invoice.invoiceId == 0 && e.Column.DisplayIndex == 3)
                 //{
 
                 //}
                 //else
                 //{
-                    TextBox t = e.EditingElement as TextBox;  // Assumes columns are all TextBoxes
+                TextBox t = e.EditingElement as TextBox;  // Assumes columns are all TextBoxes
                     var columnName = e.Column.Header.ToString();
 
                     BillDetails row = e.Row.Item as BillDetails;
@@ -2051,14 +2066,15 @@ namespace POS.View
                         billDetails[index].Price = newPrice;
                         billDetails[index].Total = total;
                     }
-                //}
-                //if (sender != null)
-                //    SectionData.EndAwait(grid_main);
-            }
+                refrishDataGridItems();
+            //}
+                if (sender != null)
+                SectionData.EndAwait(grid_main);
+        }
             catch (Exception ex)
             {
-                //if (sender != null)
-                //    SectionData.EndAwait(grid_main);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this);
             }
         }
@@ -2634,7 +2650,8 @@ namespace POS.View
                         int itemId = w.selectedItems[i];
                         await ChangeItemIdEvent(itemId);
                     }
-
+                    refreshTotalValue();
+                    refrishBillDetails();
                 }
 
                 Window.GetWindow(this).Opacity = 1;

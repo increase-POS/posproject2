@@ -477,13 +477,28 @@ namespace POS.View.reports
             cb_externalAgentsAgentsType.DisplayMemberPath = "AgentType";
             if (temp == null)
             {
-                cb_externalAgentsAgentsType.ItemsSource = comboExternalAgentsAgentsType
+                //cb_externalAgentsAgentsType.ItemsSource = comboExternalAgentsAgentsType
+                //    .GroupBy(x => x.AgentType)
+                //    .Select(g => new AgentTypeCombo
+                //    {
+                //        AgentType = g.FirstOrDefault().AgentType,
+                //        BranchId = g.FirstOrDefault().BranchId
+                //    }).ToList();
+                var lst = comboExternalAgentsAgentsType
                     .GroupBy(x => x.AgentType)
                     .Select(g => new AgentTypeCombo
                     {
                         AgentType = g.FirstOrDefault().AgentType,
                         BranchId = g.FirstOrDefault().BranchId
                     }).ToList();
+                foreach(var l in lst)
+                {
+                    if (l.AgentType.Equals("c")) l.AgentType = MainWindow.resourcemanager.GetString("trCustomer");
+                    else if (l.AgentType.Equals("v")) l.AgentType = MainWindow.resourcemanager.GetString("trVendor");
+
+                }
+
+                cb_externalAgentsAgentsType.ItemsSource = lst;
             }
             else
             {
@@ -572,6 +587,18 @@ namespace POS.View.reports
                         InvoiceType = g.FirstOrDefault().InvoiceType,
                         BranchId = g.FirstOrDefault().BranchId
                     }).ToList();
+                //var lst = comboExternalInvType
+                //    .GroupBy(x => x.InvoiceType)
+                //    .Select(g => new InvTypeCombo
+                //    {
+                //        InvoiceType = g.FirstOrDefault().InvoiceType,
+                //        BranchId = g.FirstOrDefault().BranchId
+                //    }).ToList();
+
+                //foreach (var l in lst)
+                //{
+                //    string value = "";
+                //}
             }
             else
             {
@@ -586,7 +613,115 @@ namespace POS.View.reports
             }
         }
 
-        private void fillComboExternalInvoiceInvoice()
+    //    private string getInvoiceType(string s)
+    //    {
+    //        switch (l.InvoiceType)
+    //        {
+    //            //مشتريات 
+    //            case "p":
+    //                value = MainWindow.resourcemanager.GetString("trPurchaseInvoice");
+    //                break;
+    //            //فاتورة مشتريات بانتظار الادخال
+    //            case "pw":
+    //                value = MainWindow.resourcemanager.GetString("trPurchaseInvoiceWaiting");
+    //                break;
+    //            //مبيعات
+    //            case "s":
+    //                value = MainWindow.resourcemanager.GetString("trSalesInvoice");
+    //                break;
+    //            //مرتجع مبيعات
+    //            case "sb":
+    //                value = MainWindow.resourcemanager.GetString("trSalesReturnInvoice");
+    //                break;
+    //            //مرتجع مشتريات
+    //            case "pb":
+    //                value = MainWindow.resourcemanager.GetString("trPurchaseReturnInvoice");
+    //                break;
+    //            //فاتورة مرتجع مشتريات بانتظار الاخراج
+    //            case "pbw":
+    //                value = MainWindow.resourcemanager.GetString("trPurchaseReturnInvoiceWaiting");
+    //                break;
+    //            //مسودة مشتريات 
+    //            case "pd":
+    //                value = MainWindow.resourcemanager.GetString("trDraftPurchaseBill");
+    //                break;
+    //            //مسودة مبيعات
+    //            case "sd":
+    //                value = MainWindow.resourcemanager.GetString("trSalesDraft");
+    //                break;
+    //            //مسودة مرتجع مبيعات
+    //            case "sbd":
+    //                value = MainWindow.resourcemanager.GetString("trSalesReturnDraft");
+    //                break;
+    //            //مسودة مرتجع مشتريات
+    //            case "pbd":
+    //                value = MainWindow.resourcemanager.GetString("trPurchaseReturnDraft");
+    //                break;
+    //            // مسودة طلبية مبيعات 
+    //            case "ord":
+    //                value = MainWindow.resourcemanager.GetString("trSaleOrderDraft");
+    //                break;
+    //            //   طلبية مبيعات 
+    //            case "or":
+    //                value = MainWindow.resourcemanager.GetString("trSaleOrder");
+    //                break;
+    //            // مسودة طلبية شراء 
+    //            case "pod":
+    //                value = MainWindow.resourcemanager.GetString("trPurchaceOrderDraft");
+    //                break;
+    //            // طلبية شراء 
+    //            case "po":
+    //                value = MainWindow.resourcemanager.GetString("trPurchaceOrder");
+    //                break;
+    //            //مسودة عرض 
+    //            case "qd":
+    //                value = MainWindow.resourcemanager.GetString("trQuotationsDraft");
+    //                break;
+    //            //فاتورة عرض اسعار
+    //            case "q":
+    //                value = MainWindow.resourcemanager.GetString("trQuotations");
+    //                break;
+    //            //الإتلاف
+    //            case "d":
+    //                value = MainWindow.resourcemanager.GetString("trDestructive");
+    //                break;
+    //            //النواقص
+    //            case "sh":
+    //                value = MainWindow.resourcemanager.GetString("trShortage");
+    //                break;
+    //            //مسودة  استراد
+    //            case "imd":
+    //                value = MainWindow.resourcemanager.GetString("trImportDraft");
+    //                break;
+    //            // استراد
+    //            case "im":
+    //                value = MainWindow.resourcemanager.GetString("trImport");
+    //                break;
+    //            // طلب استيراد
+    //            case "imw":
+    //                value = MainWindow.resourcemanager.GetString("trImportOrder");
+    //                break;
+    //            //مسودة تصدير
+    //            case "exd":
+    //                value = MainWindow.resourcemanager.GetString("trExportDraft");
+    //                break;
+    //            // تصدير
+    //            case "ex":
+    //                value = MainWindow.resourcemanager.GetString("trExport");
+    //                break;
+    //            // طلب تصدير
+    //            case "exw":
+    //                value = MainWindow.resourcemanager.GetString("trExportOrder");
+    //                break;
+    //            default: break;
+    //        }
+
+    //        l.InvoiceType = value;
+    //    }
+
+    //}
+
+    private void fillComboExternalInvoiceInvoice()
         {
             var temp = cb_externalInvoicesInvoiceType.SelectedItem as InvTypeCombo;
             var temp1 = cb_externalInvoicesBranches.SelectedItem as Branch;

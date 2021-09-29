@@ -563,6 +563,7 @@ namespace POS.View.storage
                 if (invItemLoc != null)
                     invItemLoc.id = 0;
                 _ItemType = "";
+                cb_user.SelectedIndex = -1;
                 DataContext = new InventoryItemLocation();
                 grid_serial.Visibility = Visibility.Collapsed;
                 tb_notes.Clear();

@@ -143,8 +143,8 @@ namespace POS.View.storage
                 await RefrishVendors();
                 //await RefrishBranches();
                 #region datagridChange
-                CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(dg_billDetails.Items);
-                ((INotifyCollectionChanged)myCollectionView).CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
+                //CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(dg_billDetails.Items);
+                //((INotifyCollectionChanged)myCollectionView).CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
                 #endregion
 
 
@@ -611,18 +611,23 @@ namespace POS.View.storage
                     {
                         if (dg_billDetails.Items.Count > 1)
                         {
-                            var cell = DataGridHelper.GetCell(dg_billDetails, count, 3);
+                            DataGridCell cell = null;
+                            try
+                            {
+                                cell = DataGridHelper.GetCell(dg_billDetails, count, 3);
+                            }
+                            catch
+                            { }
                             if (cell != null)
                             {
                                 var cp = (ContentPresenter)cell.Content;
                                 var combo = (ComboBox)cp.ContentTemplate.FindName("cbm_unitItemDetails", cp);
                                 //var combo = (combo)cell.Content;
                                 combo.SelectedValue = (int)item.itemUnitId;
-                                count++;
                             }
                         }
-
                     }
+                                count++;
                 }
 
                 if (sender != null)
@@ -807,12 +812,21 @@ namespace POS.View.storage
             
             dg_billDetails.ItemsSource = null;
             dg_billDetails.ItemsSource = billDetails;
+            dg_billDetails.Items.Refresh();
+
             if (firstTimeForDatagrid)
             {
                 await Task.Delay(1000);
                 dg_billDetails.Items.Refresh();
                 firstTimeForDatagrid = false;
             }
+            DataGrid_CollectionChanged(dg_billDetails, null);
+        }
+        void refrishDataGridItems()
+        {
+            dg_billDetails.ItemsSource = null;
+            dg_billDetails.ItemsSource = billDetails;
+            dg_billDetails.Items.Refresh();
         }
         private void inputEditable()
         {
@@ -882,6 +896,9 @@ namespace POS.View.storage
                     // update item in billdetails           
                     billDetails[index].Count = (int)newCount;
                 }
+
+                refrishDataGridItems();
+                //refrishBillDetails();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }

@@ -234,8 +234,8 @@ namespace POS.View.sales
                 }
 
                 #region datagridChange
-                CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(dg_billDetails.Items);
-                ((INotifyCollectionChanged)myCollectionView).CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
+                //CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(dg_billDetails.Items);
+                //((INotifyCollectionChanged)myCollectionView).CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
                 #endregion
 
 
@@ -928,14 +928,14 @@ namespace POS.View.sales
                         _Sum += billDetails[index].Price;
                     }
 
-                    refreshTotalValue();
-                    refrishBillDetails();
+                    //refreshTotalValue();
+                    //refrishBillDetails();
                 }
                 else
                 {
                       addRowToBill(item.name, itemId, null, 0, 1, 0, 0, (decimal)item.taxes);
                     //refreshTotalValue();
-                    refrishBillDetails();
+                    //refrishBillDetails();
                 }
             }
         }
@@ -1037,7 +1037,7 @@ namespace POS.View.sales
                 dg_billDetails.Items.Refresh();
                 firstTimeForDatagrid = false;
             }
-
+            DataGrid_CollectionChanged(dg_billDetails, null);
             //tb_sum.Text = _Sum.ToString();
             if (_Sum != 0)
                 tb_sum.Text = SectionData.DecTostring(_Sum);
@@ -1054,7 +1054,12 @@ namespace POS.View.sales
             }
 
         }
-
+        void refrishDataGridItems()
+        {
+            dg_billDetails.ItemsSource = null;
+            dg_billDetails.ItemsSource = billDetails;
+            dg_billDetails.Items.Refresh();
+        }
 
         // read item from barcode
         private async void HandleKeyPress(object sender, KeyEventArgs e)
@@ -1639,18 +1644,23 @@ SectionData.isAdminPermision())
                     {
                         if (dg_billDetails.Items.Count > 1)
                         {
-                            var cell = DataGridHelper.GetCell(dg_billDetails, count, 3);
+                            DataGridCell cell = null;
+                            try
+                            {
+                                cell = DataGridHelper.GetCell(dg_billDetails, count, 3);
+                            }
+                            catch
+                            { }
                             if (cell != null)
                             {
                                 var cp = (ContentPresenter)cell.Content;
                                 var combo = (ComboBox)cp.ContentTemplate.FindName("cbm_unitItemDetails", cp);
                                 //var combo = (combo)cell.Content;
                                 combo.SelectedValue = (int)item.itemUnitId;
-                                count++;
                             }
                         }
-
                     }
+                                count++;
                 }
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -1739,6 +1749,7 @@ SectionData.isAdminPermision())
                 }
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
+                refrishDataGridItems();
             }
             catch (Exception ex)
             {
@@ -1931,6 +1942,8 @@ SectionData.isAdminPermision())
                             int itemId = w.selectedItems[i];
                             await ChangeItemIdEvent(itemId);
                         }
+                    refreshTotalValue();
+                    refrishBillDetails();
                     }
 
                     Window.GetWindow(this).Opacity = 1;
