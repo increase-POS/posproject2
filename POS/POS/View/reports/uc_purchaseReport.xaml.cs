@@ -2753,8 +2753,8 @@ fillColumnChart(cb_Items, selectedItemId);
                     if (item.invoiceId > 0)
                     {
                         invoice = await invoice.GetById(item.invoiceId);
-                        MainWindow.mainWindow.BTN_purchases_Click(null, null);
-                        uc_purchases.Instance.btn_payInvoice_Click(null, null);
+                        MainWindow.mainWindow.BTN_purchases_Click(MainWindow.mainWindow.btn_purchase, null);
+                        uc_purchases.Instance.btn_payInvoice_Click(uc_purchases.Instance.btn_payInvoice, null);
                         uc_payInvoice.Instance.UserControl_Loaded(null, null);
                         uc_payInvoice._InvoiceType = invoice.invType;
                         uc_payInvoice.Instance.invoice = invoice;

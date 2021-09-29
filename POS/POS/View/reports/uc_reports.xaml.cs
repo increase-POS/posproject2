@@ -87,8 +87,10 @@ namespace POS.View.reports
                 translate();
                 #endregion
 
-                btn_salesReports_Click(null, null);
-                //permission();
+                //btn_salesReports_Click(null, null);
+
+                if (!stopPermission)
+                permission();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -99,15 +101,30 @@ namespace POS.View.reports
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+        public bool stopPermission;
         void permission()
         {
-            foreach (Button button in FindControls.FindVisualChildren<Button>(this))
-            {
-                if (button.Tag != null)
-                    if (MainWindow.groupObject.HasPermission(button.Tag.ToString(), MainWindow.groupObjects))
-                        button.Visibility = Visibility.Visible;
-                    else button.Visibility = Visibility.Collapsed;
-            }
+            bool loadWindow = false;
+            if (!SectionData.isAdminPermision())
+                foreach (Border border in FindControls.FindVisualChildren<Border>(this))
+                {
+                    if (border.Tag != null)
+                        if (MainWindow.groupObject.HasPermission(border.Tag.ToString(), MainWindow.groupObjects))
+
+                        {
+                            border.Visibility = Visibility.Visible;
+                            if (!loadWindow)
+                            {
+                                Button button = FindControls.FindVisualChildren<Button>(this).Where(x => x.Name == "btn_" + border.Tag).FirstOrDefault();
+                                button.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                                loadWindow = true;
+                            }
+                        }
+                        else border.Visibility = Visibility.Collapsed;
+                }
+            else
+                btn_salesReports_Click(btn_salesReports, null);
+            stopPermission = true;
         }
 
         public void refreashBackground()
@@ -145,6 +162,8 @@ namespace POS.View.reports
                 refreashBachgroundClick(btn_salesReports);
                 grid_main.Children.Clear();
                 grid_main.Children.Add(uc);
+                Button button = sender as Button;
+                MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
             }
             catch (Exception ex)
             {
@@ -160,6 +179,8 @@ namespace POS.View.reports
                 refreashBachgroundClick(btn_purchaseReports);
                 grid_main.Children.Clear();
                 grid_main.Children.Add(uc);
+                Button button = sender as Button;
+                MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
             }
             catch (Exception ex)
             {
@@ -175,6 +196,8 @@ namespace POS.View.reports
                 refreashBachgroundClick(btn_storageReports);
                 grid_main.Children.Clear();
                 grid_main.Children.Add(uc);
+                Button button = sender as Button;
+                MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
             }
             catch (Exception ex)
             {
@@ -190,6 +213,8 @@ namespace POS.View.reports
                 refreashBachgroundClick(btn_accountsReports);
                 grid_main.Children.Clear();
                 grid_main.Children.Add(uc);
+                Button button = sender as Button;
+                MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
             }
             catch (Exception ex)
             {

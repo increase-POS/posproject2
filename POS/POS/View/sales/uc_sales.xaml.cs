@@ -175,6 +175,7 @@ namespace POS.View
 
                 Button button = sender as Button;
                 MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
+                //MainWindow.mainWindow.initializationMainTrack(btn_reciptInvoice.Tag.ToString(), 1);
             }
             catch (Exception ex)
             {

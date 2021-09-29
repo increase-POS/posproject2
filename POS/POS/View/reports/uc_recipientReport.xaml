@@ -47,8 +47,7 @@
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
 
@@ -62,7 +61,6 @@
                                 CornerRadius="7,7,0,0"
                                 BorderBrush="Transparent" 
                                 Margin="10,5,0,-1">
-
                             <Button x:Name="btn_vendor"
                                     Background="Transparent"  
                                     materialDesign:RippleAssist.Feedback="Transparent"
@@ -108,7 +106,6 @@
                                 </Path>
                             </Button>
                         </Border>
-
                         <Border x:Name="bdr_customer"
                                 Grid.Column="1"
                                 Background="#4E4E4E"
@@ -167,7 +164,6 @@
                                 </Path>
                             </Button>
                         </Border>
-
                         <Border x:Name="bdr_user"
                                 Grid.Column="2"
                                 Background="#4E4E4E"
@@ -227,9 +223,8 @@
                                 </Path>
                             </Button>
                         </Border>
-
                         <Border x:Name="bdr_shipping"
-                                Grid.Column="6"
+                                Grid.Column="3"
                                 Background="#4E4E4E"
                                 BorderThickness="0"
                                 Height="40"
@@ -298,6 +293,9 @@
                                 </Path>
                             </Button>
                         </Border>
+                        
+                        
+                        
                     </Grid>
                 </Border>
 

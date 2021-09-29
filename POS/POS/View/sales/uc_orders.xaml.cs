@@ -1068,6 +1068,24 @@ namespace POS.View.sales
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+                if (e.KeyboardDevice.IsKeyDown(Key.LeftCtrl) || e.KeyboardDevice.IsKeyDown(Key.RightCtrl))
+                {
+                    switch (e.Key)
+                    {
+                        case Key.P:
+                            //handle P key
+                            Btn_printInvoice_Click(null, null);
+                            break;
+                        case Key.S:
+                            //handle S key
+                            Btn_save_Click(null, null);
+                            break;
+                        case Key.I:
+                            //handle S key
+                            Btn_items_Click(null, null);
+                            break;
+                    }
+                }
                 TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
                 if (elapsed.TotalMilliseconds > 50)
                 {

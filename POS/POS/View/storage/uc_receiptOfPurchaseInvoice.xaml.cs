@@ -289,6 +289,30 @@ namespace POS.View.storage
         }
         private async void HandleKeyPress(object sender, KeyEventArgs e)
         {
+
+            try
+            {
+                if (e.KeyboardDevice.IsKeyDown(Key.LeftCtrl) || e.KeyboardDevice.IsKeyDown(Key.RightCtrl))
+                {
+                    switch (e.Key)
+                    {
+                        case Key.P:
+                            //handle P key
+                            Btn_printInvoice_Click(null, null);
+                            break;
+                        case Key.S:
+                            //handle S key
+                            Btn_save_Click(null, null);
+                            break;
+                     }
+                }
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
             /*
             try
             {

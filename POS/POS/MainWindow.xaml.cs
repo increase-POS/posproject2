@@ -413,7 +413,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
 
                 permission();
                 //BTN_Home_Click(null, null);
-                btn_reports.Visibility = Visibility.Visible;
+                //btn_reports.Visibility = Visibility.Visible;
                 //grid_mainWindow.IsEnabled = true;
 
 
@@ -1059,6 +1059,20 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
                     txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trEmail");
                 else if (tag == "emailTemplates")
                     txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trEmailTemplates");
+                #endregion
+                #region  report
+                if (tag == "reports")
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trReports");
+                else if (tag == "storageReports")
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trStorage");
+                else if (tag == "purchaseReports")
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trPurchases");
+                else if (tag == "salesReports")
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trSales");
+                else if (tag == "accountsReports")
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trAccounts");
+                else if (tag == "usersReports")
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trUsers");
                 #endregion
             }
         }

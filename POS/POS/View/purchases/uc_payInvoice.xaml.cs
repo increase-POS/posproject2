@@ -1667,7 +1667,6 @@ namespace POS.View
         {
             try
             {
-
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
                 if (e.KeyboardDevice.IsKeyDown(Key.LeftCtrl) || e.KeyboardDevice.IsKeyDown(Key.RightCtrl))
@@ -1675,12 +1674,16 @@ namespace POS.View
                     switch (e.Key)
                     {
                         case Key.P:
-                            //handle D key
+                            //handle P key
                             btn_printInvoice_Click(null, null);
                             break;
                         case Key.S:
-                            //handle X key
+                            //handle S key
                             Btn_save_Click(null, null);
+                            break;
+                        case Key.I:
+                            //handle S key
+                            Btn_items_Click(null, null);
                             break;
                     }
                 }
