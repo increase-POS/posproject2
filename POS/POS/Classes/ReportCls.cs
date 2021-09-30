@@ -14,7 +14,7 @@ namespace POS.Classes
 {
     class ReportCls
     {
-        List<CurrencyInfo> currencies = new List<CurrencyInfo>();
+      List<CurrencyInfo> currencies = new List<CurrencyInfo>();
         public static void clearFolder(string FolderName)
         {
             string filename = "";
@@ -82,7 +82,7 @@ namespace POS.Classes
 
         }
 
-            public string PathUp(string path, int levelnum, string addtopath)
+        public string PathUp(string path, int levelnum, string addtopath)
         {
             int pos1 = 0;
             for (int i = 1; i <= levelnum; i++)
@@ -320,7 +320,7 @@ namespace POS.Classes
             //   string company_logo_img = GetLogoImagePath();
             //string amount = cashtrans.cash.ToString();
             string amount = DecTostring(cashtrans.cash);
-          
+
             string voucher_num = cashtrans.transNum.ToString();
             string type = "";
             string isCash = "0";
@@ -411,10 +411,10 @@ namespace POS.Classes
             /////
             try
             {
-               
-                int id =MainWindow.CurrencyId;
+
+                int id = MainWindow.CurrencyId;
                 ToWord toWord = new ToWord(Convert.ToDecimal(amount), currencies[id]);
-                
+
                 if (isArabic)
                 {
                     amount_in_words = toWord.ConvertToArabic();
@@ -429,9 +429,9 @@ namespace POS.Classes
             catch (Exception ex)
             {
                 amount_in_words = String.Empty;
-               
+
             }
-          
+
             //  rep.DataSources.Add(new ReportDataSource("DataSetBank", banksQuery));
 
             List<ReportParameter> paramarr = new List<ReportParameter>();
@@ -461,6 +461,36 @@ namespace POS.Classes
             paramarr.Add(new ReportParameter("isCash", isCash));
             paramarr.Add(new ReportParameter("trans_num_txt", trans_num_txt));
             return paramarr;
+        }
+        public string ConvertAmountToWords(Nullable<decimal>  amount)
+        {
+            Fillcurrency();
+            string amount_in_words = "";
+            try
+            {
+
+                bool isArabic;
+                int id = MainWindow.CurrencyId;
+                ToWord toWord = new ToWord(Convert.ToDecimal(amount), currencies[id]);
+                isArabic = checkLang();
+                if (isArabic)
+                {
+                    amount_in_words = toWord.ConvertToArabic();
+                    // cashtrans.cash
+                }
+                else
+                {
+                    amount_in_words = toWord.ConvertToEnglish(); ;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                amount_in_words = String.Empty;
+
+            }
+            return amount_in_words;
+
         }
         public static string NumberToWordsEN(int number)
         {

@@ -61,7 +61,7 @@ namespace POS.View.windows
             { }
         }
 
-        private   void btnClose_Click(object sender, RoutedEventArgs e)
+        private void btnClose_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -74,7 +74,7 @@ namespace POS.View.windows
         }
         UserSetValues usLanguage = new UserSetValues();
         UserSetValues usMenu = new UserSetValues();
-        private   void Window_Loaded(object sender, RoutedEventArgs e)
+        private void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
             try
             {
@@ -179,7 +179,7 @@ namespace POS.View.windows
             else return "en";
         }
 
-      
+
         private void translate()
         {
             cbxRemmemberMe.Content = resourcemanager.GetString("trRememberMe");
@@ -189,7 +189,7 @@ namespace POS.View.windows
             txt_close.Text = resourcemanager.GetString("trClose");
         }
         bool logInProcessing = false;
-       
+
         private async void btnLogIn_Click(object sender, RoutedEventArgs e)
         {//login
             try
@@ -200,20 +200,38 @@ namespace POS.View.windows
                     if (sender != null)
                         SectionData.StartAwait(grid_main);
 
-                
+
                     //awaitSaveBtn(true);
                     clearValidate(txtUserName, p_errorUserName);
                     clearPasswordValidate(txtPassword, p_errorPassword);
                     string password = Md5Encription.MD5Hash("Inc-m" + txtPassword.Password);
                     string userName = txtUserName.Text;
                     //check if user is exist
-                    users = await userModel.GetUsersActive();
-                    if (users.Any(i => i.username.Equals(userName)))
+                  //  users = await userModel.GetUsersActive();
+                    ////////
+                    ///
+
+                    user = await userModel.Getloginuser(userName, password);
+                   
+                    if (user.username == null)
                     {
-                        //get user info
-                        user = users.Where(i => i.username == txtUserName.Text).FirstOrDefault<User>();
-                        if (user.password.Equals(password))
+                        //user not found
+                      
+                        showTextBoxValidate(txtUserName, p_errorUserName, tt_errorUserName, "trUserNotFound");
+
+
+                    }
+                    else
+                    {
+                        if (user.userId == 0)
                         {
+                            //rong password
+                            showPasswordValidate(txtPassword, p_errorPassword, tt_errorPassword, "trWrongPassword");
+
+                        }
+                        else
+                        {
+                            //correct
                             //send user info to main window
                             MainWindow.userID = user.userId;
                             MainWindow.userLogin = user;
@@ -271,24 +289,24 @@ namespace POS.View.windows
                                 Properties.Settings.Default.menuIsOpen = "";
                             }
                             Properties.Settings.Default.Save();
-                           
+
                             //Window.GetWindow(this).Opacity = 1;
                             //open main window and close this window
                             MainWindow main = new MainWindow();
                             main.Show();
                             this.Close();
                         }
-                        else
-                            showPasswordValidate(txtPassword, p_errorPassword, tt_errorPassword, "trWrongPassword");
+
                     }
-                    else
-                        showTextBoxValidate(txtUserName, p_errorUserName, tt_errorUserName, "trUserNotFound");
+
+                    /////////////////////////////////////
+             
                     //awaitSaveBtn(false);
-                    
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                logInProcessing = false;
-            }
+
+                    if (sender != null)
+                        SectionData.EndAwait(grid_main);
+                    logInProcessing = false;
+                }
             }
             catch (Exception ex)
             {

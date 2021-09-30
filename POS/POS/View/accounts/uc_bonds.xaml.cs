@@ -845,9 +845,17 @@ namespace POS.View.accounts
                 if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
                     #region
-            //  buildbondDocReport();
-               //     LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.rep_printer_name, short.Parse(MainWindow.rep_print_count));
-                    #endregion
+                    if (bond.isRecieved==1)
+                    {
+buildbondDocReport();
+                 LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.rep_printer_name, short.Parse(MainWindow.rep_print_count));
+                   
+                    }
+                    else
+                    {
+                        MessageBox.Show("bond not recieved");
+                    }
+            #endregion
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -901,11 +909,12 @@ namespace POS.View.accounts
                 string name = "";
                 string processType = "";
                 string cardname = "";
+                string caprocesstype = "";
 
                 if (bond.isRecieved == 1)
                 {
                     pay = MainWindow.resourcemanagerreport.GetString("trPaid");
-
+                   
                 }
                 else
                 {
@@ -915,15 +924,19 @@ namespace POS.View.accounts
               
                 if (bond.ctside.Equals("v") || bond.ctside.Equals("c"))
                 {
+                   // int gid =(int) bond.ctagentId;
 
-                    name = agents.Where(x => x.agentId == bond.ctagentId).FirstOrDefault().name;
+                    name = bond.ctagentName;
+
+                   // name = agents.Where(x => x.agentId == gid).FirstOrDefault().name;
 
 
                 }
 
                 else if (bond.ctside.Equals("u"))
                 {
-                    name = users.Where(x => x.userId == bond.ctuserId).FirstOrDefault().name;
+                   // name = users.Where(x => x.userId == bond.ctuserId).FirstOrDefault().name+ " " + users.Where(x => x.userId == bond.ctuserId).FirstOrDefault().lastname;
+                    name=bond.ctusersName+" "+bond.ctusersLName;
                 }
                 else
                 {
@@ -947,7 +960,8 @@ namespace POS.View.accounts
                 if (bond.isRecieved == 1)
                 {
                     CashTransfer ca = new CashTransfer();
-                    ca = cashbondsQuery.Where(c => c.bondId == bond.bondId).FirstOrDefault();                  
+                    ca = cashbondsQuery.Where(c => c.bondId == bond.bondId).FirstOrDefault();
+                    caprocesstype = ca.processType;
                     switch (ca.processType)
                     {
 
@@ -958,15 +972,27 @@ namespace POS.View.accounts
 
                     }
 
-                    if (processType.Equals("card"))
+                    if (ca.processType=="card")
                     {
                         cardname = cards.Where(c => c.cardId == ca.cardId).FirstOrDefault().name;
                      
                     }
                    
                 }
+                string title = "";
+            
+                if (bond.type == "p")
+                    title = MainWindow.resourcemanagerreport.GetString("trPayVocher");
+                else
+                    title = MainWindow.resourcemanagerreport.GetString("trReceiptVoucher");
+
+
+                string updateusername = users.Where(x => x.userId == bond.updateUserId).FirstOrDefault().name + " " + users.Where(x => x.userId == bond.updateUserId).FirstOrDefault().lastname;
+
+                paramarr.Add(new ReportParameter("title", title));
+               
                 paramarr.Add(new ReportParameter("bondNumber", bond.number));
-                paramarr.Add(new ReportParameter("bondAmount", SectionData.DecTostring(bond.amount)));
+                paramarr.Add(new ReportParameter("amount", SectionData.DecTostring(bond.amount)));//ok
                 paramarr.Add(new ReportParameter("deserveDate", SectionData.DateToString(bond.deserveDate)));
                 paramarr.Add(new ReportParameter("isRecieved", bond.isRecieved.ToString()));
                 paramarr.Add(new ReportParameter("trPay", pay));
@@ -974,7 +1000,15 @@ namespace POS.View.accounts
                 paramarr.Add(new ReportParameter("sideName", name));
                 paramarr.Add(new ReportParameter("trProcessType", processType));
                 paramarr.Add(new ReportParameter("cardName", cardname));
-
+                paramarr.Add(new ReportParameter("transType", bond.type));
+                paramarr.Add(new ReportParameter("type", caprocesstype));
+                paramarr.Add(new ReportParameter("user_name", updateusername));
+              
+                paramarr.Add(new ReportParameter("date", reportclass.DateToString(bond.updateDate)));
+                paramarr.Add(new ReportParameter("currency", MainWindow.Currency));
+                paramarr.Add(new ReportParameter("amount_in_words", reportclass.ConvertAmountToWords(bond.amount)));
+                paramarr.Add(new ReportParameter("job", "Employee"));
+                
             }
         }
         public void buildbondDocReport()
@@ -983,16 +1017,36 @@ namespace POS.View.accounts
 
             string addpath;
             bool isArabic = ReportCls.checkLang();
+            // bond.type
             if (isArabic)
             {
-                addpath = @"\Reports\Account\Ar\ArBondAccReport.rdlc";
+                if (MainWindow.docPapersize == "A4")
+                {
+                    addpath = @"\Reports\Account\Ar\ArBondDocA4.rdlc";
+                }
+                else//A5
+                {
+                    addpath = @"\Reports\Account\Ar\ArBondDoc.rdlc";
+                }
             }
-            else addpath = @"\Reports\Account\EN\BondAccReport.rdlc";
+            else
+
+            {
+                if (MainWindow.docPapersize == "A4")
+                {
+                    addpath = @"\Reports\Account\EN\BondDocA4.rdlc";
+                }
+                else//A5
+                {
+                    addpath = @"\Reports\Account\EN\BondDoc.rdlc";
+                }
+
+            }
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
             ReportCls.checkLang();
-
-            clsReports.bondsReport(bondsQuery, rep, reppath, paramarr);
+            getBondData(paramarr);
+            clsReports.bondsDocReport( rep, reppath, paramarr);
             clsReports.setReportLanguage(paramarr);
             clsReports.Header(paramarr);
 
@@ -1137,11 +1191,93 @@ namespace POS.View.accounts
 
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_ucBonds);
 
+                if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+                {
+
+                    #region
+                    if (bond.isRecieved == 1)
+                    {
+                        buildbondDocReport();
+                        saveFileDialog.Filter = "PDF|*.pdf;";
+                        if (saveFileDialog.ShowDialog() == true)
+                        {
+                            string filepath = saveFileDialog.FileName;
+                            LocalReportExtensions.ExportToPDF(rep, filepath);
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("bond not recieved");
+                    }
+                    #endregion
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucBonds);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucBonds);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         private void Btn_preview_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_ucBonds);
+                /////////////////////
+                if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+                {
+                    #region
+                    if (bond.isRecieved == 1)
+                    {
+                        Window.GetWindow(this).Opacity = 0.2;
+                        string pdfpath = "";
+                        //
+                        pdfpath = @"\Thumb\report\temp.pdf";
+                        pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
+
+                        buildbondDocReport();
+                        LocalReportExtensions.ExportToPDF(rep, pdfpath);
+                        wd_previewPdf w = new wd_previewPdf();
+                        w.pdfPath = pdfpath;
+                        if (!string.IsNullOrEmpty(w.pdfPath))
+                        {
+                            w.ShowDialog();
+                            w.wb_pdfWebViewer.Dispose();
+                        }
+                        Window.GetWindow(this).Opacity = 1;
+                    }
+                    else
+                    {
+                        MessageBox.Show("bond not recieved");
+                    }
+
+                    #endregion
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                /////////////////////
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucBonds);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucBonds);
+                SectionData.ExceptionMessage(ex, this);
+            }
 
         }
 
