@@ -673,7 +673,7 @@
     <value>التوصيل...</value>
   </data>
   <data name="trCount" xml:space="preserve">
-    <value>عدد السجلات</value>
+    <value>العدد</value>
   </data>
   <data name="trCoupon" xml:space="preserve">
     <value>الكوبون</value>
@@ -1219,7 +1219,7 @@
     <value>القسم</value>
   </data>
   <data name="trBonds" xml:space="preserve">
-    <value>السندات المالية</value>
+    <value>السندات</value>
   </data>
   <data name="trErrorEmptyDepositFromToolTip" xml:space="preserve">
     <value>المودع لا يمكن أن يكون فارغ</value>
@@ -1639,7 +1639,7 @@
     <value>إعدادات</value>
   </data>
   <data name="trPermission" xml:space="preserve">
-    <value>صلاحيات</value>
+    <value>الصلاحية</value>
   </data>
   <data name="trItemType" xml:space="preserve">
     <value>نوع العنصر</value>
@@ -2481,5 +2481,56 @@
   </data>
   <data name="trDestructives" xml:space="preserve">
     <value>التوالف</value>
+  </data>
+  <data name="trInitializeShortage" xml:space="preserve">
+    <value>تهيئة النواقص</value>
+  </data>
+  <data name="trView" xml:space="preserve">
+    <value>عرض</value>
+  </data>
+  <data name="trGroups" xml:space="preserve">
+    <value>المجموعات</value>
+  </data>
+  <data name="trOthers" xml:space="preserve">
+    <value>أخرى</value>
+  </data>
+  <data name="trPermissionsGroup" xml:space="preserve">
+    <value>مجموعة الصلاحيات</value>
+  </data>
+  <data name="trShow" xml:space="preserve">
+    <value>عرض</value>
+  </data>
+  <data name="tr_Customer" xml:space="preserve">
+    <value>عميل</value>
+  </data>
+  <data name="tr_Vendor" xml:space="preserve">
+    <value>مورد</value>
+  </data>
+  <data name="trBestSeller" xml:space="preserve">
+    <value>الأكثر مبيعاً</value>
+  </data>
+  <data name="trBranch&amp;Store" xml:space="preserve">
+    <value>المخازن &amp; الفروع</value>
+  </data>
+  <data name="trDailyPurchase" xml:space="preserve">
+    <value>المشتريات اليومية</value>
+  </data>
+  <data name="trDailySales" xml:space="preserve">
+    <value>المبيعات اليومية</value>
+  </data>
+  <data name="trPurchase&amp;Sales" xml:space="preserve">
+    <value>المشتريات &amp; المبيعات</value>
+  </data>
+  <data name="trDay" xml:space="preserve">
+    <value>يوم</value>
+  </data>
+  <data name="trDays" xml:space="preserve">
+    <value>الأيام</value>
+  </data>
+  <data name="trOnline" xml:space="preserve">
+    <value>المتصلين</value>
+  </data>
+  <data name="trFilterInvoicesBy" xml:space="preserve">
+    <value>فلترة الفواتير حسب</value>
   </data>
 </root>

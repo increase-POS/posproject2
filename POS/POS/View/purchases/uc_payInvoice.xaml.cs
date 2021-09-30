@@ -1000,7 +1000,10 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                bool valid = validateItemUnits();
+
+                if (billDetails.Count > 0 && (_InvoiceType == "pd" || _InvoiceType == "pbd"))
+                {
+                    bool valid = validateItemUnits();
                 if (billDetails.Count > 0 && valid)
                 {
                     await addInvoice(_InvoiceType, "pi");                 
@@ -1013,7 +1016,11 @@ namespace POS.View
                     clearInvoice();
                     _InvoiceType = "pd";
                 }
-                    if (sender != null)
+                }
+                else
+                     clearInvoice();
+
+                if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)

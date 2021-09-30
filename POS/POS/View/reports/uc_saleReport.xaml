@@ -7,7 +7,7 @@
                            xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                    xmlns:converters="clr-namespace:POS.converters"
              xmlns:local="clr-namespace:POS.View.reports"
-             mc:Ignorable="d" 
+             mc:Ignorable="d" Tag="invoice"
                 d:DesignHeight="600" d:DesignWidth="800" Loaded="UserControl_Loaded">
     <Grid Margin="0,15,15,15" x:Name="grid_main">
         <Grid.ColumnDefinitions>
@@ -44,12 +44,12 @@
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="auto"/>
-
-
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
 
                         <Border x:Name="bdr_branch" Grid.Column="0" Background="White" BorderThickness="0"  Height="40" Width="60" VerticalAlignment="Bottom" CornerRadius="7,7,0,0" BorderBrush="Transparent" Margin="10,5,0,-1">
-                            <Button x:Name="btn_branch"  Background="Transparent"  
+                            <Button x:Name="btn_branch"  Background="Transparent"  Tag="branch"
                                     materialDesign:RippleAssist.Feedback="Transparent" BorderBrush="Transparent" Height="auto" Click="btn_branch_Click">
                                 <Button.Triggers>
                                     <EventTrigger x:Name="trig" RoutedEvent="Button.Click">
@@ -84,7 +84,7 @@
                             </Button>
                         </Border>
                         <Border x:Name="bdr_pos" Grid.Column="1" Background="#4E4E4E" BorderThickness="0"  Height="40" Width="60" VerticalAlignment="Bottom" CornerRadius="7,7,0,0" BorderBrush="Transparent" Margin="0,5,0,-1">
-                            <Button x:Name="btn_pos"  Background="Transparent"  
+                            <Button x:Name="btn_pos"  Background="Transparent"  Tag="pos"
                                     materialDesign:RippleAssist.Feedback="Transparent"
                                     BorderBrush="Transparent" Height="auto" Click="btn_pos_Click">
                                 <Button.Triggers>
@@ -132,7 +132,7 @@
                             </Button>
                         </Border>
                         <Border x:Name="bdr_vendors" Grid.Column="2" Background="#4E4E4E" BorderThickness="0"  Height="40" Width="60" VerticalAlignment="Bottom" CornerRadius="7,7,0,0" BorderBrush="Transparent" Margin="0,5,0,-1">
-                            <Button x:Name="btn_vendors"  Background="Transparent" 
+                            <Button x:Name="btn_vendors"  Background="Transparent" Tag="vendors"
                                     materialDesign:RippleAssist.Feedback="Transparent"
                                     BorderBrush="Transparent" Height="auto" Width="60" Click="btn_vendors_Click">
                                 <Button.Triggers>
@@ -171,7 +171,7 @@
                             </Button>
                         </Border>
                         <Border Name="bdr_users" Grid.Column="3" Background="#4E4E4E" BorderThickness="0"  Height="40" Width="60" VerticalAlignment="Bottom" CornerRadius="7,7,0,0" BorderBrush="Transparent" Margin="0,5,0,-1">
-                            <Button x:Name="btn_users"  Background="Transparent"  
+                            <Button x:Name="btn_users"  Background="Transparent"  Tag="users"
                                     materialDesign:RippleAssist.Feedback="Transparent"
                                     BorderBrush="Transparent" Height="auto" Click="btn_users_Click">
                                 <Button.Triggers>
@@ -212,7 +212,7 @@
                             </Button>
                         </Border>
                         <Border x:Name="bdr_items" Visibility="Collapsed" Grid.Column="4" Background="#4E4E4E" BorderThickness="0"  Height="40" Width="60" VerticalAlignment="Bottom" CornerRadius="7,7,0,0" BorderBrush="Transparent" Margin="0,5,0,-1">
-                            <Button x:Name="btn_items"  Background="Transparent"  
+                            <Button x:Name="btn_items"  Background="Transparent"  Tag="items"
                                     materialDesign:RippleAssist.Feedback="Transparent" Click="btn_items_Click"
                                     BorderBrush="Transparent" Height="auto" Width="60">
                                 <Button.Triggers>
@@ -271,7 +271,7 @@
                             </Button>
                         </Border>
                         <Border x:Name="bdr_coupon"  Visibility="Collapsed"  Grid.Column="5" Background="#4E4E4E" BorderThickness="0"  Height="40" Width="60" VerticalAlignment="Bottom" CornerRadius="7,7,0,0" BorderBrush="Transparent" Margin="0,5,0,-1">
-                            <Button x:Name="btn_coupons"  Background="Transparent"  
+                            <Button x:Name="btn_coupons"  Background="Transparent"  Tag="coupon"
                                     materialDesign:RippleAssist.Feedback="Transparent" Click="btn_coupons_Click"
                                     BorderBrush="Transparent" Height="auto" Width="60">
                                 <Button.Triggers>
@@ -314,9 +314,8 @@
                                 </Path>
                             </Button>
                         </Border>
-
                         <Border x:Name="bdr_offers"  Visibility="Collapsed"  Grid.Column="6" Background="#4E4E4E" BorderThickness="0"  Height="40" Width="60" VerticalAlignment="Bottom" CornerRadius="7,7,0,0" BorderBrush="Transparent" Margin="0,5,0,-1">
-                            <Button x:Name="btn_offers"  Background="Transparent"  
+                            <Button x:Name="btn_offers"  Background="Transparent"  Tag="offers"
                                     materialDesign:RippleAssist.Feedback="Transparent" Click="btn_offers_Click"
                                     BorderBrush="Transparent" Height="auto" Width="60">
                                 <Button.Triggers>
@@ -397,7 +396,8 @@
                             </Button>
                         </Border>
 
-
+                        <TextBlock  x:Name="txt_tabTitle"  Foreground="White"   Grid.Column="10" 
+                              VerticalAlignment="Center"      FontSize="16"     Margin="5 5 10 5"/>
                     </Grid>
                 </Border>
 
@@ -709,11 +709,11 @@
                                         <CheckBox x:Name="chk_offersInvoice" Content="Invoice" Margin="5" Foreground="{StaticResource MainColorGrey}" Checked="chk_offersInvoice_Checked" Unchecked="chk_offersInvoice_Unchecked"></CheckBox>
                                         <CheckBox x:Name="chk_offersReturn" IsEnabled="False" Content="Return invoice" Margin="5" Foreground="{StaticResource MainColorGrey}" Checked="chk_offersReturn_Checked" Unchecked="chk_offersReturn_Unchecked"></CheckBox>
                                         <CheckBox x:Name="chk_offersDrafs" IsEnabled="False" Content="Drafts" Checked="chk_offersDrafs_Checked" Foreground="{StaticResource MainColorGrey}" Margin="5" Unchecked="chk_offersDrafs_Unchecked"></CheckBox>
-                                        
+
                                         <DatePicker SelectedDateFormat="Short"  Name="dp_offersEndDate" Width="100" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" DockPanel.Dock="Right" SelectedDateChanged="dp_offersEndDate_SelectedDateChanged" BorderBrush="#737373"  BorderThickness="0" 
                                        Style="{StaticResource MaterialDesignFloatingHintDatePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                 materialDesign:HintAssist.Hint="End Date..."></DatePicker>
-                                        
+
                                         <DatePicker SelectedDateFormat="Short" SelectedDateChanged="dp_offersStartDate_SelectedDateChanged" Name="dp_offersStartDate" Width="100" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" DockPanel.Dock="Right"    BorderBrush="#737373"  BorderThickness="0" 
                                        Style="{StaticResource MaterialDesignFloatingHintDatePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                 materialDesign:HintAssist.Hint="Start date..."  ></DatePicker>
@@ -756,8 +756,7 @@
                                            Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
                           materialDesign:HintAssist.Hint="Enter Here To Start Search ...."  
                  Foreground="#4e4e4e" TextBlock.FontSize="14"
-                    Height="40"
-                 />
+                    Height="40" />
                         <Border Margin="0,5,0,0"  Background="White" Width="30" Height="30">
                             <Path Fill="#4e4e4e" Stretch="Fill"  
                              Grid.Column="0"  
@@ -841,7 +840,7 @@
 
                         <DataGridTextColumn x:Name="col_item" Width="*" Header="Item" Binding="{Binding ITitemUnitName1}" Visibility="Hidden"/>
                         <DataGridTextColumn x:Name="col_count" Width="*" Header="Items Quantity" Binding="{Binding count}" Visibility="Visible"/>
-                   
+
                         <!--<DataGridTextColumn x:Name="col_discount" Width="*" Header="Discount Value" Visibility="Visible" Binding="{Binding discountValue,StringFormat=F2}"/>-->
                         <DataGridTextColumn x:Name="col_discount" Width="*" Header="Discount Value" Visibility="Visible" Binding="{Binding discountValue,Converter={StaticResource accuracyConverter}}"/>
 
@@ -981,7 +980,7 @@
 
         </Grid>
 
-      <GridSplitter Grid.Column="1" Background="Transparent" Width="5" HorizontalAlignment="Stretch" />
+        <GridSplitter Grid.Column="1" Background="Transparent" Width="5" HorizontalAlignment="Stretch" />
         <Grid Grid.Column="2">
             <Grid.RowDefinitions>
 

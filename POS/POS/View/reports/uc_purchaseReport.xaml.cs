@@ -172,7 +172,9 @@ namespace POS.View.purchases
                 chk_itemInvoice.IsChecked = true;
 
                 fillBranchEvent();
-
+                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), btn_branch.Tag.ToString());
+                //txt_tabTitle.Text = MainWindow.resourcemanager.GetString("trInvoices") + " "
+                //    + MainWindow.resourcemanager.GetString("trBranches");
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -890,6 +892,7 @@ fillColumnChart(cb_Items, selectedItemId);
                 col_totalNet.Visibility = Visibility.Visible;
 
 
+              SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString() ,(sender as Button).Tag.ToString());
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -901,7 +904,7 @@ fillColumnChart(cb_Items, selectedItemId);
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
+         
         private void btn_pos_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -925,6 +928,7 @@ fillColumnChart(cb_Items, selectedItemId);
                 col_count.Visibility = Visibility.Visible;
                 col_pos.Visibility = Visibility.Visible;
                 col_totalNet.Visibility = Visibility.Visible;
+                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -963,6 +967,7 @@ fillColumnChart(cb_Items, selectedItemId);
                 col_count.Visibility = Visibility.Visible;
                 col_totalNet.Visibility = Visibility.Visible;
                 col_tax.Visibility = Visibility.Visible;
+                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -999,6 +1004,7 @@ fillColumnChart(cb_Items, selectedItemId);
                 col_user.Visibility = Visibility.Visible;
                 col_totalNet.Visibility = Visibility.Visible;
                 col_discount.Visibility = Visibility.Visible;
+                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -1035,6 +1041,7 @@ fillColumnChart(cb_Items, selectedItemId);
                 col_price.Visibility = Visibility.Visible;
                 col_subTotal.Visibility = Visibility.Visible;
 
+                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }

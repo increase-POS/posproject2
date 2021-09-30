@@ -1324,86 +1324,86 @@ namespace POS.View.reports
         }
         private void fillInternalRowChart()
         {
-            MyAxis.Labels = new List<string>();
-            List<string> names = new List<string>();
-            List<int> pTemp = new List<int>();
-            List<int> sTemp = new List<int>();
-            List<int> pbTemp = new List<int>();
-            List<int> sbTemp = new List<int>();
+      //      MyAxis.Labels = new List<string>();
+      //      List<string> names = new List<string>();
+      //      List<int> pTemp = new List<int>();
+      //      List<int> sTemp = new List<int>();
+      //      List<int> pbTemp = new List<int>();
+      //      List<int> sbTemp = new List<int>();
 
 
-            var temp = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
-            if (selectedTab == 1)
-            {
-                temp = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
-            }
+      //      var temp = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
+      //      if (selectedTab == 1)
+      //      {
+      //          temp = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
+      //      }
 
-            var result = temp.GroupBy(x => new { x.branchId, x.invoiceId }).Select(x => new ItemTransferInvoice
-            {
-                invType = x.FirstOrDefault().invType,
-                branchId = x.FirstOrDefault().branchId
-            });
+      //      var result = temp.GroupBy(x => new { x.branchId, x.invoiceId }).Select(x => new ItemTransferInvoice
+      //      {
+      //          invType = x.FirstOrDefault().invType,
+      //          branchId = x.FirstOrDefault().branchId
+      //      });
 
-            invCount = result.GroupBy(x => x.branchId).Select(x => new ItemTransferInvoice
-            {
-                PCount = x.Where(g => g.invType == "p").Count(),
-                SCount = x.Where(g => g.invType == "s").Count(),
-                PbCount = x.Where(g => g.invType == "pb").Count(),
-                SbCount = x.Where(g => g.invType == "sb").Count()
-            });
-
-
+      //      invCount = result.GroupBy(x => x.branchId).Select(x => new ItemTransferInvoice
+      //      {
+      //          PCount = x.Where(g => g.invType == "p").Count(),
+      //          SCount = x.Where(g => g.invType == "s").Count(),
+      //          PbCount = x.Where(g => g.invType == "pb").Count(),
+      //          SbCount = x.Where(g => g.invType == "sb").Count()
+      //      });
 
 
-            for (int i = 0; i < agentsCount.Count(); i++)
-            {
-                pTemp.Add(invCount.ToList().Skip(i).FirstOrDefault().PCount);
-                pbTemp.Add(invCount.ToList().Skip(i).FirstOrDefault().PbCount);
-                sTemp.Add(invCount.ToList().Skip(i).FirstOrDefault().SCount);
-                sbTemp.Add(invCount.ToList().Skip(i).FirstOrDefault().SbCount);
-            }
-            var tempName = temp.GroupBy(s => new { s.branchId, s.invType }).Select(s => new
-            {
-                locationName = s.FirstOrDefault().branchName
-            });
-            names.AddRange(tempName.Select(nn => nn.locationName));
 
-            SeriesCollection rowChartData = new SeriesCollection();
-            for (int i = 0; i < pTemp.Count(); i++)
-            {
-                MyAxis.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
-            }
 
-            rowChartData.Add(
-          new LineSeries
-          {
-              Values = pTemp.AsChartValues(),
-              Title = "Purchase"
+      //      for (int i = 0; i < agentsCount.Count(); i++)
+      //      {
+      //          pTemp.Add(invCount.ToList().Skip(i).FirstOrDefault().PCount);
+      //          pbTemp.Add(invCount.ToList().Skip(i).FirstOrDefault().PbCount);
+      //          sTemp.Add(invCount.ToList().Skip(i).FirstOrDefault().SCount);
+      //          sbTemp.Add(invCount.ToList().Skip(i).FirstOrDefault().SbCount);
+      //      }
+      //      var tempName = temp.GroupBy(s => new { s.branchId, s.invType }).Select(s => new
+      //      {
+      //          locationName = s.FirstOrDefault().branchName
+      //      });
+      //      names.AddRange(tempName.Select(nn => nn.locationName));
 
-          });
-            rowChartData.Add(
-      new LineSeries
-      {
-          Values = pbTemp.AsChartValues(),
-          Title = "Purchase Returns"
+      //      SeriesCollection rowChartData = new SeriesCollection();
+      //      for (int i = 0; i < pTemp.Count(); i++)
+      //      {
+      //          MyAxis.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
+      //      }
 
-      });
-            rowChartData.Add(
-      new LineSeries
-      {
-          Values = sTemp.AsChartValues(),
-          Title = "Sale"
-
-      });
-            rowChartData.Add(
-      new LineSeries
-      {
-          Values = sbTemp.AsChartValues(),
-          Title = "Sale Returns"
-
-      });
-            rowChart.Series = rowChartData;
-            DataContext = this;
+      //      rowChartData.Add(
+      //    new LineSeries
+      //    {
+      //        Values = pTemp.AsChartValues(),
+      //        //Title = "Purchase"
+      //        Title = MainWindow.resourcemanager.GetString("tr_Purchases")
+      //    });
+      //      rowChartData.Add(
+      //new LineSeries
+      //{
+      //    Values = pbTemp.AsChartValues(),
+      //    //Title = "Purchase Returns"
+      //    Title = MainWindow.resourcemanager.GetString("trPurchaseReturnInvoice")
+      //});
+      //      rowChartData.Add(
+      //new LineSeries
+      //{
+      //    Values = sTemp.AsChartValues(),
+      //    //Title = "Sale"
+      //    Title = MainWindow.resourcemanager.GetString("tr_Sales")
+      //});
+      //      rowChartData.Add(
+      //new LineSeries
+      //{
+      //    Values = sbTemp.AsChartValues(),
+      //    //Title = "Sale Returns"
+      //    Title = MainWindow.resourcemanager.GetString("trSalesReturnInvoice")
+      //});
+      //      rowChart.Series = rowChartData;
+      //      DataContext = this;
         }
 
         private void fillInternalColumnChart()
@@ -1454,14 +1454,16 @@ namespace POS.View.reports
             {
                 Values = cP.AsChartValues(),
                 DataLabels = true,
-                Title = "Export"
-            });
+                //Title = "Export"
+                Title = MainWindow.resourcemanager.GetString("trExport")
+            }); ;
             columnChartData.Add(
             new StackedColumnSeries
             {
                 Values = cPb.AsChartValues(),
                 DataLabels = true,
-                Title = "Import"
+                //Title = "Import"
+                Title = MainWindow.resourcemanager.GetString("trImport")
             });
 
             DataContext = this;

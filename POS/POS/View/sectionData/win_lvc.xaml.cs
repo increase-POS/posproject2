@@ -89,16 +89,16 @@ namespace POS.View.sectionData.Charts
         }
         public win_lvc(IEnumerable<CashTransfer> _cashQuery, int _sectionDate)
         {
-            try
-            {
+            //try
+            //{
                 InitializeComponent();
                 cashQuery = _cashQuery;
                 sectionDate = _sectionDate;
-            }
-            catch (Exception ex)
-            {
-                SectionData.ExceptionMessage(ex, this);
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    SectionData.ExceptionMessage(ex, this);
+            //}
         }
 
         public win_lvc(IEnumerable<User> _usersQuery, int _sectionDate)
@@ -186,24 +186,24 @@ namespace POS.View.sectionData.Charts
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
+            //try
+            //{
+            //    if (sender != null)
+            //        SectionData.StartAwait(grid_main);
                 chartList = new List<double>();
                 PiechartList = new List<double>();
                 ColumnchartList = new List<double>();
                 fillDates();
                 fillSelectedChart();
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_main);
+            //}
+            //catch (Exception ex)
+            //{
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_main);
+            //    SectionData.ExceptionMessage(ex, this);
+            //}
         }
 
         public void fillDates()
@@ -242,89 +242,100 @@ namespace POS.View.sectionData.Charts
                 {
                     for (int month = startMonth; month <= 12; month++)
                     {
-                        var firstOfThisMonth = new DateTime(year, month, dpStrtDate.SelectedDate.Value.Day);
+                        //var firstOfThisMonth = new DateTime(year, month, dpStrtDate.SelectedDate.Value.Day);
+                        DateTime firstOfThisMonth = DateTime.Now.Date;
+                        try
+                        {
+                            firstOfThisMonth = new DateTime(year, month, dpStrtDate.SelectedDate.Value.Day);
+                        }
+                        catch
+                        {
+                            firstOfThisMonth = new DateTime(year, month, 28);
+                        }
                         var firstOfNextMonth = firstOfThisMonth.AddMonths(1);
-                        if (sectionDate == 1)
-                        {
-                            var Draw = agentsQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
-                            chartList.Add(Draw);
-                            if (isSameList)
+
+                            if (sectionDate == 1)
                             {
-                                label = "Customers count";
+                                var Draw = agentsQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
+                                chartList.Add(Draw);
+                                if (isSameList)
+                                {
+                                    label = "Customers count";
+                                }
+                                else label = "Vendors count";
                             }
-                            else label = "Vendors count";
-                        }
-                        else if (sectionDate == 2)
-                        {
-                            var Draw = banksQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
-                            chartList.Add(Draw);
-                            label = "Banks count";
-                        }
-                        else if (sectionDate == 3)
-                        {
-                            var Draw = usersQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
-                            chartList.Add(Draw);
-                            label = "Users count";
-                        }
-                        else if (sectionDate == 4)
-                        {
-                            var Draw = branchesQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
-                            chartList.Add(Draw);
-                            if (isSameList)
+                            else if (sectionDate == 2)
                             {
-                                label = "Branches count";
+                                var Draw = banksQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
+                                chartList.Add(Draw);
+                                label = "Banks count";
                             }
-                            else label = "Stores count";
-                        }
-                        else if (sectionDate == 5)
-                        {
-                            var Draw = possQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
-                            chartList.Add(Draw);
-                            label = "Pos count";
-                        }
-                        else if (sectionDate == 6)
-                        {
-                            var Draw = bondsQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
-                            chartList.Add(Draw);
-                            label = "Pos count";
-                        }
-                        else if (sectionDate == 7)
-                        {
-                            var Draw = invoiceQuery.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth).Count();
-                            chartList.Add(Draw);
-                            label = "Invoice count";
-                        }
-                        else if (sectionDate == 8)
-                        {
-                            var Draw = cashQuery.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth).Count();
-                            chartList.Add(Draw);
-                            label = "CashTransfer count";
-                        }
-                        else if (sectionDate == 9)
-                        {
-                            var Draw = cardsQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
-                            chartList.Add(Draw);
-                            label = "Cards count";
-                        }
-                        else if (sectionDate == 10)
-                        {
-                            var Draw = shippingCompanyQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
-                            chartList.Add(Draw);
-                            label = "Shipping Companies count";
-                        }
-                        MyAxis.Separator.Step = 2;
-                        MyAxis.Labels.Add(CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month) + "/" + year);
-                        if (year == dpEndDate.SelectedDate.Value.Year && month == dpEndDate.SelectedDate.Value.Month)
-                        {
-                            break;
-                        }
-                        if (month == 12)
-                        {
-                            startMonth = 1;
-                            break;
+                            else if (sectionDate == 3)
+                            {
+                                var Draw = usersQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
+                                chartList.Add(Draw);
+                                label = "Users count";
+                            }
+                            else if (sectionDate == 4)
+                            {
+                                var Draw = branchesQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
+                                chartList.Add(Draw);
+                                if (isSameList)
+                                {
+                                    label = "Branches count";
+                                }
+                                else label = "Stores count";
+                            }
+                            else if (sectionDate == 5)
+                            {
+                                var Draw = possQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
+                                chartList.Add(Draw);
+                                label = "Pos count";
+                            }
+                            else if (sectionDate == 6)
+                            {
+                                var Draw = bondsQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
+                                chartList.Add(Draw);
+                                label = "Pos count";
+                            }
+                            else if (sectionDate == 7)
+                            {
+                                var Draw = invoiceQuery.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth).Count();
+                                chartList.Add(Draw);
+                                label = "Invoice count";
+                            }
+                            else if (sectionDate == 8)
+                            {
+                                var Draw = cashQuery.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth).Count();
+                                chartList.Add(Draw);
+                                label = "CashTransfer count";
+                            }
+                            else if (sectionDate == 9)
+                            {
+                                var Draw = cardsQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
+                                chartList.Add(Draw);
+                                label = "Cards count";
+                            }
+                            else if (sectionDate == 10)
+                            {
+                                var Draw = shippingCompanyQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
+                                chartList.Add(Draw);
+                                label = "Shipping Companies count";
+                            }
+                            MyAxis.Separator.Step = 2;
+                            MyAxis.Labels.Add(CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month) + "/" + year);
+                            if (year == dpEndDate.SelectedDate.Value.Year && month == dpEndDate.SelectedDate.Value.Month)
+                            {
+                                break;
+                            }
+                            if (month == 12)
+                            {
+                                startMonth = 1;
+                                break;
+                            }
                         }
                     }
-                }
+                
             }
             else
             {

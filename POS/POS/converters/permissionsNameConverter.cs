@@ -44,7 +44,28 @@ namespace POS.converters
             {
                 value = MainWindow.resourcemanager.GetString("trPayments");
             }
-            else if (value.Equals("users_stores") || value.Equals("branches_branches") || value.Equals("stores_branches"))
+            else if (value.ToString().Contains("_view"))
+            {
+                value = MainWindow.resourcemanager.GetString("trView");
+            }
+            else if (value.ToString().Contains("_initializeShortage"))
+            {
+                value = MainWindow.resourcemanager.GetString("trInitializeShortage");
+            }
+            else if (value.ToString().Contains("_initializeShortage"))
+            {
+                value = MainWindow.resourcemanager.GetString("trInitializeShortage");
+            }
+            else if (value.ToString().Contains("_openOrder"))
+            {
+                value = MainWindow.resourcemanager.GetString("trOrders");
+            }
+            else if (value.ToString().Contains("_statistic"))
+            {
+                value = MainWindow.resourcemanager.GetString("trStatistic");
+            }
+            else if (value.Equals("users_stores") || value.Equals("branches_branches") || value.Equals("stores_branches")
+                || value.ToString().Contains("_branches"))
             {
                 value = MainWindow.resourcemanager.GetString("trBranchs/Stores");
             }
@@ -58,6 +79,7 @@ namespace POS.converters
             {
                 value = MainWindow.resourcemanager.GetString("trCompanySettings");
             }
+            
             else switch (value)
                 {
                     case "locations_addRange":
@@ -122,7 +144,7 @@ namespace POS.converters
                         value = MainWindow.resourcemanager.GetString("trUnitConversion");
                         break;
                     case "ordersAccounting_allBranches":
-                        value = MainWindow.resourcemanager.GetString("trAllBranches");
+                        value = MainWindow.resourcemanager.GetString("trBranchs/Stores");
                         break;
                     case "storageAlerts_minMaxItem":
                         value = MainWindow.resourcemanager.GetString("trOverrideStorageLimitAlert");
@@ -139,8 +161,12 @@ namespace POS.converters
                     case "saleAlerts_executeOrder":
                         value = MainWindow.resourcemanager.GetString("trWaitingExecuteOrder");
                         break;
-                
-                 
+                    case "trUnits":
+                        value = MainWindow.resourcemanager.GetString("trWaitingExecuteOrder");
+                        break;
+
+
+
                     default: break;
                 }
             return value;

@@ -209,7 +209,7 @@ namespace POS.View
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
                 MainWindow.mainWindow.KeyDown -= HandleKeyPress;
-                if (billDetails.Count > 0 && _InvoiceType == "sd")
+                if (billDetails.Count > 0 &&( _InvoiceType == "sd" || _InvoiceType == "sbd"))
                 {
                     #region Accept
                     MainWindow.mainWindow.Opacity = 0.2;
@@ -1262,7 +1262,9 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                Boolean available = true;
+                if (billDetails.Count > 0 && (_InvoiceType == "sd" || _InvoiceType == "sbd"))
+                {
+                    Boolean available = true;
                 if (_InvoiceType == "sd")
                     available = await checkItemsAmounts();
                 bool valid = validateItemUnits();
@@ -1278,6 +1280,11 @@ namespace POS.View
                     _InvoiceType = "sd";
                     await clearInvoice();
                 }
+
+                }
+                else
+                    await clearInvoice();
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -3639,7 +3646,6 @@ namespace POS.View
             //MessageBox.Show("Hey you Click me! I'm Card: " + _SelectedCard);
         }
         ImageBrush brush = new ImageBrush();
-
         async void userImageLoad(Ellipse ellipse, string image)
         {
             try

@@ -546,148 +546,148 @@ fillColumnChart(cb_Items, selectedItemId);
 
         private void fillRowChart(ComboBox comboBox, ObservableCollection<int> stackedButton)
         {
-            MyAxis.Labels = new List<string>();
-            List<string> names = new List<string>();
-            IEnumerable<decimal> pTemp = null;
-            IEnumerable<decimal> pbTemp = null;
-            IEnumerable<decimal> resultTemp = null;
+          //  MyAxis.Labels = new List<string>();
+          //  List<string> names = new List<string>();
+          //  IEnumerable<decimal> pTemp = null;
+          //  IEnumerable<decimal> pbTemp = null;
+          //  IEnumerable<decimal> resultTemp = null;
 
-            if (selectedTab == 0)
-            {
-                var temp = fillRowChartList(Invoices, chk_invoice, chk_return, chk_drafs, dp_startDate, dp_endDate, dt_startTime, dt_endTime);
-                temp = temp.Where(j => (selectedBranchId.Count != 0 ? stackedButton.Contains((int)j.branchCreatorId) : true));
-                var result = temp.GroupBy(s => s.branchCreatorId).Select(s => new
-                {
-                    branchCreatorId = s.Key,
-                    totalP = s.Sum(x => x.totalNet),
-                    totalPb = s.Sum(x => x.totalNet)
-                }
+          //  if (selectedTab == 0)
+          //  {
+          //      var temp = fillRowChartList(Invoices, chk_invoice, chk_return, chk_drafs, dp_startDate, dp_endDate, dt_startTime, dt_endTime);
+          //      temp = temp.Where(j => (selectedBranchId.Count != 0 ? stackedButton.Contains((int)j.branchCreatorId) : true));
+          //      var result = temp.GroupBy(s => s.branchCreatorId).Select(s => new
+          //      {
+          //          branchCreatorId = s.Key,
+          //          totalP = s.Sum(x => x.totalNet),
+          //          totalPb = s.Sum(x => x.totalNet)
+          //      }
 
-             );
-                var resultTotal = result.Select(x => new { x.branchCreatorId, total = x.totalP - x.totalPb }).ToList();
-                pTemp = result.Select(x => (decimal)x.totalP);
-                pbTemp = result.Select(x => (decimal)x.totalPb);
-                resultTemp = result.Select(x => (decimal)x.totalP - (decimal)x.totalPb);
-                var tempName = temp.GroupBy(s => s.branchCreatorName).Select(s => new
-                {
-                    uUserName = s.Key
-                });
-                names.AddRange(tempName.Select(nn => nn.uUserName));
-            }
-            if (selectedTab == 1)
-            {
-                var temp = fillRowChartList(Invoices, chk_posInvoice, chk_posReturn, chk_posDraft, dp_posStartDate, dp_posEndDate, dt_posStartTime, dt_posEndTime);
-                temp = temp.Where(j => (selectedPosId.Count != 0 ? stackedButton.Contains((int)j.posId) : true));
-                var result = temp.GroupBy(s => s.posId).Select(s => new
-                {
-                    posId = s.Key,
-                    totalP = s.Sum(x => x.totalNet),
-                    totalPb = s.Sum(x => x.totalNet)
-                }
-             );
-                var resultTotal = result.Select(x => new { x.posId, total = x.totalP - x.totalPb }).ToList();
-                pTemp = result.Select(x => (decimal)x.totalP);
-                pbTemp = result.Select(x => (decimal)x.totalPb);
-                resultTemp = result.Select(x => (decimal)x.totalP - (decimal)x.totalPb);
-                var tempName = temp.GroupBy(s => s.posName).Select(s => new
-                {
-                    uUserName = s.Key
-                });
-                names.AddRange(tempName.Select(nn => nn.uUserName));
-            }
-            if (selectedTab == 2)
-            {
-                var temp = fillRowChartList(Invoices, chk_vendorsInvoice, chk_vendorsReturn, chk_vendorsDraft, dp_vendorsStartDate, dp_vendorsEndDate, dt_vendorsStartTime, dt_vendorsEndTime);
-                temp = temp.Where(j => (selectedVendorsId.Count != 0 ? stackedButton.Contains((int)j.agentId) : true));
-                var result = temp.GroupBy(s => s.agentId).Select(s => new
-                {
-                    agentId = s.Key,
-                    totalP = s.Sum(x => x.totalNet),
-                    totalPb = s.Sum(x => x.totalNet)
-                }
-             );
-                var resultTotal = result.Select(x => new { x.agentId, total = x.totalP - x.totalPb }).ToList();
-                pTemp = result.Select(x => (decimal)x.totalP);
-                pbTemp = result.Select(x => (decimal)x.totalPb);
-                resultTemp = result.Select(x => (decimal)x.totalP - (decimal)x.totalPb);
-                var tempName = temp.GroupBy(s => s.agentName).Select(s => new
-                {
-                    uUserName = s.Key
-                });
-                names.AddRange(tempName.Select(nn => nn.uUserName));
-            }
-            if (selectedTab == 3)
-            {
-                var temp = fillRowChartList(Invoices, chk_usersInvoice, chk_usersReturn, chk_usersDraft, dp_usersStartDate, dp_usersEndDate, dt_usersStartTime, dt_usersEndTime);
-                temp = temp.Where(j => (selectedUserId.Count != 0 ? stackedButton.Contains((int)j.updateUserId) : true));
-                var result = temp.GroupBy(s => s.updateUserId).Select(s => new
-                {
-                    updateUserId = s.Key,
-                    totalP = s.Sum(x => x.totalNet),
-                    totalPb = s.Sum(x => x.totalNet)
-                }
-             );
-                var resultTotal = result.Select(x => new { x.updateUserId, total = x.totalP - x.totalPb }).ToList();
-                pTemp = result.Select(x => (decimal)x.totalP);
-                pbTemp = result.Select(x => (decimal)x.totalPb);
-                resultTemp = result.Select(x => (decimal)x.totalP - (decimal)x.totalPb);
-                var tempName = temp.GroupBy(s => s.uUserAccName).Select(s => new
-                {
-                    uUserName = s.Key
-                });
-                names.AddRange(tempName.Select(nn => nn.uUserName));
-            }
-            if (selectedTab == 4)
-            {
-                var temp = fillRowChartList(Items, chk_itemInvoice, chk_itemReturn, chk_itemDrafs, dp_ItemStartDate, dp_ItemEndDate, dt_itemStartTime, dt_ItemEndTime);
-                temp = temp.Where(j => (selectedItemId.Count != 0 ? stackedButton.Contains((int)j.ITitemUnitId) : true));
-                var result = temp.GroupBy(s => s.ITitemUnitId).Select(s => new
-                {
-                    ITitemUnitId = s.Key,
-                    totalP = s.Sum(x => x.totalNet),
-                    totalPb = s.Sum(x => x.totalNet),
+          //   );
+          //      var resultTotal = result.Select(x => new { x.branchCreatorId, total = x.totalP - x.totalPb }).ToList();
+          //      pTemp = result.Select(x => (decimal)x.totalP);
+          //      pbTemp = result.Select(x => (decimal)x.totalPb);
+          //      resultTemp = result.Select(x => (decimal)x.totalP - (decimal)x.totalPb);
+          //      var tempName = temp.GroupBy(s => s.branchCreatorName).Select(s => new
+          //      {
+          //          uUserName = s.Key
+          //      });
+          //      names.AddRange(tempName.Select(nn => nn.uUserName));
+          //  }
+          //  if (selectedTab == 1)
+          //  {
+          //      var temp = fillRowChartList(Invoices, chk_posInvoice, chk_posReturn, chk_posDraft, dp_posStartDate, dp_posEndDate, dt_posStartTime, dt_posEndTime);
+          //      temp = temp.Where(j => (selectedPosId.Count != 0 ? stackedButton.Contains((int)j.posId) : true));
+          //      var result = temp.GroupBy(s => s.posId).Select(s => new
+          //      {
+          //          posId = s.Key,
+          //          totalP = s.Sum(x => x.totalNet),
+          //          totalPb = s.Sum(x => x.totalNet)
+          //      }
+          //   );
+          //      var resultTotal = result.Select(x => new { x.posId, total = x.totalP - x.totalPb }).ToList();
+          //      pTemp = result.Select(x => (decimal)x.totalP);
+          //      pbTemp = result.Select(x => (decimal)x.totalPb);
+          //      resultTemp = result.Select(x => (decimal)x.totalP - (decimal)x.totalPb);
+          //      var tempName = temp.GroupBy(s => s.posName).Select(s => new
+          //      {
+          //          uUserName = s.Key
+          //      });
+          //      names.AddRange(tempName.Select(nn => nn.uUserName));
+          //  }
+          //  if (selectedTab == 2)
+          //  {
+          //      var temp = fillRowChartList(Invoices, chk_vendorsInvoice, chk_vendorsReturn, chk_vendorsDraft, dp_vendorsStartDate, dp_vendorsEndDate, dt_vendorsStartTime, dt_vendorsEndTime);
+          //      temp = temp.Where(j => (selectedVendorsId.Count != 0 ? stackedButton.Contains((int)j.agentId) : true));
+          //      var result = temp.GroupBy(s => s.agentId).Select(s => new
+          //      {
+          //          agentId = s.Key,
+          //          totalP = s.Sum(x => x.totalNet),
+          //          totalPb = s.Sum(x => x.totalNet)
+          //      }
+          //   );
+          //      var resultTotal = result.Select(x => new { x.agentId, total = x.totalP - x.totalPb }).ToList();
+          //      pTemp = result.Select(x => (decimal)x.totalP);
+          //      pbTemp = result.Select(x => (decimal)x.totalPb);
+          //      resultTemp = result.Select(x => (decimal)x.totalP - (decimal)x.totalPb);
+          //      var tempName = temp.GroupBy(s => s.agentName).Select(s => new
+          //      {
+          //          uUserName = s.Key
+          //      });
+          //      names.AddRange(tempName.Select(nn => nn.uUserName));
+          //  }
+          //  if (selectedTab == 3)
+          //  {
+          //      var temp = fillRowChartList(Invoices, chk_usersInvoice, chk_usersReturn, chk_usersDraft, dp_usersStartDate, dp_usersEndDate, dt_usersStartTime, dt_usersEndTime);
+          //      temp = temp.Where(j => (selectedUserId.Count != 0 ? stackedButton.Contains((int)j.updateUserId) : true));
+          //      var result = temp.GroupBy(s => s.updateUserId).Select(s => new
+          //      {
+          //          updateUserId = s.Key,
+          //          totalP = s.Sum(x => x.totalNet),
+          //          totalPb = s.Sum(x => x.totalNet)
+          //      }
+          //   );
+          //      var resultTotal = result.Select(x => new { x.updateUserId, total = x.totalP - x.totalPb }).ToList();
+          //      pTemp = result.Select(x => (decimal)x.totalP);
+          //      pbTemp = result.Select(x => (decimal)x.totalPb);
+          //      resultTemp = result.Select(x => (decimal)x.totalP - (decimal)x.totalPb);
+          //      var tempName = temp.GroupBy(s => s.uUserAccName).Select(s => new
+          //      {
+          //          uUserName = s.Key
+          //      });
+          //      names.AddRange(tempName.Select(nn => nn.uUserName));
+          //  }
+          //  if (selectedTab == 4)
+          //  {
+          //      var temp = fillRowChartList(Items, chk_itemInvoice, chk_itemReturn, chk_itemDrafs, dp_ItemStartDate, dp_ItemEndDate, dt_itemStartTime, dt_ItemEndTime);
+          //      temp = temp.Where(j => (selectedItemId.Count != 0 ? stackedButton.Contains((int)j.ITitemUnitId) : true));
+          //      var result = temp.GroupBy(s => s.ITitemUnitId).Select(s => new
+          //      {
+          //          ITitemUnitId = s.Key,
+          //          totalP = s.Sum(x => x.totalNet),
+          //          totalPb = s.Sum(x => x.totalNet),
 
-                }
-             );
-                var resultTotal = result.Select(x => new { x.ITitemUnitId, total = x.totalP - x.totalPb }).ToList();
-                pTemp = result.Select(x => (decimal)x.totalP);
-                pbTemp = result.Select(x => (decimal)x.totalPb);
-                resultTemp = result.Select(x => (decimal)x.totalP - (decimal)x.totalPb);
-                var tempName = temp.GroupBy(jj => jj.ITitemUnitId)
-                 .Select(g => new ItemUnitCombo { itemUnitId = (int)g.FirstOrDefault().ITitemUnitId, itemUnitName = g.FirstOrDefault().ITitemName + "-" + g.FirstOrDefault().ITunitName }).ToList();
-                names.AddRange(tempName.Select(nn => nn.itemUnitName));
-            }
-            /********************************************************************************/
+          //      }
+          //   );
+          //      var resultTotal = result.Select(x => new { x.ITitemUnitId, total = x.totalP - x.totalPb }).ToList();
+          //      pTemp = result.Select(x => (decimal)x.totalP);
+          //      pbTemp = result.Select(x => (decimal)x.totalPb);
+          //      resultTemp = result.Select(x => (decimal)x.totalP - (decimal)x.totalPb);
+          //      var tempName = temp.GroupBy(jj => jj.ITitemUnitId)
+          //       .Select(g => new ItemUnitCombo { itemUnitId = (int)g.FirstOrDefault().ITitemUnitId, itemUnitName = g.FirstOrDefault().ITitemName + "-" + g.FirstOrDefault().ITunitName }).ToList();
+          //      names.AddRange(tempName.Select(nn => nn.itemUnitName));
+          //  }
+          //  /********************************************************************************/
 
 
-            SeriesCollection rowChartData = new SeriesCollection();
-            List<decimal> purchase = new List<decimal>();
-            List<decimal> returns = new List<decimal>();
-            List<decimal> sub = new List<decimal>();
-            List<string> titles = new List<string>()
-            {
-                //"اجمالي المبيعات","اجمالي المرتجع","صافي المبيعات"
-                MainWindow.resourcemanager.GetString("trTotalPurchases"),
-                MainWindow.resourcemanager.GetString("trTotalReturn"),
-                MainWindow.resourcemanager.GetString("trNetPurchases")
-            };
-            for (int i = 0; i < pTemp.Count(); i++)
-            {
-                purchase.Add(pTemp.ToList().Skip(i).FirstOrDefault());
-                returns.Add(pbTemp.ToList().Skip(i).FirstOrDefault());
-                sub.Add(resultTemp.ToList().Skip(i).FirstOrDefault());
-                MyAxis.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
-            }
+          //  SeriesCollection rowChartData = new SeriesCollection();
+          //  List<decimal> purchase = new List<decimal>();
+          //  List<decimal> returns = new List<decimal>();
+          //  List<decimal> sub = new List<decimal>();
+          //  List<string> titles = new List<string>()
+          //  {
+          //      //"اجمالي المبيعات","اجمالي المرتجع","صافي المبيعات"
+          //      MainWindow.resourcemanager.GetString("trTotalPurchases"),
+          //      MainWindow.resourcemanager.GetString("trTotalReturn"),
+          //      MainWindow.resourcemanager.GetString("trNetPurchases")
+          //  };
+          //  for (int i = 0; i < pTemp.Count(); i++)
+          //  {
+          //      purchase.Add(pTemp.ToList().Skip(i).FirstOrDefault());
+          //      returns.Add(pbTemp.ToList().Skip(i).FirstOrDefault());
+          //      sub.Add(resultTemp.ToList().Skip(i).FirstOrDefault());
+          //      MyAxis.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
+          //  }
 
-            rowChartData.Add(
-          new LineSeries
-          {
-              Values = purchase.AsChartValues(),
-              Title = titles[0]
-          });
+          //  rowChartData.Add(
+          //new LineSeries
+          //{
+          //    Values = purchase.AsChartValues(),
+          //    Title = titles[0]
+          //});
 
-            DataContext = this;
-            rowChart.Series = rowChartData;
+          //  DataContext = this;
+          //  rowChart.Series = rowChartData;
         }
         private List<ItemTransferInvoice> fillPdfList(ComboBox comboBox, ObservableCollection<int> stackedButton)
         {

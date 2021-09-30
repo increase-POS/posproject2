@@ -699,7 +699,7 @@ namespace POS.Classes
             combo.DisplayMemberPath = "name";
             combo.SelectedIndex = -1;
         }
-        static public async Task fillBranchesWithoutCurrent(ComboBox combo,int currentBranchId, string type = "")
+        static public async Task fillBranchesWithoutCurrent(ComboBox combo, int currentBranchId, string type = "")
         {
             if (isAdminPermision())
                 branches = await branchModel.GetAll();
@@ -748,17 +748,17 @@ namespace POS.Classes
                 txb.Focus();
             }
         }
-        
-        static async public void ExceptionMessage(Exception ex ,object window)
+
+        static async public void ExceptionMessage(Exception ex, object window)
         {
             try
             {
 
-            //Message
-            if (ex.HResult == -2146233088)
-                Toaster.ShowError(window as Window, message: MainWindow.resourcemanager.GetString("trNoInternetConnection"), animation: ToasterAnimation.FadeIn);
-            else
-                Toaster.ShowError(window as Window, message: ex.HResult + " || " + ex.Message, animation: ToasterAnimation.FadeIn);
+                //Message
+                if (ex.HResult == -2146233088)
+                    Toaster.ShowError(window as Window, message: MainWindow.resourcemanager.GetString("trNoInternetConnection"), animation: ToasterAnimation.FadeIn);
+                else
+                    Toaster.ShowError(window as Window, message: ex.HResult + " || " + ex.Message, animation: ToasterAnimation.FadeIn);
 
                 ErrorClass errorClass = new ErrorClass();
                 errorClass.num = ex.HResult.ToString();
@@ -803,7 +803,7 @@ namespace POS.Classes
             }
 
         }
-      
+
         static SetValues valueModel = new SetValues();
         static UserSetValues uSetValueModel = new UserSetValues();
         static List<UserSetValues> usValues = new List<UserSetValues>();
@@ -889,136 +889,136 @@ namespace POS.Classes
                 _str = MainWindow.resourcemanager.GetString("trHome");
             else if (str == "catalog")
                 _str = MainWindow.resourcemanager.GetString("trCatalog");
-                else if (str == "storage")
+            else if (str == "storage")
                 _str = MainWindow.resourcemanager.GetString("trStore");
-                else if (str == "purchase")
+            else if (str == "purchase")
                 _str = MainWindow.resourcemanager.GetString("trPurchases");
-                else if (str == "sales")
+            else if (str == "sales")
                 _str = MainWindow.resourcemanager.GetString("trSales");
-                else if (str == "accounts")
+            else if (str == "accounts")
                 _str = MainWindow.resourcemanager.GetString("trAccounting");
-                else if (str == "reports")
+            else if (str == "reports")
                 _str = MainWindow.resourcemanager.GetString("trReports");
-                else if (str == "sectionData")
+            else if (str == "sectionData")
                 _str = MainWindow.resourcemanager.GetString("trSectionData");
-                else if (str == "settings")
+            else if (str == "settings")
                 _str = MainWindow.resourcemanager.GetString("trSettings");
-                #endregion
-           
-                #region  storage
-                if (str == "locations")
+            #endregion
+
+            #region  storage
+            if (str == "locations")
                 _str = MainWindow.resourcemanager.GetString("trLocation");
-                else if (str == "section")
+            else if (str == "section")
                 _str = MainWindow.resourcemanager.GetString("trSection");
-                else if (str == "reciptOfInvoice")
+            else if (str == "reciptOfInvoice")
                 _str = MainWindow.resourcemanager.GetString("trInvoice");
-                else if (str == "itemsStorage")
+            else if (str == "itemsStorage")
                 _str = MainWindow.resourcemanager.GetString("trStorage");
-                else if (str == "importExport")
+            else if (str == "importExport")
                 _str = MainWindow.resourcemanager.GetString("trMovements");
-                else if (str == "itemsDestroy")
+            else if (str == "itemsDestroy")
                 _str = MainWindow.resourcemanager.GetString("trDestructive");
-                else if (str == "shorstre")
+            else if (str == "shorstre")
                 _str = MainWindow.resourcemanager.GetString("trShorstre");
-                else if (str == "inventory")
+            else if (str == "inventory")
                 _str = MainWindow.resourcemanager.GetString("trStocktaking");
-                else if (str == "storageStatistic")
+            else if (str == "storageStatistic")
                 _str = MainWindow.resourcemanager.GetString("trStatistic");
-                #endregion
-                #region  Account
-                else if (str == "posAccounting")
+            #endregion
+            #region  Account
+            else if (str == "posAccounting")
                 _str = MainWindow.resourcemanager.GetString("trPOS");
-                else if (str == "payments")
+            else if (str == "payments")
                 _str = MainWindow.resourcemanager.GetString("trPayments");
-                else if (str == "received")
+            else if (str == "received")
                 _str = MainWindow.resourcemanager.GetString("trReceived");
-                else if (str == "bonds")
+            else if (str == "bonds")
                 _str = MainWindow.resourcemanager.GetString("trBonds");
-                else if (str == "banksAccounting")
+            else if (str == "banksAccounting")
                 _str = MainWindow.resourcemanager.GetString("trBanks");
-                else if (str == "ordersAccounting")
+            else if (str == "ordersAccounting")
                 _str = MainWindow.resourcemanager.GetString("trOrders");
-                else if (str == "subscriptions")
+            else if (str == "subscriptions")
                 _str = MainWindow.resourcemanager.GetString("trSubscriptions");
-                else if (str == "accountsStatistic")
+            else if (str == "accountsStatistic")
                 _str = MainWindow.resourcemanager.GetString("trStatistic");
-                #endregion
-                #region  catalog
-                else if (str == "categories")
+            #endregion
+            #region  catalog
+            else if (str == "categories")
                 _str = MainWindow.resourcemanager.GetString("trCategories");
-                else if (str == "item")
+            else if (str == "item")
                 _str = MainWindow.resourcemanager.GetString("trItems");
-                else if (str == "properties")
+            else if (str == "properties")
                 _str = MainWindow.resourcemanager.GetString("trProperties");
-                else if (str == "units")
+            else if (str == "units")
                 _str = MainWindow.resourcemanager.GetString("trUnits");
-                else if (str == "storageCost")
+            else if (str == "storageCost")
                 _str = MainWindow.resourcemanager.GetString("trStorageCost");
-                #endregion
-                #region  purchase
-                if (str == "payInvoice")
+            #endregion
+            #region  purchase
+            if (str == "payInvoice")
                 _str = MainWindow.resourcemanager.GetString("trInvoice");
-                else if (str == "purchaseOrder")
+            else if (str == "purchaseOrder")
                 _str = MainWindow.resourcemanager.GetString("trOrders");
-                else if (str == "purchaseStatistic")
+            else if (str == "purchaseStatistic")
                 _str = MainWindow.resourcemanager.GetString("trStatistic");
-                #endregion
-                #region  sales
-                if (str == "reciptInvoice")
+            #endregion
+            #region  sales
+            if (str == "reciptInvoice")
                 _str = MainWindow.resourcemanager.GetString("trInvoice");
-                else if (str == "coupon")
+            else if (str == "coupon")
                 _str = MainWindow.resourcemanager.GetString("trCoupon");
-                else if (str == "offer")
+            else if (str == "offer")
                 _str = MainWindow.resourcemanager.GetString("trOffer");
-                else if (str == "package")
+            else if (str == "package")
                 _str = MainWindow.resourcemanager.GetString("trPackage");
-                else if (str == "quotation")
+            else if (str == "quotation")
                 _str = MainWindow.resourcemanager.GetString("trQuotations");
-                else if (str == "salesOrders")
+            else if (str == "salesOrders")
                 _str = MainWindow.resourcemanager.GetString("trOrders");
-                else if (str == "medals")
+            else if (str == "medals")
                 _str = MainWindow.resourcemanager.GetString("trMedals");
-                else if (str == "membership")
+            else if (str == "membership")
                 _str = MainWindow.resourcemanager.GetString("trMembership");
-                else if (str == "salesStatistic")
+            else if (str == "salesStatistic")
                 _str = MainWindow.resourcemanager.GetString("trStatistic");
-                #endregion
-                #region  sectionData
-                if (str == "suppliers")
+            #endregion
+            #region  sectionData
+            if (str == "suppliers")
                 _str = MainWindow.resourcemanager.GetString("trSuppliers");
-                else if (str == "customers")
+            else if (str == "customers")
                 _str = MainWindow.resourcemanager.GetString("trCustomers");
-                else if (str == "users")
+            else if (str == "users")
                 _str = MainWindow.resourcemanager.GetString("trUsers");
-                else if (str == "branches")
+            else if (str == "branches")
                 _str = MainWindow.resourcemanager.GetString("trBranches");
-                else if (str == "stores")
+            else if (str == "stores")
                 _str = MainWindow.resourcemanager.GetString("trStores");
-                else if (str == "pos")
+            else if (str == "pos")
                 _str = MainWindow.resourcemanager.GetString("trPOS");
-                else if (str == "banks")
+            else if (str == "banks")
                 _str = MainWindow.resourcemanager.GetString("trBanks");
-                else if (str == "cards")
+            else if (str == "cards")
                 _str = MainWindow.resourcemanager.GetString("trCard");
-                else if (str == "shippingCompany")
+            else if (str == "shippingCompany")
                 _str = MainWindow.resourcemanager.GetString("trShippingCompanies");
-                #endregion
-                #region  settings
-                if (str == "general")
+            #endregion
+            #region  settings
+            if (str == "general")
                 _str = MainWindow.resourcemanager.GetString("trGeneral");
-                else if (str == "reportsSettings")
+            else if (str == "reportsSettings")
                 _str = MainWindow.resourcemanager.GetString("trReports");
-                else if (str == "permissions")
+            else if (str == "permissions")
                 _str = MainWindow.resourcemanager.GetString("trPermission");
-                else if (str == "emailsSetting")
+            else if (str == "emailsSetting")
                 _str = MainWindow.resourcemanager.GetString("trEmail");
-                else if (str == "emailTemplates")
+            else if (str == "emailTemplates")
                 _str = MainWindow.resourcemanager.GetString("trEmailTemplates");
-                #endregion
-           
+            #endregion
+
 
             return _str;
-            
+
         }
 
         public static string DateToString(DateTime? date)
@@ -1088,8 +1088,56 @@ namespace POS.Classes
             return sdc;
         }
 
+        public static void ReportTabTitle( TextBlock textBlock, string firstTitle,string secondTitle)
+        {
+            
+                if (firstTitle == "invoice")
+                firstTitle = MainWindow.resourcemanager.GetString("trInvoices");
+            else if (firstTitle == "quotation")
+                firstTitle = MainWindow.resourcemanager.GetString("ssssssss");
+            else if (firstTitle == "promotion")
+                firstTitle = MainWindow.resourcemanager.GetString("ssssssss");
+            else if (firstTitle == "ssssssss")
+                firstTitle = MainWindow.resourcemanager.GetString("ssssssss");
+            else if (firstTitle == "ssssssss")
+                firstTitle = MainWindow.resourcemanager.GetString("ssssssss");
+            else if (firstTitle == "ssssssss")
+                firstTitle = MainWindow.resourcemanager.GetString("ssssssss");
+            else if (firstTitle == "ssssssss")
+                firstTitle = MainWindow.resourcemanager.GetString("ssssssss");
+            else if (firstTitle == "ssssssss")
+                firstTitle = MainWindow.resourcemanager.GetString("ssssssss");
+            else if (firstTitle == "ssssssss")
+                firstTitle = MainWindow.resourcemanager.GetString("ssssssss");
+            else if (firstTitle == "ssssssss")
+                firstTitle = MainWindow.resourcemanager.GetString("ssssssss");
+            
 
+                if (secondTitle == "branch")
+                secondTitle = MainWindow.resourcemanager.GetString("trBranches");
+                else if (secondTitle == "pos")
+                secondTitle = MainWindow.resourcemanager.GetString("trPOS");
+                else if (secondTitle == "vendors")
+                secondTitle = MainWindow.resourcemanager.GetString("trVendors");
+                else if (secondTitle == "users")
+                secondTitle = MainWindow.resourcemanager.GetString("trUsers");
+                else if (secondTitle == "items")
+                secondTitle = MainWindow.resourcemanager.GetString("trItems");
+                else if (secondTitle == "coupon")
+                secondTitle = MainWindow.resourcemanager.GetString("trCoupon");
+                else if (secondTitle == "offers")
+                secondTitle = MainWindow.resourcemanager.GetString("trOffer");
+                else if (secondTitle == "invoice")
+                secondTitle = MainWindow.resourcemanager.GetString("ssssssss");
+                else if (secondTitle == "order")
+                secondTitle = MainWindow.resourcemanager.GetString("ssssssss");
+                else if (secondTitle == "quotation")
+                secondTitle = MainWindow.resourcemanager.GetString("ssssssss");
+
+
+
+                textBlock.Text = firstTitle + " - " + secondTitle;
+             
+        }
     }
-
-
 }

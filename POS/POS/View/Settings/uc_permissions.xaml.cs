@@ -1074,14 +1074,28 @@ t1.Start();
                 txt_properties.Text = MainWindow.resourcemanager.GetString("trProperties");
                 txt_item.Text = MainWindow.resourcemanager.GetString("trItems");
                 txt_units.Text = MainWindow.resourcemanager.GetString("trUnits");
+            txt_storageCost.Text = MainWindow.resourcemanager.GetString("trStorageCost");
 
-                txt_posAccounting.Text = MainWindow.resourcemanager.GetString("trPOS");
+            txt_locations.Text = MainWindow.resourcemanager.GetString("trLocation");
+            txt_section.Text = MainWindow.resourcemanager.GetString("trSection");
+            txt_reciptOfInvoice.Text = MainWindow.resourcemanager.GetString("trInvoice");
+            txt_itemsStorage.Text = MainWindow.resourcemanager.GetString("trStorage");
+            txt_importExport.Text = MainWindow.resourcemanager.GetString("trMovements");
+            txt_itemsDestroy.Text = MainWindow.resourcemanager.GetString("trDestructive");
+            txt_shortage.Text = MainWindow.resourcemanager.GetString("trShortage");
+            txt_inventory.Text = MainWindow.resourcemanager.GetString("trStocktaking");
+            //txt_storageStatistic.Text = MainWindow.resourcemanager.GetString("trStatistic");
+
+
+            txt_posAccounting.Text = MainWindow.resourcemanager.GetString("trPOS");
                 txt_banksAccounting.Text = MainWindow.resourcemanager.GetString("trBanks");
                 txt_payments.Text = MainWindow.resourcemanager.GetString("trPayments");
                 txt_received.Text = MainWindow.resourcemanager.GetString("trReceived");
                 txt_bonds.Text = MainWindow.resourcemanager.GetString("trBonds");
+            txt_ordersAccounting.Text = MainWindow.resourcemanager.GetString("trOrders");
 
-                txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trInvoice");
+            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trInvoice");
+            txt_purchaseOrder.Text = MainWindow.resourcemanager.GetString("trOrders");
             //txt_storageStatistic.Text = MainWindow.resourcemanager.GetString("trStatistic");
             //txt_purchaseStatistic.Text = MainWindow.resourcemanager.GetString("trStatistic");
             txt_salesStatistic.Text = MainWindow.resourcemanager.GetString("trStatistic");
@@ -1090,17 +1104,49 @@ t1.Start();
             txt_reciptInvoice.Text = MainWindow.resourcemanager.GetString("trInvoice");
                 txt_coupon.Text = MainWindow.resourcemanager.GetString("trCoupon");
                 txt_offer.Text = MainWindow.resourcemanager.GetString("trOffer");
+            txt_package.Text = MainWindow.resourcemanager.GetString("trPackage");
+            txt_quotation.Text = MainWindow.resourcemanager.GetString("trQuotations");
+            txt_salesOrders.Text = MainWindow.resourcemanager.GetString("trOrders");
 
-                txt_customers.Text = MainWindow.resourcemanager.GetString("trCustomers");
+            txt_customers.Text = MainWindow.resourcemanager.GetString("trCustomers");
                 txt_suppliers.Text = MainWindow.resourcemanager.GetString("trSuppliers");
                 txt_users.Text = MainWindow.resourcemanager.GetString("trUsers");
                 txt_branches.Text = MainWindow.resourcemanager.GetString("trBranches");
                 txt_stores.Text = MainWindow.resourcemanager.GetString("trStores");
                 txt_pos.Text = MainWindow.resourcemanager.GetString("trPOS");
                 txt_banks.Text = MainWindow.resourcemanager.GetString("trBanks");
+            txt_shippingCompany.Text = MainWindow.resourcemanager.GetString("trShipping");
 
-            }
-            private void isEnabledButtons()
+            txt_storageReports.Text = MainWindow.resourcemanager.GetString("trStore");
+            txt_purchaseReports.Text = MainWindow.resourcemanager.GetString("trPurchases");
+            txt_salesReports.Text = MainWindow.resourcemanager.GetString("trSales");
+            txt_accountsReports.Text = MainWindow.resourcemanager.GetString("trAccounting");
+
+            txt_storageAlerts.Text = MainWindow.resourcemanager.GetString("trStore");
+            txt_saleAlerts.Text = MainWindow.resourcemanager.GetString("trSales");
+
+            txt_general.Text = MainWindow.resourcemanager.GetString("trGeneral");
+            txt_reportsSettings.Text = MainWindow.resourcemanager.GetString("trReports");
+            txt_permissions.Text = MainWindow.resourcemanager.GetString("trPermission");
+            txt_emailsSetting.Text = MainWindow.resourcemanager.GetString("trEmail");
+            txt_emailTemplates.Text = MainWindow.resourcemanager.GetString("trEmailTemplates");
+
+
+            dg_permissions.Columns[0].Header = MainWindow.resourcemanager.GetString("trPermission");
+            dg_permissions.Columns[1].Header = MainWindow.resourcemanager.GetString("trShow");
+            dg_permissions.Columns[2].Header = MainWindow.resourcemanager.GetString("trAdd");
+            dg_permissions.Columns[3].Header = MainWindow.resourcemanager.GetString("trUpdate");
+            dg_permissions.Columns[4].Header = MainWindow.resourcemanager.GetString("trDelete");
+            dg_permissions.Columns[5].Header = MainWindow.resourcemanager.GetString("trReports");
+
+
+            txt_header.Text = MainWindow.resourcemanager.GetString("");
+            txt_groupDetails.Text = MainWindow.resourcemanager.GetString("trDetails");
+            txt_groups.Text = MainWindow.resourcemanager.GetString("trGroups");
+ 
+
+        }
+        private void isEnabledButtons()
             {
                 btn_home.IsEnabled = true;
                 btn_catalog.IsEnabled = true;

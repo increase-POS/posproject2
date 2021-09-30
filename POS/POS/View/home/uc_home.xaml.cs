@@ -7,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reflection;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -82,6 +84,16 @@ namespace POS.View
             {
                 //if (sender != null)
                 //    SectionData.StartAwait(grid_main);
+
+                #region translate
+                if (MainWindow.lang.Equals("en"))
+                { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                    grid_main.FlowDirection = FlowDirection.LeftToRight; }
+                else
+                { MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                    grid_main.FlowDirection = FlowDirection.RightToLeft; }
+                translate();
+                #endregion
                 await SectionData.fillBranchesWithAll(cb_branch);
                 cb_branch.SelectedValue = MainWindow.branchID;
                 if (MainWindow.groupObject.HasPermissionAction(branchesPermission, MainWindow.groupObjects, "one"))
@@ -124,6 +136,24 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
 
+        }
+        private void translate()
+        {
+            txt_countAllPurchase.Text = MainWindow.resourcemanager.GetString("trPurchases");
+            txt_countAllSales.Text = MainWindow.resourcemanager.GetString("trSales");
+            txt_countAllVendor.Text = MainWindow.resourcemanager.GetString("trSuppliers");
+            txt_countAllCustomer.Text = MainWindow.resourcemanager.GetString("trCustomers");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_branch, MainWindow.resourcemanager.GetString("trStore/BranchHint"));
+            bestSellerTitle.Text = MainWindow.resourcemanager.GetString("trBestSeller");
+            storageTitle.Text = MainWindow.resourcemanager.GetString("trStorage");
+            txt_userOnlineTitle.Text = MainWindow.resourcemanager.GetString("trUsers");
+            purchaseAndSalesTitle.Text = MainWindow.resourcemanager.GetString("trPurchase&Sales");
+            txt_branchOnlineTitle.Text = MainWindow.resourcemanager.GetString("trBranch&Store");
+            txt_dailyPurchaseTitle.Text = MainWindow.resourcemanager.GetString("trDailyPurchase");
+            txt_dailySalesTitle.Text = MainWindow.resourcemanager.GetString("trDailySales");
+
+            txt_userOnline.Text = txt_branchOnline.Text = MainWindow.resourcemanager.GetString("trOnline") + ":";
+            txt_countDailyPurchase.Text = txt_countDailySales.Text = MainWindow.resourcemanager.GetString("trCount") + ":";
         }
         void timer_Thread30(object sendert, EventArgs et)
         {
@@ -650,7 +680,7 @@ namespace POS.View
             #endregion
             #region   itemTitle
             var itemTitle = new TextBlock();
-            itemTitle.Text = "Item:";
+            itemTitle.Text = MainWindow.resourcemanager.GetString("trItem") + ":";
             itemTitle.Tag = "itemTitle";
             itemTitle.VerticalAlignment = VerticalAlignment.Center;
             itemTitle.HorizontalAlignment = HorizontalAlignment.Center;
@@ -674,7 +704,7 @@ namespace POS.View
             #endregion
             #region   countTitle
             var countTitle = new TextBlock();
-            countTitle.Text = "Count:";
+            countTitle.Text = MainWindow.resourcemanager.GetString("trCount") + ":";
             countTitle.Tag = "countTitle";
             countTitle.VerticalAlignment = VerticalAlignment.Center;
             countTitle.HorizontalAlignment = HorizontalAlignment.Center;
@@ -853,7 +883,7 @@ namespace POS.View
             #endregion
             #region   itemTitle
             var itemTitle = new TextBlock();
-            itemTitle.Text = "Item:";
+            itemTitle.Text = MainWindow.resourcemanager.GetString("trItem") +":";
             itemTitle.Tag = "itemTitle";
             itemTitle.VerticalAlignment = VerticalAlignment.Center;
             itemTitle.HorizontalAlignment = HorizontalAlignment.Center;
@@ -877,7 +907,7 @@ namespace POS.View
             #endregion
             #region   countTitle
             var countTitle = new TextBlock();
-            countTitle.Text = "Count:";
+            countTitle.Text = MainWindow.resourcemanager.GetString("trCount") + ":";  
             countTitle.Tag = "countTitle";
             countTitle.VerticalAlignment = VerticalAlignment.Center;
             countTitle.HorizontalAlignment = HorizontalAlignment.Center;
@@ -961,18 +991,18 @@ namespace POS.View
             {
                 new LineSeries
                 {
-                    Title = "المبيعات",
+                    Title = MainWindow.resourcemanager.GetString("trSales") ,
                     Values = ArrayS.AsChartValues()
                 },
                  new LineSeries
                 {
-                    Title = "المشتريات",
+                    Title = MainWindow.resourcemanager.GetString("trPurchases"),
                     Values = ArrayP.AsChartValues()
                 }
             };
 
-                axs_AxisY.Title = "الإجمالي";
-                axs_AxisX.Title = "اليوم";
+                axs_AxisY.Title = MainWindow.resourcemanager.GetString("trTotal");
+                axs_AxisX.Title = MainWindow.resourcemanager.GetString("trDays") ;
                 dash.Labels = ArrayCount;
                 dash.YFormatter = value => value.ToString("C");
                 //DataContext = this;

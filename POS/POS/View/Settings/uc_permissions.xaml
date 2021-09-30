@@ -514,7 +514,7 @@
                             <!--***********************************************************-->
                             <!--grid home-->
 
-                            <Grid x:Name="grid_home" Margin="10,10,10,10" MinHeight="80" Visibility="Collapsed">
+                            <Grid x:Name="grid_home" Margin="10,10,10,10" MinHeight="80" Visibility="Visible">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                     <ColumnDefinition Width="auto"></ColumnDefinition>
@@ -1913,7 +1913,7 @@
                             <!--***********************************************************-->
                             <!--grid charts-->
                             
-                            <Grid x:Name="grid_charts" Margin="10,10,10,10" MinHeight="80" Visibility="Visible">
+                            <Grid x:Name="grid_charts" Margin="10,10,10,10" MinHeight="80" Visibility="Collapsed">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                     <ColumnDefinition Width="auto"></ColumnDefinition>
@@ -2703,7 +2703,7 @@
                                     </DockPanel>
 
                                 </Button>
-                                <Button x:Name="btn_accountsAlerts"  Grid.Column="4" BorderBrush="{x:Null}" Tag="accountsAlerts"
+                                <Button x:Name="btn_accountsAlerts" Visibility="Collapsed"  Grid.Column="4" BorderBrush="{x:Null}" Tag="accountsAlerts"
                                         Padding="0" Margin="5,0"  Height="auto" Click="btn_secondLevelClick"
                     Background="{x:Null}" HorizontalContentAlignment="Stretch">
                                     <DockPanel LastChildFill="True"  HorizontalAlignment="Stretch">
@@ -2743,7 +2743,6 @@
                        x:Name="dg_permissions"  BeginningEdit="Grid_BeginningEdit" 
                         AutoGenerateColumns="False" 
                         ColumnWidth="SizeToHeader"   AlternatingRowBackground="#f3f3f3" AlternationCount="2">
-                  
                     <DataGrid.Columns>
                         <DataGridTextColumn Width="*"  Header="Permission" IsReadOnly="True"  
                                             Binding="{Binding Path=objectName,Converter={StaticResource permissionsNameConverter }}">
@@ -2843,23 +2842,6 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <!--<DataGridTemplateColumn Header="Report2"  >
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <CheckBox FlowDirection="LeftToRight"  IsChecked="{Binding levelOb, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
-                                        <CheckBox.Style>
-                                            <Style TargetType="CheckBox">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding levelOb}" Value="2">
-                                                        <Setter Property="IsEnabled" Value="False" />
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </CheckBox.Style>
-                                    </CheckBox>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>-->
                     </DataGrid.Columns>
 
                 </DataGrid>
