@@ -72,8 +72,8 @@ namespace POS.View.accounts
             {
                 InitializeComponent();
             }
-            catch(Exception ex)
-            { SectionData.ExceptionMessage(ex ,this); }
+            catch (Exception ex)
+            { SectionData.ExceptionMessage(ex, this); }
         }
 
         private void translate()
@@ -100,9 +100,9 @@ namespace POS.View.accounts
             dg_bankAccounts.Columns[1].Header = MainWindow.resourcemanager.GetString("trBank");
             dg_bankAccounts.Columns[2].Header = MainWindow.resourcemanager.GetString("trDepositeNumTooltip");
             dg_bankAccounts.Columns[3].Header = MainWindow.resourcemanager.GetString("trCashTooltip");
-  
+
             tt_search.Content = MainWindow.resourcemanager.GetString("trSearch");
-            
+
             tt_confirmUser.Content = MainWindow.resourcemanager.GetString("trConfirmUserTooltip");
             tt_clear.Content = MainWindow.resourcemanager.GetString("trClear");
             tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
@@ -253,57 +253,57 @@ namespace POS.View.accounts
             }
         }
 
-        private  void Dg_bankAccounts_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Dg_bankAccounts_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//selection
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_ucBankAccounts);
                 SectionData.clearValidate(tb_cash, p_errorCash);
-            SectionData.clearValidate(tb_depositNumber, p_errorDepositNumber);
-            SectionData.clearComboBoxValidate(cb_opperationType, p_errorOpperationType);
-            SectionData.clearComboBoxValidate(cb_user, p_errorUser);
-            SectionData.clearComboBoxValidate(cb_bank, p_errorBank);
-            if (dg_bankAccounts.SelectedIndex != -1)
-            {
-                cashtrans = dg_bankAccounts.SelectedItem as CashTransfer;
-                this.DataContext = cashtrans;
-
-                if (cashtrans != null)
+                SectionData.clearValidate(tb_depositNumber, p_errorDepositNumber);
+                SectionData.clearComboBoxValidate(cb_opperationType, p_errorOpperationType);
+                SectionData.clearComboBoxValidate(cb_user, p_errorUser);
+                SectionData.clearComboBoxValidate(cb_bank, p_errorBank);
+                if (dg_bankAccounts.SelectedIndex != -1)
                 {
-                    btn_image.IsEnabled = true;
+                    cashtrans = dg_bankAccounts.SelectedItem as CashTransfer;
+                    this.DataContext = cashtrans;
 
-                    tb_cash.Text = SectionData.DecTostring(cashtrans.cash);
-
-                    cb_opperationType.SelectedValue = cashtrans.transType;
-                    cb_user.SelectedValue = cashtrans.userId;
-                    cb_bank.SelectedValue = cashtrans.bankId;
-                    p_confirmUser.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#2BB673"));
-                    if (string.IsNullOrEmpty(cashtrans.docNum))
+                    if (cashtrans != null)
                     {
-                        cb_opperationType.IsEnabled = false;
-                        cb_user.IsEnabled = false;
-                        cb_bank.IsEnabled = false;
-                        tb_cash.IsEnabled = false;
-                        tb_depositNumber.IsEnabled = true;
-                        tb_note.IsEnabled = false;
-                        btn_add.IsEnabled = true;
-                        btn_add.Content = MainWindow.resourcemanager.GetString("trCompletion");
-                    }
-                    else
-                    {
-                        cb_opperationType.IsEnabled = false;
-                        cb_user.IsEnabled = false;
-                        cb_bank.IsEnabled = false;
-                        tb_cash.IsEnabled = false;
-                        tb_depositNumber.IsEnabled = false;
-                        tb_note.IsEnabled = false;
-                        btn_add.IsEnabled = false;
-                        btn_add.Content = MainWindow.resourcemanager.GetString("trCompleted");
-                    }
+                        btn_image.IsEnabled = true;
 
+                        tb_cash.Text = SectionData.DecTostring(cashtrans.cash);
+
+                        cb_opperationType.SelectedValue = cashtrans.transType;
+                        cb_user.SelectedValue = cashtrans.userId;
+                        cb_bank.SelectedValue = cashtrans.bankId;
+                        p_confirmUser.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#2BB673"));
+                        if (string.IsNullOrEmpty(cashtrans.docNum))
+                        {
+                            cb_opperationType.IsEnabled = false;
+                            cb_user.IsEnabled = false;
+                            cb_bank.IsEnabled = false;
+                            tb_cash.IsEnabled = false;
+                            tb_depositNumber.IsEnabled = true;
+                            tb_note.IsEnabled = false;
+                            btn_add.IsEnabled = true;
+                            btn_add.Content = MainWindow.resourcemanager.GetString("trCompletion");
+                        }
+                        else
+                        {
+                            cb_opperationType.IsEnabled = false;
+                            cb_user.IsEnabled = false;
+                            cb_bank.IsEnabled = false;
+                            tb_cash.IsEnabled = false;
+                            tb_depositNumber.IsEnabled = false;
+                            tb_note.IsEnabled = false;
+                            btn_add.IsEnabled = false;
+                            btn_add.Content = MainWindow.resourcemanager.GetString("trCompleted");
+                        }
+
+                    }
                 }
-            }
                 if (sender != null)
                     SectionData.EndAwait(grid_ucBankAccounts);
             }
@@ -386,11 +386,11 @@ namespace POS.View.accounts
 
                             cash.transType = cb_opperationType.SelectedValue.ToString();
                             cash.userId = Convert.ToInt32(cb_user.SelectedValue);
-                        try
-                        {
-                            cash.transNum = await cashModel.generateCashNumber(cb_opperationType.SelectedValue.ToString() + "bn");
-                        }
-                        catch { }
+                            try
+                            {
+                                cash.transNum = await cashModel.generateCashNumber(cb_opperationType.SelectedValue.ToString() + "bn");
+                            }
+                            catch { }
                             cash.cash = decimal.Parse(tb_cash.Text);
                             cash.createUserId = MainWindow.userID.Value;
                             cash.notes = tb_note.Text;
@@ -403,7 +403,7 @@ namespace POS.View.accounts
 
                             if (!s.Equals("0"))
                             {
-                               
+
                                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                                 Btn_clear_Click(null, null);
 
@@ -418,8 +418,8 @@ namespace POS.View.accounts
                     {
                         if (cashtrans.isConfirm == 0)
                         {
-                        //chk empty deposite number
-                        SectionData.validateEmptyTextBox(tb_depositNumber, p_errorDepositNumber, tt_errorDepositNumber, "trEmptyDepositNumberToolTip");
+                            //chk empty deposite number
+                            SectionData.validateEmptyTextBox(tb_depositNumber, p_errorDepositNumber, tt_errorDepositNumber, "trEmptyDepositNumberToolTip");
                             if (!tb_depositNumber.Text.Equals(""))
                             {
                                 cashtrans.isConfirm = 1;
@@ -579,8 +579,8 @@ namespace POS.View.accounts
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
 
-                    if (sender != null)
-                        SectionData.EndAwait(grid_ucBankAccounts);
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucBankAccounts);
             }
             catch (Exception ex)
             {
@@ -720,7 +720,7 @@ namespace POS.View.accounts
         private void Tb_validateEmptyLostFocus(object sender, RoutedEventArgs e)
         {
             try
-            { 
+            {
                 string name = sender.GetType().Name;
                 validateEmpty(name, sender);
             }
@@ -734,7 +734,7 @@ namespace POS.View.accounts
         private void Tb_validateEmptyTextChangeCash(object sender, TextChangedEventArgs e)
         {
             try
-            { 
+            {
                 string name = sender.GetType().Name;
                 validateEmpty(name, sender);
                 var txb = sender as TextBox;
@@ -752,7 +752,7 @@ namespace POS.View.accounts
         private void Tb_validateEmptyLostFocusCash(object sender, RoutedEventArgs e)
         {
             try
-            { 
+            {
                 string name = sender.GetType().Name;
                 validateEmpty(name, sender);
                 Cb_user_SelectionChanged(null, null);
@@ -782,13 +782,13 @@ namespace POS.View.accounts
 
         }
 
-        private   void Cb_opperationType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Cb_opperationType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try
             {
                 if (cb_opperationType.SelectedValue.ToString() == "d")
                     btn_add.Content = MainWindow.resourcemanager.GetString("trDeposit");
-                else if(cb_opperationType.SelectedValue.ToString() == "p")
+                else if (cb_opperationType.SelectedValue.ToString() == "p")
                     btn_add.Content = MainWindow.resourcemanager.GetString("trPull");
                 else
                     btn_add.Content = MainWindow.resourcemanager.GetString("trSave");
@@ -803,7 +803,7 @@ namespace POS.View.accounts
         private void Btn_confirmUser_Click(object sender, RoutedEventArgs e)
         {//confirm user
             try
-            { 
+            {
                 Window.GetWindow(this).Opacity = 0.2;
 
                 w.tb_userName.Text = cb_user.Text;
@@ -825,7 +825,7 @@ namespace POS.View.accounts
         private void Cb_user_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//select user
             try
-            { 
+            {
                 if ((cb_user.SelectedIndex != -1) && (!tb_cash.Text.Equals("")))
                     btn_confirmUser.IsEnabled = true;
                 else
@@ -955,44 +955,44 @@ namespace POS.View.accounts
                     #region
                     Window.GetWindow(this).Opacity = 0.2;
 
-                string pdfpath = "";
+                    string pdfpath = "";
 
-                List<ReportParameter> paramarr = new List<ReportParameter>();
+                    List<ReportParameter> paramarr = new List<ReportParameter>();
 
-                //
-                pdfpath = @"\Thumb\report\temp.pdf";
-                pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
+                    //
+                    pdfpath = @"\Thumb\report\temp.pdf";
+                    pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
 
-                string addpath = "";
-                bool isArabic = ReportCls.checkLang();
-                if (isArabic)
-                {
-                    addpath = @"\Reports\Account\Ar\ArBankAccReport.rdlc";
-                }
-                else addpath = @"\Reports\Account\EN\BankAccReport.rdlc";
-                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+                    string addpath = "";
+                    bool isArabic = ReportCls.checkLang();
+                    if (isArabic)
+                    {
+                        addpath = @"\Reports\Account\Ar\ArBankAccReport.rdlc";
+                    }
+                    else addpath = @"\Reports\Account\EN\BankAccReport.rdlc";
+                    string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
-                ReportCls.checkLang();
+                    ReportCls.checkLang();
 
-                clsReports.bankAccReport(cashesQuery, rep, reppath);
-                clsReports.setReportLanguage(paramarr);
-                clsReports.Header(paramarr);
+                    clsReports.bankAccReport(cashesQuery, rep, reppath);
+                    clsReports.setReportLanguage(paramarr);
+                    clsReports.Header(paramarr);
 
-                rep.SetParameters(paramarr);
+                    rep.SetParameters(paramarr);
 
-                rep.Refresh();
+                    rep.Refresh();
 
-                LocalReportExtensions.ExportToPDF(rep, pdfpath);
-                wd_previewPdf w = new wd_previewPdf();
-                w.pdfPath = pdfpath;
-                if (!string.IsNullOrEmpty(w.pdfPath))
-                {
-                    w.ShowDialog();
-                    w.wb_pdfWebViewer.Dispose();
+                    LocalReportExtensions.ExportToPDF(rep, pdfpath);
+                    wd_previewPdf w = new wd_previewPdf();
+                    w.pdfPath = pdfpath;
+                    if (!string.IsNullOrEmpty(w.pdfPath))
+                    {
+                        w.ShowDialog();
+                        w.wb_pdfWebViewer.Dispose();
 
 
-                }
-                Window.GetWindow(this).Opacity = 1;
+                    }
+                    Window.GetWindow(this).Opacity = 1;
                     #endregion
                 }
                 else
@@ -1019,15 +1019,15 @@ namespace POS.View.accounts
                 if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
                     Window.GetWindow(this).Opacity = 0.2;
-                        win_lvc win = new win_lvc(banksQuery, 2);
-                        win.ShowDialog();
-                        Window.GetWindow(this).Opacity = 1;
+                    win_lvc win = new win_lvc(banksQuery, 2);
+                    win.ShowDialog();
+                    Window.GetWindow(this).Opacity = 1;
                 }
                 else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-            /////////////////////
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                /////////////////////
                 if (sender != null)
-                        SectionData.EndAwait(grid_ucBankAccounts);
+                    SectionData.EndAwait(grid_ucBankAccounts);
             }
             catch (Exception ex)
             {
@@ -1036,8 +1036,250 @@ namespace POS.View.accounts
                 SectionData.ExceptionMessage(ex, this);
             }
 
-           
+
+        }
+        public void getBankData(List<ReportParameter> paramarr)
+        {
+            string pay = "";
+            string processType = "";
+            //   string cardname = "";
+           // string caprocesstype = "";
+            string title = "";
+            string userName = "";
+            string bankName = "";
+            string trNum = "";
+            string trOperation = "";
+            ////////////////////////////////
+            ///
+
+            if (cashtrans.transType == "p")
+            {
+               // title = MainWindow.resourcemanagerreport.GetString("trPayVocher")
+                title = MainWindow.resourcemanagerreport.GetString("trVoucher");
+                trOperation = MainWindow.resourcemanagerreport.GetString("trDeposit");
+                trNum = MainWindow.resourcemanagerreport.GetString("trDepositeNum");
+            }
+
+            else
+            {
+                // title = MainWindow.resourcemanagerreport.GetString("trReceiptVoucher");
+                title = MainWindow.resourcemanagerreport.GetString("trVoucher");
+                
+                  trOperation = MainWindow.resourcemanagerreport.GetString("trReceiptOperation");
+                trNum = MainWindow.resourcemanagerreport.GetString("trRecieptNum");
+            }
+
+            userName = cashtrans.usersName + " " + cashtrans.usersLName;
+        
+            bankName = cashtrans.bankName;
+
+            ////////////////////////////////////
+
+            processType = MainWindow.resourcemanagerreport.GetString("trCash");
+            paramarr.Add(new ReportParameter("title", title));
+            paramarr.Add(new ReportParameter("docnum", cashtrans.docNum));
+            paramarr.Add(new ReportParameter("bondNumber", tb_transNum.Text));
+            //  paramarr.Add(new ReportParameter("deserveDate", SectionData.DateToString(bond.deserveDate)));
+
+            //  paramarr.Add(new ReportParameter("isRecieved", bond.isRecieved.ToString()));
+            paramarr.Add(new ReportParameter("trPay", pay));
+            // paramarr.Add(new ReportParameter("ctside", bond.ctside));
+            paramarr.Add(new ReportParameter("sideName", bankName));
+            paramarr.Add(new ReportParameter("trProcessType", processType));
+            // paramarr.Add(new ReportParameter("cardName", cardname));
+            paramarr.Add(new ReportParameter("transType", cashtrans.transType));//ok
+          //  paramarr.Add(new ReportParameter("type", caprocesstype));
+            paramarr.Add(new ReportParameter("user_name", userName));//ok
+
+            paramarr.Add(new ReportParameter("date", reportclass.DateToString(cashtrans.updateDate)));//ok
+            paramarr.Add(new ReportParameter("currency", MainWindow.Currency));//ok
+            paramarr.Add(new ReportParameter("amount_in_words", reportclass.ConvertAmountToWords(cashtrans.cash)));//ok
+            paramarr.Add(new ReportParameter("job", "Employee"));
+
+            paramarr.Add(new ReportParameter("trNum", trNum));//ok
+            paramarr.Add(new ReportParameter("amount", SectionData.DecTostring(cashtrans.cash)));
+
+            paramarr.Add(new ReportParameter("trOperation", trOperation));//ok
+
+            
         }
 
+
+        public void buildBankDocReport()
+        {
+
+            List<ReportParameter> paramarr = new List<ReportParameter>();
+
+            string addpath;
+            bool isArabic = ReportCls.checkLang();
+            // bond.type
+            if (isArabic)
+            {
+                if (MainWindow.docPapersize == "A4")
+                {
+                    addpath = @"\Reports\Account\Ar\ArBankDocA4.rdlc";
+                }
+                else//A5
+                {
+                    addpath = @"\Reports\Account\Ar\ArBankDoc.rdlc";
+                }
+            }
+            else
+
+            {
+                if (MainWindow.docPapersize == "A4")
+                {
+                    addpath = @"\Reports\Account\EN\BankDocA4.rdlc";
+                }
+                else//A5
+                {
+                    addpath = @"\Reports\Account\EN\BankDoc.rdlc";
+                }
+
+            }
+            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+            ReportCls.checkLang();
+            getBankData(paramarr);
+            clsReports.bondsDocReport(rep, reppath, paramarr);
+            clsReports.setReportLanguage(paramarr);
+            clsReports.Header(paramarr);
+
+            rep.SetParameters(paramarr);
+            rep.Refresh();
+
+        }
+        private void Btn_printInvoice_Click(object sender, RoutedEventArgs e)
+        {// doc
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_ucBankAccounts);
+
+                if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+                {
+                    #region
+
+                    if (cashtrans != null)
+                    {
+                        buildBankDocReport();
+                        LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.rep_printer_name, short.Parse(MainWindow.rep_print_count));
+
+                    }
+                    else
+                    {
+                        MessageBox.Show("bond not recieved");
+                    }
+
+
+                    #endregion
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucBankAccounts);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucBankAccounts);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+
+        private void Btn_pdf_Click(object sender, RoutedEventArgs e)
+        {//doc
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_ucBankAccounts);
+
+                if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+                {
+                    #region
+                    if (!string.IsNullOrEmpty(cashtrans.docNum) && cashtrans.userId != null)
+                    {
+                        buildBankDocReport();
+                        saveFileDialog.Filter = "PDF|*.pdf;";
+                        if (saveFileDialog.ShowDialog() == true)
+                        {
+                            string filepath = saveFileDialog.FileName;
+                            LocalReportExtensions.ExportToPDF(rep, filepath);
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("process not confirmed");
+                    }
+
+                    #endregion
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucBankAccounts);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucBankAccounts);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+
+        private void Btn_preview_Click(object sender, RoutedEventArgs e)
+        {//doc
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_ucBankAccounts);
+
+                if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+                {
+                    #region
+
+                    if (!string.IsNullOrEmpty(cashtrans.docNum) && cashtrans.userId != null)
+                    {
+                        Window.GetWindow(this).Opacity = 0.2;
+                        string pdfpath = "";
+                        //
+                        pdfpath = @"\Thumb\report\temp.pdf";
+                        pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
+
+                        buildBankDocReport();
+                        LocalReportExtensions.ExportToPDF(rep, pdfpath);
+                        wd_previewPdf w = new wd_previewPdf();
+                        w.pdfPath = pdfpath;
+                        if (!string.IsNullOrEmpty(w.pdfPath))
+                        {
+                            w.ShowDialog();
+                            w.wb_pdfWebViewer.Dispose();
+                        }
+                        Window.GetWindow(this).Opacity = 1;
+                    }
+                    else
+                    {
+                        MessageBox.Show("process not confirmed");
+                    }
+
+                  
+
+                    #endregion
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucBankAccounts);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucBankAccounts);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
     }
 }
