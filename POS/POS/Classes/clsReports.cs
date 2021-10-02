@@ -461,7 +461,18 @@ Parameters!trValueDiscount.Value)
             itemTransferInvTypeConv(paramarr);
 
         }
-            public static void PurInvStsReport(IEnumerable<ItemTransferInvoice> tempquery, LocalReport rep, string reppath, List<ReportParameter> paramarr)
+
+        public static void SaledailyReport(IEnumerable<ItemTransferInvoice> tempquery, LocalReport rep, string reppath, List<ReportParameter> paramarr)
+        {
+
+            PurStsReport(tempquery, rep, reppath);
+             string date=  SectionData.DateToString(tempquery.FirstOrDefault().updateDate);
+         
+            paramarr.Add(new ReportParameter("invDate", date));
+            itemTransferInvTypeConv(paramarr);
+
+        }
+        public static void PurInvStsReport(IEnumerable<ItemTransferInvoice> tempquery, LocalReport rep, string reppath, List<ReportParameter> paramarr)
         {
             PurStsReport(tempquery, rep, reppath);
             itemTransferInvTypeConv(paramarr);

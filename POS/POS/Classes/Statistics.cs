@@ -2095,7 +2095,7 @@ namespace POS.Classes
 
         // يومية الصندوق
 
-        public async Task<List<CashTransferSts>> GetDailyStatement(int mainBranchId, int userId)
+        public async Task<List<CashTransferSts>> GetDailyStatement(int mainBranchId, int userId, DateTime? date)
         {
             List<CashTransferSts> list = null;
             // ... Use HttpClient.
@@ -2108,7 +2108,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetDailyStatement?mainBranchId=" + mainBranchId + "&userId=" + userId);
+                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetDailyStatement?mainBranchId=" + mainBranchId + "&userId=" + userId + "&date=" + date);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
