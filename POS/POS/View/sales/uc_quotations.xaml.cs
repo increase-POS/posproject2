@@ -124,6 +124,7 @@ namespace POS.View.sales
             public int ID { get; set; }
             public int itemId { get; set; }
             public int itemUnitId { get; set; }
+            public int? offerId { get; set; }
             public string Product { get; set; }
             public string Unit { get; set; }
             public int Count { get; set; }
@@ -143,12 +144,11 @@ namespace POS.View.sales
             dg_billDetails.Columns[6].Header = MainWindow.resourcemanager.GetString("trAmount");
 
             // MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_discount, MainWindow.resourcemanager.GetString("trDiscountHint"));
-            txt_discountCoupon.Text = MainWindow.resourcemanager.GetString("trDiscount");
+            txt_discount.Text = MainWindow.resourcemanager.GetString("trDiscount");
             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trQuotations");
             txt_tax.Text = MainWindow.resourcemanager.GetString("trTax");
             txt_sum.Text = MainWindow.resourcemanager.GetString("trSum");
             txt_total.Text = MainWindow.resourcemanager.GetString("trTotal");
-            //txt_barcode.Text = MainWindow.resourcemanager.GetString("trBarcode");
             txt_coupon.Text = MainWindow.resourcemanager.GetString("trCoupon");
             txt_customer.Text = MainWindow.resourcemanager.GetString("trCustomer");
             txt_discount.Text = MainWindow.resourcemanager.GetString("trDiscount");
@@ -185,9 +185,8 @@ namespace POS.View.sales
 
                 MainWindow.mainWindow.KeyDown += HandleKeyPress;
                 tb_moneyIcon.Text = MainWindow.Currency;
-                tb_discountCouponMoneyIcon.Text = MainWindow.Currency;
                 tb_moneyIconTotal.Text = MainWindow.Currency;
-                
+                tb_moneyIconDis.Text = MainWindow.Currency;
                 if (MainWindow.lang.Equals("en"))
                 {
                     MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
@@ -498,7 +497,7 @@ namespace POS.View.sales
                                         price = (decimal)unit1.price;
                                     decimal total = count * price;
                                     decimal tax = (decimal)(count * item.taxes);
-                                      addRowToBill(item.name, item.itemId, unit1.mainUnit, unit1.itemUnitId, count, price, total, tax);
+                                      addRowToBill(item.name, item.itemId, unit1.mainUnit, unit1.itemUnitId, count, price, total, tax,item.offerId);
                                 }
                                 else // item exist prevoiusly in list
                                 {
@@ -625,15 +624,9 @@ namespace POS.View.sales
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-        private async void clearInvoice()
+        private async Task clearInvoice()
         {
             _Sum = 0;
-            //if (MainWindow.isInvTax == 1) // tax is on tatal invoice
-            //{
-            //    tb_taxValue.Text = MainWindow.tax.ToString();
-            //    _Tax = (decimal)MainWindow.tax;
-            //}
-            //else _Tax = 0;
             txt_invNumber.Text = "";
             _Discount = 0;
             _SequenceNum = 0;
@@ -646,7 +639,7 @@ namespace POS.View.sales
             cb_customer.SelectedIndex = -1;
             cb_customer.SelectedItem = "";
             tb_note.Clear();
-            txt_discountCoupon.Text = "0";
+            tb_totalDescount.Text = "0";
             billDetails.Clear();
             tb_total.Text = "0";
             tb_sum.Text = "0";
@@ -654,10 +647,9 @@ namespace POS.View.sales
             cb_typeDiscount.SelectedIndex = 0;
             //tb_taxValue.Text = MainWindow.tax.ToString();
             tb_taxValue.Text = SectionData.DecTostring(MainWindow.tax);
-
+            md_docImage.Badge = "";
             tgl_ActiveOffer.IsChecked = false;
             lst_coupons.Items.Clear();
-            tb_discountCoupon.Text = "0";
             md_docImage.Badge = "";
 
             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trQuotations");
@@ -679,10 +671,11 @@ namespace POS.View.sales
                     dg_billDetails.Columns[0].Visibility = Visibility.Visible; //make delete column visible
                     dg_billDetails.Columns[3].IsReadOnly = true; //make unit read only
                     dg_billDetails.Columns[4].IsReadOnly = true; //make count read only
+                    tb_discount.IsEnabled = true;
+                    cb_typeDiscount.IsEnabled = true;
                     cb_customer.IsEnabled = true;
                     tb_note.IsEnabled = true;
                     tb_barcode.IsEnabled = true;
-                    tb_discountCoupon.IsEnabled = true;
                     btn_save.IsEnabled = true;
                     cb_coupon.IsEnabled = true;
                     btn_clearCoupon.IsEnabled = true;
@@ -693,10 +686,11 @@ namespace POS.View.sales
                     dg_billDetails.Columns[0].Visibility = Visibility.Collapsed; //make delete column unvisible
                     dg_billDetails.Columns[3].IsReadOnly = true; //make unit read only
                     dg_billDetails.Columns[4].IsReadOnly = true; //make count read only
+                    tb_discount.IsEnabled = false;
+                    cb_typeDiscount.IsEnabled = false;
                     cb_customer.IsEnabled = false;
                     tb_note.IsEnabled = false;
                     tb_barcode.IsEnabled = false;
-                    tb_discountCoupon.IsEnabled = false;
                     btn_save.IsEnabled = false;
                     cb_coupon.IsEnabled = false;
                     btn_clearCoupon.IsEnabled = false;
@@ -715,10 +709,8 @@ namespace POS.View.sales
                 invoice.posId = MainWindow.posID.Value;
             }
             invoice.invType = invType;
-
-            if (!tb_discountCoupon.Text.Equals(""))
-                invoice.discountValue = decimal.Parse(tb_discountCoupon.Text);
-
+            invoice.discountValue = _Discount;
+            invoice.discountType = "1";
             invoice.total = _Sum;
             invoice.totalNet = decimal.Parse(tb_total.Text);
            
@@ -777,7 +769,7 @@ namespace POS.View.sales
                     itemT.price = billDetails[i].Price;
                     itemT.itemUnitId = billDetails[i].itemUnitId;
                     itemT.createUserId = MainWindow.userID;
-
+                    itemT.offerId = billDetails[i].offerId;
                     invoiceItems.Add(itemT);
                 }
                 await invoiceModel.saveInvoiceItems(invoiceItems, invoiceId);               
@@ -793,8 +785,6 @@ namespace POS.View.sales
 
             if (item != null)
             {
-                //this.DataContext = item;
-
                 // get item units
                 itemUnits = await itemUnitModel.GetItemUnits(item.itemId);
                 // search for default unit for purchase
@@ -806,11 +796,11 @@ namespace POS.View.sales
                         itemTax = (decimal)item.taxes;
                     decimal price = (decimal)defaultsaleUnit.price + SectionData.calcPercentage((decimal)defaultsaleUnit.price, itemTax);
                     // create new row in bill details data grid
-                    addRowToBill(item.name, itemId, defaultsaleUnit.mainUnit, defaultsaleUnit.itemUnitId, 1, price, (decimal)defaultsaleUnit.price, itemTax);
+                    addRowToBill(item.name, itemId, defaultsaleUnit.mainUnit, defaultsaleUnit.itemUnitId, 1, price, (decimal)defaultsaleUnit.price, itemTax,item.offerId);
                 }
                 else
                 {
-                      addRowToBill(item.name, itemId, null, 0, 1, 0, 0, (decimal)item.taxes);
+                      addRowToBill(item.name, itemId, null, 0, 1, 0, 0, (decimal)item.taxes,item.offerId);
                 }
                 //refreshTotalValue();
                 //refrishBillDetails();
@@ -820,6 +810,7 @@ namespace POS.View.sales
         {
             _Discount = 0;
             decimal manualDiscount = 0;
+            decimal totalDiscount = 0;
             if (_Sum > 0)
             {
                 #region calculate discount value
@@ -831,13 +822,8 @@ namespace POS.View.sales
                         discountValue = SectionData.calcPercentage(_Sum, discountValue);
                     _Discount += discountValue;
                 }
-                //tb_discountCoupon.Text = _Discount.ToString();
-                if (_Discount != 0)
-                    tb_discountCoupon.Text = SectionData.DecTostring(_Discount);
-                else
-                    tb_discountCoupon.Text = "0";
                 #endregion
-                    #region manaula discount           
+                #region manaula discount           
                 if (cb_typeDiscount.SelectedIndex != -1 && cb_typeDiscount.SelectedIndex != 0 && tb_discount.Text != "")
                 {
                     int manualDisType = cb_typeDiscount.SelectedIndex;
@@ -846,26 +832,28 @@ namespace POS.View.sales
                         manualDiscount = SectionData.calcPercentage(_Sum, manualDiscount);
                 }
                 #endregion
+                totalDiscount = _Discount + manualDiscount;
             }
                 decimal taxValue = _Tax;
-            decimal total = _Sum - _Discount - manualDiscount;
+            decimal total = _Sum - totalDiscount;
             
-                taxValue = SectionData.calcPercentage(total, (decimal)MainWindow.tax);
+            taxValue = SectionData.calcPercentage(total, (decimal)MainWindow.tax);
             
             total += taxValue;
-            //tb_sum.Text = _Sum.ToString();
             if (_Sum != 0)
                 tb_sum.Text = SectionData.DecTostring(_Sum);
             else
                 tb_sum.Text = "0";
 
-
-            //tb_total.Text = Math.Round(total, 2).ToString();
             if (total != 0)
                 tb_total.Text = SectionData.DecTostring(total);
             else
                 tb_total.Text = "0";
 
+            if (totalDiscount != 0)
+                tb_totalDescount.Text = SectionData.DecTostring(totalDiscount);
+            else
+                tb_totalDescount.Text = "0";
         }
         #endregion
         #region billdetails
@@ -913,6 +901,7 @@ namespace POS.View.sales
         {
             try
             {
+                tb_barcode.Focus();
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
                 TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
@@ -974,6 +963,24 @@ namespace POS.View.sales
                 }
                 _Sender = null;
                 _BarcodeStr = "";
+                if (e.KeyboardDevice.IsKeyDown(Key.LeftCtrl) || e.KeyboardDevice.IsKeyDown(Key.RightCtrl))
+                {
+                    switch (e.Key)
+                    {
+                        case Key.P:
+                            //handle P key
+                            Btn_printInvoice_Click(null, null);
+                            break;
+                        case Key.S:
+                            //handle S key
+                            Btn_save_Click(null, null);
+                            break;
+                        case Key.I:
+                            //handle S key
+                            Btn_items_Click(null, null);
+                            break;
+                    }
+                }
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -993,7 +1000,7 @@ namespace POS.View.sales
                 if (e.Key == Key.Return)
                 {
                     string barcode = "";
-                    if (_BarcodeStr.Length < 13)
+                    if (tb_barcode.Text.Length <= 13)
                     {
                         barcode = tb_barcode.Text;
                         await dealWithBarcode(barcode);
@@ -1010,7 +1017,7 @@ namespace POS.View.sales
             }
         }
 
-        private   void addRowToBill(string itemName, int itemId, string unitName, int itemUnitId, int count, decimal price, decimal total, decimal tax)
+        private   void addRowToBill(string itemName, int itemId, string unitName, int itemUnitId, int count, decimal price, decimal total, decimal tax, int? offerId)
         {
             // increase sequence for each read
             _SequenceNum++;
@@ -1026,6 +1033,7 @@ namespace POS.View.sales
                 Price = price,
                 Total = total,
                 Tax = tax,
+                offerId = offerId,
             });
             _Sum += total;
             _Tax += tax;
@@ -1102,13 +1110,6 @@ namespace POS.View.sales
             else
                 tb_sum.Text = "0";
 
-            //tb_discountCoupon.Text = invoice.discountValue.ToString();
-            if (_Discount != 0)
-                tb_discountCoupon.Text = SectionData.DecTostring(_Discount);
-            else
-                tb_discountCoupon.Text = "0";
-
-            //tb_discount.Text = invoice.manualDiscountValue.ToString();
             if (invoice.manualDiscountValue != 0)
                 tb_discount.Text = SectionData.DecTostring(invoice.manualDiscountValue);
             else
@@ -1130,6 +1131,7 @@ namespace POS.View.sales
             // build invoice details grid
             await buildInvoiceDetails(invoice.invoiceId);
             inputEditable();
+            refreshTotalValue();
         }
         private async Task getInvoiceCoupons(int invoiceId)
         {
@@ -1193,7 +1195,7 @@ namespace POS.View.sales
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-
+                saveBeforeExit();
                  Window.GetWindow(this).Opacity = 0.2;
                  wd_invoice w = new wd_invoice();
 
@@ -1212,7 +1214,6 @@ namespace POS.View.sales
                         invoice = w.invoice;
 
                         _InvoiceType = invoice.invType;
-                        refreshDraftNotification();
                         refreshDocCount(invoice.invoiceId);
                         // set title to bill
                         txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trQuotations");
@@ -1636,21 +1637,7 @@ namespace POS.View.sales
 
                 MainWindow.mainWindow.KeyDown -= HandleKeyPress;
 
-                if (billDetails.Count > 0 && _InvoiceType == "qd")
-                {
-                    #region Accept
-                    MainWindow.mainWindow.Opacity = 0.2;
-                    wd_acceptCancelPopup w = new wd_acceptCancelPopup();
-                    w.contentText = MainWindow.resourcemanager.GetString("trSaveQuotationNotification");
-
-                    w.ShowDialog();
-                    MainWindow.mainWindow.Opacity = 1;
-                    #endregion
-                    if (w.isOk)
-                        Btn_newDraft_Click(null, null);
-                    else
-                        clearInvoice();
-                }
+                saveBeforeExit();
                 timer.Stop();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -1662,7 +1649,32 @@ namespace POS.View.sales
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+        private async void saveBeforeExit()
+        {
+            if (billDetails.Count > 0 && _InvoiceType == "qd")
+            {
+                #region Accept
+                MainWindow.mainWindow.Opacity = 0.2;
+                wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                w.contentText = MainWindow.resourcemanager.GetString("trSaveQuotationNotification");
 
+                w.ShowDialog();
+                MainWindow.mainWindow.Opacity = 1;
+                #endregion
+                if (w.isOk)
+                    Btn_newDraft_Click(null, null);
+                else
+                {
+                    await clearInvoice();
+                    refreshDraftNotification();
+                }
+            }
+            else
+            {
+                await clearInvoice();
+                refreshDraftNotification();
+            }
+        }
         private async void Btn_printInvoice_Click(object sender, RoutedEventArgs e)
         {//print
             try

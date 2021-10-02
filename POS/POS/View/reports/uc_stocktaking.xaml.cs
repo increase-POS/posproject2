@@ -118,6 +118,8 @@ namespace POS.View.reports
                 fillSocktakingEvents();
 
                 fillSocktakingEvents();
+                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), btn_archives.Tag.ToString());
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -1198,6 +1200,8 @@ new StackedColumnSeries
 
                 fillComboBranches(cb_stocktakingArchivedBranch);
                 fillSocktakingEvents();
+                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -1234,6 +1238,8 @@ new StackedColumnSeries
                 fillComboBranches(cb_stocktakingFalseBranch);
                 fillShortFallsEvents();
                 fillComboItemsUnitsFalls();
+                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }

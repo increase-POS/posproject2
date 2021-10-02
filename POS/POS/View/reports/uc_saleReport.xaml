@@ -50,7 +50,8 @@
 
                         <Border x:Name="bdr_branch" Grid.Column="0" Background="White" BorderThickness="0"  Height="40" Width="60" VerticalAlignment="Bottom" CornerRadius="7,7,0,0" BorderBrush="Transparent" Margin="10,5,0,-1">
                             <Button x:Name="btn_branch"  Background="Transparent"  Tag="branch"
-                                    materialDesign:RippleAssist.Feedback="Transparent" BorderBrush="Transparent" Height="auto" Click="btn_branch_Click">
+                                    materialDesign:RippleAssist.Feedback="Transparent" BorderBrush="Transparent" Height="auto"
+                                    Click="btn_branch_Click">
                                 <Button.Triggers>
                                     <EventTrigger x:Name="trig" RoutedEvent="Button.Click">
                                         <BeginStoryboard>

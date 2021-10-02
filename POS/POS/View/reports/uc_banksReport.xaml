@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:POS.View.reports"
                 xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             mc:Ignorable="d" 
+             mc:Ignorable="d" Tag="banksReport"
              d:DesignHeight="450" d:DesignWidth="800"
               Loaded="UserControl_Loaded">
     <!--Main Grid-->
@@ -45,10 +45,12 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
 
                         <Border x:Name="bdr_payments"
-                                Grid.Column="0"
+                                Grid.Column="0" 
                                 Background="White"
                                 BorderThickness="0"
                                 Height="40"
@@ -59,7 +61,7 @@
                                 Margin="10,5,0,-1">
 
                             <Button x:Name="btn_payments"
-                                    Background="Transparent"  
+                                    Background="Transparent"  Tag="payments"
                                     materialDesign:RippleAssist.Feedback="Transparent"
                                     BorderBrush="Transparent"
                                     Height="auto" Click="Btn_vendor_Click"
@@ -117,7 +119,7 @@
                         </Border>
 
                         <Border x:Name="bdr_recipient"
-                                Grid.Column="1"
+                                Grid.Column="1" 
                                 Background="#4E4E4E"
                                 BorderThickness="0"
                                 Height="40"
@@ -128,7 +130,7 @@
                                 Margin="0,5,0,-1">
 
                             <Button x:Name="btn_recipient"
-                                    Background="Transparent"  
+                                    Background="Transparent"   Tag="recipient"
                                     materialDesign:RippleAssist.Feedback="Transparent"
                                     BorderBrush="Transparent"
                                     Height="auto" Click="Btn_customer_Click" >
@@ -172,7 +174,9 @@
                                 </Path>
                             </Button>
                         </Border>
-
+                        
+                        <TextBlock  x:Name="txt_tabTitle"  Foreground="White"   Grid.Column="10" 
+                              VerticalAlignment="Center"      FontSize="16"     Margin="5 5 10 5"/>
                     </Grid>
                 </Border>
 

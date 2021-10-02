@@ -524,15 +524,18 @@ namespace POS.View.storage
 
                 if (MainWindow.groupObject.HasPermissionAction(archivingPermission, MainWindow.groupObjects, "one") || MainWindow.groupObject.HasPermissionAction(createInventoryPermission, MainWindow.groupObjects, "one"))
                 {
-                    if (_InventoryType == "n")
-                        await addInventory("a"); // a:archived
-                    else if (_InventoryType == "d")
+                    if (invItemsLocations.Count > 0)
                     {
-                        var inv = await inventory.getByBranch("n", MainWindow.branchID.Value);
-                        if (inv.inventoryId == 0)
-                            await addInventory("n"); // n:normal
-                        else
-                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trWarningOneInventory"), animation: ToasterAnimation.FadeIn);
+                        if (_InventoryType == "n")
+                            await addInventory("a"); // a:archived
+                        else if (_InventoryType == "d")
+                        {
+                            var inv = await inventory.getByBranch("n", MainWindow.branchID.Value);
+                            if (inv.inventoryId == 0)
+                                await addInventory("n"); // n:normal
+                            else
+                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trWarningOneInventory"), animation: ToasterAnimation.FadeIn);
+                        }
                     }
                 }
                 else
@@ -761,15 +764,15 @@ namespace POS.View.storage
                     #endregion
                     if (w.isOk)
                     {
-                        //string res = await inventory.deleteInventory(inventory.inventoryId,MainWindow.userID.Value,false);
-                        //if (res.Equals("1"))
-                        //{
-                        //    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
+                        string res = await inventory.deleteInventory(inventory.inventoryId, MainWindow.userID.Value, false);
+                        if (res.Equals("1"))
+                        {
+                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
 
-                        //    clearInventory();
-                        //}
-                        //else
-                        //    Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                            clearInventory();
+                        }
+                        else
+                            Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                     }
                 }
                 if (sender != null)

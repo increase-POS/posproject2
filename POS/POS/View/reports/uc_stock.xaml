@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:POS.View.reports"
+             xmlns:local="clr-namespace:POS.View.reports" Tag="stock"
                xmlns:converters="clr-namespace:POS.converters"
                  xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
                            xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
@@ -38,12 +38,12 @@
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
 
                         <Border x:Name="bdr_item" Grid.Column="0" Background="White" BorderThickness="0"  Height="40" Width="60" VerticalAlignment="Bottom" CornerRadius="7,7,0,0" BorderBrush="Transparent" Margin="20,5,0,-1">
-                            <Button x:Name="btn_item"  Background="Transparent"  
+                            <Button x:Name="btn_item"  Background="Transparent" Tag="item" 
                                     materialDesign:RippleAssist.Feedback="Transparent" BorderBrush="Transparent" Height="auto" Click="Btn_item_Click" >
                                 <Button.Triggers>
                                     <EventTrigger x:Name="trig" RoutedEvent="Button.Click">
@@ -102,7 +102,7 @@
                         </Border>
 
                         <Border x:Name="bdr_location" Grid.Column="1" Background="#4E4E4E" BorderThickness="0"  Height="40" Width="60" VerticalAlignment="Bottom" CornerRadius="7,7,0,0" BorderBrush="Transparent" Margin="10,5,0,-1">
-                            <Button x:Name="btn_location"  Background="Transparent"  
+                            <Button x:Name="btn_location"  Background="Transparent"  Tag="location"
                                     materialDesign:RippleAssist.Feedback="Transparent" BorderBrush="Transparent" Height="auto" Click="btn_location_Click" >
                                 <Button.Triggers>
                                     <EventTrigger RoutedEvent="Button.Click">
@@ -141,9 +141,8 @@
                                 </Path>
                             </Button>
                         </Border>
-
                         <Border x:Name="bdr_collect" Grid.Column="2" Background="#4E4E4E" BorderThickness="0"  Height="40" Width="60" VerticalAlignment="Bottom" CornerRadius="7,7,0,0" BorderBrush="Transparent" Margin="10,5,0,-1">
-                            <Button x:Name="btn_collect"  Background="Transparent"  
+                            <Button x:Name="btn_collect"  Background="Transparent"  Tag="collect"
                                     materialDesign:RippleAssist.Feedback="Transparent" BorderBrush="Transparent" Height="auto" Click="btn_collect_Click" >
                                 <Button.Triggers>
                                     <EventTrigger RoutedEvent="Button.Click">
@@ -172,6 +171,8 @@
                             </Button>
                         </Border>
 
+                        <TextBlock  x:Name="txt_tabTitle"  Foreground="White"   Grid.Column="10" 
+                              VerticalAlignment="Center"      FontSize="16"     Margin="5 5 10 5"/>
                     </Grid>
                 </Border>
                 <Border CornerRadius="0,0,7,7" 

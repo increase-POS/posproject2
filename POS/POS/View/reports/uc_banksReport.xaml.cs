@@ -66,6 +66,7 @@ namespace POS.View.reports
                 fillBanksCombo(cb_paymentsBank);
                 fillUserCombo(userPaymentsCombo, cb_paymentsUser);
                 fillAccCombo(accPaymentsCombo, cb_paymentsAccountant);
+                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), btn_payments.Tag.ToString());
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -223,6 +224,7 @@ namespace POS.View.reports
                 fillBanksCombo(cb_paymentsBank);
                 fillUserCombo(userPaymentsCombo, cb_paymentsUser);
                 fillAccCombo(accPaymentsCombo, cb_paymentsAccountant);
+                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -255,6 +257,7 @@ namespace POS.View.reports
                 fillBanksCombo(cb_recipientBank);
                 fillUserCombo(userRecipientCombo, cb_recipientUser);
                 fillAccCombo(accRecipientCombo, cb_recipientAccountant);
+                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }

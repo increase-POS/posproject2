@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:POS.View.reports"
+             xmlns:local="clr-namespace:POS.View.reports" Tag="storageReports"
                       xmlns:converters="clr-namespace:POS.converters"
                  xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
                            xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
@@ -39,10 +39,12 @@
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
 
                         <Border x:Name="bdr_stock" Grid.Column="0" Background="White" BorderThickness="0"  Height="40" Width="60" VerticalAlignment="Bottom" CornerRadius="7,7,0,0" BorderBrush="Transparent" Margin="10,5,0,-1">
-                            <Button x:Name="btn_stock"  Background="Transparent"  
+                            <Button x:Name="btn_stock"  Background="Transparent"  Tag="stock"
                                     materialDesign:RippleAssist.Feedback="Transparent" BorderBrush="Transparent" Height="auto" Click="btn_stock_Click" >
                                 <Button.Triggers>
                                     <EventTrigger x:Name="trig" RoutedEvent="Button.Click">
@@ -71,7 +73,7 @@
                             </Button>
                         </Border>
                         <Border x:Name="bdr_external" Grid.Column="1" Background="#4E4E4E" BorderThickness="0"  Height="40" Width="60" VerticalAlignment="Bottom" CornerRadius="7,7,0,0" BorderBrush="Transparent" Margin="0,5,0,-1">
-                            <Button x:Name="btn_external"  Background="Transparent"  
+                            <Button x:Name="btn_external"  Background="Transparent"  Tag="external"
                                     materialDesign:RippleAssist.Feedback="Transparent"
                                     BorderBrush="Transparent" Height="auto" Click="btn_external_Click">
                                 <Button.Triggers>
@@ -102,9 +104,8 @@ Data="M93.34,7.49a3.11,3.11,0,0,1,2,.38,3.06,3.06,0,0,1,1.82,2.78l.2,28.16,0,0,0
                                 </Path>
                             </Button>
                         </Border>
-
                         <Border x:Name="bdr_internal" Grid.Column="2" Background="#4E4E4E" BorderThickness="0"  Height="40" Width="60" VerticalAlignment="Bottom" CornerRadius="7,7,0,0" BorderBrush="Transparent" Margin="0,5,0,-1">
-                            <Button x:Name="btn_internal"  Background="Transparent" 
+                            <Button x:Name="btn_internal"  Background="Transparent" Tag="internal"
                                     materialDesign:RippleAssist.Feedback="Transparent"
                                     BorderBrush="Transparent" Height="auto" Click="btn_internal_Click" >
                                 <Button.Triggers>
@@ -134,7 +135,7 @@ Data="M93.34,7.49a3.11,3.11,0,0,1,2,.38,3.06,3.06,0,0,1,1.82,2.78l.2,28.16,0,0,0
                             </Button>
                         </Border>
                         <Border x:Name="bdr_stocktaking" Grid.Column="3" Background="#4E4E4E" BorderThickness="0"  Height="40" Width="60" VerticalAlignment="Bottom" CornerRadius="7,7,0,0" BorderBrush="Transparent" Margin="0,5,0,-1">
-                            <Button x:Name="btn_stocktaking"  Background="Transparent" 
+                            <Button x:Name="btn_stocktaking"  Background="Transparent" Tag="stocktaking"
                                     materialDesign:RippleAssist.Feedback="Transparent"
                                     BorderBrush="Transparent" Height="auto" Click="Btn_stocktaking_Click" >
                                 <Button.Triggers>
@@ -169,7 +170,7 @@ Data="M93.34,7.49a3.11,3.11,0,0,1,2,.38,3.06,3.06,0,0,1,1.82,2.78l.2,28.16,0,0,0
                             </Button>
                         </Border>
                         <Border x:Name="bdr_destroied" Grid.Column="4" Background="#4E4E4E" BorderThickness="0"  Height="40" Width="60" VerticalAlignment="Bottom" CornerRadius="7,7,0,0" BorderBrush="Transparent" Margin="0,5,0,-1">
-                            <Button x:Name="btn_destroied"  Background="Transparent" 
+                            <Button x:Name="btn_destroied"  Background="Transparent" Tag="destroied"
                                     materialDesign:RippleAssist.Feedback="Transparent"
                                     BorderBrush="Transparent" Height="auto" Click="Btn_destroied_Click" >
                                 <Button.Triggers>
@@ -200,7 +201,8 @@ Data="M93.34,7.49a3.11,3.11,0,0,1,2,.38,3.06,3.06,0,0,1,1.82,2.78l.2,28.16,0,0,0
                                 </Path>
                             </Button>
                         </Border>
-
+                        <TextBlock  x:Name="txt_tabTitle"  Foreground="White"   Grid.Column="10" 
+                              VerticalAlignment="Center"      FontSize="16"     Margin="5 5 10 5"/>
                     </Grid>
                 </Border>
                 <Border CornerRadius="0,0,7,7" 

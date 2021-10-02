@@ -2551,4 +2551,70 @@ Please add Email in setting</value>
   <data name="trFilterInvoicesBy" xml:space="preserve">
     <value>Filter invoices by</value>
   </data>
+  <data name="trItemWithNoCount" xml:space="preserve">
+    <value>There is an item with no count</value>
+  </data>
+  <data name="trBanksCount" xml:space="preserve">
+    <value>Banks count</value>
+  </data>
+  <data name="trBondesCount" xml:space="preserve">
+    <value>Bondes count</value>
+  </data>
+  <data name="trBranchesCount" xml:space="preserve">
+    <value>BranchesCount</value>
+  </data>
+  <data name="trCardsCount" xml:space="preserve">
+    <value>credit cards count</value>
+  </data>
+  <data name="trCashtransferCount" xml:space="preserve">
+    <value>Cashtransfers count</value>
+  </data>
+  <data name="trCustomersCount" xml:space="preserve">
+    <value>Customers count</value>
+  </data>
+  <data name="trOrdersCount" xml:space="preserve">
+    <value>Orders count</value>
+  </data>
+  <data name="trPosCount" xml:space="preserve">
+    <value>Pos count</value>
+  </data>
+  <data name="trShippingCompaniesCount" xml:space="preserve">
+    <value>Shipping companies count</value>
+  </data>
+  <data name="trStoresCount" xml:space="preserve">
+    <value>Stores count</value>
+  </data>
+  <data name="trUsersCount" xml:space="preserve">
+    <value>Users count</value>
+  </data>
+  <data name="trVendorsCount" xml:space="preserve">
+    <value>Vendors count</value>
+  </data>
+  <data name="trCollect" xml:space="preserve">
+    <value>Collect</value>
+  </data>
+  <data name="trExternal" xml:space="preserve">
+    <value>External</value>
+  </data>
+  <data name="trInternal" xml:space="preserve">
+    <value>Internal</value>
+  </data>
+  <data name="trOperator" xml:space="preserve">
+    <value>Operator</value>
+  </data>
+  <data name="trPromotion" xml:space="preserve">
+    <value>Promotion</value>
+  </data>
+  <data name="trStock" xml:space="preserve">
+    <value>Stock</value>
+  </data>
+  <data name="trDepositeNum" xml:space="preserve">
+    <value>Deposit no.</value>
+  </data>
+  <data name="trRecieptNum" xml:space="preserve">
+    <value>Reciept no.</value>
+  </data>
+  <data name="trVoucher" xml:space="preserve">
+    <value>Voucher</value>
+  </data>
 </root>

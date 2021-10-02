@@ -3,11 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-               xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
-                               xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-              xmlns:converters="clr-namespace:POS.converters"
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:converters="clr-namespace:POS.converters"
              xmlns:local="clr-namespace:POS.View.reports"
-             mc:Ignorable="d" 
+             mc:Ignorable="d" Tag="purchaseItem"
              d:DesignHeight="450" d:DesignWidth="800" Loaded="UserControl_Loaded">
     <Grid Margin="0,15,15,15" x:Name="grid_main">
         <Grid.ColumnDefinitions>
@@ -39,12 +39,14 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto"/>
 
                         </Grid.ColumnDefinitions>
                         <Border x:Name="bdr_items" Visibility="Visible" Grid.Column="0" Background="White" BorderThickness="0"  Height="40" Width="60" VerticalAlignment="Bottom" CornerRadius="7,7,0,0" BorderBrush="Transparent" Margin="10,5,0,-1">
-                            <Button x:Name="btn_items"  Background="Transparent"  
+                            <Button x:Name="btn_items"  Background="Transparent"  Tag="items"
                                     materialDesign:RippleAssist.Feedback="Transparent" Click="btn_items_Click"
-                                    BorderBrush="Transparent" Height="auto" Width="60">
+                                    BorderBrush="Transparent" Height="auto" Width="60" HorizontalAlignment="Left">
                                 <Button.Triggers>
                                     <EventTrigger RoutedEvent="Button.Click">
                                         <BeginStoryboard>
@@ -101,7 +103,7 @@
                             </Button>
                         </Border>
                         <Border x:Name="bdr_collect"  Visibility="Visible"  Grid.Column="1" Background="#4E4E4E" BorderThickness="0"  Height="40" Width="60" VerticalAlignment="Bottom" CornerRadius="7,7,0,0" BorderBrush="Transparent" Margin="0,5,0,-1">
-                            <Button x:Name="btn_collect"  Background="Transparent"  
+                            <Button x:Name="btn_collect"  Background="Transparent"  Tag="collect"
                                     materialDesign:RippleAssist.Feedback="Transparent" Click="Btn_collect_Click"
                                     BorderBrush="Transparent" Height="auto">
                                 <Button.Triggers>
@@ -130,6 +132,11 @@
                                 </Path>
                             </Button>
                         </Border>
+
+
+                        <TextBlock  x:Name="txt_tabTitle"  Foreground="White"   Grid.Column="10" 
+                              VerticalAlignment="Center"      FontSize="16"     Margin="5 5 10 5"/>
+
                     </Grid>
                 </Border>
 
@@ -236,7 +243,7 @@
 
 
 
-                        <TextBox x:Name="txt_search"  TextChanged="txt_search_TextChanged"
+                        <TextBox x:Name="txt_search"  
                         Padding="10,0,5,0" BorderBrush="{x:Null}"
                                            Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
                           materialDesign:HintAssist.Hint="Enter Here To Start Search ...."  
@@ -258,7 +265,7 @@
 
                         <Button FlowDirection="LeftToRight" DockPanel.Dock="Right" Width="40" Height="40" x:Name="btn_refresh" 
                             materialDesign:ButtonAssist.CornerRadius="15" Cursor="Hand"
-                          Background="{x:Null}" BorderBrush="{x:Null}" Click="Btn_refresh_Click"  Style="{StaticResource SmallButtonCircleRotate}"
+                          Background="{x:Null}" BorderBrush="{x:Null}"  Style="{StaticResource SmallButtonCircleRotate}"
                              Margin="5,1"  Content="إضافة"   ToolTip="Refresh"  RenderTransformOrigin="0.5,0.5"
                             DataContext="M896,0L896,0C401.2,0,0,401.2,0,896v0c0,494.8,401.2,896,896,896h0c494.8,0,896-401.2,896-896v0C1792,401.2,1390.8,0,896,0z
 	 M1451.3,1021c-31.9,133.7-98.8,242.1-200.6,325.2c-101.8,83.1-221,124.6-357.7,124.6c-72.8,0-143.3-13.7-211.4-41.2
@@ -395,7 +402,7 @@
                             </Button>
                             <Button   Background="{x:Null}"    Grid.Column="3" Margin="5,0,5,-0.6" 
                             Padding="0" Height="Auto"   x:Name="btn_settings" Visibility="Collapsed"
-                                       BorderBrush="{x:Null}" Click="btn_settings_Click">
+                                       BorderBrush="{x:Null}"  >
                                 <materialDesign:PackIcon 
                           Width="20" Height="20" 
                            FlowDirection="LeftToRight" Kind="Settings" Foreground="Gray"  >

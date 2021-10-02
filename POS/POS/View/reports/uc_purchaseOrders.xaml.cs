@@ -188,6 +188,8 @@ namespace POS.View.reports
 
                 fillBranchEvent();
 
+                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), btn_branch.Tag.ToString());
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -876,9 +878,11 @@ fillColumnChart(cb_Items, selectedItemId);
                 hideAllColumn();
                 col_branch.Visibility = Visibility.Visible;
                 col_count.Visibility = Visibility.Visible;
-              // col_totalNet.Visibility = Visibility.Visible;
+                // col_totalNet.Visibility = Visibility.Visible;
 
 
+
+                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -913,7 +917,9 @@ fillColumnChart(cb_Items, selectedItemId);
                 col_branch.Visibility = Visibility.Visible;
                 col_count.Visibility = Visibility.Visible;
                 col_pos.Visibility = Visibility.Visible;
-             //   col_totalNet.Visibility = Visibility.Visible;
+                //   col_totalNet.Visibility = Visibility.Visible;
+
+                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -951,6 +957,8 @@ fillColumnChart(cb_Items, selectedItemId);
                 col_count.Visibility = Visibility.Visible;
                 //col_totalNet.Visibility = Visibility.Visible;
 
+                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -986,6 +994,8 @@ fillColumnChart(cb_Items, selectedItemId);
                 col_user.Visibility = Visibility.Visible;
                 //col_totalNet.Visibility = Visibility.Visible;
 
+                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -1019,6 +1029,8 @@ fillColumnChart(cb_Items, selectedItemId);
                 col_item.Visibility = Visibility.Visible;
                 col_itQuantity.Visibility = Visibility.Visible;
                 col_price.Visibility = Visibility.Visible;
+
+                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
 
 
                 if (sender != null)

@@ -237,11 +237,12 @@ namespace POS.View
                     location.locationId = 0;
                     if (validate(location))
                     {
+                        location.x = tb_x.Text;
+                        location.y = tb_y.Text;
+                        location.z = tb_z.Text;
                         if (locations.Where(x => x.name == location.name && x.branchId == MainWindow.branchID).Count() == 0)
                         {
-                            location.x = tb_x.Text;
-                            location.y = tb_y.Text;
-                            location.z = tb_z.Text;
+                            
                             location.note = tb_notes.Text;
                             location.createUserId = MainWindow.userID;
                             location.updateUserId = MainWindow.userID;

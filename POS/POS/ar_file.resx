@@ -2533,4 +2533,70 @@
   <data name="trFilterInvoicesBy" xml:space="preserve">
     <value>فلترة الفواتير حسب</value>
   </data>
+  <data name="trItemWithNoCount" xml:space="preserve">
+    <value>هناك عنصر بدون عدد</value>
+  </data>
+  <data name="trBanksCount" xml:space="preserve">
+    <value>عدد البنوك</value>
+  </data>
+  <data name="trBondesCount" xml:space="preserve">
+    <value>عدد السندات</value>
+  </data>
+  <data name="trBranchesCount" xml:space="preserve">
+    <value>عدد الفروع</value>
+  </data>
+  <data name="trCardsCount" xml:space="preserve">
+    <value>عدد بطاقات الدفع</value>
+  </data>
+  <data name="trCashtransferCount" xml:space="preserve">
+    <value>عدد التحويلات النقدية</value>
+  </data>
+  <data name="trCustomersCount" xml:space="preserve">
+    <value>عدد الزبائن</value>
+  </data>
+  <data name="trOrdersCount" xml:space="preserve">
+    <value>عدد الطلبات</value>
+  </data>
+  <data name="trPosCount" xml:space="preserve">
+    <value>عدد نقاط البيع</value>
+  </data>
+  <data name="trShippingCompaniesCount" xml:space="preserve">
+    <value>عدد شركات الشحن</value>
+  </data>
+  <data name="trStoresCount" xml:space="preserve">
+    <value>عدد المخازن</value>
+  </data>
+  <data name="trUsersCount" xml:space="preserve">
+    <value>عدد المستخدمين</value>
+  </data>
+  <data name="trVendorsCount" xml:space="preserve">
+    <value>عدد الموردين</value>
+  </data>
+  <data name="trCollect" xml:space="preserve">
+    <value>تجميع</value>
+  </data>
+  <data name="trExternal" xml:space="preserve">
+    <value>حركة خارجية</value>
+  </data>
+  <data name="trInternal" xml:space="preserve">
+    <value>حركة داخلية</value>
+  </data>
+  <data name="trOperator" xml:space="preserve">
+    <value>العملية</value>
+  </data>
+  <data name="trPromotion" xml:space="preserve">
+    <value>ترويج</value>
+  </data>
+  <data name="trStock" xml:space="preserve">
+    <value>مخزون</value>
+  </data>
+  <data name="trDepositeNum" xml:space="preserve">
+    <value>رقم الايداع</value>
+  </data>
+  <data name="trRecieptNum" xml:space="preserve">
+    <value>رقم السحب</value>
+  </data>
+  <data name="trVoucher" xml:space="preserve">
+    <value>سند</value>
+  </data>
 </root>

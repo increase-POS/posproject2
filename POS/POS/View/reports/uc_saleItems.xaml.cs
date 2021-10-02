@@ -88,6 +88,7 @@ namespace POS.View.reports
             fillComboItems();
 
             chk_itemInvoice.IsChecked = true;
+            SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), btn_items.Tag.ToString());
 
         }
 
@@ -180,6 +181,8 @@ namespace POS.View.reports
             col_total.Visibility = Visibility.Visible;
 
             fillItemsEvent();
+            SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
+
         }
 
         private void Btn_collect_Click(object sender, RoutedEventArgs e)
@@ -213,6 +216,8 @@ namespace POS.View.reports
             {
                 fillCollectEvent();
             }
+            SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
+
         }
 
         #region Items Events

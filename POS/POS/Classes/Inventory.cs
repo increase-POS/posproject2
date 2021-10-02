@@ -144,7 +144,7 @@ namespace POS.Classes
                 return 0;
             }
         }
-        public async Task<string> deleteInventory(int inventoryId)
+        public async Task<string> deleteInventory(int inventoryId,int userId,bool final)
         {
             string message = "";
             // ... Use HttpClient.
@@ -158,7 +158,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Inventory/delete?inventoryId=" + inventoryId);
+                request.RequestUri = new Uri(Global.APIUri + "Inventory/delete?inventoryId=" + inventoryId+"&userId="+userId+"&final="+final);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Post;
                 //set content type

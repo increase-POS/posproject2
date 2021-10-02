@@ -7,7 +7,7 @@
                     xmlns:converters="clr-namespace:POS.converters"
                  xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
                            xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             mc:Ignorable="d" 
+             mc:Ignorable="d" Tag="external"
              d:DesignHeight="450" d:DesignWidth="800"
              Loaded="UserControl_Loaded">
     <Grid Margin="0,15,15,15" x:Name="grid_main">
@@ -38,12 +38,12 @@
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
 
-                        <Border x:Name="bdr_item" Grid.Column="1" Background="White" BorderThickness="0"  Height="40" Width="60" VerticalAlignment="Bottom" CornerRadius="7,7,0,0" BorderBrush="Transparent" Margin="20,5,0,-1">
-                            <Button x:Name="btn_item"  Background="Transparent"  
+                        <Border x:Name="bdr_item" Grid.Column="0" Background="White" BorderThickness="0"  Height="40" Width="60" VerticalAlignment="Bottom" CornerRadius="7,7,0,0" BorderBrush="Transparent" Margin="20,5,0,-1">
+                            <Button x:Name="btn_item"  Background="Transparent"  Tag="item"
                                     materialDesign:RippleAssist.Feedback="Transparent"
                                     BorderBrush="Transparent" Height="auto" Click="btn_externalItems_Click">
                                 <Button.Triggers>
@@ -75,8 +75,8 @@ Data="M473.2,341.6c-10.5-18.1-21-36.2-31.5-54.2c-1.9-3.3-3.8-6.6-5.8-9.9c2.1-3.7
                             </Button>
                         </Border>
 
-                        <Border x:Name="bdr_agent" Grid.Column="2" Background="#4E4E4E" BorderThickness="0"  Height="40" Width="60" VerticalAlignment="Bottom" CornerRadius="7,7,0,0" BorderBrush="Transparent" Margin="10,5,0,-1">
-                            <Button x:Name="btn_agent"  Background="Transparent"  
+                        <Border x:Name="bdr_agent" Grid.Column="1" Background="#4E4E4E" BorderThickness="0"  Height="40" Width="60" VerticalAlignment="Bottom" CornerRadius="7,7,0,0" BorderBrush="Transparent" Margin="10,5,0,-1">
+                            <Button x:Name="btn_agent"  Background="Transparent"  Tag="agent"
                                     materialDesign:RippleAssist.Feedback="Transparent"
                                     BorderBrush="Transparent" Height="auto" Click="btn_externalAgents_Click">
                                 <Button.Triggers>
@@ -117,8 +117,8 @@ Data="M32.1,21.7v1.9C32,23.8,32,23.9,31.9,24c-0.1,0.1-0.2,0.1-0.4,0.1h-2.6H25v2.
                             </Button>
                         </Border>
 
-                        <Border x:Name="bdr_invoice" Grid.Column="3" Background="#4E4E4E" BorderThickness="0"  Height="40" Width="60" VerticalAlignment="Bottom" CornerRadius="7,7,0,0" BorderBrush="Transparent" Margin="10,5,0,-1">
-                            <Button x:Name="btn_invoice"  Background="Transparent"  
+                        <Border x:Name="bdr_invoice" Grid.Column="2" Background="#4E4E4E" BorderThickness="0"  Height="40" Width="60" VerticalAlignment="Bottom" CornerRadius="7,7,0,0" BorderBrush="Transparent" Margin="10,5,0,-1">
+                            <Button x:Name="btn_invoice"  Background="Transparent"  Tag="invoice"
                                     materialDesign:RippleAssist.Feedback="Transparent"
                                     BorderBrush="Transparent" Height="auto" Click="btn_externalInvoices_Click">
                                 <Button.Triggers>
@@ -162,6 +162,8 @@ Data="M110.2,2.4H17.8c-2.4,0-4.3,1.9-4.3,4.3v114.6c0,2.4,1.9,4.3,4.3,4.3c1.1,0,2
                             </Button>
                         </Border>
 
+                        <TextBlock  x:Name="txt_tabTitle"  Foreground="White"   Grid.Column="10" 
+                              VerticalAlignment="Center"      FontSize="16"     Margin="5 5 10 5"/>
                     </Grid>
                 </Border>
                 <Border CornerRadius="0,0,7,7" 

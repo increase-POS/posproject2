@@ -16,6 +16,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Reflection;
+using System.Resources;
 
 namespace POS.View.catalog
 {
@@ -116,6 +118,21 @@ namespace POS.View.catalog
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
+                #region translate
+                if (MainWindow.lang.Equals("en"))
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                    grid_main.FlowDirection = FlowDirection.LeftToRight;
+                }
+                else
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                    grid_main.FlowDirection = FlowDirection.RightToLeft;
+                }
+
+                translate();
+                #endregion
+
                 chartList = new List<double>();
                 PiechartList = new List<double>();
                 ColumnchartList = new List<double>();
@@ -131,6 +148,9 @@ namespace POS.View.catalog
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+
+        private void translate()
+        { }
 
         public void fillDates()
         {
@@ -166,7 +186,23 @@ namespace POS.View.catalog
                 {
                     for (int month = startMonth; month <= 12; month++)
                     {
-                        var firstOfThisMonth = new DateTime(year, month, dpStrtDate.SelectedDate.Value.Day);
+                        //var firstOfThisMonth = new DateTime(year, month, dpStrtDate.SelectedDate.Value.Day);
+                        DateTime firstOfThisMonth = DateTime.Now;
+                        try
+                        {
+                            firstOfThisMonth = new DateTime(year, month, dpStrtDate.SelectedDate.Value.Day);
+                        }
+                        catch
+                        {
+                            try
+                            {
+                                firstOfThisMonth = new DateTime(year, month, 29);
+                            }
+                            catch
+                            {
+                                firstOfThisMonth = new DateTime(year, month, 28);
+                            }
+                        }
                         var firstOfNextMonth = firstOfThisMonth.AddMonths(1);
 
                         if (catalog == 1)
@@ -218,6 +254,7 @@ namespace POS.View.catalog
                 for (int year = startYear; year <= endYear; year++)
                 {
                     var firstOfThisYear = new DateTime(year, 1, dpStrtDate.SelectedDate.Value.Month);
+
                     var firstOfNextMYear = firstOfThisYear.AddYears(1);
                     if (catalog == 1)
                     {
@@ -285,7 +322,23 @@ namespace POS.View.catalog
                 {
                     for (int month = startMonth; month <= 12; month++)
                     {
-                        var firstOfThisMonth = new DateTime(year, month, dpStrtDate.SelectedDate.Value.Day);
+                        //var firstOfThisMonth = new DateTime(year, month, dpStrtDate.SelectedDate.Value.Day);
+                        DateTime firstOfThisMonth = DateTime.Now;
+                        try
+                        {
+                            firstOfThisMonth = new DateTime(year, month, dpStrtDate.SelectedDate.Value.Day);
+                        }
+                        catch
+                        {
+                            try
+                            {
+                                firstOfThisMonth = new DateTime(year, month, 29);
+                            }
+                            catch
+                            {
+                                firstOfThisMonth = new DateTime(year, month, 28);
+                            }
+                        }
                         var firstOfNextMonth = firstOfThisMonth.AddMonths(1);
                         if (catalog == 1)
                         {
@@ -402,7 +455,23 @@ namespace POS.View.catalog
                 {
                     for (int month = startMonth; month <= 12; month++)
                     {
-                        var firstOfThisMonth = new DateTime(year, month, dpStrtDate.SelectedDate.Value.Day);
+                        //var firstOfThisMonth = new DateTime(year, month, dpStrtDate.SelectedDate.Value.Day);
+                        DateTime firstOfThisMonth = DateTime.Now;
+                        try
+                        {
+                            firstOfThisMonth = new DateTime(year, month, dpStrtDate.SelectedDate.Value.Day);
+                        }
+                        catch
+                        {
+                            try
+                            {
+                                firstOfThisMonth = new DateTime(year, month, 29);
+                            }
+                            catch
+                            {
+                                firstOfThisMonth = new DateTime(year, month, 28);
+                            }
+                        }
                         var firstOfNextMonth = firstOfThisMonth.AddMonths(1);
                         if (catalog == 1)
                         {

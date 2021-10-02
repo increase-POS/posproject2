@@ -33,6 +33,8 @@ namespace POS.View.accounts
     {
         string createPermission = "ordersAccounting_create";
         string reportsPermission = "ordersAccounting_reports";
+        string BranchesPermission = "ordersAccounting_allBranches";
+        
         private static uc_orderAccounts _instance;
         public static uc_orderAccounts Instance
         {
@@ -99,8 +101,11 @@ namespace POS.View.accounts
             cb_branch.DisplayMemberPath = "name";
             cb_branch.SelectedValuePath = "branchId";
             cb_branch.SelectedValue = MainWindow.branchID.Value;
-            cb_branch.IsEnabled = false;////////////permissions
-            #endregion
+                if (MainWindow.groupObject.HasPermissionAction(BranchesPermission, MainWindow.groupObjects, "one"))
+                    cb_branch.IsEnabled = true; 
+                else
+                    cb_branch.IsEnabled = false;
+                #endregion
 
                 #region translate
                 if (MainWindow.lang.Equals("en"))

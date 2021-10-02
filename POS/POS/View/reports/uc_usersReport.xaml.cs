@@ -134,6 +134,7 @@ namespace POS.View.reports
                 chk_posInvoice.IsChecked = true;
                 chk_vendorsInvoice.IsChecked = true;
                 chk_usersInvoice.IsChecked = true;
+                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), btn_branch.Tag.ToString());
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -616,6 +617,7 @@ namespace POS.View.reports
                 btn_branch.IsEnabled = false;
                 btn_branch.Opacity = 1;
                 fillBranchEvent();
+                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -648,6 +650,7 @@ namespace POS.View.reports
                 btn_pos.IsEnabled = false;
                 btn_pos.Opacity = 1;
                 fillPosEvent();
+                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -679,6 +682,7 @@ namespace POS.View.reports
                 btn_vendors.IsEnabled = false;
                 btn_vendors.Opacity = 1;
                 fillVendorsEvent();
+                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -710,6 +714,7 @@ namespace POS.View.reports
                 btn_users.IsEnabled = false;
                 btn_users.Opacity = 1;
                 fillUsersEvent();
+                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -738,6 +743,7 @@ namespace POS.View.reports
                 isEnabledButtons();
                 btn_items.IsEnabled = false;
                 btn_items.Opacity = 1;
+                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }

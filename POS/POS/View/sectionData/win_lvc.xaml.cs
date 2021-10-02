@@ -17,6 +17,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
+using POS.Classes;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Resources;
+using System.Windows;
+using System.Windows.Input;
+using System.Windows.Media;
+
+
 namespace POS.View.sectionData.Charts
 {
     /// <summary>
@@ -89,16 +100,16 @@ namespace POS.View.sectionData.Charts
         }
         public win_lvc(IEnumerable<CashTransfer> _cashQuery, int _sectionDate)
         {
-            //try
-            //{
+            try
+            {
                 InitializeComponent();
                 cashQuery = _cashQuery;
                 sectionDate = _sectionDate;
-            //}
-            //catch (Exception ex)
-            //{
-            //    SectionData.ExceptionMessage(ex, this);
-            //}
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         public win_lvc(IEnumerable<User> _usersQuery, int _sectionDate)
@@ -186,27 +197,46 @@ namespace POS.View.sectionData.Charts
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
-            //try
-            //{
-            //    if (sender != null)
-            //        SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                #region translate
+                if (MainWindow.lang.Equals("en"))
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                    grid_main.FlowDirection = FlowDirection.LeftToRight;
+                }
+                else
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                    grid_main.FlowDirection = FlowDirection.RightToLeft;
+                }
+
+                translate();
+                #endregion
+
                 chartList = new List<double>();
                 PiechartList = new List<double>();
                 ColumnchartList = new List<double>();
                 fillDates();
                 fillSelectedChart();
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //    SectionData.ExceptionMessage(ex, this);
-            //}
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
-        public void fillDates()
+        private void translate()
+        { }
+            public void fillDates()
         {
             dpEndDate.SelectedDate = DateTime.Now;
           
@@ -236,21 +266,29 @@ namespace POS.View.sectionData.Charts
             int endYear = dpEndDate.SelectedDate.Value.Year;
             int startMonth = dpStrtDate.SelectedDate.Value.Month;
             int endMonth = dpEndDate.SelectedDate.Value.Month;
-            if (rdoMonth.IsChecked == true)
+
+            if (rdoMonth.IsChecked == true)//month
             {
                 for (int year = startYear; year <= endYear; year++)
                 {
                     for (int month = startMonth; month <= 12; month++)
                     {
                         //var firstOfThisMonth = new DateTime(year, month, dpStrtDate.SelectedDate.Value.Day);
-                        DateTime firstOfThisMonth = DateTime.Now.Date;
+                        DateTime firstOfThisMonth = DateTime.Now ;
                         try
                         {
                             firstOfThisMonth = new DateTime(year, month, dpStrtDate.SelectedDate.Value.Day);
                         }
                         catch
                         {
-                            firstOfThisMonth = new DateTime(year, month, 28);
+                            try
+                            {
+                                firstOfThisMonth = new DateTime(year, month, 29);
+                            }
+                            catch
+                            {
+                                firstOfThisMonth = new DateTime(year, month, 28);
+                            }
                         }
                         var firstOfNextMonth = firstOfThisMonth.AddMonths(1);
 
@@ -260,21 +298,25 @@ namespace POS.View.sectionData.Charts
                                 chartList.Add(Draw);
                                 if (isSameList)
                                 {
-                                    label = "Customers count";
+                                //label = "Customers count";
+                                label = MainWindow.resourcemanager.GetString("trCustomersCount");
                                 }
-                                else label = "Vendors count";
+                                else //label = "Vendors count";
+                                label = MainWindow.resourcemanager.GetString("trVendorsCount");
                             }
                             else if (sectionDate == 2)
                             {
                                 var Draw = banksQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
                                 chartList.Add(Draw);
-                                label = "Banks count";
+                                //label = "Banks count";
+                                label = MainWindow.resourcemanager.GetString("trBanksCount");
                             }
                             else if (sectionDate == 3)
                             {
                                 var Draw = usersQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
                                 chartList.Add(Draw);
-                                label = "Users count";
+                                //label = "Users count";
+                                label = MainWindow.resourcemanager.GetString("trUsersCount");
                             }
                             else if (sectionDate == 4)
                             {
@@ -282,45 +324,53 @@ namespace POS.View.sectionData.Charts
                                 chartList.Add(Draw);
                                 if (isSameList)
                                 {
-                                    label = "Branches count";
+                                    //label = "Branches count";
+                                    label = MainWindow.resourcemanager.GetString("trBranchesCount");
                                 }
-                                else label = "Stores count";
+                                else //label = "Stores count";
+                                label = MainWindow.resourcemanager.GetString("trStoresCount");
                             }
                             else if (sectionDate == 5)
                             {
                                 var Draw = possQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
                                 chartList.Add(Draw);
-                                label = "Pos count";
+                                //label = "Pos count";
+                                label = MainWindow.resourcemanager.GetString("trPosCount");
                             }
                             else if (sectionDate == 6)
                             {
                                 var Draw = bondsQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
                                 chartList.Add(Draw);
-                                label = "Pos count";
+                                //label = "Bondes count";
+                                label = MainWindow.resourcemanager.GetString("trBondesCount");
                             }
                             else if (sectionDate == 7)
                             {
                                 var Draw = invoiceQuery.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth).Count();
                                 chartList.Add(Draw);
-                                label = "Invoice count";
+                                //label = "Invoice count";
+                                label = MainWindow.resourcemanager.GetString("trOrdersCount");
                             }
                             else if (sectionDate == 8)
                             {
                                 var Draw = cashQuery.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth).Count();
                                 chartList.Add(Draw);
-                                label = "CashTransfer count";
+                                //label = "CashTransfer count";
+                                label = MainWindow.resourcemanager.GetString("trCashtransferCount");
                             }
                             else if (sectionDate == 9)
                             {
                                 var Draw = cardsQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
                                 chartList.Add(Draw);
-                                label = "Cards count";
+                                //label = "Cards count";
+                                label = MainWindow.resourcemanager.GetString("trCardsCount");
                             }
                             else if (sectionDate == 10)
                             {
                                 var Draw = shippingCompanyQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
                                 chartList.Add(Draw);
-                                label = "Shipping Companies count";
+                                //label = "Shipping Companies count";
+                                label = MainWindow.resourcemanager.GetString("trShippingCompaniesCount");
                             }
                             MyAxis.Separator.Step = 2;
                             MyAxis.Labels.Add(CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month) + "/" + year);
@@ -337,7 +387,7 @@ namespace POS.View.sectionData.Charts
                     }
                 
             }
-            else
+            else //year
             {
                 for (int year = startYear; year <= endYear; year++)
                 {
@@ -349,21 +399,25 @@ namespace POS.View.sectionData.Charts
                         chartList.Add(Draw);
                         if (isSameList)
                         {
-                            label = "Customers count";
+                            //label = "Customers count";
+                            label = MainWindow.resourcemanager.GetString("trCustomersCount");
                         }
-                        else label = "Vendors count";
+                        else //label = "Vendors count";
+                            label = MainWindow.resourcemanager.GetString("trVendorsCount");
                     }
                     else if (sectionDate == 2)
                     {
                         var Draw = banksQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
                         chartList.Add(Draw);
-                        label = "Banks count";
+                        //label = "Banks count";
+                        label = MainWindow.resourcemanager.GetString("trBanksCount");
                     }
                     else if (sectionDate == 3)
                     {
                         var Draw = usersQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
                         chartList.Add(Draw);
-                        label = "Users count";
+                        //label = "Users count";
+                        label = MainWindow.resourcemanager.GetString("trUsersCount");
                     }
                     else if (sectionDate == 4)
                     {
@@ -371,50 +425,59 @@ namespace POS.View.sectionData.Charts
                         chartList.Add(Draw);
                         if (isSameList)
                         {
-                            label = "Branches count";
+                            //label = "Branches count";
+                            label = MainWindow.resourcemanager.GetString("trBranchesCount");
                         }
-                        else label = "Stores count";
+                        else //label = "Stores count";
+                            label = MainWindow.resourcemanager.GetString("trStoresCount");
                     }
                     else if (sectionDate == 5)
                     {
                         var Draw = possQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
                         chartList.Add(Draw);
-                        label = "Pos count";
+                        //label = "Pos count";
+                        label = MainWindow.resourcemanager.GetString("trPosCount");
                     }
                     else if (sectionDate == 6)
                     {
                         var Draw = bondsQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
                         chartList.Add(Draw);
-                        label = "Bondes count";
+                        //label = "Bondes count";
+                        label = MainWindow.resourcemanager.GetString("trBondesCount");
                     }
                     else if (sectionDate == 7)
                     {
                         var Draw = invoiceQuery.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear).Count();
                         chartList.Add(Draw);
-                        label = "Bondes count";
+                        //label = "Bondes count";
+                        label = MainWindow.resourcemanager.GetString("trOrdersCount");
                     }
                     else if (sectionDate == 8)
                     {
                         var Draw = cashQuery.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear).Count();
                         chartList.Add(Draw);
-                        label = "Cashtransfer count";
+                        //label = "Cashtransfer count";
+                        label = MainWindow.resourcemanager.GetString("trCashtransferCount");
                     }
                     else if (sectionDate == 9)
                     {
                         var Draw = cardsQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
                         chartList.Add(Draw);
-                        label = "Cards count";
+                        //label = "Cards count";
+                        label = MainWindow.resourcemanager.GetString("trCardsCount");
                     }
                     else if (sectionDate == 10)
                     {
                         var Draw = shippingCompanyQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
                         chartList.Add(Draw);
-                        label = "Shipping Companies count";
+                        //label = "Shipping Companies count";
+                        label = MainWindow.resourcemanager.GetString("trShippingCompaniesCount");
                     }
                     MyAxis.Separator.Step = 1;
                     MyAxis.Labels.Add(year.ToString());
                 }
             }
+
             SeriesCollection = new SeriesCollection
            {
                  new LineSeries
@@ -438,13 +501,31 @@ namespace POS.View.sectionData.Charts
             int endYear = dpEndDate.SelectedDate.Value.Year;
             int startMonth = dpStrtDate.SelectedDate.Value.Month;
             int endMonth = dpEndDate.SelectedDate.Value.Month;
-            if (rdoMonth.IsChecked == true)
+
+            if (rdoMonth.IsChecked == true)//month
             {
                 for (int year = startYear; year <= endYear; year++)
                 {
                     for (int month = startMonth; month <= 12; month++)
                     {
-                        var firstOfThisMonth = new DateTime(year, month, dpStrtDate.SelectedDate.Value.Day);
+                        //var firstOfThisMonth = new DateTime(year, month, dpStrtDate.SelectedDate.Value.Day);
+                        DateTime firstOfThisMonth = DateTime.Now;
+                        try
+                        {
+                            firstOfThisMonth = new DateTime(year, month, dpStrtDate.SelectedDate.Value.Day);
+                        }
+                        catch
+                        {
+                            try
+                            {
+                                firstOfThisMonth = new DateTime(year, month, 29);
+                            }
+                            catch
+                            {
+                                firstOfThisMonth = new DateTime(year, month, 28);
+                            }
+                        }
+
                         var firstOfNextMonth = firstOfThisMonth.AddMonths(1);
                         if (sectionDate == 1)
                         {
@@ -452,23 +533,25 @@ namespace POS.View.sectionData.Charts
                             PiechartList.Add(Draw);
                             if (isSameList)
                             {
-                                label = "Customers count";
+                                //label = "Customers count";
+                                label = MainWindow.resourcemanager.GetString("trCustomersCount");
                             }
-                            else label = "Vendors count";
-
-
+                            else //label = "Vendors count";
+                                label = MainWindow.resourcemanager.GetString("trVendorsCount");
                         }
                         else if (sectionDate == 2)
                         {
                             var Draw = banksQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
                             PiechartList.Add(Draw);
-                            label = "Banks count";
+                            //label = "Banks count";
+                            label = MainWindow.resourcemanager.GetString("trBanksCount");
                         }
                         else if (sectionDate == 3)
                         {
                             var Draw = usersQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
                             PiechartList.Add(Draw);
-                            label = "Users count";
+                            //label = "Users count";
+                            label = MainWindow.resourcemanager.GetString("trUsersCount");
                         }
                         else if (sectionDate == 4)
                         {
@@ -476,45 +559,53 @@ namespace POS.View.sectionData.Charts
                             PiechartList.Add(Draw);
                             if (isSameList)
                             {
-                                label = "Branches count";
+                                //label = "Branches count";
+                                label = MainWindow.resourcemanager.GetString("trBranchesCount");
                             }
-                            else label = "Stores count";
+                            else //label = "Stores count";
+                                label = MainWindow.resourcemanager.GetString("trStoresCount");
                         }
                         else if (sectionDate == 5)
                         {
                             var Draw = possQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
                             PiechartList.Add(Draw);
-                            label = "Pos count";
+                            //label = "Pos count";
+                            label = MainWindow.resourcemanager.GetString("trPosCount");
                         }
                         else if (sectionDate == 6)
                         {
                             var Draw = bondsQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
                             PiechartList.Add(Draw);
-                            label = "Bonde count";
+                            //label = "Bonde count";
+                            label = MainWindow.resourcemanager.GetString("trBondesCount");
                         }
                         else if (sectionDate == 7)
                         {
                             var Draw = invoiceQuery.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth).Count();
                             PiechartList.Add(Draw);
-                            label = "Invoice count";
+                            //label = "Invoice count";
+                            label = MainWindow.resourcemanager.GetString("trOredersCount");
                         }
                         else if (sectionDate == 8)
                         {
                             var Draw = cashQuery.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth).Count();
                             PiechartList.Add(Draw);
-                            label = "Cashtransfer count";
+                            //label = "Cashtransfer count";
+                            label = MainWindow.resourcemanager.GetString("trCashtransferCount");
                         }
                         else if (sectionDate == 9)
                         {
                             var Draw = cardsQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
                             PiechartList.Add(Draw);
-                            label = "Cards count";
+                            //label = "Cards count";
+                            label = MainWindow.resourcemanager.GetString("trCardsCount");
                         }
                         else if (sectionDate == 10)
                         {
                             var Draw = shippingCompanyQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
                             PiechartList.Add(Draw);
-                            label = "Shipping Companies count";
+                            //label = "Shipping Companies count";
+                            label = MainWindow.resourcemanager.GetString("trShippingCompaniesCount");
                         }
                         titles.Add(CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month) + "/" + year);
                         if (year == dpEndDate.SelectedDate.Value.Year && month == dpEndDate.SelectedDate.Value.Month)
@@ -529,7 +620,7 @@ namespace POS.View.sectionData.Charts
                     }
                 }
             }
-            else
+            else //year
             {
                 for (int year = startYear; year <= endYear; year++)
                 {
@@ -541,21 +632,25 @@ namespace POS.View.sectionData.Charts
                         PiechartList.Add(Draw);
                         if (isSameList)
                         {
-                            label = "Customers count";
+                            //label = "Customers count";
+                            label = MainWindow.resourcemanager.GetString("trCustomersCount");
                         }
-                        else label = "Vendors count";
+                        else //label = "Vendors count";
+                            label = MainWindow.resourcemanager.GetString("trVendorsCount");
                     }
                     else if (sectionDate == 2)
                     {
                         var Draw = banksQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
                         PiechartList.Add(Draw);
-                        label = "Banks count";
+                        //label = "Banks count";
+                        label = MainWindow.resourcemanager.GetString("trBanksCount");
                     }
                     else if (sectionDate == 3)
                     {
                         var Draw = usersQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
                         PiechartList.Add(Draw);
-                        label = "Users count";
+                        //label = "Users count";
+                        label = MainWindow.resourcemanager.GetString("trUsersCount");
                     }
                     else if (sectionDate == 4)
                     {
@@ -563,45 +658,53 @@ namespace POS.View.sectionData.Charts
                         PiechartList.Add(Draw);
                         if (isSameList)
                         {
-                            label = "Branches count";
+                            //label = "Branches count";
+                            label = MainWindow.resourcemanager.GetString("trBranchesCount");
                         }
-                        else label = "Stores count";
+                        else //label = "Stores count";
+                            label = MainWindow.resourcemanager.GetString("trStoresCount");
                     }
                     else if (sectionDate == 5)
                     {
                         var Draw = possQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
                         PiechartList.Add(Draw);
-                        label = "Pos count";
+                        //label = "Pos count";
+                        label = MainWindow.resourcemanager.GetString("trPosCount");
                     }
                     else if (sectionDate == 6)
                     {
                         var Draw = bondsQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
                         PiechartList.Add(Draw);
-                        label = "Bonde count";
+                        //label = "Bonde count";
+                        label = MainWindow.resourcemanager.GetString("trBondesCount");
                     }
                     else if (sectionDate == 7)
                     {
                         var Draw = invoiceQuery.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear).Count();
                         PiechartList.Add(Draw);
-                        label = "Invoice count";
+                        //label = "Invoice count";
+                        label = MainWindow.resourcemanager.GetString("trOrdersCount");
                     }
                     else if (sectionDate == 8)
                     {
                         var Draw = cashQuery.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear).Count();
                         PiechartList.Add(Draw);
-                        label = "Cashtrasfer count";
+                        //label = "Cashtrasfer count";
+                        label = MainWindow.resourcemanager.GetString("trCashtransferCount");
                     }
                     else if (sectionDate == 9)
                     {
                         var Draw = cardsQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
                         PiechartList.Add(Draw);
-                        label = "Cards count";
+                        //label = "Cards count";
+                        label = MainWindow.resourcemanager.GetString("trCardsCount");
                     }
                      else if (sectionDate == 10)
                     {
                         var Draw = shippingCompanyQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
                         PiechartList.Add(Draw);
-                        label = "Shipping Companies count";
+                        //label = "Shipping Companies count";
+                        label = MainWindow.resourcemanager.GetString("trShippingCompaniesCount");
                     }
                     titles.Add(year.ToString());
                 }
@@ -639,7 +742,23 @@ namespace POS.View.sectionData.Charts
                 {
                     for (int month = startMonth; month <= 12; month++)
                     {
-                        var firstOfThisMonth = new DateTime(year, month, dpStrtDate.SelectedDate.Value.Day);
+                        //var firstOfThisMonth = new DateTime(year, month, dpStrtDate.SelectedDate.Value.Day);
+                        DateTime firstOfThisMonth = DateTime.Now;
+                        try
+                        {
+                            firstOfThisMonth = new DateTime(year, month, dpStrtDate.SelectedDate.Value.Day);
+                        }
+                        catch
+                        {
+                            try
+                            {
+                                firstOfThisMonth = new DateTime(year, month, 29);
+                            }
+                            catch
+                            {
+                                firstOfThisMonth = new DateTime(year, month, 28);
+                            }
+                        }
                         var firstOfNextMonth = firstOfThisMonth.AddMonths(1);
                         if (sectionDate == 1)
                         {
@@ -647,9 +766,11 @@ namespace POS.View.sectionData.Charts
                             ColumnchartList.Add(Draw);
                             if (isSameList)
                             {
-                                label = "Customers count";
+                                //label = "Customers count";
+                                label = MainWindow.resourcemanager.GetString("trCustomersCount");
                             }
-                            else label = "Vendors count";
+                            else //label = "Vendors count";
+                                label = MainWindow.resourcemanager.GetString("trVendorsCount");
 
 
                         }
@@ -657,13 +778,15 @@ namespace POS.View.sectionData.Charts
                         {
                             var Draw = banksQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
                             ColumnchartList.Add(Draw);
-                            label = "Banks count";
+                            //label = "Banks count";
+                            label = MainWindow.resourcemanager.GetString("trBanksCount");
                         }
                         else if (sectionDate == 3)
                         {
                             var Draw = usersQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
                             ColumnchartList.Add(Draw);
-                            label = "Users count";
+                            //label = "Users count";
+                            label = MainWindow.resourcemanager.GetString("trUsersCount");
                         }
                         else if (sectionDate == 4)
                         {
@@ -671,45 +794,53 @@ namespace POS.View.sectionData.Charts
                             ColumnchartList.Add(Draw);
                             if (isSameList)
                             {
-                                label = "Branches count";
+                                //label = "Branches count";
+                                label = MainWindow.resourcemanager.GetString("trBranchesCount");
                             }
-                            else label = "Stores count";
+                            else //label = "Stores count";
+                                label = MainWindow.resourcemanager.GetString("trStoresCount");
                         }
                         else if (sectionDate == 5)
                         {
                             var Draw = possQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
                             ColumnchartList.Add(Draw);
-                            label = "Pos count";
+                            //label = "Pos count";
+                            label = MainWindow.resourcemanager.GetString("trPosCount");
                         }
                         else if (sectionDate == 6)
                         {
                             var Draw = bondsQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
                             ColumnchartList.Add(Draw);
-                            label = "Bonde count";
+                            //label = "Bonde count";
+                            label = MainWindow.resourcemanager.GetString("trBondesCount");
                         }
                         else if (sectionDate == 7)
                         {
                             var Draw = invoiceQuery.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth).Count();
                             ColumnchartList.Add(Draw);
-                            label = "Invoice count";
+                            //label = "Invoice count";
+                            label = MainWindow.resourcemanager.GetString("trOrdersCount");
                         }
                         else if (sectionDate == 8)
                         {
                             var Draw = cashQuery.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth).Count();
                             ColumnchartList.Add(Draw);
-                            label = "Cashtrasfer count";
+                            //label = "Cashtrasfer count";
+                            label = MainWindow.resourcemanager.GetString("trCashtransferCount");
                         }
                         else if (sectionDate == 9)
                         {
                             var Draw = cardsQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
                             ColumnchartList.Add(Draw);
-                            label = "Cards count";
+                            //label = "Cards count";
+                            label = MainWindow.resourcemanager.GetString("trCardsCount");
                         }
                         else if (sectionDate == 10)
                         {
                             var Draw = shippingCompanyQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
                             ColumnchartList.Add(Draw);
-                            label = "Shipping Companies count";
+                            //label = "Shipping Companies count";
+                            label = MainWindow.resourcemanager.GetString("trShippingCompaniesCount");
                         }
                         columnAxis.Separator.Step = 2;
                         columnAxis.Labels.Add(CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month) + "/" + year);
@@ -737,21 +868,25 @@ namespace POS.View.sectionData.Charts
                         ColumnchartList.Add(Draw);
                         if (isSameList)
                         {
-                            label = "Customers count";
+                            //label = "Customers count";
+                            label = MainWindow.resourcemanager.GetString("trCustomersCount");
                         }
-                        else label = "Vendors count";
+                        else //label = "Vendors count";
+                            label = MainWindow.resourcemanager.GetString("trVendorsCount");
                     }
                     else if (sectionDate == 2)
                     {
                         var Draw = banksQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
                         ColumnchartList.Add(Draw);
-                        label = "Banks count";
+                        //label = "Banks count";
+                        label = MainWindow.resourcemanager.GetString("trBanksCount");
                     }
                     else if (sectionDate == 3)
                     {
                         var Draw = usersQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
                         ColumnchartList.Add(Draw);
-                        label = "Users count";
+                        //label = "Users count";
+                        label = MainWindow.resourcemanager.GetString("trUsersCount");
                     }
                     else if (sectionDate == 4)
                     {
@@ -759,45 +894,53 @@ namespace POS.View.sectionData.Charts
                         ColumnchartList.Add(Draw);
                         if (isSameList)
                         {
-                            label = "Branches count";
+                            //label = "Branches count";
+                            label = MainWindow.resourcemanager.GetString("trBranchesCount");
                         }
-                        else label = "Stores count";
+                        else //label = "Stores count";
+                            label = MainWindow.resourcemanager.GetString("trStoresCount");
                     }
                     else if (sectionDate == 5)
                     {
                         var Draw = possQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
                         ColumnchartList.Add(Draw);
-                        label = "Pos count";
+                        //label = "Pos count";
+                        label = MainWindow.resourcemanager.GetString("trPosCount");
                     }
                     else if (sectionDate == 6)
                     {
                         var Draw = bondsQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
                         ColumnchartList.Add(Draw);
-                        label = "Bonde count";
+                        //label = "Bonde count";
+                        label = MainWindow.resourcemanager.GetString("trBondesCount");
                     }
                     else if (sectionDate == 7)
                     {
                         var Draw = invoiceQuery.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear).Count();
                         ColumnchartList.Add(Draw);
-                        label = "Invoice count";
+                        //label = "Invoice count";
+                        label = MainWindow.resourcemanager.GetString("trOrdersCount");
                     }
                     else if (sectionDate == 8)
                     {
                         var Draw = cashQuery.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear).Count();
                         ColumnchartList.Add(Draw);
-                        label = "Cashtrasfer count";
+                        //label = "Cashtrasfer count";
+                        label = MainWindow.resourcemanager.GetString("trCashtransferCount");
                     }
                     else if (sectionDate == 9)
                     {
                         var Draw = cardsQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
                         ColumnchartList.Add(Draw);
-                        label = "Cards count";
+                        //label = "Cards count";
+                        label = MainWindow.resourcemanager.GetString("trCardsCount");
                     }
                     else if (sectionDate == 10)
                     {
                         var Draw = shippingCompanyQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
                         ColumnchartList.Add(Draw);
-                        label = "Shipping Companies count";
+                        //label = "Shipping Companies count";
+                        label = MainWindow.resourcemanager.GetString("trCardsCount");
                     }
                     columnAxis.Separator.Step = 1;
                     columnAxis.Labels.Add(year.ToString());

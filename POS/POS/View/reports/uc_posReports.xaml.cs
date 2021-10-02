@@ -82,6 +82,8 @@ namespace POS.View.reports
                 fillAccCombo();
 
                 fillEvents();
+                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), btn_payments.Tag.ToString());
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -930,6 +932,7 @@ namespace POS.View.reports
 
         private void Btn_payments_Click(object sender, RoutedEventArgs e)
         {
+            SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
 
         }
     }

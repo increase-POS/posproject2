@@ -110,7 +110,7 @@ namespace POS.View.reports
                 col_destroiedDate.Visibility = Visibility.Visible;
                 col_destroiedReason.Visibility = Visibility.Visible;
                 col_destroiedAmount.Visibility = Visibility.Visible;
-
+                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), btn_destroied.Tag.ToString());
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -678,7 +678,7 @@ namespace POS.View.reports
 
         private void Btn_destroied_Click(object sender, RoutedEventArgs e)
         {
-
+            SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
         }
         ReportCls reportclass = new ReportCls();
         LocalReport rep = new LocalReport();

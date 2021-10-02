@@ -90,6 +90,8 @@ namespace POS.View.reports
                 fillVendorsEvents();
                 hideAllColumn();
 
+                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), btn_vendor.Tag.ToString());
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -1203,6 +1205,8 @@ namespace POS.View.reports
                 fillPaymentsTypeCombo(cb_vendorPayType);
                 fillVendorCombo(vendorCombo, cb_vendors);
 
+                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -1234,6 +1238,8 @@ namespace POS.View.reports
                 fillAccCombo(accCustomerCombo, cb_customerAccountant);
                 fillPaymentsTypeCombo(cb_customerPayType);
                 fillVendorCombo(customerCombo, cb_customer);
+
+                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -1267,6 +1273,8 @@ namespace POS.View.reports
                 fillPaymentsTypeCombo(cb_userPayType);
                 fillSalaryCombo(userCombo, cb_users);
 
+                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -1299,6 +1307,8 @@ namespace POS.View.reports
                 fillAccCombo(accShippingCombo, cb_shippingAccountant);
                 fillPaymentsTypeCombo(cb_shippingPayType);
                 fillShippingCombo(ShippingCombo, cb_shipping);
+
+                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);

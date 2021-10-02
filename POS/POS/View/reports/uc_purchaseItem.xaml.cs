@@ -62,7 +62,7 @@ namespace POS.View.reports
         ReportCls reportclass = new ReportCls();
         LocalReport rep = new LocalReport();
         SaveFileDialog saveFileDialog = new SaveFileDialog();
-        
+
         IEnumerable<ItemTransferInvoice> RepQuery;
         ObservableCollection<int> selectedBranchId = new ObservableCollection<int>();
 
@@ -80,22 +80,36 @@ namespace POS.View.reports
         }
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            Items = await statisticModel.GetPuritem();
-            rowChartItems = await statisticModel.GetPuritem();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                Items = await statisticModel.GetPuritem();
+                rowChartItems = await statisticModel.GetPuritem();
 
-            comboBranches = await branchModel.GetAllWithoutMain("b");
+                comboBranches = await branchModel.GetAllWithoutMain("b");
 
-            itemUnitCombos = statisticModel.GetIUComboList(Items);
+                itemUnitCombos = statisticModel.GetIUComboList(Items);
 
-            dynamicComboBranches = new ObservableCollection<Branch>(comboBranches);
-            dynamicComboItem = new ObservableCollection<ItemUnitCombo>(itemUnitCombos);
+                dynamicComboBranches = new ObservableCollection<Branch>(comboBranches);
+                dynamicComboItem = new ObservableCollection<ItemUnitCombo>(itemUnitCombos);
 
-            fillComboBranches(cb_collect);
-            fillComboItemsBranches(cb_ItemsBranches);
-            fillComboItems();
+                fillComboBranches(cb_collect);
+                fillComboItemsBranches(cb_ItemsBranches);
+                fillComboItems();
 
-            chk_itemInvoice.IsChecked = true;
+                chk_itemInvoice.IsChecked = true;
 
+                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), btn_items.Tag.ToString());
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         private void fillComboBranches(ComboBox cb)
@@ -157,97 +171,152 @@ namespace POS.View.reports
 
         private void btn_items_Click(object sender, RoutedEventArgs e)
         {
-            selectedTab = 0;
-            txt_search.Text = "";
-            ReportsHelp.showSelectedStack(grid_stacks, stk_tagsItems);
-            path_collect.Fill = Brushes.White;
-            bdrMain.RenderTransform = Animations.borderAnimation(50, bdrMain, true);
-            ReportsHelp.paintTabControlBorder(grid_tabControl, bdr_items);
-            path_items.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-            ReportsHelp.showTabControlGrid(grid_father, grid_items);
-            ReportsHelp.isEnabledButtons(grid_tabControl, btn_items);
-            ReportsHelp.hideAllColumns(dgInvoice);
-            col_number.Visibility = Visibility.Visible;
-            col_branch.Visibility = Visibility.Visible;
-            col_item.Visibility = Visibility.Visible;
-            col_unit.Visibility = Visibility.Visible;
-            col_itQuantity.Visibility = Visibility.Visible;
-            col_price.Visibility = Visibility.Visible;
-            col_total.Visibility = Visibility.Visible;
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                selectedTab = 0;
+                txt_search.Text = "";
+                ReportsHelp.showSelectedStack(grid_stacks, stk_tagsItems);
+                path_collect.Fill = Brushes.White;
+                bdrMain.RenderTransform = Animations.borderAnimation(50, bdrMain, true);
+                ReportsHelp.paintTabControlBorder(grid_tabControl, bdr_items);
+                path_items.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+                ReportsHelp.showTabControlGrid(grid_father, grid_items);
+                ReportsHelp.isEnabledButtons(grid_tabControl, btn_items);
+                ReportsHelp.hideAllColumns(dgInvoice);
+                col_number.Visibility = Visibility.Visible;
+                col_branch.Visibility = Visibility.Visible;
+                col_item.Visibility = Visibility.Visible;
+                col_unit.Visibility = Visibility.Visible;
+                col_itQuantity.Visibility = Visibility.Visible;
+                col_price.Visibility = Visibility.Visible;
+                col_total.Visibility = Visibility.Visible;
 
-            fillItemsEvent();
+                fillItemsEvent();
+
+                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         private void Btn_collect_Click(object sender, RoutedEventArgs e)
         {
-            selectedTab = 1;
-            txt_search.Text = "";
-
-            path_items.Fill = Brushes.White;
-            path_collect.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-
-            bdrMain.RenderTransform = Animations.borderAnimation(50, bdrMain, true);
-
-            ReportsHelp.showSelectedStack(grid_stacks, stk_tagsBranches);
-            ReportsHelp.paintTabControlBorder(grid_tabControl, bdr_collect);
-            ReportsHelp.showTabControlGrid(grid_father, grid_collect);
-            ReportsHelp.isEnabledButtons(grid_tabControl, btn_collect);
-            ReportsHelp.hideAllColumns(dgInvoice);
-
-            col_branch.Visibility = Visibility.Visible;
-            col_item.Visibility = Visibility.Visible;
-            col_unit.Visibility = Visibility.Visible;
-            col_itQuantity.Visibility = Visibility.Visible;
-            col_invCount.Visibility = Visibility.Visible;
-            col_avg.Visibility = Visibility.Visible;
-
-            if (stk_tagsBranches.Children.Count == 0)
+            try
             {
-                fillCollectEventAll();
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                selectedTab = 1;
+                txt_search.Text = "";
+
+                path_items.Fill = Brushes.White;
+                path_collect.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+
+                bdrMain.RenderTransform = Animations.borderAnimation(50, bdrMain, true);
+
+                ReportsHelp.showSelectedStack(grid_stacks, stk_tagsBranches);
+                ReportsHelp.paintTabControlBorder(grid_tabControl, bdr_collect);
+                ReportsHelp.showTabControlGrid(grid_father, grid_collect);
+                ReportsHelp.isEnabledButtons(grid_tabControl, btn_collect);
+                ReportsHelp.hideAllColumns(dgInvoice);
+
+                col_branch.Visibility = Visibility.Visible;
+                col_item.Visibility = Visibility.Visible;
+                col_unit.Visibility = Visibility.Visible;
+                col_itQuantity.Visibility = Visibility.Visible;
+                col_invCount.Visibility = Visibility.Visible;
+                col_avg.Visibility = Visibility.Visible;
+
+                if (stk_tagsBranches.Children.Count == 0)
+                {
+                    fillCollectEventAll();
+                }
+                else
+                {
+                    fillCollectEvent();
+                }
+
+                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
-            else
+            catch (Exception ex)
             {
-                fillCollectEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
         #region Items Events
         private void Chip_OnDeleteItemClick(object sender, RoutedEventArgs e)
         {
-            var currentChip = (Chip)sender;
-            stk_tagsItems.Children.Remove(currentChip);
-            var m = comboItemTemp.Where(j => j.itemUnitId == (Convert.ToInt32(currentChip.Name.Remove(0, 3))));
-            dynamicComboItem.Add(m.FirstOrDefault());
-            selectedItemId.Remove(Convert.ToInt32(currentChip.Name.Remove(0, 3)));
-            if (selectedItemId.Count == 0)
+            try
             {
-                cb_Items.SelectedItem = null;
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                var currentChip = (Chip)sender;
+                stk_tagsItems.Children.Remove(currentChip);
+                var m = comboItemTemp.Where(j => j.itemUnitId == (Convert.ToInt32(currentChip.Name.Remove(0, 3))));
+                dynamicComboItem.Add(m.FirstOrDefault());
+                selectedItemId.Remove(Convert.ToInt32(currentChip.Name.Remove(0, 3)));
+                if (selectedItemId.Count == 0)
+                {
+                    cb_Items.SelectedItem = null;
+                }
+                fillItemsEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
-            fillItemsEvent();
-
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         private void cb_Items_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (cb_Items.SelectedItem != null)
+            try
             {
-                if (stk_tagsItems.Children.Count < 5)
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                if (cb_Items.SelectedItem != null)
                 {
-                    selectedItem = cb_Items.SelectedItem as ItemUnitCombo;
-                    var b = new MaterialDesignThemes.Wpf.Chip()
+                    if (stk_tagsItems.Children.Count < 5)
                     {
-                        Content = selectedItem.itemUnitName,
-                        Name = "btn" + selectedItem.itemUnitId.ToString(),
-                        IsDeletable = true,
-                        Margin = new Thickness(5, 0, 5, 0)
-                    };
-                    b.DeleteClick += Chip_OnDeleteItemClick;
-                    stk_tagsItems.Children.Add(b);
-                    comboItemTemp.Add(selectedItem);
-                    selectedItemId.Add(selectedItem.itemUnitId);
-                    dynamicComboItem.Remove(selectedItem);
-                    fillItemsEvent();
+                        selectedItem = cb_Items.SelectedItem as ItemUnitCombo;
+                        var b = new MaterialDesignThemes.Wpf.Chip()
+                        {
+                            Content = selectedItem.itemUnitName,
+                            Name = "btn" + selectedItem.itemUnitId.ToString(),
+                            IsDeletable = true,
+                            Margin = new Thickness(5, 0, 5, 0)
+                        };
+                        b.DeleteClick += Chip_OnDeleteItemClick;
+                        stk_tagsItems.Children.Add(b);
+                        comboItemTemp.Add(selectedItem);
+                        selectedItemId.Add(selectedItem.itemUnitId);
+                        dynamicComboItem.Remove(selectedItem);
+                        fillItemsEvent();
+                    }
                 }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -463,183 +532,404 @@ namespace POS.View.reports
 
         private void Cb_ItemsBranches_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            fillItemsEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                fillItemsEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         private void Chk_allBranchesItem_Checked(object sender, RoutedEventArgs e)
         {
-            cb_ItemsBranches.SelectedItem = null;
-            cb_ItemsBranches.IsEnabled = false;
+
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); cb_ItemsBranches.SelectedItem = null;
+                cb_ItemsBranches.IsEnabled = false;
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         private void Chk_allBranchesItem_Unchecked(object sender, RoutedEventArgs e)
         {
-            cb_ItemsBranches.IsEnabled = true;
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                cb_ItemsBranches.IsEnabled = true;
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         private void Chk_allItems_Checked(object sender, RoutedEventArgs e)
         {
-            cb_Items.SelectedItem = null;
-            cb_Items.IsEnabled = false;
-            for (int i = 0; i < comboItemTemp.Count; i++)
+            try
             {
-                dynamicComboItem.Add(comboItemTemp.Skip(i).FirstOrDefault());
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                cb_Items.SelectedItem = null;
+                cb_Items.IsEnabled = false;
+                for (int i = 0; i < comboItemTemp.Count; i++)
+                {
+                    dynamicComboItem.Add(comboItemTemp.Skip(i).FirstOrDefault());
+                }
+                comboItemTemp.Clear();
+                stk_tagsItems.Children.Clear();
+                selectedItemId.Clear();
+                fillItemsEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
-            comboItemTemp.Clear();
-            stk_tagsItems.Children.Clear();
-            selectedItemId.Clear();
-            fillItemsEvent();
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         private void Chk_allItems_Unchecked(object sender, RoutedEventArgs e)
         {
-            cb_Items.IsEnabled = true;
-            fillItemsEvent();
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                cb_Items.IsEnabled = true;
+                fillItemsEvent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
         #endregion
 
-    
+
 
         #region Collect Events
         private void Chk_collectInvoice_Checked(object sender, RoutedEventArgs e)
         {
-            fillCollectEvent();
-            if (stk_tagsBranches.Children.Count == 0)
+
+            try
             {
-                fillCollectEventAll();
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); fillCollectEvent();
+                if (stk_tagsBranches.Children.Count == 0)
+                {
+                    fillCollectEventAll();
+                }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
         private void Chk_collectInvoice_Unchecked(object sender, RoutedEventArgs e)
         {
-            fillCollectEvent();
-            if (stk_tagsBranches.Children.Count == 0)
+
+            try
             {
-                fillCollectEventAll();
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); fillCollectEvent();
+                if (stk_tagsBranches.Children.Count == 0)
+                {
+                    fillCollectEventAll();
+                }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
         private void Chk_collectReturn_Checked(object sender, RoutedEventArgs e)
         {
-            fillCollectEvent();
-            if (stk_tagsBranches.Children.Count == 0)
+
+            try
             {
-                fillCollectEventAll();
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); fillCollectEvent();
+                if (stk_tagsBranches.Children.Count == 0)
+                {
+                    fillCollectEventAll();
+                }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
         private void Chk_collectReturn_Unchecked(object sender, RoutedEventArgs e)
         {
-            fillCollectEvent();
-            if (stk_tagsBranches.Children.Count == 0)
+
+            try
             {
-                fillCollectEventAll();
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); fillCollectEvent();
+                if (stk_tagsBranches.Children.Count == 0)
+                {
+                    fillCollectEventAll();
+                }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
         private void Chk_collectDrafs_Unchecked(object sender, RoutedEventArgs e)
         {
-            fillCollectEvent();
-            if (stk_tagsBranches.Children.Count == 0)
+
+            try
             {
-                fillCollectEventAll();
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); fillCollectEvent();
+                if (stk_tagsBranches.Children.Count == 0)
+                {
+                    fillCollectEventAll();
+                }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
         private void Chk_collectDrafs_Checked(object sender, RoutedEventArgs e)
         {
-            fillCollectEvent();
-            if (stk_tagsBranches.Children.Count == 0)
+
+            try
             {
-                fillCollectEventAll();
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); fillCollectEvent();
+                if (stk_tagsBranches.Children.Count == 0)
+                {
+                    fillCollectEventAll();
+                }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
         private void Dp_collectEndDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            fillCollectEvent();
-            if (stk_tagsBranches.Children.Count == 0)
+
+            try
             {
-                fillCollectEventAll();
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); fillCollectEvent();
+                if (stk_tagsBranches.Children.Count == 0)
+                {
+                    fillCollectEventAll();
+                }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
         private void Dp_collectStartDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            fillCollectEvent();
-            if (stk_tagsBranches.Children.Count == 0)
+
+            try
             {
-                fillCollectEventAll();
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); fillCollectEvent();
+                if (stk_tagsBranches.Children.Count == 0)
+                {
+                    fillCollectEventAll();
+                }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
         private void Chip_OnDeleteBranchClick(object sender, RoutedEventArgs e)
         {
-            var currentChip = (Chip)sender;
-            stk_tagsBranches.Children.Remove(currentChip);
-            var m = comboBrachTemp.Where(j => j.branchId == (Convert.ToInt32(currentChip.Name.Remove(0, 3))));
-            dynamicComboBranches.Add(m.FirstOrDefault());
-            selectedBranchId.Remove(Convert.ToInt32(currentChip.Name.Remove(0, 3)));
-            if (selectedBranchId.Count == 0)
+
+            try
             {
-                cb_collect.SelectedItem = null;
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); var currentChip = (Chip)sender;
+                stk_tagsBranches.Children.Remove(currentChip);
+                var m = comboBrachTemp.Where(j => j.branchId == (Convert.ToInt32(currentChip.Name.Remove(0, 3))));
+                dynamicComboBranches.Add(m.FirstOrDefault());
+                selectedBranchId.Remove(Convert.ToInt32(currentChip.Name.Remove(0, 3)));
+                if (selectedBranchId.Count == 0)
+                {
+                    cb_collect.SelectedItem = null;
+                }
+                fillCollectEvent();
+                if (stk_tagsBranches.Children.Count == 0)
+                {
+                    fillCollectEventAll();
+                }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
-            fillCollectEvent();
-            if (stk_tagsBranches.Children.Count == 0)
+            catch (Exception ex)
             {
-                fillCollectEventAll();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
         private void Cb_collect_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (cb_collect.SelectedItem != null)
+
+            try
             {
-                if (stk_tagsBranches.Children.Count < 5)
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); if (cb_collect.SelectedItem != null)
                 {
-                    selectedBranch = cb_collect.SelectedItem as Branch;
-                    var b = new MaterialDesignThemes.Wpf.Chip()
+                    if (stk_tagsBranches.Children.Count < 5)
                     {
-                        Content = selectedBranch.name,
-                        Name = "btn" + selectedBranch.branchId.ToString(),
-                        IsDeletable = true,
-                        Margin = new Thickness(5, 0, 5, 0)
-                    };
-                    b.DeleteClick += Chip_OnDeleteBranchClick;
-                    stk_tagsBranches.Children.Add(b);
-                    comboBrachTemp.Add(selectedBranch);
-                    selectedBranchId.Add(selectedBranch.branchId);
-                    dynamicComboBranches.Remove(selectedBranch);
-                    fillCollectEvent();
+                        selectedBranch = cb_collect.SelectedItem as Branch;
+                        var b = new MaterialDesignThemes.Wpf.Chip()
+                        {
+                            Content = selectedBranch.name,
+                            Name = "btn" + selectedBranch.branchId.ToString(),
+                            IsDeletable = true,
+                            Margin = new Thickness(5, 0, 5, 0)
+                        };
+                        b.DeleteClick += Chip_OnDeleteBranchClick;
+                        stk_tagsBranches.Children.Add(b);
+                        comboBrachTemp.Add(selectedBranch);
+                        selectedBranchId.Add(selectedBranch.branchId);
+                        dynamicComboBranches.Remove(selectedBranch);
+                        fillCollectEvent();
+                    }
                 }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
         private void Chk_allcollect_Checked(object sender, RoutedEventArgs e)
         {
-            cb_collect.SelectedItem = null;
-            cb_collect.IsEnabled = false;
-            for (int i = 0; i < comboBrachTemp.Count; i++)
+
+            try
             {
-                dynamicComboBranches.Add(comboBrachTemp.Skip(i).FirstOrDefault());
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); cb_collect.SelectedItem = null;
+                cb_collect.IsEnabled = false;
+                for (int i = 0; i < comboBrachTemp.Count; i++)
+                {
+                    dynamicComboBranches.Add(comboBrachTemp.Skip(i).FirstOrDefault());
+                }
+                comboBrachTemp.Clear();
+                stk_tagsBranches.Children.Clear();
+                selectedBranchId.Clear();
+                fillCollectEvent();
+                if (stk_tagsBranches.Children.Count == 0)
+                {
+                    fillCollectEventAll();
+                }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
-            comboBrachTemp.Clear();
-            stk_tagsBranches.Children.Clear();
-            selectedBranchId.Clear();
-            fillCollectEvent();
-            if (stk_tagsBranches.Children.Count == 0)
+            catch (Exception ex)
             {
-                fillCollectEventAll();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
         private void Chk_allcollect_Unchecked(object sender, RoutedEventArgs e)
         {
-            cb_collect.IsEnabled = true;
-            fillCollectEvent();
-            if (stk_tagsBranches.Children.Count == 0)
+
+            try
             {
-                fillCollectEventAll();
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); cb_collect.IsEnabled = true;
+                fillCollectEvent();
+                if (stk_tagsBranches.Children.Count == 0)
+                {
+                    fillCollectEventAll();
+                }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         #endregion
@@ -730,20 +1020,8 @@ namespace POS.View.reports
         #endregion
 
         #region General Events
-        private void txt_search_TextChanged(object sender, TextChangedEventArgs e)
-        {
 
-        }
 
-        private void Btn_refresh_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void btn_settings_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
         public void BuildReport()
         {
             List<ReportParameter> paramarr = new List<ReportParameter>();
@@ -847,8 +1125,8 @@ namespace POS.View.reports
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-       
-            private void Btn_pdf_Click(object sender, RoutedEventArgs e)
+
+        private void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {//pdf
             try
             {
@@ -878,7 +1156,7 @@ namespace POS.View.reports
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-        
+
         private void Btn_preview_Click(object sender, RoutedEventArgs e)
         {//preview
             try
@@ -1109,7 +1387,7 @@ namespace POS.View.reports
         private void fillPieChart(ComboBox comboBox, ObservableCollection<int> stackedButton)
         {
             List<string> titles = new List<string>();
-            List<int> x  =new List<int>();
+            List<int> x = new List<int>();
             titles.Clear();
 
             var temp = fillList(Items, cb_ItemsBranches, cb_Items, chk_itemInvoice, chk_itemReturn, dp_ItemStartDate, dp_ItemEndDate)
@@ -1161,8 +1439,8 @@ namespace POS.View.reports
                   );
                     break;
                 }
-               
-               
+
+
             }
             chart1.Series = piechartData;
         }
@@ -1171,7 +1449,7 @@ namespace POS.View.reports
         {
             axcolumn.Labels = new List<string>();
             List<string> names = new List<string>();
-            List<int> x =new List <int>();
+            List<int> x = new List<int>();
             IEnumerable<int> y = null;
 
             var temp = fillList(Items, cb_ItemsBranches, cb_Items, chk_itemInvoice, chk_itemReturn, dp_ItemStartDate, dp_ItemEndDate)

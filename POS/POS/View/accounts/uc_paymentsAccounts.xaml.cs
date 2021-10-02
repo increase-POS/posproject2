@@ -482,6 +482,7 @@ namespace POS.View.accounts
 
                         cb_paymentProcessType.SelectedValue = cashtrans.processType;
 
+                    if (cashtrans.cardId != null)
                         _SelectedCard = (int)cashtrans.cardId;
 
                         dp_docDate.SelectedDate = cashtrans.bondDeserveDate;

@@ -381,7 +381,7 @@ namespace POS.View.windows
                 itemsQuery = items.Where(x => (x.code.ToLower().Contains(txtItemSearch) ||
                 x.name.ToLower().Contains(txtItemSearch) ||
                 x.details.ToLower().Contains(txtItemSearch)
-                )  && x.isActive == tglItemState);
+                ));
 
                 if (btns is null)
                     btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };

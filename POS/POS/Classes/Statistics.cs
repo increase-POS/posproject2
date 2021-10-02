@@ -2011,7 +2011,7 @@ namespace POS.Classes
         #region Daily
 
         // فواتير اليومية العامة في قسم التقارير
-        public async Task<List<ItemTransferInvoice>> Getdailyinvoice(int mainBranchId, int userId)
+        public async Task<List<ItemTransferInvoice>> Getdailyinvoice(int mainBranchId, int userId, DateTime? date)
         {
             List<ItemTransferInvoice> list = null;
             // ... Use HttpClient.
@@ -2024,7 +2024,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Statistics/Getdailyinvoice?mainBranchId=" + mainBranchId + "&userId=" + userId);
+                request.RequestUri = new Uri(Global.APIUri + "Statistics/Getdailyinvoice?mainBranchId=" + mainBranchId + "&userId=" + userId + "&date=" + date);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));

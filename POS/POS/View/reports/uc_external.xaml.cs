@@ -111,6 +111,7 @@ namespace POS.View.reports
                 dgStock.ItemsSource = temp;
                 txt_count.Text = temp.Count().ToString();
                 fillExternalPieChart();
+                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), btn_item.Tag.ToString());
 
 
                 if (sender != null)
@@ -202,6 +203,7 @@ namespace POS.View.reports
                 dgStock.ItemsSource = temp;
                 txt_count.Text = temp.Count().ToString();
                 fillExternalPieChart();
+                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -238,6 +240,7 @@ namespace POS.View.reports
                 dgStock.ItemsSource = temp;
                 txt_count.Text = temp.Count().ToString();
                 fillExternalPieChart();
+                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -284,6 +287,7 @@ namespace POS.View.reports
                 dgStock.ItemsSource = temp;
                 txt_count.Text = temp.Count().ToString();
                 fillExternalPieChart();
+                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);

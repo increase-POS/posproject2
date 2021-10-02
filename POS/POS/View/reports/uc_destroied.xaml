@@ -7,7 +7,7 @@
                      xmlns:converters="clr-namespace:POS.converters"
                  xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
                            xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             mc:Ignorable="d" 
+             mc:Ignorable="d" Tag="destroied"
              d:DesignHeight="450" d:DesignWidth="800"
              Loaded="UserControl_Loaded">
     <Grid Margin="0,15,15,15" x:Name="grid_main">
@@ -36,13 +36,11 @@
                     <Grid >
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
-                        <Border x:Name="bdr_destroied" Grid.Column="4" Margin="10,0,0,0" Background="#4E4E4E" BorderThickness="0"  Height="40" Width="60" VerticalAlignment="Bottom" CornerRadius="7,7,0,0" BorderBrush="Transparent" >
-                            <Button x:Name="btn_destroied"  Background="Transparent" 
+                        <Border x:Name="bdr_destroied" Grid.Column="0" Margin="10,0,0,0" Background="#4E4E4E" BorderThickness="0"  Height="40" Width="60" VerticalAlignment="Bottom" CornerRadius="7,7,0,0" BorderBrush="Transparent" >
+                            <Button x:Name="btn_destroied"  Background="Transparent" Tag="destroied"
                                     materialDesign:RippleAssist.Feedback="Transparent"
                                     BorderBrush="Transparent" Height="auto" Click="Btn_destroied_Click" >
                                 <Path Fill="White" Stretch="Fill"  VerticalAlignment="Top" Margin="0,-1,0,0" HorizontalAlignment="Center"
@@ -60,6 +58,8 @@
                                 </Path>
                             </Button>
                         </Border>
+                        <TextBlock  x:Name="txt_tabTitle"  Foreground="White"   Grid.Column="10" 
+                              VerticalAlignment="Center"      FontSize="16"     Margin="5 5 10 5"/>
                     </Grid>
                 </Border>
                 <Border CornerRadius="0,0,7,7" 

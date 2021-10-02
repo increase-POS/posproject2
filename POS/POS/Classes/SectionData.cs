@@ -1088,56 +1088,107 @@ namespace POS.Classes
             return sdc;
         }
 
-        public static void ReportTabTitle( TextBlock textBlock, string firstTitle,string secondTitle)
+        public static void ReportTabTitle(TextBlock textBlock, string firstTitle, string secondTitle)
         {
-            
-                if (firstTitle == "invoice")
+
+            //////////////////////////////////////////////////////////////////////////////
+            if (firstTitle == "invoice")
                 firstTitle = MainWindow.resourcemanager.GetString("trInvoices");
             else if (firstTitle == "quotation")
-                firstTitle = MainWindow.resourcemanager.GetString("ssssssss");
+                firstTitle = MainWindow.resourcemanager.GetString("trQuotations");
             else if (firstTitle == "promotion")
-                firstTitle = MainWindow.resourcemanager.GetString("ssssssss");
-            else if (firstTitle == "ssssssss")
-                firstTitle = MainWindow.resourcemanager.GetString("ssssssss");
-            else if (firstTitle == "ssssssss")
-                firstTitle = MainWindow.resourcemanager.GetString("ssssssss");
-            else if (firstTitle == "ssssssss")
-                firstTitle = MainWindow.resourcemanager.GetString("ssssssss");
-            else if (firstTitle == "ssssssss")
-                firstTitle = MainWindow.resourcemanager.GetString("ssssssss");
-            else if (firstTitle == "ssssssss")
-                firstTitle = MainWindow.resourcemanager.GetString("ssssssss");
-            else if (firstTitle == "ssssssss")
-                firstTitle = MainWindow.resourcemanager.GetString("ssssssss");
-            else if (firstTitle == "ssssssss")
-                firstTitle = MainWindow.resourcemanager.GetString("ssssssss");
+                firstTitle = MainWindow.resourcemanager.GetString("trPromotion");
+            else if (firstTitle == "internal")
+                firstTitle = MainWindow.resourcemanager.GetString("trInternal");
+            else if (firstTitle == "external")
+                firstTitle = MainWindow.resourcemanager.GetString("trExternal");
+            else if (firstTitle == "banksReport")
+                firstTitle = MainWindow.resourcemanager.GetString("trBanks");
+            else if (firstTitle == "destroied")
+                firstTitle = MainWindow.resourcemanager.GetString("trDestructives");
+            else if (firstTitle == "usersReport")
+                firstTitle = MainWindow.resourcemanager.GetString("trUsers");
+            else if (firstTitle == "storageReports")
+                firstTitle = MainWindow.resourcemanager.GetString("trStorage");
+            else if (firstTitle == "stocktaking")
+                firstTitle = MainWindow.resourcemanager.GetString("trStocktaking");
+            else if (firstTitle == "stock")
+                firstTitle = MainWindow.resourcemanager.GetString("trStock");
+            else if (firstTitle == "saleOrders" || firstTitle == "purchaseOrders")
+                firstTitle = MainWindow.resourcemanager.GetString("trOrders");
+            else if (firstTitle == "saleItems" || firstTitle == "purchaseItem")
+                firstTitle = MainWindow.resourcemanager.GetString("trItems");
+            else if (firstTitle == "recipientReport")
+                firstTitle = MainWindow.resourcemanager.GetString("trRecepient");
+            else if (firstTitle == "accountStatement")
+                firstTitle = MainWindow.resourcemanager.GetString("trAccountStatement");
+            else if (firstTitle == "paymentsReport")
+                firstTitle = MainWindow.resourcemanager.GetString("trPayments");
+            else if (firstTitle == "posReports")
+                firstTitle = MainWindow.resourcemanager.GetString("trPOS");
+            else if (firstTitle == "dailySalesStatistic")
+                firstTitle = MainWindow.resourcemanager.GetString("trDailySales");
             
+           //////////////////////////////////////////////////////////////////////////////
 
-                if (secondTitle == "branch")
+            if (secondTitle == "branch")
                 secondTitle = MainWindow.resourcemanager.GetString("trBranches");
-                else if (secondTitle == "pos")
+            else if (secondTitle == "pos")
                 secondTitle = MainWindow.resourcemanager.GetString("trPOS");
-                else if (secondTitle == "vendors")
+            else if (secondTitle == "vendors")
                 secondTitle = MainWindow.resourcemanager.GetString("trVendors");
-                else if (secondTitle == "users")
+            else if (secondTitle == "users" || secondTitle == "user")
                 secondTitle = MainWindow.resourcemanager.GetString("trUsers");
-                else if (secondTitle == "items")
+            else if (secondTitle == "items" || secondTitle == "item")
                 secondTitle = MainWindow.resourcemanager.GetString("trItems");
-                else if (secondTitle == "coupon")
+            else if (secondTitle == "coupon")
                 secondTitle = MainWindow.resourcemanager.GetString("trCoupon");
-                else if (secondTitle == "offers")
+            else if (secondTitle == "offers")
                 secondTitle = MainWindow.resourcemanager.GetString("trOffer");
-                else if (secondTitle == "invoice")
-                secondTitle = MainWindow.resourcemanager.GetString("ssssssss");
-                else if (secondTitle == "order")
-                secondTitle = MainWindow.resourcemanager.GetString("ssssssss");
-                else if (secondTitle == "quotation")
-                secondTitle = MainWindow.resourcemanager.GetString("ssssssss");
+            else if (secondTitle == "invoice")
+                secondTitle = MainWindow.resourcemanager.GetString("tr_Invoice");
+            else if (secondTitle == "order")
+                secondTitle = MainWindow.resourcemanager.GetString("trOrders");
+            else if (secondTitle == "quotation")
+                secondTitle = MainWindow.resourcemanager.GetString("trQuotations");
+            else if (secondTitle == "operator")
+                secondTitle = MainWindow.resourcemanager.GetString("trOperator");
+            else if (secondTitle == "payments")
+                secondTitle = MainWindow.resourcemanager.GetString("trPayments");
+            else if (secondTitle == "recipient")
+                secondTitle = MainWindow.resourcemanager.GetString("trRecepient");
+            else if (secondTitle == "destroied") 
+                 secondTitle = MainWindow.resourcemanager.GetString("trDestructives");
+            else if (secondTitle == "agent")
+                secondTitle = MainWindow.resourcemanager.GetString("trCustomers");
+            else if (secondTitle == "stock")
+                secondTitle = MainWindow.resourcemanager.GetString("trStock");
+            else if (secondTitle == "external")
+                secondTitle = MainWindow.resourcemanager.GetString("trExternal");
+            else if (secondTitle == "internal")
+                secondTitle = MainWindow.resourcemanager.GetString("trInternal");
+            else if (secondTitle == "stocktaking")
+                secondTitle = MainWindow.resourcemanager.GetString("trStocktaking");
+            else if (secondTitle == "archives")
+                secondTitle = MainWindow.resourcemanager.GetString("trArchive");
+            else if (secondTitle == "shortfalls")
+                secondTitle = MainWindow.resourcemanager.GetString("trShortages");
+            else if (secondTitle == "location")
+                secondTitle = MainWindow.resourcemanager.GetString("trLocation");
+            else if (secondTitle == "collect")
+                secondTitle = MainWindow.resourcemanager.GetString("trCollect");
+            else if (secondTitle == "shipping")
+                secondTitle = MainWindow.resourcemanager.GetString("trShipping");
+            else if (secondTitle == "salary")
+                secondTitle = MainWindow.resourcemanager.GetString("trSalary");
+            else if (secondTitle == "generalExpenses")
+                secondTitle = MainWindow.resourcemanager.GetString("trGeneralExpenses");
+            else if (secondTitle == "administrativePull")
+                secondTitle = MainWindow.resourcemanager.GetString("trAdministrativePull");
+            //////////////////////////////////////////////////////////////////////////////
 
+            textBlock.Text = firstTitle + " / " + secondTitle;
 
-
-                textBlock.Text = firstTitle + " - " + secondTitle;
-             
         }
     }
 }

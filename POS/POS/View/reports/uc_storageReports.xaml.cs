@@ -124,7 +124,9 @@ namespace POS.View.reports
             fillPieChart();
             fillColumnChart();
 
-            if (sender != null)
+                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), btn_stock.Tag.ToString());
+
+                if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
             catch (Exception ex)
@@ -244,7 +246,9 @@ namespace POS.View.reports
 
                 showSelectedTabColumn();
             fillExternalPieChart();
-            if (sender != null)
+                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
+
+                if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
         catch (Exception ex)
@@ -1536,7 +1540,9 @@ namespace POS.View.reports
                 txt_count.Text = dgStock.Items.Count.ToString();
 
                 fillPieChart();
-            if (sender != null)
+                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
+
+                if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
         catch (Exception ex)
@@ -4139,7 +4145,9 @@ namespace POS.View.reports
 
                 showSelectedTabColumn();
             fillInternalColumnChart();
-            if (sender != null)
+                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
+
+                if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
         catch (Exception ex)
@@ -4176,7 +4184,9 @@ namespace POS.View.reports
             col_DestroyedCount.Visibility = Visibility.Visible;
 
             fillSocktakingEvents();
-            if (sender != null)
+                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
+
+                if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
         catch (Exception ex)
@@ -4209,7 +4219,9 @@ namespace POS.View.reports
             col_destroiedReason.Visibility = Visibility.Visible;
             col_destroiedAmount.Visibility = Visibility.Visible;
 
-            if (sender != null)
+                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
+
+                if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
         catch (Exception ex)

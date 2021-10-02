@@ -150,7 +150,23 @@ namespace POS.View.storage
                 {
                     for (int month = startMonth; month <= 12; month++)
                     {
-                        var firstOfThisMonth = new DateTime(year, month, dpStrtDate.SelectedDate.Value.Day);
+                        //var firstOfThisMonth = new DateTime(year, month, dpStrtDate.SelectedDate.Value.Day);
+                        DateTime firstOfThisMonth = DateTime.Now;
+                        try
+                        {
+                            firstOfThisMonth = new DateTime(year, month, dpStrtDate.SelectedDate.Value.Day);
+                        }
+                        catch
+                        {
+                            try
+                            {
+                                firstOfThisMonth = new DateTime(year, month, 29);
+                            }
+                            catch
+                            {
+                                firstOfThisMonth = new DateTime(year, month, 28);
+                            }
+                        }
                         var firstOfNextMonth = firstOfThisMonth.AddMonths(1);
                         if (sectionDate == 1)
                         {
@@ -252,7 +268,23 @@ namespace POS.View.storage
                 {
                     for (int month = startMonth; month <= 12; month++)
                     {
-                        var firstOfThisMonth = new DateTime(year, month, dpStrtDate.SelectedDate.Value.Day);
+                        //var firstOfThisMonth = new DateTime(year, month, dpStrtDate.SelectedDate.Value.Day);
+                        DateTime firstOfThisMonth = DateTime.Now;
+                        try
+                        {
+                            firstOfThisMonth = new DateTime(year, month, dpStrtDate.SelectedDate.Value.Day);
+                        }
+                        catch
+                        {
+                            try
+                            {
+                                firstOfThisMonth = new DateTime(year, month, 29);
+                            }
+                            catch
+                            {
+                                firstOfThisMonth = new DateTime(year, month, 28);
+                            }
+                        }
                         var firstOfNextMonth = firstOfThisMonth.AddMonths(1);
                         if (sectionDate == 1)
                         {
@@ -356,7 +388,23 @@ namespace POS.View.storage
                 {
                     for (int month = startMonth; month <= 12; month++)
                     {
-                        var firstOfThisMonth = new DateTime(year, month, dpStrtDate.SelectedDate.Value.Day);
+                        //var firstOfThisMonth = new DateTime(year, month, dpStrtDate.SelectedDate.Value.Day);
+                        DateTime firstOfThisMonth = DateTime.Now;
+                        try
+                        {
+                            firstOfThisMonth = new DateTime(year, month, dpStrtDate.SelectedDate.Value.Day);
+                        }
+                        catch
+                        {
+                            try
+                            {
+                                firstOfThisMonth = new DateTime(year, month, 29);
+                            }
+                            catch
+                            {
+                                firstOfThisMonth = new DateTime(year, month, 28);
+                            }
+                        }
                         var firstOfNextMonth = firstOfThisMonth.AddMonths(1);
                         if (sectionDate == 1)
                         {
