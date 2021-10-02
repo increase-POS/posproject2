@@ -16,6 +16,13 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Microsoft.Reporting.WinForms;
+using Microsoft.Win32;
+using System.IO;
+using netoaster;
+using System.Threading;
+using POS.View.sales;
+using POS.View.windows;
 
 namespace POS.View.sales
 {
@@ -26,7 +33,7 @@ namespace POS.View.sales
         private Statistics statisticModel = new Statistics();
 
         private List<ItemTransferInvoice> itemTransferInvoices = new List<ItemTransferInvoice>();
-
+        IEnumerable<ItemTransferInvoice> itemTransferQuery;
         private static uc_salesStatistic _instance;
 
         public static uc_salesStatistic Instance
@@ -38,7 +45,10 @@ namespace POS.View.sales
                 return _instance;
             }
         }
-
+        // report
+        ReportCls reportclass = new ReportCls();
+        LocalReport rep = new LocalReport();
+        SaveFileDialog saveFileDialog = new SaveFileDialog();
         public uc_salesStatistic()
         {
             InitializeComponent();
@@ -55,13 +65,14 @@ namespace POS.View.sales
             chk_invoice.IsChecked = true;
             chk_orderInvoice.IsChecked = true;
             chk_quotationInvoice.IsChecked = true;
-
-            dgInvoice.ItemsSource = fillList();
+            itemTransferQuery= fillList();
+            dgInvoice.ItemsSource = itemTransferQuery;
         }
 
         private void fillInvoiceEvents()
         {
-            dgInvoice.ItemsSource = fillList();
+            itemTransferQuery = fillList();
+            dgInvoice.ItemsSource = itemTransferQuery;
             fillColumnChart();
             fillRowChart();
             fillPieChart();
@@ -69,7 +80,8 @@ namespace POS.View.sales
 
         private void fillOrderEvents()
         {
-            dgInvoice.ItemsSource = fillList();
+            itemTransferQuery = fillList();
+            dgInvoice.ItemsSource = itemTransferQuery;
             fillColumnChart();
             fillRowChart();
             fillPieChart();
@@ -77,7 +89,8 @@ namespace POS.View.sales
 
         private void fillQuotationEvents()
         {
-            dgInvoice.ItemsSource = fillList();
+            itemTransferQuery = fillList();
+            dgInvoice.ItemsSource = itemTransferQuery;
             fillColumnChart();
             fillRowChart();
             fillPieChart();
@@ -506,6 +519,201 @@ namespace POS.View.sales
         });
             DataContext = this;
             rowChart.Series = rowChartData;
+        }
+        public void BuildReport()
+        {
+            List<ReportParameter> paramarr = new List<ReportParameter>();
+
+            string addpath;
+            bool isArabic = ReportCls.checkLang();
+            if (isArabic)
+            {
+                addpath = @"\Reports\Sale\Ar\dailySale.rdlc";
+            }
+            else
+                addpath = @"\Reports\Sale\En\dailySale.rdlc";
+            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+            ReportCls.checkLang();
+
+            clsReports.SaledailyReport(itemTransferQuery, rep, reppath, paramarr);
+            clsReports.setReportLanguage(paramarr);
+            clsReports.Header(paramarr);
+
+            rep.SetParameters(paramarr);
+
+            rep.Refresh();
+        }
+        public void pdfdaily()
+        {
+
+            BuildReport();
+
+            this.Dispatcher.Invoke(() =>
+            {
+                saveFileDialog.Filter = "PDF|*.pdf;";
+
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    string filepath = saveFileDialog.FileName;
+                    LocalReportExtensions.ExportToPDF(rep, filepath);
+                }
+            });
+        }
+
+        private void Btn_pdf_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                //if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
+                //{
+                    /////////////////////////////////////
+                    Thread t1 = new Thread(() =>
+                    {
+                        pdfdaily();
+                    });
+                    t1.Start();
+                    //////////////////////////////////////
+                //}
+                //else
+                //    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+        public void printDaily()
+        {
+            BuildReport();
+
+            this.Dispatcher.Invoke(() =>
+            {
+                LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.rep_printer_name, short.Parse(MainWindow.rep_print_count));
+            });
+        }
+        private void Btn_print_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                //if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
+                //{
+                    /////////////////////////////////////
+                    Thread t1 = new Thread(() =>
+                    {
+                        printDaily();
+                    });
+                    t1.Start();
+                    //////////////////////////////////////
+
+                //}
+                //else
+                //    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+
+        public void ExcelDaily()
+        {
+
+            BuildReport();
+
+            this.Dispatcher.Invoke(() =>
+            {
+                saveFileDialog.Filter = "EXCEL|*.xls;";
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    string filepath = saveFileDialog.FileName;
+                    LocalReportExtensions.ExportToExcel(rep, filepath);
+                }
+            });
+        }
+        private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                //if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
+                //{
+                    Thread t1 = new Thread(() =>
+                    {
+                        ExcelDaily();
+
+                    });
+                    t1.Start();
+                //}
+                //else
+                //    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+               if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+
+        private void Btn_preview_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                //if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
+                //{
+                    #region
+                    Window.GetWindow(this).Opacity = 0.2;
+                    /////////////////////
+                    string pdfpath = "";
+                    pdfpath = @"\Thumb\report\temp.pdf";
+                    pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
+                    BuildReport();
+                    LocalReportExtensions.ExportToPDF(rep, pdfpath);
+                    ///////////////////
+                    wd_previewPdf w = new wd_previewPdf();
+                    w.pdfPath = pdfpath;
+                    if (!string.IsNullOrEmpty(w.pdfPath))
+                    {
+                        w.ShowDialog();
+                        w.wb_pdfWebViewer.Dispose();
+                    }
+                    Window.GetWindow(this).Opacity = 1;
+                    #endregion
+                //}
+                //else
+                //    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
     }
 }
