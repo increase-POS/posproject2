@@ -12,6 +12,9 @@ using System.IO;
 using LinqKit;
 using Microsoft.Ajax.Utilities;
 using POS_Server.Classes;
+using POS_Server.Models.VM;
+using System.Security.Claims;
+using Newtonsoft.Json.Converters;
 
 namespace POS_Server.Controllers
 {
@@ -24,23 +27,19 @@ namespace POS_Server.Controllers
 
         [HttpGet]
         [Route("GetAllItems")]
-        public IHttpActionResult GetAllItems()
+        public ResponseVM GetAllItems()
         {
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-            Boolean canDelete = false;
-            DateTime cmpdate = DateTime.Now.AddDays(newdays);
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
-
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-         
-            if (valid)
+            else
             {
+                Boolean canDelete = false;
+                DateTime cmpdate = DateTime.Now.AddDays(newdays);
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var  itemsList = (from I in entity.items
@@ -212,21 +211,13 @@ namespace POS_Server.Controllers
                                 {
                                 itemsList[i].isNew= 1;
                                 }
-
-
-
                             
                         }
                     }
 
-                    if (itemsList == null)
-                        return NotFound();
-                    else
-                        return Ok(itemsList);
+                    return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(itemsList) };
                 }
-            }
-            else
-                return NotFound();
+            }  
         }
         private int getItemUnitAmount(int itemUnitId, int branchId)
         {
@@ -1168,105 +1159,133 @@ namespace POS_Server.Controllers
         // add or update item
         [HttpPost]
         [Route("Save")]
-        public IHttpActionResult Save(string itemObject)
+        public ResponseVM Save(string token)
         {
+            string itemObject = "";
+            string message = "";
+            items itemObj = null;
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            itemObject = itemObject.Replace("\\", string.Empty);
-            itemObject = itemObject.Trim('"');
-
-            items itemObj = JsonConvert.DeserializeObject<items>(itemObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
-            if (itemObj.updateUserId == 0 || itemObj.updateUserId == null)
+            else
             {
-                Nullable<int> id = null;
-                itemObj.updateUserId = id;
-            }
-            if (itemObj.createUserId == 0 || itemObj.createUserId == null)
-            {
-                Nullable<int> id = null;
-                itemObj.createUserId = id;
-            }
-            if (itemObj.categoryId == 0 || itemObj.categoryId == null)
-            {
-                Nullable<int> id = null;
-                itemObj.categoryId = id;
-            }
-            if (itemObj.minUnitId == 0 || itemObj.minUnitId == null)
-            {
-                Nullable<int> id = null;
-                itemObj.minUnitId = id;
-            }
-            if (itemObj.maxUnitId == 0 || itemObj.maxUnitId == null)
-            {
-                Nullable<int> id = null;
-                itemObj.maxUnitId = id;
-            }
-            if (valid)
-            {
-                try
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
                 {
-                    items itemModel;
-                    using (incposdbEntities entity = new incposdbEntities())
+                    if (c.Type == "itemObject")
                     {
-                        var ItemEntity = entity.Set<items>();
-                        if (itemObj.itemId == 0)
+                        itemObject = c.Value.Replace("\\", string.Empty);
+                        itemObject = itemObject.Trim('"');
+                        itemObj = JsonConvert.DeserializeObject<items>(itemObject, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    }
+                }
+                if (itemObj != null)
+                {
+                    //var re = Request;
+                    //var headers = re.Headers;
+                    ////  string token = "";
+                    //if (headers.Contains("APIKey"))
+                    //{
+                    //    token = headers.GetValues("APIKey").First();
+                    //}
+                    //Validation validation = new Validation();
+                    //bool valid = validation.CheckApiKey(token);
+
+                    // itemObject = itemObject.Replace("\\", string.Empty);
+                    //itemObject = itemObject.Trim('"');
+
+                    // items itemObj = JsonConvert.DeserializeObject<items>(itemObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+                    if (itemObj.updateUserId == 0 || itemObj.updateUserId == null)
+                    {
+                        Nullable<int> id = null;
+                        itemObj.updateUserId = id;
+                    }
+                    if (itemObj.createUserId == 0 || itemObj.createUserId == null)
+                    {
+                        Nullable<int> id = null;
+                        itemObj.createUserId = id;
+                    }
+                    if (itemObj.categoryId == 0 || itemObj.categoryId == null)
+                    {
+                        Nullable<int> id = null;
+                        itemObj.categoryId = id;
+                    }
+                    if (itemObj.minUnitId == 0 || itemObj.minUnitId == null)
+                    {
+                        Nullable<int> id = null;
+                        itemObj.minUnitId = id;
+                    }
+                    if (itemObj.maxUnitId == 0 || itemObj.maxUnitId == null)
+                    {
+                        Nullable<int> id = null;
+                        itemObj.maxUnitId = id;
+                    }
+                    try
+                    {
+                        items itemModel;
+                        using (incposdbEntities entity = new incposdbEntities())
                         {
-                            ProgramInfo programInfo = new ProgramInfo();
-                            int itemMaxCount = programInfo.getItemCount();
-                            int itemsCount = entity.items.Count();
-                            if (itemsCount >= itemMaxCount)
+                            var ItemEntity = entity.Set<items>();
+                            if (itemObj.itemId == 0)
                             {
-                                return Ok(-1);
+                                ProgramInfo programInfo = new ProgramInfo();
+                                int itemMaxCount = programInfo.getItemCount();
+                                int itemsCount = entity.items.Count();
+                                if (itemsCount >= itemMaxCount)
+                                {
+                                    message = "-1";
+                                    //return Ok(-1);
+                                }
+                                else
+                                {
+                                    itemObj.createDate = DateTime.Now;
+                                    itemObj.updateDate = DateTime.Now;
+                                    itemObj.updateUserId = itemObj.createUserId;
+
+                                    itemModel = ItemEntity.Add(itemObj);
+                                    entity.SaveChanges();
+                                    message = itemObj.itemId.ToString();
+                                    // return Ok(itemObj.itemId);
+                                }
                             }
                             else
                             {
-                                itemObj.createDate = DateTime.Now;
-                                itemObj.updateDate = DateTime.Now;
-                                itemObj.updateUserId = itemObj.createUserId;
+                                itemModel = entity.items.Where(p => p.itemId == itemObj.itemId).First();
+                                itemModel.code = itemObj.code;
+                                itemModel.categoryId = itemObj.categoryId;
+                                itemModel.parentId = itemObj.parentId;
+                                itemModel.details = itemObj.details;
+                                itemModel.image = itemObj.image;
+                                itemModel.max = itemObj.max;
+                                itemModel.maxUnitId = itemObj.maxUnitId;
+                                itemModel.min = itemObj.min;
+                                itemModel.minUnitId = itemObj.minUnitId;
+                                itemModel.name = itemObj.name;
 
-                                itemModel = ItemEntity.Add(itemObj);
+                                itemModel.taxes = itemObj.taxes;
+                                itemModel.type = itemObj.type;
+                                itemModel.updateDate = DateTime.Now;
+                                itemModel.updateUserId = itemObj.updateUserId;
+                                itemModel.isActive = itemObj.isActive;
                                 entity.SaveChanges();
-                                return Ok(itemObj.itemId);
+                                message = itemModel.itemId.ToString();
+                                // return Ok(itemModel.itemId);
                             }
                         }
-                        else
-                        {
-                            itemModel = entity.items.Where(p => p.itemId == itemObj.itemId).First();
-                            itemModel.code = itemObj.code;
-                            itemModel.categoryId = itemObj.categoryId;
-                            itemModel.parentId = itemObj.parentId;
-                            itemModel.details = itemObj.details;
-                            itemModel.image = itemObj.image;
-                            itemModel.max = itemObj.max;
-                            itemModel.maxUnitId = itemObj.maxUnitId;
-                            itemModel.min = itemObj.min;
-                            itemModel.minUnitId = itemObj.minUnitId;
-                            itemModel.name = itemObj.name;
-
-                            itemModel.taxes = itemObj.taxes;
-                            itemModel.type = itemObj.type;
-                            itemModel.updateDate = DateTime.Now;
-                            itemModel.updateUserId = itemObj.updateUserId;
-                            itemModel.isActive = itemObj.isActive;
-                            entity.SaveChanges();
-                            return Ok(itemModel.itemId);
-                        }                      
+                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(message) };
+                    }
+                    catch
+                    {
+                        message = "0";
+                        return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken(message) };
                     }
                 }
-                catch
-                {
-                    return Ok(0);
-                }
+                return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken(message) };
             }
-            return NotFound();
         }
         [HttpPost]
         [Route("Delete")]
