@@ -158,8 +158,15 @@ namespace POS.View
 
                 translate();
                 await SectionData.fillBranches(cb_branch, "bs");
+                cb_branch.SelectedValue = MainWindow.branchID;
+                if (SectionData.isAdminPermision())
+                    cb_branch.IsEnabled = true;
+                else
+                    cb_branch.IsEnabled = false;
+                cb_branch.IsEnabled = true;
+
                 //fillBranches();
-                cb_branch.SelectedIndex = 0;
+                //cb_branch.SelectedIndex = 0;
                 Keyboard.Focus(tb_name);
 
                 this.Dispatcher.Invoke(() =>
@@ -200,9 +207,8 @@ namespace POS.View
                 //clear
                 tb_name.Clear();
                 tb_note.Clear();
-                cb_branch.SelectedIndex = -1;
-                cb_branch.SelectedIndex = -1;
-
+                cb_branch.SelectedValue= MainWindow.branchID; 
+ 
                 p_errorName.Visibility = Visibility.Collapsed;
                 p_errorSelectBranch.Visibility = Visibility.Collapsed;
 
@@ -589,7 +595,7 @@ namespace POS.View
         {
             dg_section.ItemsSource = sectionsQuery;
             txt_count.Text = sectionsQuery.Count().ToString();
-            cb_branch.SelectedIndex = -1;
+            cb_branch.SelectedValue = MainWindow.branchID; ;
         }
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
         {

@@ -540,7 +540,7 @@
                                   Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                   materialDesign:HintAssist.Hint="Payment Process Type..."  
                                   TextBlock.FontSize="12"   Background="#f8f8f8"
-                                  Height="40" Margin="10,5,10,5"
+                                  Height="40" Margin="5"
                                   IsReadOnly="True"
                                   BorderBrush="#737373" BorderThickness="0" 
                                   LostFocus="Tb_validateEmptyLostFocus" 
@@ -561,6 +561,7 @@
                                 <ToolTip x:Name="tt_errorpaymentProcessType" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                             </Path.ToolTip>
                         </Path>
+                      
                         <ComboBox x:Name="cb_card"   Grid.Row="6"
                                   Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
                                   materialDesign:HintAssist.Hint="Card..."  
@@ -595,7 +596,7 @@
                                   BorderThickness="1"  materialDesign:HintAssist.Hint="Note..."  
                                   Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                   BorderBrush="#f8f8f8"
-                                  MinHeight="75" Margin="10,5,10,5"  TextWrapping="Wrap">
+                                  MinHeight="75" Margin="5"  TextWrapping="Wrap">
                             <TextBox.ToolTip>
                                 <ToolTip x:Name="tt_notes" Content="Payment Type"
                                                           Placement="left" 

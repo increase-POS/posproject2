@@ -339,7 +339,7 @@ namespace POS.View.sales
             int docCount = await doc.GetDocCount("Invoices", invoiceId);
 
             int previouseCount = 0;
-            if (md_docImage.Badge != null) previouseCount = int.Parse(md_docImage.Badge.ToString());
+            if (md_docImage.Badge != null && md_docImage.Badge.ToString() != "") previouseCount = int.Parse(md_docImage.Badge.ToString());
 
             if (docCount != previouseCount)
             {
@@ -803,6 +803,12 @@ namespace POS.View.sales
                 invoice.branchCreatorId = MainWindow.branchID.Value;
                 invoice.posId = MainWindow.posID.Value;
             }
+            if (invType == "or" && (invoice.invType == "ord" || invoice.invoiceId == 0))
+            {
+                invoice.invNumber = await invoice.generateInvNumber("or");
+            }
+            else if (invType == "ord" && invoice.invoiceId == 0)
+                invoice.invNumber = await invoice.generateInvNumber("ord");
             invoice.invType = invType;
             invoice.discountValue = _Discount;
             invoice.discountType = "1";
@@ -833,12 +839,7 @@ namespace POS.View.sales
             invoice.updateUserId = MainWindow.userID;
 
             // build invoice NUM like storCode_PI_sequence exp: 123_PI_2
-            if (invType == "or")
-            {
-                invoice.invNumber = await invoice.generateInvNumber("or");
-            }
-            else if (invType == "ord" && invoice.invoiceId == 0)
-                invoice.invNumber = await invoice.generateInvNumber("ord");
+            
             // save invoice in DB
             int invoiceId = int.Parse(await invoiceModel.saveInvoice(invoice));
 

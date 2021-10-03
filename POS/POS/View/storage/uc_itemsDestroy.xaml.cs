@@ -116,6 +116,10 @@ namespace POS.View.storage
         private async Task fillUsers()
         {
             users = await userModel.GetUsersActive();
+            var user = new User();
+            user.userId = 0;
+            user.name = "---";
+            users.Insert(0, user);
             cb_user.ItemsSource = users;
             cb_user.DisplayMemberPath = "name";
             cb_user.SelectedValuePath = "userId";
@@ -374,7 +378,7 @@ namespace POS.View.storage
                         invoiceModel.paid = 0;
                         invoiceModel.deserved = invoiceModel.totalNet;
                         invoiceModel.notes = tb_notes.Text;
-                        if (cb_user.SelectedIndex != -1)
+                        if (cb_user.SelectedIndex != -1 && cb_user.SelectedIndex != 0)
                             invoiceModel.userId = (int)cb_user.SelectedValue;
                         #endregion
                         List<ItemTransfer> orderList = new List<ItemTransfer>();
@@ -404,6 +408,7 @@ namespace POS.View.storage
                                     quantity = invItemLoc.amountDestroyed,
                                     itemSerial = serialNum,
                                     price = price,
+                                    invoiceId =0,
                                     inventoryItemLocId = invItemLoc.id,
                                     createUserId = MainWindow.userID,
                                 });
@@ -413,7 +418,7 @@ namespace POS.View.storage
                                     invoiceModel.invoiceId = invoiceId;
                                     await invoiceModel.saveInvoiceItems(orderList, invoiceId);
                                     await invItemLoc.distroyItem(invItemLoc);
-                                    if (cb_user.SelectedIndex != -1)
+                                    if (cb_user.SelectedIndex != -1 && cb_user.SelectedIndex != 0)
                                         await recordCash(invoiceModel);
                                    
                                     await itemLocationModel.decreaseItemLocationQuantity((int)invItemLoc.itemLocationId, (int)invItemLoc.amountDestroyed, MainWindow.userID.Value, "storageAlerts_minMaxItem", not);
@@ -441,7 +446,7 @@ namespace POS.View.storage
                                 quantity = long.Parse(tb_amount.Text),
                                 itemSerial = serialNum,
                                 price = price,
-
+                                invoiceId=0,
                                 createUserId = MainWindow.userID,
                             });
                             // اتلاف عنصر يدوياً بدون جرد

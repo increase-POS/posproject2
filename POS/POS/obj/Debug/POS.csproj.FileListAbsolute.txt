@@ -2998,3 +2998,13 @@ D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\wd_usersOnline.g.cs
 D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\wd_userInfo.baml
 D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\wd_usersOnline.baml
 E:\GitHub\posproject2\POS\POS\obj\Debug\POS.csprojAssemblyReference.cache
+E:\GitHub\posproject2\POS\POS\bin\Debug\Microsoft.IdentityModel.JsonWebTokens.dll
+E:\GitHub\posproject2\POS\POS\bin\Debug\Microsoft.IdentityModel.Logging.dll
+E:\GitHub\posproject2\POS\POS\bin\Debug\Microsoft.IdentityModel.Tokens.dll
+E:\GitHub\posproject2\POS\POS\bin\Debug\RestSharp.dll
+E:\GitHub\posproject2\POS\POS\bin\Debug\System.IdentityModel.Tokens.Jwt.dll
+E:\GitHub\posproject2\POS\POS\bin\Debug\Microsoft.IdentityModel.JsonWebTokens.xml
+E:\GitHub\posproject2\POS\POS\bin\Debug\Microsoft.IdentityModel.Logging.xml
+E:\GitHub\posproject2\POS\POS\bin\Debug\Microsoft.IdentityModel.Tokens.xml
+E:\GitHub\posproject2\POS\POS\bin\Debug\RestSharp.xml
+E:\GitHub\posproject2\POS\POS\bin\Debug\System.IdentityModel.Tokens.Jwt.xml

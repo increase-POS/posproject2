@@ -4141,6 +4141,11 @@ namespace POS.View
             }
         }
 
-      
+        private void Tb_EnglishDigit_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {//only english and digits
+            Regex regex = new Regex("^[a-zA-Z0-9. -_?]*$");
+            if (!regex.IsMatch(e.Text))
+                e.Handled = true;
+        }
     }
 }

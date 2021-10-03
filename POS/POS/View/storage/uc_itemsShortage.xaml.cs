@@ -109,6 +109,10 @@ namespace POS.View.storage
         private async Task fillUsers()
         {
             users = await userModel.GetUsersActive();
+            var user = new User();
+            user.userId = 0;
+            user.name = "---";
+            users.Insert(0, user);
             cb_user.ItemsSource = users;
             cb_user.DisplayMemberPath = "name";
             cb_user.SelectedValuePath = "userId";
@@ -338,40 +342,41 @@ namespace POS.View.storage
 
                 if (MainWindow.groupObject.HasPermissionAction(savePermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
-                    bool valid = validateDistroy();
-                    if (valid)
+                    if (invItemLoc.id != 0)
                     {
-                        int itemUnitId = 0;
-                        int itemId = 0;
-                        int invoiceId = 0;
-                        string serialNum = "";
-
-                        itemUnitId = invItemLoc.itemUnitId;
-                        itemId = invItemLoc.itemId;
-                        invItemLoc.notes = tb_notes.Text;
-                        invItemLoc.fallCause = tb_reasonOfShortage.Text;
-                        #region add invoice
-
-                        decimal price = await invoiceModel.GetAvgItemPrice(itemUnitId, itemId);
-                        price = Math.Round(price, 2);
-                        decimal total = price * int.Parse(tb_amount.Text);
-
-                        invoiceModel.invNumber = await invoiceModel.generateInvNumber("sh");
-                        invoiceModel.branchCreatorId = MainWindow.branchID.Value;
-                        invoiceModel.posId = MainWindow.posID.Value;
-                        invoiceModel.createUserId = MainWindow.userID.Value;
-                        invoiceModel.invType = "sh"; // shortage
-                        invoiceModel.total = total;
-                        invoiceModel.totalNet = total;
-                        invoiceModel.paid = 0;
-                        invoiceModel.deserved = invoiceModel.totalNet;
-                        invoiceModel.notes = tb_notes.Text;
-                        if (cb_user.SelectedIndex != -1)
-                            invoiceModel.userId = (int)cb_user.SelectedValue;
-                        #endregion
-
-                        if (invItemLoc.id != 0)
+                        bool valid = validateDistroy();
+                        if (valid)
                         {
+                            int itemUnitId = 0;
+                            int itemId = 0;
+                            int invoiceId = 0;
+                            string serialNum = "";
+
+                            itemUnitId = invItemLoc.itemUnitId;
+                            itemId = invItemLoc.itemId;
+                            invItemLoc.notes = tb_notes.Text;
+                            invItemLoc.fallCause = tb_reasonOfShortage.Text;
+                            #region add invoice
+
+                            decimal price = await invoiceModel.GetAvgItemPrice(itemUnitId, itemId);
+                            price = Math.Round(price, 2);
+                            decimal total = price * int.Parse(tb_amount.Text);
+
+                            invoiceModel.invNumber = await invoiceModel.generateInvNumber("sh");
+                            invoiceModel.branchCreatorId = MainWindow.branchID.Value;
+                            invoiceModel.posId = MainWindow.posID.Value;
+                            invoiceModel.createUserId = MainWindow.userID.Value;
+                            invoiceModel.invType = "sh"; // shortage
+                            invoiceModel.total = total;
+                            invoiceModel.totalNet = total;
+                            invoiceModel.paid = 0;
+                            invoiceModel.deserved = invoiceModel.totalNet;
+                            invoiceModel.notes = tb_notes.Text;
+                            
+                            if (cb_user.SelectedIndex != -1 && cb_user.SelectedIndex != 0)
+                                invoiceModel.userId = (int)cb_user.SelectedValue;
+                            #endregion
+
                             List<ItemTransfer> orderList = new List<ItemTransfer>();
                             int amount = await itemLocationModel.getAmountByItemLocId((int)invItemLoc.itemLocationId);
                             if (amount >= invItemLoc.amount)
@@ -398,6 +403,7 @@ namespace POS.View.storage
                                     quantity = invItemLoc.amount,
                                     itemSerial = serialNum,
                                     price = price,
+                                    invoiceId = 0,
                                     inventoryItemLocId = invItemLoc.id,
                                     createUserId = MainWindow.userID,
                                 });
@@ -407,7 +413,7 @@ namespace POS.View.storage
                                     invoiceModel.invoiceId = invoiceId;
                                     await invoiceModel.saveInvoiceItems(orderList, invoiceId);
                                     await invItemLoc.fallItem(invItemLoc);
-                                    if (cb_user.SelectedIndex != -1)
+                                    if (cb_user.SelectedIndex != -1 && cb_user.SelectedIndex != 0)
                                         await recordCash(invoiceModel);
                                     await refreshShortageDetails();
                                     Btn_clear_Click(null, null);
