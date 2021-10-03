@@ -35,8 +35,8 @@ namespace POS.converters
 
             if (!string.IsNullOrEmpty(s.agentName))
                 return name +" "+s.agentName;
-            else if (!string.IsNullOrEmpty(s.usersLName)) 
-                return name +" "+s.usersLName;
+            else if (!string.IsNullOrEmpty(s.usersName) && !string.IsNullOrEmpty(s.usersLName)) 
+                return name +" "+ s.usersName + " " + s.usersLName;
             else if (!string.IsNullOrEmpty(s.shippingCompanyName))
                 return name + " " + s.shippingCompanyName;
             else

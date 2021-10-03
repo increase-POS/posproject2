@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using POS;
 using System;
 using System.Collections.Generic;
@@ -27,17 +28,17 @@ namespace POS.Classes
         public string details { get; set; }
         public float balance { get; set; }
         public int balanceType { get; set; }
-        public DateTime createDate { get; set; }
-        public DateTime updateDate { get; set; }
-        public int createUserId { get; set; }
-        public int updateUserId { get; set; }
+        public DateTime? createDate { get; set; }
+        public DateTime? updateDate { get; set; }
+        public int? createUserId { get; set; }
+        public int? updateUserId { get; set; }
         public string phone { get; set; }
         public string mobile { get; set; }
         public string email { get; set; }
         public string address { get; set; }
-        public short isActive { get; set; }
+        public short? isActive { get; set; }
         public string notes { get; set; }
-        public byte isOnline { get; set; }
+        public byte? isOnline { get; set; }
         public string role { get; set; }
         public Boolean canDelete { get; set; }
         public string image { get; set; }
@@ -77,7 +78,40 @@ namespace POS.Classes
             }
 
         }
+        public async Task<List<User>> getBranchSalesMan(int branchId, string objectName)
+        {
+            List<User> users = null;
+            // ... Use HttpClient.
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            using (var client = new HttpClient())
+            {
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                client.BaseAddress = new Uri(Global.APIUri);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+                HttpRequestMessage request = new HttpRequestMessage();
+                request.RequestUri = new Uri(Global.APIUri + "Users/GetSalesMan?branchId="+branchId+"&objectName="+objectName);
+                request.Headers.Add("APIKey", Global.APIKey);
+                request.Method = HttpMethod.Get;
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = await client.SendAsync(request);
 
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonString = await response.Content.ReadAsStringAsync();
+                    users = JsonConvert.DeserializeObject<List<User>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+
+                    return users;
+                }
+                else //web api sent error response 
+                {
+                    users = new List<User>();
+                }
+                return users;
+            }
+
+        }
         public async Task<List<User>> GetUsersActive()
         {
             List<User> users = null;

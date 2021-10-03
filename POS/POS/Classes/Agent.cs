@@ -10,6 +10,7 @@ using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Security.Claims;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -46,46 +47,47 @@ namespace POS.Classes
 
         public async Task<List<Agent>> GetAgentsAsync(string type)
         {
-            List<Agent> agents = null;
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            using (var client = new HttpClient())
+            List<Agent> items = new List<Agent>();
+
+            //  to pass parameters (optional)
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            string myContent = type;
+            parameters.Add("type", myContent);
+            // 
+            IEnumerable<Claim> claims = await APIResult.getList("Agent/Get", parameters);
+
+            foreach (Claim c in claims)
             {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Agent/Get");
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Headers.Add("type", type);
-                request.Method = HttpMethod.Get;
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage response = await client.SendAsync(request);
-
-                if (response.IsSuccessStatusCode)
+                if (c.Type == "scopes")
                 {
-                    var jsonString = await response.Content.ReadAsStringAsync();
-                    jsonString = jsonString.Replace("\\", string.Empty);
-                    jsonString = jsonString.Trim('"');
-                    // fix date format
-                    JsonSerializerSettings settings = new JsonSerializerSettings
-                    {
-                        Converters = new List<JsonConverter> { new BadDateFixingConverter() },
-                        DateParseHandling = DateParseHandling.None
-                    };
-                    agents = JsonConvert.DeserializeObject<List<Agent>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
-                    return agents;
+                    items.Add(JsonConvert.DeserializeObject<Agent>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" }));
                 }
-                else //web api sent error response 
-                {
-                    agents = new List<Agent>();
-                }
-                return agents;
             }
-
+            return items;
         }
+        public async Task<List<Agent>> GetAgentsActive(string type)
+        {
+            List<Agent> items = new List<Agent>();
+
+            //  to pass parameters (optional)
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            string myContent = type;
+            parameters.Add("type", myContent);
+            // 
+            IEnumerable<Claim> claims = await APIResult.getList("Agent/GetActive", parameters);
+
+            foreach (Claim c in claims)
+            {
+                if (c.Type == "scopes")
+                {
+                    items.Add(JsonConvert.DeserializeObject<Agent>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" }));
+                }
+            }
+            return items;
+        }
+
+        ///////////////  Before Authorization
+
 
         public async Task<Agent> getAgentById(int agentId)
         {
@@ -126,47 +128,7 @@ namespace POS.Classes
         // if agentId = 0 will call save else call edit
 
         /// ///////////////////////////////////////
-        public async Task<List<Agent>> GetAgentsActive(string type)
-        {
-            List<Agent> agents = null;
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Agent/GetActive?type=" + type);
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Get;
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage response = await client.SendAsync(request);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    var jsonString = await response.Content.ReadAsStringAsync();
-                    jsonString = jsonString.Replace("\\", string.Empty);
-                    jsonString = jsonString.Trim('"');
-                    // fix date format
-                    JsonSerializerSettings settings = new JsonSerializerSettings
-                    {
-                        Converters = new List<JsonConverter> { new BadDateFixingConverter() },
-                        DateParseHandling = DateParseHandling.None
-                    };
-                    agents = JsonConvert.DeserializeObject<List<Agent>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
-                    return agents;
-                }
-                else //web api sent error response 
-                {
-                    agents = new List<Agent>();
-                }
-                return agents;
-            }
-        }
-
+    
         /// //////////////////////////////////////
         /// </summary>
         /// <param name="agent"></param>

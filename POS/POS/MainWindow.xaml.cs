@@ -61,7 +61,7 @@ namespace POS
         internal static User userLogin;
         internal static int? userLogInID;
         internal static Pos posLogIn = new Pos();
-        internal static int? posID = 14;
+        internal static int? posID = 2;
         internal static int? branchID;
         bool isHome = false;
         internal static int? isInvTax;

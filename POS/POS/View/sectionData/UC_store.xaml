@@ -454,7 +454,6 @@
                         <ComboBox x:Name="cb_branch" 
                                       TextBlock.Foreground="#4E4E4E"
                                       TabIndex="2"
-                                  
                                       materialDesign:HintAssist.Hint="Parent Branch..."    
                                       TextBlock.FontSize="12" 
                                    Style="{StaticResource MaterialDesignFloatingHintComboBox}" 

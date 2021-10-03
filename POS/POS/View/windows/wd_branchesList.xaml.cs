@@ -119,8 +119,8 @@ namespace POS.View.windows
                     dg_selectedStores.DisplayMemberPath = "sname";
 
                     //remove selected branch/store from previous window
-                    branch = allStores.Where(s => s.branchId == Id).FirstOrDefault<Branch>();
-                    allStores.Remove(branch);
+                    //branch = allStores.Where(s => s.branchId == Id).FirstOrDefault<Branch>();
+                    //allStores.Remove(branch);
                 }
 
                 dg_allStores.ItemsSource = allStores;

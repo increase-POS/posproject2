@@ -401,7 +401,7 @@ namespace POS.View.sales
         }
         private async Task fillUsers()
         {
-            users = await userModel.GetUsersActive();
+            users = await userModel.getBranchSalesMan(MainWindow.branchID.Value, deliveryPermission);
             cb_user.ItemsSource = users;
             cb_user.DisplayMemberPath = "name";
             cb_user.SelectedValuePath = "userId";

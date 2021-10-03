@@ -163,7 +163,6 @@ namespace POS.View
                     cb_branch.IsEnabled = true;
                 else
                     cb_branch.IsEnabled = false;
-                cb_branch.IsEnabled = true;
 
                 //fillBranches();
                 //cb_branch.SelectedIndex = 0;

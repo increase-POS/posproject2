@@ -71,6 +71,26 @@ namespace POS.Classes
             parameters.Add("itemObject", myContent);
             return APIResult.post(method, parameters);
         }
+        public async Task<List<Item>> GetAllItems()
+        {
+            List<Item> items = new List<Item>();
+
+            //########### to pass parameters (optional)
+            //Dictionary<string, string> parameters = new Dictionary<string, string>();
+            //parameters.Add("itemObject", myContent);
+            //IEnumerable<Claim> claims = await APIResult.getList("items/GetAllItems",parameters);
+            //#################
+            IEnumerable<Claim> claims = await APIResult.getList("items/GetAllItems");
+
+            foreach (Claim c in claims)
+            {
+                if (c.Type == "scopes")
+                {
+                    items.Add(JsonConvert.DeserializeObject<Item>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" }));
+                }
+            }
+            return items;
+        }
 
         public async Task<bool> deleteItem(int itemId, int userId,Boolean final)
         {
@@ -302,27 +322,7 @@ namespace POS.Classes
                 return item;
             }
         }
-        public async Task<List<Item>> GetAllItems()
-        {
-            List<Item> items = new List<Item>();
-
-            //########### to pass parameters (optional)
-            //Dictionary<string, string> parameters = new Dictionary<string, string>();
-            //parameters.Add("itemObject", myContent);
-            //IEnumerable<Claim> claims = await APIResult.getList("items/GetAllItems",parameters);
-            //#################
-            IEnumerable<Claim> claims = await APIResult.getList("items/GetAllItems");
-
-            foreach (Claim c in claims)
-            {
-                if (c.Type == "scopes")
-                {
-                    items.Add(JsonConvert.DeserializeObject<Item>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" }));
-                }
-            }
-            return items;
-        }
-        
+       
         public async Task<List<Item>> GetItemsWichHasUnits()
         {
             List<Item> items = null;
