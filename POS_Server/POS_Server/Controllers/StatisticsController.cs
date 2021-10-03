@@ -14,7 +14,16 @@ namespace POS_Server.Controllers
     public class StatisticsController : ApiController
     {
 
-
+        public List<int> AllowedBranchsId(int mainBranchId, int userId)
+        {
+            BranchesController branchc = new BranchesController();
+            List<branches> branchesList = new List<branches>();
+            branchesList = branchc.BrListByBranchandUser(mainBranchId, userId);
+            List<int> bridlist = new List<int>();
+            Calculate calc = new Calculate();
+            bridlist.AddRange(branchesList.Select(x => x.branchId).ToList());
+            return bridlist;
+        }
 
         private decimal getupValues(int miniuId, int maxiuId, int itemId)
         {
@@ -328,7 +337,7 @@ var items = from item in query.AsEnumerable()
         //  فواتير المشتريات بكل انواعها بكل فرع
         [HttpGet]
         [Route("GetPurinv")]
-        public IHttpActionResult GetPurinv()
+        public IHttpActionResult GetPurinv(int mainBranchId, int userId)
         {
             var re = Request;
             var headers = re.Headers;
@@ -342,6 +351,7 @@ var items = from item in query.AsEnumerable()
 
             if (valid) // APIKey is valid
             {
+                List<int> brIds = AllowedBranchsId(mainBranchId, userId);
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var invListm = (from I in entity.invoices
@@ -360,7 +370,8 @@ var items = from item in query.AsEnumerable()
                                     from JIMM in JIM.DefaultIfEmpty()
                                     from JAA in JA.DefaultIfEmpty()
                                     from JBCC in JBC.DefaultIfEmpty()
-                                    where (I.invType == "p" || I.invType == "pb" || I.invType == "pd" || I.invType == "pbd")
+
+                                    where (brIds.Contains(JBCC.branchId))&&(I.invType == "p" || I.invType == "pb" || I.invType == "pd" || I.invType == "pbd")
                                     // (branchType == "all" ? true : JBB.type == branchType)
                                     //   && System.DateTime.Compare((DateTime)startDate, (DateTime)I.invDate) <= 0
                                     //  && System.DateTime.Compare((DateTime)endDate, (DateTime)I.invDate) >= 0
@@ -456,7 +467,7 @@ else
 
         [HttpGet]
         [Route("GetPuritem")]
-        public IHttpActionResult GetPuritem()
+        public IHttpActionResult GetPuritem(int mainBranchId, int userId)
         {
             var re = Request;
             var headers = re.Headers;
@@ -470,6 +481,8 @@ else
 
             if (valid) // APIKey is valid
             {
+                List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var invListm = (from IT in entity.itemsTransfer
@@ -495,7 +508,7 @@ else
                                     from JIMM in JIM.DefaultIfEmpty()
                                     from JAA in JA.DefaultIfEmpty()
                                     from JBCC in JBC.DefaultIfEmpty()
-                                    where (I.invType == "p" || I.invType == "pw" || I.invType == "pb")
+                                    where (brIds.Contains(JBCC.branchId)) && (I.invType == "p" || I.invType == "pw" || I.invType == "pb")
 
                                     select new
                                     {
@@ -631,7 +644,7 @@ ITbarcode
         //عدد العناصر في كل فاتورة
         [HttpGet]
         [Route("GetPuritemcount")]
-        public IHttpActionResult GetPuritemcount()
+        public IHttpActionResult GetPuritemcount(int mainBranchId, int userId)
         {
             var re = Request;
             var headers = re.Headers;
@@ -645,6 +658,7 @@ ITbarcode
 
             if (valid) // APIKey is valid
             {
+                List<int> brIds = AllowedBranchsId(mainBranchId, userId);
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var invListm = (from I in entity.invoices
@@ -664,7 +678,7 @@ ITbarcode
                                     from JIMM in JIM.DefaultIfEmpty()
                                     from JAA in JA.DefaultIfEmpty()
                                     from JBCC in JBC.DefaultIfEmpty()
-                                    where (I.invType == "p" || I.invType == "pw" || I.invType == "pb")
+                                    where (brIds.Contains(JBCC.branchId)) && (I.invType == "p" || I.invType == "pw" || I.invType == "pb")
 
                                     select new
                                     {
@@ -1434,111 +1448,111 @@ else
         // المبيعات
         #region sales
         //  فواتير المبيعات بكل انواعها بكل فرع
-        [HttpGet]
-        [Route("GetSaleinv")]
-        public IHttpActionResult GetSaleinv()
-        {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
-            {
-                token = headers.GetValues("APIKey").First();
-            }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
+        //[HttpGet]
+        //[Route("GetSaleinv")]
+        //public IHttpActionResult GetSaleinv()
+        //{
+        //    var re = Request;
+        //    var headers = re.Headers;
+        //    string token = "";
+        //    if (headers.Contains("APIKey"))
+        //    {
+        //        token = headers.GetValues("APIKey").First();
+        //    }
+        //    Validation validation = new Validation();
+        //    bool valid = validation.CheckApiKey(token);
 
-            if (valid) // APIKey is valid
-            {
-                using (incposdbEntities entity = new incposdbEntities())
-                {
-                    var invListm = (from I in entity.invoices
-                                        //   join B in entity.branches on I.branchId equals B.branchId into JB
-                                    join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
-                                    join A in entity.agents on I.agentId equals A.agentId into JA
-                                    join U in entity.users on I.createUserId equals U.userId into JU
-                                    join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
-                                    join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
-                                    join P in entity.pos on I.posId equals P.posId into JP
+        //    if (valid) // APIKey is valid
+        //    {
+        //        using (incposdbEntities entity = new incposdbEntities())
+        //        {
+        //            var invListm = (from I in entity.invoices
+        //                                //   join B in entity.branches on I.branchId equals B.branchId into JB
+        //                            join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
+        //                            join A in entity.agents on I.agentId equals A.agentId into JA
+        //                            join U in entity.users on I.createUserId equals U.userId into JU
+        //                            join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
+        //                            join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
+        //                            join P in entity.pos on I.posId equals P.posId into JP
 
-                                    //   from JBB in JB
-                                    from JPP in JP.DefaultIfEmpty()
-                                    from JUU in JU.DefaultIfEmpty()
-                                    from JUPUS in JUPUSR.DefaultIfEmpty()
-                                    from JIMM in JIM.DefaultIfEmpty()
-                                    from JAA in JA.DefaultIfEmpty()
-                                    from JBCC in JBC.DefaultIfEmpty()
-                                    where (I.invType == "s" || I.invType == "sb" || I.invType == "sd" || I.invType == "sbd")
+        //                            //   from JBB in JB
+        //                            from JPP in JP.DefaultIfEmpty()
+        //                            from JUU in JU.DefaultIfEmpty()
+        //                            from JUPUS in JUPUSR.DefaultIfEmpty()
+        //                            from JIMM in JIM.DefaultIfEmpty()
+        //                            from JAA in JA.DefaultIfEmpty()
+        //                            from JBCC in JBC.DefaultIfEmpty()
+        //                            where (I.invType == "s" || I.invType == "sb" || I.invType == "sd" || I.invType == "sbd")
 
-                                    select new
-                                    {
-                                        I.invoiceId,
-                                        I.invNumber,
-                                        I.agentId,
-                                        I.posId,
-                                        I.invType,
-                                        I.total,
-                                        I.totalNet,
-                                        I.paid,
-                                        I.deserved,
-                                        I.deservedDate,
-                                        I.invDate,
-                                        I.invoiceMainId,
-                                        I.invCase,
-                                        I.invTime,
-                                        I.notes,
-                                        I.vendorInvNum,
-                                        I.vendorInvDate,
-                                        I.createUserId,
-                                        I.updateDate,
-                                        I.updateUserId,
-                                        I.branchId,
-                                        discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
-                                        I.discountType,
-                                        I.tax,
-                                        I.name,
-                                        I.isApproved,
-                                        //
-                                        I.branchCreatorId,
-                                        branchCreatorName = JBCC.name,
-                                        //
-                                        // branchName = JBB.name,
+        //                            select new
+        //                            {
+        //                                I.invoiceId,
+        //                                I.invNumber,
+        //                                I.agentId,
+        //                                I.posId,
+        //                                I.invType,
+        //                                I.total,
+        //                                I.totalNet,
+        //                                I.paid,
+        //                                I.deserved,
+        //                                I.deservedDate,
+        //                                I.invDate,
+        //                                I.invoiceMainId,
+        //                                I.invCase,
+        //                                I.invTime,
+        //                                I.notes,
+        //                                I.vendorInvNum,
+        //                                I.vendorInvDate,
+        //                                I.createUserId,
+        //                                I.updateDate,
+        //                                I.updateUserId,
+        //                                I.branchId,
+        //                                discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
+        //                                I.discountType,
+        //                                I.tax,
+        //                                I.name,
+        //                                I.isApproved,
+        //                                //
+        //                                I.branchCreatorId,
+        //                                branchCreatorName = JBCC.name,
+        //                                //
+        //                                // branchName = JBB.name,
 
-                                        //  branchType = JBB.type,
-                                        posName = JPP.name,
-                                        posCode = JPP.code,
-                                        agentName = JAA.name,
-                                        agentCode = JAA.code,
-                                        agentType = JAA.type,
-                                        cuserName = JUU.name,
-                                        cuserLast = JUU.lastname,
-                                        cUserAccName = JUU.username,
-                                        uuserName = JUPUS.name,
-                                        uuserLast = JUPUS.lastname,
-                                        uUserAccName = JUPUS.username,
-                                        agentCompany = JAA.company,
+        //                                //  branchType = JBB.type,
+        //                                posName = JPP.name,
+        //                                posCode = JPP.code,
+        //                                agentName = JAA.name,
+        //                                agentCode = JAA.code,
+        //                                agentType = JAA.type,
+        //                                cuserName = JUU.name,
+        //                                cuserLast = JUU.lastname,
+        //                                cUserAccName = JUU.username,
+        //                                uuserName = JUPUS.name,
+        //                                uuserLast = JUPUS.lastname,
+        //                                uUserAccName = JUPUS.username,
+        //                                agentCompany = JAA.company,
 
-                                    }).ToList();
+        //                            }).ToList();
 
 
 
-                    if (invListm == null)
-                        return NotFound();
-                    else
-                        return Ok(invListm);
-                }
+        //            if (invListm == null)
+        //                return NotFound();
+        //            else
+        //                return Ok(invListm);
+        //        }
 
-            }
+        //    }
 
-            //else
-            return NotFound();
-        }
+        //    //else
+        //    return NotFound();
+        //}
 
 
         // فواتير المبيعات مع العناصر
         [HttpGet]
         [Route("GetSaleitem")]
-        public IHttpActionResult GetSaleitem()
+        public IHttpActionResult GetSaleitem(int mainBranchId, int userId)
         {
             var re = Request;
             var headers = re.Headers;
@@ -1552,6 +1566,8 @@ else
 
             if (valid) // APIKey is valid
             {
+                List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var invListm = (from IT in entity.itemsTransfer
@@ -1577,7 +1593,7 @@ else
                                     from JIMM in JIM.DefaultIfEmpty()
                                     from JAA in JA.DefaultIfEmpty()
                                     from JBCC in JBC.DefaultIfEmpty()
-                                    where (I.invType == "s" || I.invType == "sb")
+                                    where (brIds.Contains(JBCC.branchId)) && (I.invType == "s" || I.invType == "sb")
 
                                     select new
                                     {
@@ -1677,7 +1693,7 @@ else
         //عدد العناصر في كل فاتورة
         [HttpGet]
         [Route("GetSaleitemcount")]
-        public IHttpActionResult GetSaleitemcount()
+        public IHttpActionResult GetSaleitemcount(int mainBranchId, int userId)
         {
             var re = Request;
             var headers = re.Headers;
@@ -1691,6 +1707,8 @@ else
 
             if (valid) // APIKey is valid
             {
+                List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var invListm = (from I in entity.invoices
@@ -1710,7 +1728,7 @@ else
                                     from JIMM in JIM.DefaultIfEmpty()
                                     from JAA in JA.DefaultIfEmpty()
                                     from JBCC in JBC.DefaultIfEmpty()
-                                    where (I.invType == "s" || I.invType == "sb")
+                                    where (brIds.Contains(JBCC.branchId)) && (I.invType == "s" || I.invType == "sb")
 
                                     select new
                                     {
@@ -1803,7 +1821,7 @@ else
        
         [HttpGet]
         [Route("Getorderitemcount")]
-        public IHttpActionResult Getorderitemcount()
+        public IHttpActionResult Getorderitemcount(int mainBranchId, int userId)
         {
             var re = Request;
             var headers = re.Headers;
@@ -1817,6 +1835,8 @@ else
 
             if (valid) // APIKey is valid
             {
+                List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var invListm = (from I in entity.invoices
@@ -1836,7 +1856,7 @@ else
                                     from JIMM in JIM.DefaultIfEmpty()
                                     from JAA in JA.DefaultIfEmpty()
                                     from JBCC in JBC.DefaultIfEmpty()
-                                    where (I.invType == "or" )
+                                    where (brIds.Contains(JBCC.branchId)) && (I.invType == "or" )
 
                                     select new
                                     {
@@ -1928,7 +1948,7 @@ else
 
         [HttpGet]
         [Route("GetPurorderitemcount")]
-        public IHttpActionResult GetPurorderitemcount()
+        public IHttpActionResult GetPurorderitemcount(int mainBranchId, int userId)
         {
             var re = Request;
             var headers = re.Headers;
@@ -1942,6 +1962,8 @@ else
 
             if (valid) // APIKey is valid
             {
+                List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var invListm = (from I in entity.invoices
@@ -1961,7 +1983,7 @@ else
                                     from JIMM in JIM.DefaultIfEmpty()
                                     from JAA in JA.DefaultIfEmpty()
                                     from JBCC in JBC.DefaultIfEmpty()
-                                    where (I.invType == "po")
+                                    where (brIds.Contains(JBCC.branchId)) && (I.invType == "po")
 
                                     select new
                                     {
@@ -2056,7 +2078,7 @@ else
 
         [HttpGet]
         [Route("GetQtitemcount")]
-        public IHttpActionResult GetQtitemcount()
+        public IHttpActionResult GetQtitemcount(int mainBranchId, int userId)
         {
             var re = Request;
             var headers = re.Headers;
@@ -2070,6 +2092,8 @@ else
 
             if (valid) // APIKey is valid
             {
+                List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var invListm = (from I in entity.invoices
@@ -2089,7 +2113,7 @@ else
                                     from JIMM in JIM.DefaultIfEmpty()
                                     from JAA in JA.DefaultIfEmpty()
                                     from JBCC in JBC.DefaultIfEmpty()
-                                    where (I.invType == "q" )
+                                    where (brIds.Contains(JBCC.branchId)) && (I.invType == "q" )
 
                                     select new
                                     {
@@ -2190,7 +2214,7 @@ else
 
         [HttpGet]
         [Route("GetSalecoupon")]
-        public IHttpActionResult GetSalecoupon()
+        public IHttpActionResult GetSalecoupon(int mainBranchId, int userId)
         {
             var re = Request;
             var headers = re.Headers;
@@ -2204,6 +2228,8 @@ else
 
             if (valid) // APIKey is valid
             {
+                List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var invListm = (from I in entity.invoices
@@ -2224,7 +2250,7 @@ else
                                     from JIMM in JIM.DefaultIfEmpty()
                                     from JAA in JA.DefaultIfEmpty()
                                     from JBCC in JBC.DefaultIfEmpty()
-                                    where (I.invType == "s" || I.invType == "sb")
+                                    where (brIds.Contains(JBCC.branchId)) && (I.invType == "s" || I.invType == "sb")
                                     select new
                                     {
 
@@ -2325,7 +2351,7 @@ else
         // فواتير المبيعات مع العناصر
         [HttpGet]
         [Route("GetSaleOffer")]
-        public IHttpActionResult GetSaleOffer()
+        public IHttpActionResult GetSaleOffer(int mainBranchId, int userId)
         {
             var re = Request;
             var headers = re.Headers;
@@ -2339,6 +2365,8 @@ else
 
             if (valid) // APIKey is valid
             {
+                List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var invListm = (from IT in entity.itemsTransfer
@@ -2370,7 +2398,7 @@ else
                                     from JIMM in JIM.DefaultIfEmpty()
                                     from JAA in JA.DefaultIfEmpty()
                                     from JBCC in JBC.DefaultIfEmpty()
-                                    where (I.invType == "s" || I.invType == "sb")
+                                    where (brIds.Contains(JBCC.branchId)) && (I.invType == "s" || I.invType == "sb")
                                     orderby IT.itemsTransId
                                     select new
                                     {
@@ -2524,7 +2552,7 @@ notes
         // عرض الاصناف واماكن تخزينها
         [HttpGet]
         [Route("GetStorage")]
-        public IHttpActionResult GetStorage()
+        public IHttpActionResult GetStorage(int mainBranchId, int userId)
         {
             var re = Request;
             var headers = re.Headers;
@@ -2538,6 +2566,8 @@ notes
 
             if (valid) // APIKey is valid
             {
+                List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     // storageCost storageCostsr = new storageCost();
@@ -2567,7 +2597,7 @@ notes
                                     from JUU in JU.DefaultIfEmpty()
                                     from JUPUSS in JUPUS.DefaultIfEmpty()
 
-
+                                    where (brIds.Contains(JBB.branchId)) 
 
                                     select new
                                     {
@@ -2808,7 +2838,7 @@ notes
         // حركة الاصناف الخارجية -مع العملاء والموردين
         [HttpGet]
         [Route("GetExternalMov")]
-        public IHttpActionResult GetExternalMov()
+        public IHttpActionResult GetExternalMov(int mainBranchId, int userId)
         {
             var re = Request;
             var headers = re.Headers;
@@ -2822,6 +2852,9 @@ notes
 
             if (valid) // APIKey is valid
             {
+                List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+
+
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var invListm = (from IT in entity.itemsTransfer
@@ -2848,7 +2881,11 @@ notes
                                     from JIMM in JIM.DefaultIfEmpty()
                                     from JAA in JA.DefaultIfEmpty()
                                     from JBCC in JBC.DefaultIfEmpty()
-                                    where (I.invType == "p" || I.invType == "sb" || I.invType == "s" || I.invType == "pb")// exw
+
+                                    where (brIds.Contains(JBCC.branchId)||brIds.Contains(JBB.branchId))
+                                   
+
+                                    && (I.invType == "p" || I.invType == "sb" || I.invType == "s" || I.invType == "pb")// exw
 
                                     select new
                                     {
@@ -2957,7 +2994,7 @@ notes
         // حركة الاصناف الداخلية -بين الفروع والمخازن
         [HttpGet]
         [Route("GetInternalMov")]
-        public IHttpActionResult GetInternalMov()
+        public IHttpActionResult GetInternalMov(int mainBranchId, int userId)
         {
             var re = Request;
             var headers = re.Headers;
@@ -2971,6 +3008,8 @@ notes
 
             if (valid) // APIKey is valid
             {
+                List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var invListm = (from IT in entity.itemsTransfer
@@ -2997,11 +3036,12 @@ notes
                                     from JIMM in JIM.DefaultIfEmpty()
                                     from JAA in JA.DefaultIfEmpty()
                                     from JBCC in JBC.DefaultIfEmpty()
-                                    where (I.invType == "ex") || (
+                                    where( (I.invType == "ex") || (
                                     (I.invType == "im" && I.invoiceMainId == null) ?
                                     (entity.invoices.Where(x => x.invoiceMainId == I.invoiceId && x.invType == "ex").ToList().Count > 0)
                                     : (I.invType == "im" && I.invoiceMainId != null)
-                                    ? entity.invoices.Where(x => x.invoiceId == I.invoiceMainId && x.invType == "ex").ToList().Count > 0 : false)
+                                    ? entity.invoices.Where(x => x.invoiceId == I.invoiceMainId && x.invType == "ex").ToList().Count > 0 : false))
+                                    && (brIds.Contains(JBCC.branchId) || brIds.Contains(JBB.branchId))
 
                                     select new
                                     {
@@ -3156,7 +3196,7 @@ notes
         // عناصر الجرد
         [HttpGet]
         [Route("GetInventory")]
-        public IHttpActionResult GetInventory()
+        public IHttpActionResult GetInventory(int mainBranchId, int userId)
         {
             var re = Request;
             var headers = re.Headers;
@@ -3171,6 +3211,8 @@ notes
 
             if (valid) // APIKey is valid
             {
+                List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var List = (from c in entity.inventoryItemLocation
@@ -3181,6 +3223,7 @@ notes
                                 join lo in entity.locations on l.locationId equals lo.locationId
                                 join usr in entity.users on i.updateUserId equals usr.userId
                                 //   join s in entity.sections on lo.sectionId equals s.sectionId
+                                where (brIds.Contains(lo.branches.branchId)) 
                                 select new
                                 {
                                     usr.username,
@@ -3251,7 +3294,7 @@ notes
         //
         [HttpGet]
         [Route("GetInventoryItems")]
-        public IHttpActionResult GetInventoryItems()
+        public IHttpActionResult GetInventoryItems(int mainBranchId, int userId)
         {
             var re = Request;
             var headers = re.Headers;
@@ -3266,6 +3309,8 @@ notes
 
             if (valid) // APIKey is valid
             {
+                List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var List = (from c in entity.inventoryItemLocation
@@ -3275,6 +3320,7 @@ notes
                                 join un in entity.units on u.unitId equals un.unitId
                                 join lo in entity.locations on l.locationId equals lo.locationId
                                 //   join s in entity.sections on lo.sectionId equals s.sectionId
+                                where (brIds.Contains(lo.branches.branchId))
                                 select new
                                 {
                                     inventoryILId = c.id,
@@ -3386,7 +3432,7 @@ notes
         // العناصر التالفة
         [HttpGet]
         [Route("GetDesItems")]
-        public IHttpActionResult GetDesItems()
+        public IHttpActionResult GetDesItems(int mainBranchId, int userId)
         {
             var re = Request;
             var headers = re.Headers;
@@ -3400,6 +3446,8 @@ notes
 
             if (valid) // APIKey is valid
             {
+                List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var invListm = (from IT in entity.itemsTransfer
@@ -3420,7 +3468,10 @@ notes
                                     from JUPUS in JUPUSR.DefaultIfEmpty()
                                     from duu in Dusr.DefaultIfEmpty()
                                     from JBCC in JBC.DefaultIfEmpty()
-                                    where I.invType == "d"
+                                    where I.invType == "d" &&
+                                    (brIds.Contains(JBCC.branchId) || brIds.Contains(BP.branchId))
+
+
 
                                     select new
                                     {
@@ -3500,7 +3551,7 @@ notes
         // العناصر الناقصة
         [HttpGet]
         [Route("GetFallsItems")]
-        public IHttpActionResult GetFallsItems()
+        public IHttpActionResult GetFallsItems(int mainBranchId, int userId)
         {
             var re = Request;
             var headers = re.Headers;
@@ -3514,6 +3565,8 @@ notes
 
             if (valid) // APIKey is valid
             {
+                List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var invListm = (from IT in entity.itemsTransfer
@@ -3534,7 +3587,8 @@ notes
                                     from JUPUS in JUPUSR.DefaultIfEmpty()
                                     from duu in Dusr.DefaultIfEmpty()
                                     from JBCC in JBC.DefaultIfEmpty()
-                                    where I.invType == "sh"
+                                    where I.invType == "sh" &&
+                                     (brIds.Contains(JBCC.branchId) || brIds.Contains(BP.branchId))
 
                                     select new
                                     {
@@ -3643,6 +3697,7 @@ notes
 
             if (valid)
             {
+              //  List<int> brIds = AllowedBranchsId(mainBranchId, userId);
                 using (incposdbEntities entity = new incposdbEntities())
                 {
 
@@ -3663,7 +3718,10 @@ notes
                                                         from jucc in juc.DefaultIfEmpty()
                                                         from jcrd in jcr.DefaultIfEmpty()
                                                         from jbbo in jbo.DefaultIfEmpty()
-                                                        where (C.transType == "p")//( C.transType == "p" && C.side==Side)
+                                                        where (C.transType == "p")
+                                                        //&&  (brIds.Contains(jpp.branches.branchId) || brIds.Contains(jpcc.branches.branchId))
+
+                                                        //( C.transType == "p" && C.side==Side)
                                                         select new CashTransferModel()
                                                         {
                                                             cashTransId = C.cashTransId,
@@ -3767,6 +3825,7 @@ notes
 
             if (valid)
             {
+                //List<int> brIds = AllowedBranchsId(mainBranchId, userId);
                 using (incposdbEntities entity = new incposdbEntities())
                 {
 
@@ -3788,6 +3847,8 @@ notes
                                                         from jcrd in jcr.DefaultIfEmpty()
                                                         from jbbo in jbo.DefaultIfEmpty()
                                                         where (C.side == "bn" && C.isConfirm == 1 && C.docNum != null)
+                                                       // &&(brIds.Contains(jpp.branches.branchId) || brIds.Contains(jpcc.branches.branchId))
+
                                                         select new CashTransferModel()
                                                         {
                                                             cashTransId = C.cashTransId,
@@ -3890,8 +3951,10 @@ notes
 
             if (valid)
             {
+              //  List<int> brIds = AllowedBranchsId(mainBranchId, userId);
                 using (incposdbEntities entity = new incposdbEntities())
                 {
+
 
                     List<CashTransferModel> cachlist = (from C in entity.cashTransfer
                                                         join b in entity.banks on C.bankId equals b.bankId into jb
@@ -3910,7 +3973,10 @@ notes
                                                         from jucc in juc.DefaultIfEmpty()
                                                         from jcrd in jcr.DefaultIfEmpty()
                                                         from jbbo in jbo.DefaultIfEmpty()
-                                                        where (C.transType == "d")//( C.transType == "p" && C.side==Side)
+                                                        where (C.transType == "d")
+                                                         //&& (brIds.Contains(jpp.branches.branchId) || brIds.Contains(jpcc.branches.branchId))
+
+                                                        //( C.transType == "p" && C.side==Side)
                                                         select new CashTransferModel()
                                                         {
                                                             cashTransId = C.cashTransId,
@@ -3993,6 +4059,8 @@ notes
 
             if (valid)
             {
+
+               // List<int> brIds = AllowedBranchsId(mainBranchId, userId);
                 using (incposdbEntities entity = new incposdbEntities())
                 {
 
@@ -4018,6 +4086,8 @@ notes
                                     entity.cashTransfer.Where(x2 => x2.cashTransId == (int)C.cashTransIdSource).FirstOrDefault().isConfirm == 1 :
                                     entity.cashTransfer.Where(x2 => C.cashTransId == (int)x2.cashTransIdSource).FirstOrDefault().isConfirm == 1
                                     ))
+                                 //  && (brIds.Contains(jpp.branches.branchId) || brIds.Contains(jpcc.branches.branchId))
+
 
                                     select new
                                     {
@@ -4153,6 +4223,8 @@ notes
 
             if (valid)
             {
+              //  List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+
                 using (incposdbEntities entity = new incposdbEntities())
                 {
 
@@ -4178,6 +4250,9 @@ notes
                                     from jshh in jsh.DefaultIfEmpty()
                                     from jinvv in jinv.DefaultIfEmpty()//yasmine
                                     where (C.side == "c" || C.side == "v" || C.side == "b" || C.side == "u" || C.side == "sh")//( C.transType == "p" && C.side==Side)
+                                     
+                                    //&& (brIds.Contains(jpp.branches.branchId) || brIds.Contains(jpcc.branches.branchId))
+
                                     select new
                                     {
                                         cashTransId = C.cashTransId,
@@ -4392,7 +4467,8 @@ notes
         #region
         //  يومية الفواتير العامة
 
-      
+   
+
         [HttpGet]
         [Route("Getdailyinvoice")]
         public IHttpActionResult Getdailyinvoice(int mainBranchId, int userId, DateTime? date)//,DateTime? date
@@ -4531,10 +4607,10 @@ notes
             return NotFound();
         }
 
-        //  يومية الفواتير الخاصة بمستخدم
+        // يومية فواتير المشتريات العامة في قسم التقارير
         [HttpGet]
-        [Route("GetUserdailyinvoice")]
-        public IHttpActionResult GetUserdailyinvoice()
+        [Route("GetPurdailyinvoice")]
+        public IHttpActionResult GetPurdailyinvoice(int mainBranchId, int userId, DateTime? date)//,DateTime? date
         {
             var re = Request;
             var headers = re.Headers;
@@ -4550,6 +4626,13 @@ notes
 
             if (valid) // APIKey is valid
             {
+                BranchesController branchc = new BranchesController();
+                List<branches> branchesList = new List<branches>();
+                branchesList = branchc.BrListByBranchandUser(mainBranchId, userId);
+                List<int> bridlist = new List<int>();
+                Calculate calc = new Calculate();
+                bridlist.AddRange(branchesList.Select(x => x.branchId).ToList());
+
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var invListm = (from I in entity.invoices
@@ -4569,8 +4652,143 @@ notes
                                     from JIMM in JIM.DefaultIfEmpty()
                                     from JAA in JA.DefaultIfEmpty()
                                     from JBCC in JBC.DefaultIfEmpty()
-                                   // where (JUPUS.userId == userId)
+                                    where (bridlist.Contains(JBCC.branchId)|| bridlist.Contains(JPP.branches.branchId)) &&
+                                    (I.invType == "pw" || I.invType == "pd"
+                                    || I.invType == "p" || I.invType == "pbd" || I.invType == "pbw" || I.invType == "pb"
+                                    || I.invType == "pod" || I.invType == "po")
+                                    // && calc.changeDateformat(I.updateDate, "yyyy-MM-dd")== calc.changeDateformat(date, "yyyy-MM-dd")
+                                    //&& DateTime.Compare((DateTime)IO.startDate, DateTime.Now) <= 0
+                                    //    && DateTime.Compare((DateTime)calc.changeDateformat(I.updateDate, "yyyy-MM-dd"), (DateTime)calc.changeDateformat(date, "yyyy-MM-dd")) >= 0
 
+                                    select new
+                                    {
+
+
+                                        //  Convert.ToDateTime()
+                                        I.invoiceId,
+                                        count = entity.itemsTransfer.Where(x => x.invoiceId == I.invoiceId).Count(),
+                                        I.invNumber,
+
+                                        I.posId,
+                                        I.invType,
+                                        I.total,
+                                        I.totalNet,
+                                        I.paid,
+                                        I.deserved,
+                                        I.deservedDate,
+                                        I.invDate,
+                                        I.invoiceMainId,
+                                        I.invCase,
+                                        I.invTime,
+                                        I.notes,
+                                        I.vendorInvNum,
+                                        I.vendorInvDate,
+                                        I.createUserId,
+                                        I.updateDate,
+                                        I.updateUserId,
+                                        I.branchId,
+                                        discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
+                                        I.discountType,
+                                        I.tax,
+                                        I.name,
+                                        I.isApproved,
+
+                                        //
+                                        I.branchCreatorId,
+                                        branchCreatorName = JBCC.name,
+                                        //
+                                        // branchName = JBB.name,
+
+                                        //     branchType = JBB.type,
+                                        posName = JPP.name,
+                                        posCode = JPP.code,
+
+                                        agentCode = JAA.code,
+                                        //
+                                        agentName = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb")) ?
+                                        "unknown" : JAA.name,
+
+
+                                        //   agentType = JAA.type,
+                                        agentType = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
+                                        ? "c" : JAA.type,
+                                        agentId = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
+                                        ? 0 : I.agentId,
+
+
+                                        cuserName = JUU.name,
+                                        cuserLast = JUU.lastname,
+                                        cUserAccName = JUU.username,
+                                        uuserName = JUPUS.name,
+                                        uuserLast = JUPUS.lastname,
+                                        uUserAccName = JUPUS.username,
+                                        agentCompany = ((JAA.company == null || JAA.company == "") && (I.invType == "s" || I.invType == "sb")) ?
+                                        "unknown" : JAA.company,
+
+                                        //username
+
+                                        //  I.invoiceId,
+                                        //    JBB.name
+                                    }).ToList();
+
+                    invListm = invListm.Where(X => DateTime.Compare((DateTime)calc.changeDateformat(X.updateDate, "yyyy-MM-dd"), (DateTime)calc.changeDateformat(date, "yyyy-MM-dd")) == 0).ToList();
+
+
+                    if (invListm == null)
+                        return NotFound();
+                    else
+                        return Ok(invListm);
+                }
+
+
+            }
+
+            //else
+            return NotFound();
+        }
+
+        //  يومية الفواتير الخاصة بمستخدم
+        [HttpGet]
+        [Route("GetUserdailyinvoice")]
+        public IHttpActionResult GetUserdailyinvoice(int mainBranchId, int userId)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+
+
+            if (valid) // APIKey is valid
+            {
+                List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var invListm = (from I in entity.invoices
+
+                                        //  join B in entity.branches on I.branchId equals B.branchId into JB
+                                    join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
+                                    join A in entity.agents on I.agentId equals A.agentId into JA
+                                    join U in entity.users on I.createUserId equals U.userId into JU
+                                    join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
+                                    join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
+                                    join P in entity.pos on I.posId equals P.posId into JP
+
+                                    //   from JBB in JB
+                                    from JPP in JP.DefaultIfEmpty()
+                                    from JUU in JU.DefaultIfEmpty()
+                                    from JUPUS in JUPUSR.DefaultIfEmpty()
+                                    from JIMM in JIM.DefaultIfEmpty()
+                                    from JAA in JA.DefaultIfEmpty()
+                                    from JBCC in JBC.DefaultIfEmpty()
+                                        // where (JUPUS.userId == userId)
+                                    where (brIds.Contains(JBCC.branchId)|| brIds.Contains(JPP.branches.branchId))
                                     select new
                                     {
 
@@ -4710,7 +4928,7 @@ notes
                                    && (C.transType == "d" ?
                                    entity.cashTransfer.Where(x2 => x2.cashTransId == (int)C.cashTransIdSource).FirstOrDefault().isConfirm == 1 :
                                    entity.cashTransfer.Where(x2 => C.cashTransId == (int)x2.cashTransIdSource).FirstOrDefault().isConfirm == 1
-                                   )))  && bridlist.Contains(jpp.branches.branchId)
+                                   )))  &&( bridlist.Contains(jpp.branches.branchId) || bridlist.Contains(jpcc.branches.branchId))
                                     select new
                                     {
                                         cashTransId = C.cashTransId,
@@ -4805,7 +5023,7 @@ notes
         // يومية الصندوق الخاصة بالمستخدم
         [HttpGet]
         [Route("GetUserDailyStatement")]
-        public IHttpActionResult GetUserDailyStatement( int userId)
+        public IHttpActionResult GetUserDailyStatement(int mainBranchId, int userId)
         {
             var re = Request;
             var headers = re.Headers;
@@ -4825,7 +5043,8 @@ notes
             if (valid)
             {
 
-               
+                List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+
                 using (incposdbEntities entity = new incposdbEntities())
                 {
 
@@ -4853,7 +5072,9 @@ notes
                                    && (C.transType == "d" ?
                                    entity.cashTransfer.Where(x2 => x2.cashTransId == (int)C.cashTransIdSource).FirstOrDefault().isConfirm == 1 :
                                    entity.cashTransfer.Where(x2 => C.cashTransId == (int)x2.cashTransIdSource).FirstOrDefault().isConfirm == 1
-                                   )))&& (int)C.updateUserId==userId)
+                                   )))&&  (brIds.Contains(jpp.branches.branchId) || brIds.Contains(jpcc.branches.branchId)))
+
+
                                     select new
                                     {
                                         cashTransId = C.cashTransId,
