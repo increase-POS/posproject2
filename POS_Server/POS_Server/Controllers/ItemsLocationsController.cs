@@ -95,8 +95,7 @@ namespace POS_Server.Controllers
                     var docImageList = (from b in entity.itemsLocations where b.quantity > 0 && b.invoiceId != null
                                         join u in entity.itemsUnits on b.itemUnitId equals u.itemUnitId
                                         join i in entity.items on u.itemId equals i.itemId
-                                        join l in entity.locations on b.locationId equals l.locationId
-                                        join s in entity.sections on l.sectionId equals s.sectionId where s.branchId == branchId 
+                                        join l in entity.locations on b.locationId equals l.locationId where l.sections.branchId == branchId 
 
                                         select new ItemLocationModel
                                         {
@@ -114,8 +113,8 @@ namespace POS_Server.Controllers
                                             updateUserId = b.updateUserId,
                                             itemName = i.name,
                                             location = l.x + l.y + l.z,
-                                            section = s.name,
-                                            sectionId = s.sectionId,
+                                            section = l.sections.name,
+                                            sectionId = l.sectionId,
                                             itemType = i.type,
                                             unitName = u.units.name,
                                             invoiceId = b.invoiceId,
@@ -1647,14 +1646,6 @@ namespace POS_Server.Controllers
                     foreach (itemsTransfer item in itemList)
                     {
                         lockItem(item.itemUnitId.Value,invoiceId, branchId, (int)item.quantity, userId);
-
-                        //bool isExcedded = isExceddMinQuantity((int)item.itemUnitId, (int)branchId, userId);
-                        //if (isExcedded == true) //add notification
-                        //{
-                        //    var itemId = entity.itemsUnits.Where(x => x.itemUnitId == item.itemUnitId).Select(x => x.itemId).Single();
-                        //    var itemV = entity.items.Find(itemId);
-                        //    notificationController.addNotifications(objectName, notificationObj, (int)branchId, itemV.name);
-                        //}
                     }
                 }
                 return true;
@@ -1714,8 +1705,8 @@ namespace POS_Server.Controllers
                 {
                     dic = lockUpperUnit(itemUnitId, branchId, requiredAmount, userId);
 
-                    var unit = entity.itemsUnits.Where(x => x.itemUnitId == itemUnitId).Select(x => new { x.unitId, x.itemId }).FirstOrDefault();
-                    var upperUnit = entity.itemsUnits.Where(x => x.subUnitId == unit.unitId && x.itemId == unit.itemId).Select(x => new { x.unitValue, x.itemUnitId }).FirstOrDefault();
+                    //var unit = entity.itemsUnits.Where(x => x.itemUnitId == itemUnitId).Select(x => new { x.unitId, x.itemId }).FirstOrDefault();
+                    //var upperUnit = entity.itemsUnits.Where(x => x.subUnitId == unit.unitId && x.itemId == unit.itemId).Select(x => new { x.unitValue, x.itemUnitId }).FirstOrDefault();
                     if (dic["remainQuantity"] > 0)
                     {
                         var item = (from il in entity.itemsLocations
@@ -1919,7 +1910,7 @@ namespace POS_Server.Controllers
                 var unit = entity.itemsUnits.Where(x => x.itemUnitId == itemUnitId).Select(x => new { x.unitId, x.itemId,x.unitValue }).FirstOrDefault();
                 var upperUnit = entity.itemsUnits.Where(x => x.subUnitId == unit.unitId && x.itemId == unit.itemId).Select(x => new { x.unitValue, x.itemUnitId }).FirstOrDefault();
 
-                if (upperUnit != null )
+                if (upperUnit != null && upperUnit.itemUnitId != itemUnitId)
                 {
                     decimal unitValue = (decimal)upperUnit.unitValue;
                     int breakNum = (int)Math.Ceiling(requiredAmount / unitValue);

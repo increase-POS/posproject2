@@ -112,7 +112,7 @@ namespace POS_Server.Controllers
                        ctbankName = jbb.name,
                            ctagentName = jaa.name,
                            ctusersName = juu.name,
-                           ctusersLName = jpp.name,
+                           ctusersLName = juu.lastname,
                            ctposName = jpp.name,
                            ctposCreatorName = jpcc.name,
 

@@ -96,7 +96,7 @@ namespace POS_Server.Controllers
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    var List = (from c in entity.inventoryItemLocation.Where(c => c.amountDestroyed > 0 && c.isDestroyed == false && c.Inventory.branchId == branchId && c.Inventory.inventoryType =="n")
+                    var List = (from c in entity.inventoryItemLocation.Where(c => c.amountDestroyed > 0 && c.isDestroyed == false && c.Inventory.branchId == branchId && c.Inventory.inventoryType =="n" && c.Inventory.isActive == 1)
                                 join l in entity.itemsLocations on c.itemLocationId equals l.itemsLocId
                                 join u in entity.itemsUnits on l.itemUnitId equals u.itemUnitId
                                 join un in entity.units on u.unitId equals un.unitId
@@ -159,7 +159,7 @@ namespace POS_Server.Controllers
                 using (incposdbEntities entity = new incposdbEntities())
                 {         
                     var List = (from c in entity.inventoryItemLocation
-                                .Where(c => c.realAmount - c.amount > 0  && c.Inventory.branchId == branchId && c.isFalls == false  && c.Inventory.inventoryType =="n" )
+                                .Where(c => c.realAmount - c.amount > 0  && c.Inventory.branchId == branchId && c.isFalls == false  && c.Inventory.inventoryType =="n" && c.Inventory.isActive == 1 )
                                 join l in entity.itemsLocations on c.itemLocationId equals l.itemsLocId
                                 join u in entity.itemsUnits on l.itemUnitId equals u.itemUnitId
                                 join un in entity.units on u.unitId equals un.unitId

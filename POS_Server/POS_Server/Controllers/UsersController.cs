@@ -35,31 +35,31 @@ namespace POS_Server.Controllers
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    var usersList = entity.users.Where( u => u.isActive == 1)
+                    var usersList = entity.users.Where(u => u.isActive == 1)
                     .Select(u => new UserModel
                     {
-                        userId=  u.userId,
-                        username =  u.username,
-                        password =  u.password,
-                        name =  u.name,
-                        lastname =  u.lastname,
-                        fullName = u.name +" "+ u.lastname,
-                        job =  u.job,
-                        workHours =  u.workHours,
-                        createDate =  u.createDate,
-                        updateDate =  u.updateDate,
-                        createUserId =  u.createUserId,
-                        updateUserId =  u.updateUserId,
-                        phone =  u.phone,
-                        mobile =  u.mobile,
-                        email =  u.email,
-                        notes =  u.notes,
-                        address =  u.address,
-                        isActive =  u.isActive,
-                        isOnline =  u.isOnline,
+                        userId = u.userId,
+                        username = u.username,
+                        password = u.password,
+                        name = u.name,
+                        lastname = u.lastname,
+                        fullName = u.name + " " + u.lastname,
+                        job = u.job,
+                        workHours = u.workHours,
+                        createDate = u.createDate,
+                        updateDate = u.updateDate,
+                        createUserId = u.createUserId,
+                        updateUserId = u.updateUserId,
+                        phone = u.phone,
+                        mobile = u.mobile,
+                        email = u.email,
+                        notes = u.notes,
+                        address = u.address,
+                        isActive = u.isActive,
+                        isOnline = u.isOnline,
                         image = u.image,
-                        balance= u.balance,
-                        balanceType =u.balanceType,
+                        balance = u.balance,
+                        balanceType = u.balanceType,
                     })
                     .ToList();
 
@@ -67,6 +67,108 @@ namespace POS_Server.Controllers
                         return NotFound();
                     else
                         return Ok(usersList);
+                }
+            }
+            //else
+            return NotFound();
+        }
+
+
+        [HttpGet]
+        [Route("Getloginuser")]
+        public IHttpActionResult Getloginuser(string userName, string password)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            List<UserModel> usersList = new List<UserModel>();
+            UserModel user = new UserModel();
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                UserModel emptyuser = new UserModel();
+
+                emptyuser.createDate = DateTime.Now;
+                emptyuser.updateDate = DateTime.Now;
+                emptyuser.username = user.username;
+                emptyuser.createUserId = 0;
+                emptyuser.updateUserId = 0;
+                emptyuser.userId = 0;
+                emptyuser.isActive = 0;
+                emptyuser.isOnline = 0;
+                emptyuser.canDelete = false;
+                emptyuser.balance = 0;
+                emptyuser.balanceType = 0;
+
+
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    usersList = entity.users.Where(u => u.isActive == 1 && u.username == userName)
+                    .Select(u => new UserModel
+                    {
+                        userId = u.userId,
+                        username = u.username,
+                        password = u.password,
+                        name = u.name,
+                        lastname = u.lastname,
+                        fullName = u.name + " " + u.lastname,
+                        job = u.job,
+                        workHours = u.workHours,
+                        createDate = u.createDate,
+                        updateDate = u.updateDate,
+                        createUserId = u.createUserId,
+                        updateUserId = u.updateUserId,
+                        phone = u.phone,
+                        mobile = u.mobile,
+                        email = u.email,
+                        notes = u.notes,
+                        address = u.address,
+                        isActive = u.isActive,
+                        isOnline = u.isOnline,
+                        image = u.image,
+                        balance = u.balance,
+                        balanceType = u.balanceType,
+                    })
+                    .ToList();
+
+
+                    if (usersList == null)
+                    {
+                        user = emptyuser;
+                      
+                        // rong user
+                        return Ok(user);
+                    }
+                    else
+                    {
+                        user = usersList.Where(i => i.username == userName).FirstOrDefault();
+                        if (user.password.Equals(password))
+                        {
+                            // correct username and pasword
+                            return Ok(user);
+                        }
+                        else
+                        {
+                            // rong pass return just username
+                            user = emptyuser;
+                         
+                            user.username = userName;
+                        
+                            return Ok(user);
+
+                        }
+                    }
+
+
+
+
+
                 }
             }
             //else
@@ -115,7 +217,7 @@ namespace POS_Server.Controllers
                         isActive = u.isActive,
                         isOnline = u.isOnline,
                         image = u.image,
-                        balance=u.balance,
+                        balance = u.balance,
                         balanceType = u.balanceType,
 
                     })
@@ -272,7 +374,7 @@ namespace POS_Server.Controllers
             var re = Request;
             var headers = re.Headers;
             string token = "";
-           
+
             if (headers.Contains("APIKey"))
             {
                 token = headers.GetValues("APIKey").First();
@@ -299,7 +401,7 @@ namespace POS_Server.Controllers
                 try
                 {
                     using (incposdbEntities entity = new incposdbEntities())
-                    { 
+                    {
                         var userEntity = entity.Set<users>();
                         var catEntity = entity.Set<categoryuser>();
                         if (newObject.userId == 0)
@@ -339,7 +441,7 @@ namespace POS_Server.Controllers
                                     catEntity.Add(cu);
                                 }
                                 entity.SaveChanges();
-                                return Ok( tmpUser.userId);
+                                return Ok(tmpUser.userId);
                             }
                         }
                         else
@@ -360,13 +462,13 @@ namespace POS_Server.Controllers
                             tmpUser.notes = newObject.notes;
                             tmpUser.address = newObject.address;
                             tmpUser.isActive = newObject.isActive;
-                            tmpUser.balance = newObject.balance ;
+                            tmpUser.balance = newObject.balance;
                             tmpUser.balanceType = newObject.balanceType;
                             tmpUser.isOnline = newObject.isOnline;
                             entity.SaveChanges();
                             return Ok(tmpUser.userId);
                         }
-                    }                
+                    }
                 }
                 catch
                 {
@@ -383,16 +485,16 @@ namespace POS_Server.Controllers
             var re = Request;
             var headers = re.Headers;
             string token = "";
-            
-           
-           
+
+
+
             if (headers.Contains("APIKey"))
             {
                 token = headers.GetValues("APIKey").First();
             }
-      
-       
-          
+
+
+
             Validation validation = new Validation();
             bool valid = validation.CheckApiKey(token);
             if (valid)
@@ -437,7 +539,7 @@ namespace POS_Server.Controllers
                         return NotFound();
                     }
                 }
-              
+
             }
             else
                 return NotFound();
