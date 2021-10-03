@@ -595,7 +595,7 @@ namespace POS.View
                         item.minUnitId = minUnitId;
                         item.maxUnitId = maxUnitId;
 
-                        int res =int.Parse( await itemModel.saveItem(item));
+                        int res = await itemModel.saveItem(item);
                         if (res == -1)// إظهار رسالة الترقية
                             Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpgrade"), animation: ToasterAnimation.FadeIn);
 
@@ -694,13 +694,13 @@ namespace POS.View
                         item.maxUnitId = maxUnitId;
                         // };
 
-                        string res = await itemModel.saveItem(item);
+                        int res = await itemModel.saveItem(item);
                         if (!res.Equals("0"))
                             Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
                         else
                             Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
-                        int itemId = int.Parse(res);
+                        int itemId =  res ;
 
                         await itemModel.uploadImage(openFileDialog.FileName, Md5Encription.MD5Hash("Inc-m" + itemId.ToString()), itemId);
 
@@ -834,11 +834,11 @@ namespace POS.View
 
             item.isActive = 1;
 
-            string s = await itemModel.saveItem(item);
+            int s = await itemModel.saveItem(item);
 
-            if (s.Equals("true")) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopActive"));
+            if (s > 0 )  
                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
-            else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+            else  
                 Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
             await RefrishItems();
             Txb_searchitems_TextChanged(null, null);

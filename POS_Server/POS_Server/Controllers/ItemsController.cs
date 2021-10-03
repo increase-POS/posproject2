@@ -78,6 +78,67 @@ namespace POS_Server.Controllers
                                                  })
                                    .ToList();
 
+                    var itemsofferslist = (from off in entity.offers
+
+                                           join itof in entity.itemsOffers on off.offerId equals itof.offerId // itemsOffers and offers 
+
+                                           //  join iu in entity.itemsUnits on itof.iuId  equals  iu.itemUnitId //itemsUnits and itemsOffers
+                                           join iu in entity.itemsUnits on itof.iuId equals iu.itemUnitId
+                                           //from un in entity.units
+                                           select new ItemSalePurModel()
+                                           {
+                                               itemId = iu.itemId,
+                                               itemUnitId = itof.iuId,
+                                               offerName = off.name,
+                                               offerId = off.offerId,
+                                               discountValue = off.discountValue,
+                                               isNew = 0,
+                                               isOffer = 1,
+                                               isActiveOffer = off.isActive,
+                                               startDate = off.startDate,
+                                               endDate = off.endDate,
+                                               unitId = iu.unitId,
+
+                                               price = iu.price,
+                                               discountType = off.discountType,
+                                               desPrice = iu.price,
+                                               defaultSale = iu.defaultSale,
+
+                                           }).Where(IO => IO.isActiveOffer == 1 && DateTime.Compare((DateTime)IO.startDate, DateTime.Now) <= 0 && System.DateTime.Compare((DateTime)IO.endDate, DateTime.Now) >= 0 && IO.defaultSale == 1).Distinct().ToList();
+                    //.Where(IO => IO.isActiveOffer == 1 && DateTime.Compare(IO.startDate,DateTime.Now)<0 && System.DateTime.Compare(IO.endDate, DateTime.Now) > 0).ToList();
+
+                    // test
+
+                    var unt = (from unitm in entity.itemsUnits
+                               join untb in entity.units on unitm.unitId equals untb.unitId
+                               join itemtb in entity.items on unitm.itemId equals itemtb.itemId
+
+                               select new ItemSalePurModel()
+                               {
+                                   itemId = itemtb.itemId,
+                                   name = itemtb.name,
+                                   code = itemtb.code,
+
+
+                                   max = itemtb.max,
+                                   maxUnitId = itemtb.maxUnitId,
+                                   minUnitId = itemtb.minUnitId,
+                                   min = itemtb.min,
+
+                                   parentId = itemtb.parentId,
+                                   isActive = itemtb.isActive,
+
+                                   isOffer = 0,
+                                   desPrice = 0,
+
+                                   offerName = "",
+                                   createDate = itemtb.createDate,
+                                   defaultSale = unitm.defaultSale,
+                                   unitName = untb.name,
+                                   unitId = untb.unitId,
+                                   price = unitm.price,
+
+                               }).Where(a => a.defaultSale == 1).Distinct().ToList();
 
                     if (itemsList.Count > 0)
                     {
@@ -110,11 +171,43 @@ namespace POS_Server.Controllers
                             }
                             itemsList[i].canDelete = canDelete;
 
-                            // is new
-                            
-                           
+                            foreach (var itofflist in itemsofferslist)
+                            {
 
-                                int res = DateTime.Compare((DateTime)itemsList[i].createDate, cmpdate);
+
+                                if (itemsList[i].itemId == itofflist.itemId)
+                                {
+
+                                    // get unit name of item that has the offer
+                                    using (incposdbEntities entitydb = new incposdbEntities())
+                                    { // put it in item
+                                        var un = entitydb.units
+                                         .Where(a => a.unitId == itofflist.unitId)
+                                            .Select(u => new
+                                            {
+                                                u.name
+                                           ,
+                                                u.unitId
+                                            }).FirstOrDefault();
+                                        itemsList[i].unitName = un.name;
+                                    }
+
+                                    itemsList[i].offerName = itemsList[i].offerName + "- " + itofflist.offerName;
+                                    itemsList[i].isOffer = 1;
+                                    itemsList[i].startDate = itofflist.startDate;
+                                    itemsList[i].endDate = itofflist.endDate;
+                                    itemsList[i].itemUnitId = itofflist.itemUnitId;
+                                    itemsList[i].offerId = itofflist.offerId;
+                                    itemsList[i].isActiveOffer = itofflist.isActiveOffer;
+
+                                    itemsList[i].price = itofflist.price;
+                                    itemsList[i].priceTax = itemsList[i].price + (itemsList[i].price * itemsList[i].taxes / 100);
+
+                                }
+                            }
+                            //itemsList[i].desPrice = itemsList[i].priceTax - totaldis;
+                            // is new
+                            int res = DateTime.Compare((DateTime)itemsList[i].createDate, cmpdate);
                                 if (res >= 0)
                                 {
                                 itemsList[i].isNew= 1;
@@ -173,7 +266,7 @@ namespace POS_Server.Controllers
         }
         [HttpGet]
         [Route("GetSaleOrPurItems")]
-        public IHttpActionResult GetSaleOrPurItems(int categoryId, short defaultSale, short defaultPurchase,int branchId)
+        public IHttpActionResult GetSaleOrPurItems(int categoryId, short defaultSale, short defaultPurchase, int branchId)
         {
             var re = Request;
             var headers = re.Headers;
@@ -211,10 +304,10 @@ namespace POS_Server.Controllers
 
                         // get items
                         var result = Recursive(categoriesList, categoryId);
-                        searchPredicate = searchPredicate.Or(item => categoriesId.Contains((int)item.categoryId));
+                        searchPredicate = searchPredicate.Or(item => categoriesId.Contains((int)item.categoryId) && item.isActive == 1);
                     }
                     else
-                        searchPredicate = searchPredicate.Or(item => true);
+                        searchPredicate = searchPredicate.Or(item => item.isActive == 1);
                     #region items for order
                     if (defaultSale == 0 && defaultPurchase == 0)
                     {
@@ -233,7 +326,6 @@ namespace POS_Server.Controllers
                                              min = I.min,
 
                                              parentId = I.parentId,
-                                             isActive = I.isActive,
                                              image = I.image,
                                              type = I.type,
                                              details = I.details,
@@ -406,13 +498,13 @@ namespace POS_Server.Controllers
                     else if (defaultSale != 0)
                     {
                         unitPredicate = unitPredicate.Or(unit => unit.defaultSale == 1);
-                 
+
                         var itemsList = (from I in entity.items.Where(searchPredicate)
                                          join u in entity.itemsUnits on I.itemId equals u.itemId
                                          join il in entity.itemsLocations on u.itemUnitId equals il.itemUnitId
                                          join l in entity.locations on il.locationId equals l.locationId
                                          join s in entity.sections.Where(x => x.branchId == branchId) on l.sectionId equals s.sectionId
-                                         where il.quantity > 0 
+                                         where il.quantity > 0
                                          select new ItemSalePurModel()
                                          {
                                              itemId = I.itemId,
@@ -436,8 +528,8 @@ namespace POS_Server.Controllers
                                              createUserId = I.createUserId,
                                              updateUserId = I.updateUserId,
                                              isNew = 0,
-                                            price = I.itemsUnits.Where(iu => iu.itemId == I.itemId && iu.defaultPurchase == 1).Select(iu => iu.price).FirstOrDefault(),
-                                            itemUnitId = I.itemsUnits.Where(iu => iu.itemId == I.itemId && iu.defaultPurchase == 1).Select(iu => iu.itemUnitId).FirstOrDefault(),
+                                             price = I.itemsUnits.Where(iu => iu.itemId == I.itemId && iu.defaultPurchase == 1).Select(iu => iu.price).FirstOrDefault(),
+                                             itemUnitId = I.itemsUnits.Where(iu => iu.itemId == I.itemId && iu.defaultPurchase == 1).Select(iu => iu.itemUnitId).FirstOrDefault(),
 
                                          }).DistinctBy(x => x.itemId)
                                   .ToList();
@@ -530,7 +622,7 @@ namespace POS_Server.Controllers
                             }
 
                             // get set is new
-                           // DateTime cmpdate = DateTime.Now.AddDays(newdays);
+                            // DateTime cmpdate = DateTime.Now.AddDays(newdays);
 
                             int res = DateTime.Compare((DateTime)iunlist.createDate, cmpdate);
                             if (res >= 0)
@@ -604,6 +696,7 @@ namespace POS_Server.Controllers
                         unitPredicate = unitPredicate.Or(unit => unit.defaultPurchase == 1);
                         var itemsList = (from I in entity.items.Where(searchPredicate)
                                          join u in entity.itemsUnits on I.itemId equals u.itemId
+                                         where I.type != "p"
                                          select new ItemModel()
                                          {
                                              itemId = I.itemId,
@@ -632,7 +725,7 @@ namespace POS_Server.Controllers
                                          }).DistinctBy(x => x.itemId)
                                        .ToList();
 
-                        foreach(ItemModel itemL in itemsList)
+                        foreach (ItemModel itemL in itemsList)
                         {
                             int res = DateTime.Compare((DateTime)itemL.createDate, cmpdate);
                             if (res >= 0)

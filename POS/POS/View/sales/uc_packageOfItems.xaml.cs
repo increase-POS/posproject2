@@ -1276,13 +1276,13 @@ namespace POS.View
                         item.categoryId = Convert.ToInt32(cb_categorie.SelectedValue);
                         item.createUserId = MainWindow.userID;
 
-                        string res = await itemModel.saveItem(item);
+                        int res = await itemModel.saveItem(item);
                         if (!res.Equals("0"))
                             Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                         else
                             Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
-                        int itemId = int.Parse(res);
+                        int itemId = res;
 
                         if (openFileDialog.FileName != "")
                         {
@@ -1360,13 +1360,13 @@ namespace POS.View
                         item.categoryId = Convert.ToInt32(cb_categorie.SelectedValue);
                         item.createUserId = MainWindow.userID;
 
-                        string res = await itemModel.saveItem(item);
+                        int res = await itemModel.saveItem(item);
                         if (!res.Equals("0"))
                             Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
                         else
                             Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
-                        int itemId = int.Parse(res);
+                        int itemId = res;
 
                         if (openFileDialog.FileName != "")
                         {
@@ -1487,9 +1487,9 @@ namespace POS.View
         {//activate
             item.isActive = 1;
 
-            string s = await itemModel.saveItem(item);
+            int s = await itemModel.saveItem(item);
 
-            if (!s.Equals("0"))
+            if (s > 0)
                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
             else
                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);

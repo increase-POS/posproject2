@@ -7,7 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-
+using POS_Server.Classes;
 namespace POS_Server.Controllers
 {
     [RoutePrefix("api/Statistics")]
@@ -3179,7 +3179,7 @@ notes
                                 join u in entity.itemsUnits on l.itemUnitId equals u.itemUnitId
                                 join un in entity.units on u.unitId equals un.unitId
                                 join lo in entity.locations on l.locationId equals lo.locationId
-                                join usr in entity.users on i.updateUserId equals usr.updateUserId
+                                join usr in entity.users on i.updateUserId equals usr.userId
                                 //   join s in entity.sections on lo.sectionId equals s.sectionId
                                 select new
                                 {
@@ -4391,9 +4391,11 @@ notes
         //اليومية
         #region
         //  يومية الفواتير العامة
+
+      
         [HttpGet]
         [Route("Getdailyinvoice")]
-        public IHttpActionResult Getdailyinvoice(int mainBranchId, int userId)
+        public IHttpActionResult Getdailyinvoice(int mainBranchId, int userId, DateTime? date)//,DateTime? date
         {
             var re = Request;
             var headers = re.Headers;
@@ -4413,7 +4415,7 @@ notes
                 List<branches> branchesList = new List<branches>();
                 branchesList = branchc.BrListByBranchandUser(mainBranchId, userId);
                 List<int> bridlist = new List<int>();
-
+                Calculate calc = new Calculate();
                 bridlist.AddRange(branchesList.Select(x => x.branchId).ToList());
 
                 using (incposdbEntities entity = new incposdbEntities())
@@ -4435,11 +4437,18 @@ notes
                                     from JIMM in JIM.DefaultIfEmpty()
                                     from JAA in JA.DefaultIfEmpty()
                                     from JBCC in JBC.DefaultIfEmpty()
-                                    where (bridlist.Contains(JBCC.branchId))
+                                    where (bridlist.Contains(JBCC.branchId)) && (I.invType == "sd" || I.invType == "s"
+                                    || I.invType == "sbd" || I.invType == "sd" || I.invType == "ord" || I.invType == "or"
+                                    || I.invType == "q" || I.invType == "qd")
+                                    // && calc.changeDateformat(I.updateDate, "yyyy-MM-dd")== calc.changeDateformat(date, "yyyy-MM-dd")
+                                    //&& DateTime.Compare((DateTime)IO.startDate, DateTime.Now) <= 0
+                                    //    && DateTime.Compare((DateTime)calc.changeDateformat(I.updateDate, "yyyy-MM-dd"), (DateTime)calc.changeDateformat(date, "yyyy-MM-dd")) >= 0
 
                                     select new
                                     {
 
+
+                                        //  Convert.ToDateTime()
                                         I.invoiceId,
                                         count = entity.itemsTransfer.Where(x => x.invoiceId == I.invoiceId).Count(),
                                         I.invNumber,
@@ -4506,12 +4515,15 @@ notes
                                         //    JBB.name
                                     }).ToList();
 
+                    invListm = invListm.Where(X => DateTime.Compare((DateTime)calc.changeDateformat(X.updateDate, "yyyy-MM-dd"), (DateTime)calc.changeDateformat(date, "yyyy-MM-dd")) == 0).ToList();
+
 
                     if (invListm == null)
                         return NotFound();
                     else
                         return Ok(invListm);
                 }
+
 
             }
 

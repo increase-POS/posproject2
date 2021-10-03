@@ -317,39 +317,39 @@ namespace POS_Server.Controllers
             else
                 return "-1";
         }
-        [HttpPost]
-        [Route("delete")]
-        public IHttpActionResult delete(int inventoryId)
-        {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
-            {
-                token = headers.GetValues("APIKey").First();
-            }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
+        //[HttpPost]
+        //[Route("delete")]
+        //public IHttpActionResult delete(int inventoryId)
+        //{
+        //    var re = Request;
+        //    var headers = re.Headers;
+        //    string token = "";
+        //    if (headers.Contains("APIKey"))
+        //    {
+        //        token = headers.GetValues("APIKey").First();
+        //    }
+        //    Validation validation = new Validation();
+        //    bool valid = validation.CheckApiKey(token);
 
-            if (valid)
-            {
-                try
-                {
-                    using (incposdbEntities entity = new incposdbEntities())
-                    {
-                        var inv = entity.Inventory.Find(inventoryId);
-                        inv.isActive = 0;
-                        entity.SaveChanges();
-                        return Ok(1);
-                    }
-                }
-                catch
-                {
-                    return Ok(0);
-                }
-            }
-            return NotFound();
-        }
+        //    if (valid)
+        //    {
+        //        try
+        //        {
+        //            using (incposdbEntities entity = new incposdbEntities())
+        //            {
+        //                var inv = entity.Inventory.Find(inventoryId);
+        //                inv.isActive = 0;
+        //                entity.SaveChanges();
+        //                return Ok(1);
+        //            }
+        //        }
+        //        catch
+        //        {
+        //            return Ok(0);
+        //        }
+        //    }
+        //    return NotFound();
+        //}
         [HttpPost]
         [Route("Delete")]
         public IHttpActionResult Delete(int inventoryId, int userId, bool final)
@@ -377,12 +377,12 @@ namespace POS_Server.Controllers
                             Inventory Deleterow = entity.Inventory.Find(inventoryId);
                             entity.Inventory.Remove(Deleterow);
                             entity.SaveChanges();
-                            return Ok("OK");
+                            return Ok("1");
                         }
                     }
                     catch
                     {
-                        return NotFound();
+                        return Ok(0);
                     }
                 }
                 else
@@ -397,17 +397,14 @@ namespace POS_Server.Controllers
                             Obj.updateUserId = userId;
                             Obj.updateDate = DateTime.Now;
                             entity.SaveChanges();
-                            return Ok("Ok");
+                            return Ok("1");
                         }
                     }
                     catch
                     {
-                        return NotFound();
+                        return Ok(0);
                     }
                 }
-
-
-
             }
             else
                 return NotFound();
