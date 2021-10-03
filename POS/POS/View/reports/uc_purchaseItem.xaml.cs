@@ -84,8 +84,11 @@ namespace POS.View.reports
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                Items = await statisticModel.GetPuritem();
-                rowChartItems = await statisticModel.GetPuritem();
+                List<ItemTransferInvoice> templist = new List<ItemTransferInvoice>();
+                templist= await statisticModel.GetPuritem((int)MainWindow.branchID, (int)MainWindow.userID);
+
+                Items = templist;
+                rowChartItems = templist;
 
                 comboBranches = await branchModel.GetAllWithoutMain("b");
 

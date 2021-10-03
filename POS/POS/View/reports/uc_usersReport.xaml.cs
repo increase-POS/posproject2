@@ -111,9 +111,11 @@ namespace POS.View.reports
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+                List<Invoice> templist = new List<Invoice>();
+                templist= await statisticModel.GetPurinv((int)MainWindow.branchID, (int)MainWindow.userID);
 
-                Invoices = await statisticModel.GetPurinv();
-                rowChartInvoice = await statisticModel.GetPurinv();
+                Invoices = templist;
+                rowChartInvoice = templist;
 
                 comboBranches = await branchModel.GetAllWithoutMain("b");
                 comboPoss = await posModel.GetPosAsync();

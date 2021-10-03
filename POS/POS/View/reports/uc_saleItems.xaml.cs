@@ -73,8 +73,10 @@ namespace POS.View.reports
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            Items = await statisticModel.GetSaleitem();
-            rowChartItems = await statisticModel.GetSaleitem();
+            List<ItemTransferInvoice> templist = new List<ItemTransferInvoice>();
+            templist = await statisticModel.GetSaleitem((int)MainWindow.branchID, (int)MainWindow.userID);
+            Items = templist;
+            rowChartItems = templist;
 
             comboBranches = await branchModel.GetAllWithoutMain("b");
 

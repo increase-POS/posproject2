@@ -545,49 +545,49 @@ namespace POS.Classes
         //****************************************************
 
 
-        public async Task<List<ItemLocation>> GetItemQtyInBranches(int itemId, int UnitId, string BranchType)
-        {
-            List<ItemLocation> list = null;
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetItemQtyInBranches?itemId=" + itemId + "&UnitId=" + UnitId + "&BranchType=" + BranchType);
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Get;
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage response = await client.SendAsync(request);
+        //public async Task<List<ItemLocation>> GetItemQtyInBranches(int itemId, int UnitId, string BranchType)
+        //{
+        //    List<ItemLocation> list = null;
+        //    // ... Use HttpClient.
+        //    ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+        //    using (var client = new HttpClient())
+        //    {
+        //        ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+        //        client.BaseAddress = new Uri(Global.APIUri);
+        //        client.DefaultRequestHeaders.Clear();
+        //        client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+        //        client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+        //        HttpRequestMessage request = new HttpRequestMessage();
+        //        request.RequestUri = new Uri(Global.APIUri + "Statistics/GetItemQtyInBranches?itemId=" + itemId + "&UnitId=" + UnitId + "&BranchType=" + BranchType);
+        //        request.Headers.Add("APIKey", Global.APIKey);
+        //        request.Method = HttpMethod.Get;
+        //        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        //        HttpResponseMessage response = await client.SendAsync(request);
 
-                if (response.IsSuccessStatusCode)
-                {
-                    var jsonString = await response.Content.ReadAsStringAsync();
-                    jsonString = jsonString.Replace("\\", string.Empty);
-                    jsonString = jsonString.Trim('"');
-                    // fix date format
-                    JsonSerializerSettings settings = new JsonSerializerSettings
-                    {
-                        Converters = new List<JsonConverter> { new BadDateFixingConverter() },
-                        DateParseHandling = DateParseHandling.None
-                    };
-                    list = JsonConvert.DeserializeObject<List<ItemLocation>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
-                    return list;
-                }
-                else //web api sent error response 
-                {
-                    list = new List<ItemLocation>();
-                }
-                return list;
-            }
-        }
+        //        if (response.IsSuccessStatusCode)
+        //        {
+        //            var jsonString = await response.Content.ReadAsStringAsync();
+        //            jsonString = jsonString.Replace("\\", string.Empty);
+        //            jsonString = jsonString.Trim('"');
+        //            // fix date format
+        //            JsonSerializerSettings settings = new JsonSerializerSettings
+        //            {
+        //                Converters = new List<JsonConverter> { new BadDateFixingConverter() },
+        //                DateParseHandling = DateParseHandling.None
+        //            };
+        //            list = JsonConvert.DeserializeObject<List<ItemLocation>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+        //            return list;
+        //        }
+        //        else //web api sent error response 
+        //        {
+        //            list = new List<ItemLocation>();
+        //        }
+        //        return list;
+        //    }
+        //}
 
         // المشتريات
-        public async Task<List<Invoice>> GetPurinv()
+        public async Task<List<Invoice>> GetPurinv(int mainBranchId, int userId)
         {
             List<Invoice> list = null;
             // ... Use HttpClient.
@@ -600,7 +600,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetPurinv");
+                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetPurinv?mainBranchId=" + mainBranchId + "&userId=" + userId );
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -630,7 +630,7 @@ namespace POS.Classes
 
         // الاصناف في الفواتير
 
-        public async Task<List<ItemTransferInvoice>> GetPuritem()
+        public async Task<List<ItemTransferInvoice>> GetPuritem(int mainBranchId, int userId)
         {
             List<ItemTransferInvoice> list = null;
             // ... Use HttpClient.
@@ -643,7 +643,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetPuritem");
+                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetPuritem?mainBranchId=" + mainBranchId + "&userId=" + userId);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -672,7 +672,7 @@ namespace POS.Classes
         }
 
         // عدد الاصناف في الفواتير
-        public async Task<List<ItemTransferInvoice>> GetPuritemcount()
+        public async Task<List<ItemTransferInvoice>> GetPuritemcount(int mainBranchId, int userId)
         {
             List<ItemTransferInvoice> list = null;
             // ... Use HttpClient.
@@ -685,7 +685,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetPuritemcount");
+                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetPuritemcount?mainBranchId=" + mainBranchId + "&userId=" + userId);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -713,264 +713,264 @@ namespace POS.Classes
             }
         }
 
-        public async Task<List<Invoice>> GetPurinvwithCount()
-        {
-            List<Invoice> list = null;
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetPurinvwithCount");
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Get;
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage response = await client.SendAsync(request);
+        //public async Task<List<Invoice>> GetPurinvwithCount()
+        //{
+        //    List<Invoice> list = null;
+        //    // ... Use HttpClient.
+        //    ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+        //    using (var client = new HttpClient())
+        //    {
+        //        ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+        //        client.BaseAddress = new Uri(Global.APIUri);
+        //        client.DefaultRequestHeaders.Clear();
+        //        client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+        //        client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+        //        HttpRequestMessage request = new HttpRequestMessage();
+        //        request.RequestUri = new Uri(Global.APIUri + "Statistics/GetPurinvwithCount");
+        //        request.Headers.Add("APIKey", Global.APIKey);
+        //        request.Method = HttpMethod.Get;
+        //        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        //        HttpResponseMessage response = await client.SendAsync(request);
 
-                if (response.IsSuccessStatusCode)
-                {
-                    var jsonString = await response.Content.ReadAsStringAsync();
-                    jsonString = jsonString.Replace("\\", string.Empty);
-                    jsonString = jsonString.Trim('"');
-                    // fix date format
-                    JsonSerializerSettings settings = new JsonSerializerSettings
-                    {
-                        Converters = new List<JsonConverter> { new BadDateFixingConverter() },
-                        DateParseHandling = DateParseHandling.None
-                    };
-                    list = JsonConvert.DeserializeObject<List<Invoice>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
-                    return list;
-                }
-                else //web api sent error response 
-                {
-                    list = new List<Invoice>();
-                }
-                return list;
-            }
-        }
+        //        if (response.IsSuccessStatusCode)
+        //        {
+        //            var jsonString = await response.Content.ReadAsStringAsync();
+        //            jsonString = jsonString.Replace("\\", string.Empty);
+        //            jsonString = jsonString.Trim('"');
+        //            // fix date format
+        //            JsonSerializerSettings settings = new JsonSerializerSettings
+        //            {
+        //                Converters = new List<JsonConverter> { new BadDateFixingConverter() },
+        //                DateParseHandling = DateParseHandling.None
+        //            };
+        //            list = JsonConvert.DeserializeObject<List<Invoice>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+        //            return list;
+        //        }
+        //        else //web api sent error response 
+        //        {
+        //            list = new List<Invoice>();
+        //        }
+        //        return list;
+        //    }
+        //}
 
-        public async Task<List<Branch>> GetinvInBranch()
-        {
-            List<Branch> list = null;
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetinvInBranch");
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Get;
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage response = await client.SendAsync(request);
+        //public async Task<List<Branch>> GetinvInBranch()
+        //{
+        //    List<Branch> list = null;
+        //    // ... Use HttpClient.
+        //    ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+        //    using (var client = new HttpClient())
+        //    {
+        //        ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+        //        client.BaseAddress = new Uri(Global.APIUri);
+        //        client.DefaultRequestHeaders.Clear();
+        //        client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+        //        client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+        //        HttpRequestMessage request = new HttpRequestMessage();
+        //        request.RequestUri = new Uri(Global.APIUri + "Statistics/GetinvInBranch");
+        //        request.Headers.Add("APIKey", Global.APIKey);
+        //        request.Method = HttpMethod.Get;
+        //        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        //        HttpResponseMessage response = await client.SendAsync(request);
 
-                if (response.IsSuccessStatusCode)
-                {
-                    var jsonString = await response.Content.ReadAsStringAsync();
-                    jsonString = jsonString.Replace("\\", string.Empty);
-                    jsonString = jsonString.Trim('"');
-                    // fix date format
-                    JsonSerializerSettings settings = new JsonSerializerSettings
-                    {
-                        Converters = new List<JsonConverter> { new BadDateFixingConverter() },
-                        DateParseHandling = DateParseHandling.None
-                    };
-                    list = JsonConvert.DeserializeObject<List<Branch>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
-                    return list;
-                }
-                else //web api sent error response 
-                {
-                    list = new List<Branch>();
-                }
-                return list;
-            }
-        }
+        //        if (response.IsSuccessStatusCode)
+        //        {
+        //            var jsonString = await response.Content.ReadAsStringAsync();
+        //            jsonString = jsonString.Replace("\\", string.Empty);
+        //            jsonString = jsonString.Trim('"');
+        //            // fix date format
+        //            JsonSerializerSettings settings = new JsonSerializerSettings
+        //            {
+        //                Converters = new List<JsonConverter> { new BadDateFixingConverter() },
+        //                DateParseHandling = DateParseHandling.None
+        //            };
+        //            list = JsonConvert.DeserializeObject<List<Branch>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+        //            return list;
+        //        }
+        //        else //web api sent error response 
+        //        {
+        //            list = new List<Branch>();
+        //        }
+        //        return list;
+        //    }
+        //}
 
 
-        public async Task<List<Invoice>> GetPoswithInvCount()
-        {
-            List<Invoice> list = null;
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetPoswithInvCount");
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Get;
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage response = await client.SendAsync(request);
+        //public async Task<List<Invoice>> GetPoswithInvCount()
+        //{
+        //    List<Invoice> list = null;
+        //    // ... Use HttpClient.
+        //    ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+        //    using (var client = new HttpClient())
+        //    {
+        //        ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+        //        client.BaseAddress = new Uri(Global.APIUri);
+        //        client.DefaultRequestHeaders.Clear();
+        //        client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+        //        client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+        //        HttpRequestMessage request = new HttpRequestMessage();
+        //        request.RequestUri = new Uri(Global.APIUri + "Statistics/GetPoswithInvCount");
+        //        request.Headers.Add("APIKey", Global.APIKey);
+        //        request.Method = HttpMethod.Get;
+        //        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        //        HttpResponseMessage response = await client.SendAsync(request);
 
-                if (response.IsSuccessStatusCode)
-                {
-                    var jsonString = await response.Content.ReadAsStringAsync();
-                    jsonString = jsonString.Replace("\\", string.Empty);
-                    jsonString = jsonString.Trim('"');
-                    // fix date format
-                    JsonSerializerSettings settings = new JsonSerializerSettings
-                    {
-                        Converters = new List<JsonConverter> { new BadDateFixingConverter() },
-                        DateParseHandling = DateParseHandling.None
-                    };
-                    list = JsonConvert.DeserializeObject<List<Invoice>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
-                    return list;
-                }
-                else //web api sent error response 
-                {
-                    list = new List<Invoice>();
-                }
-                return list;
-            }
-        }
+        //        if (response.IsSuccessStatusCode)
+        //        {
+        //            var jsonString = await response.Content.ReadAsStringAsync();
+        //            jsonString = jsonString.Replace("\\", string.Empty);
+        //            jsonString = jsonString.Trim('"');
+        //            // fix date format
+        //            JsonSerializerSettings settings = new JsonSerializerSettings
+        //            {
+        //                Converters = new List<JsonConverter> { new BadDateFixingConverter() },
+        //                DateParseHandling = DateParseHandling.None
+        //            };
+        //            list = JsonConvert.DeserializeObject<List<Invoice>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+        //            return list;
+        //        }
+        //        else //web api sent error response 
+        //        {
+        //            list = new List<Invoice>();
+        //        }
+        //        return list;
+        //    }
+        //}
 
         // عرض فواتير كل نقطة بيع
 
-        public async Task<List<Invoice>> GetPoswithInv()
-        {
-            List<Invoice> list = null;
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetPoswithInv");
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Get;
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage response = await client.SendAsync(request);
+        //public async Task<List<Invoice>> GetPoswithInv()
+        //{
+        //    List<Invoice> list = null;
+        //    // ... Use HttpClient.
+        //    ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+        //    using (var client = new HttpClient())
+        //    {
+        //        ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+        //        client.BaseAddress = new Uri(Global.APIUri);
+        //        client.DefaultRequestHeaders.Clear();
+        //        client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+        //        client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+        //        HttpRequestMessage request = new HttpRequestMessage();
+        //        request.RequestUri = new Uri(Global.APIUri + "Statistics/GetPoswithInv");
+        //        request.Headers.Add("APIKey", Global.APIKey);
+        //        request.Method = HttpMethod.Get;
+        //        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        //        HttpResponseMessage response = await client.SendAsync(request);
 
-                if (response.IsSuccessStatusCode)
-                {
-                    var jsonString = await response.Content.ReadAsStringAsync();
-                    jsonString = jsonString.Replace("\\", string.Empty);
-                    jsonString = jsonString.Trim('"');
-                    // fix date format
-                    JsonSerializerSettings settings = new JsonSerializerSettings
-                    {
-                        Converters = new List<JsonConverter> { new BadDateFixingConverter() },
-                        DateParseHandling = DateParseHandling.None
-                    };
-                    list = JsonConvert.DeserializeObject<List<Invoice>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
-                    return list;
-                }
-                else //web api sent error response 
-                {
-                    list = new List<Invoice>();
-                }
-                return list;
-            }
-        }
+        //        if (response.IsSuccessStatusCode)
+        //        {
+        //            var jsonString = await response.Content.ReadAsStringAsync();
+        //            jsonString = jsonString.Replace("\\", string.Empty);
+        //            jsonString = jsonString.Trim('"');
+        //            // fix date format
+        //            JsonSerializerSettings settings = new JsonSerializerSettings
+        //            {
+        //                Converters = new List<JsonConverter> { new BadDateFixingConverter() },
+        //                DateParseHandling = DateParseHandling.None
+        //            };
+        //            list = JsonConvert.DeserializeObject<List<Invoice>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+        //            return list;
+        //        }
+        //        else //web api sent error response 
+        //        {
+        //            list = new List<Invoice>();
+        //        }
+        //        return list;
+        //    }
+        //}
 
 
         // عدد فواتير المشتريات ومرتجع المشتريات ومسودات كل فرع
 
-        public async Task<List<Invoice>> GetinvCountByBranch()
-        {
-            List<Invoice> list = null;
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetinvCountByBranch");
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Get;
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage response = await client.SendAsync(request);
+        //public async Task<List<Invoice>> GetinvCountByBranch()
+        //{
+        //    List<Invoice> list = null;
+        //    // ... Use HttpClient.
+        //    ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+        //    using (var client = new HttpClient())
+        //    {
+        //        ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+        //        client.BaseAddress = new Uri(Global.APIUri);
+        //        client.DefaultRequestHeaders.Clear();
+        //        client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+        //        client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+        //        HttpRequestMessage request = new HttpRequestMessage();
+        //        request.RequestUri = new Uri(Global.APIUri + "Statistics/GetinvCountByBranch");
+        //        request.Headers.Add("APIKey", Global.APIKey);
+        //        request.Method = HttpMethod.Get;
+        //        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        //        HttpResponseMessage response = await client.SendAsync(request);
 
-                if (response.IsSuccessStatusCode)
-                {
-                    var jsonString = await response.Content.ReadAsStringAsync();
-                    jsonString = jsonString.Replace("\\", string.Empty);
-                    jsonString = jsonString.Trim('"');
-                    // fix date format
-                    JsonSerializerSettings settings = new JsonSerializerSettings
-                    {
-                        Converters = new List<JsonConverter> { new BadDateFixingConverter() },
-                        DateParseHandling = DateParseHandling.None
-                    };
-                    list = JsonConvert.DeserializeObject<List<Invoice>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
-                    return list;
-                }
-                else //web api sent error response 
-                {
-                    list = new List<Invoice>();
-                }
-                return list;
-            }
-        }
+        //        if (response.IsSuccessStatusCode)
+        //        {
+        //            var jsonString = await response.Content.ReadAsStringAsync();
+        //            jsonString = jsonString.Replace("\\", string.Empty);
+        //            jsonString = jsonString.Trim('"');
+        //            // fix date format
+        //            JsonSerializerSettings settings = new JsonSerializerSettings
+        //            {
+        //                Converters = new List<JsonConverter> { new BadDateFixingConverter() },
+        //                DateParseHandling = DateParseHandling.None
+        //            };
+        //            list = JsonConvert.DeserializeObject<List<Invoice>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+        //            return list;
+        //        }
+        //        else //web api sent error response 
+        //        {
+        //            list = new List<Invoice>();
+        //        }
+        //        return list;
+        //    }
+        //}
 
         // مبيعات
 
         // فواتير المبيعات بكل انواعها
-        public async Task<List<Invoice>> GetSaleinv()
-        {
-            List<Invoice> list = null;
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetSaleinv");
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Get;
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage response = await client.SendAsync(request);
+        //public async Task<List<Invoice>> GetSaleinv()
+        //{
+        //    List<Invoice> list = null;
+        //    // ... Use HttpClient.
+        //    ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+        //    using (var client = new HttpClient())
+        //    {
+        //        ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+        //        client.BaseAddress = new Uri(Global.APIUri);
+        //        client.DefaultRequestHeaders.Clear();
+        //        client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+        //        client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+        //        HttpRequestMessage request = new HttpRequestMessage();
+        //        request.RequestUri = new Uri(Global.APIUri + "Statistics/GetSaleinv");
+        //        request.Headers.Add("APIKey", Global.APIKey);
+        //        request.Method = HttpMethod.Get;
+        //        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        //        HttpResponseMessage response = await client.SendAsync(request);
 
-                if (response.IsSuccessStatusCode)
-                {
-                    var jsonString = await response.Content.ReadAsStringAsync();
-                    jsonString = jsonString.Replace("\\", string.Empty);
-                    jsonString = jsonString.Trim('"');
-                    // fix date format
-                    JsonSerializerSettings settings = new JsonSerializerSettings
-                    {
-                        Converters = new List<JsonConverter> { new BadDateFixingConverter() },
-                        DateParseHandling = DateParseHandling.None
-                    };
-                    list = JsonConvert.DeserializeObject<List<Invoice>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
-                    return list;
-                }
-                else //web api sent error response 
-                {
-                    list = new List<Invoice>();
-                }
-                return list;
-            }
-        }
+        //        if (response.IsSuccessStatusCode)
+        //        {
+        //            var jsonString = await response.Content.ReadAsStringAsync();
+        //            jsonString = jsonString.Replace("\\", string.Empty);
+        //            jsonString = jsonString.Trim('"');
+        //            // fix date format
+        //            JsonSerializerSettings settings = new JsonSerializerSettings
+        //            {
+        //                Converters = new List<JsonConverter> { new BadDateFixingConverter() },
+        //                DateParseHandling = DateParseHandling.None
+        //            };
+        //            list = JsonConvert.DeserializeObject<List<Invoice>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+        //            return list;
+        //        }
+        //        else //web api sent error response 
+        //        {
+        //            list = new List<Invoice>();
+        //        }
+        //        return list;
+        //    }
+        //}
 
 
         // الفواتير مع العناصر
-        public async Task<List<ItemTransferInvoice>> GetSaleitem()
+        public async Task<List<ItemTransferInvoice>> GetSaleitem(int mainBranchId, int userId)
         {
             List<ItemTransferInvoice> list = null;
             // ... Use HttpClient.
@@ -983,7 +983,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetSaleitem");
+                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetSaleitem?mainBranchId=" + mainBranchId + "&userId=" + userId);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -1012,7 +1012,7 @@ namespace POS.Classes
         }
 
         //  عدد العناصر في فواتير عرض السعر
-        public async Task<List<ItemTransferInvoice>> GetQtitemcount()
+        public async Task<List<ItemTransferInvoice>> GetQtitemcount(int mainBranchId, int userId)
         {
             List<ItemTransferInvoice> list = null;
             // ... Use HttpClient.
@@ -1025,7 +1025,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetQtitemcount");
+                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetQtitemcount?mainBranchId=" + mainBranchId + "&userId=" + userId);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -1055,7 +1055,7 @@ namespace POS.Classes
 
 
         //  للمبيعات عدد العناصر في فواتير الطلبات
-        public async Task<List<ItemTransferInvoice>> Getorderitemcount()
+        public async Task<List<ItemTransferInvoice>> Getorderitemcount(int mainBranchId, int userId)
         {
             List<ItemTransferInvoice> list = null;
             // ... Use HttpClient.
@@ -1068,7 +1068,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Statistics/Getorderitemcount");
+                request.RequestUri = new Uri(Global.APIUri + "Statistics/Getorderitemcount?mainBranchId=" + mainBranchId + "&userId=" + userId);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -1098,7 +1098,7 @@ namespace POS.Classes
 
 
         //    الشراء عدد العناصر في فواتير طلبات
-        public async Task<List<ItemTransferInvoice>> GetPurorderitemcount()
+        public async Task<List<ItemTransferInvoice>> GetPurorderitemcount(int mainBranchId, int userId)
         {
             List<ItemTransferInvoice> list = null;
             // ... Use HttpClient.
@@ -1111,7 +1111,47 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetPurorderitemcount");
+                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetPurorderitemcount?mainBranchId=" + mainBranchId + "&userId=" + userId);
+                request.Headers.Add("APIKey", Global.APIKey);
+                request.Method = HttpMethod.Get;
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonString = await response.Content.ReadAsStringAsync();
+                    jsonString = jsonString.Replace("\\", string.Empty);
+                    jsonString = jsonString.Trim('"');
+                    // fix date format
+                    JsonSerializerSettings settings = new JsonSerializerSettings
+                    {
+                        Converters = new List<JsonConverter> { new BadDateFixingConverter() },
+                        DateParseHandling = DateParseHandling.None
+                    };
+                    list = JsonConvert.DeserializeObject<List<ItemTransferInvoice>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    return list;
+                }
+                else //web api sent error response 
+                {
+                    list = new List<ItemTransferInvoice>();
+                }
+                return list;
+            }
+        }
+        public async Task<List<ItemTransferInvoice>> GetSaleitemcount(int mainBranchId, int userId)
+        {
+            List<ItemTransferInvoice> list = null;
+            // ... Use HttpClient.
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            using (var client = new HttpClient())
+            {
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                client.BaseAddress = new Uri(Global.APIUri);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+                HttpRequestMessage request = new HttpRequestMessage();
+                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetSaleitemcount?mainBranchId=" + mainBranchId + "&userId=" + userId);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -1140,46 +1180,7 @@ namespace POS.Classes
         }
 
         //
-        public async Task<List<ItemTransferInvoice>> GetSaleitemcount()
-        {
-            List<ItemTransferInvoice> list = null;
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetSaleitemcount");
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Get;
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage response = await client.SendAsync(request);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    var jsonString = await response.Content.ReadAsStringAsync();
-                    jsonString = jsonString.Replace("\\", string.Empty);
-                    jsonString = jsonString.Trim('"');
-                    // fix date format
-                    JsonSerializerSettings settings = new JsonSerializerSettings
-                    {
-                        Converters = new List<JsonConverter> { new BadDateFixingConverter() },
-                        DateParseHandling = DateParseHandling.None
-                    };
-                    list = JsonConvert.DeserializeObject<List<ItemTransferInvoice>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
-                    return list;
-                }
-                else //web api sent error response 
-                {
-                    list = new List<ItemTransferInvoice>();
-                }
-                return list;
-            }
-        }
+        #region combo
 
         public List<ItemUnitCombo> GetIUComboList(List<ItemTransferInvoice> ITInvoice)
         {
@@ -1208,11 +1209,11 @@ namespace POS.Classes
             return iulist;
 
         }
-
+        #endregion
         //OfferCombo
 
         // الفواتير  مع الكوبون
-        public async Task<List<ItemTransferInvoice>> GetSalecoupon()
+        public async Task<List<ItemTransferInvoice>> GetSalecoupon(int mainBranchId, int userId)
         {
             List<ItemTransferInvoice> list = null;
             // ... Use HttpClient.
@@ -1225,7 +1226,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetSalecoupon");
+                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetSalecoupon?mainBranchId=" + mainBranchId + "&userId=" + userId);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -1254,7 +1255,7 @@ namespace POS.Classes
         }
 
         // الفواتير مع العناصر مع الاوفر
-        public async Task<List<ItemTransferInvoice>> GetSaleOffer()
+        public async Task<List<ItemTransferInvoice>> GetSaleOffer(int mainBranchId, int userId)
         {
             List<ItemTransferInvoice> list = null;
             // ... Use HttpClient.
@@ -1267,7 +1268,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetSaleOffer");
+                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetSaleOffer?mainBranchId=" + mainBranchId + "&userId=" + userId);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -1298,7 +1299,7 @@ namespace POS.Classes
         // المخزون 
         #region Storage
 
-        public async Task<List<Storage>> GetStorage()
+        public async Task<List<Storage>> GetStorage(int mainBranchId, int userId)
         {
             List<Storage> list = null;
             // ... Use HttpClient.
@@ -1311,7 +1312,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetStorage");
+                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetStorage?mainBranchId=" + mainBranchId + "&userId=" + userId);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -1341,48 +1342,49 @@ namespace POS.Classes
 
 
         // حركة الاصناف التي دخلت الى الفرع
-        public async Task<List<ItemTransferInvoice>> GetInItems()
-        {
-            List<ItemTransferInvoice> list = null;
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetInItems");
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Get;
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage response = await client.SendAsync(request);
+        //public async Task<List<ItemTransferInvoice>> GetInItems()
+        //{
+        //    List<ItemTransferInvoice> list = null;
+        //    // ... Use HttpClient.
+        //    ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+        //    using (var client = new HttpClient())
+        //    {
+        //        ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+        //        client.BaseAddress = new Uri(Global.APIUri);
+        //        client.DefaultRequestHeaders.Clear();
+        //        client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+        //        client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+        //        HttpRequestMessage request = new HttpRequestMessage();
+        //        request.RequestUri = new Uri(Global.APIUri + "Statistics/GetInItems");
+        //        request.Headers.Add("APIKey", Global.APIKey);
+        //        request.Method = HttpMethod.Get;
+        //        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        //        HttpResponseMessage response = await client.SendAsync(request);
 
-                if (response.IsSuccessStatusCode)
-                {
-                    var jsonString = await response.Content.ReadAsStringAsync();
-                    jsonString = jsonString.Replace("\\", string.Empty);
-                    jsonString = jsonString.Trim('"');
-                    // fix date format
-                    JsonSerializerSettings settings = new JsonSerializerSettings
-                    {
-                        Converters = new List<JsonConverter> { new BadDateFixingConverter() },
-                        DateParseHandling = DateParseHandling.None
-                    };
-                    list = JsonConvert.DeserializeObject<List<ItemTransferInvoice>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
-                    return list;
-                }
-                else //web api sent error response 
-                {
-                    list = new List<ItemTransferInvoice>();
-                }
-                return list;
-            }
-        }
+        //        if (response.IsSuccessStatusCode)
+        //        {
+        //            var jsonString = await response.Content.ReadAsStringAsync();
+        //            jsonString = jsonString.Replace("\\", string.Empty);
+        //            jsonString = jsonString.Trim('"');
+        //            // fix date format
+        //            JsonSerializerSettings settings = new JsonSerializerSettings
+        //            {
+        //                Converters = new List<JsonConverter> { new BadDateFixingConverter() },
+        //                DateParseHandling = DateParseHandling.None
+        //            };
+        //            list = JsonConvert.DeserializeObject<List<ItemTransferInvoice>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+        //            return list;
+        //        }
+        //        else //web api sent error response 
+        //        {
+        //            list = new List<ItemTransferInvoice>();
+        //        }
+        //        return list;
+        //    }
+        //}
+      
         // حركة الاصناف الخارجية (مع الزبائن والموردين)
-        public async Task<List<ItemTransferInvoice>> GetExternalMov()
+        public async Task<List<ItemTransferInvoice>> GetExternalMov(int mainBranchId, int userId)
         {
             List<ItemTransferInvoice> list = null;
             // ... Use HttpClient.
@@ -1395,7 +1397,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetExternalMov");
+                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetExternalMov?mainBranchId=" + mainBranchId + "&userId=" + userId);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -1424,7 +1426,7 @@ namespace POS.Classes
         }
 
         //حركة الاصناف الداخلية بين الفروع
-        public async Task<List<ItemTransferInvoice>> GetInternalMov()
+        public async Task<List<ItemTransferInvoice>> GetInternalMov(int mainBranchId, int userId)
         {
             List<ItemTransferInvoice> list = null;
             // ... Use HttpClient.
@@ -1437,7 +1439,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetInternalMov");
+                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetInternalMov?mainBranchId=" + mainBranchId + "&userId=" + userId);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -1473,7 +1475,7 @@ namespace POS.Classes
         #region
         // عناصر الجرد
 
-        public async Task<List<InventoryClass>> GetInventory()
+        public async Task<List<InventoryClass>> GetInventory(int mainBranchId, int userId)
         {
             List<InventoryClass> list = null;
             // ... Use HttpClient.
@@ -1486,7 +1488,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetInventory");
+                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetInventory?mainBranchId=" + mainBranchId + "&userId=" + userId);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -1514,7 +1516,7 @@ namespace POS.Classes
             }
         }
 
-        public async Task<List<InventoryClass>> GetInventoryItems()
+        public async Task<List<InventoryClass>> GetInventoryItems(int mainBranchId, int userId)
         {
             List<InventoryClass> list = null;
             // ... Use HttpClient.
@@ -1527,7 +1529,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetInventoryItems");
+                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetInventoryItems?mainBranchId=" + mainBranchId + "&userId=" + userId);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -1557,7 +1559,7 @@ namespace POS.Classes
 
 
         // العناصر التالفة
-        public async Task<List<ItemTransferInvoice>> GetDesItems()
+        public async Task<List<ItemTransferInvoice>> GetDesItems(int mainBranchId, int userId)
         {
             List<ItemTransferInvoice> list = null;
             // ... Use HttpClient.
@@ -1570,7 +1572,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetDesItems");
+                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetDesItems?mainBranchId=" + mainBranchId + "&userId=" + userId);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -1599,7 +1601,7 @@ namespace POS.Classes
         }
 
         // العناصر الناقصة
-        public async Task<List<ItemTransferInvoice>> GetFallsItems()
+        public async Task<List<ItemTransferInvoice>> GetFallsItems(int mainBranchId, int userId)
         {
             List<ItemTransferInvoice> list = null;
             // ... Use HttpClient.
@@ -1612,7 +1614,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetFallsItems");
+                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetFallsItems?mainBranchId=" + mainBranchId + "&userId=" + userId);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -1702,7 +1704,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetReceipt");
+                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetReceipt?mainBranchId");
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -1747,7 +1749,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetBankTrans");
+                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetBankTrans?mainBranchId");
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -1862,6 +1864,9 @@ namespace POS.Classes
 
         }
 
+
+        // combo
+        #region
         public class VendorCombo
         {
             private int? vendorId;
@@ -2004,8 +2009,8 @@ namespace POS.Classes
             return iulist;
 
         }
-
         #endregion
+#endregion
 
         // اليومية
         #region Daily
@@ -2051,8 +2056,9 @@ namespace POS.Classes
                 return list;
             }
         }
-        // فواتير اليوميةالخاصة بمستخدم
-        public async Task<List<ItemTransferInvoice>> GetUserdailyinvoice()
+
+        // يومية فواتير المشتريات العامة في قسم التقارير
+        public async Task<List<ItemTransferInvoice>> GetPurdailyinvoice(int mainBranchId, int userId, DateTime? date)
         {
             List<ItemTransferInvoice> list = null;
             // ... Use HttpClient.
@@ -2065,7 +2071,49 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetUserdailyinvoice");
+                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetPurdailyinvoice?mainBranchId=" + mainBranchId + "&userId=" + userId + "&date=" + date);
+                request.Headers.Add("APIKey", Global.APIKey);
+                request.Method = HttpMethod.Get;
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonString = await response.Content.ReadAsStringAsync();
+                    jsonString = jsonString.Replace("\\", string.Empty);
+                    jsonString = jsonString.Trim('"');
+                    // fix date format
+                    JsonSerializerSettings settings = new JsonSerializerSettings
+                    {
+                        Converters = new List<JsonConverter> { new BadDateFixingConverter() },
+                        DateParseHandling = DateParseHandling.None
+                    };
+                    list = JsonConvert.DeserializeObject<List<ItemTransferInvoice>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    return list;
+                }
+                else //web api sent error response 
+                {
+                    list = new List<ItemTransferInvoice>();
+                }
+                return list;
+            }
+        }
+
+        // فواتير اليوميةالخاصة بمستخدم
+        public async Task<List<ItemTransferInvoice>> GetUserdailyinvoice(int mainBranchId, int userId)
+        {
+            List<ItemTransferInvoice> list = null;
+            // ... Use HttpClient.
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            using (var client = new HttpClient())
+            {
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                client.BaseAddress = new Uri(Global.APIUri);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+                HttpRequestMessage request = new HttpRequestMessage();
+                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetUserdailyinvoice?mainBranchId=" + mainBranchId + "&userId=" + userId);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -2138,7 +2186,7 @@ namespace POS.Classes
         }
 
         // يومية الصندوق الخاصة بالمستخدم
-        public async Task<List<CashTransferSts>> GetUserDailyStatement(int userId)
+        public async Task<List<CashTransferSts>> GetUserDailyStatement(int mainBranchId,int userId)
         {
             List<CashTransferSts> list = null;
             // ... Use HttpClient.
@@ -2151,7 +2199,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetUserDailyStatement?userId=" + userId);
+                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetUserDailyStatement?mainBranchId=" + mainBranchId + "&userId=" + userId);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -2182,7 +2230,9 @@ namespace POS.Classes
 
         #endregion
 
-
+       
+        /// //////////////////////////////////////////////////////////
+    
         // Combo
         #region combo
 

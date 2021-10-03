@@ -141,17 +141,33 @@ namespace POS.View.reports
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                Invoices = await statisticModel.GetSaleitemcount();
-                rowChartInvoice = await statisticModel.GetSaleitemcount();
+                List<ItemTransferInvoice> templist = new List<ItemTransferInvoice>();
+                templist = await statisticModel.GetSaleitemcount((int)MainWindow.branchID, (int)MainWindow.userID);
+                Invoices = templist;
+                rowChartInvoice = templist;
 
-                Items = await statisticModel.GetSaleitem();
-                rowChartItems = await statisticModel.GetSaleitem();
 
-                coupons = await statisticModel.GetSalecoupon();
-                rowChartCoupons = await statisticModel.GetSalecoupon();
+              
+                List<ItemTransferInvoice> templist1 = new List<ItemTransferInvoice>();
+                templist1 = await statisticModel.GetSaleitem((int)MainWindow.branchID, (int)MainWindow.userID);
+                Items = templist1;
+                rowChartItems = templist1;
 
-                Offers = await statisticModel.GetSaleOffer();
-                rowChartOffers = await statisticModel.GetSaleOffer();
+                List<ItemTransferInvoice> templist2 = new List<ItemTransferInvoice>();
+                templist2 = await statisticModel.GetSalecoupon((int)MainWindow.branchID, (int)MainWindow.userID);
+                coupons = templist2;
+                rowChartCoupons = templist2;
+
+                //coupons = await statisticModel.GetSalecoupon();
+                //rowChartCoupons = await statisticModel.GetSalecoupon();
+
+                List<ItemTransferInvoice> templist3 = new List<ItemTransferInvoice>();
+                templist3 = await statisticModel.GetSaleOffer((int)MainWindow.branchID, (int)MainWindow.userID);
+                Offers = templist3;
+                rowChartOffers = templist3;
+
+                //Offers = await statisticModel.GetSaleOffer();
+                //rowChartOffers = await statisticModel.GetSaleOffer();
 
                 comboBranches = await branchModel.GetAllWithoutMain("b");
                 comboPoss = await posModel.GetPosAsync();

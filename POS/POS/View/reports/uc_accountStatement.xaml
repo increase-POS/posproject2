@@ -321,8 +321,8 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"></ColumnDefinition>
                                         <ColumnDefinition Width="*"></ColumnDefinition>
-                                        <ColumnDefinition Width="*"></ColumnDefinition>
                                         <ColumnDefinition Width="60"></ColumnDefinition>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
                                     </Grid.ColumnDefinitions>
 
                                     <ComboBox Name="cb_vendors" 
@@ -331,7 +331,8 @@
                                               Foreground="#4E4E4E" 
                                               TextBlock.FontSize="12"
                                               Background="#f8f8f8"
-                                              BorderBrush="#737373"   BorderThickness="0" 
+                                              BorderBrush="AliceBlue"
+                                              BorderThickness="0,0,0,2" 
                                               Height="40"
                                               Margin="10,10,10,5"
                                               Padding="10,0,5,0"
@@ -340,11 +341,12 @@
                                     <ComboBox Name="cb_vendorsDate" 
                                               Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                               materialDesign:HintAssist.Hint="Date ...."
-                                              Grid.Column="2"
+                                              Grid.Column="1"
                                               Foreground="#4E4E4E" 
                                               TextBlock.FontSize="12"
                                               Background="#f8f8f8"
-                                              BorderBrush="#737373"   BorderThickness="0" 
+                                              BorderBrush="AliceBlue"
+                                              BorderThickness="0,0,0,2" 
                                               Height="40"
                                               Margin="10,10,10,5"
                                               Padding="10,0,5,0"
@@ -353,7 +355,7 @@
                                     <CheckBox x:Name="chk_allVendors"
                                               Background="{StaticResource MainColorBlue}"
                                               Grid.Row="0"
-                                              Grid.Column="3"
+                                              Grid.Column="2"
                                               Content="All"
                                               Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}"
                                               Checked="Chk_allVendors_Checked"
@@ -371,8 +373,8 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"></ColumnDefinition>
                                         <ColumnDefinition Width="*"></ColumnDefinition>
-                                        <ColumnDefinition Width="*"></ColumnDefinition>
                                         <ColumnDefinition Width="60"></ColumnDefinition>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
                                     </Grid.ColumnDefinitions>
 
                                     <ComboBox Name="cb_customer" 
@@ -381,7 +383,8 @@
                                               Foreground="#4E4E4E" 
                                               TextBlock.FontSize="12"
                                               Background="#f8f8f8"
-                                              BorderBrush="#737373"   BorderThickness="0" 
+                                              BorderBrush="AliceBlue"
+                                              BorderThickness="0,0,0,2" 
                                               Height="40"
                                               Margin="10,10,10,5"
                                               Padding="10,0,5,0"
@@ -389,11 +392,12 @@
                                     <ComboBox Name="cb_customerDate" 
                                               Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                               materialDesign:HintAssist.Hint="Date ...."
-                                              Grid.Column="2"
+                                              Grid.Column="1"
                                               Foreground="#4E4E4E" 
                                               TextBlock.FontSize="12"
                                               Background="#f8f8f8"
-                                              BorderBrush="#737373"   BorderThickness="0" 
+                                              BorderBrush="AliceBlue"
+                                              BorderThickness="0,0,0,2" 
                                               Height="40"
                                               Margin="10,10,10,5"
                                               Padding="10,0,5,0"
@@ -402,7 +406,7 @@
                                     <CheckBox x:Name="chk_allCustomers"
                                               Background="{StaticResource MainColorBlue}"
                                               Grid.Row="0"
-                                              Grid.Column="3"
+                                              Grid.Column="2"
                                               Content="All"
                                               Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}"
                                               Checked="Chk_allCustomers_Checked"
@@ -418,8 +422,8 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"></ColumnDefinition>
                                         <ColumnDefinition Width="*"></ColumnDefinition>
-                                        <ColumnDefinition Width="*"></ColumnDefinition>
                                         <ColumnDefinition Width="60"></ColumnDefinition>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
                                     </Grid.ColumnDefinitions>
 
                                     <ComboBox Name="cb_users" 
@@ -428,7 +432,8 @@
                                               Foreground="#4E4E4E" 
                                               TextBlock.FontSize="12"
                                               Background="#f8f8f8"
-                                              BorderBrush="#737373"   BorderThickness="0" 
+                                              BorderBrush="AliceBlue"
+                                              BorderThickness="0,0,0,2" 
                                               Height="40"
                                               Margin="10,10,10,5"
                                               Padding="10,0,5,0"
@@ -436,11 +441,12 @@
                                     <ComboBox Name="cb_userDate" 
                                               Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                               materialDesign:HintAssist.Hint="Date ...."
-                                              Grid.Column="2"
+                                              Grid.Column="1"
                                               Foreground="#4E4E4E" 
                                               TextBlock.FontSize="12"
                                               Background="#f8f8f8"
-                                              BorderBrush="#737373"   BorderThickness="0" 
+                                              BorderBrush="AliceBlue"
+                                              BorderThickness="0,0,0,2" 
                                               Height="40"
                                               Margin="10,10,10,5"
                                               Padding="10,0,5,0"
@@ -449,7 +455,7 @@
                                     <CheckBox x:Name="chk_allUsers"
                                               Background="{StaticResource MainColorBlue}"
                                               Grid.Row="0"
-                                              Grid.Column="3"
+                                              Grid.Column="2"
                                               Content="All"
                                               Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}"
                                               Checked="Chk_allUsers_Checked"
@@ -466,8 +472,8 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"></ColumnDefinition>
                                         <ColumnDefinition Width="*"></ColumnDefinition>
-                                        <ColumnDefinition Width="*"></ColumnDefinition>
                                         <ColumnDefinition Width="60"></ColumnDefinition>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
                                     </Grid.ColumnDefinitions>
 
                                     <ComboBox Name="cb_shipping" 
@@ -476,7 +482,8 @@
                                               Foreground="#4E4E4E" 
                                               TextBlock.FontSize="12"
                                               Background="#f8f8f8"
-                                              BorderBrush="#737373"   BorderThickness="0" 
+                                              BorderBrush="AliceBlue"
+                                              BorderThickness="0,0,0,2" 
                                               Height="40"
                                               Margin="10,10,10,5"
                                               Padding="10,0,5,0"
@@ -484,11 +491,12 @@
                                     <ComboBox Name="cb_shippingDate" 
                                               Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                               materialDesign:HintAssist.Hint="Date ...."
-                                              Grid.Column="2"
+                                              Grid.Column="1"
                                               Foreground="#4E4E4E" 
                                               TextBlock.FontSize="12"
                                               Background="#f8f8f8"
-                                              BorderBrush="#737373"   BorderThickness="0" 
+                                              BorderBrush="AliceBlue"
+                                              BorderThickness="0,0,0,2" 
                                               Height="40"
                                               Margin="10,10,10,5"
                                               Padding="10,0,5,0"
@@ -497,7 +505,7 @@
                                     <CheckBox x:Name="chk_allShippings"
                                               Background="{StaticResource MainColorBlue}"
                                               Grid.Row="0"
-                                              Grid.Column="3"
+                                              Grid.Column="2"
                                               Content="All"
                                               Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}"
                                               Checked="Chk_allShippings_Checked"

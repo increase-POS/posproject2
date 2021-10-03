@@ -66,12 +66,24 @@ namespace POS.View.reports
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                inventory = await statisticModel.GetInventory();
-                falls = await statisticModel.GetInventoryItems();
-                Destroied = await statisticModel.GetDesItems();
-                storages = await statisticModel.GetStorage();
-                itemsTransfer = await statisticModel.GetExternalMov();
-                itemsInternalTransfer = await statisticModel.GetInternalMov();
+                inventory = await statisticModel.GetInventory((int)MainWindow.branchID, (int)MainWindow.userID);
+
+                //inventory = await statisticModel.GetInventory();
+                falls = await statisticModel.GetInventoryItems((int)MainWindow.branchID, (int)MainWindow.userID);
+
+                //  falls = await statisticModel.GetInventoryItems();
+                Destroied = await statisticModel.GetDesItems((int)MainWindow.branchID, (int)MainWindow.userID);
+
+                //Destroied = await statisticModel.GetDesItems();
+                storages = await statisticModel.GetStorage((int)MainWindow.branchID, (int)MainWindow.userID);
+
+                // storages = await statisticModel.GetStorage();
+                itemsTransfer = await statisticModel.GetExternalMov((int)MainWindow.branchID, (int)MainWindow.userID);
+
+                // itemsTransfer = await statisticModel.GetExternalMov();
+                itemsInternalTransfer = await statisticModel.GetInternalMov((int)MainWindow.branchID, (int)MainWindow.userID);
+
+               // itemsInternalTransfer = await statisticModel.GetInternalMov();
                 comboBranches = await branchModel.GetAllWithoutMain("all");
 
                 comboItems = statisticModel.getItemCombo(storages);

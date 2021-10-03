@@ -140,11 +140,16 @@ namespace POS.View.purchases
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+           
+                List<ItemTransferInvoice> templist2 = new List<ItemTransferInvoice>();
+                templist2= await statisticModel.GetPuritemcount((int)MainWindow.branchID, (int)MainWindow.userID);
 
-                Invoices = await statisticModel.GetPuritemcount();
-                rowChartInvoice = await statisticModel.GetPuritemcount();
-                Items = await statisticModel.GetPuritem();
-                rowChartItems = await statisticModel.GetPuritem();
+                Invoices = templist2;
+                rowChartInvoice = templist2;
+                List<ItemTransferInvoice> templist = new List<ItemTransferInvoice>();
+                templist = await statisticModel.GetPuritem((int)MainWindow.branchID, (int)MainWindow.userID);
+                Items = templist;
+                rowChartItems = templist;
 
                 comboBranches = await branchModel.GetAllWithoutMain("b");
                 comboPoss = await posModel.GetPosAsync();
