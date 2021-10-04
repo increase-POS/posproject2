@@ -191,24 +191,103 @@ namespace POS.View.reports
             cb_branches.DisplayMemberPath = "branchCreatorName";
             cb_branches.ItemsSource = itemTrasferInvoices.Select(i => new { i.branchCreatorName, i.branchCreatorId }).Distinct();
         }
-        private void Btn_Invoice_Click(object sender, RoutedEventArgs e)
-        {
-            selectedTab = 0;
-            //path_order.Fill = Brushes.White;
-            SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
+        private async void Btn_Invoice_Click(object sender, RoutedEventArgs e)
+        {//invoice tab
+            //try
+            //{
+            //    if (sender != null)
+            //        SectionData.StartAwait(grid_main);
 
+                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
+                selectedTab = 0;
+                txt_search.Text = "";
+                chk_return.IsEnabled = true;
+                //path_order.Fill = Brushes.White;
+                //path_quotation.Fill = Brushes.White;
+                //bdrMain.RenderTransform = Animations.borderAnimation(50, bdrMain, true);
+                //ReportsHelp.paintTabControlBorder(grid_tabControl, bdr_invoice);
+                //path_invoice.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+                //ReportsHelp.showTabControlGrid(grid_father, grid_invoice);
+                //ReportsHelp.isEnabledButtons(grid_tabControl, btn_invoice);
+
+                await RefreshItemTransferInvoiceList();
+                await Search();
+
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_main);
+            //}
+            //    catch (Exception ex)
+            //    {
+            //        if (sender != null)
+            //            SectionData.EndAwait(grid_main);
+            //        SectionData.ExceptionMessage(ex, this);
+            //}
         }
-        private void Btn_order_Click(object sender, RoutedEventArgs e)
-        {
-            selectedTab = 1;
-            SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
+        private async void Btn_order_Click(object sender, RoutedEventArgs e)
+        {//order tab
+            //try
+            //{
+            //    if (sender != null)
+            //        SectionData.StartAwait(grid_main);
 
+                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
+
+                selectedTab = 1;
+                txt_search.Text = "";
+                //path_invoice.Fill = Brushes.White;
+                //path_quotation.Fill = Brushes.White;
+                //bdrMain.RenderTransform = Animations.borderAnimation(50, bdrMain, true);
+                //ReportsHelp.paintTabControlBorder(grid_tabControl, bdr_order);
+                //path_order.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+                //ReportsHelp.showTabControlGrid(grid_father, grid_order);
+                //ReportsHelp.isEnabledButtons(grid_tabControl, btn_order);
+
+                await RefreshItemTransferInvoiceList();
+                await Search();
+
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_main);
+            //}
+            //catch (Exception ex)
+            //{
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_main);
+            //    SectionData.ExceptionMessage(ex, this);
+            //}
+
+           
         }
-        private void Btn_quotation_Click(object sender, RoutedEventArgs e)
-        {
-            selectedTab = 2;
-            SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
+        private async void Btn_quotation_Click(object sender, RoutedEventArgs e)
+        {//quotation tab
+            //try
+            //{
+            //    if (sender != null)
+            //        SectionData.StartAwait(grid_main);
 
+                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
+
+                selectedTab = 2;
+                txt_search.Text = "";
+                //path_invoice.Fill = Brushes.White;
+                //path_order.Fill = Brushes.White;
+                //bdrMain.RenderTransform = Animations.borderAnimation(50, bdrMain, true);
+                //ReportsHelp.paintTabControlBorder(grid_tabControl, bdr_quotation);
+                //path_quotation.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+                //ReportsHelp.showTabControlGrid(grid_father, grid_quotation);
+                //ReportsHelp.isEnabledButtons(grid_tabControl, btn_quotation);
+
+                await RefreshItemTransferInvoiceList();
+                await Search();
+
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_main);
+            //}
+            //catch (Exception ex)
+            //{
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_main);
+            //    SectionData.ExceptionMessage(ex, this);
+            //}
         }
         private async void RefreshView_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {

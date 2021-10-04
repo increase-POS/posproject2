@@ -51,8 +51,8 @@ namespace POS.View
         }
         public uc_coupon()
         {
-            try
-            {
+            //try
+            //{
                 InitializeComponent();
                 if (System.Windows.SystemParameters.PrimaryScreenWidth >= 1440)
                 {
@@ -84,28 +84,31 @@ namespace POS.View
 
                 }
 
-            }
-            catch (Exception ex)
-            {
-                SectionData.ExceptionMessage(ex,this);
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    SectionData.ExceptionMessage(ex,this);
+            //}
         }
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
+        {//load
+            //try
+            //{
+            //    if (sender != null)
+            //        SectionData.StartAwait(grid_main);
                 MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
-                //load
+
+                #region fill discount type combo
                 var dislist = new[] {
-            new { Text = MainWindow.resourcemanager.GetString("trValueDiscount"), Value = "1" },
-            new { Text = MainWindow.resourcemanager.GetString("trPercentageDiscount"), Value = "2" },
-             };
+                    new { Text = MainWindow.resourcemanager.GetString("trValueDiscount"), Value = "1" },
+                    new { Text = MainWindow.resourcemanager.GetString("trPercentageDiscount"), Value = "2" },
+                     };
                 cb_typeDiscount.DisplayMemberPath = "Text";
                 cb_typeDiscount.SelectedValuePath = "Value";
                 cb_typeDiscount.ItemsSource = dislist;
+                #endregion
 
+                #region translate
                 if (MainWindow.lang.Equals("en"))
                 {
                     MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
@@ -118,6 +121,8 @@ namespace POS.View
                 }
 
                 translate();
+                #endregion
+
                 //tb_discountValue.Text = _numValue.ToString();
                 Keyboard.Focus(tb_code);
 
@@ -152,24 +157,24 @@ namespace POS.View
                 #endregion
 
                 #region prevent editting on date and time
-                TextBox tbStartDate = (TextBox)dp_startDate.Template.FindName("PART_TextBox", dp_startDate);
-                tbStartDate.IsReadOnly = true;
-                TextBox tbEndDate = (TextBox)dp_endDate.Template.FindName("PART_TextBox", dp_endDate);
-                tbEndDate.IsReadOnly = true;
+                //TextBox tbStartDate = (TextBox)dp_startDate.Template.FindName("PART_TextBox", dp_startDate);
+                //tbStartDate.IsReadOnly = true;
+                //TextBox tbEndDate = (TextBox)dp_endDate.Template.FindName("PART_TextBox", dp_endDate);
+                //tbEndDate.IsReadOnly = true;
                 #endregion
 
                 await RefreshCouponsList();
                 Tb_search_TextChanged(null, null);
 
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_main);
+            //}
+            //catch (Exception ex)
+            //{
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_main);
+            //    SectionData.ExceptionMessage(ex, this);
+            //}
         }
         #region Numeric
 

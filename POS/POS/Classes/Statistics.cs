@@ -2473,12 +2473,22 @@ namespace POS.Classes
             return iulist;
         }
         public class StocktakingArchivesTypeCombo
-        {
+        {//stocktype
             private int? branchId;
             private string inventoryType;
-
+            private string inventoryTypeText;
+            
             public int? BranchId { get => branchId; set => branchId = value; }
             public string InventoryType { get => inventoryType; set => inventoryType = value; }
+            public string InventoryTypeText
+            {
+                get => inventoryType == "a" ? inventoryTypeText = MainWindow.resourcemanager.GetString("trArchived")
+                     : inventoryType == "n" ? inventoryTypeText = MainWindow.resourcemanager.GetString("trSaved")
+                     : inventoryType == "d" ? inventoryTypeText = MainWindow.resourcemanager.GetString("trDraft")
+                     : "";
+
+                set => inventoryTypeText = value;
+            }
         }
 
 

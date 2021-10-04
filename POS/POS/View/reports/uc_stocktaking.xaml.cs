@@ -70,10 +70,10 @@ namespace POS.View.reports
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {//load
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
+            //try
+            //{
+            //    if (sender != null)
+            //        SectionData.StartAwait(grid_main);
                 inventory = await statisticModel.GetInventory((int)MainWindow.branchID, (int)MainWindow.userID);
 
                 //  inventory = await statisticModel.GetInventory();
@@ -127,18 +127,17 @@ namespace POS.View.reports
                 fillComboBranches(cb_stocktakingArchivedBranch);
                 fillSocktakingEvents();
 
-                fillSocktakingEvents();
                 SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), btn_archives.Tag.ToString());
 
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_main);
+            //}
+            //catch (Exception ex)
+            //{
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_main);
+            //    SectionData.ExceptionMessage(ex, this);
+            //}
         }
 
 
@@ -258,6 +257,8 @@ namespace POS.View.reports
             cb.SelectedValuePath = "branchId";
             cb.DisplayMemberPath = "name";
             cb.ItemsSource = comboBranches;
+
+            
         }
 
         private void hideAllColumn()
@@ -435,7 +436,7 @@ namespace POS.View.reports
         {
             var temp = cb_stocktakingArchivedBranch.SelectedItem as Branch;
             cb_stocktakingArchivedType.SelectedValuePath = "InventoryType";
-            cb_stocktakingArchivedType.DisplayMemberPath = "InventoryType";
+            cb_stocktakingArchivedType.DisplayMemberPath = "InventoryTypeText";
             if (temp == null)
             {
                 cb_stocktakingArchivedType.ItemsSource = cbStockType
@@ -445,6 +446,14 @@ namespace POS.View.reports
                         InventoryType = g.FirstOrDefault().InventoryType,
                         BranchId = g.FirstOrDefault().BranchId
                     }).ToList();
+                var lst = cbStockType
+                    .GroupBy(x => x.InventoryType)
+                    .Select(g => new StocktakingArchivesTypeCombo
+                    {
+                        InventoryType = g.FirstOrDefault().InventoryType,
+                        BranchId = g.FirstOrDefault().BranchId
+                    }).ToList();
+               
             }
             else
             {
@@ -457,6 +466,8 @@ namespace POS.View.reports
                         BranchId = g.FirstOrDefault().BranchId
                     }).ToList();
             }
+
+            
         }
 
        
@@ -466,12 +477,12 @@ namespace POS.View.reports
         {
             var selectedBranch = branch.SelectedItem as Branch;
             var selectedType = cb.SelectedItem as StocktakingArchivesTypeCombo;
+     
             var result = inventory.Where(x => (
-
-                         (branch.SelectedItem != null ? (x.branchId == selectedBranch.branchId) : true)
-                        && (cb.SelectedItem != null ? (x.inventoryType == selectedType.InventoryType) : true)
+                           (branch.SelectedItem != null ? (x.branchId        == selectedBranch.branchId) : true)
+                        && (cb.SelectedItem     != null ? (x.inventoryType   == selectedType.InventoryType) : true)
                         && (dp_stocktakingArchivedStartDate.SelectedDate != null ? (x.inventoryDate >= startDate.SelectedDate) : true)
-                        && (dp_stocktakingArchivedEndDate.SelectedDate != null ? (x.inventoryDate <= endDate.SelectedDate) : true)
+                        && (dp_stocktakingArchivedEndDate.SelectedDate   != null ? (x.inventoryDate <= endDate.SelectedDate) : true)
           ));
             return result;
         }
@@ -493,7 +504,10 @@ namespace POS.View.reports
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
+                fillComboArchivedTypeType();
                 fillSocktakingEvents();
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -553,7 +567,9 @@ namespace POS.View.reports
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
                 fillSocktakingEvents();
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -647,6 +663,7 @@ namespace POS.View.reports
         {
 
             var temp = cb_stocktakingFalseBranch.SelectedItem as Branch;
+
             cb_stocktakingFalseType.SelectedValuePath = "ItemsUnitsId";
             cb_stocktakingFalseType.DisplayMemberPath = "ItemsUnits";
             if (temp == null)
@@ -765,7 +782,9 @@ namespace POS.View.reports
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
                 fillShortFallsEvents();
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -1229,6 +1248,7 @@ new StackedColumnSeries
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
                 selectedStocktakingTab = 1;
                 txt_search.Text = "";
                 paintStockTakingChilds();
@@ -1248,6 +1268,7 @@ new StackedColumnSeries
                 fillComboBranches(cb_stocktakingFalseBranch);
                 fillShortFallsEvents();
                 fillComboItemsUnitsFalls();
+
                 SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
 
                 if (sender != null)
