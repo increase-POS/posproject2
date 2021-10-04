@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Converters;
 using POS_Server.Classes;
 using POS_Server.Models;
+using POS_Server.Models.VM;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -10,6 +11,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -24,34 +26,53 @@ namespace POS_Server.Controllers
         // GET api/Agent
         [HttpGet]
         [Route("Get")]
-        public IHttpActionResult Get()
+        public ResponseVM Get(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
+            //var re = Request;
+            //var headers = re.Headers;
+            //string token = "";
             string type = "";
             Boolean canDelete = false;
-            if (headers.Contains("APIKey"))
-            {
-                token = headers.GetValues("APIKey").First();
-            }
-            if (headers.Contains("type"))
-            {
-                // type = v mean vendor
-                // type = c means Client
-                // type = b means both of brevious types
-                type = headers.GetValues("type").First();
-            }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
+            //if (headers.Contains("APIKey"))
+            //{
+            //    token = headers.GetValues("APIKey").First();
+            //}
+            //if (headers.Contains("type"))
+            //{
+            //    // type = v mean vendor
+            //    // type = c means Client
+            //    // type = b means both of brevious types
+            //    type = headers.GetValues("type").First();
+            //}
+            //Validation validation = new Validation();
+            //bool valid = validation.CheckApiKey(token);
+            //if (valid)
 
-            if (valid)
+            var re = Request;
+            var headers = re.Headers;
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+            }
+            else
+            {
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "type")
+                    {
+                        //itemObject = c.Value.Replace("\\", string.Empty);
+                        //itemObject = itemObject.Trim('"');
+                        type = c.Value;
+                    }
+                }
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var agentsList = entity.agents
                    .Where(p => p.type == type)
-                   .Select(p => new AgentModel {
+                   .Select(p => new AgentModel
+                   {
                        agentId = p.agentId,
                        name = p.name,
                        code = p.code,
@@ -64,14 +85,15 @@ namespace POS_Server.Controllers
                        type = p.type,
                        accType = p.accType,
                        balance = p.balance,
-                      balanceType = p.balanceType,
+                       balanceType = p.balanceType,
                        notes = p.notes,
                        isActive = p.isActive,
                        createDate = p.createDate,
                        updateDate = p.updateDate,
-                     maxDeserve = p.maxDeserve,
+                       maxDeserve = p.maxDeserve,
                        fax = p.fax,
-                   isLimited = p.isLimited,})
+                       isLimited = p.isLimited,
+                   })
                    .ToList();
                     if (agentsList.Count > 0)
                     {
@@ -89,39 +111,52 @@ namespace POS_Server.Controllers
                             agentsList[i].canDelete = canDelete;
                         }
                     }
-                    if (agentsList == null)
-                        return NotFound();
-                    else
-                        return Ok(agentsList);
+                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(agentsList) };
 
                 }
             }
-            else
-                return NotFound();
         }
-
         [HttpGet]
         [Route("GetActive")]
-        public IHttpActionResult GetActive(string type)
+        public ResponseVM GetActive(string token)
         {
+            //var re = Request;
+            //var headers = re.Headers;
+            //string token = "";
+            //if (headers.Contains("APIKey"))
+            //{
+            //    token = headers.GetValues("APIKey").First();
+            //}
+            //Validation validation = new Validation();
+            //bool valid = validation.CheckApiKey(token);
+
+            //if (valid)
+            string type = "";
+
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid)
+            else
             {
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "type")
+                    {
+                        type = c.Value;
+                    }
+                }
                 using (incposdbEntities entity = new incposdbEntities())
                 {
 
                     var agentsList = entity.agents
                    .Where(p => p.type == type && p.isActive == 1)
-                   .Select(p => new {
+                   .Select(p => new
+                   {
                        p.agentId,
                        p.name,
                        p.code,
@@ -140,19 +175,19 @@ namespace POS_Server.Controllers
                        p.fax,
                        p.isActive,
                        p.createDate,
-                   p.isLimited,})
+                       p.isLimited,
+                   })
                    .ToList();
 
-                    if (agentsList == null)
-                        return NotFound();
-                    else
-                        return Ok(agentsList);
+                    return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(agentsList) };
 
                 }
             }
-            else
-                return NotFound();
         }
+
+
+        ///////////////  Before Authorization
+        
         // GET api/agent/5
         [HttpGet]
         [Route("GetAgentByID")]

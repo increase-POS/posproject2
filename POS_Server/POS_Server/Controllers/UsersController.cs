@@ -72,6 +72,59 @@ namespace POS_Server.Controllers
             //else
             return NotFound();
         }
+         [HttpGet]
+        [Route("GetSalesMan")]
+        public IHttpActionResult GetSalesMan(int branchId, string objectName)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                List<UserModel> users = new List<UserModel>();
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var usersList = (from u in entity.users.Where(us => us.isActive == 1)
+                                     join bu in entity.branchesUsers on u.userId equals bu.userId
+                                     where bu.branchId == branchId
+                                     select new UserModel
+                                     {
+                                         userId = u.userId,
+                                         username = u.username,
+                                         name = u.name,
+                                         lastname = u.lastname,
+                                         fullName = u.name + " " + u.lastname,
+                                         balance = u.balance,
+                                         balanceType = u.balanceType,
+                                     }).ToList();
+
+                    foreach (UserModel user in usersList)
+                    {
+                        var groupObjects = (from GO in entity.groupObject where GO.showOb == 1 && GO.objects.name.Contains(objectName)
+                                            join U in entity.users on GO.groupId equals U.groupId where U.userId == user.userId
+                                            select new
+                                            {
+                                                //group object
+                                                GO.id,
+                                                GO.showOb,
+                                            }).FirstOrDefault();
+
+                        if (groupObjects != null )
+                           users.Add(user);
+                    }
+                    return Ok(users);
+                }
+            }
+            //else
+            return NotFound();
+        }
 
 
         [HttpGet]
