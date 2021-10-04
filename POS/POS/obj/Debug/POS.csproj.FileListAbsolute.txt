@@ -3008,3 +3008,13 @@ E:\GitHub\posproject2\POS\POS\bin\Debug\Microsoft.IdentityModel.Logging.xml
 E:\GitHub\posproject2\POS\POS\bin\Debug\Microsoft.IdentityModel.Tokens.xml
 E:\GitHub\posproject2\POS\POS\bin\Debug\RestSharp.xml
 E:\GitHub\posproject2\POS\POS\bin\Debug\System.IdentityModel.Tokens.Jwt.xml
+D:\myproj\posproject2\POS\POS\bin\Debug\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\myproj\posproject2\POS\POS\bin\Debug\Microsoft.IdentityModel.Logging.dll
+D:\myproj\posproject2\POS\POS\bin\Debug\Microsoft.IdentityModel.Tokens.dll
+D:\myproj\posproject2\POS\POS\bin\Debug\RestSharp.dll
+D:\myproj\posproject2\POS\POS\bin\Debug\System.IdentityModel.Tokens.Jwt.dll
+D:\myproj\posproject2\POS\POS\bin\Debug\Microsoft.IdentityModel.JsonWebTokens.xml
+D:\myproj\posproject2\POS\POS\bin\Debug\Microsoft.IdentityModel.Logging.xml
+D:\myproj\posproject2\POS\POS\bin\Debug\Microsoft.IdentityModel.Tokens.xml
+D:\myproj\posproject2\POS\POS\bin\Debug\RestSharp.xml
+D:\myproj\posproject2\POS\POS\bin\Debug\System.IdentityModel.Tokens.Jwt.xml

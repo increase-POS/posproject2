@@ -13,6 +13,71 @@ using System.Web;
 
 namespace POS.Classes
 {
+
+    public class ItemUnitInvoiceProfit
+    {
+
+        /////////////// الارباح
+        public string ITitemName { get; set; }
+        public string ITunitName { get; set; }
+        public int ITitemsTransId { get; set; }
+        public Nullable<int> ITitemUnitId { get; set; }
+
+        public Nullable<int> ITitemId { get; set; }
+        public Nullable<int> ITunitId { get; set; }
+        public Nullable<long> ITquantity { get; set; }
+
+        public Nullable<System.DateTime> ITupdateDate { get; set; }
+        //  public Nullable<int> IT.createUserId { get; set; } 
+        public Nullable<int> ITupdateUserId { get; set; }
+
+        public Nullable<decimal> ITprice { get; set; }
+        public string ITbarcode { get; set; }
+
+        public string ITUpdateuserNam { get; set; }
+        public string ITUpdateuserLNam { get; set; }
+        public string ITUpdateuserAccNam { get; set; }
+        public int invoiceId { get; set; }
+        public string invNumber { get; set; }
+        public Nullable<int> agentId { get; set; }
+        public Nullable<int> posId { get; set; }
+        public string invType { get; set; }
+        public Nullable<decimal> total { get; set; }
+        public Nullable<decimal> totalNet { get; set; }
+
+        public Nullable<System.DateTime> updateDate { get; set; }
+        public Nullable<int> updateUserId { get; set; }
+        public Nullable<int> branchId { get; set; }
+        public Nullable<decimal> discountValue { get; set; }
+        public string discountType { get; set; }
+        public Nullable<decimal> tax { get; set; }
+        // public string name { get; set; }
+        //  isApproved { get; set; }
+
+
+        public Nullable<int> branchCreatorId { get; set; }
+        public string branchCreatorName { get; set; }
+
+
+        public string posName { get; set; }
+        public string posCode { get; set; }
+        public string agentName { get; set; }
+        public string agentCode { get; set; }
+        public string agentType { get; set; }
+
+        public string uuserName { get; set; }
+        public string uuserLast { get; set; }
+        public string uUserAccName { get; set; }
+        public string agentCompany { get; set; }
+        public Nullable<decimal> subTotal { get; set; }
+        public decimal purchasePrice { get; set; }
+        public decimal totalwithTax { get; set; }
+        public decimal subTotalNet { get; set; } // with invoice discount 
+        public decimal itemunitProfit { get; set; }
+        public decimal invoiceProfit { get; set; }
+
+    }
+
     public class CashTransferSts
     {
 
@@ -1863,6 +1928,51 @@ namespace POS.Classes
             }
 
         }
+
+        // الارباح
+        public async Task<List<ItemUnitInvoiceProfit>> GetProfit(int mainBranchId, int userId)
+        {
+            List<ItemUnitInvoiceProfit> list = null;
+            // ... Use HttpClient.
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            using (var client = new HttpClient())
+            {
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                client.BaseAddress = new Uri(Global.APIUri);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+                HttpRequestMessage request = new HttpRequestMessage();
+                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetProfit?mainBranchId=" + mainBranchId + "&userId=" + userId);
+                request.Headers.Add("APIKey", Global.APIKey);
+                request.Method = HttpMethod.Get;
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonString = await response.Content.ReadAsStringAsync();
+                    jsonString = jsonString.Replace("\\", string.Empty);
+                    jsonString = jsonString.Trim('"');
+                    // fix date format
+                    JsonSerializerSettings settings = new JsonSerializerSettings
+                    {
+                        Converters = new List<JsonConverter> { new BadDateFixingConverter() },
+                        DateParseHandling = DateParseHandling.None
+                    };
+                    list = JsonConvert.DeserializeObject<List<ItemUnitInvoiceProfit>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    return list;
+                }
+                else //web api sent error response 
+                {
+                    list = new List<ItemUnitInvoiceProfit>();
+                }
+                return list;
+            }
+
+        }
+
+
 
 
         // combo
