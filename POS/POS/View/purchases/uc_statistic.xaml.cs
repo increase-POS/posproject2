@@ -51,7 +51,7 @@ namespace POS.View.purchases
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            itemTransferInvoices = await statisticModel.GetUserdailyinvoice();
+            itemTransferInvoices = await statisticModel.GetUserdailyinvoice((int)MainWindow.branchID, (int)MainWindow.userID);
 
             dp_invoiceDate.SelectedDate = DateTime.Now;
             dp_orderDate.SelectedDate = DateTime.Now;
