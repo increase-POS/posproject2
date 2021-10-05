@@ -448,6 +448,7 @@
     <Compile Include="Models\PropertiesItemModel.cs" />
     <Compile Include="Models\PropertyModel.cs" />
     <Compile Include="Models\shippingCompaniesModel.cs" />
+    <Compile Include="Models\StatisticModel.cs" />
     <Compile Include="Models\StorageCostModel.cs" />
     <Compile Include="Models\SysEmailsModel.cs" />
     <Compile Include="Models\UnitModel.cs" />

@@ -919,6 +919,81 @@ namespace POS_Server.Controllers
             return NotFound();
         }
         [HttpGet]
+        [Route("getInvoicesToReturn")]
+        public IHttpActionResult getInvoicesToReturn(string invType,int userId)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            string token = "";
+            if (headers.Contains("APIKey"))
+            {
+                token = headers.GetValues("APIKey").First();
+            }
+            Validation validation = new Validation();
+            bool valid = validation.CheckApiKey(token);
+
+            if (valid) // APIKey is valid
+            {
+                string[] invTypeArray = invType.Split(',');
+                List<string> invTypeL = new List<string>();
+                foreach (string s in invTypeArray)
+                    invTypeL.Add(s.Trim());
+
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var branches = (from S in entity.branchesUsers
+                                              join B in entity.branches on S.branchId equals B.branchId into JB
+                                              join U in entity.users on S.userId equals U.userId into JU
+                                              from JBB in JB.DefaultIfEmpty()
+                                              from JUU in JU.DefaultIfEmpty()
+                                              where S.userId == userId
+                                    select JBB.branchId).ToList();
+
+                    var searchPredicate = PredicateBuilder.New<invoices>();
+                    searchPredicate = searchPredicate.Or(inv => branches.Contains((int)inv.branchId) && inv.isActive == true && invTypeL.Contains(inv.invType));
+
+                    var invoicesList = (from b in entity.invoices.Where(searchPredicate)
+                                        join l in entity.branches on b.branchId equals l.branchId into lj
+                                        from x in lj.DefaultIfEmpty()
+                                        select new InvoiceModel()
+                                        {
+                                            invoiceId = b.invoiceId,
+                                            invNumber = b.invNumber,
+                                            agentId = b.agentId,
+                                            invType = b.invType,
+                                            total = b.total,
+                                            totalNet = b.totalNet,
+                                            vendorInvNum = b.vendorInvNum,
+                                            vendorInvDate = b.vendorInvDate,
+                                            branchId = b.branchId,
+                                            discountType = b.discountType,
+                                            tax = b.tax,
+                                            taxtype = b.taxtype,
+                                            name = b.name,
+                                            isApproved = b.isApproved,
+                                            branchName = x.name,
+                                            branchCreatorId = b.branchCreatorId,
+                                            userId = b.userId,
+                                        })
+                    .ToList();
+                    if (invoicesList != null)
+                    {
+                        for (int i = 0; i < invoicesList.Count; i++)
+                        {
+                            int invoiceId = invoicesList[i].invoiceId;
+                            int itemCount = entity.itemsTransfer.Where(x => x.invoiceId == invoiceId).Select(x => x.itemsTransId).ToList().Count;
+                            invoicesList[i].itemsCount = itemCount;
+                        }
+                    }
+                    if (invoicesList == null)
+                        return NotFound();
+                    else
+                        return Ok(invoicesList);
+                }
+            }
+            return NotFound();
+        }
+        [HttpGet]
         [Route("getUnHandeldOrders")]
         public IHttpActionResult getUnHandeldOrders(string invType,int branchCreatorId,  int branchId)
         {
@@ -2150,6 +2225,46 @@ else
             return NotFound();
         }
 
+        public decimal AvgItemPurPrice(int itemUnitId, int itemId)
+        {
 
+            decimal price = 0;
+            int totalNum = 0;
+            decimal smallUnitPrice = 0;
+
+
+            using (incposdbEntities entity = new incposdbEntities())
+            {
+                var itemUnits = (from i in entity.itemsUnits where (i.itemId == itemId) select (i.itemUnitId)).ToList();
+
+                price += getItemUnitSumPrice(itemUnits);
+
+                totalNum = getItemUnitTotalNum(itemUnits);
+
+                if (totalNum != 0)
+                    smallUnitPrice = price / totalNum;
+
+                var smallestUnitId = (from iu in entity.itemsUnits
+                                      where (itemUnits.Contains((int)iu.itemUnitId) && iu.unitId == iu.subUnitId)
+                                      select iu.itemUnitId).FirstOrDefault();
+
+                if (smallestUnitId == null || smallestUnitId == 0)
+                {
+                    smallestUnitId = (from u in entity.itemsUnits
+                                      where !entity.itemsUnits.Any(y => u.subUnitId == y.unitId)
+                                      where (itemUnits.Contains((int)u.itemUnitId))
+                                      select u.itemUnitId).FirstOrDefault();
+                }
+                if (itemUnitId == smallestUnitId || smallestUnitId == null || smallestUnitId == 0)
+                    return smallUnitPrice;
+                else
+                {
+                    smallUnitPrice = smallUnitPrice * getUpperUnitValue(smallestUnitId, itemUnitId);
+                    return smallUnitPrice;
+                }
+            }
+
+
+        }
     }
 }
