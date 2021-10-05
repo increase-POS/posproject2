@@ -37,6 +37,9 @@ namespace POS.Classes
         public string barcode { get; set; }    
         public string itemType { get; set; }
         public bool isActive { get; set; }
+        
+
+
     }
     public  class CouponInvoice
     {
@@ -104,6 +107,7 @@ namespace POS.Classes
         public int invStatusId { get; set; }
         public decimal manualDiscountValue { get; set; }
         public string manualDiscountType { get; set; }
+        public string createrUserName { get; set; }
         // for report
         public int countP { get; set; }
         public int countS { get; set; }
@@ -334,7 +338,7 @@ namespace POS.Classes
             }
         }
 
-        public async Task<int> GetLastNumOfInv(string invCode)
+        public async Task<int> GetLastNumOfInv(string invCode, int branchId)
         {
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
@@ -346,7 +350,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Invoices/GetLastNumOfInv?invCode=" + invCode);
+                request.RequestUri = new Uri(Global.APIUri + "Invoices/GetLastNumOfInv?invCode=" + invCode+"&branchId="+branchId);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -567,6 +571,46 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
                 request.RequestUri = new Uri(Global.APIUri + "Invoices/getUnHandeldOrders?invType=" + invType+ "&branchCreatorId=" + branchCreatorId + "&branchId="+ branchId);
+                request.Headers.Add("APIKey", Global.APIKey);
+                request.Method = HttpMethod.Get;
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonString = await response.Content.ReadAsStringAsync();
+                    jsonString = jsonString.Replace("\\", string.Empty);
+                    jsonString = jsonString.Trim('"');
+                    // fix date format
+                    JsonSerializerSettings settings = new JsonSerializerSettings
+                    {
+                        Converters = new List<JsonConverter> { new BadDateFixingConverter() },
+                        DateParseHandling = DateParseHandling.None
+                    };
+                    invoices = JsonConvert.DeserializeObject<List<Invoice>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    return invoices;
+                }
+                else //web api sent error response 
+                {
+                    invoices = new List<Invoice>();
+                }
+                return invoices;
+            }
+        }
+        public async Task<List<Invoice>> getInvoicesToReturn(string invType,int userId  )
+        {
+            List<Invoice> invoices = null;
+            // ... Use HttpClient.
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            using (var client = new HttpClient())
+            {
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                client.BaseAddress = new Uri(Global.APIUri);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+                HttpRequestMessage request = new HttpRequestMessage();
+                request.RequestUri = new Uri(Global.APIUri + "Invoices/getInvoicesToReturn?invType=" + invType+"&userId="+userId);
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -1108,14 +1152,14 @@ namespace POS.Classes
                 return invoice;
             }
         }
-        public async Task<string> generateInvNumber(string invoiceCode)
+        public async Task<string> generateInvNumber(string invoiceCode, string branchCode, int branchId)
         {
-            int sequence = await GetLastNumOfInv(invoiceCode);
+            int sequence = await GetLastNumOfInv(invoiceCode,branchId);
             sequence++;
             string strSeq = sequence.ToString();
             if (sequence <= 999999)
                 strSeq = sequence.ToString().PadLeft(6, '0');
-            string invoiceNum = invoiceCode + "-" + strSeq;
+            string invoiceNum = invoiceCode + "-" + branchCode + "-" +  strSeq;
             return invoiceNum;
         }
         /// <summary>

@@ -196,6 +196,7 @@ namespace POS.View.storage
                 setTimer();
                 configureProcessType();
                 pos = await pos.getPosById(MainWindow.posID.Value);
+                branchModel = await branchModel.getBranchById(MainWindow.branchID.Value);
                 await SectionData.fillBranches(cb_branch, "bs");
                 //await RefrishBranches();
                 await RefrishItems();
@@ -1007,7 +1008,7 @@ namespace POS.View.storage
                     invoice.createUserId = MainWindow.userID;
                     invoice.updateUserId = MainWindow.userID;
                     if (invoice.invNumber == null)
-                        invoice.invNumber = await invoice.generateInvNumber("im");
+                        invoice.invNumber = await invoice.generateInvNumber("im",branchModel.code, MainWindow.branchID.Value);
                     // save invoice in DB
                     invoiceId = int.Parse(await invoice.saveInvoice(invoice));
                     if (invoiceId != 0)
@@ -1020,7 +1021,7 @@ namespace POS.View.storage
                             invoice.invoiceMainId = invoiceId;
                             if (cb_branch.SelectedIndex != -1)
                                 invoice.branchId = (int)cb_branch.SelectedValue;
-                            invoice.invNumber = await invoice.generateInvNumber("ex");
+                            invoice.invNumber = await invoice.generateInvNumber("ex", branchModel.code, MainWindow.branchID.Value);
                             invoice.createUserId = MainWindow.userID;
                         }
                         else // edit exit export order
@@ -1048,7 +1049,7 @@ namespace POS.View.storage
                     invoice.createUserId = MainWindow.userID;
                     invoice.updateUserId = MainWindow.userID;
                     if (invoice.invNumber == null)
-                        invoice.invNumber = await invoice.generateInvNumber("ex");
+                        invoice.invNumber = await invoice.generateInvNumber("ex", branchModel.code, MainWindow.branchID.Value);
                     // save invoice in DB
                     invoiceId = int.Parse(await invoice.saveInvoice(invoice));
 
@@ -1062,7 +1063,7 @@ namespace POS.View.storage
                             invoice.invoiceMainId = invoiceId;
                             if (cb_branch.SelectedIndex != -1)
                                 invoice.branchId = (int)cb_branch.SelectedValue;
-                            invoice.invNumber = await invoice.generateInvNumber("im");
+                            invoice.invNumber = await invoice.generateInvNumber("im", branchModel.code, MainWindow.branchID.Value);
                             invoice.createUserId = MainWindow.userID;
                         }
                         else // edit exit export order
@@ -1270,7 +1271,7 @@ namespace POS.View.storage
                     invoice.createUserId = MainWindow.userID;
                     invoice.updateUserId = MainWindow.userID;
                     if (invoice.invNumber == null)
-                        invoice.invNumber = await invoice.generateInvNumber("im");
+                        invoice.invNumber = await invoice.generateInvNumber("im", branchModel.code, MainWindow.branchID.Value);
                     // save invoice in DB
                     invoiceId = int.Parse(await invoice.saveInvoice(invoice));
                     if (invoiceId != 0)
@@ -1294,7 +1295,7 @@ namespace POS.View.storage
                             invoice.invoiceMainId = invoiceId;
                             if (cb_branch.SelectedIndex != -1)
                                 invoice.branchId = (int)cb_branch.SelectedValue;
-                            invoice.invNumber = await invoice.generateInvNumber("ex");
+                            invoice.invNumber = await invoice.generateInvNumber("ex", branchModel.code, MainWindow.branchID.Value);
                             invoice.createUserId = MainWindow.userID;
                         }
                         else // edit exit export order
@@ -1324,7 +1325,7 @@ namespace POS.View.storage
                     invoice.createUserId = MainWindow.userID;
                     invoice.updateUserId = MainWindow.userID;
                     if (invoice.invNumber == null)
-                        invoice.invNumber = await invoice.generateInvNumber("ex");
+                        invoice.invNumber = await invoice.generateInvNumber("ex", branchModel.code, MainWindow.branchID.Value);
                     // save invoice in DB
                     invoiceId = int.Parse(await invoice.saveInvoice(invoice));
 
@@ -1338,7 +1339,7 @@ namespace POS.View.storage
                             invoice.invoiceMainId = invoiceId;
                             if (cb_branch.SelectedIndex != -1)
                                 invoice.branchId = (int)cb_branch.SelectedValue;
-                            invoice.invNumber = await invoice.generateInvNumber("im");
+                            invoice.invNumber = await invoice.generateInvNumber("im", branchModel.code, MainWindow.branchID.Value);
                             invoice.createUserId = MainWindow.userID;
                         }
                         else // edit exit export order
