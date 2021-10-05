@@ -1452,12 +1452,14 @@ namespace POS.View
                                 if (item.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
                                 if ((!item.canDelete) && (item.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
 
-                                bool b = await itemModel.deleteItem(item.itemId, MainWindow.userID.Value, item.canDelete);
+                                int b = await itemModel.deleteItem(item.itemId, MainWindow.userID.Value, item.canDelete);
 
-                                if (b)
+                                if (b > 0)
                                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
 
-                                else
+                                else if (b == -1)
+                                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpgrade"), animation: ToasterAnimation.FadeIn);
+                                else  
                                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                             }
                         }
