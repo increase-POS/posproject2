@@ -257,6 +257,7 @@ namespace POS.View
                 await RefrishVendors();
                 await fillBarcodeList();
                 setNotifications();
+                branchModel = await branchModel.getBranchById(MainWindow.branchID.Value);
                 #region Style Date
                 SectionData.defaultDatePickerStyle(dp_desrvedDate);
                 SectionData.defaultDatePickerStyle(dp_invoiceDate);
@@ -465,7 +466,8 @@ namespace POS.View
         {
             string invoiceType = "po";
             int duration = 0;
-            int ordersCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
+            int ordersCount = await invoice.GetCountBranchInvoices(invoiceType, MainWindow.branchID.Value);
+            //int ordersCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
             if (_InvoiceType == "po" && invoice.invoiceId != 0)
                 ordersCount--;
 
@@ -709,16 +711,16 @@ namespace POS.View
             {
                 invoice.invoiceMainId = invoice.invoiceId;
                 invoice.invoiceId = 0;
-                invoice.invNumber = await invoice.generateInvNumber("pb");
+                invoice.invNumber = await invoice.generateInvNumber("pb",branchModel.code,MainWindow.branchID.Value);
                 invoice.branchCreatorId = MainWindow.branchID.Value;
                 invoice.posId = MainWindow.posID.Value;
             }
             else if (invoice.invType == "po")
             {
-                invoice.invNumber = await invoice.generateInvNumber("pi");
+                invoice.invNumber = await invoice.generateInvNumber("pi", branchModel.code, MainWindow.branchID.Value);
             }
             else if (invType == "pd" && invoice.invoiceId == 0)
-                invoice.invNumber = await invoice.generateInvNumber("pd");
+                invoice.invNumber = await invoice.generateInvNumber("pd", branchModel.code, MainWindow.branchID.Value);
 
             if (invoice.branchCreatorId == 0 || invoice.branchCreatorId == null)
             {
@@ -744,6 +746,8 @@ namespace POS.View
 
                 if (cb_branch.SelectedIndex != -1)
                     invoice.branchId = (int)cb_branch.SelectedValue;
+                else
+                    invoice.branchId = MainWindow.branchID.Value;
 
                 invoice.deservedDate = dp_desrvedDate.SelectedDate;
                 invoice.vendorInvNum = tb_invoiceNumber.Text;
@@ -758,7 +762,7 @@ namespace POS.View
                 invoice.createUserId = MainWindow.userID;
                 invoice.updateUserId = MainWindow.userID;
                 if (invType == "pw" || invType == "p")
-                    invoice.invNumber = await invoice.generateInvNumber("pi");
+                    invoice.invNumber = await invoice.generateInvNumber("pi", branchModel.code, MainWindow.branchID.Value);
 
                 // save invoice in DB
                 int invoiceId = int.Parse(await invoiceModel.saveInvoice(invoice));
@@ -856,8 +860,7 @@ namespace POS.View
                         TextBox tb = (TextBox)dp_desrvedDate.Template.FindName("PART_TextBox", dp_desrvedDate);
                         if ( cb_vendor.SelectedIndex != -1 && !tb_invoiceNumber.Equals("") && billDetails.Count > 0
                             && !tb.Text.Trim().Equals("") && decimal.Parse(tb_total.Text) > 0 && valid)
-                        {
-                            branchModel = await branchModel.getBranchById(MainWindow.branchID.Value);
+                        {                          
                             if (_InvoiceType == "pbd") //pbd means purchase bounse draft
                             {
                                 #region notification Object
@@ -1278,11 +1281,12 @@ namespace POS.View
 
                     w.title = MainWindow.resourcemanager.GetString("trReturn");
                     // purchase invoices
-                    string invoiceType = "p, pw";
+                    string invoiceType = "p";
                     w.invoiceType = invoiceType; // invoice type to view in grid
-                    w.branchCreatorId = MainWindow.branchID.Value;
-                    w.branchId = MainWindow.branchID.Value;
-
+                    //w.branchCreatorId = MainWindow.branchID.Value;
+                    //w.branchId = MainWindow.branchID.Value;
+                    w.condition = "return";
+                    w.userId = MainWindow.userID.Value;
                     if (w.ShowDialog() == true)
                     {
                         if (w.invoice != null)

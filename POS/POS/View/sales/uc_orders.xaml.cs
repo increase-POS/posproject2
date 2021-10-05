@@ -213,7 +213,7 @@ namespace POS.View.sales
                 setNotifications();
                 setTimer();              
                 await RefrishItems();
-                await RefrishCustomers();
+               await RefrishCustomers();
                 await fillBarcodeList();
                 await fillCouponsList();
                 await SectionData.fillBranches(cb_branch, "bs");
@@ -798,6 +798,7 @@ namespace POS.View.sales
         }
         private async Task addInvoice(string invType)
         {
+            branchModel = await branchModel.getBranchById(MainWindow.branchID.Value);
             if (invoice.branchCreatorId == 0 || invoice.branchCreatorId == null)
             {
                 invoice.branchCreatorId = MainWindow.branchID.Value;
@@ -805,10 +806,10 @@ namespace POS.View.sales
             }
             if (invType == "or" && (invoice.invType == "ord" || invoice.invoiceId == 0))
             {
-                invoice.invNumber = await invoice.generateInvNumber("or");
+                invoice.invNumber = await invoice.generateInvNumber("or", branchModel.code,MainWindow.branchID.Value);
             }
             else if (invType == "ord" && invoice.invoiceId == 0)
-                invoice.invNumber = await invoice.generateInvNumber("ord");
+                invoice.invNumber = await invoice.generateInvNumber("ord", branchModel.code, MainWindow.branchID.Value);
             invoice.invType = invType;
             invoice.discountValue = _Discount;
             invoice.discountType = "1";

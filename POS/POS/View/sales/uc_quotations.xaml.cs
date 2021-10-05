@@ -702,7 +702,7 @@ namespace POS.View.sales
             btn_previous.Visibility = Visibility.Visible;
         }
         private async Task addInvoice(string invType)
-        {
+        {           
             if (invoice.branchCreatorId == 0 || invoice.branchCreatorId == null)
             {
                 invoice.branchCreatorId = MainWindow.branchID.Value;
@@ -733,10 +733,10 @@ namespace POS.View.sales
             // build invoice NUM 
             if (invType == "q")
             {
-                invoice.invNumber = await invoice.generateInvNumber("qt");
+                invoice.invNumber = await invoice.generateInvNumber("qt", branch.code, MainWindow.branchID.Value);
             }
             else if (invType == "qd" && invoice.invoiceId == 0)
-                invoice.invNumber = await invoice.generateInvNumber("qtd");
+                invoice.invNumber = await invoice.generateInvNumber("qtd", branch.code, MainWindow.branchID.Value);
 
             byte isApproved = 0;
             if (tgl_ActiveOffer.IsChecked == true)

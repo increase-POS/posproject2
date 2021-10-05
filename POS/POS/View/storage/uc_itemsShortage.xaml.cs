@@ -59,6 +59,7 @@ namespace POS.View.storage
         InventoryItemLocation invItemLoc = new InventoryItemLocation();
         ItemLocation itemLocationModel = new ItemLocation();
         Invoice invoiceModel = new Invoice();
+        Branch branchModel = new Branch();
         Inventory inventory;
         IEnumerable<InventoryItemLocation> inventoriesItems;
         User userModel = new User();
@@ -93,7 +94,7 @@ namespace POS.View.storage
                 translate();
                 await refreshShortageDetails();
                 await fillUsers();
-
+                branchModel = await branchModel.getBranchById(MainWindow.branchID.Value);
 
                 Tb_search_TextChanged(null, null);
                 if (sender != null)
@@ -362,7 +363,7 @@ namespace POS.View.storage
                             price = Math.Round(price, 2);
                             decimal total = price * int.Parse(tb_amount.Text);
 
-                            invoiceModel.invNumber = await invoiceModel.generateInvNumber("sh");
+                            invoiceModel.invNumber = await invoiceModel.generateInvNumber("sh", branchModel.code, MainWindow.branchID.Value);
                             invoiceModel.branchCreatorId = MainWindow.branchID.Value;
                             invoiceModel.posId = MainWindow.posID.Value;
                             invoiceModel.createUserId = MainWindow.userID.Value;

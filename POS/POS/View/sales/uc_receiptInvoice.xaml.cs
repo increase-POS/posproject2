@@ -268,7 +268,6 @@ namespace POS.View
         {
             try
             {
-
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
                 MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
@@ -605,7 +604,8 @@ namespace POS.View
         }
         private async Task fillUsers()
         {
-            users = await userModel.GetUsersActive();
+            string deliveryPermission = "salesOrders_delivery";
+            users = await userModel.getBranchSalesMan(MainWindow.branchID.Value, deliveryPermission);
             cb_user.ItemsSource = users;
             cb_user.DisplayMemberPath = "name";
             cb_user.SelectedValuePath = "userId";
@@ -956,27 +956,28 @@ namespace POS.View
         }
         private async Task addInvoice(string invType)
         {
+            branchModel = await branchModel.getBranchById(MainWindow.branchID.Value);
             if ((invoice.invType == "s" && (invType == "sb" || invType == "sbd")) || _InvoiceType == "or" || _InvoiceType == "q") // invoice is sale and will be bounce sale  or sale bounce draft  , save another invoice in db
             {
                 invoice.invoiceMainId = invoice.invoiceId;
                 invoice.invoiceId = 0;
                 if (invType == "sb")
-                    invoice.invNumber = await invoice.generateInvNumber("sb");
+                    invoice.invNumber = await invoice.generateInvNumber("sb", branchModel.code, MainWindow.branchID.Value);
                 else if (invType == "sbd")
-                    invoice.invNumber = await invoice.generateInvNumber("sbd");
+                    invoice.invNumber = await invoice.generateInvNumber("sbd", branchModel.code, MainWindow.branchID.Value);
                 else if (_InvoiceType == "or" || _InvoiceType == "q")
-                    invoice.invNumber = await invoice.generateInvNumber("si");
+                    invoice.invNumber = await invoice.generateInvNumber("si", branchModel.code, MainWindow.branchID.Value);
             }
             // build invoice NUM 
             else if ((invoice.invNumber == null && invType == "s") || (invoice.invType == "sd" && invType == "s"))
             {
-                invoice.invNumber = await invoice.generateInvNumber("si");
+                invoice.invNumber = await invoice.generateInvNumber("si", branchModel.code, MainWindow.branchID.Value);
                 invoice.branchId = MainWindow.branchID.Value;
             }
             else if (invoice.invType == "sbd" && invType == "sb") // convert invoicce from draft bounce to bounce
-                invoice.invNumber = await invoice.generateInvNumber("sb");
+                invoice.invNumber = await invoice.generateInvNumber("sb", branchModel.code, MainWindow.branchID.Value);
             else if (invType == "sd" && invoice.invoiceId == 0)
-                invoice.invNumber = await invoice.generateInvNumber("sd");
+                invoice.invNumber = await invoice.generateInvNumber("sd", branchModel.code, MainWindow.branchID.Value);
             if (invoice.branchCreatorId == 0 || invoice.branchCreatorId == null)
             {
                 invoice.branchCreatorId = MainWindow.branchID.Value;
@@ -1694,7 +1695,9 @@ namespace POS.View
                     Window.GetWindow(this).Opacity = 0.2;
                     wd_invoice w = new wd_invoice();
                     w.title = MainWindow.resourcemanager.GetString("trReturn");
-                    w.branchCreatorId = MainWindow.branchID.Value;
+                    //w.branchCreatorId = MainWindow.branchID.Value;
+                    w.condition = "return";
+                    w.userId = MainWindow.userID.Value;
                     // sales invoices
                     string invoiceType = "s";
                     w.invoiceType = invoiceType; // invoice type to view in grid

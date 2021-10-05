@@ -116,7 +116,18 @@ namespace POS.View.windows
                 List<string> invTypeL = invoiceType.Split(',').ToList();
                 var inCommen = invTypeL.Any(s => impExpTypes.Contains(s));
                 if(inCommen)
-                    dg_Invoice.Columns[2].Visibility = Visibility.Collapsed; //make total column unvisible
+                    dg_Invoice.Columns[4].Visibility = Visibility.Collapsed; //make total column unvisible
+                #endregion
+                #region display branch & user columns in grid if invoice is sales order
+                invTypeArray = new string[] { "or" };
+                impExpTypes = invTypeArray.ToList();
+                invTypeL = invoiceType.Split(',').ToList();
+                inCommen = invTypeL.Any(s => impExpTypes.Contains(s));
+                if (inCommen)
+                {
+                    dg_Invoice.Columns[1].Visibility = Visibility.Visible; //make branch column visible
+                    dg_Invoice.Columns[2].Visibility = Visibility.Visible; //make user column visible
+                }
                 #endregion
                 await refreshInvoices();
                 Txb_search_TextChanged(null, null);
@@ -137,8 +148,10 @@ namespace POS.View.windows
             MaterialDesignThemes.Wpf.HintAssist.SetHint(txb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
 
             dg_Invoice.Columns[0].Header = MainWindow.resourcemanager.GetString("trInvoiceNumber");
-            dg_Invoice.Columns[1].Header = MainWindow.resourcemanager.GetString("trItemsCount");
-            dg_Invoice.Columns[2].Header = MainWindow.resourcemanager.GetString("trTotal");
+            dg_Invoice.Columns[1].Header = MainWindow.resourcemanager.GetString("trBranch");
+            dg_Invoice.Columns[2].Header = MainWindow.resourcemanager.GetString("trUser");
+            dg_Invoice.Columns[3].Header = MainWindow.resourcemanager.GetString("trItemsCount");
+            dg_Invoice.Columns[4].Header = MainWindow.resourcemanager.GetString("trTotal");
 
             btn_select.Content = MainWindow.resourcemanager.GetString("trSelect");
         }
@@ -148,6 +161,8 @@ namespace POS.View.windows
             {
                 invoices = await invoice.getUnHandeldOrders(invoiceType,branchCreatorId, branchId);
             }
+            else if(condition == "return")
+                invoices = await invoice.getInvoicesToReturn(invoiceType, userId);
             else
             {
                 if (userId != 0 && (invoiceStatus == "" || invoiceStatus == null))/// to display draft invoices

@@ -128,6 +128,8 @@
                     </DataGrid.Resources>
                     <DataGrid.Columns>
                         <DataGridTextColumn Width="*"  Header="Bill Number" Binding="{Binding Path=invNumber}"/>
+                        <DataGridTextColumn Width="*"  Header="Branch" Binding="{Binding Path=branchCreatorName}" Visibility="Collapsed"/>
+                        <DataGridTextColumn Width="*"  Header="User" Binding="{Binding Path=createrUserName}" Visibility="Collapsed"/>
                         <DataGridTextColumn Width="*"  Header="items count" Binding="{Binding Path=itemsCount}"/>
                         <DataGridTextColumn Width="*"  Header="Total" Binding="{Binding Path =totalNet,Converter={StaticResource accuracyConverter }}"/>
                         <DataGridTextColumn Width="*"  Header="" Binding="{Binding invType,Converter={StaticResource invoiceTypeConverter}}"/>
