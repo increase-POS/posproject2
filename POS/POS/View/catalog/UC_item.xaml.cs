@@ -799,9 +799,9 @@ namespace POS.View
                             if (item.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
                             if ((!item.canDelete) && (item.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
                             int userId = (int)MainWindow.userID;
-                            Boolean res = await itemModel.deleteItem(item.itemId, userId, item.canDelete);
+                            int res = await itemModel.deleteItem(item.itemId, userId, item.canDelete);
 
-                            if (res)
+                            if (res > 0)
                                 Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
                             else
                                 Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
