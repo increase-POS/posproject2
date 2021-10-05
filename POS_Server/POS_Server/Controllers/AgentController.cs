@@ -28,25 +28,9 @@ namespace POS_Server.Controllers
         [Route("Get")]
         public ResponseVM Get(string token)
         {
-            //var re = Request;
-            //var headers = re.Headers;
-            //string token = "";
+             
             string type = "";
             Boolean canDelete = false;
-            //if (headers.Contains("APIKey"))
-            //{
-            //    token = headers.GetValues("APIKey").First();
-            //}
-            //if (headers.Contains("type"))
-            //{
-            //    // type = v mean vendor
-            //    // type = c means Client
-            //    // type = b means both of brevious types
-            //    type = headers.GetValues("type").First();
-            //}
-            //Validation validation = new Validation();
-            //bool valid = validation.CheckApiKey(token);
-            //if (valid)
 
             var re = Request;
             var headers = re.Headers;
@@ -62,8 +46,6 @@ namespace POS_Server.Controllers
                 {
                     if (c.Type == "type")
                     {
-                        //itemObject = c.Value.Replace("\\", string.Empty);
-                        //itemObject = itemObject.Trim('"');
                         type = c.Value;
                     }
                 }
@@ -185,136 +167,76 @@ namespace POS_Server.Controllers
             }
         }
 
-
-        ///////////////  Before Authorization
-        
-        // GET api/agent/5
         [HttpGet]
         [Route("GetAgentByID")]
-        public IHttpActionResult GetAgentByID()
+        public ResponseVM GetAgentByID(string token)
         {
+            
+
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-            int agentID = 0 ;
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
-            }
-            if (headers.Contains("agentId"))
-            {
-                agentID = Convert.ToInt32( headers.GetValues("agentId").First());
-            }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid)
-            {
-                using (incposdbEntities entity = new incposdbEntities())
-                {
-
-                    var agent = entity.agents
-                   .Where(p => p.agentId == agentID)
-                   .Select(p => new { p.agentId, p.name, p.accType, p.address, p.balance,p.balanceType, p.code, p.company, p.createDate, p.createUserId,  p.email,  p.mobile, p.notes, p.phone, p.type, p.image, p.maxDeserve, p.fax,p.isActive,p.updateDate,p.updateUserId ,p.isLimited})
-                   .FirstOrDefault();
-                   
-                    if (agent == null)
-                        return NotFound();
-                    else
-                        return Ok(agent);
-
-                }
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
             else
-                return NotFound();
-        }
-
-        // GET api/Agent
-        [HttpGet]
-        [Route("Search")]
-        public IHttpActionResult Search(string type,string searchWords)
-        {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
             {
-                token = headers.GetValues("APIKey").First();
-            }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid)
-            {
-                using (incposdbEntities entity = new incposdbEntities())
                 {
-                    var agentsList = entity.agents
-                   .Where( p => (p.type==type) && ( p.name.Contains(searchWords) || p.company.Contains(searchWords) || p.mobile.Contains(searchWords)))
-                   .Select(p => new {
-                       p.agentId,
-                       p.name,
-                       p.code,
-                       p.company,
-                       p.address,
-                       p.email,
-                       p.phone,
-                       p.mobile,
-                       p.image,
-                       p.type,
-                       p.accType,
-                       p.balance,
-                       p.balanceType,
-                       p.notes,
-                       p.maxDeserve,
-                       p.fax,
-                       p.isActive,
-                       p.createDate,
-                       p.isLimited,
-                   })
-                   .ToList();
-
-                    if (agentsList == null)
-                        return NotFound();
-                    else
-                        return Ok(agentsList);
-
+                    int agentId = 0;
+                    IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                    foreach (Claim c in claims)
+                    {
+                        if (c.Type == "agentId")
+                        {
+                            agentId = int.Parse(c.Value);
+                        }
+                    }
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+                        var agent = entity.agents
+                       .Where(p => p.agentId == agentId)
+                       .Select(p => new { p.agentId, p.name, p.accType, p.address, p.balance, p.balanceType, p.code, p.company, p.createDate, p.createUserId, p.email, p.mobile, p.notes, p.phone, p.type, p.image, p.maxDeserve, p.fax, p.isActive, p.updateDate, p.updateUserId, p.isLimited })
+                       .FirstOrDefault();
+                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(agent) };
+                    }
                 }
             }
-            else
-                return NotFound();
         }
+
+        ///////////////  Before Authorization
+
+
+
 
         // add or update agent
         [HttpPost]
         [Route("Save")]
-        public IHttpActionResult Save(string agentObject)
+        public ResponseVM Save(string token)
         {
+            string message = "";
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            agentObject = agentObject.Replace("\\", string.Empty);
-            agentObject = agentObject.Trim('"');
-
-            agents agentObj = JsonConvert.DeserializeObject<agents>(agentObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
-            if (agentObj.updateUserId == 0 || agentObj.updateUserId == null)
+            else
             {
-                Nullable<int> id = null;
-                agentObj.updateUserId = id;
-            }
-            if (agentObj.createUserId == 0 || agentObj.createUserId == null)
-            {
-                Nullable<int> id = null;
-                agentObj.createUserId = id;
-            }
-            if (valid)
-            {
+                string agentObject = "";
+                agents agentObj = null;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemObject")
+                    {
+                        agentObject = c.Value.Replace("\\", string.Empty);
+                        agentObject = agentObject.Trim('"');
+                        agentObj = JsonConvert.DeserializeObject<agents>(agentObject, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                        break;
+                    }
+                }
                 try
                 {
                     agents agent;
@@ -333,7 +255,8 @@ namespace POS_Server.Controllers
                             int agentCount = entity.agents.Where(x => x.type == agentObj.type).Count();
                             if (agentCount >= agentMaxCount)
                             {
-                                return Ok(-1);
+                                message = "-1";
+                                return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken(message) };
                             }
                             else
                             {
@@ -367,43 +290,51 @@ namespace POS_Server.Controllers
                             agent.isLimited = agentObj.isLimited;
                         }
                         entity.SaveChanges();
-                        return Ok(agent.agentId);
-                    }
-                }
+                        message = agent.agentId.ToString();
 
+                    }
+                    return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(message) };
+                }
                 catch
                 {
-                    return Ok(0);
+                    message = "0";
+                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken(message) };
                 }
             }
-            else
-                return NotFound();
         }
         [HttpPost]
         [Route("Delete")]
-        public bool Delete(Boolean final)
+        public ResponseVM Delete(string token)
         {
+            string message = "";
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-            int agentId = 0;
-            int userId = 0;
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
-            if (headers.Contains("agentId"))
+            else
             {
-                agentId = Convert.ToInt32(headers.GetValues("agentId").First());
-            }
-            if (headers.Contains("userId"))
-            {
-                userId = Convert.ToInt32(headers.GetValues("userId").First());
-            }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-            if (valid)
-            {
+                int agentId = 0;
+                int userId = 0;
+                Boolean final = false;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "agentId")
+                    {
+                        agentId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "userId")
+                    {
+                        userId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "final")
+                    {
+                        final = bool.Parse(c.Value);
+                    }
+                }
                 if (!final)
                 {
                     try
@@ -415,13 +346,13 @@ namespace POS_Server.Controllers
                             tmpAgent.updateDate = DateTime.Now;
                             tmpAgent.updateUserId = userId;
 
-                            entity.SaveChanges();
+                            message = entity.SaveChanges().ToString();
                         }
-                        return true;
+                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(message) };
                     }
                     catch
                     {
-                        return false;
+                        return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
                     }
                 }
                 else
@@ -432,18 +363,17 @@ namespace POS_Server.Controllers
                         {
                             var tmpAgent = entity.agents.Where(p => p.agentId == agentId).First();
                             entity.agents.Remove(tmpAgent);
-                            entity.SaveChanges();
+                            message = entity.SaveChanges().ToString();
                         }
-                        return true;
+                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(message) };
                     }
                     catch
                     {
-                        return false;
+                        return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
                     }
                 }
             }
-            else
-                return false;
+            
         }
 
         [Route("PostUserImage")]
@@ -535,36 +465,34 @@ namespace POS_Server.Controllers
 
             return response;
         }
+
         [HttpPost]
         [Route("UpdateImage")]
-        public int UpdateImage(string agentObject)
+        public ResponseVM UpdateImage(string token)
         {
+            string message = "";
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            agentObject = agentObject.Replace("\\", string.Empty);
-            agentObject = agentObject.Trim('"');
-
-            agents agentObj = JsonConvert.DeserializeObject<agents>(agentObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
-            if (agentObj.updateUserId == 0 || agentObj.updateUserId == null)
+            else
             {
-                Nullable<int> id = null;
-                agentObj.updateUserId = id;
-            }
-            if (agentObj.createUserId == 0 || agentObj.createUserId == null)
-            {
-                Nullable<int> id = null;
-                agentObj.createUserId = id;
-            }
-            if (valid)
-            {
+                string agentObject = "";
+                agents agentObj = null;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemObject")
+                    {
+                        agentObject = c.Value.Replace("\\", string.Empty);
+                        agentObject = agentObject.Trim('"');
+                        agentObj = JsonConvert.DeserializeObject<agents>(agentObject, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                        break;
+                    }
+                }
                 try
                 {
                     agents agent;
@@ -575,33 +503,46 @@ namespace POS_Server.Controllers
                         agent.image = agentObj.image;
                         entity.SaveChanges();
                     }
-                    return agent.agentId;
+                    message = agent.agentId.ToString();
+                    return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(message) };
                 }
 
                 catch
                 {
-                    return 0;
+                    message = "0";
+                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken(message) };
                 }
             }
-            else
-                return 0;
+           
         }
         [HttpPost]
         [Route("UpdateBalance")]
-        public int UpdateBalance(int agentId , decimal balance)
+        public ResponseVM UpdateBalance(string token)
         {
+            string message = "";
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid)
+            else
             {
+                int agentId = 0;
+                decimal balance = 0;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "agentId")
+                    {
+                        agentId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "balance")
+                    {
+                        balance = int.Parse(c.Value);
+                    }
+                }
                 try
                 {
                     agents agent;
@@ -612,34 +553,41 @@ namespace POS_Server.Controllers
                         agent.balance = balance;
                         entity.SaveChanges();
                     }
-                    return agent.agentId;
+                    message = agent.agentId.ToString();
+                    return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(message) };
                 }
 
                 catch
                 {
-                    return 0;
+                    message = "0";
+                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken(message) };
                 }
             }
-            else
-                return 0;
         }
 
         [HttpGet]
         [Route("GetLastNumOfCode")]
-        public IHttpActionResult GetLastNumOfCode(string type)
+        public ResponseVM GetLastNumOfCode(string token)
         {
+            string message = "";
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
+            else
             {
+                string type = "";
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "type")
+                    {
+                        type = c.Value;
+                    }
+                }
                 List<string> numberList;
                 int lastNum = 0;
                 using (incposdbEntities entity = new incposdbEntities())
@@ -658,9 +606,9 @@ namespace POS_Server.Controllers
                         lastNum = int.Parse(numberList[numberList.Count - 1]);
                     }
                 }
-                return Ok(lastNum);
+                message = lastNum.ToString();
+                return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(message) };
             }
-            return NotFound();
         }
 
     }

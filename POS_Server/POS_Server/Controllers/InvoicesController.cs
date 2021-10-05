@@ -1032,6 +1032,7 @@ namespace POS_Server.Controllers
                 if (branchId != 0)
                     searchPredicate = searchPredicate.Or(inv => inv.branchId == branchId && inv.isActive == true && invTypeL.Contains(inv.invType));
                 var invoicesList = (from b in entity.invoices.Where(searchPredicate)
+                                    join u in entity.users on b.createUserId equals u.userId
                                     join l in entity.branches on b.branchId equals l.branchId into lj
                                     from x in lj.DefaultIfEmpty()
                                     where !entity.invoices.Any(y => y.invoiceMainId == b.invoiceId)
@@ -1041,35 +1042,12 @@ namespace POS_Server.Controllers
                                         invNumber = b.invNumber,
                                         agentId = b.agentId,
                                         invType = b.invType,
-                                        total = b.total,
-                                        totalNet = b.totalNet,
-                                        paid = b.paid,
-                                        deserved = b.deserved,
-                                        deservedDate = b.deservedDate,
-                                        invDate = b.invDate,
-                                        invoiceMainId = b.invoiceMainId,
-                                        invCase = b.invCase,
-                                        invTime = b.invTime,
-                                        notes = b.notes,
-                                        vendorInvNum = b.vendorInvNum,
-                                        vendorInvDate = b.vendorInvDate,
-                                        createUserId = b.createUserId,
-                                        updateDate = b.updateDate,
-                                        updateUserId = b.updateUserId,
-                                        branchId = b.branchId,
-                                        discountValue = b.discountValue,
-                                        discountType = b.discountType,
                                         tax = b.tax,
                                         taxtype = b.taxtype,
                                         name = b.name,
-                                        isApproved = b.isApproved,
                                         branchName = x.name,
-                                        branchCreatorId = b.branchCreatorId,
-                                        shippingCompanyId = b.shippingCompanyId,
-                                        shipUserId = b.shipUserId,
-                                        userId = b.userId,
-                                        manualDiscountType = b.manualDiscountType,
-                                        manualDiscountValue = b.manualDiscountValue,
+                                        branchCreatorName = b.branches1.name,
+                                        createrUserName = u.name +" " + u.lastname,
                                     })
                 .ToList();
                 if (invoicesList != null)
@@ -2108,7 +2086,7 @@ namespace POS_Server.Controllers
         }
         [HttpGet]
         [Route("GetLastNumOfInv")]
-        public IHttpActionResult GetLastNumOfInv(string invCode)
+        public IHttpActionResult GetLastNumOfInv(string invCode, int branchId)
         {
             var re = Request;
             var headers = re.Headers;
@@ -2126,7 +2104,7 @@ namespace POS_Server.Controllers
                 int lastNum = 0;
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    numberList = entity.invoices.Where(b => b.invNumber.Contains(invCode + "-")).Select(b => b.invNumber).ToList();
+                    numberList = entity.invoices.Where(b => b.invNumber.Contains(invCode + "-") && b.branchId == branchId).Select(b => b.invNumber).ToList();
 
                     for (int i = 0; i < numberList.Count; i++)
                     {

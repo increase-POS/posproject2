@@ -30,6 +30,7 @@ namespace POS_Server.Models
         public string vendorInvNum { get; set; }
         public string name { get; set; }
         public string branchName { get; set; }
+        public string branchCreatorName { get; set; }
         public Nullable<System.DateTime> vendorInvDate { get; set; }
         public Nullable<int> branchId { get; set; }
         public Nullable<int> posId { get; set; }
@@ -46,6 +47,7 @@ namespace POS_Server.Models
         public int invStatusId { get; set; }
         public decimal manualDiscountValue { get; set; }
         public string manualDiscountType { get; set; }
+        public string createrUserName { get; set; }
         public bool isActive { get; set; }
         
     }
