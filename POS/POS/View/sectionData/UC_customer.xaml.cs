@@ -329,7 +329,7 @@ namespace POS.View
                             agent.fax = faxStr;
                             agent.maxDeserve = maxDeserveValue;
 
-                            int s =int.Parse( await agentModel.saveAgent(agent));
+                            int s = await agentModel.saveAgent(agent) ;
 
                             if (s == -1)// إظهار رسالة الترقية
                                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpgrade"), animation: ToasterAnimation.FadeIn);
@@ -479,16 +479,16 @@ namespace POS.View
                             agent.maxDeserve = maxDeserveValue;
                             agent.isLimited = (bool)tgl_hasCredit.IsChecked;
 
-                            string s = await agentModel.saveAgent(agent);
+                            int s = await agentModel.saveAgent(agent);
 
-                            if (!s.Equals("0"))
+                            if (s > 0)
                                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
                             else
                                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
                             if (isImgPressed)
                             {
-                                int agentId = int.Parse(s);
+                                int agentId = s;
                                 string b = await agentModel.uploadImage(imgFileName, Md5Encription.MD5Hash("Inc-m" + agentId.ToString()), agentId);
                                 agent.image = b;
                                 isImgPressed = false;
@@ -593,11 +593,11 @@ namespace POS.View
                                 if (agent.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
                                 if ((!agent.canDelete) && (agent.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
 
-                                bool b = await agentModel.deleteAgent(agent.agentId, agent.canDelete);
+                                int b = await agentModel.deleteAgent(agent.agentId, (int)MainWindow.userID, agent.canDelete);
 
-                                if (b) //SectionData.popUpResponse("", popupContent);
+                                if (b > 0) 
                                     Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
-                                else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                                else  
                                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                             }
                         }
@@ -625,11 +625,11 @@ namespace POS.View
             
                 agent.isActive = 1;
 
-                string s = await agentModel.saveAgent(agent);
+                int s = await agentModel.saveAgent(agent);
 
-                if (s.Equals("true")) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopActive"));
+                if (s> 0) 
                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
-                else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                else  
                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
                 await RefreshCustomersList();

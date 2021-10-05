@@ -470,9 +470,9 @@ namespace POS.View.windows
                         agent.fax = faxStr;
                         //agent.maxDeserve = maxDeserveValue;
 
-                        string s = await agentModel.saveAgent(agent);
+                        int s = await agentModel.saveAgent(agent);
 
-                        if (!s.Equals("0"))
+                        if (s>0)
                         {
                             Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
                             this.Close();
@@ -482,7 +482,7 @@ namespace POS.View.windows
 
                         if (isImgPressed)
                         {
-                            int agentId = int.Parse(s);
+                            int agentId =  s ;
                             string b = await agentModel.uploadImage(imgFileName, Md5Encription.MD5Hash("Inc-m" + agentId.ToString()), agentId);
                             agent.image = b;
                             isImgPressed = false;

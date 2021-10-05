@@ -335,8 +335,6 @@ namespace POS.Classes
             }
             return false;
         }
-
-       
         public async Task<byte[]> downloadImage(string imageName)
         {
             Stream jsonString = null;

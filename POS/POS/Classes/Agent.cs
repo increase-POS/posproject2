@@ -85,90 +85,43 @@ namespace POS.Classes
             }
             return items;
         }
-
-        ///////////////  Before Authorization
-
-
         public async Task<Agent> getAgentById(int agentId)
         {
             Agent agent = new Agent();
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("agentId", agentId.ToString());
+            //#################
+            IEnumerable<Claim> claims = await APIResult.getList("Agent/GetAgentByID", parameters);
 
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            using (var client = new HttpClient())
+            foreach (Claim c in claims)
             {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Agent/GetAgentByID");
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Headers.Add("agentId", agentId.ToString());
-                request.Method = HttpMethod.Get;
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var response = await client.SendAsync(request);
-
-                if (response.IsSuccessStatusCode)
+                if (c.Type == "scopes")
                 {
-                    var jsonString = await response.Content.ReadAsStringAsync();
-
-                    agent = JsonConvert.DeserializeObject<Agent>(jsonString);
-
-                    return agent;
+                    agent = JsonConvert.DeserializeObject<Agent>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    break;
                 }
-
-                return agent;
             }
-
+            return agent;
         }
-
-        // adding or editing  agent by calling API metod "saveAgent"
-        // if agentId = 0 will call save else call edit
-
-        /// ///////////////////////////////////////
-    
-        /// //////////////////////////////////////
         /// </summary>
         /// <param name="agent"></param>
         /// <returns></returns>
-        public async Task<string> saveAgent(Agent agent)
+        /// 
+
+        public async Task<int> saveAgent(Agent agent)
         {
-            string message = "";
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            string method = "Agent/Save";
 
-            string myContent = JsonConvert.SerializeObject(agent);
-
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-
-                HttpRequestMessage request = new HttpRequestMessage();
-
-                // encoding parameter to get special characters
-                myContent = HttpUtility.UrlEncode(myContent);
-
-                request.RequestUri = new Uri(Global.APIUri + "Agent/Save?agentObject=" + myContent);
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Post;
-                //set content type
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var response = await client.SendAsync(request);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    message = await response.Content.ReadAsStringAsync();
-                    message = JsonConvert.DeserializeObject<string>(message);
-                }
-                return message;
-            }
+            var myContent = JsonConvert.SerializeObject(agent);
+            parameters.Add("itemObject", myContent);
+            return APIResult.post(method, parameters);
         }
+    
+        /// ///////////////////////////////////////
+        /// before
+        /// //////////////////////////////////////
+
         public string EncodeNonAsciiCharacters(string value)
         {
             StringBuilder sb = new StringBuilder();
@@ -197,81 +150,18 @@ namespace POS.Classes
                 });
         }
         // delete agent
-
-        public async Task<Boolean> deleteAgent(int agentId , bool final)
+        public async Task<int> deleteAgent(int agentId, int userId, Boolean final)
         {
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("agentId", agentId.ToString());
+            parameters.Add("userId", userId.ToString());
+            parameters.Add("final", final.ToString());
 
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Agent/Delete?final=" + final);
-
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Headers.Add("agentId", agentId.ToString());
-                request.Headers.Add("userId", "2");
-                request.Method = HttpMethod.Post;
-                //set content type
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var response = await client.SendAsync(request);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    return true;
-                }
-                return false;
-            }
+            string method = "Agent/Delete";
+            return APIResult.post(method, parameters);
         }
 
-        public async Task<List<Agent>> SearchAgents(string type , string searchWord)
-        {
-            List<Agent> agents = null;
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Agent/Search?type=" + type + "&Searchwords=" + searchWord);
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Headers.Add("type", type);
-                request.Method = HttpMethod.Get;
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage response = await client.SendAsync(request);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    var jsonString = await response.Content.ReadAsStringAsync();
-                    jsonString = jsonString.Replace("\\", string.Empty);
-                    jsonString = jsonString.Trim('"');
-                    // fix date format
-                    JsonSerializerSettings settings = new JsonSerializerSettings
-                    {
-                        Converters = new List<JsonConverter> { new BadDateFixingConverter() },
-                        DateParseHandling = DateParseHandling.None
-                    };
-                    agents = JsonConvert.DeserializeObject<List<Agent>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
-                    return agents;
-                }
-                else //web api sent error response 
-                {
-                    agents = new List<Agent>();
-                }
-                return agents;
-            }
-
-        }
-
+         
         //public async Task<Boolean> uploadImage(string imagePath, int agentId)
         public async Task<string> uploadImage(string imagePath, string imageName, int agentId)
         {
@@ -341,45 +231,17 @@ namespace POS.Classes
             }
             return "";
         }
-
-        public async Task<string> updateImage(Agent agent)
+        // update image field in DB
+        public async Task<int> updateImage(Agent agent)
         {
-            string message = "";
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            var myContent = JsonConvert.SerializeObject(agent);
+            parameters.Add("itemObject", myContent);
 
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-
-            string myContent = JsonConvert.SerializeObject(agent);
-
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-
-                HttpRequestMessage request = new HttpRequestMessage();
-
-                // encoding parameter to get special characters
-                myContent = HttpUtility.UrlEncode(myContent);
-
-                request.RequestUri = new Uri(Global.APIUri + "Agent/UpdateImage?agentObject=" + myContent);
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Post;
-                //set content type
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var response = await client.SendAsync(request);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    message = await response.Content.ReadAsStringAsync();
-                    message = JsonConvert.DeserializeObject<string>(message);
-                }
-                return message;
-            }
+            string method = "Agent/UpdateImage";
+            return APIResult.post(method, parameters);
         }
-
+      
         //public async Task<Image> downloadImage(string imageName)
         //public async Task<Stream> downloadImage(string imageName)
         public async Task<byte[]> downloadImage(string imageName)
@@ -429,38 +291,18 @@ namespace POS.Classes
                 return byteImg;
             }
         }
-        public async Task<string> updateBalance(int agentId , decimal balance)
+
+        public async Task<int> updateBalance(int agentId, decimal balance)
         {
-            string message = "";
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("agentId", agentId.ToString());
+            parameters.Add("balance", balance.ToString());
 
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-
-                HttpRequestMessage request = new HttpRequestMessage();
-
-                request.RequestUri = new Uri(Global.APIUri + "Agent/UpdateBalance?agentId=" + agentId + "&balance=" + balance);
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Post;
-                //set content type
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var response = await client.SendAsync(request);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    message = await response.Content.ReadAsStringAsync();
-                    message = JsonConvert.DeserializeObject<string>(message);
-                }
-                return message;
-            }
+            string method = "Agent/UpdateBalance";
+            return APIResult.post(method, parameters);
         }
+
+         
 
         public async Task<string> generateCodeNumber(string type)
         {
@@ -472,34 +314,25 @@ namespace POS.Classes
             string transNum = type + "-" + strSeq;
             return transNum;
         }
-
         public async Task<int> GetLastNumOfCode(string type)
         {
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Agent/GetLastNumOfCode?type=" + type);
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Get;
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage response = await client.SendAsync(request);
+            int value = 0 ;
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("type", type);
+            //#################
+            IEnumerable<Claim> claims = await APIResult.getList("Agent/GetLastNumOfCode", parameters);
 
-                if (response.IsSuccessStatusCode)
+            foreach (Claim c in claims)
+            {
+                if (c.Type == "scopes")
                 {
-                    string message = await response.Content.ReadAsStringAsync();
-                    message = JsonConvert.DeserializeObject<string>(message);
-                    return int.Parse(message);
+                    value = JsonConvert.DeserializeObject<int>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    break;
                 }
-                return 0;
             }
+            return value;
         }
+         
 
     }
 

@@ -23,6 +23,7 @@ using System.Threading;
 using POS.View.windows;
 using System.Resources;
 using System.Reflection;
+using static POS.Classes.Statistics;
 
 namespace POS.View.reports
 {
@@ -36,6 +37,10 @@ namespace POS.View.reports
         IEnumerable<ItemTransferInvoice> itemTrasferInvoicesQueryExcel;
         string searchText = "";
         int selectedTab = 0;
+        //prin & pdf
+        ReportCls reportclass = new ReportCls();
+        LocalReport rep = new LocalReport();
+        SaveFileDialog saveFileDialog = new SaveFileDialog();
 
         private static us_dailySalesStatistic _instance;
        
@@ -116,9 +121,7 @@ namespace POS.View.reports
             if (itemTrasferInvoices is null)
                 await RefreshItemTransferInvoiceList();
 
-
             searchText = txt_search.Text.ToLower();
-            //itemTrasferInvoicesQuery = itemTrasferInvoices;
             itemTrasferInvoicesQuery = itemTrasferInvoices
                 .Where(s => 
             (
@@ -134,41 +137,44 @@ namespace POS.View.reports
                 //||
                 //(chk_drafs.IsChecked   == true ? s.invType == "sd" : false)
                 (
-                selectedTab == 0 //invoice
-                &&
-                (chk_invoice.IsChecked == true ? s.invType == "s" : false)
-                ||
-                (chk_return.IsChecked == true ? s.invType == "sb" : false)
-                ||
-                (chk_drafs.IsChecked == true ? s.invType == "sd" : false)
+                    selectedTab == 0 //invoice
+                    ?
+                    (chk_invoice.IsChecked == true ? s.invType == "s" : false)
+                    ||
+                    (chk_return.IsChecked == true ? s.invType == "sb" : false)
+                    ||
+                    (chk_drafs.IsChecked == true ? s.invType == "sd" : false)
+                    : false
                 )
                 ||
                 (
-                selectedTab == 1 //order
-                &&
-                (chk_invoice.IsChecked == true ? s.invType == "or" : false)
-                ||
-                (chk_return.IsChecked == true ? s.invType == "sbd" : false)/////????
-                ||
-                (chk_drafs.IsChecked == true ? s.invType == "ord" : false)
+                    selectedTab == 1 //order
+                    ?
+                    (chk_invoice.IsChecked == true ? s.invType == "or" : false)
+                    ||
+                    (chk_return.IsChecked == true ? s.invType == "sbd" : false)/////????
+                    ||
+                    (chk_drafs.IsChecked == true ? s.invType == "ord" : false)
+                    : false
                 )
                 ||
                 (
-                selectedTab == 1 //quotation
-                &&
-                (chk_invoice.IsChecked == true ? s.invType == "or" : false)
-                ||
-                (chk_return.IsChecked == true ? s.invType == "sbd" : false)/////????
-                ||
-                (chk_drafs.IsChecked == true ? s.invType == "ord" : false)
+                    selectedTab == 2 //quotation
+                    ?
+                    (chk_invoice.IsChecked == true ? s.invType == "q" : false)
+                    ||
+                    (chk_return.IsChecked == true ? s.invType == "sbd" : false)/////????
+                    ||
+                    (chk_drafs.IsChecked == true ? s.invType == "qd" : false)
+                    : false
                 )
             )
             &&
             //branchID
             (cb_branches.SelectedIndex != -1 ? s.branchCreatorId == Convert.ToInt32(cb_branches.SelectedValue) : true)
-            //&&
+            &&
             //posID
-            //(cb_branches.SelectedIndex != -1 ? s.branchCreatorId == Convert.ToInt32(cb_branches.SelectedValue) : true)
+            (cb_pos.SelectedIndex != -1 ? s.posId == Convert.ToInt32(cb_pos.SelectedValue) : true)
             );
 
             itemTrasferInvoicesQueryExcel = itemTrasferInvoicesQuery.ToList();
@@ -201,12 +207,13 @@ namespace POS.View.reports
                 SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
                 selectedTab = 0;
                 txt_search.Text = "";
-                chk_return.IsEnabled = true;
-                //path_order.Fill = Brushes.White;
-                //path_quotation.Fill = Brushes.White;
-                //bdrMain.RenderTransform = Animations.borderAnimation(50, bdrMain, true);
-                //ReportsHelp.paintTabControlBorder(grid_tabControl, bdr_invoice);
-                //path_invoice.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+                chk_return.Visibility = Visibility.Visible;
+                //chk_return.IsChecked = false;
+                path_order.Fill = Brushes.White;
+                path_quotation.Fill = Brushes.White;
+                bdrMain.RenderTransform = Animations.borderAnimation(50, bdrMain, true);
+                ReportsHelp.paintTabControlBorder(grid_tabControl, bdr_invoice);
+                path_invoice.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
                 //ReportsHelp.showTabControlGrid(grid_father, grid_invoice);
                 //ReportsHelp.isEnabledButtons(grid_tabControl, btn_invoice);
 
@@ -234,11 +241,13 @@ namespace POS.View.reports
 
                 selectedTab = 1;
                 txt_search.Text = "";
-                //path_invoice.Fill = Brushes.White;
-                //path_quotation.Fill = Brushes.White;
-                //bdrMain.RenderTransform = Animations.borderAnimation(50, bdrMain, true);
-                //ReportsHelp.paintTabControlBorder(grid_tabControl, bdr_order);
-                //path_order.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+                chk_return.Visibility = Visibility.Collapsed;
+                chk_return.IsChecked = false;
+                path_invoice.Fill = Brushes.White;
+                path_quotation.Fill = Brushes.White;
+                bdrMain.RenderTransform = Animations.borderAnimation(50, bdrMain, true);
+                ReportsHelp.paintTabControlBorder(grid_tabControl, bdr_order);
+                path_order.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
                 //ReportsHelp.showTabControlGrid(grid_father, grid_order);
                 //ReportsHelp.isEnabledButtons(grid_tabControl, btn_order);
 
@@ -268,11 +277,13 @@ namespace POS.View.reports
 
                 selectedTab = 2;
                 txt_search.Text = "";
-                //path_invoice.Fill = Brushes.White;
-                //path_order.Fill = Brushes.White;
-                //bdrMain.RenderTransform = Animations.borderAnimation(50, bdrMain, true);
-                //ReportsHelp.paintTabControlBorder(grid_tabControl, bdr_quotation);
-                //path_quotation.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+                chk_return.Visibility = Visibility.Collapsed;
+                chk_return.IsChecked = false;
+                path_invoice.Fill = Brushes.White;
+                path_order.Fill = Brushes.White;
+                bdrMain.RenderTransform = Animations.borderAnimation(50, bdrMain, true);
+                ReportsHelp.paintTabControlBorder(grid_tabControl, bdr_quotation);
+                path_quotation.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
                 //ReportsHelp.showTabControlGrid(grid_father, grid_quotation);
                 //ReportsHelp.isEnabledButtons(grid_tabControl, btn_quotation);
 
@@ -506,64 +517,296 @@ namespace POS.View.reports
            
         }
         int branchID = 0;
-        private void cb_branches_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void cb_branches_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-             RefreshView_SelectedDateChanged(null, null);
-            //fillPos(Convert.ToInt32(cb_branches.SelectedValue));
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                await RefreshItemTransferInvoiceList();
+                await Search();
+                fillPos(Convert.ToInt32(cb_branches.SelectedValue));
+
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         private void fillPos(int bID)
-        {
-            cb_branches.SelectedValuePath = "posId";
-            cb_branches.DisplayMemberPath = "posName";
-            cb_branches.ItemsSource = itemTrasferInvoices.Where(t => t.branchCreatorId == bID)
+        {////////////////???????????????????????????????????
+            cb_pos.SelectedValuePath = "posId";
+            cb_pos.DisplayMemberPath = "posName";
+            cb_pos.ItemsSource = itemTrasferInvoicesQuery.Where(t => t.branchCreatorId == bID)
                                                          .Select(i => i.posName).Distinct();
+           
+            //List<CashTransferSts> list;
+            //list = await statisticsModel.GetPosTrans();
+            //fromPos = statisticsModel.getFromPosCombo(list);
+            //cb_pos.SelectedValuePath = "PosFromId";
+            //cb_pos.DisplayMemberPath = "PosFromName";
+            //cb_pos.ItemsSource = fromPos;
+            //if (cb_branches.SelectedItem != null)
+            //{
+            //    var temp = cb_branches.SelectedItem as branchFromCombo;
+            //    cb_formPos.ItemsSource = cb_pos.Where(x => x.BranchId == temp.BranchFromId);
+            //}
         }
 
         private void BuildReport()
         {
-           
+            //List<ReportParameter> paramarr = new List<ReportParameter>();
+
+            //string addpath = "";
+            //bool isArabic = ReportCls.checkLang();
+            //if (isArabic)
+            //{
+            //    addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurItemSts.rdlc";
+            //}
+            //else
+            //{
+            //    //english
+            //    addpath = @"\Reports\StatisticReport\Purchase\En\EnPurItemSts.rdlc";
+            //}
+
+            //string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+            //ReportCls.checkLang();
+            ////  getpuritemcount
+            //clsReports.PurOrderStsReport(itemTrasferInvoicesQuery, rep, reppath, paramarr);
+
+            //clsReports.setReportLanguage(paramarr);
+            //clsReports.Header(paramarr);
+
+            //rep.SetParameters(paramarr);
+
+            //rep.Refresh();
         }
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
-        {
-          
+        {//pdf
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                #region
+
+                BuildReport();
+                saveFileDialog.Filter = "PDF|*.pdf;";
+
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    string filepath = saveFileDialog.FileName;
+                    LocalReportExtensions.ExportToPDF(rep, filepath);
+                }
+
+                #endregion
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         private void Btn_print_Click(object sender, RoutedEventArgs e)
-        {
-            
+        {//print
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                List<ItemTransferInvoice> query = new List<ItemTransferInvoice>();
+
+                #region
+                BuildReport();
+
+                LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.rep_printer_name, short.Parse(MainWindow.rep_print_count));
+
+                #endregion
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
-        {
-            
+        {//excel
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                List<ItemTransferInvoice> query = new List<ItemTransferInvoice>();
+
+                #region
+                BuildReport();
+                this.Dispatcher.Invoke(() =>
+                {
+                    saveFileDialog.Filter = "EXCEL|*.xls;";
+                    if (saveFileDialog.ShowDialog() == true)
+                    {
+                        string filepath = saveFileDialog.FileName;
+                        LocalReportExtensions.ExportToExcel(rep, filepath);
+                    }
+                });
+                #endregion
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         private void Btn_preview_Click(object sender, RoutedEventArgs e)
-        {
-           
+        {//preview
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                #region
+                Window.GetWindow(this).Opacity = 0.2;
+                string pdfpath = "";
+
+                pdfpath = @"\Thumb\report\temp.pdf";
+                pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
+
+                BuildReport();
+
+                LocalReportExtensions.ExportToPDF(rep, pdfpath);
+                wd_previewPdf w = new wd_previewPdf();
+                w.pdfPath = pdfpath;
+                if (!string.IsNullOrEmpty(w.pdfPath))
+                {
+                    w.ShowDialog();
+                    w.wb_pdfWebViewer.Dispose();
+                }
+                Window.GetWindow(this).Opacity = 1;
+                #endregion
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
-        private void Chk_allBranches_Checked(object sender, RoutedEventArgs e)
+        private async void Chk_allBranches_Checked(object sender, RoutedEventArgs e)
         {
-            cb_branches.SelectedIndex = -1;
-            cb_branches.IsEnabled = false;
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                cb_branches.SelectedIndex = -1;
+                cb_branches.IsEnabled = false;
+                await RefreshItemTransferInvoiceList();
+                await Search();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
-        private void Chk_allBranches_Unchecked(object sender, RoutedEventArgs e)
+        private async void Chk_allBranches_Unchecked(object sender, RoutedEventArgs e)
         {
-            cb_branches.IsEnabled = true;
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                cb_branches.IsEnabled = true;
+
+                await RefreshItemTransferInvoiceList();
+                await Search();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
-        private void Chk_allPos_Checked(object sender, RoutedEventArgs e)
+        private async void Chk_allPos_Checked(object sender, RoutedEventArgs e)
         {
-            cb_pos.SelectedIndex = -1;
-            cb_pos.IsEnabled = false;
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                cb_pos.SelectedIndex = -1;
+                cb_pos.IsEnabled = false;
+
+                await RefreshItemTransferInvoiceList();
+                await Search();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
-        private void Chk_allPos_Unchecked(object sender, RoutedEventArgs e)
+        private async void Chk_allPos_Unchecked(object sender, RoutedEventArgs e)
         {
-            cb_pos.IsEnabled = true;
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                cb_pos.IsEnabled = true;
+
+                await RefreshItemTransferInvoiceList();
+                await Search();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         private async void Txt_search_TextChanged(object sender, TextChangedEventArgs e)
@@ -590,6 +833,27 @@ namespace POS.View.reports
 
         private async void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {//refresh
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                await RefreshItemTransferInvoiceList();
+                await Search();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+
+        private async void Cb_pos_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
             try
             {
                 if (sender != null)

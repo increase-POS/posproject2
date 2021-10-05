@@ -177,9 +177,11 @@
                                 </Path>
                             </Button>
                         </Border>
-
-                        <TextBlock  x:Name="txt_tabTitle"  Foreground="White"   Grid.Column="10" 
+                        <Border Grid.Column="10" >
+                            <TextBlock  x:Name="txt_tabTitle"  Foreground="White"   
                               VerticalAlignment="Center"      FontSize="16"     Margin="5 5 10 5"/>
+                        </Border>
+                        
 
                     </Grid>
                 </Border>
@@ -231,7 +233,7 @@
                                      Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                       materialDesign:HintAssist.Hint="Pos ...."
                                     Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" BorderBrush="AliceBlue" BorderThickness="0,0,0,2" 
-                                    Height="40" Margin="10,5,10,5" Padding="10,0,5,0" Grid.Row="1"></ComboBox>
+                                    Height="40" Margin="10,5,10,5" Padding="10,0,5,0" Grid.Row="1" SelectionChanged="Cb_pos_SelectionChanged"></ComboBox>
                                         <CheckBox DockPanel.Dock="Right" Background="{StaticResource MainColorBlue}" x:Name="chk_allPos" Grid.Row="2"  Content="All" Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}" Checked="Chk_allPos_Checked" Unchecked="Chk_allPos_Unchecked"></CheckBox>
 
                                     </DockPanel>
