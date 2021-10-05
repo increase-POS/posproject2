@@ -298,7 +298,7 @@ namespace POS.View
                 setNotifications();
                 setTimer();
                 await RefrishItems();
-                //await RefrishCustomers();
+                await RefrishCustomers();
                 await fillBarcodeList();
                 await fillCouponsList();
                 await fillShippingCompanies();
