@@ -766,7 +766,7 @@ namespace POS.View.accounts
                 user.balance += value;
             }
 
-            string s = await userModel.saveUser(user);
+             await userModel.save(user);
         }
 
         private async Task calcShippingComBalance(decimal value, int shippingcompanyId)

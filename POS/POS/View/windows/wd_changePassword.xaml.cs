@@ -214,10 +214,11 @@ namespace POS.View.windows
                             //change password
                             string newPassword = Md5Encription.MD5Hash("Inc-m" + pb_newPassword.Password);
                             MainWindow.userLogin.password = newPassword;
-                            string s = await userModel.saveUser(MainWindow.userLogin);
-                            if (!s.Equals("0"))
+                            int s = int.Parse( await userModel.save(MainWindow.userLogin));
+                            
+                            if (s>0)
                             {
-                                userID = int.Parse(s);
+                                userID = s;
                                 if (!Properties.Settings.Default.password.Equals(""))
                                 {
                                     Properties.Settings.Default.password = pb_newPassword.Password;

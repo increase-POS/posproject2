@@ -853,13 +853,13 @@ namespace POS.View.storage
 
                 await invoice.saveInvoice(invoice);
                 await cashTrasnfer.Save(cashTrasnfer); //add cash transfer
-                await user.saveUser(user);
+                await user.save(user);
             }
             else if (user.balanceType == 1)
             {
                 newBalance = user.balance + (float)invoice.totalNet;
                 user.balance = newBalance;
-                await user.saveUser(user);
+                await user.save(user);
             }
         }
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)

@@ -43,7 +43,7 @@ namespace POS.Classes
         public Boolean canDelete { get; set; }
         public string image { get; set; }
         public Nullable<int> groupId { get; set; }
-        public async Task<List<User>> GetUsersAsync()
+        public async Task<List<User>> Get()
         {
             List<User> users = null;
             // ... Use HttpClient.
@@ -183,7 +183,7 @@ namespace POS.Classes
             }
 
         }
-        public async Task<string> saveUser(User user)
+        public async Task<string> save(User user)
         {
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
@@ -250,7 +250,7 @@ namespace POS.Classes
             }
         }
       
-        public async Task<Boolean> deleteUser(int delUserId, int userId, bool final)
+        public async Task<Boolean> delete(int delUserId, int userId, bool final)
         {
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;

@@ -180,7 +180,7 @@ namespace POS.View.reports
                 comboBranches = await branchModel.GetAllWithoutMain("b");
                 comboPoss = await posModel.GetPosAsync();
                 comboVendors = await agentModel.GetAgentsAsync("c");
-                comboUsers = await userModel.GetUsersAsync();
+                comboUsers = await userModel.Get();
 
                 itemUnitCombos = statisticModel.GetIUComboList(Items);
                 comboCoupon = statisticModel.GetCopComboList(coupons);

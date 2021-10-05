@@ -322,11 +322,13 @@ namespace POS.Classes
             //#################
             IEnumerable<Claim> claims = await APIResult.getList("Agent/GetLastNumOfCode", parameters);
 
+
             foreach (Claim c in claims)
             {
                 if (c.Type == "scopes")
                 {
-                    value = JsonConvert.DeserializeObject<int>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    
+                    value =int.Parse(JsonConvert.DeserializeObject<String>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" }));
                     break;
                 }
             }

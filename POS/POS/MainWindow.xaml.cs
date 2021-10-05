@@ -896,7 +896,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
 
             //update user record
             userLogin.isOnline = 0;
-            await userModel.saveUser(userLogin);
+            await userModel.save(userLogin);
 
 
             return true;

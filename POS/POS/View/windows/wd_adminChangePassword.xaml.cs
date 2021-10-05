@@ -153,9 +153,9 @@ namespace POS.View.windows
 
                         user.password = password ;
 
-                        string s = await userModel.saveUser(user);
+                        int s = int.Parse(await userModel.save(user));
 
-                        if (!s.Equals("0"))
+                        if (s>0)
                         {
                             if (Properties.Settings.Default.password != string.Empty)
                             {
@@ -166,7 +166,7 @@ namespace POS.View.windows
                             await Task.Delay(2000);
                             this.Close();
 
-                            userID = int.Parse(s);
+                            userID =s;
                        
                         }
                         else
