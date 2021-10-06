@@ -2617,4 +2617,16 @@ Please add Email in setting</value>
   <data name="trVoucher" xml:space="preserve">
     <value>Voucher</value>
   </data>
+  <data name="tr_Branch" xml:space="preserve">
+    <value>Branch</value>
+  </data>
+  <data name="tr_Store" xml:space="preserve">
+    <value>Store</value>
+  </data>
+  <data name="trCashPaid" xml:space="preserve">
+    <value>Cash Paid</value>
+  </data>
+  <data name="trTheRest" xml:space="preserve">
+    <value>The Rest</value>
+  </data>
 </root>

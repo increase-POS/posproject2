@@ -88,6 +88,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Branch.
+        /// </summary>
+        internal static string tr_Branch {
+            get {
+                return ResourceManager.GetString("tr_Branch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Card.
         /// </summary>
         internal static string tr_Card {
@@ -129,6 +138,15 @@ namespace POS {
         internal static string tr_Sales {
             get {
                 return ResourceManager.GetString("tr_Sales", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Store.
+        /// </summary>
+        internal static string tr_Store {
+            get {
+                return ResourceManager.GetString("tr_Store", resourceCulture);
             }
         }
         
@@ -750,6 +768,15 @@ namespace POS {
         internal static string trCashHint {
             get {
                 return ResourceManager.GetString("trCashHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cash Paid.
+        /// </summary>
+        internal static string trCashPaid {
+            get {
+                return ResourceManager.GetString("trCashPaid", resourceCulture);
             }
         }
         
@@ -6691,6 +6718,15 @@ namespace POS {
         internal static string trThereIsNoOrderToSen {
             get {
                 return ResourceManager.GetString("trThereIsNoOrderToSen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Rest.
+        /// </summary>
+        internal static string trTheRest {
+            get {
+                return ResourceManager.GetString("trTheRest", resourceCulture);
             }
         }
         

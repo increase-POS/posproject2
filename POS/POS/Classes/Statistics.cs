@@ -78,6 +78,24 @@ namespace POS.Classes
 
     }
 
+
+    public class BalanceSTS
+    {
+
+        public int posId { get; set; }
+        public string posName { get; set; }
+        public Nullable<byte> posIsActive { get; set; }
+        public Nullable<decimal> balance { get; set; }
+        public string posCode { get; set; }
+        public int branchId { get; set; }
+        public string branchName { get; set; }
+        public string branchCode { get; set; }
+
+        public string branchType { get; set; }
+        public Nullable<byte> banchIsActive { get; set; }
+
+    }
+
     public class CashTransferSts
     {
 
@@ -1712,6 +1730,50 @@ namespace POS.Classes
 
         // المحاسبة
         #region Accountant
+
+        //public async Task<List<BalanceSTS>> GetBalance(int mainBranchId, int userId)
+        //الصندوق
+        public async Task<List<BalanceSTS>> GetBalance(int mainBranchId, int userId)
+        {
+            List<BalanceSTS> list = null;
+            // ... Use HttpClient.
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            using (var client = new HttpClient())
+            {
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                client.BaseAddress = new Uri(Global.APIUri);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+                HttpRequestMessage request = new HttpRequestMessage();
+                request.RequestUri = new Uri(Global.APIUri + "Statistics/GetBalance?mainBranchId=" + mainBranchId + "&userId=" + userId);
+                request.Headers.Add("APIKey", Global.APIKey);
+                request.Method = HttpMethod.Get;
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonString = await response.Content.ReadAsStringAsync();
+                    jsonString = jsonString.Replace("\\", string.Empty);
+                    jsonString = jsonString.Trim('"');
+                    // fix date format
+                    JsonSerializerSettings settings = new JsonSerializerSettings
+                    {
+                        Converters = new List<JsonConverter> { new BadDateFixingConverter() },
+                        DateParseHandling = DateParseHandling.None
+                    };
+                    list = JsonConvert.DeserializeObject<List<BalanceSTS>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    return list;
+                }
+                else //web api sent error response 
+                {
+                    list = new List<BalanceSTS>();
+                }
+                return list;
+            }
+        }
+
         // المدفوعات
         public async Task<List<CashTransferSts>> GetPayments()
         {
@@ -2124,49 +2186,6 @@ namespace POS.Classes
 
         // اليومية
         #region Daily
-
-        //public async Task<List<BalanceSTS>> GetBalance(int mainBranchId, int userId)
-        //يومية المحاسبة
-        //public async Task<List<BalanceSTS>> GetBalance(int mainBranchId, int userId)
-        //{
-        //    List<BalanceSTS> list = null;
-        //    // ... Use HttpClient.
-        //    ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-        //    using (var client = new HttpClient())
-        //    {
-        //        ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-        //        client.BaseAddress = new Uri(Global.APIUri);
-        //        client.DefaultRequestHeaders.Clear();
-        //        client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-        //        client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-        //        HttpRequestMessage request = new HttpRequestMessage();
-        //        request.RequestUri = new Uri(Global.APIUri + "Statistics/GetBalance?mainBranchId=" + mainBranchId + "&userId=" + userId);
-        //        request.Headers.Add("APIKey", Global.APIKey);
-        //        request.Method = HttpMethod.Get;
-        //        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-        //        HttpResponseMessage response = await client.SendAsync(request);
-
-        //        if (response.IsSuccessStatusCode)
-        //        {
-        //            var jsonString = await response.Content.ReadAsStringAsync();
-        //            jsonString = jsonString.Replace("\\", string.Empty);
-        //            jsonString = jsonString.Trim('"');
-        //            // fix date format
-        //            JsonSerializerSettings settings = new JsonSerializerSettings
-        //            {
-        //                Converters = new List<JsonConverter> { new BadDateFixingConverter() },
-        //                DateParseHandling = DateParseHandling.None
-        //            };
-        //            list = JsonConvert.DeserializeObject<List<BalanceSTS>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
-        //            return list;
-        //        }
-        //        else //web api sent error response 
-        //        {
-        //            list = new List<BalanceSTS>();
-        //        }
-        //        return list;
-        //    }
-        //}
 
         // فواتير اليومية العامة في قسم التقارير(مبيعات)
         public async Task<List<ItemTransferInvoice>> Getdailyinvoice(int mainBranchId, int userId, DateTime? date)

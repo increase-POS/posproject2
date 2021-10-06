@@ -235,6 +235,59 @@
                         </Grid>
                     </Border>
 
+                    <Border Background="White" CornerRadius="7"  Height="140"  Width="260" BorderThickness="1" BorderBrush="#178DD2" Margin="10,0,10,20">
+                        <Grid x:Name="grid_fund">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"></ColumnDefinition>
+                                <ColumnDefinition Width="3*"></ColumnDefinition>
+                                <ColumnDefinition Width="40"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Path  Fill="#178DD2" Stretch="Fill" Margin="20,10,0,10" 
+                              HorizontalAlignment="Center" Grid.Column="0"  
+                         VerticalAlignment="Center" Height="60" Width="60"
+                              Data="M33,12c0-0.6,0.4-1,1-1h5c0.6,0,1,0.4,1,1c0,0.6-0.4,1-1,1h-5C33.4,13,33,12.6,33,12z M34,17h5c0.6,0,1-0.4,1-1
+	c0-0.6-0.4-1-1-1h-5c-0.6,0-1,0.4-1,1C33,16.6,33.4,17,34,17z M58,50v8H0v-8H58z M20,54c0-0.6-0.4-1-1-1H5c-0.6,0-1,0.4-1,1
+	s0.4,1,1,1h14C19.6,55,20,54.6,20,54z M55,54c0-0.6-0.4-1-1-1h-1c-0.6,0-1,0.4-1,1s0.4,1,1,1h1C54.6,55,55,54.6,55,54z M4,50h50v-4
+	H4V50z M19,29h-1c-0.6,0-1,0.4-1,1c0,0.6,0.4,1,1,1h1c0.6,0,1-0.4,1-1C20,29.4,19.6,29,19,29z M14.3,29.3C14.1,29.5,14,29.7,14,30
+	s0.1,0.5,0.3,0.7c0.2,0.2,0.4,0.3,0.7,0.3s0.5-0.1,0.7-0.3c0.2-0.2,0.3-0.4,0.3-0.7s-0.1-0.5-0.3-0.7C15.3,28.9,14.7,28.9,14.3,29.3
+	z M14,26h5c0.6,0,1-0.4,1-1c0-0.6-0.4-1-1-1h-5c-0.6,0-1,0.4-1,1C13,25.6,13.4,26,14,26z M18.3,34.3C18.1,34.5,18,34.7,18,35
+	s0.1,0.5,0.3,0.7S18.7,36,19,36s0.5-0.1,0.7-0.3S20,35.2,20,35s-0.1-0.5-0.3-0.7C19.3,33.9,18.7,33.9,18.3,34.3z M56,16.2v28.6
+	c0,0.7-0.5,1.2-1.2,1.2H3.2C2.5,46,2,45.5,2,44.8V16.2c0-0.7,0.5-1.2,1.2-1.1H12v-3h4v3h10.8c0.7,0,1.2-0.6,1.2-1.2V7.2
+	C28,6.5,28.5,6,29.2,6h21.6C51.5,6,52,6.5,52,7.2v6.6c0,0.7,0.6,1.2,1.2,1.2h1.6C55.5,15,56,15.5,56,16.2z M22,21H8v18h14V21z
+	 M35,38h-4v4h4V38z M35,31h-4v4h4V31z M35,24h-4v4h4V24z M42,38h-4v4h4V38z M42,31h-4v4h4V31z M42,24h-4v4h4V24z M49,38h-4v4h4V38z
+	 M49,31h-4v4h4V31z M49,24h-4v4h4V24z M49,9H31v11h18V9z M11,26c0.3,0,0.5-0.1,0.7-0.3c0.2-0.2,0.3-0.4,0.3-0.7s-0.1-0.5-0.3-0.7
+	c-0.4-0.4-1-0.4-1.4,0C10.1,24.5,10,24.7,10,25s0.1,0.5,0.3,0.7C10.5,25.9,10.7,26,11,26z M11,36h5c0.6,0,1-0.4,1-1s-0.4-1-1-1h-5
+	c-0.6,0-1,0.4-1,1S10.4,36,11,36z M11,31h1c0.6,0,1-0.4,1-1c0-0.6-0.4-1-1-1h-1c-0.6,0-1,0.4-1,1C10,30.6,10.4,31,11,31z M12,10
+	c0.3,0,0.5-0.1,0.7-0.3l1-1c0.4-0.4,0.4-1,0-1.4c-0.4-0.4-1-0.4-1.4,0l-1,1c-0.4,0.4-0.4,1,0,1.4C11.5,9.9,11.7,10,12,10z M16,6v3
+	c0,0.6,0.4,1,1,1s1-0.4,1-1V4c0-0.1,0-0.3-0.1-0.4c-0.1-0.2-0.3-0.4-0.5-0.5c-0.2-0.1-0.5-0.1-0.8,0c-0.1,0.1-0.2,0.1-0.3,0.2l-1,1
+	c-0.4,0.4-0.4,1,0,1.4C15.5,5.9,15.7,6,16,6z M20,6v3c0,0.6,0.4,1,1,1s1-0.4,1-1V4c0-0.1,0-0.3-0.1-0.4c-0.1-0.2-0.3-0.4-0.5-0.5
+	c-0.2-0.1-0.5-0.1-0.8,0c-0.1,0.1-0.2,0.1-0.3,0.2l-1,1c-0.4,0.4-0.4,1,0,1.4C19.5,5.9,19.7,6,20,6z M7,6v3c0,0.6,0.4,1,1,1
+	s1-0.4,1-1V4c0-0.1,0-0.3-0.1-0.4C8.8,3.4,8.6,3.2,8.4,3.1C8.1,3,7.9,3,7.6,3.1c-0.1,0-0.2,0.1-0.3,0.2l-1,1c-0.4,0.4-0.4,1,0,1.4
+	C6.5,5.9,6.7,6,7,6z M25,0v13H3V0H25z M23,2H5v9h18V2z"/>
+                            <StackPanel Grid.Column="1" VerticalAlignment="Top"  Grid.ColumnSpan="2" Margin="5,20,0,0" HorizontalAlignment="Left">
+                                <TextBlock x:Name="txt_fundInfo" HorizontalAlignment="Right" Width="135" Foreground="#6e6e6e" FontWeight="SemiBold" Text="Fund Accounts" FontSize="18"></TextBlock>
+                                <TextBlock x:Name="txt_fundHint" Text="Branch,Store,..." FontSize="10" Margin="5,2,0,0"   Foreground="#949494"></TextBlock>
+                            </StackPanel>
+                            <Border Height="25" Width="25" CornerRadius="25" Grid.Column="2" VerticalAlignment="Bottom" Margin="0,0,10,10"
+                                Background="White" HorizontalAlignment="Center">
+                                <Button Background="Transparent" BorderThickness="0" x:Name="btn_fund" 
+                                 Padding="0" VerticalAlignment="Center" HorizontalAlignment="Center"
+                       Height="auto" Width="auto" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="Btn_fund_Click">
+                                    <Path       VerticalAlignment="Center" HorizontalAlignment="Center"
+                                    Height="25" Width="25"  
+                                Fill="#178DD2" Stretch="Fill" 
+                           Grid.Column="0"  
+                              Data="M25.2,150c0,22.8,5.7,43.5,16.8,62.7s26.4,34.2,45.3,45.6c19.2,11.1,39.9,16.8,62.7,16.8s43.5-5.7,62.7-16.8
+	c19.2-11.1,34.2-26.4,45.3-45.6c11.1-19.2,16.8-39.9,16.8-62.7s-5.7-43.5-16.8-62.7c-11.1-19.2-26.4-34.2-45.3-45.3
+	c-19.2-11.4-39.9-16.8-62.7-16.8S106.5,30.9,87.3,42S53.1,68.4,42,87.3C30.6,106.5,25.2,127.2,25.2,150z M108,99.6
+	c-2.1-2.1-3-4.5-3-7.5c0-2.7,0.9-5.4,3-7.5l16.5-16.8c2.1-2.1,4.5-3,7.2-3c2.7,0,5.1,0.9,7.2,3l72.9,74.4c2.1,2.1,3,4.5,3,7.5
+	s-0.9,5.4-3,7.5l-72.9,74.7c-2.1,2.1-4.5,3-7.2,3c-2.7,0-5.1-0.9-7.2-3L108,215.1c-2.1-2.1-3-4.5-3-7.5c0-2.7,0.9-5.4,3-7.5
+	l49.5-50.1L108,99.6z"/>
+                                </Button>
+                            </Border>
+                        </Grid>
+                    </Border>
+
                 </WrapPanel>
             </ScrollViewer>
         </Grid>
