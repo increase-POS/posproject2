@@ -46,17 +46,11 @@ namespace POS.View.Settings
         }
         public void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            #region menu state
-            string menuState = MainWindow.menuIsOpen;
-            if (menuState.Equals("open"))
-                ex.IsExpanded = true;
-            else
-                ex.IsExpanded = false;
-            #endregion
+          
 
-            #region translate
             try
             {
+            #region translate
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
@@ -70,6 +64,13 @@ namespace POS.View.Settings
 
                 if(!stopPermission)
                 permission();
+                #region menu state
+                string menuState = MainWindow.menuIsOpen;
+                if (menuState.Equals("open"))
+                    ex.IsExpanded = true;
+                else
+                    ex.IsExpanded = false;
+                #endregion
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }

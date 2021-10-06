@@ -404,8 +404,7 @@ namespace POS.View.Settings
         {//save language
             try
             {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
+                
 
                 if (MainWindow.groupObject.HasPermissionAction(usersSettingsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
@@ -416,6 +415,8 @@ namespace POS.View.Settings
                             usLanguage = new UserSetValues();
                         if (Convert.ToInt32(cb_language.SelectedValue) != 0)
                         {
+                            if (sender != null)
+                                SectionData.StartAwait(grid_main);
                             usLanguage.userId = MainWindow.userID;
                             usLanguage.valId = Convert.ToInt32(cb_language.SelectedValue);
                             usLanguage.createUserId = MainWindow.userID;
@@ -433,10 +434,10 @@ namespace POS.View.Settings
                             }
                             else
                                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-
-
+                            if (sender != null)
+                                SectionData.EndAwait(grid_main);
                             uc_settings objUC1 = new uc_settings();
-                            objUC1.UserControl_Loaded(null , null);
+                            //objUC1.UserControl_Loaded(null , null);
                            
                             //update languge in main window
                             MainWindow parentWindow = Window.GetWindow(this) as MainWindow;
@@ -460,29 +461,25 @@ namespace POS.View.Settings
                                 parentWindow.translate();
 
                                 //parentWindow
-                                UserControl_Loaded(null, null);
+                                //UserControl_Loaded(null, null);
 
-                                uc_settings set = new uc_settings();
+                                //uc_settings set = new uc_settings();
                                 //parentWindow.grid_main.Children.Clear();
                                 //parentWindow.grid_main.Children.Add(set);
                                 //uc_general g = new uc_general();
                                 //set.Content = g;
                                 //set.ex.Visibility = Visibility.Visible;
-                                set.UserControl_Loaded(null , null);
+                                //set.UserControl_Loaded(null , null);
 
-                                this.UserControl_Loaded(null , null);
-
-
+                                //this.UserControl_Loaded(null , null);
+                            MainWindow.loadingDefaultPath("settings", "general");
                             }
-
-
                         }
                     }
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
+               
             }
             catch (Exception ex)
             {

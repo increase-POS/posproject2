@@ -156,7 +156,7 @@ namespace POS.View.sales
             txt_delivery.Text = MainWindow.resourcemanager.GetString("trDelivery");
             txt_discount.Text = MainWindow.resourcemanager.GetString("trDiscount");
 
-            txt_waitConfirmUser.Text = MainWindow.resourcemanager.GetString("trWaitConfirmUser");
+            txt_waitConfirmUser.Text = MainWindow.resourcemanager.GetString("trWaiting");
             txt_printInvoice.Text = MainWindow.resourcemanager.GetString("trPrint");
             txt_preview.Text = MainWindow.resourcemanager.GetString("trPreview");
             txt_invoiceImages.Text = MainWindow.resourcemanager.GetString("trImages");

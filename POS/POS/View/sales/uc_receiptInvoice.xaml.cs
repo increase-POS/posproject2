@@ -29,6 +29,7 @@ using System.Globalization;
 using System.Windows.Threading;
 using System.Threading;
 using System.Windows.Resources;
+using System.ComponentModel;
 
 namespace POS.View
 {
@@ -182,6 +183,8 @@ namespace POS.View
             txt_quotations.Text = MainWindow.resourcemanager.GetString("trQuotations");
             txt_ordersWait.Text = MainWindow.resourcemanager.GetString("trOrders");
             txt_invoices.Text = MainWindow.resourcemanager.GetString("trInvoices");
+            txt_payment.Text = MainWindow.resourcemanager.GetString("trPayment");
+            txt_theRestTitle.Text = MainWindow.resourcemanager.GetString("trTheRest");
 
             tt_error_previous.Content = MainWindow.resourcemanager.GetString("trPrevious");
             tt_error_next.Content = MainWindow.resourcemanager.GetString("trNext");
@@ -198,6 +201,7 @@ namespace POS.View
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_processNum, MainWindow.resourcemanager.GetString("trProcessNumHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_discount, MainWindow.resourcemanager.GetString("trDiscountHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_typeDiscount, MainWindow.resourcemanager.GetString("trDiscountTypeHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_cashPaid, MainWindow.resourcemanager.GetString("trCashPaid"));
 
             btn_save.Content = MainWindow.resourcemanager.GetString("trPay");
         }
@@ -274,6 +278,7 @@ namespace POS.View
                 MainWindow.mainWindow.KeyDown += HandleKeyPress;
                 tb_moneyIcon.Text = MainWindow.Currency;
                 tb_moneyIconTotal.Text = MainWindow.Currency;
+                tb_moneyIcontheResst.Text = MainWindow.Currency;
 
                 if (MainWindow.lang.Equals("en"))
                 {
@@ -369,7 +374,15 @@ namespace POS.View
                 }
 
                 #endregion
-
+                #region tb_total textChange
+                var dp = DependencyPropertyDescriptor.FromProperty(
+                TextBlock.TextProperty,
+             typeof(TextBlock));
+                dp.AddValueChanged(tb_total, (Null, args) =>
+                {
+                    Tb_cashPaid_TextChanged(null, null);
+                });
+                #endregion
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -1369,6 +1382,7 @@ namespace POS.View
             md_docImage.Badge = "";
             md_payments.Badge = "";
             gd_card.Visibility = Visibility.Collapsed;
+            gd_theRest.Visibility = Visibility.Collapsed;
             btn_deleteInvoice.Visibility = Visibility.Collapsed;
             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesInvoice");
             txt_payInvoice.Foreground = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
@@ -1659,7 +1673,17 @@ namespace POS.View
                 switch (cashTrasnfer.processType)
                 {
                     case "cash":
+
+                        gd_theRest.Visibility = Visibility.Visible;
+                        tb_cashPaid.Text = txt_theRest.Text = "0";
+                        gd_card.Visibility = Visibility.Collapsed;
+                        _SelectedCard = -1;
+                        txt_card.Text = "";
+                        tb_processNum.Clear();
+                        break;
                     case "balance":
+                        gd_theRest.Visibility = Visibility.Collapsed;
+                        tb_cashPaid.Text = txt_theRest.Text = "0";
                         gd_card.Visibility = Visibility.Collapsed;
                        _SelectedCard = -1;
                         txt_card.Text = "";
@@ -1669,6 +1693,8 @@ namespace POS.View
                         gd_card.Visibility = Visibility.Visible;
                         _SelectedCard = cashTrasnfer.cardId.Value;
                         tb_processNum.Text = cashTrasnfer.docNum;
+                        gd_theRest.Visibility = Visibility.Collapsed;
+                        tb_cashPaid.Text = txt_theRest.Text = "0";
                         break;
                 }
             }
@@ -3620,6 +3646,8 @@ namespace POS.View
                 switch (cb_paymentProcessType.SelectedIndex)
                 {
                     case 0://cash
+                        gd_theRest.Visibility = Visibility.Visible;
+                        tb_cashPaid.Text = txt_theRest.Text = "0";
                         gd_card.Visibility = Visibility.Collapsed;
                         tb_processNum.Clear();
                         //cb_card.SelectedIndex = -1;
@@ -3631,6 +3659,8 @@ namespace POS.View
                         SectionData.clearValidate(tb_processNum, p_errorCard);
                         break;
                     case 1:// balance
+                        gd_theRest.Visibility = Visibility.Collapsed;
+                        tb_cashPaid.Text = txt_theRest.Text = "0";
                         gd_card.Visibility = Visibility.Collapsed;
                         dp_desrvedDate.IsEnabled = true;
                         tb_processNum.Clear();
@@ -3642,6 +3672,8 @@ namespace POS.View
                         SectionData.clearValidate(tb_processNum, p_errorCard);
                         break;
                     case 2://card
+                        gd_theRest.Visibility = Visibility.Collapsed;
+                        tb_cashPaid.Text = txt_theRest.Text = "0";
                         dp_desrvedDate.IsEnabled = false;
                         gd_card.Visibility = Visibility.Visible;
                         SectionData.clearComboBoxValidate(cb_customer, p_errorCustomer);
@@ -4155,6 +4187,34 @@ namespace POS.View
             Regex regex = new Regex("^[a-zA-Z0-9. -_?]*$");
             if (!regex.IsMatch(e.Text))
                 e.Handled = true;
+        }
+
+        private void Tb_cashPaid_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(tb_total.Text) && !string.IsNullOrEmpty(tb_cashPaid.Text))
+                {
+                    decimal total = decimal.Parse(tb_total.Text);
+                    decimal cashPaid = decimal.Parse(tb_cashPaid.Text);
+                    decimal theRest = (cashPaid - total);
+
+                        txt_theRest.Text = theRest.ToString();
+                    if (theRest > 0)
+                        txt_theRest.Foreground = Application.Current.Resources["mediumGreen"] as SolidColorBrush;
+                    else if (theRest < 0)
+                        txt_theRest.Foreground = Application.Current.Resources["mediumRed"] as SolidColorBrush;
+                    else
+                        txt_theRest.Foreground = Application.Current.Resources["MainColorGrey"] as SolidColorBrush;
+                    
+                }
+                else
+                    txt_theRest.Text = "0";
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
     }
 }
