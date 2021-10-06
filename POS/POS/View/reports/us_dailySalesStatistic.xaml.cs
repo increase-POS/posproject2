@@ -545,7 +545,8 @@ namespace POS.View.reports
             cb_pos.SelectedValuePath = "posId";
             cb_pos.DisplayMemberPath = "posName";
             cb_pos.ItemsSource = itemTrasferInvoicesQuery.Where(t => t.branchCreatorId == bID)
-                                                         .Select(i => i.posName).Distinct();
+                                                         .Select(i => new { i.posName,
+                                                             i.posId}).Distinct();
            
             //List<CashTransferSts> list;
             //list = await statisticsModel.GetPosTrans();
