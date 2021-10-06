@@ -267,6 +267,10 @@ namespace POS.View.windows
                             Pos posmodel = new Pos();
                             posmodel = await posmodel.getPosById((int)MainWindow.posID);
                             MainWindow.branchID = posmodel.branchId;
+
+                            Branch branchModel = new Branch();
+                            MainWindow.loginBranch = await branchModel.getBranchById((int)MainWindow.branchID);
+
                             userLog.userId = user.userId;
                             string str = await userLogsModel.Save(userLog);
 
