@@ -546,7 +546,7 @@ namespace POS.View.reports
             cb_pos.DisplayMemberPath = "posName";
             cb_pos.ItemsSource = itemTrasferInvoicesQuery.Where(t => t.branchCreatorId == bID)
                                                          .Select(i => new { i.posName,
-                                                             i.posId}).Distinct();
+                                                                            i.posId}).Distinct();
            
             //List<CashTransferSts> list;
             //list = await statisticsModel.GetPosTrans();
@@ -563,33 +563,30 @@ namespace POS.View.reports
 
         private void BuildReport()
         {
-            //List<ReportParameter> paramarr = new List<ReportParameter>();
+            List<ReportParameter> paramarr = new List<ReportParameter>();
 
-            //string addpath = "";
-            //bool isArabic = ReportCls.checkLang();
-            //if (isArabic)
-            //{
-            //    addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurItemSts.rdlc";
-            //}
-            //else
-            //{
-            //    //english
-            //    addpath = @"\Reports\StatisticReport\Purchase\En\EnPurItemSts.rdlc";
-            //}
+            string addpath;
+            bool isArabic = ReportCls.checkLang();
+            if (isArabic)
+            {
+                addpath = @"\Reports\StatisticReport\Sale\Daily\Ar\dailySale.rdlc";
+                //Reports\StatisticReport\Sale\Daily\Ar
+            }
+            else
+                addpath = @"\Reports\StatisticReport\Sale\Daily\En\dailySale.rdlc";
+            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
-            //string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+            ReportCls.checkLang();
 
-            //ReportCls.checkLang();
-            ////  getpuritemcount
-            //clsReports.PurOrderStsReport(itemTrasferInvoicesQuery, rep, reppath, paramarr);
+            clsReports.SaledailyReport(itemTrasferInvoicesQuery, rep, reppath, paramarr);
+            clsReports.setReportLanguage(paramarr);
+            clsReports.Header(paramarr);
 
-            //clsReports.setReportLanguage(paramarr);
-            //clsReports.Header(paramarr);
+            rep.SetParameters(paramarr);
 
-            //rep.SetParameters(paramarr);
-
-            //rep.Refresh();
+            rep.Refresh();
         }
+        //itemTrasferInvoicesQuery
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {//pdf
             try
