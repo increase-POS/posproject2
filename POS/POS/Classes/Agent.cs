@@ -45,7 +45,7 @@ namespace POS.Classes
         public decimal maxDeserve { get; set; }
         public Boolean canDelete { get; set; }
 
-        public async Task<List<Agent>> GetAgentsAsync(string type)
+        public async Task<List<Agent>> Get(string type)
         {
             List<Agent> items = new List<Agent>();
 
@@ -108,7 +108,7 @@ namespace POS.Classes
         /// <returns></returns>
         /// 
 
-        public async Task<int> saveAgent(Agent agent)
+        public async Task<int> save(Agent agent)
         {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             string method = "Agent/Save";
@@ -150,10 +150,10 @@ namespace POS.Classes
                 });
         }
         // delete agent
-        public async Task<int> deleteAgent(int agentId, int userId, Boolean final)
+        public async Task<int> delete(int agentId, int userId, Boolean final)
         {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
-            parameters.Add("agentId", agentId.ToString());
+            parameters.Add("itemId", agentId.ToString());
             parameters.Add("userId", userId.ToString());
             parameters.Add("final", final.ToString());
 
@@ -215,7 +215,7 @@ namespace POS.Classes
                             agent.agentId = agentId;
                             agent.image = fileName;
                             await updateImage(agent);
-                            //await saveAgent();
+                            //await save();
                             return fileName;
                         }
                     }

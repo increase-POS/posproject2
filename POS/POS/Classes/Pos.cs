@@ -1,10 +1,12 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -28,170 +30,53 @@ namespace POS.Classes
         public string branchName { get; set; }
         public string branchCode { get; set; }
         public Nullable<decimal> balanceAll { get; set; }
-
-        public async Task<List<Pos>> GetPosAsync()
+        public async Task<List<Pos>> Get()
         {
-            List<Pos> poss = null;
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            using (var client = new HttpClient())
+            List<Pos> items = new List<Pos>();
+            IEnumerable<Claim> claims = await APIResult.getList("Pos/get");
+            foreach (Claim c in claims)
             {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Pos/get");
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Get;
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage response = await client.SendAsync(request);
-
-                if (response.IsSuccessStatusCode)
+                if (c.Type == "scopes")
                 {
-                    var jsonString = await response.Content.ReadAsStringAsync();
-
-                    poss = JsonConvert.DeserializeObject<List<Pos>>(jsonString);
-
-                    return poss;
+                    items.Add(JsonConvert.DeserializeObject<Pos>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" }));
                 }
-                else //web api sent error response 
-                {
-                    poss = new List<Pos>();
-                }
-                return poss;
             }
-
+            return items;
         }
-
-        public async Task<int> savePos(Pos pos)
+        public async Task<Pos> getPosById(int itemId)
         {
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            // 
-            var myContent = JsonConvert.SerializeObject(pos);
+            Pos item = new Pos();
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("itemId", itemId.ToString());
+            //#################
+            IEnumerable<Claim> claims = await APIResult.getList("Pos/GetPosByID", parameters);
 
-            using (var client = new HttpClient())
+            foreach (Claim c in claims)
             {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                // encoding parameter to get special characters
-                myContent = HttpUtility.UrlEncode(myContent);
-                request.RequestUri = new Uri(Global.APIUri + "Pos/Save?posObject=" + myContent);
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Post;
-                //set content type
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var response = await client.SendAsync(request);
-
-                if (response.IsSuccessStatusCode)
+                if (c.Type == "scopes")
                 {
-                    var message = await response.Content.ReadAsStringAsync();
-                    message = JsonConvert.DeserializeObject<string>(message);
-                    return int.Parse( message);
+                    item = JsonConvert.DeserializeObject<Pos>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    break;
                 }
-                return 0;
             }
+            return item;
         }
-
-        public async Task<Pos> getPosById(int posId)
+        public async Task<int> save(Pos item)
         {
-            Pos pos = new Pos();
-
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Pos/GetPosByID?posId=" + posId);
-                request.Headers.Add("APIKey", Global.APIKey);
-                //request.Headers.Add("posId", posId.ToString());
-                request.Method = HttpMethod.Get;
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var response = await client.SendAsync(request);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    var jsonString = await response.Content.ReadAsStringAsync();
-
-                    pos = JsonConvert.DeserializeObject<Pos>(jsonString);
-
-                    return pos;
-                }
-
-                return pos;
-            }
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            string method = "Pos/Save";
+            var myContent = JsonConvert.SerializeObject(item);
+            parameters.Add("itemObject", myContent);
+            return APIResult.post(method, parameters);
         }
-
-        //public async Task<string> deletePos(int posId)
-        //{
-        //    // ... Use HttpClient.
-        //    ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-
-        //    using (var client = new HttpClient())
-        //    {
-        //        ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-        //        client.BaseAddress = new Uri(Global.APIUri);
-        //        client.DefaultRequestHeaders.Clear();
-        //        client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-        //        client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-        //        HttpRequestMessage request = new HttpRequestMessage();
-        //        request.RequestUri = new Uri(Global.APIUri + "Users/Delete");
-        //        request.Headers.Add("APIKey", Global.APIKey);
-        //        request.Headers.Add("posId", posId.ToString());
-        //        request.Method = HttpMethod.Post;
-        //        //set content type
-        //        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-        //        var response = await client.SendAsync(request);
-
-        //        if (response.IsSuccessStatusCode)
-        //        {
-        //            var message = await response.Content.ReadAsStringAsync();
-        //            message = JsonConvert.DeserializeObject<string>(message);
-        //            return message;
-        //        }
-        //        return "";
-        //    }
-        //}
-
-        public async Task<Boolean> deletePos(int posId, int userId, bool final)
+        public async Task<int> delete(int posId, int userId, Boolean final)
         {
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Pos/Delete?posId=" + posId + "&userId=" + userId + "&final=" + final);
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Post;
-                //set content type
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var response = await client.SendAsync(request);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    return true;
-                }
-                return false;
-            }
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("itemId", posId.ToString());
+            parameters.Add("userId", userId.ToString());
+            parameters.Add("final", final.ToString());
+            string method = "Pos/Delete";
+            return APIResult.post(method, parameters);
         }
-
-
     }
 }

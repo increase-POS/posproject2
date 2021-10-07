@@ -9,6 +9,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -43,241 +44,122 @@ namespace POS.Classes
         public Boolean canDelete { get; set; }
         public string image { get; set; }
         public Nullable<int> groupId { get; set; }
+
         public async Task<List<User>> Get()
         {
-            List<User> users = null;
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            using (var client = new HttpClient())
+            List<User> users = new List<User>();
+
+            IEnumerable<Claim> claims = await APIResult.getList("Users/Get");
+
+            foreach (Claim c in claims)
             {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Users/get");
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Get;
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage response = await client.SendAsync(request);
-
-                if (response.IsSuccessStatusCode)
+                if (c.Type == "scopes")
                 {
-                    var jsonString = await response.Content.ReadAsStringAsync();
-
-                    users = JsonConvert.DeserializeObject<List<User>>(jsonString);
-
-                    return users;
+                    users.Add(JsonConvert.DeserializeObject<User>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" }));
                 }
-                else //web api sent error response 
-                {
-                    users = new List<User>();
-                }
-                return users;
             }
-
+            return users;
         }
         public async Task<List<User>> getBranchSalesMan(int branchId, string objectName)
         {
-            List<User> users = null;
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            using (var client = new HttpClient())
+            List<User> items = new List<User>();
+
+            //########### to pass parameters (optional)
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("branchId", branchId.ToString());
+            parameters.Add("objectName", objectName);
+            IEnumerable<Claim> claims = await APIResult.getList("Users/GetSalesMan", parameters);
+            foreach (Claim c in claims)
             {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Users/GetSalesMan?branchId="+branchId+"&objectName="+objectName);
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Get;
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage response = await client.SendAsync(request);
-
-                if (response.IsSuccessStatusCode)
+                if (c.Type == "scopes")
                 {
-                    var jsonString = await response.Content.ReadAsStringAsync();
-                    users = JsonConvert.DeserializeObject<List<User>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
-
-                    return users;
+                    items.Add(JsonConvert.DeserializeObject<User>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" }));
                 }
-                else //web api sent error response 
-                {
-                    users = new List<User>();
-                }
-                return users;
             }
-
+            return items;
         }
         public async Task<List<User>> GetUsersActive()
         {
-            List<User> users = null;
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            using (var client = new HttpClient())
+            List<User> items = new List<User>();
+            IEnumerable<Claim> claims = await APIResult.getList("Users/GetActive");
+            foreach (Claim c in claims)
             {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Users/GetActive");
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Get;
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage response = await client.SendAsync(request);
-
-                if (response.IsSuccessStatusCode)
+                if (c.Type == "scopes")
                 {
-                    var jsonString = await response.Content.ReadAsStringAsync();
-
-                    users = JsonConvert.DeserializeObject<List<User>>(jsonString);
-
-                    return users;
+                    items.Add(JsonConvert.DeserializeObject<User>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" }));
                 }
-                else //web api sent error response 
-                {
-                    users = new List<User>();
-                }
-                return users;
             }
-
+            return items;
         }
-
         public async Task<User> Getloginuser(string userName, string password)
         {
-            User users = null;
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            using (var client = new HttpClient())
+            User user = new User();
+
+            //########### to pass parameters (optional)
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("userName", userName);
+            parameters.Add("password", password);
+            IEnumerable<Claim> claims = await APIResult.getList("Users/Getloginuser", parameters);
+            //#################
+
+            foreach (Claim c in claims)
             {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Users/Getloginuser?userName="+ userName + "&password="+ password);
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Get;
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage response = await client.SendAsync(request);
-
-                if (response.IsSuccessStatusCode)
+                if (c.Type == "scopes")
                 {
-                    var jsonString = await response.Content.ReadAsStringAsync();
-
-                    users = JsonConvert.DeserializeObject<User>(jsonString);
-
-                    return users;
+                    user = JsonConvert.DeserializeObject<User>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    break;
                 }
-                else //web api sent error response 
-                {
-                    users = new User();
-                }
-                return users;
             }
-
-        }
-        public async Task<string> save(User user)
-        {
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            // 
-            var myContent = JsonConvert.SerializeObject(user);
-
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                // encoding parameter to get special characters
-                myContent = HttpUtility.UrlEncode(myContent);
-                request.RequestUri = new Uri(Global.APIUri + "Users/Save?userObject=" + myContent);
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Post;
-                //set content type
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var response = await client.SendAsync(request);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    var message = await response.Content.ReadAsStringAsync();
-                    message = JsonConvert.DeserializeObject<string>(message);
-                    return message;
-                }
-                return "";
-            }
+            return user;
         }
         public async Task<User> getUserById(int userId)
         {
             User user = new User();
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("userId", userId.ToString());
+            //#################
+            IEnumerable<Claim> claims = await APIResult.getList("Users/GetUserByID", parameters);
 
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            using (var client = new HttpClient())
+            foreach (Claim c in claims)
             {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Users/GetUserByID");
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Headers.Add("userId", userId.ToString());
-                request.Method = HttpMethod.Get;
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var response = await client.SendAsync(request);
-
-                if (response.IsSuccessStatusCode)
+                if (c.Type == "scopes")
                 {
-                    var jsonString = await response.Content.ReadAsStringAsync();
-
-                    user = JsonConvert.DeserializeObject<User>(jsonString);
-
-                    return user;
+                    user = JsonConvert.DeserializeObject<User>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    break;
                 }
-
-                return user;
             }
+            return user;
         }
-      
-        public async Task<Boolean> delete(int delUserId, int userId, bool final)
+         
+        public async Task<int> save(User user)
         {
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            string method = "Users/Save";
 
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Users/Delete?delUserId=" + delUserId  + "&userId=" + userId + "&final=" + final);
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Post;
-                //set content type
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var response = await client.SendAsync(request);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    return true;
-                }
-                return false;
-            }
+            var myContent = JsonConvert.SerializeObject(user);
+            parameters.Add("itemObject", myContent);
+            return APIResult.post(method, parameters);
         }
 
+        public async Task<int> delete(int delUserId, int userId, bool final)
+        {
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("delUserId", delUserId.ToString());
+            parameters.Add("userId", userId.ToString());
+            parameters.Add("final", final.ToString());
+
+            string method = "Users/Delete";
+            return APIResult.post(method, parameters);
+        }
+        public async Task<int> updateImage(User user)
+        {
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            var myContent = JsonConvert.SerializeObject(user);
+            parameters.Add("itemObject", myContent);
+
+            string method = "Users/UpdateImage";
+            return APIResult.post(method, parameters);
+        }
         public async Task<string> uploadImage(string imagePath, string imageName, int userId)
         //public async Task<Boolean> uploadImage(string imagePath, int userId)
         {
@@ -346,44 +228,6 @@ namespace POS.Classes
             }
             return "";
         }
-        public async Task<string> updateImage(User user)
-        {
-            string message = "";
-
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-
-            string myContent = JsonConvert.SerializeObject(user);
-
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-
-                HttpRequestMessage request = new HttpRequestMessage();
-
-                // encoding parameter to get special characters
-                myContent = HttpUtility.UrlEncode(myContent);
-
-                request.RequestUri = new Uri(Global.APIUri + "Users/UpdateImage?userObject=" + myContent);
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Post;
-                //set content type
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var response = await client.SendAsync(request);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    message = await response.Content.ReadAsStringAsync();
-                    message = JsonConvert.DeserializeObject<string>(message);
-                }
-                return message;
-            }
-        }
-
         public async Task<byte[]> downloadImage(string imageName)
 
         {
