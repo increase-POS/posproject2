@@ -490,7 +490,7 @@ namespace POS.View
                             user.notes = tb_details.Text;
                             user.role = "";
 
-                            int s = int.Parse(await userModel.save(user));
+                            int s = await userModel.save(user);
                             if (s == -1)// إظهار رسالة الترقية
                                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpgrade"), animation: ToasterAnimation.FadeIn);
 
@@ -607,7 +607,7 @@ namespace POS.View
                             user.notes = tb_details.Text;
                             user.role = "";
 
-                            int s = int.Parse(await userModel.save(user));
+                            int s = await userModel.save(user);
 
                             if (!s.Equals("0"))   
                                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
@@ -698,9 +698,9 @@ namespace POS.View
                                 if (user.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
                                 if ((!user.canDelete) && (user.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
                              
-                                bool b = await userModel.delete(user.userId, MainWindow.userID.Value, user.canDelete) ;
+                                int b = await userModel.delete(user.userId, MainWindow.userID.Value, user.canDelete) ;
 
-                                if (b) 
+                                if (b>0) 
                                     Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
                                 else 
                                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
@@ -736,7 +736,7 @@ namespace POS.View
         {//activate
             user.isActive = 1;
            
-                int s = int.Parse(await userModel.save(user));
+                int s =  await userModel.save(user) ;
 
                 if (s>0) 
                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);

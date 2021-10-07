@@ -144,7 +144,7 @@ namespace POS.View.accounts
                 dp_startSearchDate.SelectedDateChanged += this.dp_SelectedStartDateChanged;
                 dp_endSearchDate.SelectedDateChanged += this.dp_SelectedEndDateChanged;
 
-                poss = await posModel.GetPosAsync();
+                poss = await posModel.Get();
 
                 //SectionData.fillBranches(cb_fromBranch, "bs");
                 //cb_fromBranch.SelectedValue = MainWindow.branchID.Value;

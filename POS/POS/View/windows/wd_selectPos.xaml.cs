@@ -212,7 +212,7 @@ namespace POS.View.windows
                     SectionData.StartAwait(grid_changePassword);
 
                 int bId = Convert.ToInt32(cb_branch.SelectedValue);
-                poss = await posModel.GetPosAsync();
+                poss = await posModel.Get();
                 var pos = poss.Where(p => p.branchId == bId);
                 cb_pos.ItemsSource = pos;
                 cb_pos.DisplayMemberPath = "name";

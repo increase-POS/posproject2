@@ -743,7 +743,7 @@ namespace POS.View.accounts
 
             pos.balance -= ammount;
 
-            s = await pos.savePos(pos);
+            s = await pos.save(pos);
         }
 
         private async Task calcUserBalance(float value, int userId)

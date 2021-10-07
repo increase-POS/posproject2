@@ -114,7 +114,7 @@ namespace POS.Classes
                             docImage.id = docImageId;
                             docImage.image = fileName;
                             await updateImage(docImage);
-                            //await saveAgent();
+                            //await save();
                             return true;
                         }
                     }
@@ -183,7 +183,7 @@ namespace POS.Classes
                             docImage.id = docImageId;
                             docImage.image = fileName;
                             await updateImage(docImage);
-                            //await saveAgent();
+                            //await save();
                             return true;
                         }
                     }

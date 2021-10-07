@@ -470,7 +470,7 @@ namespace POS.View
                             branch.isActive = 1;
                             branch.parentId = Convert.ToInt32(cb_branch.SelectedValue);
 
-                            int s = int.Parse( await branchModel.saveBranch(branch));
+                            int s =  await branchModel.save(branch);
                             if (s == -1)// إظهار رسالة الترقية
                                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpgrade"), animation: ToasterAnimation.FadeIn);
 
@@ -535,14 +535,14 @@ namespace POS.View
                 else
                 {
                     await section.Delete(int.Parse(sectionId), MainWindow.userID.Value, true);
-                    await branchModel.deleteBranch(branchId, MainWindow.userID.Value, true);
+                    await branchModel.delete(branchId, MainWindow.userID.Value, true);
                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                 }
             }
             else
             {
 
-                await branchModel.deleteBranch(branchId, MainWindow.userID.Value, true);
+                await branchModel.delete(branchId, MainWindow.userID.Value, true);
                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
             }
 
@@ -603,9 +603,9 @@ namespace POS.View
                             branch.isActive = 1;
                             branch.parentId = Convert.ToInt32(cb_branch.SelectedValue);
 
-                            string s = await branchModel.saveBranch(branch);
+                            int s = await branchModel.save(branch);
 
-                            if (!s.Equals("-1"))
+                            if (s>0)
                                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
                             else
                                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
@@ -678,9 +678,9 @@ namespace POS.View
                                 }
                                 if ((!branch.canDelete) && (branch.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
 
-                                bool b = await branchModel.deleteBranch(branch.branchId, MainWindow.userID.Value, branch.canDelete);
+                                int b = await branchModel.delete(branch.branchId, MainWindow.userID.Value, branch.canDelete);
 
-                                if (b)
+                                if (b>0)
                                     Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
                                 else
                                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
@@ -713,9 +713,9 @@ namespace POS.View
 
             branch.isActive = 1;
 
-            string s = await branchModel.saveBranch(branch);
+            int s = await branchModel.save(branch);
 
-            if (!s.Equals("-1"))
+            if (s>0)
                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
             else
                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);

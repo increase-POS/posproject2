@@ -310,7 +310,7 @@ namespace POS.View.accounts
             else
                 pos.balance += ammount;
 
-            s = await pos.savePos(pos);
+            s = await pos.save(pos);
         }
 
         private async Task<bool> chkEnoughBalance(decimal ammount)

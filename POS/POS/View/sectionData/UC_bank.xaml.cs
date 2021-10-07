@@ -360,9 +360,9 @@ namespace POS.View
                             bank.updateUserId = MainWindow.userID;
                             bank.isActive = 1;
 
-                            string s = await bankModel.saveBank(bank);
+                            int s = await bankModel.save(bank);
 
-                            if (s.Equals("Bank Is Added Successfully"))
+                            if (s>0)
                             {
                                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                                 Btn_clear_Click(null, null);
@@ -436,9 +436,9 @@ namespace POS.View
                             bank.updateUserId = MainWindow.userID;
                             bank.isActive = 1;
 
-                            string s = await bankModel.saveBank(bank);
+                            int s = await bankModel.save(bank);
 
-                            if (s.Equals("Bank Is Updated Successfully"))
+                            if (s>0)
                                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
                             else
                                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
@@ -506,9 +506,9 @@ namespace POS.View
                                 if (bank.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
                                 if ((!bank.canDelete) && (bank.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
 
-                                bool b = await bankModel.deleteBank(bank.bankId, MainWindow.userID.Value, bank.canDelete);
+                                int b = await bankModel.delete(bank.bankId, MainWindow.userID.Value, bank.canDelete);
 
-                                if (b)
+                                if (b>0)
                                     Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
                                 else
                                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
@@ -539,9 +539,9 @@ namespace POS.View
 
             bank.isActive = 1;
 
-            string s = await bankModel.saveBank(bank);
+            int s = await bankModel.save(bank);
 
-            if (s.Equals("Bank Is Updated Successfully"))
+            if (s>0)
                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
             else
                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
@@ -746,7 +746,7 @@ namespace POS.View
         async Task<IEnumerable<Bank>> RefreshBanksList()
         {
 
-            banks = await bankModel.GetBanksAsync();
+            banks = await bankModel.Get();
 
             return banks;
         }
@@ -859,7 +859,7 @@ namespace POS.View
             bool b = false;
 
 
-            List<Bank> banks = await bankModel.GetBanksAsync();
+            List<Bank> banks = await bankModel.Get();
             Bank bank1 = new Bank();
 
             for (int i = 0; i < banks.Count(); i++)

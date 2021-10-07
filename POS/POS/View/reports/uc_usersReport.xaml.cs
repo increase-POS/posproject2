@@ -118,8 +118,8 @@ namespace POS.View.reports
                 rowChartInvoice = templist;
 
                 comboBranches = await branchModel.GetAllWithoutMain("b");
-                comboPoss = await posModel.GetPosAsync();
-                comboVendors = await agentModel.GetAgentsAsync("v");
+                comboPoss = await posModel.Get();
+                comboVendors = await agentModel.Get("v");
                 comboUsers = await userModel.Get();
 
                 dynamicComboBranches = new ObservableCollection<Branch>(comboBranches);

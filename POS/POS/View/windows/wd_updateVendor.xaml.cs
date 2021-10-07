@@ -393,7 +393,7 @@ namespace POS.View.windows
         #endregion
         async Task<IEnumerable<Agent>> RefreshVendorsList()
         {
-            agents = await agentModel.GetAgentsAsync("v");
+            agents = await agentModel.Get("v");
             return agents;
 
         }
@@ -470,7 +470,7 @@ namespace POS.View.windows
                         agent.fax = faxStr;
                         //agent.maxDeserve = maxDeserveValue;
 
-                        int s = await agentModel.saveAgent(agent);
+                        int s = await agentModel.save(agent);
 
                         if (s>0)
                         {

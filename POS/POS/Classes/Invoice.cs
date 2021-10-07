@@ -1224,13 +1224,13 @@ namespace POS.Classes
                         await invoice.saveInvoice(invoice);
                         
                         await cashTrasnfer.Save(cashTrasnfer); //add agent cash transfer
-                        await agent.saveAgent(agent);
+                        await agent.save(agent);
                     }
                     else if (agent.balanceType == 0)
                     {
                         newBalance = agent.balance + (float)invoice.totalNet;
                         agent.balance = newBalance;
-                        await agent.saveAgent(agent);
+                        await agent.save(agent);
                     }
                         break;
                 #endregion
@@ -1276,13 +1276,13 @@ namespace POS.Classes
                         {
                             await cashTrasnfer.Save(cashTrasnfer); //add cash transfer     
                         }
-                        await agent.saveAgent(agent);
+                        await agent.save(agent);
                     }
                     else if (agent.balanceType == 1)
                     {
                         newBalance = agent.balance + (float)invoice.totalNet;
                         agent.balance = newBalance;
-                        await agent.saveAgent(agent);
+                        await agent.save(agent);
                     }
                     break;
                 #endregion  

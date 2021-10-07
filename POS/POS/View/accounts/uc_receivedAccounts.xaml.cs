@@ -721,7 +721,7 @@ namespace POS.View.accounts
             Pos pos = await posModel.getPosById(MainWindow.posID.Value);
             pos.balance += ammount;
 
-            s = await pos.savePos(pos);
+            s = await pos.save(pos);
         }
 
         private async Task calcUserBalance(float value, int userId)

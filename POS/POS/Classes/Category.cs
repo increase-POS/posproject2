@@ -336,7 +336,7 @@ namespace POS.Classes
                             category.categoryId = categoryId;
                             category.image = fileName;
                             await updateImage(category);
-                            //await saveAgent();
+                            //await save();
                             return true;
                         }
                     }

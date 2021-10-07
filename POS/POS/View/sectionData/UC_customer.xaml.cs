@@ -329,7 +329,7 @@ namespace POS.View
                             agent.fax = faxStr;
                             agent.maxDeserve = maxDeserveValue;
 
-                            int s = await agentModel.saveAgent(agent) ;
+                            int s = await agentModel.save(agent) ;
 
                             if (s == -1)// إظهار رسالة الترقية
                                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpgrade"), animation: ToasterAnimation.FadeIn);
@@ -479,7 +479,7 @@ namespace POS.View
                             agent.maxDeserve = maxDeserveValue;
                             agent.isLimited = (bool)tgl_hasCredit.IsChecked;
 
-                            int s = await agentModel.saveAgent(agent);
+                            int s = await agentModel.save(agent);
 
                             if (s > 0)
                                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
@@ -593,7 +593,7 @@ namespace POS.View
                                 if (agent.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
                                 if ((!agent.canDelete) && (agent.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
 
-                                int b = await agentModel.deleteAgent(agent.agentId, (int)MainWindow.userID, agent.canDelete);
+                                int b = await agentModel.delete(agent.agentId, (int)MainWindow.userID, agent.canDelete);
 
                                 if (b > 0) 
                                     Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
@@ -625,7 +625,7 @@ namespace POS.View
             
                 agent.isActive = 1;
 
-                int s = await agentModel.saveAgent(agent);
+                int s = await agentModel.save(agent);
 
                 if (s> 0) 
                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
@@ -729,7 +729,7 @@ namespace POS.View
         async Task<IEnumerable<Agent>> RefreshCustomersList()
         {
                 if (agents is null)
-                    agents = await agentModel.GetAgentsAsync("c");
+                    agents = await agentModel.Get("c");
                 return agents;
         }
         void RefreshCustomerView()

@@ -259,7 +259,7 @@ namespace POS.View.windows
                             //checkother
                             string str1 = await userLogsModel.checkOtherUser((int)MainWindow.userID);
 
-                            int s =int.Parse(  await userModel.save(user));
+                            int s =  await userModel.save(user);
 
                             //create lognin record
                             UsersLogs userLog = new UsersLogs();

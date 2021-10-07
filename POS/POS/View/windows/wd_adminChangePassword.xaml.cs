@@ -153,7 +153,7 @@ namespace POS.View.windows
 
                         user.password = password ;
 
-                        int s = int.Parse(await userModel.save(user));
+                        int s = await userModel.save(user);
 
                         if (s>0)
                         {

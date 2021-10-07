@@ -51,7 +51,7 @@ namespace POS.View.windows
                 if (sender != null)
                     SectionData.StartAwait(grid_customerList);
 
-                allAgents = (await agentModel.GetAgentsAsync("c")).Where(x => x.isActive == 1).ToList();
+                allAgents = (await agentModel.Get("c")).Where(x => x.isActive == 1).ToList();
                 allAgentsSource = allAgents;
                 selectedAgents = (await medalAgentModel.GetAll()).Where(x => x.medalId == medalId).ToList();
 

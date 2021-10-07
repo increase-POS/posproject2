@@ -53,7 +53,7 @@ namespace POS.View.reports
                 recipient = await statisticModel.GetReceipt();// Pull
                 BankChart = await statisticModel.GetBankTrans();
 
-                bankCombo = await bankModel.GetBanksAsync();
+                bankCombo = await bankModel.Get();
 
                 userPaymentsCombo = statisticModel.getUserAcc(payments, "bn");
                 accPaymentsCombo = statisticModel.getAccounantCombo(payments, "bn");

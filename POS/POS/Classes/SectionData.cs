@@ -56,7 +56,7 @@ namespace POS.Classes
         {
             try
             {
-                List<Agent> agents = await agentModel.GetAgentsAsync(type);
+                List<Agent> agents = await agentModel.Get(type);
                 Agent agent = new Agent();
                 List<string> codes = new List<string>();
                 for (int i = 0; i < agents.Count; i++)
@@ -94,7 +94,7 @@ namespace POS.Classes
 
                 if (_class.Equals("Agent"))
                 {
-                    List<Agent> agents = await agentModel.GetAgentsAsync(type);
+                    List<Agent> agents = await agentModel.Get(type);
                     //Agent agent = new Agent();
                     //for (int i = 0; i < agents.Count; i++)
                     //{
@@ -108,7 +108,7 @@ namespace POS.Classes
                 }
                 else if (_class.Equals("Branch"))
                 {
-                    List<Branch> branches = await branchModel.GetBranchesAsync(type);
+                    List<Branch> branches = await branchModel.Get(type);
 
                     //Branch branch = new Branch();
                     //for (int i = 0; i < branches.Count; i++)
@@ -140,7 +140,7 @@ namespace POS.Classes
                 }
                 else if (_class.Equals("Pos"))
                 {
-                    List<Pos> poss = await posModel.GetPosAsync();
+                    List<Pos> poss = await posModel.Get();
 
                     //    Pos pos = new Pos();
                     //    for (int i = 0; i < poss.Count; i++)
@@ -172,7 +172,7 @@ namespace POS.Classes
 
                 if (_class.Equals("Agent"))
                 {
-                    List<Agent> agents = await agentModel.GetAgentsAsync(type);
+                    List<Agent> agents = await agentModel.Get(type);
                     Agent agent = new Agent();
                     for (int i = 0; i < agents.Count; i++)
                     {
@@ -182,7 +182,7 @@ namespace POS.Classes
                 }
                 else if (_class.Equals("Branch"))
                 {
-                    List<Branch> branches = await branchModel.GetBranchesAsync(type);
+                    List<Branch> branches = await branchModel.Get(type);
 
                     Branch branch = new Branch();
                     for (int i = 0; i < branches.Count; i++)

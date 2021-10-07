@@ -407,7 +407,7 @@ namespace POS.View
                             store.isActive = 1;
                             store.parentId = Convert.ToInt32(cb_branch.SelectedValue);
 
-                            int s = int.Parse( await storeModel.saveBranch(store));
+                            int s = await storeModel.save(store);
                             if(s == -1) // upgrade message
                                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpgrade"), animation: ToasterAnimation.FadeIn);
                             else if(s == 0)// an error occure
@@ -470,14 +470,14 @@ namespace POS.View
                 else
                 {
                     await section.Delete(int.Parse(sectionId), MainWindow.userID.Value, true);
-                    await storeModel.deleteBranch(branchId, MainWindow.userID.Value, true);
+                    await storeModel.delete(branchId, MainWindow.userID.Value, true);
                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                 }
             }
             else
             {
 
-                await storeModel.deleteBranch(branchId, MainWindow.userID.Value, true);
+                await storeModel.delete(branchId, MainWindow.userID.Value, true);
                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
             }
         }
@@ -534,9 +534,9 @@ namespace POS.View
                             store.isActive = 1;
                             store.parentId = Convert.ToInt32(cb_branch.SelectedValue);
 
-                            string s = await storeModel.saveBranch(store);
+                            int s = await storeModel.save(store);
 
-                            if (!s.Equals("-1"))
+                            if (s>0)
                                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
                             else
                                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
@@ -609,9 +609,9 @@ namespace POS.View
                                     if (store.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
                                     if ((!store.canDelete) && (store.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
 
-                                    bool b = await storeModel.deleteBranch(store.branchId, MainWindow.userID.Value, store.canDelete);
+                                    int b = await storeModel.delete(store.branchId, MainWindow.userID.Value, store.canDelete);
 
-                                    if (b)
+                                    if (b>0)
                                         Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
                                     else
                                         Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
@@ -646,9 +646,9 @@ namespace POS.View
         {//activate
             store.isActive = 1;
 
-            string s = await storeModel.saveBranch(store);
+            int s = await storeModel.save(store);
 
-            if (!s.Equals("-1"))
+            if (s>0)
                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
             else
                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
@@ -745,7 +745,7 @@ namespace POS.View
 
         async Task<IEnumerable<Branch>> RefreshStoresList()
         {
-             stores = await storeModel.GetBranchesAsync("s");
+             stores = await storeModel.Get("s");
              return stores;
         }
         void RefreshStoreView()

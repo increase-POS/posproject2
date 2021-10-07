@@ -154,7 +154,7 @@ namespace POS.View.accounts
                 #endregion
 
                 #region fill banks combo
-                banks = await bankModel.GetBanksAsync();
+                banks = await bankModel.Get();
                 banksQuery = banks.Where(s => s.isActive == 1);
                 cb_bank.ItemsSource = banksQuery;
                 cb_bank.DisplayMemberPath = "name";
@@ -467,7 +467,7 @@ namespace POS.View.accounts
 
             pos.balance += ammount;
 
-            int s = await posModel.savePos(pos);
+            int s = await posModel.save(pos);
 
         }
 

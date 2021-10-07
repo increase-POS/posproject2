@@ -1096,7 +1096,7 @@ namespace POS.View
                         {
                             case 0:// cash: update pos balance
                                 pos.balance += invoice.totalNet;
-                                await pos.savePos(pos);
+                                await pos.save(pos);
                                 // cach transfer model
                                 CashTransfer cashTrasnfer = new CashTransfer();
                                 cashTrasnfer.transType = "d"; //deposit
@@ -1145,7 +1145,7 @@ namespace POS.View
                             case 2: // cash:card: update pos balance
 
                                 pos.balance -= invoice.totalNet;
-                                await pos.savePos(pos);
+                                await pos.save(pos);
                                 // cach transfer model
                                 CashTransfer cashTrasnfer = new CashTransfer();
                                 cashTrasnfer.transType = "p"; //pull

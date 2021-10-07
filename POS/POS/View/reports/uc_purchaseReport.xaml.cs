@@ -152,8 +152,8 @@ namespace POS.View.purchases
                 rowChartItems = templist;
 
                 comboBranches = await branchModel.GetAllWithoutMain("b");
-                comboPoss = await posModel.GetPosAsync();
-                comboVendors = await agentModel.GetAgentsAsync("v");
+                comboPoss = await posModel.Get();
+                comboVendors = await agentModel.Get("v");
                 comboUsers = await userModel.Get();
 
                 itemUnitCombos = statisticModel.GetIUComboList(Items);
