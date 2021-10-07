@@ -131,6 +131,75 @@ namespace POS.Classes
             return false;
         }
 
+        public async Task<Boolean> uploadOrginalImage(string imagePath, string tableName, int docImageId)
+        {
+            if (imagePath != "")
+            {
+                string imageName = Md5Encription.MD5Hash(tableName + docImageId.ToString());
+                MultipartFormDataContent form = new MultipartFormDataContent();
+                // get file extension
+                var ext = imagePath.Substring(imagePath.LastIndexOf('.'));
+                var extension = ext.ToLower();
+                try
+                {
+                    // configure trmporery path
+                    string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+                    string tmpPath = Path.Combine(dir, Global.TMPFolder);
+                    tmpPath = Path.Combine(tmpPath, imageName + extension);
+                    if (System.IO.File.Exists(tmpPath))
+                    {
+                        System.IO.File.Delete(tmpPath);
+                    }
+                    // resize image
+                    ImageProcess imageP = new ImageProcess(1000, imagePath);
+                  imageP.ScaleOrginalImage(tmpPath);
+
+                    // read image file
+                    var stream = new FileStream(tmpPath, FileMode.Open, FileAccess.Read);
+
+                    // create http client request
+                    using (var client = new HttpClient())
+                    {
+                        client.BaseAddress = new Uri(Global.APIUri);
+                        client.Timeout = System.TimeSpan.FromSeconds(3600);
+                        string boundary = string.Format("----WebKitFormBoundary{0}", DateTime.Now.Ticks.ToString("x"));
+                        HttpContent content = new StreamContent(stream);
+                        content.Headers.ContentType = MediaTypeHeaderValue.Parse("multipart/form-data");
+                        content.Headers.Add("client", "true");
+
+                        string fileName = imageName + extension;
+                        content.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
+                        {
+                            Name = imageName,
+                            FileName = fileName
+                        };
+                        form.Add(content, "fileToUpload");
+
+                        var response = await client.PostAsync(@"DocImage/PostImage", form);
+                        if (response.IsSuccessStatusCode)
+                        {
+                            // save image name in DB
+                            DocImage docImage = new DocImage();
+                            docImage.id = docImageId;
+                            docImage.image = fileName;
+                            await updateImage(docImage);
+                            //await saveAgent();
+                            return true;
+                        }
+                    }
+                    stream.Dispose();
+                    //delete tmp image
+                    if (System.IO.File.Exists(tmpPath))
+                    {
+                        System.IO.File.Delete(tmpPath);
+                    }
+                }
+                catch
+                { return false; }
+            }
+            return false;
+        }
+
         // update image field in DB
         public async Task<string> updateImage(DocImage docImage)
         {

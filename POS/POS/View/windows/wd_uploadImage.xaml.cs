@@ -12,7 +12,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
-using System.Windows.Forms;
+
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -22,6 +22,11 @@ using System.Web.UI.WebControls;
 using System.Windows.Resources;
 using System.Resources;
 using System.Reflection;
+
+
+using System.IO;
+using Microsoft.Reporting.WinForms;
+using Microsoft.Win32;
 
 namespace POS.View.windows
 {
@@ -35,7 +40,7 @@ namespace POS.View.windows
         public string docNum { get; set; }
 
         private int docId = 0;
-
+        string imagepath;
         DocImage docImgModel = new DocImage();
         List<DocImage> imageList;
 
@@ -56,27 +61,27 @@ namespace POS.View.windows
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
-                try
-                {
+            try
+            {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
 
                 #region translate
                 if (MainWindow.lang.Equals("en"))
-            {
-                MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
                     grid_main.FlowDirection = System.Windows.FlowDirection.LeftToRight;
-            }
-            else
-            {
-                MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                }
+                else
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
                     grid_main.FlowDirection = System.Windows.FlowDirection.RightToLeft;
-            }
-            translate();
-            #endregion
+                }
+                translate();
+                #endregion
 
-            await refreshImageList();
+                await refreshImageList();
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -109,42 +114,60 @@ namespace POS.View.windows
 
         private void Tb_name_TextChanged(object sender, TextChangedEventArgs e)
         {
-                    try
-                    {
-                        SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
-                }
-                catch (Exception ex)
-                {
-                    SectionData.ExceptionMessage(ex, this);
-                }
+            try
+            {
+                SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
             }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
 
         private void Tb_name_LostFocus(object sender, RoutedEventArgs e)
         {
-                        try
-                        {
-                            SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
-                }
-                catch (Exception ex)
-                {
-                    SectionData.ExceptionMessage(ex, this);
-                }
+            try
+            {
+                SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
             }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
         private void Img_upload_Click(object sender, RoutedEventArgs e)
         {
-                            try
-                            {
+            try
+            {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
                 //select image
                 openFileDialog.Filter = "Images|*.png;*.jpg;*.bmp;*.jpeg;*.jfif";
 
-            if (openFileDialog.ShowDialog() == true)
-            {
-                brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
-                img_upload.Background = brush;
-            }
+                if (openFileDialog.ShowDialog() == true)
+                {
+                    FileInfo fs = new FileInfo(openFileDialog.FileName);
+                    long filesize = fs.Length / 1024;
+                    if (filesize >= 500)
+                    {
+                        string str = "file size must be les than 500 KB";
+                        MessageBox.Show(str);
+
+                    }
+                    else
+                    {
+                        brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
+                        img_upload.Background = brush;
+                    }
+
+
+
+                }
+
+
+                // MessageBox.Show(filesize.ToString());
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -161,37 +184,38 @@ namespace POS.View.windows
         }
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {//add
-                                try
-                                {
+            try
+            {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
                 validateDocValues();
-            if (!tb_name.Text.Equals(""))
-            {
-                docId = 0;
-                docImgModel.id = docId;
-                docImgModel.tableName = tableName;
-                docImgModel.tableId = tableId;
-                docImgModel.docnum = docNum;
-                docImgModel.docName = tb_name.Text;
-                docImgModel.note = tb_notes.Text;
-                docImgModel.createUserId = MainWindow.userID;
+                if (!tb_name.Text.Equals(""))
+                {
+                    docId = 0;
+                    docImgModel.id = docId;
+                    docImgModel.tableName = tableName;
+                    docImgModel.tableId = tableId;
+                    docImgModel.docnum = docNum;
+                    docImgModel.docName = tb_name.Text;
+                    docImgModel.note = tb_notes.Text;
+                    docImgModel.createUserId = MainWindow.userID;
 
-                string res = await docImgModel.saveDocImage(docImgModel);
-                if (!res.Equals("0"))
-                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
-                else
-                    Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    string res = await docImgModel.saveDocImage(docImgModel);
+                    if (!res.Equals("0"))
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                    else
+                        Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
-                int docImageId = int.Parse(res);
+                    int docImageId = int.Parse(res);
 
-                await docImgModel.uploadImage(openFileDialog.FileName, tableName, docImageId);
+                    // await docImgModel.uploadImage(openFileDialog.FileName, tableName, docImageId);
+                    await docImgModel.uploadOrginalImage(openFileDialog.FileName, tableName, docImageId);
 
-                //refresh image list
-                await refreshImageList();
-                clear();
-            }
+                    //refresh image list
+                    await refreshImageList();
+                    clear();
+                }
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -205,32 +229,32 @@ namespace POS.View.windows
 
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {//delete
-                                    try
-                                    {
+            try
+            {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
                 if (docImgModel.id != 0)
-            {
-                Boolean res = await docImgModel.delete(docId);
+                {
+                    Boolean res = await docImgModel.delete(docId);
 
-                if (res)
-                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
-                else
-                    Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    if (res)
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
+                    else
+                        Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
-                docId = 0;
-                //clear img
-                Uri resourceUri = new Uri("/pic/no-image-icon-125x125.png", UriKind.Relative);
-                StreamResourceInfo streamInfo = System.Windows.Application.GetResourceStream(resourceUri);
-                BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
-                brush.ImageSource = temp;
-                img_upload.Background = brush;
+                    docId = 0;
+                    //clear img
+                    Uri resourceUri = new Uri("/pic/no-image-icon-125x125.png", UriKind.Relative);
+                    StreamResourceInfo streamInfo = System.Windows.Application.GetResourceStream(resourceUri);
+                    BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
+                    brush.ImageSource = temp;
+                    img_upload.Background = brush;
 
-                //refresh images
-                await refreshImageList();
-                clear();
-            }
+                    //refresh images
+                    await refreshImageList();
+                    clear();
+                }
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -248,20 +272,20 @@ namespace POS.View.windows
             openFileDialog.FileName = "";
             docImgModel = new DocImage();
 
-            SectionData.clearValidate(tb_name , p_errorName);
+            SectionData.clearValidate(tb_name, p_errorName);
             SectionData.clearImg(img_upload);
         }
         private void Btn_colse_Click(object sender, RoutedEventArgs e)
         {
-                                        try
-                                        {
-                                            this.Close();
-                }
-                catch (Exception ex)
-                {
-                    SectionData.ExceptionMessage(ex, this);
-                }
+            try
+            {
+                this.Close();
             }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
 
         private async Task refreshImageList()
         {
@@ -273,7 +297,7 @@ namespace POS.View.windows
         }
         private async void getImg(string imageName)
         {
-            
+
             try
             {
                 if (docImgModel.image.Equals(""))
@@ -299,11 +323,14 @@ namespace POS.View.windows
                         // configure trmporary path
                         string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
                         string tmpPath = System.IO.Path.Combine(dir, Global.TMPAgentsFolder);
+
                         tmpPath = System.IO.Path.Combine(tmpPath, docImgModel.image);
                         openFileDialog.FileName = tmpPath;
+                        // + @"\agents\" +
+                        imagepath = System.IO.Path.Combine(dir, Global.TMPFolder + @"\" + docImgModel.image);
                     }
                     else
-                     SectionData.clearImg(img_upload);
+                        SectionData.clearImg(img_upload);
                 }
             }
             catch { }
@@ -312,20 +339,20 @@ namespace POS.View.windows
         // display image in IMG_customer 
         private void Lst_images_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-                                            try
-                                            {
+            try
+            {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
                 if (lst_images.SelectedIndex != -1)
-            {
-                docId = (int)lst_images.SelectedValue;
-                docImgModel = imageList.ToList().Find(c => c.id == docId);
-                tb_name.Text = docImgModel.docName;
-                tb_notes.Text = docImgModel.note;
-                string imageName = docImgModel.image;
-                getImg(imageName);
-            }
+                {
+                    docId = (int)lst_images.SelectedValue;
+                    docImgModel = imageList.ToList().Find(c => c.id == docId);
+                    tb_name.Text = docImgModel.docName;
+                    tb_notes.Text = docImgModel.note;
+                    string imageName = docImgModel.image;
+                    getImg(imageName);
+                }
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -382,8 +409,8 @@ namespace POS.View.windows
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-            
-        }
+
+            }
             catch (System.Runtime.InteropServices.COMException)
             {
                 if (sender != null)
@@ -427,50 +454,89 @@ namespace POS.View.windows
             WIA.Property prop = properties.get_Item(ref propName);
             prop.set_Value(ref propValue);
         }
+        ReportCls reportclass = new ReportCls();
+        LocalReport rep = new LocalReport();
+        SaveFileDialog saveFileDialog = new SaveFileDialog();
+        int Width = 1;
+        int Height = 1;
+        public void BuildReport()
+        {
+            List<ReportParameter> paramarr = new List<ReportParameter>();
+            string addpath;
+            System.Drawing.Image img = System.Drawing.Image.FromFile(imagepath);
+            Width = (int)img.PhysicalDimension.Width + 100;
+            Height = (int)img.PhysicalDimension.Height + 100;
+            //  MessageBox.Show("Width: " + img.PhysicalDimension.Width.ToString() + ", Height: " + img.PhysicalDimension.Height.ToString());
 
+            addpath = @"\Reports\image\image.rdlc";
+
+
+            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+            rep.ReportPath = reppath;
+            rep.DataSources.Clear();
+            rep.EnableExternalImages = true;
+            // paramarr.Add(new ReportParameter("logoImage", "file:\\" + rep.GetLogoImagePath()));
+            paramarr.Add(new ReportParameter("logoImage", "file:\\" + @imagepath));
+            rep.SetParameters(paramarr);
+
+            rep.Refresh();
+        }
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {
-                                                try
-                                                {
+            try
+            {
+                BuildReport();
+                //   D:\mailtemp\images\image-122.png
 
-                }
-                catch (Exception ex)
+                saveFileDialog.Filter = "PDF|*.pdf;";
+                if (saveFileDialog.ShowDialog() == true)
                 {
-                    SectionData.ExceptionMessage(ex, this);
+                    string filepath = saveFileDialog.FileName;
+
+                    LocalReportExtensions.customExportToPDFwh(rep, filepath, Width, Height);
                 }
+
+
+                // LocalReportExtensions.customExportbyPrinter(rep, filepath);
             }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
 
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
         {//update
-                                                    try
-                                                    {
+            try
+            {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
                 validateDocValues();
-            if (!tb_name.Text.Equals(""))
-            {
-                docImgModel.tableName = tableName;
-                docImgModel.tableId = tableId;
-                docImgModel.docnum = docNum;
-                docImgModel.docName = tb_name.Text;
-                docImgModel.note = tb_notes.Text;
-                docImgModel.updateUserId = MainWindow.userID;
+                if (!tb_name.Text.Equals(""))
+                {
+                    docImgModel.tableName = tableName;
+                    docImgModel.tableId = tableId;
+                    docImgModel.docnum = docNum;
+                    docImgModel.docName = tb_name.Text;
+                    docImgModel.note = tb_notes.Text;
+                    docImgModel.updateUserId = MainWindow.userID;
 
-                string res = await docImgModel.saveDocImage(docImgModel);
-                if (!res.Equals("0"))
-                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
-                else
-                    Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    string res = await docImgModel.saveDocImage(docImgModel);
+                    if (!res.Equals("0"))
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
+                    else
+                        Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
-                int docImageId = int.Parse(res);
+                    int docImageId = int.Parse(res);
 
-                if (openFileDialog.FileName != "")
-                    await docImgModel.uploadImage(openFileDialog.FileName, tableName, docImageId);
+                    if (openFileDialog.FileName != "")
+                        //    await docImgModel.uploadImage(openFileDialog.FileName, tableName, docImageId);
+                        await docImgModel.uploadOrginalImage(openFileDialog.FileName, tableName, docImageId);
 
-                //refresh image list
-                await refreshImageList();
-            }
+                    //refresh image list
+                    await refreshImageList();
+                }
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -493,27 +559,27 @@ namespace POS.View.windows
 
             }
         }
-        private  void HandleKeyPress(object sender, System.Windows.Input.KeyEventArgs e)
+        private void HandleKeyPress(object sender, System.Windows.Input.KeyEventArgs e)
         {
-                                                        try
-                                                        {
+            try
+            {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
                 if (e.KeyboardDevice.IsKeyDown(Key.LeftCtrl) || e.KeyboardDevice.IsKeyDown(Key.RightCtrl))
-            {
-                switch (e.Key)
                 {
-                    case Key.P:
-                        //handle D key
-                        Btn_print_Click(null, null);
-                        break;
-                    case Key.S:
-                        //handle X key
-                        Btn_save_Click(null, null);
-                        break;
+                    switch (e.Key)
+                    {
+                        case Key.P:
+                            //handle D key
+                            Btn_print_Click(null, null);
+                            break;
+                        case Key.S:
+                            //handle X key
+                            Btn_save_Click(null, null);
+                            break;
+                    }
                 }
-            }
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -527,16 +593,44 @@ namespace POS.View.windows
 
         private void Btn_print_Click(object sender, RoutedEventArgs e)
         {
-                                                            try
-                                                            {
+            try
+            {
+                BuildReport();
+                //   D:\mailtemp\images\image-122.png
 
-                }
-                catch (Exception ex)
-                {
-                    SectionData.ExceptionMessage(ex, this);
-                }
+                //  LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.rep_printer_name, short.Parse(MainWindow.rep_print_count));
+                LocalReportExtensions.customPrintToPrinterwh(rep, MainWindow.rep_printer_name, short.Parse(MainWindow.rep_print_count), Width, Height);
+
+
+
             }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
 
-       
+        private void Btn_preview_Click(object sender, RoutedEventArgs e)
+        {
+            Window.GetWindow(this).Opacity = 0.2;
+
+            string pdfpath = "";
+
+            //
+            pdfpath = @"\Thumb\report\temp.pdf";
+            pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
+            BuildReport();
+            LocalReportExtensions.customExportToPDFwh(rep, pdfpath, Width, Height);
+            wd_previewPdf w = new wd_previewPdf();
+            w.pdfPath = pdfpath;
+            if (!string.IsNullOrEmpty(w.pdfPath))
+            {
+                w.ShowDialog();
+                w.wb_pdfWebViewer.Dispose();
+
+
+            }
+            Window.GetWindow(this).Opacity = 1;
+        }
     }
 }

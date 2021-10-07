@@ -430,6 +430,16 @@ namespace Microsoft.Reporting.WinForms
         }
 
         // custom Print
+        public static void customPrintToPrinterwh(this LocalReport report, string printerName, short copy, int width, int height)
+        {
+            m_pageSettings = new PageSettings();
+            ReportPageSettings reportPageSettings = report.GetDefaultPageSettings();
+
+            m_pageSettings.PaperSize = reportPageSettings.PaperSize;
+            m_pageSettings.Margins = reportPageSettings.Margins;
+
+            customExportbyPrinterwh(printerName, report, copy, width, height);
+        }
         public static void customPrintToPrinter(this LocalReport report, string printerName, short copy, int width, int height)
         {
             m_pageSettings = new PageSettings();
@@ -493,6 +503,57 @@ namespace Microsoft.Reporting.WinForms
             }
         }
 
+        public static void customExportbyPrinterwh(string printerName, LocalReport report, short copy, int width, int height, bool print = true)
+        {
+
+            PaperSize paperSize = m_pageSettings.PaperSize;
+
+            Margins margins = m_pageSettings.Margins;
+
+            // The device info string defines the page range to print as well as the size of the page.
+            // A start and end page of 0 means generate all pages.
+            string deviceInfo = string.Format(
+                  CultureInfo.InvariantCulture,
+                  "<DeviceInfo>" +
+                      "<OutputFormat>EMF</OutputFormat>" +
+
+                  "<PageWidth>{5}</PageWidth>" +
+                  "<PageHeight>{4}</PageHeight>" +
+
+                  "<MarginTop>{0}</MarginTop>" +
+                  "<MarginLeft>{1}</MarginLeft>" +
+                  "<MarginRight>{2}</MarginRight>" +
+                  "<MarginBottom>{3}</MarginBottom>" +
+
+                  "</DeviceInfo>"
+                  ,
+                  ToInches(margins.Top),
+                  ToInches(margins.Left),
+                  ToInches(margins.Right),
+                  ToInches(margins.Bottom),
+                  ToInches(height),
+                  ToInches(width)
+                  );
+            /*
+                ToInches(margins.Top),
+                ToInches(margins.Left),
+                ToInches(margins.Right),
+                ToInches(margins.Bottom),
+                ToInches(paperSize.Height),
+                ToInches(paperSize.Width)
+             * */
+            Warning[] warnings;
+            m_streams = new List<Stream>();
+            report.Render("Image", deviceInfo, CreateStream,
+               out warnings);
+            foreach (Stream stream in m_streams)
+                stream.Position = 0;
+
+            if (print)
+            {
+                customPrintbyPrinter(printerName, copy, width, height);
+            }
+        }
         public static void customPrintbyPrinter(string printerName, short copy, int width, int height)
         {
             if (m_streams == null || m_streams.Count == 0)
@@ -583,5 +644,78 @@ namespace Microsoft.Reporting.WinForms
             catch { }
 
         }
+
+   
+        public static void customExportToPDFwh(LocalReport report, String FullPath, int width, int height)
+        {/*
+           /*
+            Warning[] warnings;
+            string[] streamIds;
+            string mimeType = string.Empty;
+            string encoding = string.Empty;
+            string extension = string.Empty;
+
+            var bytes = report.Render("PDF", null, out mimeType, out encoding, out extension, out streamIds, out warnings);
+
+            string fullpath = Path.Combine(DirPath, Filename);
+            using (FileStream stream = new FileStream(fullpath.ToString(), FileMode.Create))
+            {
+                stream.Write(bytes, 0, bytes.Length);
+                stream.Close();
+            }
+           
+            */
+
+
+            string deviceInfo = string.Format(
+                  CultureInfo.InvariantCulture,
+                  "<DeviceInfo>" +
+                      "<OutputFormat>EMF</OutputFormat>" +
+                      "<PageWidth>{1}</PageWidth>" +
+                      "<PageHeight>{0}</PageHeight>" +
+                       "<EmbedFonts>None</EmbedFonts>" +
+                  "</DeviceInfo>",
+
+                  ToInches(height),
+                  ToInches(width));
+       //   System.Drawing.Image img2 = System.Drawing.Image.FromFile(@"D:\mailtemp\images\image-122.png");
+         //   img2.PhysicalDimension.Width; 
+       
+
+         byte[] Bytes = report.Render(format: "PDF", deviceInfo: deviceInfo);
+           //byte[] Bytes = ImageToByteArray(img2);
+
+       
+           // BinaryFormatter bf = new BinaryFormatter();
+        
+           
+          //  System.IO.File.WriteAllBytes(FullPath, Bytes);
+
+            try
+            {
+                using (FileStream stream = new FileStream(FullPath, FileMode.Create))
+                {
+                    try
+                    {
+                        stream.Write(Bytes, 0, Bytes.Length);
+                        stream.Close();
+
+                    }
+                    catch
+                    {
+
+                    }
+                    finally
+                    {
+                        stream.Close();
+                    }
+                }
+
+            }
+            catch { }
+
+
+        }
+
     }
 }
