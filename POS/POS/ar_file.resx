@@ -2599,4 +2599,16 @@
   <data name="trVoucher" xml:space="preserve">
     <value>سند</value>
   </data>
+  <data name="tr_Branch" xml:space="preserve">
+    <value>فرع</value>
+  </data>
+  <data name="tr_Store" xml:space="preserve">
+    <value>مخزن</value>
+  </data>
+  <data name="trCashPaid" xml:space="preserve">
+    <value>المبلغ المدفوع</value>
+  </data>
+  <data name="trTheRest" xml:space="preserve">
+    <value>الباقي</value>
+  </data>
 </root>

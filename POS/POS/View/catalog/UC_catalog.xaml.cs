@@ -58,17 +58,10 @@ namespace POS.View
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            #region menu state
-            string menuState = MainWindow.menuIsOpen;
-            if (menuState.Equals("open"))
-                ex.IsExpanded = true;
-            else
-                ex.IsExpanded = false;
-            #endregion
-
-            #region translate
+           
             try
             {
+            #region translate
                 if (MainWindow.lang.Equals("en"))
                 {
                     MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
@@ -85,6 +78,13 @@ namespace POS.View
 
                 if (!stopPermission)
                     permission();
+                #region menu state
+                string menuState = MainWindow.menuIsOpen;
+                if (menuState.Equals("open"))
+                    ex.IsExpanded = true;
+                else
+                    ex.IsExpanded = false;
+                #endregion
 
 
             }

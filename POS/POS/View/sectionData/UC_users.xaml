@@ -93,8 +93,6 @@
                 </DockPanel>
             </Border>
             <!--#endregion-->
-
-
             <Border Margin="5,5,5,0" Grid.Row="1"  Background="White" CornerRadius="7,7,0,0">
                 <Grid>
                     <Grid Grid.Row="1" x:Name="grid_cards" Visibility="Collapsed" Margin="5,5,5,17.5" >

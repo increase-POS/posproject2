@@ -9,7 +9,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         WindowStyle="None" WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize" Margin="0" 
-        Height="400" Width="600"   Background="Transparent"
+        Height="500" Width="700"   Background="Transparent"
         AllowsTransparency="True"
         Loaded="Window_Loaded" MouseDown="Window_MouseDown">
     <Grid Grid.Column="1" Grid.Row="1"   x:Name="grid_ucInvoice" >
@@ -90,7 +90,7 @@
                     <RowDefinition Height="45"/>
                 </Grid.RowDefinitions>
 
-                <Grid   Width="590"  HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0">
+                <Grid   Width="690"  HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0">
                     <TextBox   Width="580"  x:Name="txb_search"  TextChanged="Txb_search_TextChanged"
                         Padding="10,0,5,0" BorderBrush="{x:Null}"
                           materialDesign:HintAssist.Hint="Enter Here To Start Search ...."  
@@ -111,52 +111,72 @@
                 </Grid>
                 <Line Grid.Row="1" Grid.Column="0"  Grid.ColumnSpan="3" Stretch="Fill" Stroke="#DFDFDF"  X2="1"  Margin="1,1,1,1"
                           VerticalAlignment="Bottom"/>
-
-                <DataGrid x:Name="dg_Invoice" Margin="5" Grid.Row="2" Grid.ColumnSpan="2"  Background="White"
+                <Grid Margin="5" Grid.Row="2" Grid.ColumnSpan="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <DataGrid x:Name="dg_Invoice"  Grid.Row="0" Grid.ColumnSpan="2"  Background="White"
                       materialDesign:DataGridAssist.CornerRadius="5" Visibility="Visible"
                          IsReadOnly="True" CanUserAddRows="False" 
                           MouseDoubleClick="Dg_Invoice_MouseDoubleClick"
                         AutoGenerateColumns="False" 
                         ColumnWidth="SizeToHeader" SelectionChanged="Dg_Invoice_SelectionChanged"    >
-                    <DataGrid.Resources>
-                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"></SolidColorBrush>
-                        <Style BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" TargetType="{x:Type DataGridColumnHeader}">
-                            <Setter Property="Background" Value="#e7f3fa" />
-                            <Setter Property="BorderBrush" Value="White"/>
-                            <Setter Property="BorderThickness" Value="0 0 1 0"/>
-                        </Style>
-                    </DataGrid.Resources>
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Width="*"  Header="Bill Number" Binding="{Binding Path=invNumber}"/>
-                        <DataGridTextColumn Width="*"  Header="Branch" Binding="{Binding Path=branchCreatorName}" Visibility="Collapsed"/>
-                        <DataGridTextColumn Width="*"  Header="User" Binding="{Binding Path=createrUserName}" Visibility="Collapsed"/>
-                        <DataGridTextColumn Width="*"  Header="items count" Binding="{Binding Path=itemsCount}"/>
-                        <DataGridTextColumn Width="*"  Header="Total" Binding="{Binding Path =totalNet,Converter={StaticResource accuracyConverter }}"/>
-                        <DataGridTextColumn Width="*"  Header="" Binding="{Binding invType,Converter={StaticResource invoiceTypeConverter}}"/>
-                    </DataGrid.Columns>
-                    <DataGrid.RowStyle>
-                        <Style TargetType="DataGridRow">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding invType}" Value="pbd">
-                                    <Setter Property="Background" Value="{StaticResource lightRed}"></Setter>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding invType}" Value="pbw">
-                                    <Setter Property="Background" Value="{StaticResource lightRed}"></Setter>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding invType}" Value="pb">
-                                    <Setter Property="Background" Value="{StaticResource lightRed}"></Setter>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding invType}" Value="spd">
-                                    <Setter Property="Background" Value="{StaticResource lightRed}"></Setter>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding invType}" Value="sb">
-                                    <Setter Property="Background" Value="{StaticResource lightRed}"></Setter>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </DataGrid.RowStyle>
-                </DataGrid>
+                        <DataGrid.Resources>
+                            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"></SolidColorBrush>
+                            <Style BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" TargetType="{x:Type DataGridColumnHeader}">
+                                <Setter Property="Background" Value="#e7f3fa" />
+                                <Setter Property="BorderBrush" Value="White"/>
+                                <Setter Property="BorderThickness" Value="0 0 1 0"/>
+                            </Style>
+                        </DataGrid.Resources>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Width="*"  Header="Bill Number" Binding="{Binding Path=invNumber}"/>
+                            <DataGridTextColumn Width="*"  Header="Branch" Binding="{Binding Path=branchCreatorName}" Visibility="Collapsed"/>
+                            <DataGridTextColumn Width="*"  Header="User" Binding="{Binding Path=createrUserName}" Visibility="Collapsed"/>
+                            <DataGridTextColumn Width="*"  Header="items count" Binding="{Binding Path=itemsCount}"/>
+                            <DataGridTextColumn Width="*"  Header="Total" Binding="{Binding Path =totalNet,Converter={StaticResource accuracyConverter }}"/>
+                            <DataGridTextColumn Width="*"  Header="" Binding="{Binding invType,Converter={StaticResource invoiceTypeConverter}}"/>
+                        </DataGrid.Columns>
+                        <DataGrid.RowStyle>
+                            <Style TargetType="DataGridRow">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding invType}" Value="pbd">
+                                        <Setter Property="Background" Value="{StaticResource lightRed}"></Setter>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding invType}" Value="pbw">
+                                        <Setter Property="Background" Value="{StaticResource lightRed}"></Setter>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding invType}" Value="pb">
+                                        <Setter Property="Background" Value="{StaticResource lightRed}"></Setter>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding invType}" Value="spd">
+                                        <Setter Property="Background" Value="{StaticResource lightRed}"></Setter>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding invType}" Value="sb">
+                                        <Setter Property="Background" Value="{StaticResource lightRed}"></Setter>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.RowStyle>
+                    </DataGrid>
+                    <Border Grid.Row="1" BorderThickness="0,0,0,1" BorderBrush="#178DD2" Margin="15 0 0 0" Width="15"  
+                            HorizontalAlignment="Left" VerticalAlignment="Bottom" >
+                            <TextBlock   Background="{x:Null}" x:Name="txt_count"   Grid.Column="4" 
+                               Text="0" Foreground="#378500" FontSize="12" HorizontalAlignment="Center" >
+                                       
+                                <TextBlock.ToolTip>
+                                    <ToolTip x:Name="tt_count" Content="Customers Count"
+                                              Placement="left" 
+                                              HorizontalOffset="35"
+                                              PlacementRectangle="50,25,0,0"
+                                              VerticalOffset="-20"/>
+                                </TextBlock.ToolTip>
+                            </TextBlock>
+                    </Border>
 
+                </Grid>
+               
                 <Line Grid.Row="3" Grid.Column="0"  Grid.ColumnSpan="3" Stretch="Fill" Stroke="#DFDFDF"  X2="1"  Margin="1,1,1,1"
                           VerticalAlignment="Bottom"/>
 

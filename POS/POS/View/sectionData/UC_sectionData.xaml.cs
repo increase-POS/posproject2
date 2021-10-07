@@ -123,15 +123,8 @@ namespace POS.View
         {
             try
             {
-
-                #region menu state
-                string menuState = MainWindow.menuIsOpen;
-                if (menuState.Equals("open"))
-                    ex.IsExpanded = true;
-                else
-                    ex.IsExpanded = false;
-                #endregion
-
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
                 #region translate
                 if (MainWindow.lang.Equals("en"))
                 { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly()); grid_ucSectionData.FlowDirection = FlowDirection.LeftToRight; }
@@ -142,10 +135,21 @@ namespace POS.View
 
                 if (!stopPermission)
                     permission();
+                #region menu state
+                string menuState = MainWindow.menuIsOpen;
+                if (menuState.Equals("open"))
+                    ex.IsExpanded = true;
+                else
+                    ex.IsExpanded = false;
+                #endregion
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
                 SectionData.ExceptionMessage(ex, this);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
         }
         public bool stopPermission;

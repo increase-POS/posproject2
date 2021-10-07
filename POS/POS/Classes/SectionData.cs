@@ -798,10 +798,9 @@ namespace POS.Classes
                  .Where(x => x.Name == "prg_awaitRing");
             if (progressRingList.Count() == 0)
             {
-                grid.IsEnabled = true;
-                grid.Opacity = 1;
+                    grid.IsEnabled = true;
+                    grid.Opacity = 1;
             }
-
         }
 
         static SetValues valueModel = new SetValues();

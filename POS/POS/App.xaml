@@ -796,7 +796,6 @@
             <SolidColorBrush x:Key="MainColorBlue" Color="#178DD2"/>
             
             <SolidColorBrush x:Key="MainColorOrange" Color="#FFA926"/>
-            
             <SolidColorBrush x:Key="MainColorGrey" Color="#4E4E4E"/>
             <SolidColorBrush x:Key="MainColorlightGrey" Color="#DFDFDF"/>
             

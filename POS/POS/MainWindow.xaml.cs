@@ -266,7 +266,11 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
                         secondPath = "";
                     }
                 }
-                catch { firstPath = ""; secondPath = ""; }
+                catch
+                {
+                    firstPath = "";
+                    secondPath = "";
+                }
                 #endregion
 
                 #region get default System info
@@ -445,12 +449,12 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
                     textBox.SelectAll();
         }
 
-        bool loadingDefaultPath(string first, string second)
+       public static bool loadingDefaultPath(string first, string second)
         {
             bool load = false;
             if (!string.IsNullOrEmpty(first) && !string.IsNullOrEmpty(second))
             {
-                foreach (Button button in FindControls.FindVisualChildren<Button>(this))
+                foreach (Button button in FindControls.FindVisualChildren<Button>(MainWindow.mainWindow))
                 {
                     if (button.Tag != null)
                         if (button.Tag.ToString() == first && MainWindow.groupObject.HasPermission(first, MainWindow.groupObjects))
@@ -484,7 +488,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             return load;
         }
 
-        void loadingSecondLevel(string second , UserControl userControl)
+        static void loadingSecondLevel(string second , UserControl userControl)
         {
             userControl.RaiseEvent(new RoutedEventArgs(FrameworkElement.LoadedEvent));
             var button = userControl.FindName("btn_" + second) as Button;
