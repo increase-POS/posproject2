@@ -6,48 +6,97 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using POS_Server.Models.VM;
+using System.Security.Claims;
 
 namespace POS_Server.Controllers
 {
     [RoutePrefix("api/city")]
     public class cityController : ApiController
     {
-        // GET api/<controller> get all coupons
+      
         [HttpGet]
         [Route("Get")]
-        public IHttpActionResult Get()
+        public ResponseVM Get()
         {
+
+
+            // public ResponseVM GetPurinv(string token)
+
+            //int mainBranchId, int userId    DateTime? date=new DateTime?();
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
+            else
             {
-                using (incposdbEntities entity = new incposdbEntities())
+
+                try
                 {
-                    var cityList = entity.cities
-                  
-                   .Select(c => new {
-                    c.cityId,   
-                    c.cityCode,
-                    c.countryId
+
+
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+
+                        var cityList = entity.cities
+
+                   .Select(c => new
+                   {
+                       c.cityId,
+                       c.cityCode,
+                       c.countryId
                    })
                    .ToList();
 
-                    if (cityList == null)
-                        return NotFound();
-                    else
-                        return Ok(cityList);
+
+
+                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(cityList) };
+
+                    }
+
                 }
+                catch
+                {
+                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                }
+
             }
-            //else
-                return NotFound();
+
+
+            //var re = Request;
+            //var headers = re.Headers;
+            //string token = "";
+            //if (headers.Contains("APIKey"))
+            //{
+            //    token = headers.GetValues("APIKey").First();
+            //}
+            //Validation validation = new Validation();
+            //bool valid = validation.CheckApiKey(token);
+
+            //if (valid) // APIKey is valid
+            //{
+            //    using (incposdbEntities entity = new incposdbEntities())
+            //    {
+            //        var cityList = entity.cities
+                  
+            //       .Select(c => new {
+            //        c.cityId,   
+            //        c.cityCode,
+            //        c.countryId
+            //       })
+            //       .ToList();
+
+            //        if (cityList == null)
+            //            return NotFound();
+            //        else
+            //            return Ok(cityList);
+            //    }
+            //}
+            ////else
+            //    return NotFound();
         }
 
 

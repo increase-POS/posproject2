@@ -1,11 +1,14 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using POS_Server.Classes;
 using POS_Server.Models;
+using POS_Server.Models.VM;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Web.Http;
 
 namespace POS_Server.Controllers
@@ -16,21 +19,17 @@ namespace POS_Server.Controllers
         // GET api/<controller>
         [HttpGet]
         [Route("Get")]
-        public IHttpActionResult Get()
+        public ResponseVM Get(string token)
         {
+            Boolean canDelete = false;
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-            Boolean canDelete = false;
-
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
+            else
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
@@ -72,90 +71,35 @@ namespace POS_Server.Controllers
                             posList[i].canDelete = canDelete;
                         }
                     }
-
-                    if (posList == null)
-                        return NotFound();
-                    else
-                        return Ok(posList);
+                    return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(posList) };
                 }
             }
-            //else
-            return NotFound();
+          
         }
 
-        [HttpGet]
-        [Route("Search")]
-        public IHttpActionResult Search(string searchWords)
-        {
-            var re = Request;
-            var headers = re.Headers;
-            decimal balance =0;
-            string token = "";
-            if (headers.Contains("APIKey"))
-            {
-                token = headers.GetValues("APIKey").First();
-            }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            try
-            {
-                 balance = Convert.ToDecimal(searchWords);
-            }
-            catch { }
-            if (valid) // APIKey is valid
-            {
-                using (incposdbEntities entity = new incposdbEntities())
-                {
-                    var posList = (from p in entity.pos
-                                   join b in entity.branches on p.branchId equals b.branchId into lj
-                                   from x in lj.DefaultIfEmpty()
-                                   select new PosModel()
-                                   {
-                                       posId = p.posId,
-                                       balance = p.balance,
-                                       branchId = p.branchId,
-                                       code = p.code,
-                                       name = p.name,
-                                       branchName = x.name,
-                                       createDate = p.createDate,
-                                       updateDate = p.updateDate,
-                                       createUserId = p.createUserId,
-                                       updateUserId = p.updateUserId,
-                                       isActive = p.isActive,
-                                       note = p.note,
-                                       balanceAll = p.balanceAll,
-                                       branchCode = x.code,
-                                   })
-                                   .Where(p=> (p.name.Contains(searchWords) || p.code.Contains(searchWords) || p.branchName.Contains(searchWords) || p.balance == balance ))
-                                   .ToList();
-
-                    if (posList == null)
-                        return NotFound();
-                    else
-                        return Ok(posList);
-                }
-            }
-            //else
-            return NotFound();
-        }
         // GET api/<controller>
         [HttpGet]
         [Route("GetPosByID")]
-        public IHttpActionResult GetPosByID(int posId)
+        public ResponseVM GetPosByID(string token)
         {
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid)
+            else
             {
+                int posId = 0;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemId")
+                    {
+                        posId = int.Parse(c.Value);
+                    }
+                }
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var pos = (from p in entity.pos where p.posId == posId
@@ -178,38 +122,39 @@ namespace POS_Server.Controllers
                                     note = p.note,
                                     branchCode = x.code,
                                 }).FirstOrDefault();
-
-                    if (pos == null)
-                        return NotFound();
-                    else
-                        return Ok(pos);
+                    return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(pos) };
                 }
             }
-            else
-                return NotFound();
-        }
+         }
 
         // add or update pos
         [HttpPost]
         [Route("Save")]
-        public IHttpActionResult Save(string posObject)
+        public ResponseVM Save(string token )
         {
+            string message = "";
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-            string message = "";
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid)
+            else
             {
-                posObject = posObject.Replace("\\", string.Empty);
-                posObject = posObject.Trim('"');
-                pos newObject = JsonConvert.DeserializeObject<pos>(posObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+                string posObject = "";
+                pos newObject = null;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemObject")
+                    {
+                        posObject = c.Value.Replace("\\", string.Empty);
+                        posObject = posObject.Trim('"');
+                        newObject = JsonConvert.DeserializeObject<pos>(posObject, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                        break;
+                    }
+                }
                 if (newObject.updateUserId == 0 || newObject.updateUserId == null)
                 {
                     Nullable<int> id = null;
@@ -233,7 +178,8 @@ namespace POS_Server.Controllers
                             int posCount = entity.pos.Count();
                             if (posCount >= posMaxCount)
                             {
-                                return Ok(-1);
+                                message = "-1";
+                                return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken(message) };
                             }
                             else
                             {
@@ -243,8 +189,9 @@ namespace POS_Server.Controllers
 
                                tmpPos = unitEntity.Add(newObject);
                                 entity.SaveChanges();
-                                return Ok(tmpPos.posId);
+                                message = tmpPos.posId.ToString();
                             }
+                            return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(message) };
                         }
                         else
                         {
@@ -259,34 +206,52 @@ namespace POS_Server.Controllers
                             tmpPos.balance = newObject.balance;
                             tmpPos.balanceAll = newObject.balanceAll;
                             entity.SaveChanges();
-                            return Ok(tmpPos.posId);
+                            message = tmpPos.posId.ToString();
+                            return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(message) };
                         }
                     }
                 }
                 catch
                 {
-                    return Ok(0);
+                    message = "0";
+                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken(message) };
                 }
             }
-            return NotFound();
         }
 
         [HttpPost]
         [Route("Delete")]
-        public IHttpActionResult Delete(int posId,int userId,Boolean final)
+        public ResponseVM Delete(string token )
         {
+            string message = "";
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
-
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-            if (valid)
+            else
             {
+                int posId = 0;
+                int userId = 0;
+                Boolean final = false;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemId")
+                    {
+                        posId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "userId")
+                    {
+                        userId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "final")
+                    {
+                        final = bool.Parse(c.Value);
+                    }
+                }
                 if (final)
                 {
                     try
@@ -296,14 +261,13 @@ namespace POS_Server.Controllers
                             pos posDelete = entity.pos.Find(posId);
 
                             entity.pos.Remove(posDelete);
-                            entity.SaveChanges();
-
-                            return Ok("Pos is Deleted Successfully");
+                            message = entity.SaveChanges().ToString();
+                            return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(message) };
                         }
                     }
                     catch
                     {
-                        return NotFound();
+                        return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
                     }
                 }
                 else
@@ -315,14 +279,11 @@ namespace POS_Server.Controllers
                         posDelete.isActive = 0;
                         posDelete.updateUserId = userId;
                         posDelete.updateDate = DateTime.Now;
-                        entity.SaveChanges();
-
-                        return Ok("Pos is Deleted Successfully");
+                        message = entity.SaveChanges().ToString();
+                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(message) };
                     }
                 }
             }
-            else
-                return NotFound();
         }
     }
 }

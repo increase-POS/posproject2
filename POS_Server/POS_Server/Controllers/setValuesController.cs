@@ -9,6 +9,9 @@ using System.Web.Http;
 using System.Web;
 using System.IO;
 using System.Net.Http.Headers;
+using POS_Server.Models.VM;
+using System.Security.Claims;
+using Newtonsoft.Json.Converters;
 
 namespace POS_Server.Controllers
 {
@@ -18,169 +21,366 @@ namespace POS_Server.Controllers
         // GET api/<controller> get all setValues
         [HttpGet]
         [Route("Get")]
-        public IHttpActionResult Get()
+        public ResponseVM Get()
         {
+            // public ResponseVM GetPurinv(string token)
+
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-          
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
+            else
             {
-                using (incposdbEntities entity = new incposdbEntities())
+                //int mainBranchId = 0;
+                //int userId = 0;
+
+                //IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                //foreach (Claim c in claims)
+                //{
+                //    if (c.Type == "mainBranchId")
+                //    {
+                //        mainBranchId = int.Parse(c.Value);
+                //    }
+                //    else if (c.Type == "userId")
+                //    {
+                //        userId = int.Parse(c.Value);
+                //    }
+
+                //}
+
+                // DateTime cmpdate = DateTime.Now.AddDays(newdays);
+                try
                 {
-                    var setValuesList = entity.setValues
-                  
-                   .Select(c => new  {
+
+
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+
+
+                        var list = entity.setValues
+
+                   .Select(c => new
+                   {
                        c.valId,
-                      c.value,
-                      c.isDefault,
-                      c.isSystem,
-                      c.notes,
-                      c.settingId,
+                       c.value,
+                       c.isDefault,
+                       c.isSystem,
+                       c.notes,
+                       c.settingId,
 
                    })
-                   .ToList();
+                               .ToList();
 
-                    /*
-                     * 
-                      valId 
-                      value 
-                      isDefault 
-                      isSystem 
-                      notes 
-                      settingId 
-                     * */
+                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(list) };
 
-                    if (setValuesList == null)
-                        return NotFound();
-                    else
-                        return Ok(setValuesList);
+                    }
+
                 }
+                catch
+                {
+                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                }
+
             }
-            //else
-                return NotFound();
+
+            //var re = Request;
+            //var headers = re.Headers;
+            //string token = "";
+          
+            //if (headers.Contains("APIKey"))
+            //{
+            //    token = headers.GetValues("APIKey").First();
+            //}
+            //Validation validation = new Validation();
+            //bool valid = validation.CheckApiKey(token);
+
+            //if (valid) // APIKey is valid
+            //{
+            //    using (incposdbEntities entity = new incposdbEntities())
+            //    {
+            //        var setValuesList = entity.setValues
+                  
+            //       .Select(c => new  {
+            //           c.valId,
+            //          c.value,
+            //          c.isDefault,
+            //          c.isSystem,
+            //          c.notes,
+            //          c.settingId,
+
+            //       })
+            //       .ToList();
+
+            //        /*
+            //         * 
+            //          valId 
+            //          value 
+            //          isDefault 
+            //          isSystem 
+            //          notes 
+            //          settingId 
+            //         * */
+
+            //        if (setValuesList == null)
+            //            return NotFound();
+            //        else
+            //            return Ok(setValuesList);
+            //    }
+            //}
+            ////else
+            //    return NotFound();
         }
         // email
         [HttpGet]
         [Route("GetBySetName")]
-        public IHttpActionResult GetBySetName(string name)
+        public ResponseVM GetBySetName(string token)
         {
+
+            // public ResponseVM GetPurinv(string token)name
+
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
+            else
             {
-                using (incposdbEntities entity = new incposdbEntities())
+               string name = "";
+               
+
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
                 {
-                    setting sett = entity.setting.Where(s => s.name == name).FirstOrDefault();
-                   var setValuesList = entity.setValues.Where(x => sett.settingId == x.settingId)
-                        .Select(X=> new { X.valId,
-                            X.value,
-                            X.isDefault,
-                            X.isSystem,
-                            X.settingId,
-                            X.notes,
-                           
-                        })
-                        .ToList();
+                    if (c.Type == "name")
+                    {
+                        name = c.Value;
+                    }
+                  
 
-                    if (setValuesList == null)
-                        return NotFound();
-                    else
-                        return Ok(setValuesList);
                 }
+
+                // DateTime cmpdate = DateTime.Now.AddDays(newdays);
+                try
+                {
+
+
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+                        setting sett = entity.setting.Where(s => s.name == name).FirstOrDefault();
+                        var list = entity.setValues.Where(x => sett.settingId == x.settingId)
+                             .Select(X => new
+                             {
+                                 X.valId,
+                                 X.value,
+                                 X.isDefault,
+                                 X.isSystem,
+                                 X.settingId,
+                                 X.notes,
+
+                             })
+                             .ToList();
+                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(list) };
+
+                    }
+
+                }
+                catch
+                {
+                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                }
+
             }
-            //else
-            return NotFound();
+
+
+            //var re = Request;
+            //var headers = re.Headers;
+            //string token = "";
+
+            //if (headers.Contains("APIKey"))
+            //{
+            //    token = headers.GetValues("APIKey").First();
+            //}
+            //Validation validation = new Validation();
+            //bool valid = validation.CheckApiKey(token);
+
+            //if (valid) // APIKey is valid
+            //{
+            //    using (incposdbEntities entity = new incposdbEntities())
+            //    {
+            //        setting sett = entity.setting.Where(s => s.name == name).FirstOrDefault();
+            //       var setValuesList = entity.setValues.Where(x => sett.settingId == x.settingId)
+            //            .Select(X=> new { X.valId,
+            //                X.value,
+            //                X.isDefault,
+            //                X.isSystem,
+            //                X.settingId,
+            //                X.notes,
+
+            //            })
+            //            .ToList();
+
+            //        if (setValuesList == null)
+            //            return NotFound();
+            //        else
+            //            return Ok(setValuesList);
+            //    }
+            //}
+            ////else
+            //return NotFound();
         }
 
 
         [HttpGet]
         [Route("GetBySetvalNote")]
-        public IHttpActionResult GetBySetvalNote(string setvalnote)
+        public ResponseVM GetBySetvalNote(string token)
         {
+
+            // public ResponseVM GetPurinv(string token)setvalnote
+
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
+            else
             {
-                using (incposdbEntities entity = new incposdbEntities())
+                string setvalnote = "";
+
+
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
                 {
-                    //setting sett = entity.setting.Where(s => s.name == name).FirstOrDefault();
-                    var setValuesList = entity.setValues.ToList().Where(x => x.notes == setvalnote)
-                         .Select(X => new {
-                             X.valId,
-                             X.value,
-                             X.isDefault,
-                             X.isSystem,
-                             X.settingId,
-                             X.notes,
-                             name= entity.setting.ToList().Where(s => s.settingId == X.settingId).FirstOrDefault().name,
+                    if (c.Type == "setvalnote")
+                    {
+                        setvalnote = c.Value;
+                    }
 
-                })
-                         .ToList();
 
-                    if (setValuesList == null)
-                        return NotFound();
-                    else
-                        return Ok(setValuesList);
                 }
+
+                // DateTime cmpdate = DateTime.Now.AddDays(newdays);
+                try
+                {
+
+
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+                       // setting sett = entity.setting.Where(s => s.name == name).FirstOrDefault();
+                        var list = entity.setValues.ToList().Where(x => x.notes == setvalnote)
+                             .Select(X => new
+                             {
+                                 X.valId,
+                                 X.value,
+                                 X.isDefault,
+                                 X.isSystem,
+                                 X.settingId,
+                                 X.notes,
+                                 name = entity.setting.ToList().Where(s => s.settingId == X.settingId).FirstOrDefault().name,
+
+                             })
+                             .ToList();
+
+                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(list) };
+
+                    }
+
+                }
+                catch
+                {
+                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                }
+
             }
-            //else
-            return NotFound();
+
+            //var re = Request;
+            //var headers = re.Headers;
+            //string token = "";
+
+            //if (headers.Contains("APIKey"))
+            //{
+            //    token = headers.GetValues("APIKey").First();
+            //}
+            //Validation validation = new Validation();
+            //bool valid = validation.CheckApiKey(token);
+
+            //if (valid) // APIKey is valid
+            //{
+            //    using (incposdbEntities entity = new incposdbEntities())
+            //    {
+            //        //setting sett = entity.setting.Where(s => s.name == name).FirstOrDefault();
+            //        var setValuesList = entity.setValues.ToList().Where(x => x.notes == setvalnote)
+            //             .Select(X => new {
+            //                 X.valId,
+            //                 X.value,
+            //                 X.isDefault,
+            //                 X.isSystem,
+            //                 X.settingId,
+            //                 X.notes,
+            //                 name= entity.setting.ToList().Where(s => s.settingId == X.settingId).FirstOrDefault().name,
+
+            //    })
+            //             .ToList();
+
+            //        if (setValuesList == null)
+            //            return NotFound();
+            //        else
+            //            return Ok(setValuesList);
+            //    }
+            //}
+            ////else
+            //return NotFound();
         }
 
 
         // GET api/<controller>  Get medal By ID 
         [HttpGet]
         [Route("GetByID")]
-        public IHttpActionResult GetByID()
+        public ResponseVM GetByID(string token)
         {
+            // public ResponseVM GetPurinv(string token)Id
+
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-            int cId = 0;
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
-            if (headers.Contains("Id"))
+            else
             {
-                cId = Convert.ToInt32(headers.GetValues("Id").First());
-            }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
+                int Id =0;
 
-            if (valid)
-            {
-                using (incposdbEntities entity = new incposdbEntities())
+
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
                 {
-                    var list = entity.setValues
-                   .Where(c => c.valId == cId)
-                   .Select(c => new {
+                    if (c.Type == "Id")
+                    {
+                        Id = int.Parse(c.Value);
+                    }
+
+
+                }
+
+                // DateTime cmpdate = DateTime.Now.AddDays(newdays);
+                try
+                {
+
+
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+                   
+                        var item = entity.setValues
+                   .Where(c => c.valId == Id)
+                   .Select(c => new
+                   {
                        c.valId,
                        c.value,
                        c.isDefault,
@@ -189,105 +389,250 @@ namespace POS_Server.Controllers
                        c.settingId,
 
 
-                   })
-                   .FirstOrDefault();
+                   }).FirstOrDefault();
+                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(item) };
 
-                    if (list == null)
-                        return NotFound();
-                    else
-                        return Ok(list);
+                    }
+
                 }
+                catch
+                {
+                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                }
+
             }
-            else
-                return NotFound();
+
+            //var re = Request;
+            //var headers = re.Headers;
+            //string token = "";
+            //int cId = 0;
+            //if (headers.Contains("APIKey"))
+            //{
+            //    token = headers.GetValues("APIKey").First();
+            //}
+            //if (headers.Contains("Id"))
+            //{
+            //    cId = Convert.ToInt32(headers.GetValues("Id").First());
+            //}
+            //Validation validation = new Validation();
+            //bool valid = validation.CheckApiKey(token);
+
+            //if (valid)
+            //{
+            //    using (incposdbEntities entity = new incposdbEntities())
+            //    {
+            //        var list = entity.setValues
+            //       .Where(c => c.valId == cId)
+            //       .Select(c => new {
+            //           c.valId,
+            //           c.value,
+            //           c.isDefault,
+            //           c.isSystem,
+            //           c.notes,
+            //           c.settingId,
+
+
+            //       })
+            //       .FirstOrDefault();
+
+            //        if (list == null)
+            //            return NotFound();
+            //        else
+            //            return Ok(list);
+            //    }
+            //}
+            //else
+            //    return NotFound();
         }
 
 
         // add or update medal 
         [HttpPost]
         [Route("Save")]
-        public String Save(string newObject)
+        public ResponseVM Save(string token)
         {
+            //string Object string newObject
+            string message = "";
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-            string message ="";
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
-            }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-            
-            if (valid)
-            {
-                newObject = newObject.Replace("\\", string.Empty);
-                newObject = newObject.Trim('"');
-                setValues Object = JsonConvert.DeserializeObject<setValues>(newObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
-                try
-                {
-                    if (Object.settingId == 0 || Object.settingId == null)
-                    {
-                        Nullable<int> id = null;
-                        Object.settingId = id;
-                    }
-                    using (incposdbEntities entity = new incposdbEntities())
-                    {
-                        var sEntity = entity.Set<setValues>();
-                        setValues defItem = entity.setValues.Where(p => p.settingId == Object.settingId && p.isDefault == 1).FirstOrDefault();
-                          
-                        if (Object.valId == 0)
-                        {     
-                            if (Object.isDefault == 1 )
-                            { // get the row with same settingId of newObject
-                                 if (defItem != null)
-                                {
-                                    defItem.isDefault = 0;
-                                    entity.SaveChanges();
-                                }
-                            }
-                            else //Object.isDefault ==0 
-                            {
-                                if (defItem == null)//other values isDefault not 1 
-                                {
-                                    Object.isDefault =1;
-                                }
-
-                            }
-                                sEntity.Add(Object);
-                          message = Object.valId.ToString();
-                            entity.SaveChanges();
-                        }
-                        else
-                        {
-                            if (Object.isDefault == 1)
-                            {
-                                defItem.isDefault = 0;//reset the other default to 0 if exist
-                            }
-                            var tmps = entity.setValues.Where(p => p.valId == Object.valId).FirstOrDefault();
-                            tmps.valId = Object.valId;                          
-                            tmps.notes = Object.notes;
-                            tmps.value = Object.value;
-                            tmps.isDefault=Object.isDefault;
-                            tmps.isSystem=Object.isSystem;
-                       
-                            tmps.settingId=Object.settingId;
-                            entity.SaveChanges();
-                            message = tmps.valId.ToString();
-                        }
-                       
-                       
-                    }
-                    return message; ;
-                }
-
-                catch
-                {
-                    return "-1";
-                }
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
             else
-                return "-1";
+            {
+                string Object = "";
+                setValues newObject = null;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "Object")
+                    {
+                        Object = c.Value.Replace("\\", string.Empty);
+                        Object = Object.Trim('"');
+                        newObject = JsonConvert.DeserializeObject<setValues>(Object, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                        break;
+                    }
+                }
+                if (newObject != null)
+                {
+
+
+                    setValues tmpObject=null;
+
+
+                    try
+                    {
+                        if (newObject.settingId == 0 || newObject.settingId == null)
+                        {
+                            Nullable<int> id = null;
+                            newObject.settingId = id;
+                        }
+                        using (incposdbEntities entity = new incposdbEntities())
+                        {
+                            var sEntity = entity.Set<setValues>();
+                            setValues defItem = entity.setValues.Where(p => p.settingId == newObject.settingId && p.isDefault == 1).FirstOrDefault();
+
+                            if (newObject.valId == 0)
+                            {
+                                if (newObject.isDefault == 1)
+                                { // get the row with same settingId of newObject
+                                    if (defItem != null)
+                                    {
+                                        defItem.isDefault = 0;
+                                        entity.SaveChanges();
+                                    }
+                                }
+                                else //Object.isDefault ==0 
+                                {
+                                    if (defItem == null)//other values isDefault not 1 
+                                    {
+                                        newObject.isDefault = 1;
+                                    }
+
+                                }
+                                sEntity.Add(newObject);
+                                message = newObject.valId.ToString();
+                                entity.SaveChanges();
+                            }
+                            else
+                            {
+                                if (newObject.isDefault == 1)
+                                {
+                                    defItem.isDefault = 0;//reset the other default to 0 if exist
+                                }
+                                tmpObject = entity.setValues.Where(p => p.valId == newObject.valId).FirstOrDefault();
+                                tmpObject.valId = newObject.valId;
+                                tmpObject.notes = newObject.notes;
+                                tmpObject.value = newObject.value;
+                                tmpObject.isDefault = newObject.isDefault;
+                                tmpObject.isSystem = newObject.isSystem;
+
+                                tmpObject.settingId = newObject.settingId;
+                                entity.SaveChanges();
+                                message = tmpObject.valId.ToString();
+                            }
+
+
+                        }
+                       
+                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(message) };
+
+                    }
+                    catch
+                    {
+                        message = "0";
+                        return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken(message) };
+                    }
+
+
+                }
+
+                return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken(message) };
+
+            }
+
+            //var re = Request;
+            //var headers = re.Headers;
+            //string token = "";
+            //string message ="";
+            //if (headers.Contains("APIKey"))
+            //{
+            //    token = headers.GetValues("APIKey").First();
+            //}
+            //Validation validation = new Validation();
+            //bool valid = validation.CheckApiKey(token);
+
+            //if (valid)
+            //{
+            //    newObject = newObject.Replace("\\", string.Empty);
+            //    newObject = newObject.Trim('"');
+            //    setValues Object = JsonConvert.DeserializeObject<setValues>(newObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+            //    try
+            //    {
+            //        if (Object.settingId == 0 || Object.settingId == null)
+            //        {
+            //            Nullable<int> id = null;
+            //            Object.settingId = id;
+            //        }
+            //        using (incposdbEntities entity = new incposdbEntities())
+            //        {
+            //            var sEntity = entity.Set<setValues>();
+            //            setValues defItem = entity.setValues.Where(p => p.settingId == Object.settingId && p.isDefault == 1).FirstOrDefault();
+
+            //            if (Object.valId == 0)
+            //            {     
+            //                if (Object.isDefault == 1 )
+            //                { // get the row with same settingId of newObject
+            //                     if (defItem != null)
+            //                    {
+            //                        defItem.isDefault = 0;
+            //                        entity.SaveChanges();
+            //                    }
+            //                }
+            //                else //Object.isDefault ==0 
+            //                {
+            //                    if (defItem == null)//other values isDefault not 1 
+            //                    {
+            //                        Object.isDefault =1;
+            //                    }
+
+            //                }
+            //                    sEntity.Add(Object);
+            //              message = Object.valId.ToString();
+            //                entity.SaveChanges();
+            //            }
+            //            else
+            //            {
+            //                if (Object.isDefault == 1)
+            //                {
+            //                    defItem.isDefault = 0;//reset the other default to 0 if exist
+            //                }
+            //                var tmps = entity.setValues.Where(p => p.valId == Object.valId).FirstOrDefault();
+            //                tmps.valId = Object.valId;                          
+            //                tmps.notes = Object.notes;
+            //                tmps.value = Object.value;
+            //                tmps.isDefault=Object.isDefault;
+            //                tmps.isSystem=Object.isSystem;
+
+            //                tmps.settingId=Object.settingId;
+            //                entity.SaveChanges();
+            //                message = tmps.valId.ToString();
+            //            }
+
+
+            //        }
+            //        return message; ;
+            //    }
+
+            //    catch
+            //    {
+            //        return "-1";
+            //    }
+            //}
+            //else
+            //    return "-1";
         }
 
 
@@ -295,136 +640,299 @@ namespace POS_Server.Controllers
         //email temp  
         [HttpPost]
         [Route("SaveValueByNotes")]
-        public String SaveValueByNotes(string newObject)
+        public ResponseVM SaveValueByNotes(string token)
         {
+
+            //string Object string newObject
+            string message = "";
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-            string message = "";
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
-            }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid)
-            {
-                newObject = newObject.Replace("\\", string.Empty);
-                newObject = newObject.Trim('"');
-                setValues Object = JsonConvert.DeserializeObject<setValues>(newObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
-                try
-                {
-                    if (Object.settingId == 0 || Object.settingId == null)
-                    {
-                        Nullable<int> id = null;
-                        Object.settingId = id;
-                    }
-                    using (incposdbEntities entity = new incposdbEntities())
-                    {
-                        setValues defItem = new setValues();
-                        var sEntity = entity.Set<setValues>();
-                       
-                            defItem = entity.setValues.Where(p => p.settingId == Object.settingId ).FirstOrDefault();
-
-                     
-                      
-                        if (Object.valId == 0)
-                        {
-                            if (Object.isDefault == 1)
-                            {
-                                // get the row with same settingId of newObject
-                                if (defItem != null)
-                                {
-                                    defItem.isDefault = 0;
-                                    entity.SaveChanges();
-                                }
-                            }
-                            else //Object.isDefault ==0 
-                            {
-                                if (defItem == null)//other values isDefault not 1 
-                                {
-                                    Object.isDefault = 1;
-                                }
-
-                            }
-                            sEntity.Add(Object);
-                            message = Object.valId.ToString();
-                            entity.SaveChanges();
-                        }
-                        else
-                        {
-                            if (Object.isDefault == 1)
-                            {
-                                defItem.isDefault = 0;//reset the other default to 0 if exist
-                            }
-                            var tmps1 = sEntity.ToList();
-                            var tmps = tmps1.Where(p => p.notes == Object.notes &&  p.settingId == Object.settingId && p.valId == Object.valId).FirstOrDefault();
-                         //   tmps.valId = Object.valId;
-                           // tmps.notes = Object.notes;
-                            tmps.value = Object.value;
-                            tmps.isDefault = Object.isDefault;
-                            tmps.isSystem = Object.isSystem;
-                         
-                            tmps.settingId = Object.settingId;
-                            entity.SaveChanges();
-                            message = tmps.valId.ToString();
-                        }
-
-
-                    }
-                    return message; ;
-                }
-
-                catch (Exception ex)
-                {
-                    return ex.ToString();
-                }
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
             else
-                return "-2";
+            {
+                string Object = "";
+                setValues newObject = null;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "Object")
+                    {
+                        Object = c.Value.Replace("\\", string.Empty);
+                        Object = Object.Trim('"');
+                        newObject = JsonConvert.DeserializeObject<setValues>(Object, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                        break;
+                    }
+                }
+                if (newObject != null)
+                {
+
+
+                    setValues tmpObject = null;
+
+
+                    try
+                    {
+                        if (newObject.settingId == 0 || newObject.settingId == null)
+                        {
+                            Nullable<int> id = null;
+                            newObject.settingId = id;
+                        }
+                        using (incposdbEntities entity = new incposdbEntities())
+                        {
+                            setValues defItem = new setValues();
+                            var sEntity = entity.Set<setValues>();
+
+                            defItem = entity.setValues.Where(p => p.settingId == newObject.settingId).FirstOrDefault();
+
+
+
+                            if (newObject.valId == 0)
+                            {
+                                if (newObject.isDefault == 1)
+                                {
+                                    // get the row with same settingId of newObject
+                                    if (defItem != null)
+                                    {
+                                        defItem.isDefault = 0;
+                                        entity.SaveChanges();
+                                    }
+                                }
+                                else //newObject.isDefault ==0 
+                                {
+                                    if (defItem == null)//other values isDefault not 1 
+                                    {
+                                        newObject.isDefault = 1;
+                                    }
+
+                                }
+                                sEntity.Add(newObject);
+                                message = newObject.valId.ToString();
+                                entity.SaveChanges();
+                            }
+                            else
+                            {
+                                if (newObject.isDefault == 1)
+                                {
+                                    defItem.isDefault = 0;//reset the other default to 0 if exist
+                                }
+                                var tmps1 = sEntity.ToList();
+                                tmpObject = tmps1.Where(p => p.notes == newObject.notes && p.settingId == newObject.settingId && p.valId == newObject.valId).FirstOrDefault();
+                                //   tmpObject.valId = newObject.valId;
+                                // tmpObject.notes = newObject.notes;
+                                tmpObject.value = newObject.value;
+                                tmpObject.isDefault = newObject.isDefault;
+                                tmpObject.isSystem = newObject.isSystem;
+
+                                tmpObject.settingId = newObject.settingId;
+                                entity.SaveChanges();
+                                message = tmpObject.valId.ToString();
+                            }
+
+
+                        }
+                       
+
+                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(message) };
+
+                    }
+                    catch
+                    {
+                        message = "0";
+                        return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken(message) };
+                    }
+
+
+                }
+
+                return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken(message) };
+
+            }
+
+            //var re = Request;
+            //var headers = re.Headers;
+            //string token = "";
+            //string message = "";
+            //if (headers.Contains("APIKey"))
+            //{
+            //    token = headers.GetValues("APIKey").First();
+            //}
+            //Validation validation = new Validation();
+            //bool valid = validation.CheckApiKey(token);
+
+            //if (valid)
+            //{
+            //    newObject = newObject.Replace("\\", string.Empty);
+            //    newObject = newObject.Trim('"');
+            //    setValues Object = JsonConvert.DeserializeObject<setValues>(newObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+            //    try
+            //    {
+            //        if (Object.settingId == 0 || Object.settingId == null)
+            //        {
+            //            Nullable<int> id = null;
+            //            Object.settingId = id;
+            //        }
+            //        using (incposdbEntities entity = new incposdbEntities())
+            //        {
+            //            setValues defItem = new setValues();
+            //            var sEntity = entity.Set<setValues>();
+
+            //                defItem = entity.setValues.Where(p => p.settingId == Object.settingId ).FirstOrDefault();
+
+
+
+            //            if (Object.valId == 0)
+            //            {
+            //                if (Object.isDefault == 1)
+            //                {
+            //                    // get the row with same settingId of newObject
+            //                    if (defItem != null)
+            //                    {
+            //                        defItem.isDefault = 0;
+            //                        entity.SaveChanges();
+            //                    }
+            //                }
+            //                else //Object.isDefault ==0 
+            //                {
+            //                    if (defItem == null)//other values isDefault not 1 
+            //                    {
+            //                        Object.isDefault = 1;
+            //                    }
+
+            //                }
+            //                sEntity.Add(Object);
+            //                message = Object.valId.ToString();
+            //                entity.SaveChanges();
+            //            }
+            //            else
+            //            {
+            //                if (Object.isDefault == 1)
+            //                {
+            //                    defItem.isDefault = 0;//reset the other default to 0 if exist
+            //                }
+            //                var tmps1 = sEntity.ToList();
+            //                var tmps = tmps1.Where(p => p.notes == Object.notes &&  p.settingId == Object.settingId && p.valId == Object.valId).FirstOrDefault();
+            //             //   tmps.valId = Object.valId;
+            //               // tmps.notes = Object.notes;
+            //                tmps.value = Object.value;
+            //                tmps.isDefault = Object.isDefault;
+            //                tmps.isSystem = Object.isSystem;
+
+            //                tmps.settingId = Object.settingId;
+            //                entity.SaveChanges();
+            //                message = tmps.valId.ToString();
+            //            }
+
+
+            //        }
+            //        return message; ;
+            //    }
+
+            //    catch (Exception ex)
+            //    {
+            //        return ex.ToString();
+            //    }
+            //}
+            //else
+            //    return "-2";
         }
 
         [HttpPost]
         [Route("Delete")]
-        public IHttpActionResult Delete(int Id, int userId)
+        public ResponseVM Delete(string token)
         {
+
+
+            // public ResponseVM Delete(string token)int Id, int userId
+            //int Id, int userId
+            string message = "";
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
-            }
-
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-            if (valid)
-            {
-               
-                    try
-                    {
-                        using (incposdbEntities entity = new incposdbEntities())
-                        {
-                            setValues sObj = entity.setValues.Find(Id);
-                       
-                            entity.setValues.Remove(sObj);
-                            entity.SaveChanges();
-
-                            return Ok("medal is Deleted Successfully");
-                        }
-                    }
-                    catch
-                    {
-                        return NotFound();
-                    }
-                
-                
-
-               
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
             else
-                return NotFound();
+            {
+                int Id = 0;
+                int userId = 0;
+
+
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "Id")
+                    {
+                        Id = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "userId")
+                    {
+                        userId = int.Parse(c.Value);
+                    }
+
+                }
+
+                try
+                {
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+                        setValues sObj = entity.setValues.Find(Id);
+
+                        entity.setValues.Remove(sObj);
+                        message = entity.SaveChanges().ToString();
+
+                    }
+                    return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(message) };
+                }
+                catch
+                {
+                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                }
+
+
+            }
+
+
+            //var re = Request;
+            //var headers = re.Headers;
+            //string token = "";
+            //if (headers.Contains("APIKey"))
+            //{
+            //    token = headers.GetValues("APIKey").First();
+            //}
+
+            //Validation validation = new Validation();
+            //bool valid = validation.CheckApiKey(token);
+            //if (valid)
+            //{
+               
+            //        try
+            //        {
+            //            using (incposdbEntities entity = new incposdbEntities())
+            //            {
+            //                setValues sObj = entity.setValues.Find(Id);
+                       
+            //                entity.setValues.Remove(sObj);
+            //                entity.SaveChanges();
+
+            //                return Ok("medal is Deleted Successfully");
+            //            }
+            //        }
+            //        catch
+            //        {
+            //            return NotFound();
+            //        }
+                
+                
+
+               
+            //}
+            //else
+            //    return NotFound();
         }
 // image
         #region Image

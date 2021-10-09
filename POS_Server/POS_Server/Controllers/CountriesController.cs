@@ -6,6 +6,8 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using POS_Server.Models.VM;
+using System.Security.Claims;
 
 namespace POS_Server.Controllers
 {
@@ -15,104 +17,172 @@ namespace POS_Server.Controllers
         // GET api/<controller>
         [HttpGet]
         [Route("GetAllCountries")]
-        public IHttpActionResult GetAllCountries()
+        public ResponseVM GetAllCountries()
         {
+
+            // public ResponseVM GetPurinv(string token)
+
+            //int mainBranchId, int userId    DateTime? date=new DateTime?();
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-          
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
+            else
             {
-                using (incposdbEntities entity = new incposdbEntities())
+                //int mainBranchId = 0;
+                //int userId = 0;
+
+                //IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                //foreach (Claim c in claims)
+                //{
+                //    if (c.Type == "mainBranchId")
+                //    {
+                //        mainBranchId = int.Parse(c.Value);
+                //    }
+                //    else if (c.Type == "userId")
+                //    {
+                //        userId = int.Parse(c.Value);
+                //    }
+
+                //}
+
+                // DateTime cmpdate = DateTime.Now.AddDays(newdays);
+                try
                 {
-                    var countrylist = entity.countriesCodes
-                         .Select(c => new {
+
+                   
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+
+
+                        var countrylist = entity.countriesCodes
+                         .Select(c => new
+                         {
                              c.countryId,
                              c.code,
                          }).ToList();
-                        
-                    
-                    if (countrylist == null)
-                       return NotFound();
-                    else
-                        return Ok(countrylist);
+
+
+
+                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(countrylist) };
+
+                    }
+
                 }
-            }
-            else
-                return NotFound();
-        }
-
-
-        [HttpGet]
-        [Route("GetAllCities")]
-        public IHttpActionResult GetAllCities()
-        {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-
-            if (headers.Contains("APIKey"))
-            {
-                token = headers.GetValues("APIKey").First();
-            }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
-            {
-                using (incposdbEntities entity = new incposdbEntities())
+                catch
                 {
-                    var countrylist = entity.countriesCodes
-                         .Select(c => new {
-                             c.countryId,
-                             c.code,
-                             c.isDefault,
-                         }).ToList();
-
-
-                    if (countrylist == null)
-                    { return Ok(countrylist); }
-                    //return ("no");
-                    //return NotFound();
-                    else
-                    { return Ok(countrylist);}
-                        
+                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
                 }
+
             }
-            else
-                return NotFound();
+
+            //var re = Request;
+            //var headers = re.Headers;
+            //string token = "";
+
+            //if (headers.Contains("APIKey"))
+            //{
+            //    token = headers.GetValues("APIKey").First();
+            //}
+            //Validation validation = new Validation();
+            //bool valid = validation.CheckApiKey(token);
+
+            //if (valid) // APIKey is valid
+            //{
+            //    using (incposdbEntities entity = new incposdbEntities())
+            //    {
+            //        var countrylist = entity.countriesCodes
+            //             .Select(c => new {
+            //                 c.countryId,
+            //                 c.code,
+            //             }).ToList();
+
+
+            //        if (countrylist == null)
+            //           return NotFound();
+            //        else
+            //            return Ok(countrylist);
+            //    }
+            //}
+            //else
+            //    return NotFound();
+
+
         }
+
+
+        //[HttpGet]
+        //[Route("GetAllCities")]
+        //public IHttpActionResult GetAllCities()
+        //{
+        //    var re = Request;
+        //    var headers = re.Headers;
+        //    string token = "";
+
+        //    if (headers.Contains("APIKey"))
+        //    {
+        //        token = headers.GetValues("APIKey").First();
+        //    }
+        //    Validation validation = new Validation();
+        //    bool valid = validation.CheckApiKey(token);
+
+        //    if (valid) // APIKey is valid
+        //    {
+        //        using (incposdbEntities entity = new incposdbEntities())
+        //        {
+        //            var countrylist = entity.countriesCodes
+        //                 .Select(c => new {
+        //                     c.countryId,
+        //                     c.code,
+        //                     c.isDefault,
+        //                 }).ToList();
+
+
+        //            if (countrylist == null)
+        //            { return Ok(countrylist); }
+        //            //return ("no");
+        //            //return NotFound();
+        //            else
+        //            { return Ok(countrylist);}
+                        
+        //        }
+        //    }
+        //    else
+        //        return NotFound();
+        //}
 
 
 
         [HttpGet]
         [Route("GetAllRegion")]
-        public IHttpActionResult GetAllRegion()
+        public ResponseVM GetAllRegion()
         {
+            // public ResponseVM GetPurinv(string token)
+
+            //int mainBranchId, int userId    DateTime? date=new DateTime?();
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
+            else
             {
-                using (incposdbEntities entity = new incposdbEntities())
+        
+                try
                 {
-                    var countrylist = entity.countriesCodes
-                         .Select(c => new {
+
+
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+
+                        var countrylist = entity.countriesCodes
+                         .Select(c => new
+                         {
                              c.countryId,
                              c.code,
                              c.currency,
@@ -123,44 +193,92 @@ namespace POS_Server.Controllers
                          }).ToList();
 
 
-                    if (countrylist == null)
-                        return NotFound();
-                    else
-                        return Ok(countrylist);
+                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(countrylist) };
+
+                    }
+
                 }
+                catch
+                {
+                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                }
+
             }
-            else
-                return NotFound();
+
+            //var re = Request;
+            //var headers = re.Headers;
+            //string token = "";
+
+            //if (headers.Contains("APIKey"))
+            //{
+            //    token = headers.GetValues("APIKey").First();
+            //}
+            //Validation validation = new Validation();
+            //bool valid = validation.CheckApiKey(token);
+
+            //if (valid) // APIKey is valid
+            //{
+            //    using (incposdbEntities entity = new incposdbEntities())
+            //    {
+            //        var countrylist = entity.countriesCodes
+            //             .Select(c => new {
+            //                 c.countryId,
+            //                 c.code,
+            //                 c.currency,
+            //                 c.name,
+            //                 c.isDefault,
+            //                 c.currencyId,
+
+            //             }).ToList();
+
+
+            //        if (countrylist == null)
+            //            return NotFound();
+            //        else
+            //            return Ok(countrylist);
+            //    }
+            //}
+            //else
+            //    return NotFound();
         }
 
         [HttpPost]
         [Route("UpdateIsdefault")]
-        public string UpdateIsdefault(int countryId)
+        public ResponseVM UpdateIsdefault(string token)
         {
+            //int countryId
+            string message = "";
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-            string message = "";
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid)
+            else
             {
+                int countryId = 0;
+             
                
-
-                try
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
                 {
-                    using (incposdbEntities entity = new incposdbEntities())
+                    if (c.Type == "countryId")
                     {
-                        // reset all to 0
-                        List<countriesCodes> objectlist = entity.countriesCodes.Where(x=>x.isDefault==1).ToList();
+                        countryId = int.Parse(c.Value);
+                    }
+                   
+                }
+                
+                    try
+                    {
+                        using (incposdbEntities entity = new incposdbEntities())
+                        {
+                       // reset all to 0
+                                    List<countriesCodes> objectlist = entity.countriesCodes.Where(x => x.isDefault == 1).ToList();
                         if (objectlist.Count > 0)
                         {
-                            for(int i=0;i< objectlist.Count; i++)
+                            for (int i = 0; i < objectlist.Count; i++)
                             {
                                 objectlist[i].isDefault = 0;
 
@@ -173,51 +291,141 @@ namespace POS_Server.Controllers
                         if (objectrow != null)
                         {
                             objectrow.isDefault = 1;
-
-                            message = objectrow.countryId.ToString();
-                            entity.SaveChanges();
+                           
+       
+                           int res=  entity.SaveChanges();
+                            if (res > 0)
+                            {
+                                message = objectrow.countryId.ToString();
+                            }
+                            else
+                            {
+                                return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                            }
                         }
                         else
                         {
-                            message = "-1";
+                            return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
                         }
                         //  entity.SaveChanges();
+
+
+
+                      
+
+
+                        }
+                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(message) };
                     }
-                }
-                catch
-                {
-                    message = "-1";
-                }
+                    catch
+                    {
+                        return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                    }
+                
+                
             }
-            return message;
+
+
+
+            //var re = Request;
+            //var headers = re.Headers;
+            //string token = "";
+            //string message = "";
+            //if (headers.Contains("APIKey"))
+            //{
+            //    token = headers.GetValues("APIKey").First();
+            //}
+            //Validation validation = new Validation();
+            //bool valid = validation.CheckApiKey(token);
+
+            //if (valid)
+            //{
+
+
+            //    try
+            //    {
+            //        using (incposdbEntities entity = new incposdbEntities())
+            //        {
+            //            // reset all to 0
+            //            List<countriesCodes> objectlist = entity.countriesCodes.Where(x=>x.isDefault==1).ToList();
+            //            if (objectlist.Count > 0)
+            //            {
+            //                for(int i=0;i< objectlist.Count; i++)
+            //                {
+            //                    objectlist[i].isDefault = 0;
+
+            //                }
+            //                entity.SaveChanges();
+            //            }
+            //            // set is selected to isdefault=1
+            //            countriesCodes objectrow = entity.countriesCodes.Find(countryId);
+
+            //            if (objectrow != null)
+            //            {
+            //                objectrow.isDefault = 1;
+
+            //                message = objectrow.countryId.ToString();
+            //                entity.SaveChanges();
+            //            }
+            //            else
+            //            {
+            //                message = "-1";
+            //            }
+            //            //  entity.SaveChanges();
+            //        }
+            //    }
+            //    catch
+            //    {
+            //        message = "-1";
+            //    }
+            //}
+            //return message;
         }
 
         [HttpGet]
         [Route("GetByID")]
-        public IHttpActionResult GetByID()
+        public ResponseVM GetByID(string token)
         {
+
+            // public ResponseVM GetPurinv(string token)
+
+            //int mainBranchId, int userId    DateTime? date=new DateTime?();
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-            int cId = 0;
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
-            if (headers.Contains("Id"))
+            else
             {
-                cId = Convert.ToInt32(headers.GetValues("Id").First());
-            }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
+                int Id = 0;
+               // int userId = 0;
 
-            if (valid)
-            {
-                using (incposdbEntities entity = new incposdbEntities())
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
                 {
-                    var list = entity.countriesCodes
-                   .Where(c => c.countryId == cId)
-                   .Select(c => new {
+                    if (c.Type == "Id")
+                    {
+                        Id = int.Parse(c.Value);
+                    }
+                 
+
+                }
+
+                // DateTime cmpdate = DateTime.Now.AddDays(newdays);
+                try
+                {
+
+
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+
+
+                        var list = entity.countriesCodes
+                   .Where(c => c.countryId == Id)
+                   .Select(c => new
+                   {
                        c.countryId,
                        c.code,
                        c.currency,
@@ -227,42 +435,104 @@ namespace POS_Server.Controllers
                    })
                    .FirstOrDefault();
 
-                    if (list == null)
-                        return NotFound();
-                    else
-                        return Ok(list);
+                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(list) };
+
+                    }
+
                 }
+                catch
+                {
+                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                }
+
             }
-            else
-                return NotFound();
+
+
+            //var re = Request;
+            //var headers = re.Headers;
+            //string token = "";
+            //int cId = 0;
+            //if (headers.Contains("APIKey"))
+            //{
+            //    token = headers.GetValues("APIKey").First();
+            //}
+            //if (headers.Contains("Id"))
+            //{
+            //    cId = Convert.ToInt32(headers.GetValues("Id").First());
+            //}
+            //Validation validation = new Validation();
+            //bool valid = validation.CheckApiKey(token);
+
+            //if (valid)
+            //{
+            //    using (incposdbEntities entity = new incposdbEntities())
+            //    {
+            //        var list = entity.countriesCodes
+            //       .Where(c => c.countryId == cId)
+            //       .Select(c => new {
+            //           c.countryId,
+            //           c.code,
+            //           c.currency,
+            //           c.name,
+            //           c.isDefault,
+            //           c.currencyId,
+            //       })
+            //       .FirstOrDefault();
+
+            //        if (list == null)
+            //            return NotFound();
+            //        else
+            //            return Ok(list);
+            //    }
+            //}
+            //else
+            //    return NotFound();
         }
 
         [HttpGet]
         [Route("GetisDefault")]
-        public IHttpActionResult GetisDefault()
+        public ResponseVM GetisDefault(string token)
         {
+
+            // public ResponseVM GetPurinv(string token)
+
+            //int mainBranchId, int userId    DateTime? date=new DateTime?();
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-            int cId = 0;
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
-            if (headers.Contains("isDefault"))
+            else
             {
-                cId = Convert.ToInt32(headers.GetValues("isDefault").First());
-            }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
+                //int mainBranchId = 0;
+               int isDefault = 0;
 
-            if (valid)
-            {
-                using (incposdbEntities entity = new incposdbEntities())
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
                 {
-                    var list = entity.countriesCodes
-                   .Where(c => c.isDefault == cId)
-                   .Select(c => new {
+                    if (c.Type == "isDefault")
+                    {
+                        isDefault = int.Parse(c.Value);
+                    }
+               
+
+                }
+
+                // DateTime cmpdate = DateTime.Now.AddDays(newdays);
+                try
+                {
+
+
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+
+
+                        var list = entity.countriesCodes
+                   .Where(c => c.isDefault == isDefault)
+                   .Select(c => new
+                   {
                        c.countryId,
                        c.code,
                        c.currency,
@@ -272,14 +542,60 @@ namespace POS_Server.Controllers
                    })
                    .FirstOrDefault();
 
-                    if (list == null)
-                        return NotFound();
-                    else
-                        return Ok(list);
+
+                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(list) };
+
+                    }
+
                 }
+                catch
+                {
+                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                }
+
             }
-            else
-                return NotFound();
+
+
+
+            //var re = Request;
+            //var headers = re.Headers;
+            //string token = "";
+            //int cId = 0;
+            //if (headers.Contains("APIKey"))
+            //{
+            //    token = headers.GetValues("APIKey").First();
+            //}
+            //if (headers.Contains("isDefault"))
+            //{
+            //    cId = Convert.ToInt32(headers.GetValues("isDefault").First());
+            //}
+            //Validation validation = new Validation();
+            //bool valid = validation.CheckApiKey(token);
+
+            //if (valid)
+            //{
+            //    using (incposdbEntities entity = new incposdbEntities())
+            //    {
+            //        var list = entity.countriesCodes
+            //       .Where(c => c.isDefault == cId)
+            //       .Select(c => new {
+            //           c.countryId,
+            //           c.code,
+            //           c.currency,
+            //           c.name,
+            //           c.isDefault,
+            //           c.currencyId,
+            //       })
+            //       .FirstOrDefault();
+
+            //        if (list == null)
+            //            return NotFound();
+            //        else
+            //            return Ok(list);
+            //    }
+            //}
+            //else
+            //    return NotFound();
         }
 
 
