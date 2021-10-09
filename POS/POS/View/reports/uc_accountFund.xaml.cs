@@ -37,7 +37,7 @@ namespace POS.View.reports
         IEnumerable<BalanceSTS> balancesQuery;
         IEnumerable<BalanceSTS> balancesQueryExcel;
         string searchText = "";
-        int selectedTab = 0;
+        //int selectedTab = 0;
         //prin & pdf
         ReportCls reportclass = new ReportCls();
         LocalReport rep = new LocalReport();
@@ -68,13 +68,13 @@ namespace POS.View.reports
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {//load
-         //try
-         //{
-         //    if (sender != null)
-         //        SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
-            #region translate
-            if (MainWindow.lang.Equals("en"))
+                #region translate
+                if (MainWindow.lang.Equals("en"))
             {
                 MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
                 grid_main.FlowDirection = FlowDirection.LeftToRight;
@@ -87,23 +87,23 @@ namespace POS.View.reports
             translate();
             #endregion
 
-            chk_allBranches.IsChecked = true;
-            chk_allPos.IsChecked = true;
+                chk_allBranches.IsChecked = true;
+                chk_allPos.IsChecked = true;
+            
+                await RefreshBalanceSTSList();
+                await Search();
 
-            await RefreshBalanceSTSList();
-            await Search();
+                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), btn_branch.Tag.ToString());
 
-            SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), btn_branch.Tag.ToString());
-
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //    SectionData.ExceptionMessage(ex, this);
-            //}
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         async Task Search()
@@ -133,7 +133,6 @@ namespace POS.View.reports
             fillBranches();
             fillColumnChart();
             fillPieChart();
-            fillRowChart();
 
         }
 
@@ -159,14 +158,14 @@ namespace POS.View.reports
         {
             cb_branches.SelectedValuePath = "branchId";
             cb_branches.DisplayMemberPath = "branchName";
-            cb_branches.ItemsSource = balancesQuery.Select(i => new { i.branchName, i.branchId }).Distinct();
+            cb_branches.ItemsSource = balances.Select(i => new { i.branchName, i.branchId }).Distinct();
         }
 
         private void fillPos(int bID)
         {
             cb_pos.SelectedValuePath = "posId";
             cb_pos.DisplayMemberPath = "posName";
-            cb_pos.ItemsSource = balancesQuery.Where(b => b.branchId == bID)
+            cb_pos.ItemsSource = balances.Where(b => b.branchId == bID)
                                                          .Select(i => new {
                                                              i.posName,
                                                              i.posId
@@ -178,36 +177,51 @@ namespace POS.View.reports
         {
             axcolumn.Labels = new List<string>();
             List<string> names = new List<string>();
-            IEnumerable<int> x = null;
+            List<decimal> balances = new List<decimal>();
+            //IEnumerable<int> x = null;
          
             var temp = balancesQuery;
-            var result = temp.GroupBy(s => s.branchId).Select(s => new
+            var result = temp.GroupBy(s => s.posId).Select(s => new
             {
-                branchCreatorId = s.Key,
-                countS = s.Count(),
+                posId = s.Key,
+                //countS = s.Count()
             });
-            x = result.Select(m => m.countS);
+            //x = result.Select(m => m.countS);
            
-            var tempName = temp.GroupBy(s => s.branchName).Select(s => new
+            var tempName = temp.GroupBy(s => s.posName+"/"+s.branchName).Select(s => new
             {
-                branchName = s.Key
+                posName = s.Key
             });
-            names.AddRange(tempName.Select(nn => nn.branchName));
+            names.AddRange(tempName.Select(nn => nn.posName));
+
+            var tempBalance = temp.GroupBy(s => s.balance).Select(s => new
+            {
+                balance = s.Key
+            });
+            balances.AddRange(tempBalance.Select(nn => nn.balance.Value));
 
             List<string> lable = new List<string>();
             SeriesCollection columnChartData = new SeriesCollection();
-            List<int> cS = new List<int>();
+            //List<int> cS = new List<int>();
+            List<decimal> cS = new List<decimal>();
 
             List<string> titles = new List<string>()
             {
                MainWindow.resourcemanager.GetString("tr_Balance")
             };
-            for (int i = 0; i < x.Count(); i++)
+            int x = 6;
+            if (result.Count() < 6) x = result.Count();
+            for (int i = 0; i < x; i++)
             {
-                cS.Add(x.ToList().Skip(i).FirstOrDefault());
+                //cS.Add(x.ToList().Skip(i).FirstOrDefault());
+                cS.Add(balances.ToList().Skip(i).FirstOrDefault());
                 axcolumn.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
             }
-
+            if (result.Count() > 6)
+            {
+                cS.Add(balances.ToList().Skip(5).FirstOrDefault());
+                axcolumn.Labels.Add(MainWindow.resourcemanager.GetString("trOthers"));
+            }
             columnChartData.Add(
             new StackedColumnSeries
             {
@@ -224,20 +238,34 @@ namespace POS.View.reports
         {
             List<string> titles = new List<string>();
             IEnumerable<int> x = null;
-           
+            IEnumerable<decimal> balances = null;
+
             titles.Clear();
+
             var temp = balancesQuery;
             var titleTemp = temp.GroupBy(m => m.branchName);
             titles.AddRange(titleTemp.Select(jj => jj.Key));
-            var result = temp.GroupBy(s => s.branchId).Select(s => new { branchCreatorId = s.Key, count = s.Count() });
-            x = result.Select(m => m.count);
+            //var result = temp.GroupBy(s => s.branchId).Select(s => new { branchCreatorId = s.Key, count = s.Count() });
+            var result = temp.GroupBy(s => s.branchId)
+                        .Select(
+                            g => new
+                            {
+                                branchId = g.Key,
+                                balance = g.Sum(s => s.balance),
+                                count = g.Count()
+                            });
+            //x = result.Select(m => m.count);
+            balances = result.Select(m => m.balance.Value);
 
             SeriesCollection piechartData = new SeriesCollection();
-            for (int i = 0; i < x.Count(); i++)
+            //for (int i = 0; i < x.Count(); i++)
+            for (int i = 0; i < balances.Count(); i++)
             {
-                List<int> final = new List<int>();
+                //List<int> final = new List<int>();
+                List<decimal> final = new List<decimal>();
                 List<string> lable = new List<string>();
-                final.Add(x.ToList().Skip(i).FirstOrDefault());
+                //final.Add(x.ToList().Skip(i).FirstOrDefault());
+                final.Add(balances.ToList().Skip(i).FirstOrDefault());
                 piechartData.Add(
                   new PieSeries
                   {
@@ -252,67 +280,7 @@ namespace POS.View.reports
 
         private void fillRowChart()
         {
-        //    MyAxis.Labels = new List<string>();
-        //    List<string> names = new List<string>();
-        //    IEnumerable<decimal> pTemp = null;
-        //    IEnumerable<decimal> pbTemp = null;
-        //    IEnumerable<decimal> resultTemp = null;
-
-        //    var temp = balancesQuery;
-        //    var result = temp.GroupBy(s => s.branchId).Select(s => new
-        //    {
-        //        branchCreatorId = s.Key,
-        //        totalS = s.Sum(x => x.balance)
-        //    }
-        //    );
-        //    var resultTotal = result.Select(x => new { x.branchCreatorId, total = x.totalS - x.totalSb }).ToList();
-        //    pTemp = result.Select(x => (decimal)x.totalS);
-          
-        //    resultTemp = result.Select(x => (decimal)x.totalS);
-        //    var tempName = temp.GroupBy(s => s.branchCreatorName).Select(s => new
-        //    {
-        //        uUserName = s.Key
-        //    });
-        //    names.AddRange(tempName.Select(nn => nn.uUserName));
-        //    //}
-
-        //    SeriesCollection rowChartData = new SeriesCollection();
-        //    List<decimal> purchase = new List<decimal>();
-        //    List<decimal> returns = new List<decimal>();
-        //    List<decimal> sub = new List<decimal>();
-        //    List<string> titles = new List<string>()
-        //    {
-        //                 "اجمالي المبيعات","اجمالي المرتجع","صافي المبيعات"
-        //    };
-        //    for (int i = 0; i < pbTemp.Count(); i++)
-        //    {
-        //        purchase.Add(pTemp.ToList().Skip(i).FirstOrDefault());
-        //        returns.Add(pbTemp.ToList().Skip(i).FirstOrDefault());
-        //        sub.Add(resultTemp.ToList().Skip(i).FirstOrDefault());
-        //        MyAxis.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
-        //    }
-
-        //    rowChartData.Add(
-        //  new LineSeries
-        //  {
-        //      Values = purchase.AsChartValues(),
-        //      Title = titles[0]
-        //  }); ;
-        //    rowChartData.Add(
-        // new LineSeries
-        // {
-        //     Values = returns.AsChartValues(),
-        //     Title = titles[1]
-        // });
-        //    rowChartData.Add(
-        //new LineSeries
-        //{
-        //    Values = sub.AsChartValues(),
-        //    Title = titles[2]
-
-        //});
-        //    DataContext = this;
-        //    rowChart.Series = rowChartData;
+        
         }
 
        
@@ -326,7 +294,6 @@ namespace POS.View.reports
 
                 await Search();
                 fillPos(Convert.ToInt32(cb_branches.SelectedValue));
-
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -349,7 +316,7 @@ namespace POS.View.reports
 
                 cb_branches.SelectedIndex = -1;
                 cb_branches.IsEnabled = false;
-                await RefreshBalanceSTSList();
+                
                 await Search();
 
                 if (sender != null)

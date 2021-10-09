@@ -56,15 +56,22 @@ namespace POS.View.reports
 
         public us_dailySalesStatistic()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {//load
-            //try
-            //{
-            //    if (sender != null)
-            //        SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
                 #region translate
                 if (MainWindow.lang.Equals("en"))
@@ -90,17 +97,17 @@ namespace POS.View.reports
                 await RefreshItemTransferInvoiceList();
                 await Search();
 
-            SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), btn_invoice.Tag.ToString());
+                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), btn_invoice.Tag.ToString());
 
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //    SectionData.ExceptionMessage(ex, this);
-            //}
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         private void translate()
@@ -131,11 +138,6 @@ namespace POS.View.reports
             )
             &&
             (//invType
-                //(chk_invoice.IsChecked == true ? s.invType == "s"  : false)
-                //||
-                //(chk_return.IsChecked  == true ? s.invType == "sb" : false)
-                //||
-                //(chk_drafs.IsChecked   == true ? s.invType == "sd" : false)
                 (
                     selectedTab == 0 //invoice
                     ?
@@ -151,8 +153,8 @@ namespace POS.View.reports
                     selectedTab == 1 //order
                     ?
                     (chk_invoice.IsChecked == true ? s.invType == "or" : false)
-                    ||
-                    (chk_return.IsChecked == true ? s.invType == "sbd" : false)/////????
+                    //||
+                    //(chk_return.IsChecked == true ? s.invType == "sbd" : false)
                     ||
                     (chk_drafs.IsChecked == true ? s.invType == "ord" : false)
                     : false
@@ -162,8 +164,8 @@ namespace POS.View.reports
                     selectedTab == 2 //quotation
                     ?
                     (chk_invoice.IsChecked == true ? s.invType == "q" : false)
-                    ||
-                    (chk_return.IsChecked == true ? s.invType == "sbd" : false)/////????
+                    //||
+                    //(chk_return.IsChecked == true ? s.invType == "sbd" : false)/////????
                     ||
                     (chk_drafs.IsChecked == true ? s.invType == "qd" : false)
                     : false
@@ -199,43 +201,39 @@ namespace POS.View.reports
         }
         private async void Btn_Invoice_Click(object sender, RoutedEventArgs e)
         {//invoice tab
-            //try
-            //{
-            //    if (sender != null)
-            //        SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
                 SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
                 selectedTab = 0;
                 txt_search.Text = "";
                 chk_return.Visibility = Visibility.Visible;
-                //chk_return.IsChecked = false;
                 path_order.Fill = Brushes.White;
                 path_quotation.Fill = Brushes.White;
                 bdrMain.RenderTransform = Animations.borderAnimation(50, bdrMain, true);
                 ReportsHelp.paintTabControlBorder(grid_tabControl, bdr_invoice);
                 path_invoice.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-                //ReportsHelp.showTabControlGrid(grid_father, grid_invoice);
-                //ReportsHelp.isEnabledButtons(grid_tabControl, btn_invoice);
 
-                await RefreshItemTransferInvoiceList();
                 await Search();
 
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //}
-            //    catch (Exception ex)
-            //    {
-            //        if (sender != null)
-            //            SectionData.EndAwait(grid_main);
-            //        SectionData.ExceptionMessage(ex, this);
-            //}
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
         private async void Btn_order_Click(object sender, RoutedEventArgs e)
         {//order tab
-            //try
-            //{
-            //    if (sender != null)
-            //        SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
                 SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
 
@@ -248,30 +246,27 @@ namespace POS.View.reports
                 bdrMain.RenderTransform = Animations.borderAnimation(50, bdrMain, true);
                 ReportsHelp.paintTabControlBorder(grid_tabControl, bdr_order);
                 path_order.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-                //ReportsHelp.showTabControlGrid(grid_father, grid_order);
-                //ReportsHelp.isEnabledButtons(grid_tabControl, btn_order);
 
-                await RefreshItemTransferInvoiceList();
                 await Search();
 
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //    SectionData.ExceptionMessage(ex, this);
-            //}
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
 
-           
+
         }
         private async void Btn_quotation_Click(object sender, RoutedEventArgs e)
         {//quotation tab
-            //try
-            //{
-            //    if (sender != null)
-            //        SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
                 SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
 
@@ -284,21 +279,18 @@ namespace POS.View.reports
                 bdrMain.RenderTransform = Animations.borderAnimation(50, bdrMain, true);
                 ReportsHelp.paintTabControlBorder(grid_tabControl, bdr_quotation);
                 path_quotation.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-                //ReportsHelp.showTabControlGrid(grid_father, grid_quotation);
-                //ReportsHelp.isEnabledButtons(grid_tabControl, btn_quotation);
 
-                await RefreshItemTransferInvoiceList();
                 await Search();
 
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //    SectionData.ExceptionMessage(ex, this);
-            //}
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
         private async void RefreshView_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -307,7 +299,6 @@ namespace POS.View.reports
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                await RefreshItemTransferInvoiceList();
                 await Search();
                 fillBranches();
 
@@ -328,7 +319,6 @@ namespace POS.View.reports
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                await RefreshItemTransferInvoiceList();
                 await Search();
 
                 if (sender != null)
@@ -345,15 +335,13 @@ namespace POS.View.reports
         {
             List<string> titles = new List<string>();
             IEnumerable<int> x = null;
-            //if (selectedTab == 0)
-            //{
+            
             titles.Clear();
             var temp = itemTrasferInvoicesQuery;
             var titleTemp = temp.GroupBy(m => m.branchCreatorName);
             titles.AddRange(titleTemp.Select(jj => jj.Key));
             var result = temp.GroupBy(s => s.branchCreatorId).Select(s => new { branchCreatorId = s.Key, count = s.Count() });
             x = result.Select(m => m.count);
-            //}
            
             SeriesCollection piechartData = new SeriesCollection();
             for (int i = 0; i < x.Count(); i++)
@@ -380,8 +368,7 @@ namespace POS.View.reports
             IEnumerable<int> x = null;
             IEnumerable<int> y = null;
             IEnumerable<int> z = null;
-            //if (selectedTab == 0)
-            //{
+           
             var temp = itemTrasferInvoicesQuery;
             var result = temp.GroupBy(s => s.branchCreatorId).Select(s => new
             {
@@ -398,7 +385,6 @@ namespace POS.View.reports
                 uUserName = s.Key
             });
             names.AddRange(tempName.Select(nn => nn.uUserName));
-            //}
         
             List<string> lable = new List<string>();
             SeriesCollection columnChartData = new SeriesCollection();
@@ -407,8 +393,9 @@ namespace POS.View.reports
             List<int> cSd = new List<int>();
             List<string> titles = new List<string>()
             {
-                "مبيعات","مرتجع","مسودة"
-            };
+                //"مبيعات","مرتجع","مسودة"
+                MainWindow.resourcemanager.GetString("tr_Sales"),MainWindow.resourcemanager.GetString("trReturned"),MainWindow.resourcemanager.GetString("trDraft")
+        };
             for (int i = 0; i < x.Count(); i++)
             {
                 cS.Add(x.ToList().Skip(i).FirstOrDefault());
@@ -452,8 +439,6 @@ namespace POS.View.reports
             IEnumerable<decimal> pbTemp = null;
             IEnumerable<decimal> resultTemp = null;
 
-            //if (selectedTab == 0)
-            //{
             var temp = itemTrasferInvoicesQuery;
             var result = temp.GroupBy(s => s.branchCreatorId).Select(s => new
             {
@@ -471,7 +456,6 @@ namespace POS.View.reports
                 uUserName = s.Key
             });
             names.AddRange(tempName.Select(nn => nn.uUserName));
-            //}
          
             SeriesCollection rowChartData = new SeriesCollection();
             List<decimal> purchase = new List<decimal>();
@@ -512,11 +496,6 @@ namespace POS.View.reports
             rowChart.Series = rowChartData;
         }
 
-        private void chk_allBranches_Click(object sender, RoutedEventArgs e)
-        {
-           
-        }
-        int branchID = 0;
         private async void cb_branches_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try
@@ -541,24 +520,12 @@ namespace POS.View.reports
         }
 
         private void fillPos(int bID)
-        {////////////////???????????????????????????????????
+        {
             cb_pos.SelectedValuePath = "posId";
             cb_pos.DisplayMemberPath = "posName";
             cb_pos.ItemsSource = itemTrasferInvoicesQuery.Where(t => t.branchCreatorId == bID)
                                                          .Select(i => new { i.posName,
                                                                             i.posId}).Distinct();
-           
-            //List<CashTransferSts> list;
-            //list = await statisticsModel.GetPosTrans();
-            //fromPos = statisticsModel.getFromPosCombo(list);
-            //cb_pos.SelectedValuePath = "PosFromId";
-            //cb_pos.DisplayMemberPath = "PosFromName";
-            //cb_pos.ItemsSource = fromPos;
-            //if (cb_branches.SelectedItem != null)
-            //{
-            //    var temp = cb_branches.SelectedItem as branchFromCombo;
-            //    cb_formPos.ItemsSource = cb_pos.Where(x => x.BranchId == temp.BranchFromId);
-            //}
         }
 
         private void BuildReport()
@@ -586,7 +553,7 @@ namespace POS.View.reports
 
             rep.Refresh();
         }
-        //itemTrasferInvoicesQuery
+       
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {//pdf
             try

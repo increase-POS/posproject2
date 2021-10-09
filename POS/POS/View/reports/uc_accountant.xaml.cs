@@ -153,5 +153,19 @@ namespace POS.View.reports
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+
+        private void Btn_profit_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                uc_accountProfits uc = new uc_accountProfits();
+                sc_main.Visibility = Visibility.Collapsed;
+                main.Children.Add(uc);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
     }
 }
