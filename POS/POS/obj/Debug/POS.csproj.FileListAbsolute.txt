@@ -3020,3 +3020,5 @@ D:\myproj\posproject2\POS\POS\bin\Debug\RestSharp.xml
 D:\myproj\posproject2\POS\POS\bin\Debug\System.IdentityModel.Tokens.Jwt.xml
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\reports\uc_accountFund.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\reports\uc_accountFund.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\reports\uc_accountProfits.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\reports\uc_accountProfits.baml
