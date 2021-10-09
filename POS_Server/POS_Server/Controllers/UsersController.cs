@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using POS_Server.Classes;
 using POS_Server.Models;
+using POS_Server.Models.VM;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,6 +10,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Security.Claims;
 using System.Web;
 using System.Web.Http;
 
@@ -19,19 +22,18 @@ namespace POS_Server.Controllers
         //get active users
         [HttpGet]
         [Route("GetActive")]
-        public IHttpActionResult GetActive()
+        public ResponseVM GetActive(string token)
         {
+            string type = "";
+            Boolean canDelete = false;
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
+            else
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
@@ -63,88 +65,41 @@ namespace POS_Server.Controllers
                     })
                     .ToList();
 
-                    if (usersList == null)
-                        return NotFound();
-                    else
-                        return Ok(usersList);
+                    return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(usersList) };
                 }
             }
-            //else
-            return NotFound();
-        }
-         [HttpGet]
-        [Route("GetSalesMan")]
-        public IHttpActionResult GetSalesMan(int branchId, string objectName)
-        {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
-            {
-                token = headers.GetValues("APIKey").First();
-            }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
-            {
-                List<UserModel> users = new List<UserModel>();
-                using (incposdbEntities entity = new incposdbEntities())
-                {
-                    var usersList = (from u in entity.users.Where(us => us.isActive == 1)
-                                     join bu in entity.branchesUsers on u.userId equals bu.userId
-                                     where bu.branchId == branchId
-                                     select new UserModel
-                                     {
-                                         userId = u.userId,
-                                         username = u.username,
-                                         name = u.name,
-                                         lastname = u.lastname,
-                                         fullName = u.name + " " + u.lastname,
-                                         balance = u.balance,
-                                         balanceType = u.balanceType,
-                                     }).ToList();
-
-                    foreach (UserModel user in usersList)
-                    {
-                        var groupObjects = (from GO in entity.groupObject where GO.showOb == 1 && GO.objects.name.Contains(objectName)
-                                            join U in entity.users on GO.groupId equals U.groupId where U.userId == user.userId
-                                            select new
-                                            {
-                                                //group object
-                                                GO.id,
-                                                GO.showOb,
-                                            }).FirstOrDefault();
-
-                        if (groupObjects != null )
-                           users.Add(user);
-                    }
-                    return Ok(users);
-                }
-            }
-            //else
-            return NotFound();
         }
 
 
         [HttpGet]
         [Route("Getloginuser")]
-        public IHttpActionResult Getloginuser(string userName, string password)
+        public ResponseVM Getloginuser(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
             List<UserModel> usersList = new List<UserModel>();
             UserModel user = new UserModel();
-            if (headers.Contains("APIKey"))
+            var re = Request;
+            var headers = re.Headers;
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
+            else
             {
+                string userName = "";
+                string password = "";
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "userName")
+                    {
+                        userName = c.Value;
+                    }
+                    else if (c.Type == "password")
+                    {
+                        password = c.Value;
+                    }
+                }
                 UserModel emptyuser = new UserModel();
 
                 emptyuser.createDate = DateTime.Now;
@@ -189,14 +144,11 @@ namespace POS_Server.Controllers
                         balanceType = u.balanceType,
                     })
                     .ToList();
-
-
                     if (usersList == null)
                     {
                         user = emptyuser;
-                      
                         // rong user
-                        return Ok(user);
+                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(user) };
                     }
                     else
                     {
@@ -204,47 +156,34 @@ namespace POS_Server.Controllers
                         if (user.password.Equals(password))
                         {
                             // correct username and pasword
-                            return Ok(user);
+                            return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(user) };
                         }
                         else
                         {
                             // rong pass return just username
                             user = emptyuser;
-                         
                             user.username = userName;
-                        
-                            return Ok(user);
+                            return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(user) };
 
                         }
                     }
-
-
-
-
-
                 }
             }
-            //else
-            return NotFound();
         }
-
         // return all users active and inactive
         [HttpGet]
         [Route("Get")]
-        public IHttpActionResult Get()
+        public ResponseVM Get(string token)
         {
+            Boolean canDelete = false;
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-            Boolean canDelete = false;
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
+            else
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
@@ -292,38 +231,33 @@ namespace POS_Server.Controllers
                             usersList[i].canDelete = canDelete;
                         }
                     }
-
-                    if (usersList == null)
-                        return NotFound();
-                    else
-                        return Ok(usersList);
+                    return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(usersList) };
                 }
             }
-            //else
-            return NotFound();
         }
         // GET api/<controller>
         [HttpGet]
         [Route("GetUserByID")]
-        public IHttpActionResult GetUserByID()
+        public ResponseVM GetUserByID(string token)
         {
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-            int userId = 0;
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
-            if (headers.Contains("userId"))
+            else
             {
-                userId = Convert.ToInt32(headers.GetValues("userId").First());
-            }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid)
-            {
+                int userId = 0;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "userId")
+                    {
+                        userId = int.Parse(c.Value);
+                    }
+                }
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var user = entity.users
@@ -353,17 +287,11 @@ namespace POS_Server.Controllers
                        u.balanceType,
                    })
                    .FirstOrDefault();
-
-                    if (user == null)
-                        return NotFound();
-                    else
-                        return Ok(user);
+                    return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(user) };
                 }
             }
-            else
-                return NotFound();
         }
-
+        /*
         [HttpGet]
         [Route("Search")]
         public IHttpActionResult Search(string searchWords)
@@ -419,25 +347,35 @@ namespace POS_Server.Controllers
             //else
             return NotFound();
         }
+        */
         // add or update unit
         [HttpPost]
         [Route("Save")]
-        public IHttpActionResult Save(string userObject)
+        public ResponseVM Save(string token)
         {
+            string message = "";
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid)
+            else
             {
-                users tmpUser = new users();
+                string userObject = "";
+                users userObj = null;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemObject")
+                    {
+                        userObject = c.Value.Replace("\\", string.Empty);
+                        userObject = userObject.Trim('"');
+                        userObj = JsonConvert.DeserializeObject<users>(userObject, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                        break;
+                    }
+                }
                 userObject = userObject.Replace("\\", string.Empty);
                 userObject = userObject.Trim('"');
                 users newObject = JsonConvert.DeserializeObject<users>(userObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
@@ -464,7 +402,8 @@ namespace POS_Server.Controllers
                             int usersCount = entity.users.Count();
                             if (usersCount >= userMaxCount)
                             {
-                                return Ok(-1);
+                                 message = "-1";
+                                return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken(message) };
                             }
                             else
                             {
@@ -473,7 +412,7 @@ namespace POS_Server.Controllers
                                 newObject.updateUserId = newObject.createUserId;
                                 newObject.balance = 0;
                                 newObject.balanceType = 0;
-                                tmpUser = userEntity.Add(newObject);
+                                userObj = userEntity.Add(newObject);
                                 // get all categories
                                 var categories = entity.categories.Where(x => x.isActive == 1).Select(x => x.categoryId).ToList();
                                 int sequence = 0;
@@ -484,7 +423,7 @@ namespace POS_Server.Controllers
                                     categoryuser cu = new categoryuser()
                                     {
                                         categoryId = categoryId,
-                                        userId = tmpUser.userId,
+                                        userId = userObj.userId,
                                         sequence = sequence,
                                         createDate = DateTime.Now,
                                         updateDate = DateTime.Now,
@@ -493,65 +432,81 @@ namespace POS_Server.Controllers
                                     };
                                     catEntity.Add(cu);
                                 }
-                                entity.SaveChanges();
-                                return Ok(tmpUser.userId);
+                                entity.SaveChanges().ToString();
+                                message = userObj.userId.ToString();
+                                return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(message) };
+
                             }
                         }
                         else
                         {
-                            tmpUser = entity.users.Where(p => p.userId == newObject.userId).FirstOrDefault();
-                            tmpUser.name = newObject.name;
-                            tmpUser.username = newObject.username;
-                            tmpUser.password = newObject.password;
-                            tmpUser.name = newObject.name;
-                            tmpUser.lastname = newObject.lastname;
-                            tmpUser.job = newObject.job;
-                            tmpUser.workHours = newObject.workHours;
-                            tmpUser.updateDate = DateTime.Now;
-                            tmpUser.updateUserId = newObject.updateUserId;
-                            tmpUser.phone = newObject.phone;
-                            tmpUser.mobile = newObject.mobile;
-                            tmpUser.email = newObject.email;
-                            tmpUser.notes = newObject.notes;
-                            tmpUser.address = newObject.address;
-                            tmpUser.isActive = newObject.isActive;
-                            tmpUser.balance = newObject.balance;
-                            tmpUser.balanceType = newObject.balanceType;
-                            tmpUser.isOnline = newObject.isOnline;
-                            entity.SaveChanges();
-                            return Ok(tmpUser.userId);
+                            userObj = entity.users.Where(p => p.userId == newObject.userId).FirstOrDefault();
+                            userObj.name = newObject.name;
+                            userObj.username = newObject.username;
+                            userObj.password = newObject.password;
+                            userObj.name = newObject.name;
+                            userObj.lastname = newObject.lastname;
+                            userObj.job = newObject.job;
+                            userObj.workHours = newObject.workHours;
+                            userObj.updateDate = DateTime.Now;
+                            userObj.updateUserId = newObject.updateUserId;
+                            userObj.phone = newObject.phone;
+                            userObj.mobile = newObject.mobile;
+                            userObj.email = newObject.email;
+                            userObj.notes = newObject.notes;
+                            userObj.address = newObject.address;
+                            userObj.isActive = newObject.isActive;
+                            userObj.balance = newObject.balance;
+                            userObj.balanceType = newObject.balanceType;
+                            userObj.isOnline = newObject.isOnline;
+                           entity.SaveChanges().ToString();
+                            message = userObj.userId.ToString();
+                            return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(message) };
+
                         }
                     }
                 }
                 catch
                 {
-                    return Ok(0);
+                    message = "0";
+                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken(message) };
                 }
             }
-            return NotFound();
         }
 
         [HttpPost]
         [Route("Delete")]
-        public IHttpActionResult Delete(int delUserId, int userId, bool final)
+        public ResponseVM Delete(string token)
         {
+            string message = "";
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-
-
-
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
-
-
-
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-            if (valid)
+            else
             {
+                int delUserId = 0;
+                int userId = 0;
+                Boolean final = false;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "delUserId")
+                    {
+                        delUserId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "userId")
+                    {
+                        userId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "final")
+                    {
+                        final = bool.Parse(c.Value);
+                    }
+                }
                 if (final)
                 {
                     try
@@ -562,13 +517,14 @@ namespace POS_Server.Controllers
 
                             users usersDelete = entity.users.Find(delUserId);
                             entity.users.Remove(usersDelete);
-                            entity.SaveChanges();
-                            return Ok("Deleted Successfully");
+                            message = entity.SaveChanges().ToString();
+                            return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(message) };
+
                         }
                     }
                     catch
                     {
-                        return NotFound();
+                        return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
                     }
                 }
                 else
@@ -582,20 +538,19 @@ namespace POS_Server.Controllers
                             userDelete.isActive = 0;
                             userDelete.updateDate = DateTime.Now;
                             userDelete.updateUserId = userId;
-                            entity.SaveChanges();
+                            message = entity.SaveChanges().ToString();
+                            return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(message) };
 
-                            return Ok("User is Deleted Successfully");
                         }
                     }
                     catch
                     {
-                        return NotFound();
+                        return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
                     }
                 }
 
             }
-            else
-                return NotFound();
+           
         }
 
         [Route("PostUserImage")]
@@ -689,34 +644,31 @@ namespace POS_Server.Controllers
         }
         [HttpPost]
         [Route("UpdateImage")]
-        public int UpdateImage(string userObject)
+        public ResponseVM UpdateImage(string token)
         {
+            string message = "";
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            userObject = userObject.Replace("\\", string.Empty);
-            userObject = userObject.Trim('"');
-
-            users userObj = JsonConvert.DeserializeObject<users>(userObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
-            if (userObj.updateUserId == 0 || userObj.updateUserId == null)
+            else
             {
-                Nullable<int> id = null;
-                userObj.updateUserId = id;
-            }
-            if (userObj.createUserId == 0 || userObj.createUserId == null)
-            {
-                Nullable<int> id = null;
-                userObj.createUserId = id;
-            }
-            if (valid)
-            {
+                string userObject = "";
+                users userObj = null;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemObject")
+                    {
+                        userObject = c.Value.Replace("\\", string.Empty);
+                        userObject = userObject.Trim('"');
+                        userObj = JsonConvert.DeserializeObject<users>(userObject, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                        break;
+                    }
+                }
                 try
                 {
                     users user;
@@ -727,16 +679,16 @@ namespace POS_Server.Controllers
                         user.image = userObj.image;
                         entity.SaveChanges();
                     }
-                    return user.userId;
+                    message = user.userId.ToString();
+                    return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(message) };
                 }
 
                 catch
                 {
-                    return 0;
+                    message = "0";
+                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken(message) };
                 }
             }
-            else
-                return 0;
         }
     }
 }

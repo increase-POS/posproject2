@@ -8,6 +8,11 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using POS_Server.Classes;
+using POS_Server.Models.VM;
+using System.Security.Claims;
+
+
+
 namespace POS_Server.Controllers
 {
     [RoutePrefix("api/Statistics")]
@@ -20,7 +25,7 @@ namespace POS_Server.Controllers
             List<branches> branchesList = new List<branches>();
             branchesList = branchc.BrListByBranchandUser(mainBranchId, userId);
             List<int> bridlist = new List<int>();
-            Calculate calc = new Calculate();
+           // Calculate calc = new Calculate();
             bridlist.AddRange(branchesList.Select(x => x.branchId).ToList());
             return bridlist;
         }
@@ -178,576 +183,998 @@ namespace POS_Server.Controllers
         }
 
         // item quantity in location GetItemQtyInBranches()
-        [HttpGet]
-        [Route("GetItemQtyInBranches")]
-        public IHttpActionResult GetItemQtyInBranches(int itemId, int UnitId, string BranchType)
-        {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            int iuId = 0;
-            int subUnit = 0;
-            int subitemunitId = 0;
-            string unitName = "";
-            if (headers.Contains("APIKey"))
-            {
-                token = headers.GetValues("APIKey").First();
-            }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
+        //        [HttpGet]
+        //        [Route("GetItemQtyInBranches")]
+        //        public IHttpActionResult GetItemQtyInBranches(int itemId, int UnitId, string BranchType)
+        //        {
+        //            var re = Request;
+        //            var headers = re.Headers;
+        //            string token = "";
+        //            int iuId = 0;
+        //            int subUnit = 0;
+        //            int subitemunitId = 0;
+        //            string unitName = "";
+        //            if (headers.Contains("APIKey"))
+        //            {
+        //                token = headers.GetValues("APIKey").First();
+        //            }
+        //            Validation validation = new Validation();
+        //            bool valid = validation.CheckApiKey(token);
 
-            if (valid) // APIKey is valid
-            {
-                using (incposdbEntities entity = new incposdbEntities())
-                {
+        //            if (valid) // APIKey is valid
+        //            {
+        //                using (incposdbEntities entity = new incposdbEntities())
+        //                {
 
-                    var itemunit = entity.itemsUnits.Where(x => x.itemId == itemId && x.unitId == UnitId).Select(x => new { x.itemUnitId, x.subUnitId }).FirstOrDefault();
-                    if (itemunit != null)
-                    {
-                        iuId = itemunit.itemUnitId;//ref iuid
-                        subUnit = (int)itemunit.subUnitId;
-                    }
-                    if (subUnit > 0)
-                    {
-                        var subitemunit = entity.itemsUnits.Where(x => x.itemId == itemId && x.unitId == subUnit).Select(x => new { x.itemUnitId, x.subUnitId }).FirstOrDefault();
-                        if (subitemunit != null)
-                        {
-                            subitemunitId = subitemunit.itemUnitId;
-                        }
-                    }
-                    var unit = entity.units.Where(x => x.unitId == UnitId).Select(x => new { x.name }).FirstOrDefault();
-                    if (unit != null)
-                    {
-                        unitName = unit.name;
-                    }
+        //                    var itemunit = entity.itemsUnits.Where(x => x.itemId == itemId && x.unitId == UnitId).Select(x => new { x.itemUnitId, x.subUnitId }).FirstOrDefault();
+        //                    if (itemunit != null)
+        //                    {
+        //                        iuId = itemunit.itemUnitId;//ref iuid
+        //                        subUnit = (int)itemunit.subUnitId;
+        //                    }
+        //                    if (subUnit > 0)
+        //                    {
+        //                        var subitemunit = entity.itemsUnits.Where(x => x.itemId == itemId && x.unitId == subUnit).Select(x => new { x.itemUnitId, x.subUnitId }).FirstOrDefault();
+        //                        if (subitemunit != null)
+        //                        {
+        //                            subitemunitId = subitemunit.itemUnitId;
+        //                        }
+        //                    }
+        //                    var unit = entity.units.Where(x => x.unitId == UnitId).Select(x => new { x.name }).FirstOrDefault();
+        //                    if (unit != null)
+        //                    {
+        //                        unitName = unit.name;
+        //                    }
 
-                    var brList = (from IL in entity.itemsLocations
-                                  from B in entity.branches
-                                  from S in entity.sections.Where(x => x.branchId == B.branchId)
-                                  from L in entity.locations.Where(x => x.locationId == IL.locationId && x.sectionId == S.sectionId)
-                                      //   join L in entity.locations on IL.locationId equals L.locationId into JL
-                                  join IU in entity.itemsUnits on IL.itemUnitId equals IU.itemUnitId
-                                  join I in entity.items on IU.itemId equals I.itemId
-                                  join U in entity.units on IU.unitId equals U.unitId
+        //                    var brList = (from IL in entity.itemsLocations
+        //                                  from B in entity.branches
+        //                                  from S in entity.sections.Where(x => x.branchId == B.branchId)
+        //                                  from L in entity.locations.Where(x => x.locationId == IL.locationId && x.sectionId == S.sectionId)
+        //                                      //   join L in entity.locations on IL.locationId equals L.locationId into JL
+        //                                  join IU in entity.itemsUnits on IL.itemUnitId equals IU.itemUnitId
+        //                                  join I in entity.items on IU.itemId equals I.itemId
+        //                                  join U in entity.units on IU.unitId equals U.unitId
 
-                                  // join L in entity.locations on S.sectionId equals L.sectionId into JLS
-                                  join SS in entity.sections on B.branchId equals SS.branchId
-
-
-                                  //    from e in db.Emails.Where(x => x.id_contact == c.id).DefaultIfEmpty()
-
-                                  where IU.itemId == itemId
-                                  group new { IL, S, B, L, IU, I, U, SS } by (B.branchId) into g
+        //                                  // join L in entity.locations on S.sectionId equals L.sectionId into JLS
+        //                                  join SS in entity.sections on B.branchId equals SS.branchId
 
 
-                                  select new
-                                  {
+        //                                  //    from e in db.Emails.Where(x => x.id_contact == c.id).DefaultIfEmpty()
 
-                                      itemsLocId = g.Select(i => i.IL.itemsLocId).FirstOrDefault(),
-                                      branchName = g.Select(i => i.B.name).FirstOrDefault(),
-                                      branchId = g.Select(i => i.B.branchId).FirstOrDefault(),
-                                      sectionId = g.Select(i => i.S.sectionId).FirstOrDefault(),
-                                      itemName = g.Select(i => i.I.name).FirstOrDefault(),
-                                      unitName = g.Select(i => i.I.name).FirstOrDefault(),
-                                      //   quantity = g.Sum(i => i.IL.quantity),
-                                      // quantity= getItemUnitAmount(iuId, g.FirstOrDefault().B.branchId),
-                                      // quantity = getItemUnitAmount(iuId, 7),
-                                      count = g.Count(),
-                                      itemUnitId = iuId,
+        //                                  where IU.itemId == itemId
+        //                                  group new { IL, S, B, L, IU, I, U, SS } by (B.branchId) into g
 
 
-                                      /*
-                                      B.branchId,
-                                      B.name,
-                                          IL.itemsLocId,
-                                          IL.locationId,
-                                          IL.itemUnitId,
-                                          IU.unitValue,
-                                          IU.subUnitId,
-                                            IU.itemId,
-                                            IU.unitId,
-                                         itemName= I.name,
-                                         sectionName=S.name,
-                                         branchName= B.name,
-                                         IL.quantity,
-                                        S.sectionId,
-                                        */
+        //                                  select new
+        //                                  {
 
-                                  });
-
-                    var groupitems = (from item in brList.AsEnumerable()
-                                      select new
-                                      {
-
-                                          item.itemsLocId,
-                                          item.branchName,
-                                          item.branchId,
-                                          item.itemName,
-                                          item.itemUnitId,
-                                          item.count,
-                                          unitName,
-                                          /*
-                                        //  item.count,
-                                          item.itemUnitId,
-                                          item.subUnitId,
-                                          item.unitValue,
-                                          item.unitId,
-                                          item.itemId,
-                                          // item.quantity,
-                                          */
-                                          //  quantity = getItemUnitAmount(iuId, item.branchId) + getItemSubUnitAmount(subitemunitId, item.branchId),
-                                          quantity = getItemSubUnitAmount(iuId, item.branchId),
-                                      }).ToList();
-
-                    /*
-                     var items =  myContext.Select(i => new {
-                   Value1 = item.Value1,
-                   Value2 = item.Value2
-               })
-               .AsEnumerable()
-               .Select(i => new {
-                   Value1 = TweakValue(item.Value1),
-                   Value2 = TweakValue(item.Value2)
-                });
+        //                                      itemsLocId = g.Select(i => i.IL.itemsLocId).FirstOrDefault(),
+        //                                      branchName = g.Select(i => i.B.name).FirstOrDefault(),
+        //                                      branchId = g.Select(i => i.B.branchId).FirstOrDefault(),
+        //                                      sectionId = g.Select(i => i.S.sectionId).FirstOrDefault(),
+        //                                      itemName = g.Select(i => i.I.name).FirstOrDefault(),
+        //                                      unitName = g.Select(i => i.I.name).FirstOrDefault(),
+        //                                      //   quantity = g.Sum(i => i.IL.quantity),
+        //                                      // quantity= getItemUnitAmount(iuId, g.FirstOrDefault().B.branchId),
+        //                                      // quantity = getItemUnitAmount(iuId, 7),
+        //                                      count = g.Count(),
+        //                                      itemUnitId = iuId,
 
 
-                    var query = from item in myContext
-            where item.Foo == bar
-            orderby item.Something
-            select new { item.Value1, item.Value2 };
+        //                                      /*
+        //                                      B.branchId,
+        //                                      B.name,
+        //                                          IL.itemsLocId,
+        //                                          IL.locationId,
+        //                                          IL.itemUnitId,
+        //                                          IU.unitValue,
+        //                                          IU.subUnitId,
+        //                                            IU.itemId,
+        //                                            IU.unitId,
+        //                                         itemName= I.name,
+        //                                         sectionName=S.name,
+        //                                         branchName= B.name,
+        //                                         IL.quantity,
+        //                                        S.sectionId,
+        //                                        */
 
-var items = from item in query.AsEnumerable()
-            select new {
-                Value1 = TweakValue(item.Value1),
-                Value2 = TweakValue(item.Value2)
-            };
+        //                                  });
 
-                     * */
-                    if (groupitems == null)
-                        return NotFound();
-                    else
-                        return Ok(groupitems);
-                }
-            }
-            //else
-            return NotFound();
-        }
+        //                    var groupitems = (from item in brList.AsEnumerable()
+        //                                      select new
+        //                                      {
+
+        //                                          item.itemsLocId,
+        //                                          item.branchName,
+        //                                          item.branchId,
+        //                                          item.itemName,
+        //                                          item.itemUnitId,
+        //                                          item.count,
+        //                                          unitName,
+        //                                          /*
+        //                                        //  item.count,
+        //                                          item.itemUnitId,
+        //                                          item.subUnitId,
+        //                                          item.unitValue,
+        //                                          item.unitId,
+        //                                          item.itemId,
+        //                                          // item.quantity,
+        //                                          */
+        //                                          //  quantity = getItemUnitAmount(iuId, item.branchId) + getItemSubUnitAmount(subitemunitId, item.branchId),
+        //                                          quantity = getItemSubUnitAmount(iuId, item.branchId),
+        //                                      }).ToList();
+
+        //                    /*
+        //                     var items =  myContext.Select(i => new {
+        //                   Value1 = item.Value1,
+        //                   Value2 = item.Value2
+        //               })
+        //               .AsEnumerable()
+        //               .Select(i => new {
+        //                   Value1 = TweakValue(item.Value1),
+        //                   Value2 = TweakValue(item.Value2)
+        //                });
+
+
+        //                    var query = from item in myContext
+        //            where item.Foo == bar
+        //            orderby item.Something
+        //            select new { item.Value1, item.Value2 };
+
+        //var items = from item in query.AsEnumerable()
+        //            select new {
+        //                Value1 = TweakValue(item.Value1),
+        //                Value2 = TweakValue(item.Value2)
+        //            };
+
+        //                     * */
+        //                    if (groupitems == null)
+        //                        return NotFound();
+        //                    else
+        //                        return Ok(groupitems);
+        //                }
+        //            }
+        //            //else
+        //            return NotFound();
+        //        }
 
         // for report 
         //  فواتير المشتريات بكل انواعها بكل فرع
         [HttpGet]
         [Route("GetPurinv")]
-        public IHttpActionResult GetPurinv(int mainBranchId, int userId)
+        public ResponseVM GetPurinv(string token)
         {
+            //int mainBranchId, int userId
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
+            else
             {
-                List<int> brIds = AllowedBranchsId(mainBranchId, userId);
-                using (incposdbEntities entity = new incposdbEntities())
+                int mainBranchId = 0;
+                int userId = 0;
+
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
                 {
-                    var invListm = (from I in entity.invoices
-                                    join B in entity.branches on I.branchId equals B.branchId into JB
-                                    join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
-                                    join A in entity.agents on I.agentId equals A.agentId into JA
-                                    join U in entity.users on I.createUserId equals U.userId into JU
-                                    join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
-                                    join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
-                                    join P in entity.pos on I.posId equals P.posId into JP
+                    if (c.Type == "mainBranchId")
+                    {
+                        mainBranchId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "userId")
+                    {
+                        userId = int.Parse(c.Value);
+                    }
 
-                                    from JBB in JB
-                                    from JPP in JP.DefaultIfEmpty()
-                                    from JUU in JU.DefaultIfEmpty()
-                                    from JUPUS in JUPUSR.DefaultIfEmpty()
-                                    from JIMM in JIM.DefaultIfEmpty()
-                                    from JAA in JA.DefaultIfEmpty()
-                                    from JBCC in JBC.DefaultIfEmpty()
-
-                                    where (brIds.Contains(JBCC.branchId)) && (I.invType == "p" || I.invType == "pb" || I.invType == "pd" || I.invType == "pbd")
-                                    // (branchType == "all" ? true : JBB.type == branchType)
-                                    //   && System.DateTime.Compare((DateTime)startDate, (DateTime)I.invDate) <= 0
-                                    //  && System.DateTime.Compare((DateTime)endDate, (DateTime)I.invDate) >= 0
-                                    // I.invType == invtype
-                                    //     && branchType == "all" ? true : JBB.type == branchType
-
-                                    //  && startDate <= I.invDate && endDate >= I.invDate
-                                    // &&  System.DateTime.Compare((DateTime)startDate,  I.invDate) <= 0 && System.DateTime.Compare((DateTime)endDate, I.invDate) >= 0
-                                    //   group new { I, JBB } by (I.branchId) into g
-                                    select new
-                                    {
-                                        I.invoiceId,
-                                        I.invNumber,
-                                        I.agentId,
-                                        I.posId,
-                                        I.invType,
-                                        I.total,
-                                        I.totalNet,
-                                        I.paid,
-                                        I.deserved,
-                                        I.deservedDate,
-                                        I.invDate,
-                                        I.invoiceMainId,
-                                        I.invCase,
-                                        I.invTime,
-                                        I.notes,
-                                        I.vendorInvNum,
-                                        I.vendorInvDate,
-                                        I.createUserId,
-                                        I.updateDate,
-                                        I.updateUserId,
-                                        I.branchId,
-                                        discountValue = ((I.discountType == "1" || I.discountType == null) || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
-                                        I.discountType,
-                                        I.tax,
-                                        I.name,
-                                        I.isApproved,
-                                        //
-                                        I.branchCreatorId,
-                                        branchCreatorName = JBCC.name,
-                                        //
-                                        branchName = JBB.name,
-
-                                        branchType = JBB.type,
-                                        posName = JPP.name,
-                                        posCode = JPP.code,
-                                        agentName = JAA.name,
-                                        agentCode = JAA.code,
-                                        agentType = JAA.type,
-                                        cuserName = JUU.name,
-                                        cuserLast = JUU.lastname,
-                                        cUserAccName = JUU.username,
-                                        uuserName = JUPUS.name,
-                                        uuserLast = JUPUS.lastname,
-                                        uUserAccName = JUPUS.username,
-                                        agentCompany = JAA.company,
-
-                                        //username
-
-                                        //  I.invoiceId,
-                                        //    JBB.name
-                                    }).ToList();
-
-                    /*
-          if(S.(I.discountType == "1" || I.discountType ==null ))
-{
-    return S.I.discountValue;
-}else if(S.I.discountType == "2")
-{
-   return (S.I.discountValue / 100);
-}
-else
-{
-    return 0;
-}
-*/
-
-
-
-                    if (invListm == null)
-                        return NotFound();
-                    else
-                        return Ok(invListm);
                 }
+                // DateTime cmpdate = DateTime.Now.AddDays(newdays);
+                try
+                {
 
+                    List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+
+
+                        var invListm = (from I in entity.invoices
+                                        join B in entity.branches on I.branchId equals B.branchId into JB
+                                        join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
+                                        join A in entity.agents on I.agentId equals A.agentId into JA
+                                        join U in entity.users on I.createUserId equals U.userId into JU
+                                        join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
+                                        join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
+                                        join P in entity.pos on I.posId equals P.posId into JP
+
+                                        from JBB in JB
+                                        from JPP in JP.DefaultIfEmpty()
+                                        from JUU in JU.DefaultIfEmpty()
+                                        from JUPUS in JUPUSR.DefaultIfEmpty()
+                                        from JIMM in JIM.DefaultIfEmpty()
+                                        from JAA in JA.DefaultIfEmpty()
+                                        from JBCC in JBC.DefaultIfEmpty()
+
+                                        where (brIds.Contains(JBCC.branchId)) && (I.invType == "p" || I.invType == "pb" || I.invType == "pd" || I.invType == "pbd")
+                                        // (branchType == "all" ? true : JBB.type == branchType)
+                                        //   && System.DateTime.Compare((DateTime)startDate, (DateTime)I.invDate) <= 0
+                                        //  && System.DateTime.Compare((DateTime)endDate, (DateTime)I.invDate) >= 0
+                                        // I.invType == invtype
+                                        //     && branchType == "all" ? true : JBB.type == branchType
+
+                                        //  && startDate <= I.invDate && endDate >= I.invDate
+                                        // &&  System.DateTime.Compare((DateTime)startDate,  I.invDate) <= 0 && System.DateTime.Compare((DateTime)endDate, I.invDate) >= 0
+                                        //   group new { I, JBB } by (I.branchId) into g
+                                        select new
+                                        {
+                                            I.invoiceId,
+                                            I.invNumber,
+                                            I.agentId,
+                                            I.posId,
+                                            I.invType,
+                                            I.total,
+                                            I.totalNet,
+                                            I.paid,
+                                            I.deserved,
+                                            I.deservedDate,
+                                            I.invDate,
+                                            I.invoiceMainId,
+                                            I.invCase,
+                                            I.invTime,
+                                            I.notes,
+                                            I.vendorInvNum,
+                                            I.vendorInvDate,
+                                            I.createUserId,
+                                            I.updateDate,
+                                            I.updateUserId,
+                                            I.branchId,
+                                            discountValue = ((I.discountType == "1" || I.discountType == null) || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
+                                            I.discountType,
+                                            I.tax,
+                                            I.name,
+                                            I.isApproved,
+                                            //
+                                            I.branchCreatorId,
+                                            branchCreatorName = JBCC.name,
+                                            //
+                                            branchName = JBB.name,
+
+                                            branchType = JBB.type,
+                                            posName = JPP.name,
+                                            posCode = JPP.code,
+                                            agentName = JAA.name,
+                                            agentCode = JAA.code,
+                                            agentType = JAA.type,
+                                            cuserName = JUU.name,
+                                            cuserLast = JUU.lastname,
+                                            cUserAccName = JUU.username,
+                                            uuserName = JUPUS.name,
+                                            uuserLast = JUPUS.lastname,
+                                            uUserAccName = JUPUS.username,
+                                            agentCompany = JAA.company,
+
+                                            //username
+
+                                            //  I.invoiceId,
+                                            //    JBB.name
+                                        }).ToList();
+
+
+
+
+                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(invListm) };
+
+                    }
+
+                }
+                catch
+                {
+                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                }
+                //return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
             }
 
+
+
+
+
+
+            //            var re = Request;
+            //            var headers = re.Headers;
+            //            string token = "";
+            //            if (headers.Contains("APIKey"))
+            //            {
+            //                token = headers.GetValues("APIKey").First();
+            //            }
+            //            Validation validation = new Validation();
+            //            bool valid = validation.CheckApiKey(token);
+
+            //            if (valid) // APIKey is valid
+            //            {
+            //                List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+            //                using (incposdbEntities entity = new incposdbEntities())
+            //                {
+            //                    var invListm = (from I in entity.invoices
+            //                                    join B in entity.branches on I.branchId equals B.branchId into JB
+            //                                    join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
+            //                                    join A in entity.agents on I.agentId equals A.agentId into JA
+            //                                    join U in entity.users on I.createUserId equals U.userId into JU
+            //                                    join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
+            //                                    join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
+            //                                    join P in entity.pos on I.posId equals P.posId into JP
+
+            //                                    from JBB in JB
+            //                                    from JPP in JP.DefaultIfEmpty()
+            //                                    from JUU in JU.DefaultIfEmpty()
+            //                                    from JUPUS in JUPUSR.DefaultIfEmpty()
+            //                                    from JIMM in JIM.DefaultIfEmpty()
+            //                                    from JAA in JA.DefaultIfEmpty()
+            //                                    from JBCC in JBC.DefaultIfEmpty()
+
+            //                                    where (brIds.Contains(JBCC.branchId)) && (I.invType == "p" || I.invType == "pb" || I.invType == "pd" || I.invType == "pbd")
+            //                                    // (branchType == "all" ? true : JBB.type == branchType)
+            //                                    //   && System.DateTime.Compare((DateTime)startDate, (DateTime)I.invDate) <= 0
+            //                                    //  && System.DateTime.Compare((DateTime)endDate, (DateTime)I.invDate) >= 0
+            //                                    // I.invType == invtype
+            //                                    //     && branchType == "all" ? true : JBB.type == branchType
+
+            //                                    //  && startDate <= I.invDate && endDate >= I.invDate
+            //                                    // &&  System.DateTime.Compare((DateTime)startDate,  I.invDate) <= 0 && System.DateTime.Compare((DateTime)endDate, I.invDate) >= 0
+            //                                    //   group new { I, JBB } by (I.branchId) into g
+            //                                    select new
+            //                                    {
+            //                                        I.invoiceId,
+            //                                        I.invNumber,
+            //                                        I.agentId,
+            //                                        I.posId,
+            //                                        I.invType,
+            //                                        I.total,
+            //                                        I.totalNet,
+            //                                        I.paid,
+            //                                        I.deserved,
+            //                                        I.deservedDate,
+            //                                        I.invDate,
+            //                                        I.invoiceMainId,
+            //                                        I.invCase,
+            //                                        I.invTime,
+            //                                        I.notes,
+            //                                        I.vendorInvNum,
+            //                                        I.vendorInvDate,
+            //                                        I.createUserId,
+            //                                        I.updateDate,
+            //                                        I.updateUserId,
+            //                                        I.branchId,
+            //                                        discountValue = ((I.discountType == "1" || I.discountType == null) || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
+            //                                        I.discountType,
+            //                                        I.tax,
+            //                                        I.name,
+            //                                        I.isApproved,
+            //                                        //
+            //                                        I.branchCreatorId,
+            //                                        branchCreatorName = JBCC.name,
+            //                                        //
+            //                                        branchName = JBB.name,
+
+            //                                        branchType = JBB.type,
+            //                                        posName = JPP.name,
+            //                                        posCode = JPP.code,
+            //                                        agentName = JAA.name,
+            //                                        agentCode = JAA.code,
+            //                                        agentType = JAA.type,
+            //                                        cuserName = JUU.name,
+            //                                        cuserLast = JUU.lastname,
+            //                                        cUserAccName = JUU.username,
+            //                                        uuserName = JUPUS.name,
+            //                                        uuserLast = JUPUS.lastname,
+            //                                        uUserAccName = JUPUS.username,
+            //                                        agentCompany = JAA.company,
+
+            //                                        //username
+
+            //                                        //  I.invoiceId,
+            //                                        //    JBB.name
+            //                                    }).ToList();
+
+            //                    /*
+            //          if(S.(I.discountType == "1" || I.discountType ==null ))
+            //{
+            //    return S.I.discountValue;
+            //}else if(S.I.discountType == "2")
+            //{
+            //   return (S.I.discountValue / 100);
+            //}
             //else
-            return NotFound();
+            //{
+            //    return 0;
+            //}
+            //*/
+
+
+
+            //                    if (invListm == null)
+            //                        return NotFound();
+            //                    else
+            //                        return Ok(invListm);
+            //                }
+
+            //            }
+
+            //            //else
+            //            return NotFound();
+
+
+
+
         }
 
         // العناصر في الفواتير
 
         [HttpGet]
         [Route("GetPuritem")]
-        public IHttpActionResult GetPuritem(int mainBranchId, int userId)
+        public ResponseVM GetPuritem(string token)
         {
+            // public ResponseVM GetPurinv(string token)
+
+            //int mainBranchId, int userId
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
+            else
             {
-                List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+                int mainBranchId = 0;
+                int userId = 0;
 
-                using (incposdbEntities entity = new incposdbEntities())
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
                 {
-                    var invListm = (from IT in entity.itemsTransfer
-                                    from I in entity.invoices.Where(I => I.invoiceId == IT.invoiceId)
+                    if (c.Type == "mainBranchId")
+                    {
+                        mainBranchId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "userId")
+                    {
+                        userId = int.Parse(c.Value);
+                    }
 
-                                    from IU in entity.itemsUnits.Where(IU => IU.itemUnitId == IT.itemUnitId)
-                                    join ITCUSER in entity.users on IT.createUserId equals ITCUSER.userId
-                                    join ITUPUSER in entity.users on IT.updateUserId equals ITUPUSER.userId
-                                    join ITEM in entity.items on IU.itemId equals ITEM.itemId
-                                    join UNIT in entity.units on IU.unitId equals UNIT.unitId
-                                    join B in entity.branches on I.branchId equals B.branchId into JB
-                                    join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
-                                    join A in entity.agents on I.agentId equals A.agentId into JA
-                                    join U in entity.users on I.createUserId equals U.userId into JU
-                                    join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
-                                    join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
-                                    join P in entity.pos on I.posId equals P.posId into JP
-
-                                    from JBB in JB
-                                    from JPP in JP.DefaultIfEmpty()
-                                    from JUU in JU.DefaultIfEmpty()
-                                    from JUPUS in JUPUSR.DefaultIfEmpty()
-                                    from JIMM in JIM.DefaultIfEmpty()
-                                    from JAA in JA.DefaultIfEmpty()
-                                    from JBCC in JBC.DefaultIfEmpty()
-                                    where (brIds.Contains(JBCC.branchId)) && (I.invType == "p" || I.invType == "pw" || I.invType == "pb")
-
-                                    select new
-                                    {
-                                        ITitemName = ITEM.name,
-                                        ITunitName = UNIT.name,
-                                        ITitemsTransId = IT.itemsTransId,
-                                        ITitemUnitId = IT.itemUnitId,
-
-                                        ITitemId = IU.itemId,
-                                        ITunitId = IU.unitId,
-                                        ITquantity = IT.quantity,
-
-                                        ITcreateDate = IT.createDate,
-                                        ITupdateDate = IT.updateDate,
-                                        ITcreateUserId = IT.createUserId,
-                                        ITupdateUserId = IT.updateUserId,
-                                        ITnotes = IT.notes,
-                                        ITprice = IT.price,
-                                        ITbarcode = IU.barcode,
-                                        ITCreateuserName = ITCUSER.name,
-                                        ITCreateuserLName = ITCUSER.lastname,
-                                        ITCreateuserAccName = ITCUSER.username,
-
-                                        ITUpdateuserName = ITUPUSER.name,
-                                        ITUpdateuserLName = ITUPUSER.lastname,
-                                        ITUpdateuserAccName = ITUPUSER.username,
-                                        I.invoiceId,
-                                        I.invNumber,
-                                        I.agentId,
-                                        I.posId,
-                                        I.invType,
-                                        I.total,
-                                        I.totalNet,
-                                        I.paid,
-                                        I.deserved,
-                                        I.deservedDate,
-                                        I.invDate,
-                                        I.invoiceMainId,
-                                        I.invCase,
-                                        I.invTime,
-                                        I.notes,
-                                        I.vendorInvNum,
-                                        I.vendorInvDate,
-                                        I.createUserId,
-                                        I.updateDate,
-                                        I.updateUserId,
-                                        I.branchId,
-                                        discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? ((I.discountValue / 100) * I.total) : 0),
-                                        I.discountType,
-                                        I.tax,
-                                        I.name,
-                                        I.isApproved,
-
-                                        //
-                                        I.branchCreatorId,
-                                        branchCreatorName = JBCC.name,
-                                        //
-                                        branchName = JBB.name,
-
-                                        branchType = JBB.type,
-                                        posName = JPP.name,
-                                        posCode = JPP.code,
-                                        agentName = JAA.name,
-                                        agentCode = JAA.code,
-                                        agentType = JAA.type,
-                                        cuserName = JUU.name,
-                                        cuserLast = JUU.lastname,
-                                        cUserAccName = JUU.username,
-                                        uuserName = JUPUS.name,
-                                        uuserLast = JUPUS.lastname,
-                                        uUserAccName = JUPUS.username,
-                                        agentCompany = JAA.company,
-                                        subTotal = (IT.price * IT.quantity),
-                                        //username
-
-                                        //  I.invoiceId,
-                                        //    JBB.name
-                                    }).ToList();
-
-                    /*
-   public int ITitemsTransId { get; set; }
-        public Nullable<int> ITitemId { get; set; }
-        public string ITitemName { get; set; }
-        public Nullable<long> ITquantity { get; set; }
-        public Nullable<int> ITinvoiceId { get; set; }
-        public string ITinvNumber { get; set; }
-        public Nullable<int> ITlocationIdNew { get; set; }
-        public Nullable<int> ITlocationIdOld { get; set; }
-        public Nullable<System.DateTime> ITcreateDate { get; set; }
-        public Nullable<System.DateTime> ITupdateDate { get; set; }
-        public Nullable<int> ITcreateUserId { get; set; }
-        public Nullable<int> ITupdateUserId { get; set; }
-        public string ITnotes { get; set; }
-        public Nullable<decimal> ITprice { get; set; }
-        public Nullable<int> ITitemUnitId { get; set; }
-
-        public string ITunitName { get; set; }
-        public string ITbarcode { get; set; }
-
-ITitemsTransId
-ITitemId
-ITitemName
-ITquantity
-ITinvoiceId
-ITinvNumber
-ITcreateDate
-ITupdateDate
-ITcreateUserId
-ITupdateUserId
-ITnotes
-ITprice
-ITitemUnitId
-ITunitName
-ITbarcode
-
-
-*/
-
-
-
-                    if (invListm == null)
-                        return NotFound();
-                    else
-                        return Ok(invListm);
                 }
+                // DateTime cmpdate = DateTime.Now.AddDays(newdays);
+                try
+                {
 
+                    List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+
+                        var invListm = (from IT in entity.itemsTransfer
+                                        from I in entity.invoices.Where(I => I.invoiceId == IT.invoiceId)
+
+                                        from IU in entity.itemsUnits.Where(IU => IU.itemUnitId == IT.itemUnitId)
+                                        join ITCUSER in entity.users on IT.createUserId equals ITCUSER.userId
+                                        join ITUPUSER in entity.users on IT.updateUserId equals ITUPUSER.userId
+                                        join ITEM in entity.items on IU.itemId equals ITEM.itemId
+                                        join UNIT in entity.units on IU.unitId equals UNIT.unitId
+                                        join B in entity.branches on I.branchId equals B.branchId into JB
+                                        join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
+                                        join A in entity.agents on I.agentId equals A.agentId into JA
+                                        join U in entity.users on I.createUserId equals U.userId into JU
+                                        join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
+                                        join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
+                                        join P in entity.pos on I.posId equals P.posId into JP
+
+                                        from JBB in JB
+                                        from JPP in JP.DefaultIfEmpty()
+                                        from JUU in JU.DefaultIfEmpty()
+                                        from JUPUS in JUPUSR.DefaultIfEmpty()
+                                        from JIMM in JIM.DefaultIfEmpty()
+                                        from JAA in JA.DefaultIfEmpty()
+                                        from JBCC in JBC.DefaultIfEmpty()
+                                        where (brIds.Contains(JBCC.branchId)) && (I.invType == "p" || I.invType == "pw" || I.invType == "pb")
+
+                                        select new
+                                        {
+                                            ITitemName = ITEM.name,
+                                            ITunitName = UNIT.name,
+                                            ITitemsTransId = IT.itemsTransId,
+                                            ITitemUnitId = IT.itemUnitId,
+
+                                            ITitemId = IU.itemId,
+                                            ITunitId = IU.unitId,
+                                            ITquantity = IT.quantity,
+
+                                            ITcreateDate = IT.createDate,
+                                            ITupdateDate = IT.updateDate,
+                                            ITcreateUserId = IT.createUserId,
+                                            ITupdateUserId = IT.updateUserId,
+                                            ITnotes = IT.notes,
+                                            ITprice = IT.price,
+                                            ITbarcode = IU.barcode,
+                                            ITCreateuserName = ITCUSER.name,
+                                            ITCreateuserLName = ITCUSER.lastname,
+                                            ITCreateuserAccName = ITCUSER.username,
+
+                                            ITUpdateuserName = ITUPUSER.name,
+                                            ITUpdateuserLName = ITUPUSER.lastname,
+                                            ITUpdateuserAccName = ITUPUSER.username,
+                                            I.invoiceId,
+                                            I.invNumber,
+                                            I.agentId,
+                                            I.posId,
+                                            I.invType,
+                                            I.total,
+                                            I.totalNet,
+                                            I.paid,
+                                            I.deserved,
+                                            I.deservedDate,
+                                            I.invDate,
+                                            I.invoiceMainId,
+                                            I.invCase,
+                                            I.invTime,
+                                            I.notes,
+                                            I.vendorInvNum,
+                                            I.vendorInvDate,
+                                            I.createUserId,
+                                            I.updateDate,
+                                            I.updateUserId,
+                                            I.branchId,
+                                            discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? ((I.discountValue / 100) * I.total) : 0),
+                                            I.discountType,
+                                            I.tax,
+                                            I.name,
+                                            I.isApproved,
+
+                                            //
+                                            I.branchCreatorId,
+                                            branchCreatorName = JBCC.name,
+                                            //
+                                            branchName = JBB.name,
+
+                                            branchType = JBB.type,
+                                            posName = JPP.name,
+                                            posCode = JPP.code,
+                                            agentName = JAA.name,
+                                            agentCode = JAA.code,
+                                            agentType = JAA.type,
+                                            cuserName = JUU.name,
+                                            cuserLast = JUU.lastname,
+                                            cUserAccName = JUU.username,
+                                            uuserName = JUPUS.name,
+                                            uuserLast = JUPUS.lastname,
+                                            uUserAccName = JUPUS.username,
+                                            agentCompany = JAA.company,
+                                            subTotal = (IT.price * IT.quantity),
+                                            //username
+
+                                            //  I.invoiceId,
+                                            //    JBB.name
+                                        }).ToList();
+
+
+
+
+                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(invListm) };
+
+                    }
+
+                }
+                catch
+                {
+                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                }
+                //return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+
+
+                //            var re = Request;
+                //            var headers = re.Headers;
+                //            string token = "";
+                //            if (headers.Contains("APIKey"))
+                //            {
+                //                token = headers.GetValues("APIKey").First();
+                //            }
+                //            Validation validation = new Validation();
+                //            bool valid = validation.CheckApiKey(token);
+
+                //            if (valid) // APIKey is valid
+                //            {
+                //                List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+
+                //                using (incposdbEntities entity = new incposdbEntities())
+                //                {
+                //                    var invListm = (from IT in entity.itemsTransfer
+                //                                    from I in entity.invoices.Where(I => I.invoiceId == IT.invoiceId)
+
+                //                                    from IU in entity.itemsUnits.Where(IU => IU.itemUnitId == IT.itemUnitId)
+                //                                    join ITCUSER in entity.users on IT.createUserId equals ITCUSER.userId
+                //                                    join ITUPUSER in entity.users on IT.updateUserId equals ITUPUSER.userId
+                //                                    join ITEM in entity.items on IU.itemId equals ITEM.itemId
+                //                                    join UNIT in entity.units on IU.unitId equals UNIT.unitId
+                //                                    join B in entity.branches on I.branchId equals B.branchId into JB
+                //                                    join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
+                //                                    join A in entity.agents on I.agentId equals A.agentId into JA
+                //                                    join U in entity.users on I.createUserId equals U.userId into JU
+                //                                    join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
+                //                                    join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
+                //                                    join P in entity.pos on I.posId equals P.posId into JP
+
+                //                                    from JBB in JB
+                //                                    from JPP in JP.DefaultIfEmpty()
+                //                                    from JUU in JU.DefaultIfEmpty()
+                //                                    from JUPUS in JUPUSR.DefaultIfEmpty()
+                //                                    from JIMM in JIM.DefaultIfEmpty()
+                //                                    from JAA in JA.DefaultIfEmpty()
+                //                                    from JBCC in JBC.DefaultIfEmpty()
+                //                                    where (brIds.Contains(JBCC.branchId)) && (I.invType == "p" || I.invType == "pw" || I.invType == "pb")
+
+                //                                    select new
+                //                                    {
+                //                                        ITitemName = ITEM.name,
+                //                                        ITunitName = UNIT.name,
+                //                                        ITitemsTransId = IT.itemsTransId,
+                //                                        ITitemUnitId = IT.itemUnitId,
+
+                //                                        ITitemId = IU.itemId,
+                //                                        ITunitId = IU.unitId,
+                //                                        ITquantity = IT.quantity,
+
+                //                                        ITcreateDate = IT.createDate,
+                //                                        ITupdateDate = IT.updateDate,
+                //                                        ITcreateUserId = IT.createUserId,
+                //                                        ITupdateUserId = IT.updateUserId,
+                //                                        ITnotes = IT.notes,
+                //                                        ITprice = IT.price,
+                //                                        ITbarcode = IU.barcode,
+                //                                        ITCreateuserName = ITCUSER.name,
+                //                                        ITCreateuserLName = ITCUSER.lastname,
+                //                                        ITCreateuserAccName = ITCUSER.username,
+
+                //                                        ITUpdateuserName = ITUPUSER.name,
+                //                                        ITUpdateuserLName = ITUPUSER.lastname,
+                //                                        ITUpdateuserAccName = ITUPUSER.username,
+                //                                        I.invoiceId,
+                //                                        I.invNumber,
+                //                                        I.agentId,
+                //                                        I.posId,
+                //                                        I.invType,
+                //                                        I.total,
+                //                                        I.totalNet,
+                //                                        I.paid,
+                //                                        I.deserved,
+                //                                        I.deservedDate,
+                //                                        I.invDate,
+                //                                        I.invoiceMainId,
+                //                                        I.invCase,
+                //                                        I.invTime,
+                //                                        I.notes,
+                //                                        I.vendorInvNum,
+                //                                        I.vendorInvDate,
+                //                                        I.createUserId,
+                //                                        I.updateDate,
+                //                                        I.updateUserId,
+                //                                        I.branchId,
+                //                                        discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? ((I.discountValue / 100) * I.total) : 0),
+                //                                        I.discountType,
+                //                                        I.tax,
+                //                                        I.name,
+                //                                        I.isApproved,
+
+                //                                        //
+                //                                        I.branchCreatorId,
+                //                                        branchCreatorName = JBCC.name,
+                //                                        //
+                //                                        branchName = JBB.name,
+
+                //                                        branchType = JBB.type,
+                //                                        posName = JPP.name,
+                //                                        posCode = JPP.code,
+                //                                        agentName = JAA.name,
+                //                                        agentCode = JAA.code,
+                //                                        agentType = JAA.type,
+                //                                        cuserName = JUU.name,
+                //                                        cuserLast = JUU.lastname,
+                //                                        cUserAccName = JUU.username,
+                //                                        uuserName = JUPUS.name,
+                //                                        uuserLast = JUPUS.lastname,
+                //                                        uUserAccName = JUPUS.username,
+                //                                        agentCompany = JAA.company,
+                //                                        subTotal = (IT.price * IT.quantity),
+                //                                        //username
+
+                //                                        //  I.invoiceId,
+                //                                        //    JBB.name
+                //                                    }).ToList();
+
+                //                    /*
+                //   public int ITitemsTransId { get; set; }
+                //        public Nullable<int> ITitemId { get; set; }
+                //        public string ITitemName { get; set; }
+                //        public Nullable<long> ITquantity { get; set; }
+                //        public Nullable<int> ITinvoiceId { get; set; }
+                //        public string ITinvNumber { get; set; }
+                //        public Nullable<int> ITlocationIdNew { get; set; }
+                //        public Nullable<int> ITlocationIdOld { get; set; }
+                //        public Nullable<System.DateTime> ITcreateDate { get; set; }
+                //        public Nullable<System.DateTime> ITupdateDate { get; set; }
+                //        public Nullable<int> ITcreateUserId { get; set; }
+                //        public Nullable<int> ITupdateUserId { get; set; }
+                //        public string ITnotes { get; set; }
+                //        public Nullable<decimal> ITprice { get; set; }
+                //        public Nullable<int> ITitemUnitId { get; set; }
+
+                //        public string ITunitName { get; set; }
+                //        public string ITbarcode { get; set; }
+
+                //ITitemsTransId
+                //ITitemId
+                //ITitemName
+                //ITquantity
+                //ITinvoiceId
+                //ITinvNumber
+                //ITcreateDate
+                //ITupdateDate
+                //ITcreateUserId
+                //ITupdateUserId
+                //ITnotes
+                //ITprice
+                //ITitemUnitId
+                //ITunitName
+                //ITbarcode
+
+
+                //*/
+
+
+
+                //                    if (invListm == null)
+                //                        return NotFound();
+                //                    else
+                //                        return Ok(invListm);
+                //                }
+
+                //            }
+
+                //            //else
+                //            return NotFound();
             }
-
-            //else
-            return NotFound();
         }
-
         //عدد العناصر في كل فاتورة
         [HttpGet]
         [Route("GetPuritemcount")]
-        public IHttpActionResult GetPuritemcount(int mainBranchId, int userId)
+        public ResponseVM GetPuritemcount(string token)
         {
+
+
+            //int mainBranchId, int userId
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
+            else
             {
-                List<int> brIds = AllowedBranchsId(mainBranchId, userId);
-                using (incposdbEntities entity = new incposdbEntities())
+                int mainBranchId = 0;
+                int userId = 0;
+
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
                 {
-                    var invListm = (from I in entity.invoices
+                    if (c.Type == "mainBranchId")
+                    {
+                        mainBranchId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "userId")
+                    {
+                        userId = int.Parse(c.Value);
+                    }
 
-                                    join B in entity.branches on I.branchId equals B.branchId into JB
-                                    join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
-                                    join A in entity.agents on I.agentId equals A.agentId into JA
-                                    join U in entity.users on I.createUserId equals U.userId into JU
-                                    join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
-                                    join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
-                                    join P in entity.pos on I.posId equals P.posId into JP
+                }
+                // DateTime cmpdate = DateTime.Now.AddDays(newdays);
+                try
+                {
 
-                                    from JBB in JB
-                                    from JPP in JP.DefaultIfEmpty()
-                                    from JUU in JU.DefaultIfEmpty()
-                                    from JUPUS in JUPUSR.DefaultIfEmpty()
-                                    from JIMM in JIM.DefaultIfEmpty()
-                                    from JAA in JA.DefaultIfEmpty()
-                                    from JBCC in JBC.DefaultIfEmpty()
-                                    where (brIds.Contains(JBCC.branchId)) && (I.invType == "p" || I.invType == "pw" || I.invType == "pb")
-
-                                    select new
-                                    {
-
-                                        I.invoiceId,
-                                        count = entity.itemsTransfer.Where(x => x.invoiceId == I.invoiceId).Count(),
-                                        I.invNumber,
-                                        I.agentId,
-                                        I.posId,
-                                        I.invType,
-                                        I.total,
-                                        I.totalNet,
-                                        I.paid,
-                                        I.deserved,
-                                        I.deservedDate,
-                                        I.invDate,
-                                        I.invoiceMainId,
-                                        I.invCase,
-                                        I.invTime,
-                                        I.notes,
-                                        I.vendorInvNum,
-                                        I.vendorInvDate,
-                                        I.createUserId,
-                                        I.updateDate,
-                                        I.updateUserId,
-                                        I.branchId,
-
-                                        I.discountType,
-                                        I.tax,
-                                        I.name,
-                                        I.isApproved,
-                                        discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? ((I.discountValue / 100) * I.total) : 0),  //
-                                        I.branchCreatorId,
-                                        branchCreatorName = JBCC.name,
-                                        //
-                                        branchName = JBB.name,
-
-                                        branchType = JBB.type,
-                                        posName = JPP.name,
-                                        posCode = JPP.code,
-                                        agentName = JAA.name,
-                                        agentCode = JAA.code,
-                                        agentType = JAA.type,
-
-                                        cuserName = JUU.name,
-                                        cuserLast = JUU.lastname,
-                                        cUserAccName = JUU.username,
-                                        uuserName = JUPUS.name,
-                                        uuserLast = JUPUS.lastname,
-                                        uUserAccName = JUPUS.username,
-                                        agentCompany = JAA.company,
-
-                                        //username
-
-                                        //  I.invoiceId,
-                                        //    JBB.name
-                                    }).ToList();
+                    List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
 
 
-                    if (invListm == null)
-                        return NotFound();
-                    else
-                        return Ok(invListm);
+                        var invListm = (from I in entity.invoices
+
+                                        join B in entity.branches on I.branchId equals B.branchId into JB
+                                        join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
+                                        join A in entity.agents on I.agentId equals A.agentId into JA
+                                        join U in entity.users on I.createUserId equals U.userId into JU
+                                        join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
+                                        join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
+                                        join P in entity.pos on I.posId equals P.posId into JP
+
+                                        from JBB in JB
+                                        from JPP in JP.DefaultIfEmpty()
+                                        from JUU in JU.DefaultIfEmpty()
+                                        from JUPUS in JUPUSR.DefaultIfEmpty()
+                                        from JIMM in JIM.DefaultIfEmpty()
+                                        from JAA in JA.DefaultIfEmpty()
+                                        from JBCC in JBC.DefaultIfEmpty()
+                                        where (brIds.Contains(JBCC.branchId)) && (I.invType == "p" || I.invType == "pw" || I.invType == "pb")
+
+                                        select new
+                                        {
+
+                                            I.invoiceId,
+                                            count = entity.itemsTransfer.Where(x => x.invoiceId == I.invoiceId).Count(),
+                                            I.invNumber,
+                                            I.agentId,
+                                            I.posId,
+                                            I.invType,
+                                            I.total,
+                                            I.totalNet,
+                                            I.paid,
+                                            I.deserved,
+                                            I.deservedDate,
+                                            I.invDate,
+                                            I.invoiceMainId,
+                                            I.invCase,
+                                            I.invTime,
+                                            I.notes,
+                                            I.vendorInvNum,
+                                            I.vendorInvDate,
+                                            I.createUserId,
+                                            I.updateDate,
+                                            I.updateUserId,
+                                            I.branchId,
+
+                                            I.discountType,
+                                            I.tax,
+                                            I.name,
+                                            I.isApproved,
+                                            discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? ((I.discountValue / 100) * I.total) : 0),  //
+                                            I.branchCreatorId,
+                                            branchCreatorName = JBCC.name,
+                                            //
+                                            branchName = JBB.name,
+
+                                            branchType = JBB.type,
+                                            posName = JPP.name,
+                                            posCode = JPP.code,
+                                            agentName = JAA.name,
+                                            agentCode = JAA.code,
+                                            agentType = JAA.type,
+
+                                            cuserName = JUU.name,
+                                            cuserLast = JUU.lastname,
+                                            cUserAccName = JUU.username,
+                                            uuserName = JUPUS.name,
+                                            uuserLast = JUPUS.lastname,
+                                            uUserAccName = JUPUS.username,
+                                            agentCompany = JAA.company,
+
+                                            //username
+
+                                            //  I.invoiceId,
+                                            //    JBB.name
+                                        }).ToList();
+
+
+
+
+
+                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(invListm) };
+
+                    }
+
+                }
+                catch
+                {
+                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
                 }
 
             }
+            //var re = Request;
+            //var headers = re.Headers;
+            //string token = "";
+            //if (headers.Contains("APIKey"))
+            //{
+            //    token = headers.GetValues("APIKey").First();
+            //}
+            //Validation validation = new Validation();
+            //bool valid = validation.CheckApiKey(token);
 
-            //else
-            return NotFound();
+            //if (valid) // APIKey is valid
+            //{
+            //    List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+            //    using (incposdbEntities entity = new incposdbEntities())
+            //    {
+            //        var invListm = (from I in entity.invoices
+
+            //                        join B in entity.branches on I.branchId equals B.branchId into JB
+            //                        join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
+            //                        join A in entity.agents on I.agentId equals A.agentId into JA
+            //                        join U in entity.users on I.createUserId equals U.userId into JU
+            //                        join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
+            //                        join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
+            //                        join P in entity.pos on I.posId equals P.posId into JP
+
+            //                        from JBB in JB
+            //                        from JPP in JP.DefaultIfEmpty()
+            //                        from JUU in JU.DefaultIfEmpty()
+            //                        from JUPUS in JUPUSR.DefaultIfEmpty()
+            //                        from JIMM in JIM.DefaultIfEmpty()
+            //                        from JAA in JA.DefaultIfEmpty()
+            //                        from JBCC in JBC.DefaultIfEmpty()
+            //                        where (brIds.Contains(JBCC.branchId)) && (I.invType == "p" || I.invType == "pw" || I.invType == "pb")
+
+            //                        select new
+            //                        {
+
+            //                            I.invoiceId,
+            //                            count = entity.itemsTransfer.Where(x => x.invoiceId == I.invoiceId).Count(),
+            //                            I.invNumber,
+            //                            I.agentId,
+            //                            I.posId,
+            //                            I.invType,
+            //                            I.total,
+            //                            I.totalNet,
+            //                            I.paid,
+            //                            I.deserved,
+            //                            I.deservedDate,
+            //                            I.invDate,
+            //                            I.invoiceMainId,
+            //                            I.invCase,
+            //                            I.invTime,
+            //                            I.notes,
+            //                            I.vendorInvNum,
+            //                            I.vendorInvDate,
+            //                            I.createUserId,
+            //                            I.updateDate,
+            //                            I.updateUserId,
+            //                            I.branchId,
+
+            //                            I.discountType,
+            //                            I.tax,
+            //                            I.name,
+            //                            I.isApproved,
+            //                            discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? ((I.discountValue / 100) * I.total) : 0),  //
+            //                            I.branchCreatorId,
+            //                            branchCreatorName = JBCC.name,
+            //                            //
+            //                            branchName = JBB.name,
+
+            //                            branchType = JBB.type,
+            //                            posName = JPP.name,
+            //                            posCode = JPP.code,
+            //                            agentName = JAA.name,
+            //                            agentCode = JAA.code,
+            //                            agentType = JAA.type,
+
+            //                            cuserName = JUU.name,
+            //                            cuserLast = JUU.lastname,
+            //                            cUserAccName = JUU.username,
+            //                            uuserName = JUPUS.name,
+            //                            uuserLast = JUPUS.lastname,
+            //                            uUserAccName = JUPUS.username,
+            //                            agentCompany = JAA.company,
+
+            //                            //username
+
+            //                            //  I.invoiceId,
+            //                            //    JBB.name
+            //                        }).ToList();
+
+
+            //        if (invListm == null)
+            //            return NotFound();
+            //        else
+            //            return Ok(invListm);
+            //    }
+
+            //}
+
+            ////else
+            //return NotFound();
         }
 
 
@@ -755,607 +1182,610 @@ ITbarcode
         // عدد العناصر في كل فاتورة
 
 
-        [HttpGet]
-        [Route("GetPurinvwithCount")]
-        public IHttpActionResult GetPurinvwithCount()
-        {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
-            {
-                token = headers.GetValues("APIKey").First();
-            }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
+        //        [HttpGet]
+        //        [Route("GetPurinvwithCount")]
+        //        public IHttpActionResult GetPurinvwithCount()
+        //        {
+        //            var re = Request;
+        //            var headers = re.Headers;
+        //            string token = "";
+        //            if (headers.Contains("APIKey"))
+        //            {
+        //                token = headers.GetValues("APIKey").First();
+        //            }
+        //            Validation validation = new Validation();
+        //            bool valid = validation.CheckApiKey(token);
 
-            if (valid) // APIKey is valid
-            {
-                using (incposdbEntities entity = new incposdbEntities())
-                {
-                    var invListm = (from I in entity.invoices
-                                    join B in entity.branches on I.branchId equals B.branchId into JB
-                                    join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
-                                    join A in entity.agents on I.agentId equals A.agentId into JA
-                                    join U in entity.users on I.createUserId equals U.userId into JU
-                                    join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
-                                    join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
-                                    join P in entity.pos on I.posId equals P.posId into JP
-                                    join IT in entity.itemsTransfer on I.invoiceId equals IT.invoiceId into JIT
-                                    from JBB in JB.DefaultIfEmpty()
-                                    from JPP in JP.DefaultIfEmpty()
-                                    from JUU in JU.DefaultIfEmpty()
-                                    from JUPUS in JUPUSR.DefaultIfEmpty()
-                                    from JIMM in JIM.DefaultIfEmpty()
-                                    from JAA in JA.DefaultIfEmpty()
-                                    from JITT in JIT.DefaultIfEmpty()
-                                    from JBCC in JBC.DefaultIfEmpty()
+        //            if (valid) // APIKey is valid
+        //            {
+        //                using (incposdbEntities entity = new incposdbEntities())
+        //                {
+        //                    var invListm = (from I in entity.invoices
+        //                                    join B in entity.branches on I.branchId equals B.branchId into JB
+        //                                    join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
+        //                                    join A in entity.agents on I.agentId equals A.agentId into JA
+        //                                    join U in entity.users on I.createUserId equals U.userId into JU
+        //                                    join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
+        //                                    join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
+        //                                    join P in entity.pos on I.posId equals P.posId into JP
+        //                                    join IT in entity.itemsTransfer on I.invoiceId equals IT.invoiceId into JIT
+        //                                    from JBB in JB.DefaultIfEmpty()
+        //                                    from JPP in JP.DefaultIfEmpty()
+        //                                    from JUU in JU.DefaultIfEmpty()
+        //                                    from JUPUS in JUPUSR.DefaultIfEmpty()
+        //                                    from JIMM in JIM.DefaultIfEmpty()
+        //                                    from JAA in JA.DefaultIfEmpty()
+        //                                    from JITT in JIT.DefaultIfEmpty()
+        //                                    from JBCC in JBC.DefaultIfEmpty()
 
-                                    where (I.invType == "p" || I.invType == "pb" || I.invType == "pd" || I.invType == "pbd")
-                                    // (branchType == "all" ? true : JBB.type == branchType)
-                                    //   && System.DateTime.Compare((DateTime)startDate, (DateTime)I.invDate) <= 0
-                                    //  && System.DateTime.Compare((DateTime)endDate, (DateTime)I.invDate) >= 0
-                                    // I.invType == invtype
-                                    //     && branchType == "all" ? true : JBB.type == branchType
+        //                                    where (I.invType == "p" || I.invType == "pb" || I.invType == "pd" || I.invType == "pbd")
+        //                                    // (branchType == "all" ? true : JBB.type == branchType)
+        //                                    //   && System.DateTime.Compare((DateTime)startDate, (DateTime)I.invDate) <= 0
+        //                                    //  && System.DateTime.Compare((DateTime)endDate, (DateTime)I.invDate) >= 0
+        //                                    // I.invType == invtype
+        //                                    //     && branchType == "all" ? true : JBB.type == branchType
 
-                                    //  && startDate <= I.invDate && endDate >= I.invDate
-                                    // &&  System.DateTime.Compare((DateTime)startDate,  I.invDate) <= 0 && System.DateTime.Compare((DateTime)endDate, I.invDate) >= 0
-                                    group new { I, JBB, JPP, JUU, JUPUS, JIMM, JAA, JITT } by (I.invoiceId) into g
-                                    select new
-                                    {
-                                        countP = g.Select(S => S.JITT.invoiceId).Count(),
-                                        invoiceId = g.Select(S => S.I.invoiceId).FirstOrDefault(),
-                                        invNumber = g.Select(S => S.I.invNumber).FirstOrDefault(),
-                                        agentId = g.Select(S => S.I.agentId).FirstOrDefault(),
+        //                                    //  && startDate <= I.invDate && endDate >= I.invDate
+        //                                    // &&  System.DateTime.Compare((DateTime)startDate,  I.invDate) <= 0 && System.DateTime.Compare((DateTime)endDate, I.invDate) >= 0
+        //                                    group new { I, JBB, JPP, JUU, JUPUS, JIMM, JAA, JITT } by (I.invoiceId) into g
+        //                                    select new
+        //                                    {
+        //                                        countP = g.Select(S => S.JITT.invoiceId).Count(),
+        //                                        invoiceId = g.Select(S => S.I.invoiceId).FirstOrDefault(),
+        //                                        invNumber = g.Select(S => S.I.invNumber).FirstOrDefault(),
+        //                                        agentId = g.Select(S => S.I.agentId).FirstOrDefault(),
 
-                                        invType = g.Select(S => S.I.invType).FirstOrDefault(),
-                                        total = g.Select(S => S.I.total).FirstOrDefault(),
-                                        totalNet = g.Select(S => S.I.totalNet).FirstOrDefault(),
-                                        paid = g.Select(S => S.I.paid).FirstOrDefault(),
-                                        deserved = g.Select(S => S.I.deserved).FirstOrDefault(),
-                                        deservedDate = g.Select(S => S.I.deservedDate).FirstOrDefault(),
-                                        invDate = g.Select(S => S.I.invDate).FirstOrDefault(),
-                                        invoiceMainId = g.Select(S => S.I.invoiceMainId).FirstOrDefault(),
-                                        invCase = g.Select(S => S.I.invCase).FirstOrDefault(),
-                                        invTime = g.Select(S => S.I.invTime).FirstOrDefault(),
-                                        notes = g.Select(S => S.I.notes).FirstOrDefault(),
-                                        vendorInvNum = g.Select(S => S.I.vendorInvNum).FirstOrDefault(),
-                                        vendorInvDate = g.Select(S => S.I.vendorInvDate).FirstOrDefault(),
-                                        createUserId = g.Select(S => S.I.createUserId).FirstOrDefault(),
-                                        updateDate = g.Select(S => S.I.updateDate).FirstOrDefault(),
-                                        updateUserId = g.Select(S => S.I.updateUserId).FirstOrDefault(),
-                                        branchId = g.Select(S => S.I.branchId).FirstOrDefault(),
-                                        // discountValue=g.Select(S=>S.I.discountValue).FirstOrDefault(),
-                                        discountType = g.Select(S => S.I.discountType).FirstOrDefault(),
-                                        tax = g.Select(S => S.I.tax).FirstOrDefault(),
-                                        name = g.Select(S => S.I.name).FirstOrDefault(),
-                                        isApproved = g.Select(S => S.I.isApproved).FirstOrDefault(),
-                                        branchName = g.Select(S => S.JBB.name).FirstOrDefault(),
-                                        branchType = g.Select(S => S.JBB.type).FirstOrDefault(),
-                                        posName = g.Select(S => S.JPP.name).FirstOrDefault(),
-                                        posCode = g.Select(S => S.JPP.code).FirstOrDefault(),
-                                        agentName = g.Select(S => S.JAA.name).FirstOrDefault(),
-                                        agentCode = g.Select(S => S.JAA.code).FirstOrDefault(),
-                                        agentType = g.Select(S => S.JAA.type).FirstOrDefault(),
-                                        cuserName = g.Select(S => S.JUU.name).FirstOrDefault(),
-                                        cuserLast = g.Select(S => S.JUU.lastname).FirstOrDefault(),
-                                        cUserAccName = g.Select(S => S.JUU.username).FirstOrDefault(),
-                                        uuserName = g.Select(S => S.JUPUS.name).FirstOrDefault(),
-                                        uuserLast = g.Select(S => S.JUPUS.lastname).FirstOrDefault(),
-                                        uUserAccName = g.Select(S => S.JUPUS.username).FirstOrDefault(),
-                                        agentCompany = g.Select(S => S.JAA.company).FirstOrDefault(),
-                                        posId = g.Select(S => S.JPP.posId).FirstOrDefault(),
-                                        discountValue = g.Select(
-                                            S => (S.I.discountType == "1" || S.I.discountType == null) ? S.I.discountValue
-                                            : (S.I.discountType == "2" ? (S.I.discountValue / 100) : 0))
-                                        .FirstOrDefault(),
-                                        /*
-                                        I.invoiceId,
-                                        I.invNumber,
-                                        I.agentId,
+        //                                        invType = g.Select(S => S.I.invType).FirstOrDefault(),
+        //                                        total = g.Select(S => S.I.total).FirstOrDefault(),
+        //                                        totalNet = g.Select(S => S.I.totalNet).FirstOrDefault(),
+        //                                        paid = g.Select(S => S.I.paid).FirstOrDefault(),
+        //                                        deserved = g.Select(S => S.I.deserved).FirstOrDefault(),
+        //                                        deservedDate = g.Select(S => S.I.deservedDate).FirstOrDefault(),
+        //                                        invDate = g.Select(S => S.I.invDate).FirstOrDefault(),
+        //                                        invoiceMainId = g.Select(S => S.I.invoiceMainId).FirstOrDefault(),
+        //                                        invCase = g.Select(S => S.I.invCase).FirstOrDefault(),
+        //                                        invTime = g.Select(S => S.I.invTime).FirstOrDefault(),
+        //                                        notes = g.Select(S => S.I.notes).FirstOrDefault(),
+        //                                        vendorInvNum = g.Select(S => S.I.vendorInvNum).FirstOrDefault(),
+        //                                        vendorInvDate = g.Select(S => S.I.vendorInvDate).FirstOrDefault(),
+        //                                        createUserId = g.Select(S => S.I.createUserId).FirstOrDefault(),
+        //                                        updateDate = g.Select(S => S.I.updateDate).FirstOrDefault(),
+        //                                        updateUserId = g.Select(S => S.I.updateUserId).FirstOrDefault(),
+        //                                        branchId = g.Select(S => S.I.branchId).FirstOrDefault(),
+        //                                        // discountValue=g.Select(S=>S.I.discountValue).FirstOrDefault(),
+        //                                        discountType = g.Select(S => S.I.discountType).FirstOrDefault(),
+        //                                        tax = g.Select(S => S.I.tax).FirstOrDefault(),
+        //                                        name = g.Select(S => S.I.name).FirstOrDefault(),
+        //                                        isApproved = g.Select(S => S.I.isApproved).FirstOrDefault(),
+        //                                        branchName = g.Select(S => S.JBB.name).FirstOrDefault(),
+        //                                        branchType = g.Select(S => S.JBB.type).FirstOrDefault(),
+        //                                        posName = g.Select(S => S.JPP.name).FirstOrDefault(),
+        //                                        posCode = g.Select(S => S.JPP.code).FirstOrDefault(),
+        //                                        agentName = g.Select(S => S.JAA.name).FirstOrDefault(),
+        //                                        agentCode = g.Select(S => S.JAA.code).FirstOrDefault(),
+        //                                        agentType = g.Select(S => S.JAA.type).FirstOrDefault(),
+        //                                        cuserName = g.Select(S => S.JUU.name).FirstOrDefault(),
+        //                                        cuserLast = g.Select(S => S.JUU.lastname).FirstOrDefault(),
+        //                                        cUserAccName = g.Select(S => S.JUU.username).FirstOrDefault(),
+        //                                        uuserName = g.Select(S => S.JUPUS.name).FirstOrDefault(),
+        //                                        uuserLast = g.Select(S => S.JUPUS.lastname).FirstOrDefault(),
+        //                                        uUserAccName = g.Select(S => S.JUPUS.username).FirstOrDefault(),
+        //                                        agentCompany = g.Select(S => S.JAA.company).FirstOrDefault(),
+        //                                        posId = g.Select(S => S.JPP.posId).FirstOrDefault(),
+        //                                        discountValue = g.Select(
+        //                                            S => (S.I.discountType == "1" || S.I.discountType == null) ? S.I.discountValue
+        //                                            : (S.I.discountType == "2" ? (S.I.discountValue / 100) : 0))
+        //                                        .FirstOrDefault(),
+        //                                        /*
+        //                                        I.invoiceId,
+        //                                        I.invNumber,
+        //                                        I.agentId,
 
-                                        I.invType,
-                                        I.total,
-                                        I.totalNet,
-                                        I.paid,
-                                        I.deserved,
-                                        I.deservedDate,
-                                        I.invDate,
-                                        I.invoiceMainId,
-                                        I.invCase,
-                                        I.invTime,
-                                        I.notes,
-                                        I.vendorInvNum,
-                                        I.vendorInvDate,
-                                        I.createUserId,
-                                        I.updateDate,
-                                        I.updateUserId,
-                                        I.branchId,
-                                        I.discountValue,
-                                        I.discountType,
-                                        I.tax,
-                                        I.name,
-                                        I.isApproved,
-                                        branchName = JBB.name,
-                                        branchType = JBB.type,
-                                        posName = JPP.name,
-                                        posCode = JPP.code,
-                                        agentName = JAA.name,
-                                        agentCode = JAA.code,
-                                        cuserName = JUU.name,
-                                        cuserLast = JUU.lastname,
-                                        cUserAccName = JUU.lastname,
-                                        uuserName = JUPUS.name,
-                                        uuserLast = JUPUS.lastname,
-                                        uUserAccName = JUPUS.lastname,
-                                        agentCompany = JAA.company,
-                                        */
-                                        //username
+        //                                        I.invType,
+        //                                        I.total,
+        //                                        I.totalNet,
+        //                                        I.paid,
+        //                                        I.deserved,
+        //                                        I.deservedDate,
+        //                                        I.invDate,
+        //                                        I.invoiceMainId,
+        //                                        I.invCase,
+        //                                        I.invTime,
+        //                                        I.notes,
+        //                                        I.vendorInvNum,
+        //                                        I.vendorInvDate,
+        //                                        I.createUserId,
+        //                                        I.updateDate,
+        //                                        I.updateUserId,
+        //                                        I.branchId,
+        //                                        I.discountValue,
+        //                                        I.discountType,
+        //                                        I.tax,
+        //                                        I.name,
+        //                                        I.isApproved,
+        //                                        branchName = JBB.name,
+        //                                        branchType = JBB.type,
+        //                                        posName = JPP.name,
+        //                                        posCode = JPP.code,
+        //                                        agentName = JAA.name,
+        //                                        agentCode = JAA.code,
+        //                                        cuserName = JUU.name,
+        //                                        cuserLast = JUU.lastname,
+        //                                        cUserAccName = JUU.lastname,
+        //                                        uuserName = JUPUS.name,
+        //                                        uuserLast = JUPUS.lastname,
+        //                                        uUserAccName = JUPUS.lastname,
+        //                                        agentCompany = JAA.company,
+        //                                        */
+        //                                        //username
 
-                                        //  I.invoiceId,
-                                        //    JBB.name
-                                    }).ToList();
+        //                                        //  I.invoiceId,
+        //                                        //    JBB.name
+        //                                    }).ToList();
 
-                    /*
-          if(S.(I.discountType == "1" || I.discountType ==null ))
-{
-    return S.I.discountValue;
-}else if(S.I.discountType == "2")
-{
-   return (S.I.discountValue / 100);
-}
-else
-{
-    return 0;
-}
-*/
+        //                    /*
+        //          if(S.(I.discountType == "1" || I.discountType ==null ))
+        //{
+        //    return S.I.discountValue;
+        //}else if(S.I.discountType == "2")
+        //{
+        //   return (S.I.discountValue / 100);
+        //}
+        //else
+        //{
+        //    return 0;
+        //}
+        //*/
 
 
 
-                    if (invListm == null)
-                        return NotFound();
-                    else
-                        return Ok(invListm);
-                }
+        //                    if (invListm == null)
+        //                        return NotFound();
+        //                    else
+        //                        return Ok(invListm);
+        //                }
 
-            }
+        //            }
 
-            //else
-            return NotFound();
-        }
+        //            //else
+        //            return NotFound();
+        //        }
+
+
+
         // item quantity in location GetItemQtyInBranches()
         // عدد الفواتير في كل فرع
-        [HttpGet]
-        [Route("GetinvInBranch")]
-        public IHttpActionResult GetinvInBranch()
-        {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
-            {
-                token = headers.GetValues("APIKey").First();
-            }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
+        //[HttpGet]
+        //[Route("GetinvInBranch")]
+        //public IHttpActionResult GetinvInBranch()
+        //{
+        //    var re = Request;
+        //    var headers = re.Headers;
+        //    string token = "";
+        //    if (headers.Contains("APIKey"))
+        //    {
+        //        token = headers.GetValues("APIKey").First();
+        //    }
+        //    Validation validation = new Validation();
+        //    bool valid = validation.CheckApiKey(token);
 
-            if (valid) // APIKey is valid
-            {
-                using (incposdbEntities entity = new incposdbEntities())
-                {
-                    var invListm = (from B in entity.branches.Distinct()
-                                    from I in entity.invoices.Where(x => x.branchCreatorId == B.branchId).Distinct()
-                                        // from P in entity.pos.Where(x => x.posId == I.posId)
-
-
-                                        // from IT in entity.itemsTransfer.Where(x => x.invoiceId == I.invoiceId).Distinct()
-                                        // from JBB in JB.DefaultIfEmpty()
+        //    if (valid) // APIKey is valid
+        //    {
+        //        using (incposdbEntities entity = new incposdbEntities())
+        //        {
+        //            var invListm = (from B in entity.branches.Distinct()
+        //                            from I in entity.invoices.Where(x => x.branchCreatorId == B.branchId).Distinct()
+        //                                // from P in entity.pos.Where(x => x.posId == I.posId)
 
 
-                                        //    from JIMM in JIM.DefaultIfEmpty()
-
-                                        //  from JITT in JIT.DefaultIfEmpty()
-
-                                    where (I.invType == "p" || I.invType == "pb" || I.invType == "pd" || I.invType == "pbd")
-                                    group new { I, B } by (B.branchId) into g
-                                    select new
-                                    {
+        //                                // from IT in entity.itemsTransfer.Where(x => x.invoiceId == I.invoiceId).Distinct()
+        //                                // from JBB in JB.DefaultIfEmpty()
 
 
-                                        count = g.Select(S => S.I.invoiceId).Count(),
+        //                                //    from JIMM in JIM.DefaultIfEmpty()
 
-                                        invType = g.Select(S => S.I.invType).FirstOrDefault(),
-                                        total = g.Sum(S => S.I.total),
-                                        totalNet = g.Sum(S => S.I.totalNet),
-                                        paid = g.Sum(S => S.I.paid),
-                                        deserved = g.Sum(S => S.I.deserved),
-                                        //
-                                        branchCreatorId = g.Select(S => S.I.branchCreatorId).FirstOrDefault(),
-                                        branchCreatorName = g.Select(S => S.B.name).FirstOrDefault(),
-                                        //
+        //                                //  from JITT in JIT.DefaultIfEmpty()
 
-                                        discountType = g.Select(S => S.I.discountType).FirstOrDefault(),
-                                        tax = g.Select(S => S.I.tax).FirstOrDefault(),
-                                        discountValue = g.Select(
-                                            S => (S.I.discountType == "1" || S.I.discountType == null) ? S.I.discountValue
-                                            : (S.I.discountType == "2" ? (S.I.discountValue / 100) : 0))
-                                        .FirstOrDefault(),
-
-                                        name = g.Select(S => S.B.name).FirstOrDefault(),
-                                        branchType = g.Select(S => S.B.type).FirstOrDefault(),
-                                        //posName = g.Select(S => S.P.name).FirstOrDefault(),
-                                        //  posCode = g.Select(S => S.P.code).FirstOrDefault(),
+        //                            where (I.invType == "p" || I.invType == "pb" || I.invType == "pd" || I.invType == "pbd")
+        //                            group new { I, B } by (B.branchId) into g
+        //                            select new
+        //                            {
 
 
-                                        //  count
+        //                                count = g.Select(S => S.I.invoiceId).Count(),
+
+        //                                invType = g.Select(S => S.I.invType).FirstOrDefault(),
+        //                                total = g.Sum(S => S.I.total),
+        //                                totalNet = g.Sum(S => S.I.totalNet),
+        //                                paid = g.Sum(S => S.I.paid),
+        //                                deserved = g.Sum(S => S.I.deserved),
+        //                                //
+        //                                branchCreatorId = g.Select(S => S.I.branchCreatorId).FirstOrDefault(),
+        //                                branchCreatorName = g.Select(S => S.B.name).FirstOrDefault(),
+        //                                //
+
+        //                                discountType = g.Select(S => S.I.discountType).FirstOrDefault(),
+        //                                tax = g.Select(S => S.I.tax).FirstOrDefault(),
+        //                                discountValue = g.Select(
+        //                                    S => (S.I.discountType == "1" || S.I.discountType == null) ? S.I.discountValue
+        //                                    : (S.I.discountType == "2" ? (S.I.discountValue / 100) : 0))
+        //                                .FirstOrDefault(),
+
+        //                                name = g.Select(S => S.B.name).FirstOrDefault(),
+        //                                branchType = g.Select(S => S.B.type).FirstOrDefault(),
+        //                                //posName = g.Select(S => S.P.name).FirstOrDefault(),
+        //                                //  posCode = g.Select(S => S.P.code).FirstOrDefault(),
 
 
-
-                                    }).ToList();
+        //                                //  count
 
 
 
+        //                            }).ToList();
 
-                    if (invListm == null)
-                        return NotFound();
-                    else
-                        return Ok(invListm);
-                }
 
-            }
 
-            //else
-            return NotFound();
-        }
+
+        //            if (invListm == null)
+        //                return NotFound();
+        //            else
+        //                return Ok(invListm);
+        //        }
+
+        //    }
+
+        //    //else
+        //    return NotFound();
+        //}
 
 
 
         //  الفواتير بكل نقطة عددPOs
         // 
-        [HttpGet]
-        [Route("GetPoswithInvCount")]
-        public IHttpActionResult GetPoswithInvCount()
-        {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
-            {
-                token = headers.GetValues("APIKey").First();
-            }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
+        //        [HttpGet]
+        //        [Route("GetPoswithInvCount")]
+        //        public IHttpActionResult GetPoswithInvCount()
+        //        {
+        //            var re = Request;
+        //            var headers = re.Headers;
+        //            string token = "";
+        //            if (headers.Contains("APIKey"))
+        //            {
+        //                token = headers.GetValues("APIKey").First();
+        //            }
+        //            Validation validation = new Validation();
+        //            bool valid = validation.CheckApiKey(token);
 
-            if (valid) // APIKey is valid
-            {
-                using (incposdbEntities entity = new incposdbEntities())
-                {
-                    var invListm = (from I in entity.invoices
-                                    join B in entity.branches on I.branchId equals B.branchId into JB
-                                    join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
-                                    join A in entity.agents on I.agentId equals A.agentId into JA
-                                    join U in entity.users on I.createUserId equals U.userId into JU
-                                    join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
-                                    join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
-                                    join P in entity.pos on I.posId equals P.posId into JP
+        //            if (valid) // APIKey is valid
+        //            {
+        //                using (incposdbEntities entity = new incposdbEntities())
+        //                {
+        //                    var invListm = (from I in entity.invoices
+        //                                    join B in entity.branches on I.branchId equals B.branchId into JB
+        //                                    join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
+        //                                    join A in entity.agents on I.agentId equals A.agentId into JA
+        //                                    join U in entity.users on I.createUserId equals U.userId into JU
+        //                                    join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
+        //                                    join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
+        //                                    join P in entity.pos on I.posId equals P.posId into JP
 
-                                    from JBB in JB.DefaultIfEmpty()
-                                    from JPP in JP.DefaultIfEmpty()
-                                    from JUU in JU.DefaultIfEmpty()
-                                    from JUPUS in JUPUSR.DefaultIfEmpty()
-                                    from JIMM in JIM.DefaultIfEmpty()
-                                    from JAA in JA.DefaultIfEmpty()
-                                    from JBCC in JBC.DefaultIfEmpty()
+        //                                    from JBB in JB.DefaultIfEmpty()
+        //                                    from JPP in JP.DefaultIfEmpty()
+        //                                    from JUU in JU.DefaultIfEmpty()
+        //                                    from JUPUS in JUPUSR.DefaultIfEmpty()
+        //                                    from JIMM in JIM.DefaultIfEmpty()
+        //                                    from JAA in JA.DefaultIfEmpty()
+        //                                    from JBCC in JBC.DefaultIfEmpty()
 
-                                    where (I.invType == "p" || I.invType == "pb" || I.invType == "pd" || I.invType == "pbd")
+        //                                    where (I.invType == "p" || I.invType == "pb" || I.invType == "pd" || I.invType == "pbd")
 
-                                    // &&  System.DateTime.Compare((DateTime)startDate,  I.invDate) <= 0 && System.DateTime.Compare((DateTime)endDate, I.invDate) >= 0
-                                    group new { I, JBB, JPP, JUU, JUPUS, JIMM, JAA, JBCC } by (JPP.posId) into g
-                                    select new
-                                    {
-                                        countP = g.Select(S => S.I.invoiceId).Count(),
-                                        invoiceId = g.Select(S => S.I.invoiceId).FirstOrDefault(),
-                                        invNumber = g.Select(S => S.I.invNumber).FirstOrDefault(),
-                                        agentId = g.Select(S => S.I.agentId).FirstOrDefault(),
-                                        //
-                                        branchCreatorId = g.Select(S => S.I.branchCreatorId).FirstOrDefault(),
-                                        branchCreatorName = g.Select(S => S.JBCC.name).FirstOrDefault(),
-                                        //
-                                        invType = g.Select(S => S.I.invType).FirstOrDefault(),
-                                        total = g.Select(S => S.I.total).FirstOrDefault(),
-                                        totalNet = g.Select(S => S.I.totalNet).FirstOrDefault(),
-                                        paid = g.Select(S => S.I.paid).FirstOrDefault(),
-                                        deserved = g.Select(S => S.I.deserved).FirstOrDefault(),
-                                        deservedDate = g.Select(S => S.I.deservedDate).FirstOrDefault(),
-                                        invDate = g.Select(S => S.I.invDate).FirstOrDefault(),
-                                        invoiceMainId = g.Select(S => S.I.invoiceMainId).FirstOrDefault(),
-                                        invCase = g.Select(S => S.I.invCase).FirstOrDefault(),
-                                        invTime = g.Select(S => S.I.invTime).FirstOrDefault(),
-                                        notes = g.Select(S => S.I.notes).FirstOrDefault(),
-                                        vendorInvNum = g.Select(S => S.I.vendorInvNum).FirstOrDefault(),
-                                        vendorInvDate = g.Select(S => S.I.vendorInvDate).FirstOrDefault(),
-                                        createUserId = g.Select(S => S.I.createUserId).FirstOrDefault(),
-                                        updateDate = g.Select(S => S.I.updateDate).FirstOrDefault(),
-                                        updateUserId = g.Select(S => S.I.updateUserId).FirstOrDefault(),
-                                        branchId = g.Select(S => S.I.branchId).FirstOrDefault(),
-                                        discountValue = g.Select(
-                                            S => (S.I.discountType == "1" || S.I.discountType == null) ? S.I.discountValue
-                                            : (S.I.discountType == "2" ? (S.I.discountValue / 100) : 0))
-                                        .FirstOrDefault(),
-                                        discountType = g.Select(S => S.I.discountType).FirstOrDefault(),
-                                        tax = g.Select(S => S.I.tax).FirstOrDefault(),
-                                        name = g.Select(S => S.I.name).FirstOrDefault(),
-                                        isApproved = g.Select(S => S.I.isApproved).FirstOrDefault(),
-                                        branchName = g.Select(S => S.JBB.name).FirstOrDefault(),
-                                        branchType = g.Select(S => S.JBB.type).FirstOrDefault(),
-                                        posName = g.Select(S => S.JPP.name).FirstOrDefault(),
-                                        posCode = g.Select(S => S.JPP.code).FirstOrDefault(),
-                                        agentName = g.Select(S => S.JAA.name).FirstOrDefault(),
-                                        agentCode = g.Select(S => S.JAA.code).FirstOrDefault(),
-                                        agentType = g.Select(S => S.JAA.type).FirstOrDefault(),
+        //                                    // &&  System.DateTime.Compare((DateTime)startDate,  I.invDate) <= 0 && System.DateTime.Compare((DateTime)endDate, I.invDate) >= 0
+        //                                    group new { I, JBB, JPP, JUU, JUPUS, JIMM, JAA, JBCC } by (JPP.posId) into g
+        //                                    select new
+        //                                    {
+        //                                        countP = g.Select(S => S.I.invoiceId).Count(),
+        //                                        invoiceId = g.Select(S => S.I.invoiceId).FirstOrDefault(),
+        //                                        invNumber = g.Select(S => S.I.invNumber).FirstOrDefault(),
+        //                                        agentId = g.Select(S => S.I.agentId).FirstOrDefault(),
+        //                                        //
+        //                                        branchCreatorId = g.Select(S => S.I.branchCreatorId).FirstOrDefault(),
+        //                                        branchCreatorName = g.Select(S => S.JBCC.name).FirstOrDefault(),
+        //                                        //
+        //                                        invType = g.Select(S => S.I.invType).FirstOrDefault(),
+        //                                        total = g.Select(S => S.I.total).FirstOrDefault(),
+        //                                        totalNet = g.Select(S => S.I.totalNet).FirstOrDefault(),
+        //                                        paid = g.Select(S => S.I.paid).FirstOrDefault(),
+        //                                        deserved = g.Select(S => S.I.deserved).FirstOrDefault(),
+        //                                        deservedDate = g.Select(S => S.I.deservedDate).FirstOrDefault(),
+        //                                        invDate = g.Select(S => S.I.invDate).FirstOrDefault(),
+        //                                        invoiceMainId = g.Select(S => S.I.invoiceMainId).FirstOrDefault(),
+        //                                        invCase = g.Select(S => S.I.invCase).FirstOrDefault(),
+        //                                        invTime = g.Select(S => S.I.invTime).FirstOrDefault(),
+        //                                        notes = g.Select(S => S.I.notes).FirstOrDefault(),
+        //                                        vendorInvNum = g.Select(S => S.I.vendorInvNum).FirstOrDefault(),
+        //                                        vendorInvDate = g.Select(S => S.I.vendorInvDate).FirstOrDefault(),
+        //                                        createUserId = g.Select(S => S.I.createUserId).FirstOrDefault(),
+        //                                        updateDate = g.Select(S => S.I.updateDate).FirstOrDefault(),
+        //                                        updateUserId = g.Select(S => S.I.updateUserId).FirstOrDefault(),
+        //                                        branchId = g.Select(S => S.I.branchId).FirstOrDefault(),
+        //                                        discountValue = g.Select(
+        //                                            S => (S.I.discountType == "1" || S.I.discountType == null) ? S.I.discountValue
+        //                                            : (S.I.discountType == "2" ? (S.I.discountValue / 100) : 0))
+        //                                        .FirstOrDefault(),
+        //                                        discountType = g.Select(S => S.I.discountType).FirstOrDefault(),
+        //                                        tax = g.Select(S => S.I.tax).FirstOrDefault(),
+        //                                        name = g.Select(S => S.I.name).FirstOrDefault(),
+        //                                        isApproved = g.Select(S => S.I.isApproved).FirstOrDefault(),
+        //                                        branchName = g.Select(S => S.JBB.name).FirstOrDefault(),
+        //                                        branchType = g.Select(S => S.JBB.type).FirstOrDefault(),
+        //                                        posName = g.Select(S => S.JPP.name).FirstOrDefault(),
+        //                                        posCode = g.Select(S => S.JPP.code).FirstOrDefault(),
+        //                                        agentName = g.Select(S => S.JAA.name).FirstOrDefault(),
+        //                                        agentCode = g.Select(S => S.JAA.code).FirstOrDefault(),
+        //                                        agentType = g.Select(S => S.JAA.type).FirstOrDefault(),
 
-                                        cuserName = g.Select(S => S.JUU.name).FirstOrDefault(),
-                                        cuserLast = g.Select(S => S.JUU.lastname).FirstOrDefault(),
-                                        cUserAccName = g.Select(S => S.JUU.username).FirstOrDefault(),
-                                        uuserName = g.Select(S => S.JUPUS.name).FirstOrDefault(),
-                                        uuserLast = g.Select(S => S.JUPUS.lastname).FirstOrDefault(),
-                                        uUserAccName = g.Select(S => S.JUPUS.username).FirstOrDefault(),
-                                        agentCompany = g.Select(S => S.JAA.company).FirstOrDefault(),
-                                        posId = g.Select(S => S.JPP.posId).FirstOrDefault(),
-                                        /*
-                                
-                                        */
-                                        //username
+        //                                        cuserName = g.Select(S => S.JUU.name).FirstOrDefault(),
+        //                                        cuserLast = g.Select(S => S.JUU.lastname).FirstOrDefault(),
+        //                                        cUserAccName = g.Select(S => S.JUU.username).FirstOrDefault(),
+        //                                        uuserName = g.Select(S => S.JUPUS.name).FirstOrDefault(),
+        //                                        uuserLast = g.Select(S => S.JUPUS.lastname).FirstOrDefault(),
+        //                                        uUserAccName = g.Select(S => S.JUPUS.username).FirstOrDefault(),
+        //                                        agentCompany = g.Select(S => S.JAA.company).FirstOrDefault(),
+        //                                        posId = g.Select(S => S.JPP.posId).FirstOrDefault(),
+        //                                        /*
 
-                                        //  I.invoiceId,
-                                        //    JBB.name
-                                    }).ToList();
+        //                                        */
+        //                                        //username
 
-                    /*
-          if(S.(I.discountType == "1" || I.discountType ==null ))
-{
-    return S.I.discountValue;
-}else if(S.I.discountType == "2")
-{
-   return (S.I.discountValue / 100);
-}
-else
-{
-    return 0;
-}
-*/
+        //                                        //  I.invoiceId,
+        //                                        //    JBB.name
+        //                                    }).ToList();
+
+        //                    /*
+        //          if(S.(I.discountType == "1" || I.discountType ==null ))
+        //{
+        //    return S.I.discountValue;
+        //}else if(S.I.discountType == "2")
+        //{
+        //   return (S.I.discountValue / 100);
+        //}
+        //else
+        //{
+        //    return 0;
+        //}
+        //*/
 
 
 
-                    if (invListm == null)
-                        return NotFound();
-                    else
-                        return Ok(invListm);
-                }
+        //                    if (invListm == null)
+        //                        return NotFound();
+        //                    else
+        //                        return Ok(invListm);
+        //                }
 
-            }
+        //            }
 
-            //else
-            return NotFound();
-        }
+        //            //else
+        //            return NotFound();
+        //        }
 
         // الفواتير في كل نقطة
 
-        [HttpGet]
-        [Route("GetPoswithInv")]
-        public IHttpActionResult GetPoswithInv()
-        {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
-            {
-                token = headers.GetValues("APIKey").First();
-            }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
+        //        [HttpGet]
+        //        [Route("GetPoswithInv")]
+        //        public IHttpActionResult GetPoswithInv()
+        //        {
+        //            var re = Request;
+        //            var headers = re.Headers;
+        //            string token = "";
+        //            if (headers.Contains("APIKey"))
+        //            {
+        //                token = headers.GetValues("APIKey").First();
+        //            }
+        //            Validation validation = new Validation();
+        //            bool valid = validation.CheckApiKey(token);
 
-            if (valid) // APIKey is valid
-            {
-                using (incposdbEntities entity = new incposdbEntities())
-                {
-                    var invListm = (from I in entity.invoices
-                                    join B in entity.branches on I.branchId equals B.branchId into JB
-                                    join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
-                                    join A in entity.agents on I.agentId equals A.agentId into JA
-                                    join U in entity.users on I.createUserId equals U.userId into JU
-                                    join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
-                                    join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
-                                    join P in entity.pos on I.posId equals P.posId into JP
+        //            if (valid) // APIKey is valid
+        //            {
+        //                using (incposdbEntities entity = new incposdbEntities())
+        //                {
+        //                    var invListm = (from I in entity.invoices
+        //                                    join B in entity.branches on I.branchId equals B.branchId into JB
+        //                                    join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
+        //                                    join A in entity.agents on I.agentId equals A.agentId into JA
+        //                                    join U in entity.users on I.createUserId equals U.userId into JU
+        //                                    join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
+        //                                    join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
+        //                                    join P in entity.pos on I.posId equals P.posId into JP
 
-                                    from JBB in JB.DefaultIfEmpty()
-                                    from JPP in JP.DefaultIfEmpty()
-                                    from JUU in JU.DefaultIfEmpty()
-                                    from JUPUS in JUPUSR.DefaultIfEmpty()
-                                    from JIMM in JIM.DefaultIfEmpty()
-                                    from JAA in JA.DefaultIfEmpty()
-                                    from JBCC in JBC.DefaultIfEmpty()
+        //                                    from JBB in JB.DefaultIfEmpty()
+        //                                    from JPP in JP.DefaultIfEmpty()
+        //                                    from JUU in JU.DefaultIfEmpty()
+        //                                    from JUPUS in JUPUSR.DefaultIfEmpty()
+        //                                    from JIMM in JIM.DefaultIfEmpty()
+        //                                    from JAA in JA.DefaultIfEmpty()
+        //                                    from JBCC in JBC.DefaultIfEmpty()
 
-                                    where (I.invType == "p" || I.invType == "pb" || I.invType == "pd" || I.invType == "pbd")
-                                    // (branchType == "all" ? true : JBB.type == branchType)
-                                    //   && System.DateTime.Compare((DateTime)startDate, (DateTime)I.invDate) <= 0
-                                    //  && System.DateTime.Compare((DateTime)endDate, (DateTime)I.invDate) >= 0
-                                    // I.invType == invtype
-                                    //     && branchType == "all" ? true : JBB.type == branchType
+        //                                    where (I.invType == "p" || I.invType == "pb" || I.invType == "pd" || I.invType == "pbd")
+        //                                    // (branchType == "all" ? true : JBB.type == branchType)
+        //                                    //   && System.DateTime.Compare((DateTime)startDate, (DateTime)I.invDate) <= 0
+        //                                    //  && System.DateTime.Compare((DateTime)endDate, (DateTime)I.invDate) >= 0
+        //                                    // I.invType == invtype
+        //                                    //     && branchType == "all" ? true : JBB.type == branchType
 
-                                    //  && startDate <= I.invDate && endDate >= I.invDate
-                                    // &&  System.DateTime.Compare((DateTime)startDate,  I.invDate) <= 0 && System.DateTime.Compare((DateTime)endDate, I.invDate) >= 0
+        //                                    //  && startDate <= I.invDate && endDate >= I.invDate
+        //                                    // &&  System.DateTime.Compare((DateTime)startDate,  I.invDate) <= 0 && System.DateTime.Compare((DateTime)endDate, I.invDate) >= 0
 
-                                    select new
-                                    {
+        //                                    select new
+        //                                    {
 
-                                        I.invoiceId,
-                                        I.invNumber,
-                                        I.agentId,
-                                        I.invType,
-                                        I.total,
-                                        I.totalNet,
-                                        I.paid,
-                                        I.deserved,
-                                        I.deservedDate,
-                                        I.invDate,
-                                        I.invoiceMainId,
-                                        I.invCase,
-                                        I.invTime,
-                                        I.notes,
-                                        I.vendorInvNum,
-                                        I.vendorInvDate,
-                                        I.createUserId,
-                                        I.updateDate,
-                                        I.updateUserId,
-                                        I.branchId,
-                                        discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
-                                        I.discountType,
-                                        I.tax,
-                                        I.name,
-                                        I.isApproved,
-                                        //
-                                        I.branchCreatorId,
-                                        brancCreatorhName = JBCC.name,
-                                        //
-                                        branchName = JBB.name,
-                                        branchType = JBB.type,
-                                        posName = JPP.name,
-                                        posCode = JPP.code,
-                                        agentName = JAA.name,
-                                        agentCode = JAA.code,
-                                        agentType = JAA.type,
-                                        cuserName = JUU.name,
-                                        cuserLast = JUU.lastname,
-                                        cUserAccName = JUU.username,
-                                        uuserName = JUPUS.name,
-                                        uuserLast = JUPUS.lastname,
-                                        uUserAccName = JUPUS.username,
-                                        agentCompany = JAA.company,
-                                        JPP.posId,
-
-
-                                        //username
-
-                                        //  I.invoiceId,
-                                        //    JBB.name
-                                    }).ToList();
-
-                    /*
-          if(S.(I.discountType == "1" || I.discountType ==null ))
-{
-    return S.I.discountValue;
-}else if(S.I.discountType == "2")
-{
-   return (S.I.discountValue / 100);
-}
-else
-{
-    return 0;
-}
-*/
+        //                                        I.invoiceId,
+        //                                        I.invNumber,
+        //                                        I.agentId,
+        //                                        I.invType,
+        //                                        I.total,
+        //                                        I.totalNet,
+        //                                        I.paid,
+        //                                        I.deserved,
+        //                                        I.deservedDate,
+        //                                        I.invDate,
+        //                                        I.invoiceMainId,
+        //                                        I.invCase,
+        //                                        I.invTime,
+        //                                        I.notes,
+        //                                        I.vendorInvNum,
+        //                                        I.vendorInvDate,
+        //                                        I.createUserId,
+        //                                        I.updateDate,
+        //                                        I.updateUserId,
+        //                                        I.branchId,
+        //                                        discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
+        //                                        I.discountType,
+        //                                        I.tax,
+        //                                        I.name,
+        //                                        I.isApproved,
+        //                                        //
+        //                                        I.branchCreatorId,
+        //                                        brancCreatorhName = JBCC.name,
+        //                                        //
+        //                                        branchName = JBB.name,
+        //                                        branchType = JBB.type,
+        //                                        posName = JPP.name,
+        //                                        posCode = JPP.code,
+        //                                        agentName = JAA.name,
+        //                                        agentCode = JAA.code,
+        //                                        agentType = JAA.type,
+        //                                        cuserName = JUU.name,
+        //                                        cuserLast = JUU.lastname,
+        //                                        cUserAccName = JUU.username,
+        //                                        uuserName = JUPUS.name,
+        //                                        uuserLast = JUPUS.lastname,
+        //                                        uUserAccName = JUPUS.username,
+        //                                        agentCompany = JAA.company,
+        //                                        JPP.posId,
 
 
+        //                                        //username
 
-                    if (invListm == null)
-                        return NotFound();
-                    else
-                        return Ok(invListm);
-                }
+        //                                        //  I.invoiceId,
+        //                                        //    JBB.name
+        //                                    }).ToList();
 
-            }
+        //                    /*
+        //          if(S.(I.discountType == "1" || I.discountType ==null ))
+        //{
+        //    return S.I.discountValue;
+        //}else if(S.I.discountType == "2")
+        //{
+        //   return (S.I.discountValue / 100);
+        //}
+        //else
+        //{
+        //    return 0;
+        //}
+        //*/
 
-            //else
-            return NotFound();
-        }
+
+
+        //                    if (invListm == null)
+        //                        return NotFound();
+        //                    else
+        //                        return Ok(invListm);
+        //                }
+
+        //            }
+
+        //            //else
+        //            return NotFound();
+        //        }
 
 
         // عدد فواتير المشتريات ومرتجع المشتريات ومسودات كل فرع
-        [HttpGet]
-        [Route("GetinvCountByBranch")]
-        public IHttpActionResult GetinvCountByBranch()
-        {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
-            {
-                token = headers.GetValues("APIKey").First();
-            }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
+        //        [HttpGet]
+        //        [Route("GetinvCountByBranch")]
+        //        public IHttpActionResult GetinvCountByBranch()
+        //        {
+        //            var re = Request;
+        //            var headers = re.Headers;
+        //            string token = "";
+        //            if (headers.Contains("APIKey"))
+        //            {
+        //                token = headers.GetValues("APIKey").First();
+        //            }
+        //            Validation validation = new Validation();
+        //            bool valid = validation.CheckApiKey(token);
 
-            if (valid) // APIKey is valid
-            {
-                using (incposdbEntities entity = new incposdbEntities())
-                {
-                    var invListm = (from I in entity.invoices
-                                    join B in entity.branches on I.branchId equals B.branchId into JB
-                                    join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
-                                    from JBB in JB.DefaultIfEmpty()
-                                    from JBCC in JBC.DefaultIfEmpty()
-                                    where (JBB.branchId != 1)
-                                 && (I.invType == "p" || I.invType == "pb" || I.invType == "pd" || I.invType == "pbd")
+        //            if (valid) // APIKey is valid
+        //            {
+        //                using (incposdbEntities entity = new incposdbEntities())
+        //                {
+        //                    var invListm = (from I in entity.invoices
+        //                                    join B in entity.branches on I.branchId equals B.branchId into JB
+        //                                    join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
+        //                                    from JBB in JB.DefaultIfEmpty()
+        //                                    from JBCC in JBC.DefaultIfEmpty()
+        //                                    where (JBB.branchId != 1)
+        //                                 && (I.invType == "p" || I.invType == "pb" || I.invType == "pd" || I.invType == "pbd")
 
-                                    // &&  System.DateTime.Compare((DateTime)startDate,  I.invDate) <= 0 && System.DateTime.Compare((DateTime)endDate, I.invDate) >= 0
-                                    group new { I, JBB, JBCC } by (I.branchCreatorId) into g
-                                    select new
-                                    {
-                                        branchCreatorId = g.Key,
-                                        branchCreatorName = g.Select(t => t.JBCC.name).FirstOrDefault(),
+        //                                    // &&  System.DateTime.Compare((DateTime)startDate,  I.invDate) <= 0 && System.DateTime.Compare((DateTime)endDate, I.invDate) >= 0
+        //                                    group new { I, JBB, JBCC } by (I.branchCreatorId) into g
+        //                                    select new
+        //                                    {
+        //                                        branchCreatorId = g.Key,
+        //                                        branchCreatorName = g.Select(t => t.JBCC.name).FirstOrDefault(),
 
-                                        countP = g.Where(t => t.I.invType == "p").Count(),
-                                        countPb = g.Where(t => t.I.invType == "pb").Count(),
-                                        //  countS = g.Where(t => t.I.invType == "s").Count(),
-                                        countD = g.Where(t => t.I.invType == "pd" || t.I.invType == "pbd").Count(),
-                                        //  totalS = g.Where(t => t.I.invType == "s").Sum(S => S.I.total),
-                                        //totalNetS = g.Where(t => t.I.invType == "s").Sum(S => S.I.totalNet),
-                                        /*
-                                        totalP = g.Where(t => t.I.invType == "p").Sum(S => S.I.total),
-                                        totalPb = g.Where(t => t.I.invType == "pb").Sum(S => S.I.total),
-                                        totalD = g.Where(t => t.I.invType == "pd" || t.I.invType == "pbd").Sum(S => S.I.total),
-                                       
-                                        totalNetP = g.Where(t => t.I.invType == "p").Sum(S => S.I.totalNet),
-                                        totalNetPb = g.Where(t => t.I.invType == "pb").Sum(S => S.I.totalNet),
-                                        totalNetD = g.Where(t => t.I.invType == "pd" || t.I.invType == "pbd").Sum(S => S.I.totalNet),
-                                      
-                                        paid = g.Where(t => t.I.invType == "p").Sum(S => S.I.paid),
-                                        deserved = g.Where(t => t.I.invType == "p").Sum(S => S.I.deserved),
-                                        discountValue = g.Where(t => t.I.invType == "p").Sum(S => S.(I.discountType == "1" || I.discountType ==null ) ? S.I.discountValue : (S.I.discountType == "2" ? (S.I.discountValue / 100) : 0)),
-                                      
-                                        paidPb = g.Where(t => t.I.invType == "pb").Sum(S => S.I.paid),
-                                        deservedPb = g.Where(t => t.I.invType == "pb").Sum(S => S.I.deserved),
-                                        discountValuePb = g.Where(t => t.I.invType == "pb").Sum(S => S.(I.discountType == "1" || I.discountType ==null ) ? S.I.discountValue : (S.I.discountType == "2" ? (S.I.discountValue / 100) : 0)),
-                                           */
-                                    }).ToList();
+        //                                        countP = g.Where(t => t.I.invType == "p").Count(),
+        //                                        countPb = g.Where(t => t.I.invType == "pb").Count(),
+        //                                        //  countS = g.Where(t => t.I.invType == "s").Count(),
+        //                                        countD = g.Where(t => t.I.invType == "pd" || t.I.invType == "pbd").Count(),
+        //                                        //  totalS = g.Where(t => t.I.invType == "s").Sum(S => S.I.total),
+        //                                        //totalNetS = g.Where(t => t.I.invType == "s").Sum(S => S.I.totalNet),
+        //                                        /*
+        //                                        totalP = g.Where(t => t.I.invType == "p").Sum(S => S.I.total),
+        //                                        totalPb = g.Where(t => t.I.invType == "pb").Sum(S => S.I.total),
+        //                                        totalD = g.Where(t => t.I.invType == "pd" || t.I.invType == "pbd").Sum(S => S.I.total),
 
-                    /*
-          if(S.(I.discountType == "1" || I.discountType ==null ))
-{
-    return S.I.discountValue;
-}else if(S.I.discountType == "2")
-{
-   return (S.I.discountValue / 100);
-}
-else
-{
-    return 0;
-}
-*/
+        //                                        totalNetP = g.Where(t => t.I.invType == "p").Sum(S => S.I.totalNet),
+        //                                        totalNetPb = g.Where(t => t.I.invType == "pb").Sum(S => S.I.totalNet),
+        //                                        totalNetD = g.Where(t => t.I.invType == "pd" || t.I.invType == "pbd").Sum(S => S.I.totalNet),
+
+        //                                        paid = g.Where(t => t.I.invType == "p").Sum(S => S.I.paid),
+        //                                        deserved = g.Where(t => t.I.invType == "p").Sum(S => S.I.deserved),
+        //                                        discountValue = g.Where(t => t.I.invType == "p").Sum(S => S.(I.discountType == "1" || I.discountType ==null ) ? S.I.discountValue : (S.I.discountType == "2" ? (S.I.discountValue / 100) : 0)),
+
+        //                                        paidPb = g.Where(t => t.I.invType == "pb").Sum(S => S.I.paid),
+        //                                        deservedPb = g.Where(t => t.I.invType == "pb").Sum(S => S.I.deserved),
+        //                                        discountValuePb = g.Where(t => t.I.invType == "pb").Sum(S => S.(I.discountType == "1" || I.discountType ==null ) ? S.I.discountValue : (S.I.discountType == "2" ? (S.I.discountValue / 100) : 0)),
+        //                                           */
+        //                                    }).ToList();
+
+        //                    /*
+        //          if(S.(I.discountType == "1" || I.discountType ==null ))
+        //{
+        //    return S.I.discountValue;
+        //}else if(S.I.discountType == "2")
+        //{
+        //   return (S.I.discountValue / 100);
+        //}
+        //else
+        //{
+        //    return 0;
+        //}
+        //*/
 
 
 
-                    if (invListm == null)
-                        return NotFound();
-                    else
-                        return Ok(invListm);
-                }
+        //                    if (invListm == null)
+        //                        return NotFound();
+        //                    else
+        //                        return Ok(invListm);
+        //                }
 
-            }
+        //            }
 
-            //else
-            return NotFound();
-        }
+        //            //else
+        //            return NotFound();
+        //        }
 
 
         /*
@@ -1552,268 +1982,570 @@ else
         // فواتير المبيعات مع العناصر
         [HttpGet]
         [Route("GetSaleitem")]
-        public IHttpActionResult GetSaleitem(int mainBranchId, int userId)
+        public ResponseVM GetSaleitem(string token)
         {
+
+            // public ResponseVM GetPurinv(string token)
+
+            //int mainBranchId, int userId
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
+            else
             {
-                List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+                int mainBranchId = 0;
+                int userId = 0;
 
-                using (incposdbEntities entity = new incposdbEntities())
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
                 {
-                    var invListm = (from IT in entity.itemsTransfer
-                                    from I in entity.invoices.Where(I => I.invoiceId == IT.invoiceId)
+                    if (c.Type == "mainBranchId")
+                    {
+                        mainBranchId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "userId")
+                    {
+                        userId = int.Parse(c.Value);
+                    }
 
-                                    from IU in entity.itemsUnits.Where(IU => IU.itemUnitId == IT.itemUnitId)
-                                    join ITCUSER in entity.users on IT.createUserId equals ITCUSER.userId
-                                    join ITUPUSER in entity.users on IT.updateUserId equals ITUPUSER.userId
-                                    join ITEM in entity.items on IU.itemId equals ITEM.itemId
-                                    join UNIT in entity.units on IU.unitId equals UNIT.unitId
-                                    //    join B in entity.branches on I.branchId equals B.branchId into JB
-                                    join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
-                                    join A in entity.agents on I.agentId equals A.agentId into JA
-                                    join U in entity.users on I.createUserId equals U.userId into JU
-                                    join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
-                                    join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
-                                    join P in entity.pos on I.posId equals P.posId into JP
+                }
+                // DateTime cmpdate = DateTime.Now.AddDays(newdays);
+                try
+                {
 
-                                    // from JBB in JB
-                                    from JPP in JP.DefaultIfEmpty()
-                                    from JUU in JU.DefaultIfEmpty()
-                                    from JUPUS in JUPUSR.DefaultIfEmpty()
-                                    from JIMM in JIM.DefaultIfEmpty()
-                                    from JAA in JA.DefaultIfEmpty()
-                                    from JBCC in JBC.DefaultIfEmpty()
-                                    where (brIds.Contains(JBCC.branchId)) && (I.invType == "s" || I.invType == "sb")
-
-                                    select new
-                                    {
-
-                                        ITitemName = ITEM.name,
-                                        ITunitName = UNIT.name,
-                                        ITitemsTransId = IT.itemsTransId,
-                                        ITitemUnitId = IT.itemUnitId,
-
-                                        ITitemId = IU.itemId,
-                                        ITunitId = IU.unitId,
-                                        ITquantity = IT.quantity,
-
-                                        ITcreateDate = IT.createDate,
-                                        ITupdateDate = IT.updateDate,
-                                        ITcreateUserId = IT.createUserId,
-                                        ITupdateUserId = IT.updateUserId,
-                                        ITnotes = IT.notes,
-                                        ITprice = IT.price,
-                                        ITbarcode = IU.barcode,
-                                        ITCreateuserName = ITCUSER.name,
-                                        ITCreateuserLName = ITCUSER.lastname,
-                                        ITCreateuserAccName = ITCUSER.username,
-
-                                        ITUpdateuserName = ITUPUSER.name,
-                                        ITUpdateuserLName = ITUPUSER.lastname,
-                                        ITUpdateuserAccName = ITUPUSER.username,
-                                        I.invoiceId,
-                                        I.invNumber,
-                                        I.agentId,
-                                        I.posId,
-                                        I.invType,
-                                        I.total,
-                                        I.totalNet,
-                                        I.paid,
-                                        I.deserved,
-                                        I.deservedDate,
-                                        I.invDate,
-                                        I.invoiceMainId,
-                                        I.invCase,
-                                        I.invTime,
-                                        I.notes,
-                                        I.vendorInvNum,
-                                        I.vendorInvDate,
-                                        I.createUserId,
-                                        I.updateDate,
-                                        I.updateUserId,
-                                        I.branchId,
-                                        discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
-                                        I.discountType,
-                                        I.tax,
-                                        I.name,
-                                        I.isApproved,
-
-                                        //
-                                        I.branchCreatorId,
-                                        branchCreatorName = JBCC.name,
-                                        //
-                                        //  branchName = JBB.name,
-
-                                        //  branchType = JBB.type,
-                                        posName = JPP.name,
-                                        posCode = JPP.code,
-                                        agentName = JAA.name,
-                                        agentCode = JAA.code,
-                                        agentType = JAA.type,
-                                        cuserName = JUU.name,
-                                        cuserLast = JUU.lastname,
-                                        cUserAccName = JUU.username,
-                                        uuserName = JUPUS.name,
-                                        uuserLast = JUPUS.lastname,
-                                        uUserAccName = JUPUS.username,
-                                        agentCompany = JAA.company,
-                                        subTotal = (IT.price * IT.quantity),
-                                        //username
-
-                                        //  I.invoiceId,
-                                        //    JBB.name
-                                    }).ToList();
+                    List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
 
 
+                        var invListm = (from IT in entity.itemsTransfer
+                                        from I in entity.invoices.Where(I => I.invoiceId == IT.invoiceId)
+
+                                        from IU in entity.itemsUnits.Where(IU => IU.itemUnitId == IT.itemUnitId)
+                                        join ITCUSER in entity.users on IT.createUserId equals ITCUSER.userId
+                                        join ITUPUSER in entity.users on IT.updateUserId equals ITUPUSER.userId
+                                        join ITEM in entity.items on IU.itemId equals ITEM.itemId
+                                        join UNIT in entity.units on IU.unitId equals UNIT.unitId
+                                        //    join B in entity.branches on I.branchId equals B.branchId into JB
+                                        join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
+                                        join A in entity.agents on I.agentId equals A.agentId into JA
+                                        join U in entity.users on I.createUserId equals U.userId into JU
+                                        join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
+                                        join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
+                                        join P in entity.pos on I.posId equals P.posId into JP
+
+                                        // from JBB in JB
+                                        from JPP in JP.DefaultIfEmpty()
+                                        from JUU in JU.DefaultIfEmpty()
+                                        from JUPUS in JUPUSR.DefaultIfEmpty()
+                                        from JIMM in JIM.DefaultIfEmpty()
+                                        from JAA in JA.DefaultIfEmpty()
+                                        from JBCC in JBC.DefaultIfEmpty()
+                                        where (brIds.Contains(JBCC.branchId)) && (I.invType == "s" || I.invType == "sb")
+
+                                        select new
+                                        {
+
+                                            ITitemName = ITEM.name,
+                                            ITunitName = UNIT.name,
+                                            ITitemsTransId = IT.itemsTransId,
+                                            ITitemUnitId = IT.itemUnitId,
+
+                                            ITitemId = IU.itemId,
+                                            ITunitId = IU.unitId,
+                                            ITquantity = IT.quantity,
+
+                                            ITcreateDate = IT.createDate,
+                                            ITupdateDate = IT.updateDate,
+                                            ITcreateUserId = IT.createUserId,
+                                            ITupdateUserId = IT.updateUserId,
+                                            ITnotes = IT.notes,
+                                            ITprice = IT.price,
+                                            ITbarcode = IU.barcode,
+                                            ITCreateuserName = ITCUSER.name,
+                                            ITCreateuserLName = ITCUSER.lastname,
+                                            ITCreateuserAccName = ITCUSER.username,
+
+                                            ITUpdateuserName = ITUPUSER.name,
+                                            ITUpdateuserLName = ITUPUSER.lastname,
+                                            ITUpdateuserAccName = ITUPUSER.username,
+                                            I.invoiceId,
+                                            I.invNumber,
+                                            I.agentId,
+                                            I.posId,
+                                            I.invType,
+                                            I.total,
+                                            I.totalNet,
+                                            I.paid,
+                                            I.deserved,
+                                            I.deservedDate,
+                                            I.invDate,
+                                            I.invoiceMainId,
+                                            I.invCase,
+                                            I.invTime,
+                                            I.notes,
+                                            I.vendorInvNum,
+                                            I.vendorInvDate,
+                                            I.createUserId,
+                                            I.updateDate,
+                                            I.updateUserId,
+                                            I.branchId,
+                                            discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
+                                            I.discountType,
+                                            I.tax,
+                                            I.name,
+                                            I.isApproved,
+
+                                            //
+                                            I.branchCreatorId,
+                                            branchCreatorName = JBCC.name,
+                                            //
+                                            //  branchName = JBB.name,
+
+                                            //  branchType = JBB.type,
+                                            posName = JPP.name,
+                                            posCode = JPP.code,
+                                            agentName = JAA.name,
+                                            agentCode = JAA.code,
+                                            agentType = JAA.type,
+                                            cuserName = JUU.name,
+                                            cuserLast = JUU.lastname,
+                                            cUserAccName = JUU.username,
+                                            uuserName = JUPUS.name,
+                                            uuserLast = JUPUS.lastname,
+                                            uUserAccName = JUPUS.username,
+                                            agentCompany = JAA.company,
+                                            subTotal = (IT.price * IT.quantity),
+                                            //username
+
+                                            //  I.invoiceId,
+                                            //    JBB.name
+                                        }).ToList();
 
 
 
-                    if (invListm == null)
-                        return NotFound();
-                    else
-                        return Ok(invListm);
+
+
+                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(invListm) };
+
+                    }
+
+                }
+                catch
+                {
+                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
                 }
 
             }
 
-            //else
-            return NotFound();
+            //var re = Request;
+            //var headers = re.Headers;
+            //string token = "";
+            //if (headers.Contains("APIKey"))
+            //{
+            //    token = headers.GetValues("APIKey").First();
+            //}
+            //Validation validation = new Validation();
+            //bool valid = validation.CheckApiKey(token);
+
+            //if (valid) // APIKey is valid
+            //{
+            //    List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+
+            //    using (incposdbEntities entity = new incposdbEntities())
+            //    {
+            //        var invListm = (from IT in entity.itemsTransfer
+            //                        from I in entity.invoices.Where(I => I.invoiceId == IT.invoiceId)
+
+            //                        from IU in entity.itemsUnits.Where(IU => IU.itemUnitId == IT.itemUnitId)
+            //                        join ITCUSER in entity.users on IT.createUserId equals ITCUSER.userId
+            //                        join ITUPUSER in entity.users on IT.updateUserId equals ITUPUSER.userId
+            //                        join ITEM in entity.items on IU.itemId equals ITEM.itemId
+            //                        join UNIT in entity.units on IU.unitId equals UNIT.unitId
+            //                        //    join B in entity.branches on I.branchId equals B.branchId into JB
+            //                        join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
+            //                        join A in entity.agents on I.agentId equals A.agentId into JA
+            //                        join U in entity.users on I.createUserId equals U.userId into JU
+            //                        join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
+            //                        join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
+            //                        join P in entity.pos on I.posId equals P.posId into JP
+
+            //                        // from JBB in JB
+            //                        from JPP in JP.DefaultIfEmpty()
+            //                        from JUU in JU.DefaultIfEmpty()
+            //                        from JUPUS in JUPUSR.DefaultIfEmpty()
+            //                        from JIMM in JIM.DefaultIfEmpty()
+            //                        from JAA in JA.DefaultIfEmpty()
+            //                        from JBCC in JBC.DefaultIfEmpty()
+            //                        where (brIds.Contains(JBCC.branchId)) && (I.invType == "s" || I.invType == "sb")
+
+            //                        select new
+            //                        {
+
+            //                            ITitemName = ITEM.name,
+            //                            ITunitName = UNIT.name,
+            //                            ITitemsTransId = IT.itemsTransId,
+            //                            ITitemUnitId = IT.itemUnitId,
+
+            //                            ITitemId = IU.itemId,
+            //                            ITunitId = IU.unitId,
+            //                            ITquantity = IT.quantity,
+
+            //                            ITcreateDate = IT.createDate,
+            //                            ITupdateDate = IT.updateDate,
+            //                            ITcreateUserId = IT.createUserId,
+            //                            ITupdateUserId = IT.updateUserId,
+            //                            ITnotes = IT.notes,
+            //                            ITprice = IT.price,
+            //                            ITbarcode = IU.barcode,
+            //                            ITCreateuserName = ITCUSER.name,
+            //                            ITCreateuserLName = ITCUSER.lastname,
+            //                            ITCreateuserAccName = ITCUSER.username,
+
+            //                            ITUpdateuserName = ITUPUSER.name,
+            //                            ITUpdateuserLName = ITUPUSER.lastname,
+            //                            ITUpdateuserAccName = ITUPUSER.username,
+            //                            I.invoiceId,
+            //                            I.invNumber,
+            //                            I.agentId,
+            //                            I.posId,
+            //                            I.invType,
+            //                            I.total,
+            //                            I.totalNet,
+            //                            I.paid,
+            //                            I.deserved,
+            //                            I.deservedDate,
+            //                            I.invDate,
+            //                            I.invoiceMainId,
+            //                            I.invCase,
+            //                            I.invTime,
+            //                            I.notes,
+            //                            I.vendorInvNum,
+            //                            I.vendorInvDate,
+            //                            I.createUserId,
+            //                            I.updateDate,
+            //                            I.updateUserId,
+            //                            I.branchId,
+            //                            discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
+            //                            I.discountType,
+            //                            I.tax,
+            //                            I.name,
+            //                            I.isApproved,
+
+            //                            //
+            //                            I.branchCreatorId,
+            //                            branchCreatorName = JBCC.name,
+            //                            //
+            //                            //  branchName = JBB.name,
+
+            //                            //  branchType = JBB.type,
+            //                            posName = JPP.name,
+            //                            posCode = JPP.code,
+            //                            agentName = JAA.name,
+            //                            agentCode = JAA.code,
+            //                            agentType = JAA.type,
+            //                            cuserName = JUU.name,
+            //                            cuserLast = JUU.lastname,
+            //                            cUserAccName = JUU.username,
+            //                            uuserName = JUPUS.name,
+            //                            uuserLast = JUPUS.lastname,
+            //                            uUserAccName = JUPUS.username,
+            //                            agentCompany = JAA.company,
+            //                            subTotal = (IT.price * IT.quantity),
+            //                            //username
+
+            //                            //  I.invoiceId,
+            //                            //    JBB.name
+            //                        }).ToList();
+
+
+
+
+
+            //        if (invListm == null)
+            //            return NotFound();
+            //        else
+            //            return Ok(invListm);
+            //    }
+
+            //}
+
+            ////else
+            //return NotFound();
         }
 
         //عدد العناصر في كل فاتورة
         [HttpGet]
         [Route("GetSaleitemcount")]
-        public IHttpActionResult GetSaleitemcount(int mainBranchId, int userId)
+        public ResponseVM GetSaleitemcount(string token)
         {
+
+            // public ResponseVM GetPurinv(string token)
+
+            //int mainBranchId, int userId
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
+            else
             {
-                List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+                int mainBranchId = 0;
+                int userId = 0;
 
-                using (incposdbEntities entity = new incposdbEntities())
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
                 {
-                    var invListm = (from I in entity.invoices
+                    if (c.Type == "mainBranchId")
+                    {
+                        mainBranchId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "userId")
+                    {
+                        userId = int.Parse(c.Value);
+                    }
 
-                                        //  join B in entity.branches on I.branchId equals B.branchId into JB
-                                    join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
-                                    join A in entity.agents on I.agentId equals A.agentId into JA
-                                    join U in entity.users on I.createUserId equals U.userId into JU
-                                    join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
-                                    join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
-                                    join P in entity.pos on I.posId equals P.posId into JP
+                }
+                // DateTime cmpdate = DateTime.Now.AddDays(newdays);
+                try
+                {
 
-                                    //   from JBB in JB
-                                    from JPP in JP.DefaultIfEmpty()
-                                    from JUU in JU.DefaultIfEmpty()
-                                    from JUPUS in JUPUSR.DefaultIfEmpty()
-                                    from JIMM in JIM.DefaultIfEmpty()
-                                    from JAA in JA.DefaultIfEmpty()
-                                    from JBCC in JBC.DefaultIfEmpty()
-                                    where (brIds.Contains(JBCC.branchId)) && (I.invType == "s" || I.invType == "sb")
+                    List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
 
-                                    select new
-                                    {
+                        var invListm = (from I in entity.invoices
 
-                                        I.invoiceId,
-                                        count = entity.itemsTransfer.Where(x => x.invoiceId == I.invoiceId).Count(),
-                                        I.invNumber,
+                                            //join B in entity.branches on I.branchId equals B.branchId into JB
+                                        join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
+                                        join A in entity.agents on I.agentId equals A.agentId into JA
+                                        join U in entity.users on I.createUserId equals U.userId into JU
+                                        join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
+                                        join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
+                                        join P in entity.pos on I.posId equals P.posId into JP
 
-                                        I.posId,
-                                        I.invType,
-                                        I.total,
-                                        I.totalNet,
-                                        I.paid,
-                                        I.deserved,
-                                        I.deservedDate,
-                                        I.invDate,
-                                        I.invoiceMainId,
-                                        I.invCase,
-                                        I.invTime,
-                                        I.notes,
-                                        I.vendorInvNum,
-                                        I.vendorInvDate,
-                                        I.createUserId,
-                                        I.updateDate,
-                                        I.updateUserId,
-                                        I.branchId,
-                                        discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
-                                        I.discountType,
-                                        I.tax,
-                                        I.name,
-                                        I.isApproved,
+                                        //   from JBB in JB
+                                        from JPP in JP.DefaultIfEmpty()
+                                        from JUU in JU.DefaultIfEmpty()
+                                        from JUPUS in JUPUSR.DefaultIfEmpty()
+                                        from JIMM in JIM.DefaultIfEmpty()
+                                        from JAA in JA.DefaultIfEmpty()
+                                        from JBCC in JBC.DefaultIfEmpty()
+                                        where (brIds.Contains(JBCC.branchId)) && (I.invType == "s" || I.invType == "sb")
 
-                                        //
-                                        I.branchCreatorId,
-                                        branchCreatorName = JBCC.name,
-                                        //
-                                        // branchName = JBB.name,
+                                        select new
+                                        {
 
-                                        //     branchType = JBB.type,
-                                        posName = JPP.name,
-                                        posCode = JPP.code,
+                                            I.invoiceId,
+                                            count = entity.itemsTransfer.Where(x => x.invoiceId == I.invoiceId).Count(),
+                                            I.invNumber,
 
-                                        agentCode = JAA.code,
-                                        //
-                                        agentName = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb")) ?
-                                        "unknown" : JAA.name,
+                                            I.posId,
+                                            I.invType,
+                                            I.total,
+                                            I.totalNet,
+                                            I.paid,
+                                            I.deserved,
+                                            I.deservedDate,
+                                            I.invDate,
+                                            I.invoiceMainId,
+                                            I.invCase,
+                                            I.invTime,
+                                            I.notes,
+                                            I.vendorInvNum,
+                                            I.vendorInvDate,
+                                            I.createUserId,
+                                            I.updateDate,
+                                            I.updateUserId,
+                                            I.branchId,
+                                            discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
+                                            I.discountType,
+                                            I.tax,
+                                            I.name,
+                                            I.isApproved,
 
+                                            //
+                                            I.branchCreatorId,
+                                            branchCreatorName = JBCC.name,
+                                            //
+                                            // branchName = JBB.name,
 
-                                        //   agentType = JAA.type,
-                                        agentType = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
-                                        ? "c" : JAA.type,
-                                        agentId = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
-                                        ? 0 : I.agentId,
+                                            //     branchType = JBB.type,
+                                            posName = JPP.name,
+                                            posCode = JPP.code,
 
-
-                                        cuserName = JUU.name,
-                                        cuserLast = JUU.lastname,
-                                        cUserAccName = JUU.username,
-                                        uuserName = JUPUS.name,
-                                        uuserLast = JUPUS.lastname,
-                                        uUserAccName = JUPUS.username,
-                                        agentCompany = ((JAA.company == null || JAA.company == "") && (I.invType == "s" || I.invType == "sb")) ?
-                                        "unknown" : JAA.company,
-
-
-
+                                            agentCode = JAA.code,
+                                            //
+                                            agentName = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb")) ?
+                                            "unknown" : JAA.name,
 
 
-                                        //username
+                                            //   agentType = JAA.type,
+                                            agentType = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
+                                            ? "c" : JAA.type,
+                                            agentId = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
+                                            ? 0 : I.agentId,
 
-                                        //  I.invoiceId,
-                                        //    JBB.name
-                                    }).ToList();
+
+                                            cuserName = JUU.name,
+                                            cuserLast = JUU.lastname,
+                                            cUserAccName = JUU.username,
+                                            uuserName = JUPUS.name,
+                                            uuserLast = JUPUS.lastname,
+                                            uUserAccName = JUPUS.username,
+                                            agentCompany = ((JAA.company == null || JAA.company == "") && (I.invType == "s" || I.invType == "sb")) ?
+                                            "unknown" : JAA.company,
 
 
-                    if (invListm == null)
-                        return NotFound();
-                    else
-                        return Ok(invListm);
+
+
+
+                                            //username
+
+                                            //  I.invoiceId,
+                                            //    JBB.name
+                                        }).ToList();
+
+
+
+
+                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(invListm) };
+
+                    }
+
+                }
+                catch
+                {
+                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
                 }
 
             }
 
-            //else
-            return NotFound();
+            //var re = Request;
+            //var headers = re.Headers;
+            //string token = "";
+            //if (headers.Contains("APIKey"))
+            //{
+            //    token = headers.GetValues("APIKey").First();
+            //}
+            //Validation validation = new Validation();
+            //bool valid = validation.CheckApiKey(token);
+
+            //if (valid) // APIKey is valid
+            //{
+            //    List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+
+            //    using (incposdbEntities entity = new incposdbEntities())
+            //    {
+            //        var invListm = (from I in entity.invoices
+
+            //                            //  join B in entity.branches on I.branchId equals B.branchId into JB
+            //                        join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
+            //                        join A in entity.agents on I.agentId equals A.agentId into JA
+            //                        join U in entity.users on I.createUserId equals U.userId into JU
+            //                        join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
+            //                        join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
+            //                        join P in entity.pos on I.posId equals P.posId into JP
+
+            //                        //   from JBB in JB
+            //                        from JPP in JP.DefaultIfEmpty()
+            //                        from JUU in JU.DefaultIfEmpty()
+            //                        from JUPUS in JUPUSR.DefaultIfEmpty()
+            //                        from JIMM in JIM.DefaultIfEmpty()
+            //                        from JAA in JA.DefaultIfEmpty()
+            //                        from JBCC in JBC.DefaultIfEmpty()
+            //                        where (brIds.Contains(JBCC.branchId)) && (I.invType == "s" || I.invType == "sb")
+
+            //                        select new
+            //                        {
+
+            //                            I.invoiceId,
+            //                            count = entity.itemsTransfer.Where(x => x.invoiceId == I.invoiceId).Count(),
+            //                            I.invNumber,
+
+            //                            I.posId,
+            //                            I.invType,
+            //                            I.total,
+            //                            I.totalNet,
+            //                            I.paid,
+            //                            I.deserved,
+            //                            I.deservedDate,
+            //                            I.invDate,
+            //                            I.invoiceMainId,
+            //                            I.invCase,
+            //                            I.invTime,
+            //                            I.notes,
+            //                            I.vendorInvNum,
+            //                            I.vendorInvDate,
+            //                            I.createUserId,
+            //                            I.updateDate,
+            //                            I.updateUserId,
+            //                            I.branchId,
+            //                            discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
+            //                            I.discountType,
+            //                            I.tax,
+            //                            I.name,
+            //                            I.isApproved,
+
+            //                            //
+            //                            I.branchCreatorId,
+            //                            branchCreatorName = JBCC.name,
+            //                            //
+            //                            // branchName = JBB.name,
+
+            //                            //     branchType = JBB.type,
+            //                            posName = JPP.name,
+            //                            posCode = JPP.code,
+
+            //                            agentCode = JAA.code,
+            //                            //
+            //                            agentName = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb")) ?
+            //                            "unknown" : JAA.name,
+
+
+            //                            //   agentType = JAA.type,
+            //                            agentType = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
+            //                            ? "c" : JAA.type,
+            //                            agentId = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
+            //                            ? 0 : I.agentId,
+
+
+            //                            cuserName = JUU.name,
+            //                            cuserLast = JUU.lastname,
+            //                            cUserAccName = JUU.username,
+            //                            uuserName = JUPUS.name,
+            //                            uuserLast = JUPUS.lastname,
+            //                            uUserAccName = JUPUS.username,
+            //                            agentCompany = ((JAA.company == null || JAA.company == "") && (I.invType == "s" || I.invType == "sb")) ?
+            //                            "unknown" : JAA.company,
+
+
+
+
+
+            //                            //username
+
+            //                            //  I.invoiceId,
+            //                            //    JBB.name
+            //                        }).ToList();
+
+
+            //        if (invListm == null)
+            //            return NotFound();
+            //        else
+            //            return Ok(invListm);
+            //    }
+
+            //}
+
+            ////else
+            //return NotFound();
         }
 
 
@@ -1821,254 +2553,540 @@ else
 
         [HttpGet]
         [Route("Getorderitemcount")]
-        public IHttpActionResult Getorderitemcount(int mainBranchId, int userId)
+        public ResponseVM Getorderitemcount(string token)
         {
+
+            // public ResponseVM GetPurinv(string token)
+
+            //int mainBranchId, int userId
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
+            else
             {
-                List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+                int mainBranchId = 0;
+                int userId = 0;
 
-                using (incposdbEntities entity = new incposdbEntities())
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
                 {
-                    var invListm = (from I in entity.invoices
+                    if (c.Type == "mainBranchId")
+                    {
+                        mainBranchId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "userId")
+                    {
+                        userId = int.Parse(c.Value);
+                    }
 
-                                        //  join B in entity.branches on I.branchId equals B.branchId into JB
-                                    join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
-                                    join A in entity.agents on I.agentId equals A.agentId into JA
-                                    join U in entity.users on I.createUserId equals U.userId into JU
-                                    join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
-                                    join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
-                                    join P in entity.pos on I.posId equals P.posId into JP
+                }
+                // DateTime cmpdate = DateTime.Now.AddDays(newdays);
+                try
+                {
 
-                                    //   from JBB in JB
-                                    from JPP in JP.DefaultIfEmpty()
-                                    from JUU in JU.DefaultIfEmpty()
-                                    from JUPUS in JUPUSR.DefaultIfEmpty()
-                                    from JIMM in JIM.DefaultIfEmpty()
-                                    from JAA in JA.DefaultIfEmpty()
-                                    from JBCC in JBC.DefaultIfEmpty()
-                                    where (brIds.Contains(JBCC.branchId)) && (I.invType == "or")
+                    List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
 
-                                    select new
-                                    {
+                        var invListm = (from I in entity.invoices
 
-                                        I.invoiceId,
-                                        count = entity.itemsTransfer.Where(x => x.invoiceId == I.invoiceId).Count(),
-                                        I.invNumber,
+                                            //join B in entity.branches on I.branchId equals B.branchId into JB
+                                        join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
+                                        join A in entity.agents on I.agentId equals A.agentId into JA
+                                        join U in entity.users on I.createUserId equals U.userId into JU
+                                        join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
+                                        join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
+                                        join P in entity.pos on I.posId equals P.posId into JP
 
-                                        I.posId,
-                                        I.invType,
-                                        I.total,
-                                        I.totalNet,
-                                        I.paid,
-                                        I.deserved,
-                                        I.deservedDate,
-                                        I.invDate,
-                                        I.invoiceMainId,
-                                        I.invCase,
-                                        I.invTime,
-                                        I.notes,
-                                        I.vendorInvNum,
-                                        I.vendorInvDate,
-                                        I.createUserId,
-                                        I.updateDate,
-                                        I.updateUserId,
-                                        I.branchId,
-                                        discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
-                                        I.discountType,
-                                        I.tax,
-                                        I.name,
-                                        I.isApproved,
+                                        //   from JBB in JB
+                                        from JPP in JP.DefaultIfEmpty()
+                                        from JUU in JU.DefaultIfEmpty()
+                                        from JUPUS in JUPUSR.DefaultIfEmpty()
+                                        from JIMM in JIM.DefaultIfEmpty()
+                                        from JAA in JA.DefaultIfEmpty()
+                                        from JBCC in JBC.DefaultIfEmpty()
+                                        where (brIds.Contains(JBCC.branchId)) && (I.invType == "or")
 
-                                        //
-                                        I.branchCreatorId,
-                                        branchCreatorName = JBCC.name,
-                                        //
-                                        // branchName = JBB.name,
+                                        select new
+                                        {
 
-                                        //     branchType = JBB.type,
-                                        posName = JPP.name,
-                                        posCode = JPP.code,
+                                            I.invoiceId,
+                                            count = entity.itemsTransfer.Where(x => x.invoiceId == I.invoiceId).Count(),
+                                            I.invNumber,
 
-                                        agentCode = JAA.code,
-                                        //
-                                        agentName = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb")) ?
-                                        "unknown" : JAA.name,
+                                            I.posId,
+                                            I.invType,
+                                            I.total,
+                                            I.totalNet,
+                                            I.paid,
+                                            I.deserved,
+                                            I.deservedDate,
+                                            I.invDate,
+                                            I.invoiceMainId,
+                                            I.invCase,
+                                            I.invTime,
+                                            I.notes,
+                                            I.vendorInvNum,
+                                            I.vendorInvDate,
+                                            I.createUserId,
+                                            I.updateDate,
+                                            I.updateUserId,
+                                            I.branchId,
+                                            discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
+                                            I.discountType,
+                                            I.tax,
+                                            I.name,
+                                            I.isApproved,
 
+                                            //
+                                            I.branchCreatorId,
+                                            branchCreatorName = JBCC.name,
+                                            //
+                                            // branchName = JBB.name,
 
-                                        //   agentType = JAA.type,
-                                        agentType = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
-                                        ? "c" : JAA.type,
-                                        agentId = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
-                                        ? 0 : I.agentId,
+                                            //     branchType = JBB.type,
+                                            posName = JPP.name,
+                                            posCode = JPP.code,
 
-
-                                        cuserName = JUU.name,
-                                        cuserLast = JUU.lastname,
-                                        cUserAccName = JUU.username,
-                                        uuserName = JUPUS.name,
-                                        uuserLast = JUPUS.lastname,
-                                        uUserAccName = JUPUS.username,
-                                        agentCompany = ((JAA.company == null || JAA.company == "") && (I.invType == "s" || I.invType == "sb")) ?
-                                        "unknown" : JAA.company,
-
-
-
+                                            agentCode = JAA.code,
+                                            //
+                                            agentName = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb")) ?
+                                            "unknown" : JAA.name,
 
 
-                                        //username
+                                            //   agentType = JAA.type,
+                                            agentType = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
+                                            ? "c" : JAA.type,
+                                            agentId = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
+                                            ? 0 : I.agentId,
 
-                                        //  I.invoiceId,
-                                        //    JBB.name
-                                    }).ToList();
+
+                                            cuserName = JUU.name,
+                                            cuserLast = JUU.lastname,
+                                            cUserAccName = JUU.username,
+                                            uuserName = JUPUS.name,
+                                            uuserLast = JUPUS.lastname,
+                                            uUserAccName = JUPUS.username,
+                                            agentCompany = ((JAA.company == null || JAA.company == "") && (I.invType == "s" || I.invType == "sb")) ?
+                                            "unknown" : JAA.company,
 
 
-                    if (invListm == null)
-                        return NotFound();
-                    else
-                        return Ok(invListm);
+
+
+
+                                            //username
+
+                                            //  I.invoiceId,
+                                            //    JBB.name
+                                        }).ToList();
+
+
+
+
+                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(invListm) };
+
+                    }
+
+                }
+                catch
+                {
+                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
                 }
 
             }
+            //var re = Request;
+            //var headers = re.Headers;
+            //string token = "";
+            //if (headers.Contains("APIKey"))
+            //{
+            //    token = headers.GetValues("APIKey").First();
+            //}
+            //Validation validation = new Validation();
+            //bool valid = validation.CheckApiKey(token);
 
-            //else
-            return NotFound();
+            //if (valid) // APIKey is valid
+            //{
+            //    List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+
+            //    using (incposdbEntities entity = new incposdbEntities())
+            //    {
+            //        var invListm = (from I in entity.invoices
+
+            //                            //  join B in entity.branches on I.branchId equals B.branchId into JB
+            //                        join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
+            //                        join A in entity.agents on I.agentId equals A.agentId into JA
+            //                        join U in entity.users on I.createUserId equals U.userId into JU
+            //                        join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
+            //                        join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
+            //                        join P in entity.pos on I.posId equals P.posId into JP
+
+            //                        //   from JBB in JB
+            //                        from JPP in JP.DefaultIfEmpty()
+            //                        from JUU in JU.DefaultIfEmpty()
+            //                        from JUPUS in JUPUSR.DefaultIfEmpty()
+            //                        from JIMM in JIM.DefaultIfEmpty()
+            //                        from JAA in JA.DefaultIfEmpty()
+            //                        from JBCC in JBC.DefaultIfEmpty()
+            //                        where (brIds.Contains(JBCC.branchId)) && (I.invType == "or")
+
+            //                        select new
+            //                        {
+
+            //                            I.invoiceId,
+            //                            count = entity.itemsTransfer.Where(x => x.invoiceId == I.invoiceId).Count(),
+            //                            I.invNumber,
+
+            //                            I.posId,
+            //                            I.invType,
+            //                            I.total,
+            //                            I.totalNet,
+            //                            I.paid,
+            //                            I.deserved,
+            //                            I.deservedDate,
+            //                            I.invDate,
+            //                            I.invoiceMainId,
+            //                            I.invCase,
+            //                            I.invTime,
+            //                            I.notes,
+            //                            I.vendorInvNum,
+            //                            I.vendorInvDate,
+            //                            I.createUserId,
+            //                            I.updateDate,
+            //                            I.updateUserId,
+            //                            I.branchId,
+            //                            discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
+            //                            I.discountType,
+            //                            I.tax,
+            //                            I.name,
+            //                            I.isApproved,
+
+            //                            //
+            //                            I.branchCreatorId,
+            //                            branchCreatorName = JBCC.name,
+            //                            //
+            //                            // branchName = JBB.name,
+
+            //                            //     branchType = JBB.type,
+            //                            posName = JPP.name,
+            //                            posCode = JPP.code,
+
+            //                            agentCode = JAA.code,
+            //                            //
+            //                            agentName = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb")) ?
+            //                            "unknown" : JAA.name,
+
+
+            //                            //   agentType = JAA.type,
+            //                            agentType = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
+            //                            ? "c" : JAA.type,
+            //                            agentId = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
+            //                            ? 0 : I.agentId,
+
+
+            //                            cuserName = JUU.name,
+            //                            cuserLast = JUU.lastname,
+            //                            cUserAccName = JUU.username,
+            //                            uuserName = JUPUS.name,
+            //                            uuserLast = JUPUS.lastname,
+            //                            uUserAccName = JUPUS.username,
+            //                            agentCompany = ((JAA.company == null || JAA.company == "") && (I.invType == "s" || I.invType == "sb")) ?
+            //                            "unknown" : JAA.company,
+
+
+
+
+
+            //                            //username
+
+            //                            //  I.invoiceId,
+            //                            //    JBB.name
+            //                        }).ToList();
+
+
+            //        if (invListm == null)
+            //            return NotFound();
+            //        else
+            //            return Ok(invListm);
+            //    }
+
+            //}
+
+            ////else
+            //return NotFound();
         }
 
         // عدد العناصر في فواتير الطلبات
 
         [HttpGet]
         [Route("GetPurorderitemcount")]
-        public IHttpActionResult GetPurorderitemcount(int mainBranchId, int userId)
+        public ResponseVM GetPurorderitemcount(string token)
         {
+            // public ResponseVM GetPurinv(string token)
+
+            //int mainBranchId, int userId
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
+            else
             {
-                List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+                int mainBranchId = 0;
+                int userId = 0;
 
-                using (incposdbEntities entity = new incposdbEntities())
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
                 {
-                    var invListm = (from I in entity.invoices
+                    if (c.Type == "mainBranchId")
+                    {
+                        mainBranchId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "userId")
+                    {
+                        userId = int.Parse(c.Value);
+                    }
 
-                                        //  join B in entity.branches on I.branchId equals B.branchId into JB
-                                    join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
-                                    join A in entity.agents on I.agentId equals A.agentId into JA
-                                    join U in entity.users on I.createUserId equals U.userId into JU
-                                    join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
-                                    join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
-                                    join P in entity.pos on I.posId equals P.posId into JP
+                }
+                // DateTime cmpdate = DateTime.Now.AddDays(newdays);
+                try
+                {
 
-                                    //   from JBB in JB
-                                    from JPP in JP.DefaultIfEmpty()
-                                    from JUU in JU.DefaultIfEmpty()
-                                    from JUPUS in JUPUSR.DefaultIfEmpty()
-                                    from JIMM in JIM.DefaultIfEmpty()
-                                    from JAA in JA.DefaultIfEmpty()
-                                    from JBCC in JBC.DefaultIfEmpty()
-                                    where (brIds.Contains(JBCC.branchId)) && (I.invType == "po")
+                    List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
 
-                                    select new
-                                    {
+                        var invListm = (from I in entity.invoices
 
-                                        I.invoiceId,
-                                        count = entity.itemsTransfer.Where(x => x.invoiceId == I.invoiceId).Count(),
-                                        I.invNumber,
+                                            //  join B in entity.branches on I.branchId equals B.branchId into JB
+                                        join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
+                                        join A in entity.agents on I.agentId equals A.agentId into JA
+                                        join U in entity.users on I.createUserId equals U.userId into JU
+                                        join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
+                                        join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
+                                        join P in entity.pos on I.posId equals P.posId into JP
 
-                                        I.posId,
-                                        I.invType,
-                                        I.total,
-                                        I.totalNet,
-                                        I.paid,
-                                        I.deserved,
-                                        I.deservedDate,
-                                        I.invDate,
-                                        I.invoiceMainId,
-                                        I.invCase,
-                                        I.invTime,
-                                        I.notes,
-                                        I.vendorInvNum,
-                                        I.vendorInvDate,
-                                        I.createUserId,
-                                        I.updateDate,
-                                        I.updateUserId,
-                                        I.branchId,
-                                        discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
-                                        I.discountType,
-                                        I.tax,
-                                        I.name,
-                                        I.isApproved,
+                                        //   from JBB in JB
+                                        from JPP in JP.DefaultIfEmpty()
+                                        from JUU in JU.DefaultIfEmpty()
+                                        from JUPUS in JUPUSR.DefaultIfEmpty()
+                                        from JIMM in JIM.DefaultIfEmpty()
+                                        from JAA in JA.DefaultIfEmpty()
+                                        from JBCC in JBC.DefaultIfEmpty()
+                                        where (brIds.Contains(JBCC.branchId)) && (I.invType == "po")
 
-                                        //
-                                        I.branchCreatorId,
-                                        branchCreatorName = JBCC.name,
-                                        //
-                                        // branchName = JBB.name,
+                                        select new
+                                        {
 
-                                        //     branchType = JBB.type,
-                                        posName = JPP.name,
-                                        posCode = JPP.code,
+                                            I.invoiceId,
+                                            count = entity.itemsTransfer.Where(x => x.invoiceId == I.invoiceId).Count(),
+                                            I.invNumber,
 
-                                        agentCode = JAA.code,
-                                        //
-                                        agentName = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb")) ?
-                                        "unknown" : JAA.name,
+                                            I.posId,
+                                            I.invType,
+                                            I.total,
+                                            I.totalNet,
+                                            I.paid,
+                                            I.deserved,
+                                            I.deservedDate,
+                                            I.invDate,
+                                            I.invoiceMainId,
+                                            I.invCase,
+                                            I.invTime,
+                                            I.notes,
+                                            I.vendorInvNum,
+                                            I.vendorInvDate,
+                                            I.createUserId,
+                                            I.updateDate,
+                                            I.updateUserId,
+                                            I.branchId,
+                                            discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
+                                            I.discountType,
+                                            I.tax,
+                                            I.name,
+                                            I.isApproved,
 
+                                            //
+                                            I.branchCreatorId,
+                                            branchCreatorName = JBCC.name,
+                                            //
+                                            // branchName = JBB.name,
 
-                                        //   agentType = JAA.type,
-                                        agentType = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
-                                        ? "c" : JAA.type,
-                                        agentId = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
-                                        ? 0 : I.agentId,
+                                            //     branchType = JBB.type,
+                                            posName = JPP.name,
+                                            posCode = JPP.code,
 
-
-                                        cuserName = JUU.name,
-                                        cuserLast = JUU.lastname,
-                                        cUserAccName = JUU.username,
-                                        uuserName = JUPUS.name,
-                                        uuserLast = JUPUS.lastname,
-                                        uUserAccName = JUPUS.username,
-                                        agentCompany = ((JAA.company == null || JAA.company == "") && (I.invType == "s" || I.invType == "sb")) ?
-                                        "unknown" : JAA.company,
-
-
-
+                                            agentCode = JAA.code,
+                                            //
+                                            agentName = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb")) ?
+                                            "unknown" : JAA.name,
 
 
-                                        //username
+                                            //   agentType = JAA.type,
+                                            agentType = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
+                                            ? "c" : JAA.type,
+                                            agentId = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
+                                            ? 0 : I.agentId,
 
-                                        //  I.invoiceId,
-                                        //    JBB.name
-                                    }).ToList();
+
+                                            cuserName = JUU.name,
+                                            cuserLast = JUU.lastname,
+                                            cUserAccName = JUU.username,
+                                            uuserName = JUPUS.name,
+                                            uuserLast = JUPUS.lastname,
+                                            uUserAccName = JUPUS.username,
+                                            agentCompany = ((JAA.company == null || JAA.company == "") && (I.invType == "s" || I.invType == "sb")) ?
+                                            "unknown" : JAA.company,
 
 
-                    if (invListm == null)
-                        return NotFound();
-                    else
-                        return Ok(invListm);
+
+
+
+                                            //username
+
+                                            //  I.invoiceId,
+                                            //    JBB.name
+                                        }).ToList();
+
+
+
+
+                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(invListm) };
+
+                    }
+
+                }
+                catch
+                {
+                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
                 }
 
             }
 
-            //else
-            return NotFound();
+            //var re = Request;
+            //var headers = re.Headers;
+            //string token = "";
+            //if (headers.Contains("APIKey"))
+            //{
+            //    token = headers.GetValues("APIKey").First();
+            //}
+            //Validation validation = new Validation();
+            //bool valid = validation.CheckApiKey(token);
+
+            //if (valid) // APIKey is valid
+            //{
+            //    List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+
+            //    using (incposdbEntities entity = new incposdbEntities())
+            //    {
+            //        var invListm = (from I in entity.invoices
+
+            //                            //  join B in entity.branches on I.branchId equals B.branchId into JB
+            //                        join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
+            //                        join A in entity.agents on I.agentId equals A.agentId into JA
+            //                        join U in entity.users on I.createUserId equals U.userId into JU
+            //                        join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
+            //                        join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
+            //                        join P in entity.pos on I.posId equals P.posId into JP
+
+            //                        //   from JBB in JB
+            //                        from JPP in JP.DefaultIfEmpty()
+            //                        from JUU in JU.DefaultIfEmpty()
+            //                        from JUPUS in JUPUSR.DefaultIfEmpty()
+            //                        from JIMM in JIM.DefaultIfEmpty()
+            //                        from JAA in JA.DefaultIfEmpty()
+            //                        from JBCC in JBC.DefaultIfEmpty()
+            //                        where (brIds.Contains(JBCC.branchId)) && (I.invType == "po")
+
+            //                        select new
+            //                        {
+
+            //                            I.invoiceId,
+            //                            count = entity.itemsTransfer.Where(x => x.invoiceId == I.invoiceId).Count(),
+            //                            I.invNumber,
+
+            //                            I.posId,
+            //                            I.invType,
+            //                            I.total,
+            //                            I.totalNet,
+            //                            I.paid,
+            //                            I.deserved,
+            //                            I.deservedDate,
+            //                            I.invDate,
+            //                            I.invoiceMainId,
+            //                            I.invCase,
+            //                            I.invTime,
+            //                            I.notes,
+            //                            I.vendorInvNum,
+            //                            I.vendorInvDate,
+            //                            I.createUserId,
+            //                            I.updateDate,
+            //                            I.updateUserId,
+            //                            I.branchId,
+            //                            discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
+            //                            I.discountType,
+            //                            I.tax,
+            //                            I.name,
+            //                            I.isApproved,
+
+            //                            //
+            //                            I.branchCreatorId,
+            //                            branchCreatorName = JBCC.name,
+            //                            //
+            //                            // branchName = JBB.name,
+
+            //                            //     branchType = JBB.type,
+            //                            posName = JPP.name,
+            //                            posCode = JPP.code,
+
+            //                            agentCode = JAA.code,
+            //                            //
+            //                            agentName = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb")) ?
+            //                            "unknown" : JAA.name,
+
+
+            //                            //   agentType = JAA.type,
+            //                            agentType = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
+            //                            ? "c" : JAA.type,
+            //                            agentId = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
+            //                            ? 0 : I.agentId,
+
+
+            //                            cuserName = JUU.name,
+            //                            cuserLast = JUU.lastname,
+            //                            cUserAccName = JUU.username,
+            //                            uuserName = JUPUS.name,
+            //                            uuserLast = JUPUS.lastname,
+            //                            uUserAccName = JUPUS.username,
+            //                            agentCompany = ((JAA.company == null || JAA.company == "") && (I.invType == "s" || I.invType == "sb")) ?
+            //                            "unknown" : JAA.company,
+
+
+
+
+
+            //                            //username
+
+            //                            //  I.invoiceId,
+            //                            //    JBB.name
+            //                        }).ToList();
+
+
+            //        if (invListm == null)
+            //            return NotFound();
+            //        else
+            //            return Ok(invListm);
+            //    }
+
+            //}
+
+            ////else
+            //return NotFound();
         }
 
 
@@ -2078,127 +3096,271 @@ else
 
         [HttpGet]
         [Route("GetQtitemcount")]
-        public IHttpActionResult GetQtitemcount(int mainBranchId, int userId)
+        public ResponseVM GetQtitemcount(string token)
         {
+
+            // public ResponseVM GetPurinv(string token)
+
+            //int mainBranchId, int userId
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
+            else
             {
-                List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+                int mainBranchId = 0;
+                int userId = 0;
 
-                using (incposdbEntities entity = new incposdbEntities())
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
                 {
-                    var invListm = (from I in entity.invoices
+                    if (c.Type == "mainBranchId")
+                    {
+                        mainBranchId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "userId")
+                    {
+                        userId = int.Parse(c.Value);
+                    }
 
-                                        //  join B in entity.branches on I.branchId equals B.branchId into JB
-                                    join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
-                                    join A in entity.agents on I.agentId equals A.agentId into JA
-                                    join U in entity.users on I.createUserId equals U.userId into JU
-                                    join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
-                                    join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
-                                    join P in entity.pos on I.posId equals P.posId into JP
+                }
+                // DateTime cmpdate = DateTime.Now.AddDays(newdays);
+                try
+                {
 
-                                    //   from JBB in JB
-                                    from JPP in JP.DefaultIfEmpty()
-                                    from JUU in JU.DefaultIfEmpty()
-                                    from JUPUS in JUPUSR.DefaultIfEmpty()
-                                    from JIMM in JIM.DefaultIfEmpty()
-                                    from JAA in JA.DefaultIfEmpty()
-                                    from JBCC in JBC.DefaultIfEmpty()
-                                    where (brIds.Contains(JBCC.branchId)) && (I.invType == "q")
+                    List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
 
-                                    select new
-                                    {
+                        var invListm = (from I in entity.invoices
 
-                                        I.invoiceId,
-                                        count = entity.itemsTransfer.Where(x => x.invoiceId == I.invoiceId).Count(),
-                                        I.invNumber,
+                                            //  join B in entity.branches on I.branchId equals B.branchId into JB
+                                        join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
+                                        join A in entity.agents on I.agentId equals A.agentId into JA
+                                        join U in entity.users on I.createUserId equals U.userId into JU
+                                        join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
+                                        join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
+                                        join P in entity.pos on I.posId equals P.posId into JP
 
-                                        I.posId,
-                                        I.invType,
-                                        I.total,
-                                        I.totalNet,
-                                        I.paid,
-                                        I.deserved,
-                                        I.deservedDate,
-                                        I.invDate,
-                                        I.invoiceMainId,
-                                        I.invCase,
-                                        I.invTime,
-                                        I.notes,
-                                        I.vendorInvNum,
-                                        I.vendorInvDate,
-                                        I.createUserId,
-                                        I.updateDate,
-                                        I.updateUserId,
-                                        I.branchId,
-                                        discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
-                                        I.discountType,
-                                        I.tax,
-                                        I.name,
-                                        I.isApproved,
+                                        //   from JBB in JB
+                                        from JPP in JP.DefaultIfEmpty()
+                                        from JUU in JU.DefaultIfEmpty()
+                                        from JUPUS in JUPUSR.DefaultIfEmpty()
+                                        from JIMM in JIM.DefaultIfEmpty()
+                                        from JAA in JA.DefaultIfEmpty()
+                                        from JBCC in JBC.DefaultIfEmpty()
+                                        where (brIds.Contains(JBCC.branchId)) && (I.invType == "q")
 
-                                        //
-                                        I.branchCreatorId,
-                                        branchCreatorName = JBCC.name,
-                                        //
-                                        // branchName = JBB.name,
+                                        select new
+                                        {
 
-                                        //     branchType = JBB.type,
-                                        posName = JPP.name,
-                                        posCode = JPP.code,
+                                            I.invoiceId,
+                                            count = entity.itemsTransfer.Where(x => x.invoiceId == I.invoiceId).Count(),
+                                            I.invNumber,
 
-                                        agentCode = JAA.code,
-                                        //
-                                        agentName = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb")) ?
-                                        "unknown" : JAA.name,
+                                            I.posId,
+                                            I.invType,
+                                            I.total,
+                                            I.totalNet,
+                                            I.paid,
+                                            I.deserved,
+                                            I.deservedDate,
+                                            I.invDate,
+                                            I.invoiceMainId,
+                                            I.invCase,
+                                            I.invTime,
+                                            I.notes,
+                                            I.vendorInvNum,
+                                            I.vendorInvDate,
+                                            I.createUserId,
+                                            I.updateDate,
+                                            I.updateUserId,
+                                            I.branchId,
+                                            discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
+                                            I.discountType,
+                                            I.tax,
+                                            I.name,
+                                            I.isApproved,
 
+                                            //
+                                            I.branchCreatorId,
+                                            branchCreatorName = JBCC.name,
+                                            //
+                                            // branchName = JBB.name,
 
-                                        //   agentType = JAA.type,
-                                        agentType = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
-                                        ? "c" : JAA.type,
-                                        agentId = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
-                                        ? 0 : I.agentId,
+                                            //     branchType = JBB.type,
+                                            posName = JPP.name,
+                                            posCode = JPP.code,
 
-
-                                        cuserName = JUU.name,
-                                        cuserLast = JUU.lastname,
-                                        cUserAccName = JUU.username,
-                                        uuserName = JUPUS.name,
-                                        uuserLast = JUPUS.lastname,
-                                        uUserAccName = JUPUS.username,
-                                        agentCompany = ((JAA.company == null || JAA.company == "") && (I.invType == "s" || I.invType == "sb")) ?
-                                        "unknown" : JAA.company,
-
-
-
+                                            agentCode = JAA.code,
+                                            //
+                                            agentName = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb")) ?
+                                            "unknown" : JAA.name,
 
 
-                                        //username
+                                            //   agentType = JAA.type,
+                                            agentType = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
+                                            ? "c" : JAA.type,
+                                            agentId = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
+                                            ? 0 : I.agentId,
 
-                                        //  I.invoiceId,
-                                        //    JBB.name
-                                    }).ToList();
+
+                                            cuserName = JUU.name,
+                                            cuserLast = JUU.lastname,
+                                            cUserAccName = JUU.username,
+                                            uuserName = JUPUS.name,
+                                            uuserLast = JUPUS.lastname,
+                                            uUserAccName = JUPUS.username,
+                                            agentCompany = ((JAA.company == null || JAA.company == "") && (I.invType == "s" || I.invType == "sb")) ?
+                                            "unknown" : JAA.company,
 
 
-                    if (invListm == null)
-                        return NotFound();
-                    else
-                        return Ok(invListm);
+
+
+
+                                            //username
+
+                                            //  I.invoiceId,
+                                            //    JBB.name
+                                        }).ToList();
+
+
+
+
+                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(invListm) };
+
+                    }
+
+                }
+                catch
+                {
+                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
                 }
 
             }
 
-            //else
-            return NotFound();
+            //var re = Request;
+            //var headers = re.Headers;
+            //string token = "";
+            //if (headers.Contains("APIKey"))
+            //{
+            //    token = headers.GetValues("APIKey").First();
+            //}
+            //Validation validation = new Validation();
+            //bool valid = validation.CheckApiKey(token);
+
+            //if (valid) // APIKey is valid
+            //{
+            //    List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+
+            //    using (incposdbEntities entity = new incposdbEntities())
+            //    {
+            //        var invListm = (from I in entity.invoices
+
+            //                            //  join B in entity.branches on I.branchId equals B.branchId into JB
+            //                        join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
+            //                        join A in entity.agents on I.agentId equals A.agentId into JA
+            //                        join U in entity.users on I.createUserId equals U.userId into JU
+            //                        join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
+            //                        join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
+            //                        join P in entity.pos on I.posId equals P.posId into JP
+
+            //                        //   from JBB in JB
+            //                        from JPP in JP.DefaultIfEmpty()
+            //                        from JUU in JU.DefaultIfEmpty()
+            //                        from JUPUS in JUPUSR.DefaultIfEmpty()
+            //                        from JIMM in JIM.DefaultIfEmpty()
+            //                        from JAA in JA.DefaultIfEmpty()
+            //                        from JBCC in JBC.DefaultIfEmpty()
+            //                        where (brIds.Contains(JBCC.branchId)) && (I.invType == "q")
+
+            //                        select new
+            //                        {
+
+            //                            I.invoiceId,
+            //                            count = entity.itemsTransfer.Where(x => x.invoiceId == I.invoiceId).Count(),
+            //                            I.invNumber,
+
+            //                            I.posId,
+            //                            I.invType,
+            //                            I.total,
+            //                            I.totalNet,
+            //                            I.paid,
+            //                            I.deserved,
+            //                            I.deservedDate,
+            //                            I.invDate,
+            //                            I.invoiceMainId,
+            //                            I.invCase,
+            //                            I.invTime,
+            //                            I.notes,
+            //                            I.vendorInvNum,
+            //                            I.vendorInvDate,
+            //                            I.createUserId,
+            //                            I.updateDate,
+            //                            I.updateUserId,
+            //                            I.branchId,
+            //                            discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
+            //                            I.discountType,
+            //                            I.tax,
+            //                            I.name,
+            //                            I.isApproved,
+
+            //                            //
+            //                            I.branchCreatorId,
+            //                            branchCreatorName = JBCC.name,
+            //                            //
+            //                            // branchName = JBB.name,
+
+            //                            //     branchType = JBB.type,
+            //                            posName = JPP.name,
+            //                            posCode = JPP.code,
+
+            //                            agentCode = JAA.code,
+            //                            //
+            //                            agentName = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb")) ?
+            //                            "unknown" : JAA.name,
+
+
+            //                            //   agentType = JAA.type,
+            //                            agentType = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
+            //                            ? "c" : JAA.type,
+            //                            agentId = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
+            //                            ? 0 : I.agentId,
+
+
+            //                            cuserName = JUU.name,
+            //                            cuserLast = JUU.lastname,
+            //                            cUserAccName = JUU.username,
+            //                            uuserName = JUPUS.name,
+            //                            uuserLast = JUPUS.lastname,
+            //                            uUserAccName = JUPUS.username,
+            //                            agentCompany = ((JAA.company == null || JAA.company == "") && (I.invType == "s" || I.invType == "sb")) ?
+            //                            "unknown" : JAA.company,
+
+
+
+
+
+            //                            //username
+
+            //                            //  I.invoiceId,
+            //                            //    JBB.name
+            //                        }).ToList();
+
+
+            //        if (invListm == null)
+            //            return NotFound();
+            //        else
+            //            return Ok(invListm);
+            //    }
+
+            //}
+
+            ////else
+            //return NotFound();
         }
 
 
@@ -2214,332 +3376,697 @@ else
 
         [HttpGet]
         [Route("GetSalecoupon")]
-        public IHttpActionResult GetSalecoupon(int mainBranchId, int userId)
+        public ResponseVM GetSalecoupon(string token)
         {
+            // public ResponseVM GetPurinv(string token)
+
+            //int mainBranchId, int userId
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
+            else
             {
-                List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+                int mainBranchId = 0;
+                int userId = 0;
 
-                using (incposdbEntities entity = new incposdbEntities())
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
                 {
-                    var invListm = (from I in entity.invoices
+                    if (c.Type == "mainBranchId")
+                    {
+                        mainBranchId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "userId")
+                    {
+                        userId = int.Parse(c.Value);
+                    }
 
-                                        //  join B in entity.branches on I.branchId equals B.branchId into JB
-                                    join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
-                                    join A in entity.agents on I.agentId equals A.agentId into JA
-                                    join U in entity.users on I.createUserId equals U.userId into JU
-                                    join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
-                                    join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
-                                    join P in entity.pos on I.posId equals P.posId into JP
-                                    join IC in entity.couponsInvoices on I.invoiceId equals IC.InvoiceId
-                                    join C in entity.coupons on IC.couponId equals C.cId
-                                    //   from JBB in JB
-                                    from JPP in JP.DefaultIfEmpty()
-                                    from JUU in JU.DefaultIfEmpty()
-                                    from JUPUS in JUPUSR.DefaultIfEmpty()
-                                    from JIMM in JIM.DefaultIfEmpty()
-                                    from JAA in JA.DefaultIfEmpty()
-                                    from JBCC in JBC.DefaultIfEmpty()
-                                    where (brIds.Contains(JBCC.branchId)) && (I.invType == "s" || I.invType == "sb")
-                                    select new
-                                    {
+                }
+                // DateTime cmpdate = DateTime.Now.AddDays(newdays);
+                try
+                {
 
-                                        //coupon
-                                        Copname = C.name,
-                                        CopcId = C.cId,
-                                        Copcode = C.code,
+                    List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
 
-                                        CopisActive = C.isActive,
-                                        CopdiscountType = C.discountType,
-                                        CopdiscountValue = C.discountValue,
-                                        CopstartDate = C.startDate,
-                                        CopendDate = C.endDate,
-                                        Copnotes = C.notes,
-                                        Copquantity = C.quantity,
-                                        CopremainQ = C.remainQ,
-                                        CopinvMin = C.invMin,
-                                        CopinvMax = C.invMax,
-                                        CopcreateDate = C.createDate,
-                                        CopupdateDate = C.updateDate,
-                                        CopcreateUserId = C.createUserId,
-                                        CopupdateUserId = C.updateUserId,
-                                        Copbarcode = C.barcode,
+                        var invListm = (from I in entity.invoices
 
-                                        I.invoiceId,
-                                        I.invNumber,
-                                        I.agentId,
-                                        I.posId,
-                                        I.invType,
-                                        I.total,
-                                        I.totalNet,
-                                        I.paid,
-                                        I.deserved,
-                                        I.deservedDate,
-                                        I.invDate,
-                                        I.invoiceMainId,
-                                        I.invCase,
-                                        I.invTime,
-                                        I.notes,
-                                        I.vendorInvNum,
-                                        I.vendorInvDate,
-                                        I.createUserId,
-                                        I.updateDate,
-                                        I.updateUserId,
-                                        I.branchId,
-                                        discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
-                                        couponTotalValue = (C.discountType == 1 || C.discountType == null) ? C.discountValue : (C.discountType == 2 ? ((C.discountValue / 100) * I.total) : 0),
+                                            //  join B in entity.branches on I.branchId equals B.branchId into JB
+                                        join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
+                                        join A in entity.agents on I.agentId equals A.agentId into JA
+                                        join U in entity.users on I.createUserId equals U.userId into JU
+                                        join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
+                                        join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
+                                        join P in entity.pos on I.posId equals P.posId into JP
+                                        join IC in entity.couponsInvoices on I.invoiceId equals IC.InvoiceId
+                                        join C in entity.coupons on IC.couponId equals C.cId
+                                        //   from JBB in JB
+                                        from JPP in JP.DefaultIfEmpty()
+                                        from JUU in JU.DefaultIfEmpty()
+                                        from JUPUS in JUPUSR.DefaultIfEmpty()
+                                        from JIMM in JIM.DefaultIfEmpty()
+                                        from JAA in JA.DefaultIfEmpty()
+                                        from JBCC in JBC.DefaultIfEmpty()
+                                        where (brIds.Contains(JBCC.branchId)) && (I.invType == "s" || I.invType == "sb")
+                                        select new
+                                        {
 
-                                        I.discountType,
-                                        I.tax,
-                                        I.name,
-                                        I.isApproved,
+                                            //coupon
+                                            Copname = C.name,
+                                            CopcId = C.cId,
+                                            Copcode = C.code,
 
-                                        // discountValue = (I.discountType == "1" || I.discountType ==null ) ? I.discountValue : (I.discountType == "2" ? ((I.discountValue / 100) * I.total) : 0),
+                                            CopisActive = C.isActive,
+                                            CopdiscountType = C.discountType,
+                                            CopdiscountValue = C.discountValue,
+                                            CopstartDate = C.startDate,
+                                            CopendDate = C.endDate,
+                                            Copnotes = C.notes,
+                                            Copquantity = C.quantity,
+                                            CopremainQ = C.remainQ,
+                                            CopinvMin = C.invMin,
+                                            CopinvMax = C.invMax,
+                                            CopcreateDate = C.createDate,
+                                            CopupdateDate = C.updateDate,
+                                            CopcreateUserId = C.createUserId,
+                                            CopupdateUserId = C.updateUserId,
+                                            Copbarcode = C.barcode,
 
-                                        I.branchCreatorId,
-                                        branchCreatorName = JBCC.name,
-                                        //
-                                        //  branchName = JBB.name,
+                                            I.invoiceId,
+                                            I.invNumber,
+                                            I.agentId,
+                                            I.posId,
+                                            I.invType,
+                                            I.total,
+                                            I.totalNet,
+                                            I.paid,
+                                            I.deserved,
+                                            I.deservedDate,
+                                            I.invDate,
+                                            I.invoiceMainId,
+                                            I.invCase,
+                                            I.invTime,
+                                            I.notes,
+                                            I.vendorInvNum,
+                                            I.vendorInvDate,
+                                            I.createUserId,
+                                            I.updateDate,
+                                            I.updateUserId,
+                                            I.branchId,
+                                            discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
+                                            couponTotalValue = (C.discountType == 1 || C.discountType == null) ? C.discountValue : (C.discountType == 2 ? ((C.discountValue / 100) * I.total) : 0),
 
-                                        //  branchType = JBB.type,
-                                        posName = JPP.name,
-                                        posCode = JPP.code,
-                                        agentName = JAA.name,
-                                        agentCode = JAA.code,
-                                        agentType = JAA.type,
-                                        cuserName = JUU.name,
-                                        cuserLast = JUU.lastname,
-                                        cUserAccName = JUU.username,
-                                        uuserName = JUPUS.name,
-                                        uuserLast = JUPUS.lastname,
-                                        uUserAccName = JUPUS.username,
-                                        agentCompany = JAA.company,
+                                            I.discountType,
+                                            I.tax,
+                                            I.name,
+                                            I.isApproved,
 
-                                        //username
+                                            // discountValue = (I.discountType == "1" || I.discountType ==null ) ? I.discountValue : (I.discountType == "2" ? ((I.discountValue / 100) * I.total) : 0),
 
-                                        //  I.invoiceId,
-                                        //    JBB.name
-                                    }).ToList();
+                                            I.branchCreatorId,
+                                            branchCreatorName = JBCC.name,
+                                            //
+                                            //  branchName = JBB.name,
+
+                                            //  branchType = JBB.type,
+                                            posName = JPP.name,
+                                            posCode = JPP.code,
+                                            agentName = JAA.name,
+                                            agentCode = JAA.code,
+                                            agentType = JAA.type,
+                                            cuserName = JUU.name,
+                                            cuserLast = JUU.lastname,
+                                            cUserAccName = JUU.username,
+                                            uuserName = JUPUS.name,
+                                            uuserLast = JUPUS.lastname,
+                                            uUserAccName = JUPUS.username,
+                                            agentCompany = JAA.company,
+
+                                            //username
+
+                                            //  I.invoiceId,
+                                            //    JBB.name
+                                        }).ToList();
 
 
 
 
 
-                    if (invListm == null)
-                        return NotFound();
-                    else
-                        return Ok(invListm);
+
+                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(invListm) };
+
+                    }
+
+                }
+                catch
+                {
+                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
                 }
 
             }
 
-            //else
-            return NotFound();
+
+            //var re = Request;
+            //var headers = re.Headers;
+            //string token = "";
+            //if (headers.Contains("APIKey"))
+            //{
+            //    token = headers.GetValues("APIKey").First();
+            //}
+            //Validation validation = new Validation();
+            //bool valid = validation.CheckApiKey(token);
+
+            //if (valid) // APIKey is valid
+            //{
+            //    List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+
+            //    using (incposdbEntities entity = new incposdbEntities())
+            //    {
+            //        var invListm = (from I in entity.invoices
+
+            //                            //  join B in entity.branches on I.branchId equals B.branchId into JB
+            //                        join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
+            //                        join A in entity.agents on I.agentId equals A.agentId into JA
+            //                        join U in entity.users on I.createUserId equals U.userId into JU
+            //                        join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
+            //                        join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
+            //                        join P in entity.pos on I.posId equals P.posId into JP
+            //                        join IC in entity.couponsInvoices on I.invoiceId equals IC.InvoiceId
+            //                        join C in entity.coupons on IC.couponId equals C.cId
+            //                        //   from JBB in JB
+            //                        from JPP in JP.DefaultIfEmpty()
+            //                        from JUU in JU.DefaultIfEmpty()
+            //                        from JUPUS in JUPUSR.DefaultIfEmpty()
+            //                        from JIMM in JIM.DefaultIfEmpty()
+            //                        from JAA in JA.DefaultIfEmpty()
+            //                        from JBCC in JBC.DefaultIfEmpty()
+            //                        where (brIds.Contains(JBCC.branchId)) && (I.invType == "s" || I.invType == "sb")
+            //                        select new
+            //                        {
+
+            //                            //coupon
+            //                            Copname = C.name,
+            //                            CopcId = C.cId,
+            //                            Copcode = C.code,
+
+            //                            CopisActive = C.isActive,
+            //                            CopdiscountType = C.discountType,
+            //                            CopdiscountValue = C.discountValue,
+            //                            CopstartDate = C.startDate,
+            //                            CopendDate = C.endDate,
+            //                            Copnotes = C.notes,
+            //                            Copquantity = C.quantity,
+            //                            CopremainQ = C.remainQ,
+            //                            CopinvMin = C.invMin,
+            //                            CopinvMax = C.invMax,
+            //                            CopcreateDate = C.createDate,
+            //                            CopupdateDate = C.updateDate,
+            //                            CopcreateUserId = C.createUserId,
+            //                            CopupdateUserId = C.updateUserId,
+            //                            Copbarcode = C.barcode,
+
+            //                            I.invoiceId,
+            //                            I.invNumber,
+            //                            I.agentId,
+            //                            I.posId,
+            //                            I.invType,
+            //                            I.total,
+            //                            I.totalNet,
+            //                            I.paid,
+            //                            I.deserved,
+            //                            I.deservedDate,
+            //                            I.invDate,
+            //                            I.invoiceMainId,
+            //                            I.invCase,
+            //                            I.invTime,
+            //                            I.notes,
+            //                            I.vendorInvNum,
+            //                            I.vendorInvDate,
+            //                            I.createUserId,
+            //                            I.updateDate,
+            //                            I.updateUserId,
+            //                            I.branchId,
+            //                            discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
+            //                            couponTotalValue = (C.discountType == 1 || C.discountType == null) ? C.discountValue : (C.discountType == 2 ? ((C.discountValue / 100) * I.total) : 0),
+
+            //                            I.discountType,
+            //                            I.tax,
+            //                            I.name,
+            //                            I.isApproved,
+
+            //                            // discountValue = (I.discountType == "1" || I.discountType ==null ) ? I.discountValue : (I.discountType == "2" ? ((I.discountValue / 100) * I.total) : 0),
+
+            //                            I.branchCreatorId,
+            //                            branchCreatorName = JBCC.name,
+            //                            //
+            //                            //  branchName = JBB.name,
+
+            //                            //  branchType = JBB.type,
+            //                            posName = JPP.name,
+            //                            posCode = JPP.code,
+            //                            agentName = JAA.name,
+            //                            agentCode = JAA.code,
+            //                            agentType = JAA.type,
+            //                            cuserName = JUU.name,
+            //                            cuserLast = JUU.lastname,
+            //                            cUserAccName = JUU.username,
+            //                            uuserName = JUPUS.name,
+            //                            uuserLast = JUPUS.lastname,
+            //                            uUserAccName = JUPUS.username,
+            //                            agentCompany = JAA.company,
+
+            //                            //username
+
+            //                            //  I.invoiceId,
+            //                            //    JBB.name
+            //                        }).ToList();
+
+
+
+
+
+            //        if (invListm == null)
+            //            return NotFound();
+            //        else
+            //            return Ok(invListm);
+            //    }
+
+            //}
+
+            ////else
+            //return NotFound();
         }
 
 
         // فواتير المبيعات مع العناصر
         [HttpGet]
         [Route("GetSaleOffer")]
-        public IHttpActionResult GetSaleOffer(int mainBranchId, int userId)
+        public ResponseVM GetSaleOffer(string token)
         {
+
+            // public ResponseVM GetPurinv(string token)
+
+            //int mainBranchId, int userId
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
+            else
             {
-                List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+                int mainBranchId = 0;
+                int userId = 0;
 
-                using (incposdbEntities entity = new incposdbEntities())
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
                 {
-                    var invListm = (from IT in entity.itemsTransfer
-                                    from I in entity.invoices.Where(I => I.invoiceId == IT.invoiceId)
+                    if (c.Type == "mainBranchId")
+                    {
+                        mainBranchId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "userId")
+                    {
+                        userId = int.Parse(c.Value);
+                    }
 
-                                    from IU in entity.itemsUnits.Where(IU => IU.itemUnitId == IT.itemUnitId)
-                                    join ITCUSER in entity.users on IT.createUserId equals ITCUSER.userId
-                                    join ITUPUSER in entity.users on IT.updateUserId equals ITUPUSER.userId
-                                    join ITEM in entity.items on IU.itemId equals ITEM.itemId
-                                    join UNIT in entity.units on IU.unitId equals UNIT.unitId
-                                    //    join B in entity.branches on I.branchId equals B.branchId into JB
-                                    join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
-                                    join A in entity.agents on I.agentId equals A.agentId into JA
-                                    join U in entity.users on I.createUserId equals U.userId into JU
-                                    join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
-                                    join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
-                                    join P in entity.pos on I.posId equals P.posId into JP
-                                    join ITO in entity.itemTransferOffer on IT.itemsTransId equals ITO.itemTransId
-                                    join O in entity.offers on ITO.offerId equals O.offerId
+                }
+                // DateTime cmpdate = DateTime.Now.AddDays(newdays);
+                try
+                {
 
-                                    //join ITOF in entity.itemsTransfer on ITO.itemTransId equals ITOF.itemsTransId 
-                                    //   from  IUO in entity.itemsOffers.Where(X=> X.offerId == O.offerId).Distinct()
+                    List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
 
+                        var invListm = (from IT in entity.itemsTransfer
+                                        from I in entity.invoices.Where(I => I.invoiceId == IT.invoiceId)
 
-                                    // from JBB in JB
-                                    from JPP in JP.DefaultIfEmpty()
-                                    from JUU in JU.DefaultIfEmpty()
-                                    from JUPUS in JUPUSR.DefaultIfEmpty()
-                                    from JIMM in JIM.DefaultIfEmpty()
-                                    from JAA in JA.DefaultIfEmpty()
-                                    from JBCC in JBC.DefaultIfEmpty()
-                                    where (brIds.Contains(JBCC.branchId)) && (I.invType == "s" || I.invType == "sb")
-                                    orderby IT.itemsTransId
-                                    select new
-                                    {
-                                        // offer
+                                        from IU in entity.itemsUnits.Where(IU => IU.itemUnitId == IT.itemUnitId)
+                                        join ITCUSER in entity.users on IT.createUserId equals ITCUSER.userId
+                                        join ITUPUSER in entity.users on IT.updateUserId equals ITUPUSER.userId
+                                        join ITEM in entity.items on IU.itemId equals ITEM.itemId
+                                        join UNIT in entity.units on IU.unitId equals UNIT.unitId
+                                        //    join B in entity.branches on I.branchId equals B.branchId into JB
+                                        join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
+                                        join A in entity.agents on I.agentId equals A.agentId into JA
+                                        join U in entity.users on I.createUserId equals U.userId into JU
+                                        join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
+                                        join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
+                                        join P in entity.pos on I.posId equals P.posId into JP
+                                        join ITO in entity.itemTransferOffer on IT.itemsTransId equals ITO.itemTransId
+                                        join O in entity.offers on ITO.offerId equals O.offerId
 
-                                        Oname = O.name,
-                                        OofferId = O.offerId,
-                                        Oitemofferid = ITO.id,
-                                        //Oquantity = IUO.quantity,
-                                        Ocode = O.code,
-                                        OisActive = O.isActive,
-                                        OdiscountType = O.discountType,
-                                        OdiscountValue = O.discountValue,
-                                        OstartDate = O.startDate,
-                                        OendDate = O.endDate,
-                                        OcreateDate = O.createDate,
-                                        OupdateDate = O.updateDate,
-                                        OcreateUserId = O.createUserId,
-                                        OupdateUserId = O.updateUserId,
-                                        Onotes = O.notes,
-
-                                        //itemtransfer
-                                        ITitemName = ITEM.name,
-                                        ITunitName = UNIT.name,
-                                        ITitemsTransId = IT.itemsTransId,
-                                        ITitemUnitId = IT.itemUnitId,
-
-                                        ITitemId = IU.itemId,
-                                        ITunitId = IU.unitId,
-                                        ITquantity = IT.quantity,
-
-                                        ITcreateDate = IT.createDate,
-                                        ITupdateDate = IT.updateDate,
-                                        ITcreateUserId = IT.createUserId,
-                                        ITupdateUserId = IT.updateUserId,
-                                        ITnotes = IT.notes,
-                                        ITprice = IT.price,
-                                        ITbarcode = IU.barcode,
-                                        ITCreateuserName = ITCUSER.name,
-                                        ITCreateuserLName = ITCUSER.lastname,
-                                        ITCreateuserAccName = ITCUSER.username,
-
-                                        ITUpdateuserName = ITUPUSER.name,
-                                        ITUpdateuserLName = ITUPUSER.lastname,
-                                        ITUpdateuserAccName = ITUPUSER.username,
-                                        I.invoiceId,
-                                        I.invNumber,
-                                        I.agentId,
-                                        I.posId,
-                                        I.invType,
-                                        I.total,
-                                        I.totalNet,
-                                        I.paid,
-                                        I.deserved,
-                                        I.deservedDate,
-                                        I.invDate,
-                                        I.invoiceMainId,
-                                        I.invCase,
-                                        I.invTime,
-                                        I.notes,
-                                        I.vendorInvNum,
-                                        I.vendorInvDate,
-                                        I.createUserId,
-                                        I.updateDate,
-                                        I.updateUserId,
-                                        I.branchId,
-                                        discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
-                                        I.discountType,
-                                        I.tax,
-                                        I.name,
-                                        I.isApproved,
-
-                                        //
-                                        I.branchCreatorId,
-                                        branchCreatorName = JBCC.name,
-                                        //
-                                        //  branchName = JBB.name,
-
-                                        //  branchType = JBB.type,
-                                        posName = JPP.name,
-                                        posCode = JPP.code,
-                                        agentName = JAA.name,
-                                        agentCode = JAA.code,
-                                        agentType = JAA.type,
-                                        cuserName = JUU.name,
-                                        cuserLast = JUU.lastname,
-                                        cUserAccName = JUU.username,
-                                        uuserName = JUPUS.name,
-                                        uuserLast = JUPUS.lastname,
-                                        uUserAccName = JUPUS.username,
-                                        agentCompany = JAA.company,
-
-                                        subTotal = (IT.price * IT.quantity),
-                                        // couponTotalValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? ((I.discountValue / 100) * I.total) : 0),
-                                        offerTotalValue = (O.discountType == "1" || O.discountType == null) ? (O.discountValue * (IT.price * IT.quantity)) : (O.discountType == "2" ? ((O.discountValue / 100) * (IT.price * IT.quantity)) : 0),
-
-                                    }).ToList();
-
-                    /*
-                        public int offerId { get; set; }
-                            public string name { get; set; }
-                            public string code { get; set; }
-                            public Nullable<byte> isActive { get; set; }
-                            public string discountType { get; set; }
-                            public Nullable<decimal> discountValue { get; set; }
-                            public Nullable<System.DateTime> startDate { get; set; }
-                            public Nullable<System.DateTime> endDate { get; set; }
-                            public Nullable<System.DateTime> createDate { get; set; }
-                            public Nullable<System.DateTime> updateDate { get; set; }
-                            public Nullable<int> createUserId { get; set; }
-                            public Nullable<int> updateUserId { get; set; }
-                            public string notes { get; set; }
-
-offerId
-name
-code
-isActive
-discountType
-discountValue
-startDate
-endDate
-createDate
-updateDate
-createUserId
-updateUserId
-notes
-
-                     * */
+                                        //join ITOF in entity.itemsTransfer on ITO.itemTransId equals ITOF.itemsTransId 
+                                        //   from  IUO in entity.itemsOffers.Where(X=> X.offerId == O.offerId).Distinct()
 
 
+                                        // from JBB in JB
+                                        from JPP in JP.DefaultIfEmpty()
+                                        from JUU in JU.DefaultIfEmpty()
+                                        from JUPUS in JUPUSR.DefaultIfEmpty()
+                                        from JIMM in JIM.DefaultIfEmpty()
+                                        from JAA in JA.DefaultIfEmpty()
+                                        from JBCC in JBC.DefaultIfEmpty()
+                                        where (brIds.Contains(JBCC.branchId)) && (I.invType == "s" || I.invType == "sb")
+                                        orderby IT.itemsTransId
+                                        select new
+                                        {
+                                            // offer
 
-                    if (invListm == null)
-                        return NotFound();
-                    else
-                        return Ok(invListm);
+                                            Oname = O.name,
+                                            OofferId = O.offerId,
+                                            Oitemofferid = ITO.id,
+                                            //Oquantity = IUO.quantity,
+                                            Ocode = O.code,
+                                            OisActive = O.isActive,
+                                            OdiscountType = O.discountType,
+                                            OdiscountValue = O.discountValue,
+                                            OstartDate = O.startDate,
+                                            OendDate = O.endDate,
+                                            OcreateDate = O.createDate,
+                                            OupdateDate = O.updateDate,
+                                            OcreateUserId = O.createUserId,
+                                            OupdateUserId = O.updateUserId,
+                                            Onotes = O.notes,
+
+                                            //itemtransfer
+                                            ITitemName = ITEM.name,
+                                            ITunitName = UNIT.name,
+                                            ITitemsTransId = IT.itemsTransId,
+                                            ITitemUnitId = IT.itemUnitId,
+
+                                            ITitemId = IU.itemId,
+                                            ITunitId = IU.unitId,
+                                            ITquantity = IT.quantity,
+
+                                            ITcreateDate = IT.createDate,
+                                            ITupdateDate = IT.updateDate,
+                                            ITcreateUserId = IT.createUserId,
+                                            ITupdateUserId = IT.updateUserId,
+                                            ITnotes = IT.notes,
+                                            ITprice = IT.price,
+                                            ITbarcode = IU.barcode,
+                                            ITCreateuserName = ITCUSER.name,
+                                            ITCreateuserLName = ITCUSER.lastname,
+                                            ITCreateuserAccName = ITCUSER.username,
+
+                                            ITUpdateuserName = ITUPUSER.name,
+                                            ITUpdateuserLName = ITUPUSER.lastname,
+                                            ITUpdateuserAccName = ITUPUSER.username,
+                                            I.invoiceId,
+                                            I.invNumber,
+                                            I.agentId,
+                                            I.posId,
+                                            I.invType,
+                                            I.total,
+                                            I.totalNet,
+                                            I.paid,
+                                            I.deserved,
+                                            I.deservedDate,
+                                            I.invDate,
+                                            I.invoiceMainId,
+                                            I.invCase,
+                                            I.invTime,
+                                            I.notes,
+                                            I.vendorInvNum,
+                                            I.vendorInvDate,
+                                            I.createUserId,
+                                            I.updateDate,
+                                            I.updateUserId,
+                                            I.branchId,
+                                            discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
+                                            I.discountType,
+                                            I.tax,
+                                            I.name,
+                                            I.isApproved,
+
+                                            //
+                                            I.branchCreatorId,
+                                            branchCreatorName = JBCC.name,
+                                            //
+                                            //  branchName = JBB.name,
+
+                                            //  branchType = JBB.type,
+                                            posName = JPP.name,
+                                            posCode = JPP.code,
+                                            agentName = JAA.name,
+                                            agentCode = JAA.code,
+                                            agentType = JAA.type,
+                                            cuserName = JUU.name,
+                                            cuserLast = JUU.lastname,
+                                            cUserAccName = JUU.username,
+                                            uuserName = JUPUS.name,
+                                            uuserLast = JUPUS.lastname,
+                                            uUserAccName = JUPUS.username,
+                                            agentCompany = JAA.company,
+
+                                            subTotal = (IT.price * IT.quantity),
+                                            // couponTotalValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? ((I.discountValue / 100) * I.total) : 0),
+                                            offerTotalValue = (O.discountType == "1" || O.discountType == null) ? (O.discountValue * (IT.price * IT.quantity)) : (O.discountType == "2" ? ((O.discountValue / 100) * (IT.price * IT.quantity)) : 0),
+
+                                        }).ToList();
+
+                        /*
+                            public int offerId { get; set; }
+                                public string name { get; set; }
+                                public string code { get; set; }
+                                public Nullable<byte> isActive { get; set; }
+                                public string discountType { get; set; }
+                                public Nullable<decimal> discountValue { get; set; }
+                                public Nullable<System.DateTime> startDate { get; set; }
+                                public Nullable<System.DateTime> endDate { get; set; }
+                                public Nullable<System.DateTime> createDate { get; set; }
+                                public Nullable<System.DateTime> updateDate { get; set; }
+                                public Nullable<int> createUserId { get; set; }
+                                public Nullable<int> updateUserId { get; set; }
+                                public string notes { get; set; }
+
+    offerId
+    name
+    code
+    isActive
+    discountType
+    discountValue
+    startDate
+    endDate
+    createDate
+    updateDate
+    createUserId
+    updateUserId
+    notes
+
+                         * */
+
+
+
+
+
+                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(invListm) };
+
+                    }
+
+                }
+                catch
+                {
+                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
                 }
 
             }
 
-            //else
-            return NotFound();
+            //            var re = Request;
+            //            var headers = re.Headers;
+            //            string token = "";
+            //            if (headers.Contains("APIKey"))
+            //            {
+            //                token = headers.GetValues("APIKey").First();
+            //            }
+            //            Validation validation = new Validation();
+            //            bool valid = validation.CheckApiKey(token);
+
+            //            if (valid) // APIKey is valid
+            //            {
+            //                List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+
+            //                using (incposdbEntities entity = new incposdbEntities())
+            //                {
+            //                    var invListm = (from IT in entity.itemsTransfer
+            //                                    from I in entity.invoices.Where(I => I.invoiceId == IT.invoiceId)
+
+            //                                    from IU in entity.itemsUnits.Where(IU => IU.itemUnitId == IT.itemUnitId)
+            //                                    join ITCUSER in entity.users on IT.createUserId equals ITCUSER.userId
+            //                                    join ITUPUSER in entity.users on IT.updateUserId equals ITUPUSER.userId
+            //                                    join ITEM in entity.items on IU.itemId equals ITEM.itemId
+            //                                    join UNIT in entity.units on IU.unitId equals UNIT.unitId
+            //                                    //    join B in entity.branches on I.branchId equals B.branchId into JB
+            //                                    join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
+            //                                    join A in entity.agents on I.agentId equals A.agentId into JA
+            //                                    join U in entity.users on I.createUserId equals U.userId into JU
+            //                                    join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
+            //                                    join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
+            //                                    join P in entity.pos on I.posId equals P.posId into JP
+            //                                    join ITO in entity.itemTransferOffer on IT.itemsTransId equals ITO.itemTransId
+            //                                    join O in entity.offers on ITO.offerId equals O.offerId
+
+            //                                    //join ITOF in entity.itemsTransfer on ITO.itemTransId equals ITOF.itemsTransId 
+            //                                    //   from  IUO in entity.itemsOffers.Where(X=> X.offerId == O.offerId).Distinct()
+
+
+            //                                    // from JBB in JB
+            //                                    from JPP in JP.DefaultIfEmpty()
+            //                                    from JUU in JU.DefaultIfEmpty()
+            //                                    from JUPUS in JUPUSR.DefaultIfEmpty()
+            //                                    from JIMM in JIM.DefaultIfEmpty()
+            //                                    from JAA in JA.DefaultIfEmpty()
+            //                                    from JBCC in JBC.DefaultIfEmpty()
+            //                                    where (brIds.Contains(JBCC.branchId)) && (I.invType == "s" || I.invType == "sb")
+            //                                    orderby IT.itemsTransId
+            //                                    select new
+            //                                    {
+            //                                        // offer
+
+            //                                        Oname = O.name,
+            //                                        OofferId = O.offerId,
+            //                                        Oitemofferid = ITO.id,
+            //                                        //Oquantity = IUO.quantity,
+            //                                        Ocode = O.code,
+            //                                        OisActive = O.isActive,
+            //                                        OdiscountType = O.discountType,
+            //                                        OdiscountValue = O.discountValue,
+            //                                        OstartDate = O.startDate,
+            //                                        OendDate = O.endDate,
+            //                                        OcreateDate = O.createDate,
+            //                                        OupdateDate = O.updateDate,
+            //                                        OcreateUserId = O.createUserId,
+            //                                        OupdateUserId = O.updateUserId,
+            //                                        Onotes = O.notes,
+
+            //                                        //itemtransfer
+            //                                        ITitemName = ITEM.name,
+            //                                        ITunitName = UNIT.name,
+            //                                        ITitemsTransId = IT.itemsTransId,
+            //                                        ITitemUnitId = IT.itemUnitId,
+
+            //                                        ITitemId = IU.itemId,
+            //                                        ITunitId = IU.unitId,
+            //                                        ITquantity = IT.quantity,
+
+            //                                        ITcreateDate = IT.createDate,
+            //                                        ITupdateDate = IT.updateDate,
+            //                                        ITcreateUserId = IT.createUserId,
+            //                                        ITupdateUserId = IT.updateUserId,
+            //                                        ITnotes = IT.notes,
+            //                                        ITprice = IT.price,
+            //                                        ITbarcode = IU.barcode,
+            //                                        ITCreateuserName = ITCUSER.name,
+            //                                        ITCreateuserLName = ITCUSER.lastname,
+            //                                        ITCreateuserAccName = ITCUSER.username,
+
+            //                                        ITUpdateuserName = ITUPUSER.name,
+            //                                        ITUpdateuserLName = ITUPUSER.lastname,
+            //                                        ITUpdateuserAccName = ITUPUSER.username,
+            //                                        I.invoiceId,
+            //                                        I.invNumber,
+            //                                        I.agentId,
+            //                                        I.posId,
+            //                                        I.invType,
+            //                                        I.total,
+            //                                        I.totalNet,
+            //                                        I.paid,
+            //                                        I.deserved,
+            //                                        I.deservedDate,
+            //                                        I.invDate,
+            //                                        I.invoiceMainId,
+            //                                        I.invCase,
+            //                                        I.invTime,
+            //                                        I.notes,
+            //                                        I.vendorInvNum,
+            //                                        I.vendorInvDate,
+            //                                        I.createUserId,
+            //                                        I.updateDate,
+            //                                        I.updateUserId,
+            //                                        I.branchId,
+            //                                        discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
+            //                                        I.discountType,
+            //                                        I.tax,
+            //                                        I.name,
+            //                                        I.isApproved,
+
+            //                                        //
+            //                                        I.branchCreatorId,
+            //                                        branchCreatorName = JBCC.name,
+            //                                        //
+            //                                        //  branchName = JBB.name,
+
+            //                                        //  branchType = JBB.type,
+            //                                        posName = JPP.name,
+            //                                        posCode = JPP.code,
+            //                                        agentName = JAA.name,
+            //                                        agentCode = JAA.code,
+            //                                        agentType = JAA.type,
+            //                                        cuserName = JUU.name,
+            //                                        cuserLast = JUU.lastname,
+            //                                        cUserAccName = JUU.username,
+            //                                        uuserName = JUPUS.name,
+            //                                        uuserLast = JUPUS.lastname,
+            //                                        uUserAccName = JUPUS.username,
+            //                                        agentCompany = JAA.company,
+
+            //                                        subTotal = (IT.price * IT.quantity),
+            //                                        // couponTotalValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? ((I.discountValue / 100) * I.total) : 0),
+            //                                        offerTotalValue = (O.discountType == "1" || O.discountType == null) ? (O.discountValue * (IT.price * IT.quantity)) : (O.discountType == "2" ? ((O.discountValue / 100) * (IT.price * IT.quantity)) : 0),
+
+            //                                    }).ToList();
+
+            //                    /*
+            //                        public int offerId { get; set; }
+            //                            public string name { get; set; }
+            //                            public string code { get; set; }
+            //                            public Nullable<byte> isActive { get; set; }
+            //                            public string discountType { get; set; }
+            //                            public Nullable<decimal> discountValue { get; set; }
+            //                            public Nullable<System.DateTime> startDate { get; set; }
+            //                            public Nullable<System.DateTime> endDate { get; set; }
+            //                            public Nullable<System.DateTime> createDate { get; set; }
+            //                            public Nullable<System.DateTime> updateDate { get; set; }
+            //                            public Nullable<int> createUserId { get; set; }
+            //                            public Nullable<int> updateUserId { get; set; }
+            //                            public string notes { get; set; }
+
+            //offerId
+            //name
+            //code
+            //isActive
+            //discountType
+            //discountValue
+            //startDate
+            //endDate
+            //createDate
+            //updateDate
+            //createUserId
+            //updateUserId
+            //notes
+
+            //                     * */
+
+
+
+            //                    if (invListm == null)
+            //                        return NotFound();
+            //                    else
+            //                        return Ok(invListm);
+            //                }
+
+            //            }
+
+            //            //else
+            //            return NotFound();
         }
 
         //
@@ -2552,641 +4079,1186 @@ notes
         // عرض الاصناف واماكن تخزينها
         [HttpGet]
         [Route("GetStorage")]
-        public IHttpActionResult GetStorage(int mainBranchId, int userId)
+        public ResponseVM GetStorage(string token)
         {
+
+            // public ResponseVM GetPurinv(string token)
+
+            //int mainBranchId, int userId
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
+            else
             {
-                List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+                int mainBranchId = 0;
+                int userId = 0;
 
-                using (incposdbEntities entity = new incposdbEntities())
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
                 {
-                    // storageCost storageCostsr = new storageCost();
+                    if (c.Type == "mainBranchId")
+                    {
+                        mainBranchId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "userId")
+                    {
+                        userId = int.Parse(c.Value);
+                    }
 
-                    var invListm = (from L in entity.locations
-                                        //  from I in entity.invoices.Where(I => I.invoiceId == IT.invoiceId)
+                }
+                // DateTime cmpdate = DateTime.Now.AddDays(newdays);
+                try
+                {
 
-
-                                    join IUL in entity.itemsLocations on L.locationId equals IUL.locationId
-                                    join IU in entity.itemsUnits on IUL.itemUnitId equals IU.itemUnitId
-
-                                    //  join ITCUSER in entity.users on IT.createUserId equals ITCUSER.userId
-                                    //join ITUPUSER in entity.users on IT.updateUserId equals ITUPUSER.userId
-                                    join ITEM in entity.items on IU.itemId equals ITEM.itemId
-                                    join UNIT in entity.units on IU.unitId equals UNIT.unitId
-                                    join S in entity.sections on L.sectionId equals S.sectionId into JS
-                                    join B in entity.branches on L.branchId equals B.branchId into JB
-
-
-                                    join UPUSR in entity.users on IUL.updateUserId equals UPUSR.userId into JUPUS
-                                    join U in entity.users on IUL.createUserId equals U.userId into JU
-
-
-
-                                    from JBB in JB
-                                    from JSS in JS.DefaultIfEmpty()
-                                    from JUU in JU.DefaultIfEmpty()
-                                    from JUPUSS in JUPUS.DefaultIfEmpty()
-
-                                    where (brIds.Contains(JBB.branchId))
-
-                                    select new
-                                    {
-                                        // item unit
-                                        itemName = ITEM.name,
-                                        ITEM.min,
-                                        ITEM.max,
-                                        ITEM.minUnitId,
-                                        ITEM.maxUnitId,
-                                        minUnitName = entity.units.Where(x => x.unitId == ITEM.minUnitId).FirstOrDefault().name,
-                                        maxUnitName = entity.units.Where(x => x.unitId == ITEM.maxUnitId).FirstOrDefault().name,
-                                        unitName = UNIT.name,
-                                        IU.itemUnitId,
-
-                                        IU.itemId,
-                                        IU.unitId,
-
-                                        IU.barcode,
-                                        //item location
-                                        CreateuserName = JUU.name,
-                                        CreateuserLName = JUU.lastname,
-                                        CreateuserAccName = JUU.username,
-                                        UuserName = JUPUSS.name,
-                                        UuserLName = JUPUSS.lastname,
-                                        UuserAccName = JUPUSS.username,
-
-                                        //
-                                        branchName = JBB.name,
-
-                                        branchType = JBB.type,
-                                        //itemslocations
-
-                                        IUL.itemsLocId,
-                                        IUL.locationId,
-                                        IUL.quantity,
-
-                                        IUL.startDate,
-                                        IUL.endDate,
-
-                                        IULnote = IUL.note,
-                                        IU.storageCostId,
-
-                                        storageCostName = IU.storageCostId != null ? entity.storageCost.Where(X => X.storageCostId == IU.storageCostId).FirstOrDefault().name : "",
-                                        storageCostValue = IU.storageCostId != null ?
-                                      entity.storageCost.Where(X => X.storageCostId == IU.storageCostId).FirstOrDefault().cost
-                                      : 0,
-
-                                        //  IUL.updateDate.
-                                        cuserName = JUU.name,
-                                        cuserLast = JUU.lastname,
-                                        cUserAccName = JUU.username,
-                                        uuserName = JUPUSS.name,
-                                        uuserLast = JUPUSS.lastname,
-                                        uUserAccName = JUPUSS.username,
-                                        // Location
-                                        L.x,
-                                        L.y,
-                                        L.z,
-
-                                        LocisActive = L.isActive,
-                                        L.sectionId,
-                                        Locnote = L.note,
-                                        L.branchId,
-                                        LocisFreeZone = L.isFreeZone,
+                    List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+                        var invListm = (from L in entity.locations
+                                            //  from I in entity.invoices.Where(I => I.invoiceId == IT.invoiceId)
 
 
-                                        // section
+                                        join IUL in entity.itemsLocations on L.locationId equals IUL.locationId
+                                        join IU in entity.itemsUnits on IUL.itemUnitId equals IU.itemUnitId
 
-                                        Secname = JSS.name,
-                                        SecisActive = JSS.isActive,
-                                        Secnote = JSS.note,
-                                        SecisFreeZone = JSS.isFreeZone,
+                                        //  join ITCUSER in entity.users on IT.createUserId equals ITCUSER.userId
+                                        //join ITUPUSER in entity.users on IT.updateUserId equals ITUPUSER.userId
+                                        join ITEM in entity.items on IU.itemId equals ITEM.itemId
+                                        join UNIT in entity.units on IU.unitId equals UNIT.unitId
+                                        join S in entity.sections on L.sectionId equals S.sectionId into JS
+                                        join B in entity.branches on L.branchId equals B.branchId into JB
 
 
-                                        //username
-
-                                        //  I.invoiceId,
-                                        //    JBB.name
-                                    }).ToList();
+                                        join UPUSR in entity.users on IUL.updateUserId equals UPUSR.userId into JUPUS
+                                        join U in entity.users on IUL.createUserId equals U.userId into JU
 
 
 
+                                        from JBB in JB
+                                        from JSS in JS.DefaultIfEmpty()
+                                        from JUU in JU.DefaultIfEmpty()
+                                        from JUPUSS in JUPUS.DefaultIfEmpty()
+
+                                        where (brIds.Contains(JBB.branchId))
+
+                                        select new
+                                        {
+                                            // item unit
+                                            itemName = ITEM.name,
+                                            ITEM.min,
+                                            ITEM.max,
+                                            ITEM.minUnitId,
+                                            ITEM.maxUnitId,
+                                            minUnitName = entity.units.Where(x => x.unitId == ITEM.minUnitId).FirstOrDefault().name,
+                                            maxUnitName = entity.units.Where(x => x.unitId == ITEM.maxUnitId).FirstOrDefault().name,
+                                            unitName = UNIT.name,
+                                            IU.itemUnitId,
+
+                                            IU.itemId,
+                                            IU.unitId,
+
+                                            IU.barcode,
+                                            //item location
+                                            CreateuserName = JUU.name,
+                                            CreateuserLName = JUU.lastname,
+                                            CreateuserAccName = JUU.username,
+                                            UuserName = JUPUSS.name,
+                                            UuserLName = JUPUSS.lastname,
+                                            UuserAccName = JUPUSS.username,
+
+                                            //
+                                            branchName = JBB.name,
+
+                                            branchType = JBB.type,
+                                            //itemslocations
+
+                                            IUL.itemsLocId,
+                                            IUL.locationId,
+                                            IUL.quantity,
+
+                                            IUL.startDate,
+                                            IUL.endDate,
+
+                                            IULnote = IUL.note,
+                                            IU.storageCostId,
+
+                                            storageCostName = IU.storageCostId != null ? entity.storageCost.Where(X => X.storageCostId == IU.storageCostId).FirstOrDefault().name : "",
+                                            storageCostValue = IU.storageCostId != null ?
+                                          entity.storageCost.Where(X => X.storageCostId == IU.storageCostId).FirstOrDefault().cost
+                                          : 0,
+
+                                            //  IUL.updateDate.
+                                            cuserName = JUU.name,
+                                            cuserLast = JUU.lastname,
+                                            cUserAccName = JUU.username,
+                                            uuserName = JUPUSS.name,
+                                            uuserLast = JUPUSS.lastname,
+                                            uUserAccName = JUPUSS.username,
+                                            // Location
+                                            L.x,
+                                            L.y,
+                                            L.z,
+
+                                            LocisActive = L.isActive,
+                                            L.sectionId,
+                                            Locnote = L.note,
+                                            L.branchId,
+                                            LocisFreeZone = L.isFreeZone,
 
 
-                    if (invListm == null)
-                        return NotFound();
-                    else
-                        return Ok(invListm);
+                                            // section
+
+                                            Secname = JSS.name,
+                                            SecisActive = JSS.isActive,
+                                            Secnote = JSS.note,
+                                            SecisFreeZone = JSS.isFreeZone,
+
+
+                                            //username
+
+                                            //  I.invoiceId,
+                                            //    JBB.name
+                                        }).ToList();
+
+
+
+
+
+
+
+                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(invListm) };
+
+                    }
+
+                }
+                catch
+                {
+                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
                 }
 
             }
 
-            //else
-            return NotFound();
+            //var re = Request;
+            //var headers = re.Headers;
+            //string token = "";
+            //if (headers.Contains("APIKey"))
+            //{
+            //    token = headers.GetValues("APIKey").First();
+            //}
+            //Validation validation = new Validation();
+            //bool valid = validation.CheckApiKey(token);
+
+            //if (valid) // APIKey is valid
+            //{
+            //    List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+
+            //    using (incposdbEntities entity = new incposdbEntities())
+            //    {
+            //        // storageCost storageCostsr = new storageCost();
+
+            //        var invListm = (from L in entity.locations
+            //                            //  from I in entity.invoices.Where(I => I.invoiceId == IT.invoiceId)
+
+
+            //                        join IUL in entity.itemsLocations on L.locationId equals IUL.locationId
+            //                        join IU in entity.itemsUnits on IUL.itemUnitId equals IU.itemUnitId
+
+            //                        //  join ITCUSER in entity.users on IT.createUserId equals ITCUSER.userId
+            //                        //join ITUPUSER in entity.users on IT.updateUserId equals ITUPUSER.userId
+            //                        join ITEM in entity.items on IU.itemId equals ITEM.itemId
+            //                        join UNIT in entity.units on IU.unitId equals UNIT.unitId
+            //                        join S in entity.sections on L.sectionId equals S.sectionId into JS
+            //                        join B in entity.branches on L.branchId equals B.branchId into JB
+
+
+            //                        join UPUSR in entity.users on IUL.updateUserId equals UPUSR.userId into JUPUS
+            //                        join U in entity.users on IUL.createUserId equals U.userId into JU
+
+
+
+            //                        from JBB in JB
+            //                        from JSS in JS.DefaultIfEmpty()
+            //                        from JUU in JU.DefaultIfEmpty()
+            //                        from JUPUSS in JUPUS.DefaultIfEmpty()
+
+            //                        where (brIds.Contains(JBB.branchId))
+
+            //                        select new
+            //                        {
+            //                            // item unit
+            //                            itemName = ITEM.name,
+            //                            ITEM.min,
+            //                            ITEM.max,
+            //                            ITEM.minUnitId,
+            //                            ITEM.maxUnitId,
+            //                            minUnitName = entity.units.Where(x => x.unitId == ITEM.minUnitId).FirstOrDefault().name,
+            //                            maxUnitName = entity.units.Where(x => x.unitId == ITEM.maxUnitId).FirstOrDefault().name,
+            //                            unitName = UNIT.name,
+            //                            IU.itemUnitId,
+
+            //                            IU.itemId,
+            //                            IU.unitId,
+
+            //                            IU.barcode,
+            //                            //item location
+            //                            CreateuserName = JUU.name,
+            //                            CreateuserLName = JUU.lastname,
+            //                            CreateuserAccName = JUU.username,
+            //                            UuserName = JUPUSS.name,
+            //                            UuserLName = JUPUSS.lastname,
+            //                            UuserAccName = JUPUSS.username,
+
+            //                            //
+            //                            branchName = JBB.name,
+
+            //                            branchType = JBB.type,
+            //                            //itemslocations
+
+            //                            IUL.itemsLocId,
+            //                            IUL.locationId,
+            //                            IUL.quantity,
+
+            //                            IUL.startDate,
+            //                            IUL.endDate,
+
+            //                            IULnote = IUL.note,
+            //                            IU.storageCostId,
+
+            //                            storageCostName = IU.storageCostId != null ? entity.storageCost.Where(X => X.storageCostId == IU.storageCostId).FirstOrDefault().name : "",
+            //                            storageCostValue = IU.storageCostId != null ?
+            //                          entity.storageCost.Where(X => X.storageCostId == IU.storageCostId).FirstOrDefault().cost
+            //                          : 0,
+
+            //                            //  IUL.updateDate.
+            //                            cuserName = JUU.name,
+            //                            cuserLast = JUU.lastname,
+            //                            cUserAccName = JUU.username,
+            //                            uuserName = JUPUSS.name,
+            //                            uuserLast = JUPUSS.lastname,
+            //                            uUserAccName = JUPUSS.username,
+            //                            // Location
+            //                            L.x,
+            //                            L.y,
+            //                            L.z,
+
+            //                            LocisActive = L.isActive,
+            //                            L.sectionId,
+            //                            Locnote = L.note,
+            //                            L.branchId,
+            //                            LocisFreeZone = L.isFreeZone,
+
+
+            //                            // section
+
+            //                            Secname = JSS.name,
+            //                            SecisActive = JSS.isActive,
+            //                            Secnote = JSS.note,
+            //                            SecisFreeZone = JSS.isFreeZone,
+
+
+            //                            //username
+
+            //                            //  I.invoiceId,
+            //                            //    JBB.name
+            //                        }).ToList();
+
+
+
+
+
+            //        if (invListm == null)
+            //            return NotFound();
+            //        else
+            //            return Ok(invListm);
+            //    }
+
+            //}
+
+            ////else
+            //return NotFound();
         }
 
         // 
         // العناصر في الفواتير
 
-        [HttpGet]
-        [Route("GetInItems")]
-        public IHttpActionResult GetInItems()
-        {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
-            {
-                token = headers.GetValues("APIKey").First();
-            }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
+        //[HttpGet]
+        //[Route("GetInItems")]
+        //public IHttpActionResult GetInItems()
+        //{
+        //    var re = Request;
+        //    var headers = re.Headers;
+        //    string token = "";
+        //    if (headers.Contains("APIKey"))
+        //    {
+        //        token = headers.GetValues("APIKey").First();
+        //    }
+        //    Validation validation = new Validation();
+        //    bool valid = validation.CheckApiKey(token);
 
-            if (valid) // APIKey is valid
-            {
-                using (incposdbEntities entity = new incposdbEntities())
-                {
-                    var invListm = (from IT in entity.itemsTransfer
-                                    from I in entity.invoices.Where(I => I.invoiceId == IT.invoiceId)
+        //    if (valid) // APIKey is valid
+        //    {
+        //        using (incposdbEntities entity = new incposdbEntities())
+        //        {
+        //            var invListm = (from IT in entity.itemsTransfer
+        //                            from I in entity.invoices.Where(I => I.invoiceId == IT.invoiceId)
 
-                                    from IU in entity.itemsUnits.Where(IU => IU.itemUnitId == IT.itemUnitId)
-                                    join ITCUSER in entity.users on IT.createUserId equals ITCUSER.userId
-                                    join ITUPUSER in entity.users on IT.updateUserId equals ITUPUSER.userId
-                                    join ITEM in entity.items on IU.itemId equals ITEM.itemId
-                                    join UNIT in entity.units on IU.unitId equals UNIT.unitId
-                                    join B in entity.branches on I.branchId equals B.branchId into JB
-                                    // join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
-                                    join A in entity.agents on I.agentId equals A.agentId into JA
-                                    join U in entity.users on I.createUserId equals U.userId into JU
-                                    join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
-                                    join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
-                                    from JPP in entity.pos.Where(X => X.posId == I.posId)
-                                    join BP in entity.branches on JPP.branchId equals BP.branchId
+        //                            from IU in entity.itemsUnits.Where(IU => IU.itemUnitId == IT.itemUnitId)
+        //                            join ITCUSER in entity.users on IT.createUserId equals ITCUSER.userId
+        //                            join ITUPUSER in entity.users on IT.updateUserId equals ITUPUSER.userId
+        //                            join ITEM in entity.items on IU.itemId equals ITEM.itemId
+        //                            join UNIT in entity.units on IU.unitId equals UNIT.unitId
+        //                            join B in entity.branches on I.branchId equals B.branchId into JB
+        //                            // join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
+        //                            join A in entity.agents on I.agentId equals A.agentId into JA
+        //                            join U in entity.users on I.createUserId equals U.userId into JU
+        //                            join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
+        //                            join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
+        //                            from JPP in entity.pos.Where(X => X.posId == I.posId)
+        //                            join BP in entity.branches on JPP.branchId equals BP.branchId
 
-                                    from JBB in JB.DefaultIfEmpty()
-                                        //   from JPP into  JP.DefaultIfEmpty
-                                    from JUU in JU.DefaultIfEmpty()
-                                    from JUPUS in JUPUSR.DefaultIfEmpty()
-                                    from JIMM in JIM.DefaultIfEmpty()
-                                    from JAA in JA.DefaultIfEmpty()
-                                        // from JBCC in JBC.DefaultIfEmpty()
-                                    where (I.invType == "p" || I.invType == "sb" || I.invType == "im")// exw
+        //                            from JBB in JB.DefaultIfEmpty()
+        //                                //   from JPP into  JP.DefaultIfEmpty
+        //                            from JUU in JU.DefaultIfEmpty()
+        //                            from JUPUS in JUPUSR.DefaultIfEmpty()
+        //                            from JIMM in JIM.DefaultIfEmpty()
+        //                            from JAA in JA.DefaultIfEmpty()
+        //                                // from JBCC in JBC.DefaultIfEmpty()
+        //                            where (I.invType == "p" || I.invType == "sb" || I.invType == "im")// exw
 
-                                    select new
-                                    {
-                                        ITitemName = ITEM.name,
-                                        ITunitName = UNIT.name,
-                                        ITitemsTransId = IT.itemsTransId,
-                                        ITitemUnitId = IT.itemUnitId,
+        //                            select new
+        //                            {
+        //                                ITitemName = ITEM.name,
+        //                                ITunitName = UNIT.name,
+        //                                ITitemsTransId = IT.itemsTransId,
+        //                                ITitemUnitId = IT.itemUnitId,
 
-                                        ITitemId = IU.itemId,
-                                        ITunitId = IU.unitId,
-                                        ITquantity = IT.quantity,
+        //                                ITitemId = IU.itemId,
+        //                                ITunitId = IU.unitId,
+        //                                ITquantity = IT.quantity,
 
-                                        ITcreateDate = IT.createDate,
-                                        ITupdateDate = IT.updateDate,
-                                        ITcreateUserId = IT.createUserId,
-                                        ITupdateUserId = IT.updateUserId,
-                                        ITnotes = IT.notes,
-                                        ITprice = IT.price,
-                                        ITbarcode = IU.barcode,
-                                        ITCreateuserName = ITCUSER.name,
-                                        ITCreateuserLName = ITCUSER.lastname,
-                                        ITCreateuserAccName = ITCUSER.username,
+        //                                ITcreateDate = IT.createDate,
+        //                                ITupdateDate = IT.updateDate,
+        //                                ITcreateUserId = IT.createUserId,
+        //                                ITupdateUserId = IT.updateUserId,
+        //                                ITnotes = IT.notes,
+        //                                ITprice = IT.price,
+        //                                ITbarcode = IU.barcode,
+        //                                ITCreateuserName = ITCUSER.name,
+        //                                ITCreateuserLName = ITCUSER.lastname,
+        //                                ITCreateuserAccName = ITCUSER.username,
 
-                                        ITUpdateuserName = ITUPUSER.name,
-                                        ITUpdateuserLName = ITUPUSER.lastname,
-                                        ITUpdateuserAccName = ITUPUSER.username,
-                                        I.invoiceId,
-                                        I.invNumber,
-                                        I.agentId,
-                                        I.posId,
-                                        I.invType,
-                                        I.total,
-                                        I.totalNet,
-                                        I.paid,
-                                        I.deserved,
-                                        I.deservedDate,
-                                        I.invDate,
-                                        I.invoiceMainId,
-                                        I.invCase,
-                                        I.invTime,
-                                        I.notes,
-                                        I.vendorInvNum,
-                                        I.vendorInvDate,
-                                        I.createUserId,
-                                        I.updateDate,
-                                        I.updateUserId,
-                                        I.branchId,
-                                        discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
-                                        I.discountType,
-                                        I.tax,
-                                        I.name,
-                                        I.isApproved,
+        //                                ITUpdateuserName = ITUPUSER.name,
+        //                                ITUpdateuserLName = ITUPUSER.lastname,
+        //                                ITUpdateuserAccName = ITUPUSER.username,
+        //                                I.invoiceId,
+        //                                I.invNumber,
+        //                                I.agentId,
+        //                                I.posId,
+        //                                I.invType,
+        //                                I.total,
+        //                                I.totalNet,
+        //                                I.paid,
+        //                                I.deserved,
+        //                                I.deservedDate,
+        //                                I.invDate,
+        //                                I.invoiceMainId,
+        //                                I.invCase,
+        //                                I.invTime,
+        //                                I.notes,
+        //                                I.vendorInvNum,
+        //                                I.vendorInvDate,
+        //                                I.createUserId,
+        //                                I.updateDate,
+        //                                I.updateUserId,
+        //                                I.branchId,
+        //                                discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
+        //                                I.discountType,
+        //                                I.tax,
+        //                                I.name,
+        //                                I.isApproved,
 
-                                        //
-                                        //  I.branchCreatorId,
-                                        //  branchCreatorName = JBCC.name,
-                                        //
-                                        branchName = JBB.name,
+        //                                //
+        //                                //  I.branchCreatorId,
+        //                                //  branchCreatorName = JBCC.name,
+        //                                //
+        //                                branchName = JBB.name,
 
-                                        branchType = JBB.type,
-                                        posName = JPP.name,
-                                        posCode = JPP.code,
-                                        agentName = JAA.name,
-                                        agentCode = JAA.code,
-                                        agentType = JAA.type,
-                                        cuserName = JUU.name,
-                                        cuserLast = JUU.lastname,
-                                        cUserAccName = JUU.username,
-                                        uuserName = JUPUS.name,
-                                        uuserLast = JUPUS.lastname,
-                                        uUserAccName = JUPUS.username,
-                                        agentCompany = JAA.company,
+        //                                branchType = JBB.type,
+        //                                posName = JPP.name,
+        //                                posCode = JPP.code,
+        //                                agentName = JAA.name,
+        //                                agentCode = JAA.code,
+        //                                agentType = JAA.type,
+        //                                cuserName = JUU.name,
+        //                                cuserLast = JUU.lastname,
+        //                                cUserAccName = JUU.username,
+        //                                uuserName = JUPUS.name,
+        //                                uuserLast = JUPUS.lastname,
+        //                                uUserAccName = JUPUS.username,
+        //                                agentCompany = JAA.company,
 
-                                        //username
+        //                                //username
 
-                                        //  I.invoiceId,
-                                        //    JBB.name
-                                    }).ToList();
-
-
+        //                                //  I.invoiceId,
+        //                                //    JBB.name
+        //                            }).ToList();
 
 
 
-                    if (invListm == null)
-                        return NotFound();
-                    else
-                        return Ok(invListm);
-                }
 
-            }
 
-            //else
-            return NotFound();
-        }
+        //            if (invListm == null)
+        //                return NotFound();
+        //            else
+        //                return Ok(invListm);
+        //        }
+
+        //    }
+
+        //    //else
+        //    return NotFound();
+        //}
 
         // حركة الاصناف الخارجية -مع العملاء والموردين
         [HttpGet]
         [Route("GetExternalMov")]
-        public IHttpActionResult GetExternalMov(int mainBranchId, int userId)
+        public ResponseVM GetExternalMov(string token)
         {
+            // public ResponseVM GetPurinv(string token)
+
+            //int mainBranchId, int userId
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
+            else
             {
-                List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+                int mainBranchId = 0;
+                int userId = 0;
 
-
-                using (incposdbEntities entity = new incposdbEntities())
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
                 {
-                    var invListm = (from IT in entity.itemsTransfer
-                                    from I in entity.invoices.Where(I => I.invoiceId == IT.invoiceId)
+                    if (c.Type == "mainBranchId")
+                    {
+                        mainBranchId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "userId")
+                    {
+                        userId = int.Parse(c.Value);
+                    }
 
-                                    from IU in entity.itemsUnits.Where(IU => IU.itemUnitId == IT.itemUnitId)
-                                    join ITCUSER in entity.users on IT.createUserId equals ITCUSER.userId
-                                    join ITUPUSER in entity.users on IT.updateUserId equals ITUPUSER.userId
-                                    join ITEM in entity.items on IU.itemId equals ITEM.itemId
-                                    join UNIT in entity.units on IU.unitId equals UNIT.unitId
-                                    join B in entity.branches on I.branchId equals B.branchId into JB
-                                    join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
-                                    join A in entity.agents on I.agentId equals A.agentId into JA
-                                    join U in entity.users on I.createUserId equals U.userId into JU
-                                    join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
-                                    join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
-                                    from JPP in entity.pos.Where(X => X.posId == I.posId)
-                                    join BP in entity.branches on JPP.branchId equals BP.branchId
+                }
+                // DateTime cmpdate = DateTime.Now.AddDays(newdays);
+                try
+                {
 
-                                    from JBB in JB.DefaultIfEmpty()
-                                        //   from JPP into  JP.DefaultIfEmpty
-                                    from JUU in JU.DefaultIfEmpty()
-                                    from JUPUS in JUPUSR.DefaultIfEmpty()
-                                    from JIMM in JIM.DefaultIfEmpty()
-                                    from JAA in JA.DefaultIfEmpty()
-                                    from JBCC in JBC.DefaultIfEmpty()
+                    List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+                        var invListm = (from IT in entity.itemsTransfer
+                                        from I in entity.invoices.Where(I => I.invoiceId == IT.invoiceId)
 
-                                    where (brIds.Contains(JBCC.branchId) || brIds.Contains(JBB.branchId))
+                                        from IU in entity.itemsUnits.Where(IU => IU.itemUnitId == IT.itemUnitId)
+                                        join ITCUSER in entity.users on IT.createUserId equals ITCUSER.userId
+                                        join ITUPUSER in entity.users on IT.updateUserId equals ITUPUSER.userId
+                                        join ITEM in entity.items on IU.itemId equals ITEM.itemId
+                                        join UNIT in entity.units on IU.unitId equals UNIT.unitId
+                                        join B in entity.branches on I.branchId equals B.branchId into JB
+                                        join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
+                                        join A in entity.agents on I.agentId equals A.agentId into JA
+                                        join U in entity.users on I.createUserId equals U.userId into JU
+                                        join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
+                                        join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
+                                        from JPP in entity.pos.Where(X => X.posId == I.posId)
+                                        join BP in entity.branches on JPP.branchId equals BP.branchId
 
+                                        from JBB in JB.DefaultIfEmpty()
+                                            //   from JPP into  JP.DefaultIfEmpty
+                                        from JUU in JU.DefaultIfEmpty()
+                                        from JUPUS in JUPUSR.DefaultIfEmpty()
+                                        from JIMM in JIM.DefaultIfEmpty()
+                                        from JAA in JA.DefaultIfEmpty()
+                                        from JBCC in JBC.DefaultIfEmpty()
 
-                                    && (I.invType == "p" || I.invType == "sb" || I.invType == "s" || I.invType == "pb")// exw
-
-                                    select new
-                                    {
-                                        itemName = ITEM.name,
-                                        unitName = UNIT.name,
-                                        IT.itemsTransId,
-                                        IT.itemUnitId,
-
-                                        IU.itemId,
-                                        IU.unitId,
-                                        IT.quantity,
-
-                                        // createDate = IT.createDate,
-                                        //updateDate = IT.updateDate,
-                                        //  ITcreateUserId = IT.createUserId,
-                                        //ITupdateUserId = IT.updateUserId,
-                                        //notes = IT.notes,
-                                        IT.price,
-                                        IU.barcode,
-                                        CreateuserName = ITCUSER.name,
-                                        CreateuserLName = ITCUSER.lastname,
-                                        CreateuserAccName = ITCUSER.username,
-
-                                        UpdateuserName = ITUPUSER.name,
-                                        UpdateuserLName = ITUPUSER.lastname,
-                                        UpdateuserAccName = ITUPUSER.username,
-                                        I.invoiceId,
-                                        I.invNumber,
-
-                                        I.posId,
-                                        I.invType,
-                                        I.total,
-                                        I.totalNet,
-                                        I.paid,
-                                        I.deserved,
-                                        I.deservedDate,
-                                        I.invDate,
-                                        I.invoiceMainId,
-                                        I.invCase,
-                                        I.invTime,
-                                        I.notes,
-                                        I.vendorInvNum,
-                                        I.vendorInvDate,
-                                        I.createUserId,
-                                        I.updateDate,
-                                        I.updateUserId,
-                                        // I.branchId,
-                                        discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
-                                        I.discountType,
-                                        I.tax,
-                                        I.name,
-                                        I.isApproved,
-
-                                        //
-                                        I.branchCreatorId,
-                                        branchCreatorName = JBCC.name,
-                                        //
-                                        branchName = ((I.invType == "s" || I.invType == "pb" || I.invType == "sb") ? JBCC.name : (I.invType == "p" ? JBB.name : JBCC.name)),
-                                        branchId = ((I.invType == "s" || I.invType == "pb" || I.invType == "sb") ? I.branchCreatorId : (I.invType == "p" ? I.branchId : I.branchCreatorId)),
-                                        //  branchName = JBB.name,
-
-                                        branchType = JBB.type,
-                                        posName = JPP.name,
-                                        posCode = JPP.code,
-                                        agentCode = JAA.code,
-                                        //   agentName =  JAA.name,
-                                        agentName = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb")) ?
-                                        "unknown" : JAA.name,
+                                        where (brIds.Contains(JBCC.branchId) || brIds.Contains(JBB.branchId))
 
 
-                                        //   agentType = JAA.type,
-                                        agentType = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
-                                        ? "c" : JAA.type,
-                                        agentId = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
-                                        ? 0 : I.agentId,
-                                        cuserName = JUU.name,
-                                        cuserLast = JUU.lastname,
-                                        cUserAccName = JUU.username,
-                                        uuserName = JUPUS.name,
-                                        uuserLast = JUPUS.lastname,
-                                        uUserAccName = JUPUS.username,
-                                        agentCompany = JAA.company,
+                                        && (I.invType == "p" || I.invType == "sb" || I.invType == "s" || I.invType == "pb")// exw
 
-                                        //username
+                                        select new
+                                        {
+                                            itemName = ITEM.name,
+                                            unitName = UNIT.name,
+                                            IT.itemsTransId,
+                                            IT.itemUnitId,
 
-                                        //  I.invoiceId,
-                                        //    JBB.name
-                                    }).ToList();
+                                            IU.itemId,
+                                            IU.unitId,
+                                            IT.quantity,
+
+                                            // createDate = IT.createDate,
+                                            //updateDate = IT.updateDate,
+                                            //  ITcreateUserId = IT.createUserId,
+                                            //ITupdateUserId = IT.updateUserId,
+                                            //notes = IT.notes,
+                                            IT.price,
+                                            IU.barcode,
+                                            CreateuserName = ITCUSER.name,
+                                            CreateuserLName = ITCUSER.lastname,
+                                            CreateuserAccName = ITCUSER.username,
+
+                                            UpdateuserName = ITUPUSER.name,
+                                            UpdateuserLName = ITUPUSER.lastname,
+                                            UpdateuserAccName = ITUPUSER.username,
+                                            I.invoiceId,
+                                            I.invNumber,
+
+                                            I.posId,
+                                            I.invType,
+                                            I.total,
+                                            I.totalNet,
+                                            I.paid,
+                                            I.deserved,
+                                            I.deservedDate,
+                                            I.invDate,
+                                            I.invoiceMainId,
+                                            I.invCase,
+                                            I.invTime,
+                                            I.notes,
+                                            I.vendorInvNum,
+                                            I.vendorInvDate,
+                                            I.createUserId,
+                                            I.updateDate,
+                                            I.updateUserId,
+                                            // I.branchId,
+                                            discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
+                                            I.discountType,
+                                            I.tax,
+                                            I.name,
+                                            I.isApproved,
+
+                                            //
+                                            I.branchCreatorId,
+                                            branchCreatorName = JBCC.name,
+                                            //
+                                            branchName = ((I.invType == "s" || I.invType == "pb" || I.invType == "sb") ? JBCC.name : (I.invType == "p" ? JBB.name : JBCC.name)),
+                                            branchId = ((I.invType == "s" || I.invType == "pb" || I.invType == "sb") ? I.branchCreatorId : (I.invType == "p" ? I.branchId : I.branchCreatorId)),
+                                            //  branchName = JBB.name,
+
+                                            branchType = JBB.type,
+                                            posName = JPP.name,
+                                            posCode = JPP.code,
+                                            agentCode = JAA.code,
+                                            //   agentName =  JAA.name,
+                                            agentName = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb")) ?
+                                            "unknown" : JAA.name,
+
+
+                                            //   agentType = JAA.type,
+                                            agentType = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
+                                            ? "c" : JAA.type,
+                                            agentId = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
+                                            ? 0 : I.agentId,
+                                            cuserName = JUU.name,
+                                            cuserLast = JUU.lastname,
+                                            cUserAccName = JUU.username,
+                                            uuserName = JUPUS.name,
+                                            uuserLast = JUPUS.lastname,
+                                            uUserAccName = JUPUS.username,
+                                            agentCompany = JAA.company,
+
+                                            //username
+
+                                            //  I.invoiceId,
+                                            //    JBB.name
+                                        }).ToList();
 
 
 
 
 
-                    if (invListm == null)
-                        return NotFound();
-                    else
-                        return Ok(invListm);
+
+
+                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(invListm) };
+
+                    }
+
+                }
+                catch
+                {
+                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
                 }
 
             }
 
-            //else
-            return NotFound();
+            //var re = Request;
+            //var headers = re.Headers;
+            //string token = "";
+            //if (headers.Contains("APIKey"))
+            //{
+            //    token = headers.GetValues("APIKey").First();
+            //}
+            //Validation validation = new Validation();
+            //bool valid = validation.CheckApiKey(token);
+
+            //if (valid) // APIKey is valid
+            //{
+            //    List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+
+
+            //    using (incposdbEntities entity = new incposdbEntities())
+            //    {
+            //        var invListm = (from IT in entity.itemsTransfer
+            //                        from I in entity.invoices.Where(I => I.invoiceId == IT.invoiceId)
+
+            //                        from IU in entity.itemsUnits.Where(IU => IU.itemUnitId == IT.itemUnitId)
+            //                        join ITCUSER in entity.users on IT.createUserId equals ITCUSER.userId
+            //                        join ITUPUSER in entity.users on IT.updateUserId equals ITUPUSER.userId
+            //                        join ITEM in entity.items on IU.itemId equals ITEM.itemId
+            //                        join UNIT in entity.units on IU.unitId equals UNIT.unitId
+            //                        join B in entity.branches on I.branchId equals B.branchId into JB
+            //                        join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
+            //                        join A in entity.agents on I.agentId equals A.agentId into JA
+            //                        join U in entity.users on I.createUserId equals U.userId into JU
+            //                        join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
+            //                        join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
+            //                        from JPP in entity.pos.Where(X => X.posId == I.posId)
+            //                        join BP in entity.branches on JPP.branchId equals BP.branchId
+
+            //                        from JBB in JB.DefaultIfEmpty()
+            //                            //   from JPP into  JP.DefaultIfEmpty
+            //                        from JUU in JU.DefaultIfEmpty()
+            //                        from JUPUS in JUPUSR.DefaultIfEmpty()
+            //                        from JIMM in JIM.DefaultIfEmpty()
+            //                        from JAA in JA.DefaultIfEmpty()
+            //                        from JBCC in JBC.DefaultIfEmpty()
+
+            //                        where (brIds.Contains(JBCC.branchId) || brIds.Contains(JBB.branchId))
+
+
+            //                        && (I.invType == "p" || I.invType == "sb" || I.invType == "s" || I.invType == "pb")// exw
+
+            //                        select new
+            //                        {
+            //                            itemName = ITEM.name,
+            //                            unitName = UNIT.name,
+            //                            IT.itemsTransId,
+            //                            IT.itemUnitId,
+
+            //                            IU.itemId,
+            //                            IU.unitId,
+            //                            IT.quantity,
+
+            //                            // createDate = IT.createDate,
+            //                            //updateDate = IT.updateDate,
+            //                            //  ITcreateUserId = IT.createUserId,
+            //                            //ITupdateUserId = IT.updateUserId,
+            //                            //notes = IT.notes,
+            //                            IT.price,
+            //                            IU.barcode,
+            //                            CreateuserName = ITCUSER.name,
+            //                            CreateuserLName = ITCUSER.lastname,
+            //                            CreateuserAccName = ITCUSER.username,
+
+            //                            UpdateuserName = ITUPUSER.name,
+            //                            UpdateuserLName = ITUPUSER.lastname,
+            //                            UpdateuserAccName = ITUPUSER.username,
+            //                            I.invoiceId,
+            //                            I.invNumber,
+
+            //                            I.posId,
+            //                            I.invType,
+            //                            I.total,
+            //                            I.totalNet,
+            //                            I.paid,
+            //                            I.deserved,
+            //                            I.deservedDate,
+            //                            I.invDate,
+            //                            I.invoiceMainId,
+            //                            I.invCase,
+            //                            I.invTime,
+            //                            I.notes,
+            //                            I.vendorInvNum,
+            //                            I.vendorInvDate,
+            //                            I.createUserId,
+            //                            I.updateDate,
+            //                            I.updateUserId,
+            //                            // I.branchId,
+            //                            discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
+            //                            I.discountType,
+            //                            I.tax,
+            //                            I.name,
+            //                            I.isApproved,
+
+            //                            //
+            //                            I.branchCreatorId,
+            //                            branchCreatorName = JBCC.name,
+            //                            //
+            //                            branchName = ((I.invType == "s" || I.invType == "pb" || I.invType == "sb") ? JBCC.name : (I.invType == "p" ? JBB.name : JBCC.name)),
+            //                            branchId = ((I.invType == "s" || I.invType == "pb" || I.invType == "sb") ? I.branchCreatorId : (I.invType == "p" ? I.branchId : I.branchCreatorId)),
+            //                            //  branchName = JBB.name,
+
+            //                            branchType = JBB.type,
+            //                            posName = JPP.name,
+            //                            posCode = JPP.code,
+            //                            agentCode = JAA.code,
+            //                            //   agentName =  JAA.name,
+            //                            agentName = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb")) ?
+            //                            "unknown" : JAA.name,
+
+
+            //                            //   agentType = JAA.type,
+            //                            agentType = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
+            //                            ? "c" : JAA.type,
+            //                            agentId = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
+            //                            ? 0 : I.agentId,
+            //                            cuserName = JUU.name,
+            //                            cuserLast = JUU.lastname,
+            //                            cUserAccName = JUU.username,
+            //                            uuserName = JUPUS.name,
+            //                            uuserLast = JUPUS.lastname,
+            //                            uUserAccName = JUPUS.username,
+            //                            agentCompany = JAA.company,
+
+            //                            //username
+
+            //                            //  I.invoiceId,
+            //                            //    JBB.name
+            //                        }).ToList();
+
+
+
+
+
+            //        if (invListm == null)
+            //            return NotFound();
+            //        else
+            //            return Ok(invListm);
+            //    }
+
+            //}
+
+            ////else
+            //return NotFound();
         }
 
         // حركة الاصناف الداخلية -بين الفروع والمخازن
         [HttpGet]
         [Route("GetInternalMov")]
-        public IHttpActionResult GetInternalMov(int mainBranchId, int userId)
+        public ResponseVM GetInternalMov(string token)
         {
+            // public ResponseVM GetPurinv(string token)
+
+            //int mainBranchId, int userId
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
+            else
             {
-                List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+                int mainBranchId = 0;
+                int userId = 0;
 
-                using (incposdbEntities entity = new incposdbEntities())
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
                 {
-                    var invListm = (from IT in entity.itemsTransfer
-                                    from I in entity.invoices.Where(I => I.invoiceId == IT.invoiceId)
+                    if (c.Type == "mainBranchId")
+                    {
+                        mainBranchId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "userId")
+                    {
+                        userId = int.Parse(c.Value);
+                    }
 
-                                    from IU in entity.itemsUnits.Where(IU => IU.itemUnitId == IT.itemUnitId)
-                                    join ITCUSER in entity.users on IT.createUserId equals ITCUSER.userId
-                                    join ITUPUSER in entity.users on IT.updateUserId equals ITUPUSER.userId
-                                    join ITEM in entity.items on IU.itemId equals ITEM.itemId
-                                    join UNIT in entity.units on IU.unitId equals UNIT.unitId
-                                    join B in entity.branches on I.branchId equals B.branchId into JB
-                                    join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
-                                    join A in entity.agents on I.agentId equals A.agentId into JA
-                                    join U in entity.users on I.createUserId equals U.userId into JU
-                                    join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
-                                    join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
-                                    //  from JPP in entity.pos.Where(X => X.posId == I.posId ).DefaultIfEmpty()
-                                    //   join BP in entity.branches on JPP.branchId equals BP.branchId
+                }
+                // DateTime cmpdate = DateTime.Now.AddDays(newdays);
+                try
+                {
 
-                                    from JBB in JB.DefaultIfEmpty()
+                    List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+                        var invListm = (from IT in entity.itemsTransfer
+                                        from I in entity.invoices.Where(I => I.invoiceId == IT.invoiceId)
 
-                                    from JUU in JU.DefaultIfEmpty()
-                                    from JUPUS in JUPUSR.DefaultIfEmpty()
-                                    from JIMM in JIM.DefaultIfEmpty()
-                                    from JAA in JA.DefaultIfEmpty()
-                                    from JBCC in JBC.DefaultIfEmpty()
-                                    where ((I.invType == "ex") || (
-                                    (I.invType == "im" && I.invoiceMainId == null) ?
-                                    (entity.invoices.Where(x => x.invoiceMainId == I.invoiceId && x.invType == "ex").ToList().Count > 0)
-                                    : (I.invType == "im" && I.invoiceMainId != null)
-                                    ? entity.invoices.Where(x => x.invoiceId == I.invoiceMainId && x.invType == "ex").ToList().Count > 0 : false))
-                                    && (brIds.Contains(JBCC.branchId) || brIds.Contains(JBB.branchId))
+                                        from IU in entity.itemsUnits.Where(IU => IU.itemUnitId == IT.itemUnitId)
+                                        join ITCUSER in entity.users on IT.createUserId equals ITCUSER.userId
+                                        join ITUPUSER in entity.users on IT.updateUserId equals ITUPUSER.userId
+                                        join ITEM in entity.items on IU.itemId equals ITEM.itemId
+                                        join UNIT in entity.units on IU.unitId equals UNIT.unitId
+                                        join B in entity.branches on I.branchId equals B.branchId into JB
+                                        join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
+                                        join A in entity.agents on I.agentId equals A.agentId into JA
+                                        join U in entity.users on I.createUserId equals U.userId into JU
+                                        join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
+                                        join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
+                                        //  from JPP in entity.pos.Where(X => X.posId == I.posId ).DefaultIfEmpty()
+                                        //   join BP in entity.branches on JPP.branchId equals BP.branchId
 
-                                    select new
-                                    {
-                                        itemName = ITEM.name,
-                                        unitName = UNIT.name,
-                                        IT.itemsTransId,
-                                        IT.itemUnitId,
+                                        from JBB in JB.DefaultIfEmpty()
 
-                                        IU.itemId,
-                                        IU.unitId,
-                                        IT.quantity,
+                                        from JUU in JU.DefaultIfEmpty()
+                                        from JUPUS in JUPUSR.DefaultIfEmpty()
+                                        from JIMM in JIM.DefaultIfEmpty()
+                                        from JAA in JA.DefaultIfEmpty()
+                                        from JBCC in JBC.DefaultIfEmpty()
+                                        where ((I.invType == "ex") || (
+                                        (I.invType == "im" && I.invoiceMainId == null) ?
+                                        (entity.invoices.Where(x => x.invoiceMainId == I.invoiceId && x.invType == "ex").ToList().Count > 0)
+                                        : (I.invType == "im" && I.invoiceMainId != null)
+                                        ? entity.invoices.Where(x => x.invoiceId == I.invoiceMainId && x.invType == "ex").ToList().Count > 0 : false))
+                                        && (brIds.Contains(JBCC.branchId) || brIds.Contains(JBB.branchId))
 
-                                        // createDate = IT.createDate,
-                                        //updateDate = IT.updateDate,
-                                        //  ITcreateUserId = IT.createUserId,
-                                        //ITupdateUserId = IT.updateUserId,
-                                        //notes = IT.notes,
-                                        IT.price,
-                                        IU.barcode,
-                                        CreateuserName = ITCUSER.name,
-                                        CreateuserLName = ITCUSER.lastname,
-                                        CreateuserAccName = ITCUSER.username,
+                                        select new
+                                        {
+                                            itemName = ITEM.name,
+                                            unitName = UNIT.name,
+                                            IT.itemsTransId,
+                                            IT.itemUnitId,
 
-                                        UpdateuserName = ITUPUSER.name,
-                                        UpdateuserLName = ITUPUSER.lastname,
-                                        UpdateuserAccName = ITUPUSER.username,
-                                        I.invoiceId,
-                                        I.invNumber,
-                                        I.agentId,
-                                        I.posId,
-                                        I.invType,
-                                        I.total,
-                                        I.totalNet,
-                                        I.paid,
-                                        I.deserved,
-                                        I.deservedDate,
-                                        I.invDate,
-                                        I.invoiceMainId,
-                                        I.invCase,
-                                        I.invTime,
-                                        I.notes,
-                                        I.vendorInvNum,
-                                        I.vendorInvDate,
-                                        I.createUserId,
-                                        I.updateDate,
-                                        I.updateUserId,
-                                        I.branchId,
-                                        discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
-                                        I.discountType,
-                                        I.tax,
-                                        I.name,
-                                        I.isApproved,
+                                            IU.itemId,
+                                            IU.unitId,
+                                            IT.quantity,
 
-                                        //
-                                        I.branchCreatorId,
-                                        branchCreatorName = JBCC.name,
-                                        //
-                                        movbranchname = JBB.name,
-                                        movbranchid = I.branchId,
-                                        branchName = JBB.name,
+                                            // createDate = IT.createDate,
+                                            //updateDate = IT.updateDate,
+                                            //  ITcreateUserId = IT.createUserId,
+                                            //ITupdateUserId = IT.updateUserId,
+                                            //notes = IT.notes,
+                                            IT.price,
+                                            IU.barcode,
+                                            CreateuserName = ITCUSER.name,
+                                            CreateuserLName = ITCUSER.lastname,
+                                            CreateuserAccName = ITCUSER.username,
 
-                                        branchType = JBB.type,
-                                        //     posName = JPP.name,
-                                        //  posCode = JPP.code,
-                                        agentName = JAA.name,
-                                        agentCode = JAA.code,
-                                        cuserName = JUU.name,
-                                        cuserLast = JUU.lastname,
-                                        cUserAccName = JUU.username,
-                                        uuserName = JUPUS.name,
-                                        uuserLast = JUPUS.lastname,
-                                        uUserAccName = JUPUS.username,
-                                        agentCompany = JAA.company,
-                                        agentType = JAA.type,
-                                        exportBranch = I.invType == "ex" ? JBB.name :
-                                        I.invType == "im"
-                                        ? (I.invoiceMainId == null) ? (
-                                        entity.branches.Where
-                                        (B => B.branchId == entity.invoices.Where
-                                       (x => x.invoiceMainId == I.invoiceId)
-                                       .FirstOrDefault().branchId)
-                                        .FirstOrDefault().name) :// I.invoiceMainId not null
-                                       entity.branches.Where
-                                       (b => b.branchId ==
-                                       (entity.invoices.Where
-                                       (i => i.invoiceId == I.invoiceMainId)
-                                       .FirstOrDefault().branchId))
-                                       .FirstOrDefault().name
-                                       : "",
-                                        importBranch = I.invType == "im" ? JBB.name :
-                                        I.invType == "ex"
-                                        ? (I.invoiceMainId == null) ? (
-                                        entity.branches.Where
-                                        (B => B.branchId == entity.invoices.Where
-                                       (x => x.invoiceMainId == I.invoiceId)
-                                       .FirstOrDefault().branchId)
-                                        .FirstOrDefault().name) :// I.invoiceMainId not null
-                                       entity.branches.Where
-                                       (b => b.branchId ==
-                                       (entity.invoices.Where
-                                       (i => i.invoiceId == I.invoiceMainId)
-                                       .FirstOrDefault().branchId))
-                                       .FirstOrDefault().name
-                                       : "",
-                                        // ex im branchId
-                                        exportBranchId = I.invType == "ex" ? I.branchId :
-                                        I.invType == "im"
-                                        ? (I.invoiceMainId == null) ?
-                                       (entity.invoices.Where
-                                       (x => x.invoiceMainId == I.invoiceId)
-                                       .FirstOrDefault().branchId)
-                                         :// I.invoiceMainId not null
-                                       (entity.invoices.Where
-                                       (i => i.invoiceId == I.invoiceMainId)
-                                       .FirstOrDefault().branchId)
-                                       : null,
+                                            UpdateuserName = ITUPUSER.name,
+                                            UpdateuserLName = ITUPUSER.lastname,
+                                            UpdateuserAccName = ITUPUSER.username,
+                                            I.invoiceId,
+                                            I.invNumber,
+                                            I.agentId,
+                                            I.posId,
+                                            I.invType,
+                                            I.total,
+                                            I.totalNet,
+                                            I.paid,
+                                            I.deserved,
+                                            I.deservedDate,
+                                            I.invDate,
+                                            I.invoiceMainId,
+                                            I.invCase,
+                                            I.invTime,
+                                            I.notes,
+                                            I.vendorInvNum,
+                                            I.vendorInvDate,
+                                            I.createUserId,
+                                            I.updateDate,
+                                            I.updateUserId,
+                                            I.branchId,
+                                            discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
+                                            I.discountType,
+                                            I.tax,
+                                            I.name,
+                                            I.isApproved,
 
-                                        importBranchId = I.invType == "im" ? I.branchId :
-                                        I.invType == "ex"
-                                         ? (I.invoiceMainId == null) ?
-                                       (entity.invoices.Where
-                                       (x => x.invoiceMainId == I.invoiceId)
-                                       .FirstOrDefault().branchId)
-                                         :// I.invoiceMainId not null
-                                       (entity.invoices.Where
-                                       (i => i.invoiceId == I.invoiceMainId)
-                                       .FirstOrDefault().branchId)
-                                       : null,
+                                            //
+                                            I.branchCreatorId,
+                                            branchCreatorName = JBCC.name,
+                                            //
+                                            movbranchname = JBB.name,
+                                            movbranchid = I.branchId,
+                                            branchName = JBB.name,
 
-                                    }).ToList();
+                                            branchType = JBB.type,
+                                            //     posName = JPP.name,
+                                            //  posCode = JPP.code,
+                                            agentName = JAA.name,
+                                            agentCode = JAA.code,
+                                            cuserName = JUU.name,
+                                            cuserLast = JUU.lastname,
+                                            cUserAccName = JUU.username,
+                                            uuserName = JUPUS.name,
+                                            uuserLast = JUPUS.lastname,
+                                            uUserAccName = JUPUS.username,
+                                            agentCompany = JAA.company,
+                                            agentType = JAA.type,
+                                            exportBranch = I.invType == "ex" ? JBB.name :
+                                            I.invType == "im"
+                                            ? (I.invoiceMainId == null) ? (
+                                            entity.branches.Where
+                                            (B => B.branchId == entity.invoices.Where
+                                           (x => x.invoiceMainId == I.invoiceId)
+                                           .FirstOrDefault().branchId)
+                                            .FirstOrDefault().name) :// I.invoiceMainId not null
+                                           entity.branches.Where
+                                           (b => b.branchId ==
+                                           (entity.invoices.Where
+                                           (i => i.invoiceId == I.invoiceMainId)
+                                           .FirstOrDefault().branchId))
+                                           .FirstOrDefault().name
+                                           : "",
+                                            importBranch = I.invType == "im" ? JBB.name :
+                                            I.invType == "ex"
+                                            ? (I.invoiceMainId == null) ? (
+                                            entity.branches.Where
+                                            (B => B.branchId == entity.invoices.Where
+                                           (x => x.invoiceMainId == I.invoiceId)
+                                           .FirstOrDefault().branchId)
+                                            .FirstOrDefault().name) :// I.invoiceMainId not null
+                                           entity.branches.Where
+                                           (b => b.branchId ==
+                                           (entity.invoices.Where
+                                           (i => i.invoiceId == I.invoiceMainId)
+                                           .FirstOrDefault().branchId))
+                                           .FirstOrDefault().name
+                                           : "",
+                                            // ex im branchId
+                                            exportBranchId = I.invType == "ex" ? I.branchId :
+                                            I.invType == "im"
+                                            ? (I.invoiceMainId == null) ?
+                                           (entity.invoices.Where
+                                           (x => x.invoiceMainId == I.invoiceId)
+                                           .FirstOrDefault().branchId)
+                                             :// I.invoiceMainId not null
+                                           (entity.invoices.Where
+                                           (i => i.invoiceId == I.invoiceMainId)
+                                           .FirstOrDefault().branchId)
+                                           : null,
+
+                                            importBranchId = I.invType == "im" ? I.branchId :
+                                            I.invType == "ex"
+                                             ? (I.invoiceMainId == null) ?
+                                           (entity.invoices.Where
+                                           (x => x.invoiceMainId == I.invoiceId)
+                                           .FirstOrDefault().branchId)
+                                             :// I.invoiceMainId not null
+                                           (entity.invoices.Where
+                                           (i => i.invoiceId == I.invoiceMainId)
+                                           .FirstOrDefault().branchId)
+                                           : null,
+
+                                        }).ToList();
 
 
 
 
 
-                    if (invListm == null)
-                        return NotFound();
-                    else
-                        return Ok(invListm);
+
+
+                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(invListm) };
+
+                    }
+
+                }
+                catch
+                {
+                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
                 }
 
             }
 
-            //else
-            return NotFound();
+            //var re = Request;
+            //var headers = re.Headers;
+            //string token = "";
+            //if (headers.Contains("APIKey"))
+            //{
+            //    token = headers.GetValues("APIKey").First();
+            //}
+            //Validation validation = new Validation();
+            //bool valid = validation.CheckApiKey(token);
+
+            //if (valid) // APIKey is valid
+            //{
+            //    List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+
+            //    using (incposdbEntities entity = new incposdbEntities())
+            //    {
+            //        var invListm = (from IT in entity.itemsTransfer
+            //                        from I in entity.invoices.Where(I => I.invoiceId == IT.invoiceId)
+
+            //                        from IU in entity.itemsUnits.Where(IU => IU.itemUnitId == IT.itemUnitId)
+            //                        join ITCUSER in entity.users on IT.createUserId equals ITCUSER.userId
+            //                        join ITUPUSER in entity.users on IT.updateUserId equals ITUPUSER.userId
+            //                        join ITEM in entity.items on IU.itemId equals ITEM.itemId
+            //                        join UNIT in entity.units on IU.unitId equals UNIT.unitId
+            //                        join B in entity.branches on I.branchId equals B.branchId into JB
+            //                        join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
+            //                        join A in entity.agents on I.agentId equals A.agentId into JA
+            //                        join U in entity.users on I.createUserId equals U.userId into JU
+            //                        join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
+            //                        join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
+            //                        //  from JPP in entity.pos.Where(X => X.posId == I.posId ).DefaultIfEmpty()
+            //                        //   join BP in entity.branches on JPP.branchId equals BP.branchId
+
+            //                        from JBB in JB.DefaultIfEmpty()
+
+            //                        from JUU in JU.DefaultIfEmpty()
+            //                        from JUPUS in JUPUSR.DefaultIfEmpty()
+            //                        from JIMM in JIM.DefaultIfEmpty()
+            //                        from JAA in JA.DefaultIfEmpty()
+            //                        from JBCC in JBC.DefaultIfEmpty()
+            //                        where ((I.invType == "ex") || (
+            //                        (I.invType == "im" && I.invoiceMainId == null) ?
+            //                        (entity.invoices.Where(x => x.invoiceMainId == I.invoiceId && x.invType == "ex").ToList().Count > 0)
+            //                        : (I.invType == "im" && I.invoiceMainId != null)
+            //                        ? entity.invoices.Where(x => x.invoiceId == I.invoiceMainId && x.invType == "ex").ToList().Count > 0 : false))
+            //                        && (brIds.Contains(JBCC.branchId) || brIds.Contains(JBB.branchId))
+
+            //                        select new
+            //                        {
+            //                            itemName = ITEM.name,
+            //                            unitName = UNIT.name,
+            //                            IT.itemsTransId,
+            //                            IT.itemUnitId,
+
+            //                            IU.itemId,
+            //                            IU.unitId,
+            //                            IT.quantity,
+
+            //                            // createDate = IT.createDate,
+            //                            //updateDate = IT.updateDate,
+            //                            //  ITcreateUserId = IT.createUserId,
+            //                            //ITupdateUserId = IT.updateUserId,
+            //                            //notes = IT.notes,
+            //                            IT.price,
+            //                            IU.barcode,
+            //                            CreateuserName = ITCUSER.name,
+            //                            CreateuserLName = ITCUSER.lastname,
+            //                            CreateuserAccName = ITCUSER.username,
+
+            //                            UpdateuserName = ITUPUSER.name,
+            //                            UpdateuserLName = ITUPUSER.lastname,
+            //                            UpdateuserAccName = ITUPUSER.username,
+            //                            I.invoiceId,
+            //                            I.invNumber,
+            //                            I.agentId,
+            //                            I.posId,
+            //                            I.invType,
+            //                            I.total,
+            //                            I.totalNet,
+            //                            I.paid,
+            //                            I.deserved,
+            //                            I.deservedDate,
+            //                            I.invDate,
+            //                            I.invoiceMainId,
+            //                            I.invCase,
+            //                            I.invTime,
+            //                            I.notes,
+            //                            I.vendorInvNum,
+            //                            I.vendorInvDate,
+            //                            I.createUserId,
+            //                            I.updateDate,
+            //                            I.updateUserId,
+            //                            I.branchId,
+            //                            discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
+            //                            I.discountType,
+            //                            I.tax,
+            //                            I.name,
+            //                            I.isApproved,
+
+            //                            //
+            //                            I.branchCreatorId,
+            //                            branchCreatorName = JBCC.name,
+            //                            //
+            //                            movbranchname = JBB.name,
+            //                            movbranchid = I.branchId,
+            //                            branchName = JBB.name,
+
+            //                            branchType = JBB.type,
+            //                            //     posName = JPP.name,
+            //                            //  posCode = JPP.code,
+            //                            agentName = JAA.name,
+            //                            agentCode = JAA.code,
+            //                            cuserName = JUU.name,
+            //                            cuserLast = JUU.lastname,
+            //                            cUserAccName = JUU.username,
+            //                            uuserName = JUPUS.name,
+            //                            uuserLast = JUPUS.lastname,
+            //                            uUserAccName = JUPUS.username,
+            //                            agentCompany = JAA.company,
+            //                            agentType = JAA.type,
+            //                            exportBranch = I.invType == "ex" ? JBB.name :
+            //                            I.invType == "im"
+            //                            ? (I.invoiceMainId == null) ? (
+            //                            entity.branches.Where
+            //                            (B => B.branchId == entity.invoices.Where
+            //                           (x => x.invoiceMainId == I.invoiceId)
+            //                           .FirstOrDefault().branchId)
+            //                            .FirstOrDefault().name) :// I.invoiceMainId not null
+            //                           entity.branches.Where
+            //                           (b => b.branchId ==
+            //                           (entity.invoices.Where
+            //                           (i => i.invoiceId == I.invoiceMainId)
+            //                           .FirstOrDefault().branchId))
+            //                           .FirstOrDefault().name
+            //                           : "",
+            //                            importBranch = I.invType == "im" ? JBB.name :
+            //                            I.invType == "ex"
+            //                            ? (I.invoiceMainId == null) ? (
+            //                            entity.branches.Where
+            //                            (B => B.branchId == entity.invoices.Where
+            //                           (x => x.invoiceMainId == I.invoiceId)
+            //                           .FirstOrDefault().branchId)
+            //                            .FirstOrDefault().name) :// I.invoiceMainId not null
+            //                           entity.branches.Where
+            //                           (b => b.branchId ==
+            //                           (entity.invoices.Where
+            //                           (i => i.invoiceId == I.invoiceMainId)
+            //                           .FirstOrDefault().branchId))
+            //                           .FirstOrDefault().name
+            //                           : "",
+            //                            // ex im branchId
+            //                            exportBranchId = I.invType == "ex" ? I.branchId :
+            //                            I.invType == "im"
+            //                            ? (I.invoiceMainId == null) ?
+            //                           (entity.invoices.Where
+            //                           (x => x.invoiceMainId == I.invoiceId)
+            //                           .FirstOrDefault().branchId)
+            //                             :// I.invoiceMainId not null
+            //                           (entity.invoices.Where
+            //                           (i => i.invoiceId == I.invoiceMainId)
+            //                           .FirstOrDefault().branchId)
+            //                           : null,
+
+            //                            importBranchId = I.invType == "im" ? I.branchId :
+            //                            I.invType == "ex"
+            //                             ? (I.invoiceMainId == null) ?
+            //                           (entity.invoices.Where
+            //                           (x => x.invoiceMainId == I.invoiceId)
+            //                           .FirstOrDefault().branchId)
+            //                             :// I.invoiceMainId not null
+            //                           (entity.invoices.Where
+            //                           (i => i.invoiceId == I.invoiceMainId)
+            //                           .FirstOrDefault().branchId)
+            //                           : null,
+
+            //                        }).ToList();
+
+
+
+
+
+            //        if (invListm == null)
+            //            return NotFound();
+            //        else
+            //            return Ok(invListm);
+            //    }
+
+            //}
+
+            ////else
+            //return NotFound();
         }
 
         #endregion
@@ -3196,479 +5268,1036 @@ notes
         // عناصر الجرد
         [HttpGet]
         [Route("GetInventory")]
-        public IHttpActionResult GetInventory(int mainBranchId, int userId)
+        public ResponseVM GetInventory(string token)
         {
+            // public ResponseVM GetPurinv(string token)
+
+            //int mainBranchId, int userId
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
+            else
             {
-                List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+                int mainBranchId = 0;
+                int userId = 0;
 
-                using (incposdbEntities entity = new incposdbEntities())
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
                 {
-                    var List = (from c in entity.inventoryItemLocation
-                                join i in entity.Inventory on c.inventoryId equals i.inventoryId
-                                join l in entity.itemsLocations on c.itemLocationId equals l.itemsLocId
-                                join u in entity.itemsUnits on l.itemUnitId equals u.itemUnitId
-                                join un in entity.units on u.unitId equals un.unitId
-                                join lo in entity.locations on l.locationId equals lo.locationId
-                                join usr in entity.users on i.updateUserId equals usr.userId
-                                //   join s in entity.sections on lo.sectionId equals s.sectionId
-                                where (brIds.Contains(lo.branches.branchId))
-                                select new
-                                {
-                                    usr.username,
-                                    inventoryILId = c.id,
-                                    c.isDestroyed,
-                                    c.amount,
-                                    c.amountDestroyed,
-                                    c.realAmount,
-                                    c.itemLocationId,
-                                    c.inventoryId,
-                                    c.isActive,
-                                    c.notes,
-                                    i.createDate,
-                                    i.updateDate,
-                                    i.createUserId,
-                                    i.updateUserId,
-                                    i.branchId,
-                                    branchName = i.branches.name,
-                                    u.items.itemId,
-                                    itemName = u.items.name,
-                                    un.unitId,
-                                    u.itemUnitId,
-                                    unitName = un.name,
+                    if (c.Type == "mainBranchId")
+                    {
+                        mainBranchId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "userId")
+                    {
+                        userId = int.Parse(c.Value);
+                    }
 
-                                    Secname = lo.sections.name,
-                                    lo.sectionId,
-                                    lo.x,
-                                    lo.y,
-                                    lo.z,
-                                    itemType = u.items.type,
-                                    inventoryDate = c.Inventory.createDate,
-                                    inventoryNum = c.Inventory.num,
-                                    c.Inventory.inventoryType,
-                                    // diffPercentage =(c.realAmount == 0) ? 0 : ((( (decimal)(int)c.realAmount-(decimal)(int)c.amount)*100)/(decimal)(int)c.realAmountc.realAmount),
-                                    //diffPercentage = (c.realAmount == 0) ? 0 : (((int)c.amount / (decimal)(int)c.realAmount) * 100),
-                                }).ToList();
+                }
+                // DateTime cmpdate = DateTime.Now.AddDays(newdays);
+                try
+                {
 
-
-                    var list2 = List.GroupBy(S => S.inventoryId).Select(X => new
+                    List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+                    using (incposdbEntities entity = new incposdbEntities())
                     {
 
-                        X.FirstOrDefault().inventoryId,
-                        X.FirstOrDefault().isDestroyed,
-                        DestroyedCount = X.Where(a => a.isDestroyed == true ? true : false).Count(),
-                        userFalls = X.FirstOrDefault().username,
+                        var List = (from c in entity.inventoryItemLocation
+                                    join i in entity.Inventory on c.inventoryId equals i.inventoryId
+                                    join l in entity.itemsLocations on c.itemLocationId equals l.itemsLocId
+                                    join u in entity.itemsUnits on l.itemUnitId equals u.itemUnitId
+                                    join un in entity.units on u.unitId equals un.unitId
+                                    join lo in entity.locations on l.locationId equals lo.locationId
+                                    join usr in entity.users on i.updateUserId equals usr.userId
+                                    //   join s in entity.sections on lo.sectionId equals s.sectionId
+                                    where (brIds.Contains(lo.branches.branchId))
+                                    select new
+                                    {
+                                        usr.username,
+                                        inventoryILId = c.id,
+                                        c.isDestroyed,
+                                        c.amount,
+                                        c.amountDestroyed,
+                                        c.realAmount,
+                                        c.itemLocationId,
+                                        c.inventoryId,
+                                        c.isActive,
+                                        c.notes,
+                                        i.createDate,
+                                        i.updateDate,
+                                        i.createUserId,
+                                        i.updateUserId,
+                                        i.branchId,
+                                        branchName = i.branches.name,
+                                        u.items.itemId,
+                                        itemName = u.items.name,
+                                        un.unitId,
+                                        u.itemUnitId,
+                                        unitName = un.name,
 
-                        X.FirstOrDefault().branchName,
-                        X.FirstOrDefault().branchId,
-                        X.FirstOrDefault().inventoryNum,
-                        X.FirstOrDefault().inventoryType,
-                        X.FirstOrDefault().inventoryDate,
-                        //diffsum= (X.Sum(a=>a.diffPercentage )),
-                        // diffPercentage = (X.Sum(a => a.diffPercentage)) / X.Count(),
-                        diffPercentage = ((X.Sum(a => (decimal)(int)a.amount) / X.Sum(a => (decimal)(int)a.realAmount)) * 100),
-                        itemCount = X.Count(),
+                                        Secname = lo.sections.name,
+                                        lo.sectionId,
+                                        lo.x,
+                                        lo.y,
+                                        lo.z,
+                                        itemType = u.items.type,
+                                        inventoryDate = c.Inventory.createDate,
+                                        inventoryNum = c.Inventory.num,
+                                        c.Inventory.inventoryType,
+                                        // diffPercentage =(c.realAmount == 0) ? 0 : ((( (decimal)(int)c.realAmount-(decimal)(int)c.amount)*100)/(decimal)(int)c.realAmountc.realAmount),
+                                        //diffPercentage = (c.realAmount == 0) ? 0 : (((int)c.amount / (decimal)(int)c.realAmount) * 100),
+                                    }).ToList();
 
 
-                    }).ToList();
-
-                    if (list2 == null)
-                        return NotFound();
-                    else
-                        return Ok(list2);
-                }
-            }
-            return NotFound();
-        }
-        //
-        [HttpGet]
-        [Route("GetInventoryItems")]
-        public IHttpActionResult GetInventoryItems(int mainBranchId, int userId)
-        {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-
-            if (headers.Contains("APIKey"))
-            {
-                token = headers.GetValues("APIKey").First();
-            }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
-            {
-                List<int> brIds = AllowedBranchsId(mainBranchId, userId);
-
-                using (incposdbEntities entity = new incposdbEntities())
-                {
-                    var List = (from c in entity.inventoryItemLocation
-                                join i in entity.Inventory on c.inventoryId equals i.inventoryId
-                                join l in entity.itemsLocations on c.itemLocationId equals l.itemsLocId
-                                join u in entity.itemsUnits on l.itemUnitId equals u.itemUnitId
-                                join un in entity.units on u.unitId equals un.unitId
-                                join lo in entity.locations on l.locationId equals lo.locationId
-                                //   join s in entity.sections on lo.sectionId equals s.sectionId
-                                where (brIds.Contains(lo.branches.branchId))
-                                select new
-                                {
-                                    inventoryILId = c.id,
-                                    c.isDestroyed,
-                                    c.amount,
-                                    c.amountDestroyed,
-                                    c.realAmount,
-                                    c.itemLocationId,
-                                    c.inventoryId,
-                                    c.isActive,
-                                    c.notes,
-                                    i.createDate,
-                                    i.updateDate,
-                                    i.createUserId,
-                                    i.updateUserId,
-                                    i.branchId,
-
-                                    branchName = i.branches.name,
-                                    u.items.itemId,
-                                    itemName = u.items.name,
-                                    un.unitId,
-                                    u.itemUnitId,
-                                    unitName = un.name,
-
-                                    Secname = lo.sections.name,
-                                    lo.sectionId,
-                                    lo.x,
-                                    lo.y,
-                                    lo.z,
-                                    l.startDate,
-                                    l.endDate,
-                                    l.itemsLocId,
-                                    l.locationId,
-                                    itemType = u.items.type,
-                                    inventoryDate = c.Inventory.createDate,
-                                    inventoryNum = c.Inventory.num,
-                                    c.Inventory.inventoryType,
-                                    //   shortfalls= (int)c.realAmount - (int)c.amount,
-                                    // shortfallspercent= (c.realAmount == 0) ? 0 : ((((decimal)(int)c.realAmount - (decimal)(int)c.amount) * 100) / (decimal)(int)c.realAmount)
-                                    // diffPercentage =(c.realAmount == 0) ? 0 : ((( (decimal)(int)c.realAmount-(decimal)(int)c.amount)*100)/(decimal)(int)c.realAmountc.realAmount),
-                                    //diffPercentage = (c.realAmount == 0) ? 0 : (((int)c.amount / (decimal)(int)c.realAmount) * 100),
-                                }).ToList();
-                    var list2 = List.GroupBy(S => new { S.branchId, S.itemUnitId, S.inventoryId })
-                        .Select(X => new
+                        var list2 = List.GroupBy(S => S.inventoryId).Select(X => new
                         {
 
                             X.FirstOrDefault().inventoryId,
                             X.FirstOrDefault().isDestroyed,
                             DestroyedCount = X.Where(a => a.isDestroyed == true ? true : false).Count(),
+                            userFalls = X.FirstOrDefault().username,
 
                             X.FirstOrDefault().branchName,
                             X.FirstOrDefault().branchId,
                             X.FirstOrDefault().inventoryNum,
                             X.FirstOrDefault().inventoryType,
                             X.FirstOrDefault().inventoryDate,
-                            //
-
-                            amount = (X.Sum(a => (int)a.amount)),
-                            amountDestroyed = (X.Sum(a => (int)a.amountDestroyed)),
-                            realAmount = (X.Sum(a => (int)a.realAmount)),
-
-                            X.FirstOrDefault().itemLocationId,
-
-
-                            X.FirstOrDefault().notes,
-                            X.FirstOrDefault().createDate,
-                            X.FirstOrDefault().updateDate,
-                            X.FirstOrDefault().createUserId,
-                            X.FirstOrDefault().updateUserId,
-
-
-
-                            X.FirstOrDefault().itemId,
-                            X.FirstOrDefault().itemName,
-                            X.FirstOrDefault().unitId,
-                            X.FirstOrDefault().itemUnitId,
-                            X.FirstOrDefault().unitName,
-
-                            // X.FirstOrDefault().Secname ,
-                            // X.FirstOrDefault().sectionId,
-                            //  X.FirstOrDefault().x,
-                            //  X.FirstOrDefault().y,
-                            //  X.FirstOrDefault().z,
-
-                            X.FirstOrDefault().itemsLocId,
-                            X.FirstOrDefault().locationId,
-                            X.FirstOrDefault().itemType,
-
-                            shortfalls = (int)(X.Sum(a => (int)a.realAmount)) - (int)(X.Sum(a => (int)a.amount)),
-                            shortfallspercent = ((X.Sum(a => (int)a.realAmount)) == 0) ? 0 : ((((decimal)(int)(X.Sum(a => (int)a.realAmount)) - (decimal)(int)(X.Sum(a => (int)a.amount))) * 100) / (decimal)(int)(X.Sum(a => (int)a.realAmount))),
-
-
                             //diffsum= (X.Sum(a=>a.diffPercentage )),
                             // diffPercentage = (X.Sum(a => a.diffPercentage)) / X.Count(),
+                            diffPercentage = ((X.Sum(a => (decimal)(int)a.amount) / X.Sum(a => (decimal)(int)a.realAmount)) * 100),
                             itemCount = X.Count(),
 
 
                         }).ToList();
-                    if (list2 == null)
-                        return NotFound();
-                    else
-                        return Ok(list2);
+
+
+
+
+                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(list2) };
+
+                    }
+
                 }
+                catch
+                {
+                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                }
+
             }
-            return NotFound();
+
+            //var re = Request;
+            //var headers = re.Headers;
+            //string token = "";
+
+            //if (headers.Contains("APIKey"))
+            //{
+            //    token = headers.GetValues("APIKey").First();
+            //}
+            //Validation validation = new Validation();
+            //bool valid = validation.CheckApiKey(token);
+
+            //if (valid) // APIKey is valid
+            //{
+            //    List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+
+            //    using (incposdbEntities entity = new incposdbEntities())
+            //    {
+            //        var List = (from c in entity.inventoryItemLocation
+            //                    join i in entity.Inventory on c.inventoryId equals i.inventoryId
+            //                    join l in entity.itemsLocations on c.itemLocationId equals l.itemsLocId
+            //                    join u in entity.itemsUnits on l.itemUnitId equals u.itemUnitId
+            //                    join un in entity.units on u.unitId equals un.unitId
+            //                    join lo in entity.locations on l.locationId equals lo.locationId
+            //                    join usr in entity.users on i.updateUserId equals usr.userId
+            //                    //   join s in entity.sections on lo.sectionId equals s.sectionId
+            //                    where (brIds.Contains(lo.branches.branchId))
+            //                    select new
+            //                    {
+            //                        usr.username,
+            //                        inventoryILId = c.id,
+            //                        c.isDestroyed,
+            //                        c.amount,
+            //                        c.amountDestroyed,
+            //                        c.realAmount,
+            //                        c.itemLocationId,
+            //                        c.inventoryId,
+            //                        c.isActive,
+            //                        c.notes,
+            //                        i.createDate,
+            //                        i.updateDate,
+            //                        i.createUserId,
+            //                        i.updateUserId,
+            //                        i.branchId,
+            //                        branchName = i.branches.name,
+            //                        u.items.itemId,
+            //                        itemName = u.items.name,
+            //                        un.unitId,
+            //                        u.itemUnitId,
+            //                        unitName = un.name,
+
+            //                        Secname = lo.sections.name,
+            //                        lo.sectionId,
+            //                        lo.x,
+            //                        lo.y,
+            //                        lo.z,
+            //                        itemType = u.items.type,
+            //                        inventoryDate = c.Inventory.createDate,
+            //                        inventoryNum = c.Inventory.num,
+            //                        c.Inventory.inventoryType,
+            //                        // diffPercentage =(c.realAmount == 0) ? 0 : ((( (decimal)(int)c.realAmount-(decimal)(int)c.amount)*100)/(decimal)(int)c.realAmountc.realAmount),
+            //                        //diffPercentage = (c.realAmount == 0) ? 0 : (((int)c.amount / (decimal)(int)c.realAmount) * 100),
+            //                    }).ToList();
+
+
+            //        var list2 = List.GroupBy(S => S.inventoryId).Select(X => new
+            //        {
+
+            //            X.FirstOrDefault().inventoryId,
+            //            X.FirstOrDefault().isDestroyed,
+            //            DestroyedCount = X.Where(a => a.isDestroyed == true ? true : false).Count(),
+            //            userFalls = X.FirstOrDefault().username,
+
+            //            X.FirstOrDefault().branchName,
+            //            X.FirstOrDefault().branchId,
+            //            X.FirstOrDefault().inventoryNum,
+            //            X.FirstOrDefault().inventoryType,
+            //            X.FirstOrDefault().inventoryDate,
+            //            //diffsum= (X.Sum(a=>a.diffPercentage )),
+            //            // diffPercentage = (X.Sum(a => a.diffPercentage)) / X.Count(),
+            //            diffPercentage = ((X.Sum(a => (decimal)(int)a.amount) / X.Sum(a => (decimal)(int)a.realAmount)) * 100),
+            //            itemCount = X.Count(),
+
+
+            //        }).ToList();
+
+            //        if (list2 == null)
+            //            return NotFound();
+            //        else
+            //            return Ok(list2);
+            //    }
+            //}
+            //return NotFound();
+        }
+        //
+        [HttpGet]
+        [Route("GetInventoryItems")]
+        public ResponseVM GetInventoryItems(string token)
+        {
+            // public ResponseVM GetPurinv(string token)
+
+            //int mainBranchId, int userId
+            var re = Request;
+            var headers = re.Headers;
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+            {
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+            }
+            else
+            {
+                int mainBranchId = 0;
+                int userId = 0;
+
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "mainBranchId")
+                    {
+                        mainBranchId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "userId")
+                    {
+                        userId = int.Parse(c.Value);
+                    }
+
+                }
+                // DateTime cmpdate = DateTime.Now.AddDays(newdays);
+                try
+                {
+
+                    List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+
+
+                        var List = (from c in entity.inventoryItemLocation
+                                    join i in entity.Inventory on c.inventoryId equals i.inventoryId
+                                    join l in entity.itemsLocations on c.itemLocationId equals l.itemsLocId
+                                    join u in entity.itemsUnits on l.itemUnitId equals u.itemUnitId
+                                    join un in entity.units on u.unitId equals un.unitId
+                                    join lo in entity.locations on l.locationId equals lo.locationId
+                                    //   join s in entity.sections on lo.sectionId equals s.sectionId
+                                    where (brIds.Contains(lo.branches.branchId))
+                                    select new
+                                    {
+                                        inventoryILId = c.id,
+                                        c.isDestroyed,
+                                        c.amount,
+                                        c.amountDestroyed,
+                                        c.realAmount,
+                                        c.itemLocationId,
+                                        c.inventoryId,
+                                        c.isActive,
+                                        c.notes,
+                                        i.createDate,
+                                        i.updateDate,
+                                        i.createUserId,
+                                        i.updateUserId,
+                                        i.branchId,
+
+                                        branchName = i.branches.name,
+                                        u.items.itemId,
+                                        itemName = u.items.name,
+                                        un.unitId,
+                                        u.itemUnitId,
+                                        unitName = un.name,
+
+                                        Secname = lo.sections.name,
+                                        lo.sectionId,
+                                        lo.x,
+                                        lo.y,
+                                        lo.z,
+                                        l.startDate,
+                                        l.endDate,
+                                        l.itemsLocId,
+                                        l.locationId,
+                                        itemType = u.items.type,
+                                        inventoryDate = c.Inventory.createDate,
+                                        inventoryNum = c.Inventory.num,
+                                        c.Inventory.inventoryType,
+                                        //   shortfalls= (int)c.realAmount - (int)c.amount,
+                                        // shortfallspercent= (c.realAmount == 0) ? 0 : ((((decimal)(int)c.realAmount - (decimal)(int)c.amount) * 100) / (decimal)(int)c.realAmount)
+                                        // diffPercentage =(c.realAmount == 0) ? 0 : ((( (decimal)(int)c.realAmount-(decimal)(int)c.amount)*100)/(decimal)(int)c.realAmountc.realAmount),
+                                        //diffPercentage = (c.realAmount == 0) ? 0 : (((int)c.amount / (decimal)(int)c.realAmount) * 100),
+                                    }).ToList();
+                        var list2 = List.GroupBy(S => new { S.branchId, S.itemUnitId, S.inventoryId })
+                            .Select(X => new
+                            {
+
+                                X.FirstOrDefault().inventoryId,
+                                X.FirstOrDefault().isDestroyed,
+                                DestroyedCount = X.Where(a => a.isDestroyed == true ? true : false).Count(),
+
+                                X.FirstOrDefault().branchName,
+                                X.FirstOrDefault().branchId,
+                                X.FirstOrDefault().inventoryNum,
+                                X.FirstOrDefault().inventoryType,
+                                X.FirstOrDefault().inventoryDate,
+                                //
+
+                                amount = (X.Sum(a => (int)a.amount)),
+                                amountDestroyed = (X.Sum(a => (int)a.amountDestroyed)),
+                                realAmount = (X.Sum(a => (int)a.realAmount)),
+
+                                X.FirstOrDefault().itemLocationId,
+
+
+                                X.FirstOrDefault().notes,
+                                X.FirstOrDefault().createDate,
+                                X.FirstOrDefault().updateDate,
+                                X.FirstOrDefault().createUserId,
+                                X.FirstOrDefault().updateUserId,
+
+
+
+                                X.FirstOrDefault().itemId,
+                                X.FirstOrDefault().itemName,
+                                X.FirstOrDefault().unitId,
+                                X.FirstOrDefault().itemUnitId,
+                                X.FirstOrDefault().unitName,
+
+                                // X.FirstOrDefault().Secname ,
+                                // X.FirstOrDefault().sectionId,
+                                //  X.FirstOrDefault().x,
+                                //  X.FirstOrDefault().y,
+                                //  X.FirstOrDefault().z,
+
+                                X.FirstOrDefault().itemsLocId,
+                                X.FirstOrDefault().locationId,
+                                X.FirstOrDefault().itemType,
+
+                                shortfalls = (int)(X.Sum(a => (int)a.realAmount)) - (int)(X.Sum(a => (int)a.amount)),
+                                shortfallspercent = ((X.Sum(a => (int)a.realAmount)) == 0) ? 0 : ((((decimal)(int)(X.Sum(a => (int)a.realAmount)) - (decimal)(int)(X.Sum(a => (int)a.amount))) * 100) / (decimal)(int)(X.Sum(a => (int)a.realAmount))),
+
+
+                                //diffsum= (X.Sum(a=>a.diffPercentage )),
+                                // diffPercentage = (X.Sum(a => a.diffPercentage)) / X.Count(),
+                                itemCount = X.Count(),
+
+
+                            }).ToList();
+
+
+
+                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(list2) };
+
+                    }
+
+                }
+                catch
+                {
+                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                }
+
+            }
+
+            //var re = Request;
+            //var headers = re.Headers;
+            //string token = "";
+
+            //if (headers.Contains("APIKey"))
+            //{
+            //    token = headers.GetValues("APIKey").First();
+            //}
+            //Validation validation = new Validation();
+            //bool valid = validation.CheckApiKey(token);
+
+            //if (valid) // APIKey is valid
+            //{
+            //    List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+
+            //    using (incposdbEntities entity = new incposdbEntities())
+            //    {
+            //        var List = (from c in entity.inventoryItemLocation
+            //                    join i in entity.Inventory on c.inventoryId equals i.inventoryId
+            //                    join l in entity.itemsLocations on c.itemLocationId equals l.itemsLocId
+            //                    join u in entity.itemsUnits on l.itemUnitId equals u.itemUnitId
+            //                    join un in entity.units on u.unitId equals un.unitId
+            //                    join lo in entity.locations on l.locationId equals lo.locationId
+            //                    //   join s in entity.sections on lo.sectionId equals s.sectionId
+            //                    where (brIds.Contains(lo.branches.branchId))
+            //                    select new
+            //                    {
+            //                        inventoryILId = c.id,
+            //                        c.isDestroyed,
+            //                        c.amount,
+            //                        c.amountDestroyed,
+            //                        c.realAmount,
+            //                        c.itemLocationId,
+            //                        c.inventoryId,
+            //                        c.isActive,
+            //                        c.notes,
+            //                        i.createDate,
+            //                        i.updateDate,
+            //                        i.createUserId,
+            //                        i.updateUserId,
+            //                        i.branchId,
+
+            //                        branchName = i.branches.name,
+            //                        u.items.itemId,
+            //                        itemName = u.items.name,
+            //                        un.unitId,
+            //                        u.itemUnitId,
+            //                        unitName = un.name,
+
+            //                        Secname = lo.sections.name,
+            //                        lo.sectionId,
+            //                        lo.x,
+            //                        lo.y,
+            //                        lo.z,
+            //                        l.startDate,
+            //                        l.endDate,
+            //                        l.itemsLocId,
+            //                        l.locationId,
+            //                        itemType = u.items.type,
+            //                        inventoryDate = c.Inventory.createDate,
+            //                        inventoryNum = c.Inventory.num,
+            //                        c.Inventory.inventoryType,
+            //                        //   shortfalls= (int)c.realAmount - (int)c.amount,
+            //                        // shortfallspercent= (c.realAmount == 0) ? 0 : ((((decimal)(int)c.realAmount - (decimal)(int)c.amount) * 100) / (decimal)(int)c.realAmount)
+            //                        // diffPercentage =(c.realAmount == 0) ? 0 : ((( (decimal)(int)c.realAmount-(decimal)(int)c.amount)*100)/(decimal)(int)c.realAmountc.realAmount),
+            //                        //diffPercentage = (c.realAmount == 0) ? 0 : (((int)c.amount / (decimal)(int)c.realAmount) * 100),
+            //                    }).ToList();
+            //        var list2 = List.GroupBy(S => new { S.branchId, S.itemUnitId, S.inventoryId })
+            //            .Select(X => new
+            //            {
+
+            //                X.FirstOrDefault().inventoryId,
+            //                X.FirstOrDefault().isDestroyed,
+            //                DestroyedCount = X.Where(a => a.isDestroyed == true ? true : false).Count(),
+
+            //                X.FirstOrDefault().branchName,
+            //                X.FirstOrDefault().branchId,
+            //                X.FirstOrDefault().inventoryNum,
+            //                X.FirstOrDefault().inventoryType,
+            //                X.FirstOrDefault().inventoryDate,
+            //                //
+
+            //                amount = (X.Sum(a => (int)a.amount)),
+            //                amountDestroyed = (X.Sum(a => (int)a.amountDestroyed)),
+            //                realAmount = (X.Sum(a => (int)a.realAmount)),
+
+            //                X.FirstOrDefault().itemLocationId,
+
+
+            //                X.FirstOrDefault().notes,
+            //                X.FirstOrDefault().createDate,
+            //                X.FirstOrDefault().updateDate,
+            //                X.FirstOrDefault().createUserId,
+            //                X.FirstOrDefault().updateUserId,
+
+
+
+            //                X.FirstOrDefault().itemId,
+            //                X.FirstOrDefault().itemName,
+            //                X.FirstOrDefault().unitId,
+            //                X.FirstOrDefault().itemUnitId,
+            //                X.FirstOrDefault().unitName,
+
+            //                // X.FirstOrDefault().Secname ,
+            //                // X.FirstOrDefault().sectionId,
+            //                //  X.FirstOrDefault().x,
+            //                //  X.FirstOrDefault().y,
+            //                //  X.FirstOrDefault().z,
+
+            //                X.FirstOrDefault().itemsLocId,
+            //                X.FirstOrDefault().locationId,
+            //                X.FirstOrDefault().itemType,
+
+            //                shortfalls = (int)(X.Sum(a => (int)a.realAmount)) - (int)(X.Sum(a => (int)a.amount)),
+            //                shortfallspercent = ((X.Sum(a => (int)a.realAmount)) == 0) ? 0 : ((((decimal)(int)(X.Sum(a => (int)a.realAmount)) - (decimal)(int)(X.Sum(a => (int)a.amount))) * 100) / (decimal)(int)(X.Sum(a => (int)a.realAmount))),
+
+
+            //                //diffsum= (X.Sum(a=>a.diffPercentage )),
+            //                // diffPercentage = (X.Sum(a => a.diffPercentage)) / X.Count(),
+            //                itemCount = X.Count(),
+
+
+            //            }).ToList();
+            //        if (list2 == null)
+            //            return NotFound();
+            //        else
+            //            return Ok(list2);
+            //    }
+            //}
+            //return NotFound();
         }
 
 
         // العناصر التالفة
         [HttpGet]
         [Route("GetDesItems")]
-        public IHttpActionResult GetDesItems(int mainBranchId, int userId)
+        public ResponseVM GetDesItems(string token)
         {
+            // public ResponseVM GetPurinv(string token)
+
+            //int mainBranchId, int userId
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
+            else
             {
-                List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+                int mainBranchId = 0;
+                int userId = 0;
 
-                using (incposdbEntities entity = new incposdbEntities())
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
                 {
-                    var invListm = (from IT in entity.itemsTransfer
-                                    from I in entity.invoices.Where(I => I.invoiceId == IT.invoiceId)
+                    if (c.Type == "mainBranchId")
+                    {
+                        mainBranchId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "userId")
+                    {
+                        userId = int.Parse(c.Value);
+                    }
 
-                                    from IU in entity.itemsUnits.Where(IU => IU.itemUnitId == IT.itemUnitId)
+                }
+                // DateTime cmpdate = DateTime.Now.AddDays(newdays);
+                try
+                {
 
-                                    join ITEM in entity.items on IU.itemId equals ITEM.itemId
-                                    join UNIT in entity.units on IU.unitId equals UNIT.unitId
-                                    join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
-                                    join U in entity.users on I.createUserId equals U.userId into JU
-                                    join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
-                                    from JPP in entity.pos.Where(X => X.posId == I.posId)
-                                    join BP in entity.branches on JPP.branchId equals BP.branchId
-                                    join du in entity.users on I.userId equals du.userId into Dusr
-                                    //   from JPP into  JP.DefaultIfEmpty
-                                    from JUU in JU.DefaultIfEmpty()
-                                    from JUPUS in JUPUSR.DefaultIfEmpty()
-                                    from duu in Dusr.DefaultIfEmpty()
-                                    from JBCC in JBC.DefaultIfEmpty()
-                                    where I.invType == "d" &&
-                                    (brIds.Contains(JBCC.branchId) || brIds.Contains(BP.branchId))
+                    List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+
+                        var invListm = (from IT in entity.itemsTransfer
+                                        from I in entity.invoices.Where(I => I.invoiceId == IT.invoiceId)
+
+                                        from IU in entity.itemsUnits.Where(IU => IU.itemUnitId == IT.itemUnitId)
+
+                                        join ITEM in entity.items on IU.itemId equals ITEM.itemId
+                                        join UNIT in entity.units on IU.unitId equals UNIT.unitId
+                                        join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
+                                        join U in entity.users on I.createUserId equals U.userId into JU
+                                        join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
+                                        from JPP in entity.pos.Where(X => X.posId == I.posId)
+                                        join BP in entity.branches on JPP.branchId equals BP.branchId
+                                        join du in entity.users on I.userId equals du.userId into Dusr
+                                        //   from JPP into  JP.DefaultIfEmpty
+                                        from JUU in JU.DefaultIfEmpty()
+                                        from JUPUS in JUPUSR.DefaultIfEmpty()
+                                        from duu in Dusr.DefaultIfEmpty()
+                                        from JBCC in JBC.DefaultIfEmpty()
+                                        where I.invType == "d" &&
+                                        (brIds.Contains(JBCC.branchId) || brIds.Contains(BP.branchId))
 
 
 
-                                    select new
-                                    {
-                                        causeDestroy = IT.inventoryItemLocation.cause,
-                                        userdestroy = duu.username,
-                                        I.userId,
-                                        itemName = ITEM.name,
-                                        unitName = UNIT.name,
-                                        IT.itemsTransId,
-                                        IT.itemUnitId,
+                                        select new
+                                        {
+                                            causeDestroy = IT.inventoryItemLocation.cause,
+                                            userdestroy = duu.username,
+                                            I.userId,
+                                            itemName = ITEM.name,
+                                            unitName = UNIT.name,
+                                            IT.itemsTransId,
+                                            IT.itemUnitId,
 
-                                        IU.itemId,
-                                        IU.unitId,
-                                        IT.quantity,
-                                        IT.price,
-                                        IU.barcode,
+                                            IU.itemId,
+                                            IU.unitId,
+                                            IT.quantity,
+                                            IT.price,
+                                            IU.barcode,
 
-                                        I.invoiceId,
-                                        I.invNumber,
+                                            I.invoiceId,
+                                            I.invNumber,
 
-                                        I.posId,
-                                        I.invType,
-                                        I.total,
-                                        I.totalNet,
-                                        I.paid,
-                                        I.deserved,
-                                        I.deservedDate,
-                                        I.invDate,
-                                        I.invoiceMainId,
-                                        I.invCase,
-                                        I.invTime,
-                                        I.notes,
-                                        I.vendorInvNum,
-                                        I.vendorInvDate,
-                                        I.createUserId,
-                                        IupdateDate = I.updateDate,
-                                        I.updateUserId,
-                                        // I.branchId,
-                                        I.discountValue,
-                                        I.discountType,
-                                        I.tax,
-                                        I.name,
-                                        I.isApproved,
-                                        IT.itemSerial,
-                                        //
-                                        I.branchCreatorId,
+                                            I.posId,
+                                            I.invType,
+                                            I.total,
+                                            I.totalNet,
+                                            I.paid,
+                                            I.deserved,
+                                            I.deservedDate,
+                                            I.invDate,
+                                            I.invoiceMainId,
+                                            I.invCase,
+                                            I.invTime,
+                                            I.notes,
+                                            I.vendorInvNum,
+                                            I.vendorInvDate,
+                                            I.createUserId,
+                                            IupdateDate = I.updateDate,
+                                            I.updateUserId,
+                                            // I.branchId,
+                                            I.discountValue,
+                                            I.discountType,
+                                            I.tax,
+                                            I.name,
+                                            I.isApproved,
+                                            IT.itemSerial,
+                                            //
+                                            I.branchCreatorId,
 
-                                        //
-                                        branchName = JBCC.name,
-                                        branchId = I.branchCreatorId,
+                                            //
+                                            branchName = JBCC.name,
+                                            branchId = I.branchCreatorId,
 
-                                        branchType = JBCC.type,
-                                        posName = JPP.name,
-                                        posCode = JPP.code,
+                                            branchType = JBCC.type,
+                                            posName = JPP.name,
+                                            posCode = JPP.code,
 
-                                        cuserName = JUU.name,
-                                        cuserLast = JUU.lastname,
-                                        cUserAccName = JUU.username,
-                                        uuserName = JUPUS.name,
-                                        uuserLast = JUPUS.lastname,
-                                        uUserAccName = JUPUS.username,
+                                            cuserName = JUU.name,
+                                            cuserLast = JUU.lastname,
+                                            cUserAccName = JUU.username,
+                                            uuserName = JUPUS.name,
+                                            uuserLast = JUPUS.lastname,
+                                            uUserAccName = JUPUS.username,
 
-                                    }).ToList();
+                                        }).ToList();
 
-                    if (invListm == null)
-                        return NotFound();
-                    else
-                        return Ok(invListm);
+
+
+
+
+                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(invListm) };
+
+                    }
+
+                }
+                catch
+                {
+                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
                 }
 
             }
 
-            //else
-            return NotFound();
+            //var re = Request;
+            //var headers = re.Headers;
+            //string token = "";
+            //if (headers.Contains("APIKey"))
+            //{
+            //    token = headers.GetValues("APIKey").First();
+            //}
+            //Validation validation = new Validation();
+            //bool valid = validation.CheckApiKey(token);
+
+            //if (valid) // APIKey is valid
+            //{
+            //    List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+
+            //    using (incposdbEntities entity = new incposdbEntities())
+            //    {
+            //        var invListm = (from IT in entity.itemsTransfer
+            //                        from I in entity.invoices.Where(I => I.invoiceId == IT.invoiceId)
+
+            //                        from IU in entity.itemsUnits.Where(IU => IU.itemUnitId == IT.itemUnitId)
+
+            //                        join ITEM in entity.items on IU.itemId equals ITEM.itemId
+            //                        join UNIT in entity.units on IU.unitId equals UNIT.unitId
+            //                        join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
+            //                        join U in entity.users on I.createUserId equals U.userId into JU
+            //                        join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
+            //                        from JPP in entity.pos.Where(X => X.posId == I.posId)
+            //                        join BP in entity.branches on JPP.branchId equals BP.branchId
+            //                        join du in entity.users on I.userId equals du.userId into Dusr
+            //                        //   from JPP into  JP.DefaultIfEmpty
+            //                        from JUU in JU.DefaultIfEmpty()
+            //                        from JUPUS in JUPUSR.DefaultIfEmpty()
+            //                        from duu in Dusr.DefaultIfEmpty()
+            //                        from JBCC in JBC.DefaultIfEmpty()
+            //                        where I.invType == "d" &&
+            //                        (brIds.Contains(JBCC.branchId) || brIds.Contains(BP.branchId))
+
+
+
+            //                        select new
+            //                        {
+            //                            causeDestroy = IT.inventoryItemLocation.cause,
+            //                            userdestroy = duu.username,
+            //                            I.userId,
+            //                            itemName = ITEM.name,
+            //                            unitName = UNIT.name,
+            //                            IT.itemsTransId,
+            //                            IT.itemUnitId,
+
+            //                            IU.itemId,
+            //                            IU.unitId,
+            //                            IT.quantity,
+            //                            IT.price,
+            //                            IU.barcode,
+
+            //                            I.invoiceId,
+            //                            I.invNumber,
+
+            //                            I.posId,
+            //                            I.invType,
+            //                            I.total,
+            //                            I.totalNet,
+            //                            I.paid,
+            //                            I.deserved,
+            //                            I.deservedDate,
+            //                            I.invDate,
+            //                            I.invoiceMainId,
+            //                            I.invCase,
+            //                            I.invTime,
+            //                            I.notes,
+            //                            I.vendorInvNum,
+            //                            I.vendorInvDate,
+            //                            I.createUserId,
+            //                            IupdateDate = I.updateDate,
+            //                            I.updateUserId,
+            //                            // I.branchId,
+            //                            I.discountValue,
+            //                            I.discountType,
+            //                            I.tax,
+            //                            I.name,
+            //                            I.isApproved,
+            //                            IT.itemSerial,
+            //                            //
+            //                            I.branchCreatorId,
+
+            //                            //
+            //                            branchName = JBCC.name,
+            //                            branchId = I.branchCreatorId,
+
+            //                            branchType = JBCC.type,
+            //                            posName = JPP.name,
+            //                            posCode = JPP.code,
+
+            //                            cuserName = JUU.name,
+            //                            cuserLast = JUU.lastname,
+            //                            cUserAccName = JUU.username,
+            //                            uuserName = JUPUS.name,
+            //                            uuserLast = JUPUS.lastname,
+            //                            uUserAccName = JUPUS.username,
+
+            //                        }).ToList();
+
+            //        if (invListm == null)
+            //            return NotFound();
+            //        else
+            //            return Ok(invListm);
+            //    }
+
+            //}
+
+            ////else
+            //return NotFound();
         }
 
         // العناصر الناقصة
         [HttpGet]
         [Route("GetFallsItems")]
-        public IHttpActionResult GetFallsItems(int mainBranchId, int userId)
+        public ResponseVM GetFallsItems(string token)
         {
+            // public ResponseVM GetPurinv(string token)
+
+            //int mainBranchId, int userId
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
+            else
             {
-                List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+                int mainBranchId = 0;
+                int userId = 0;
 
-                using (incposdbEntities entity = new incposdbEntities())
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
                 {
-                    var invListm = (from IT in entity.itemsTransfer
-                                    from I in entity.invoices.Where(I => I.invoiceId == IT.invoiceId)
+                    if (c.Type == "mainBranchId")
+                    {
+                        mainBranchId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "userId")
+                    {
+                        userId = int.Parse(c.Value);
+                    }
 
-                                    from IU in entity.itemsUnits.Where(IU => IU.itemUnitId == IT.itemUnitId)
+                }
+                // DateTime cmpdate = DateTime.Now.AddDays(newdays);
+                try
+                {
 
-                                    join ITEM in entity.items on IU.itemId equals ITEM.itemId
-                                    join UNIT in entity.units on IU.unitId equals UNIT.unitId
-                                    join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
-                                    join U in entity.users on I.createUserId equals U.userId into JU
-                                    join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
-                                    from JPP in entity.pos.Where(X => X.posId == I.posId)
-                                    join BP in entity.branches on JPP.branchId equals BP.branchId
-                                    join du in entity.users on I.userId equals du.userId into Dusr
-                                    //   from JPP into  JP.DefaultIfEmpty
-                                    from JUU in JU.DefaultIfEmpty()
-                                    from JUPUS in JUPUSR.DefaultIfEmpty()
-                                    from duu in Dusr.DefaultIfEmpty()
-                                    from JBCC in JBC.DefaultIfEmpty()
-                                    where I.invType == "sh" &&
-                                     (brIds.Contains(JBCC.branchId) || brIds.Contains(BP.branchId))
+                    List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
 
-                                    select new
-                                    {
+                        var invListm = (from IT in entity.itemsTransfer
+                                        from I in entity.invoices.Where(I => I.invoiceId == IT.invoiceId)
+
+                                        from IU in entity.itemsUnits.Where(IU => IU.itemUnitId == IT.itemUnitId)
+
+                                        join ITEM in entity.items on IU.itemId equals ITEM.itemId
+                                        join UNIT in entity.units on IU.unitId equals UNIT.unitId
+                                        join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
+                                        join U in entity.users on I.createUserId equals U.userId into JU
+                                        join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
+                                        from JPP in entity.pos.Where(X => X.posId == I.posId)
+                                        join BP in entity.branches on JPP.branchId equals BP.branchId
+                                        join du in entity.users on I.userId equals du.userId into Dusr
+                                        //   from JPP into  JP.DefaultIfEmpty
+                                        from JUU in JU.DefaultIfEmpty()
+                                        from JUPUS in JUPUSR.DefaultIfEmpty()
+                                        from duu in Dusr.DefaultIfEmpty()
+                                        from JBCC in JBC.DefaultIfEmpty()
+                                        where I.invType == "sh" &&
+                                         (brIds.Contains(JBCC.branchId) || brIds.Contains(BP.branchId))
+
+                                        select new
+                                        {
 
 
-                                        inventoryNum = IT.inventoryItemLocation.Inventory.num,
-                                        IT.inventoryItemLocation.Inventory.inventoryType,
-                                        inventoryDate = IT.inventoryItemLocation.Inventory.createDate,
-                                        //   itemCount
-                                        causeFalls = IT.inventoryItemLocation.fallCause,
-                                        userFalls = duu.username,
-                                        I.userId,
-                                        itemName = ITEM.name,
-                                        unitName = UNIT.name,
-                                        IT.itemsTransId,
-                                        IT.itemUnitId,
+                                            inventoryNum = IT.inventoryItemLocation.Inventory.num,
+                                            IT.inventoryItemLocation.Inventory.inventoryType,
+                                            inventoryDate = IT.inventoryItemLocation.Inventory.createDate,
+                                            //   itemCount
+                                            causeFalls = IT.inventoryItemLocation.fallCause,
+                                            userFalls = duu.username,
+                                            I.userId,
+                                            itemName = ITEM.name,
+                                            unitName = UNIT.name,
+                                            IT.itemsTransId,
+                                            IT.itemUnitId,
 
-                                        IU.itemId,
-                                        IU.unitId,
-                                        itemCount = IT.quantity,
-                                        IT.price,
-                                        IU.barcode,
+                                            IU.itemId,
+                                            IU.unitId,
+                                            itemCount = IT.quantity,
+                                            IT.price,
+                                            IU.barcode,
 
-                                        I.invoiceId,
-                                        I.invNumber,
+                                            I.invoiceId,
+                                            I.invNumber,
 
-                                        I.posId,
-                                        I.invType,
-                                        I.total,
-                                        I.totalNet,
-                                        I.paid,
-                                        I.deserved,
-                                        I.deservedDate,
-                                        I.invDate,
-                                        I.invoiceMainId,
-                                        I.invCase,
-                                        I.invTime,
-                                        I.notes,
-                                        I.vendorInvNum,
-                                        I.vendorInvDate,
-                                        I.createUserId,
-                                        IupdateDate = I.updateDate,
-                                        I.updateUserId,
-                                        // I.branchId,
-                                        I.discountValue,
-                                        I.discountType,
-                                        I.tax,
-                                        I.name,
-                                        I.isApproved,
-                                        IT.itemSerial,
-                                        //
-                                        I.branchCreatorId,
+                                            I.posId,
+                                            I.invType,
+                                            I.total,
+                                            I.totalNet,
+                                            I.paid,
+                                            I.deserved,
+                                            I.deservedDate,
+                                            I.invDate,
+                                            I.invoiceMainId,
+                                            I.invCase,
+                                            I.invTime,
+                                            I.notes,
+                                            I.vendorInvNum,
+                                            I.vendorInvDate,
+                                            I.createUserId,
+                                            IupdateDate = I.updateDate,
+                                            I.updateUserId,
+                                            // I.branchId,
+                                            I.discountValue,
+                                            I.discountType,
+                                            I.tax,
+                                            I.name,
+                                            I.isApproved,
+                                            IT.itemSerial,
+                                            //
+                                            I.branchCreatorId,
 
-                                        //
-                                        branchName = JBCC.name,
-                                        branchId = I.branchCreatorId,
+                                            //
+                                            branchName = JBCC.name,
+                                            branchId = I.branchCreatorId,
 
-                                        branchType = JBCC.type,
-                                        posName = JPP.name,
-                                        posCode = JPP.code,
+                                            branchType = JBCC.type,
+                                            posName = JPP.name,
+                                            posCode = JPP.code,
 
-                                        cuserName = JUU.name,
-                                        cuserLast = JUU.lastname,
-                                        cUserAccName = JUU.username,
-                                        uuserName = JUPUS.name,
-                                        uuserLast = JUPUS.lastname,
-                                        uUserAccName = JUPUS.username,
+                                            cuserName = JUU.name,
+                                            cuserLast = JUU.lastname,
+                                            cUserAccName = JUU.username,
+                                            uuserName = JUPUS.name,
+                                            uuserLast = JUPUS.lastname,
+                                            uUserAccName = JUPUS.username,
 
-                                    }).ToList();
+                                        }).ToList();
 
-                    if (invListm == null)
-                        return NotFound();
-                    else
-                        return Ok(invListm);
+
+
+
+
+                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(invListm) };
+
+                    }
+
+                }
+                catch
+                {
+                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
                 }
 
             }
 
-            //else
-            return NotFound();
+            //var re = Request;
+            //var headers = re.Headers;
+            //string token = "";
+            //if (headers.Contains("APIKey"))
+            //{
+            //    token = headers.GetValues("APIKey").First();
+            //}
+            //Validation validation = new Validation();
+            //bool valid = validation.CheckApiKey(token);
+
+            //if (valid) // APIKey is valid
+            //{
+            //    List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+
+            //    using (incposdbEntities entity = new incposdbEntities())
+            //    {
+            //        var invListm = (from IT in entity.itemsTransfer
+            //                        from I in entity.invoices.Where(I => I.invoiceId == IT.invoiceId)
+
+            //                        from IU in entity.itemsUnits.Where(IU => IU.itemUnitId == IT.itemUnitId)
+
+            //                        join ITEM in entity.items on IU.itemId equals ITEM.itemId
+            //                        join UNIT in entity.units on IU.unitId equals UNIT.unitId
+            //                        join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
+            //                        join U in entity.users on I.createUserId equals U.userId into JU
+            //                        join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
+            //                        from JPP in entity.pos.Where(X => X.posId == I.posId)
+            //                        join BP in entity.branches on JPP.branchId equals BP.branchId
+            //                        join du in entity.users on I.userId equals du.userId into Dusr
+            //                        //   from JPP into  JP.DefaultIfEmpty
+            //                        from JUU in JU.DefaultIfEmpty()
+            //                        from JUPUS in JUPUSR.DefaultIfEmpty()
+            //                        from duu in Dusr.DefaultIfEmpty()
+            //                        from JBCC in JBC.DefaultIfEmpty()
+            //                        where I.invType == "sh" &&
+            //                         (brIds.Contains(JBCC.branchId) || brIds.Contains(BP.branchId))
+
+            //                        select new
+            //                        {
+
+
+            //                            inventoryNum = IT.inventoryItemLocation.Inventory.num,
+            //                            IT.inventoryItemLocation.Inventory.inventoryType,
+            //                            inventoryDate = IT.inventoryItemLocation.Inventory.createDate,
+            //                            //   itemCount
+            //                            causeFalls = IT.inventoryItemLocation.fallCause,
+            //                            userFalls = duu.username,
+            //                            I.userId,
+            //                            itemName = ITEM.name,
+            //                            unitName = UNIT.name,
+            //                            IT.itemsTransId,
+            //                            IT.itemUnitId,
+
+            //                            IU.itemId,
+            //                            IU.unitId,
+            //                            itemCount = IT.quantity,
+            //                            IT.price,
+            //                            IU.barcode,
+
+            //                            I.invoiceId,
+            //                            I.invNumber,
+
+            //                            I.posId,
+            //                            I.invType,
+            //                            I.total,
+            //                            I.totalNet,
+            //                            I.paid,
+            //                            I.deserved,
+            //                            I.deservedDate,
+            //                            I.invDate,
+            //                            I.invoiceMainId,
+            //                            I.invCase,
+            //                            I.invTime,
+            //                            I.notes,
+            //                            I.vendorInvNum,
+            //                            I.vendorInvDate,
+            //                            I.createUserId,
+            //                            IupdateDate = I.updateDate,
+            //                            I.updateUserId,
+            //                            // I.branchId,
+            //                            I.discountValue,
+            //                            I.discountType,
+            //                            I.tax,
+            //                            I.name,
+            //                            I.isApproved,
+            //                            IT.itemSerial,
+            //                            //
+            //                            I.branchCreatorId,
+
+            //                            //
+            //                            branchName = JBCC.name,
+            //                            branchId = I.branchCreatorId,
+
+            //                            branchType = JBCC.type,
+            //                            posName = JPP.name,
+            //                            posCode = JPP.code,
+
+            //                            cuserName = JUU.name,
+            //                            cuserLast = JUU.lastname,
+            //                            cUserAccName = JUU.username,
+            //                            uuserName = JUPUS.name,
+            //                            uuserLast = JUPUS.lastname,
+            //                            uUserAccName = JUPUS.username,
+
+            //                        }).ToList();
+
+            //        if (invListm == null)
+            //            return NotFound();
+            //        else
+            //            return Ok(invListm);
+            //    }
+
+            //}
+
+            ////else
+            //return NotFound();
         }
 
         #endregion
@@ -3678,676 +6307,1413 @@ notes
         //المدفوعات
         [HttpGet]
         [Route("GetPayments")]
-        public IHttpActionResult GetPayments()
+        public ResponseVM GetPayments()
         {
+            // public ResponseVM GetPurinv(string token)
+
+            //int mainBranchId, int userId
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-
-
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
-            }
-
-
-
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid)
-            {
-                //  List<int> brIds = AllowedBranchsId(mainBranchId, userId);
-                using (incposdbEntities entity = new incposdbEntities())
-                {
-
-                    List<CashTransferModel> cachlist = (from C in entity.cashTransfer
-                                                        join b in entity.banks on C.bankId equals b.bankId into jb
-                                                        join a in entity.agents on C.agentId equals a.agentId into ja
-                                                        join p in entity.pos on C.posId equals p.posId into jp
-                                                        join pc in entity.pos on C.posIdCreator equals pc.posId into jpcr
-                                                        join u in entity.users on C.userId equals u.userId into ju
-                                                        join uc in entity.users on C.updateUserId equals uc.userId into juc
-                                                        join cr in entity.cards on C.cardId equals cr.cardId into jcr
-                                                        join bo in entity.bondes on C.bondId equals bo.bondId into jbo
-                                                        from jbb in jb.DefaultIfEmpty()
-                                                        from jaa in ja.DefaultIfEmpty()
-                                                        from jpp in jp.DefaultIfEmpty()
-                                                        from juu in ju.DefaultIfEmpty()
-                                                        from jpcc in jpcr.DefaultIfEmpty()
-                                                        from jucc in juc.DefaultIfEmpty()
-                                                        from jcrd in jcr.DefaultIfEmpty()
-                                                        from jbbo in jbo.DefaultIfEmpty()
-                                                        where (C.transType == "p")
-                                                        //&&  (brIds.Contains(jpp.branches.branchId) || brIds.Contains(jpcc.branches.branchId))
-
-                                                        //( C.transType == "p" && C.side==Side)
-                                                        select new CashTransferModel()
-                                                        {
-                                                            cashTransId = C.cashTransId,
-                                                            transType = C.transType,
-                                                            posId = C.posId,
-                                                            userId = C.userId,
-                                                            agentId = C.agentId,
-                                                            invId = C.invId,
-                                                            transNum = C.transNum,
-                                                            createDate = C.createDate,
-                                                            updateDate = C.updateDate,
-                                                            cash = C.cash,
-                                                            updateUserId = C.updateUserId,
-                                                            createUserId = C.createUserId,
-                                                            notes = C.notes,
-                                                            posIdCreator = C.posIdCreator,
-                                                            isConfirm = C.isConfirm,
-                                                            cashTransIdSource = C.cashTransIdSource,
-                                                            side = C.side,
-
-                                                            docName = C.docName,
-                                                            docNum = C.docNum,
-                                                            docImage = C.docImage,
-                                                            bankId = C.bankId,
-                                                            bankName = jbb.name,
-                                                            agentName = jaa.name,
-
-                                                            usersName = juu.name,// side =u
-                                                            userAcc = juu.username,// side =u
-                                                            posName = jpp.name,
-                                                            posCreatorName = jpcc.name,
-                                                            processType = C.processType,
-                                                            cardId = C.cardId,
-                                                            bondId = C.bondId,
-                                                            usersLName = juu.lastname,// side =u
-                                                            updateUserName = jucc.name,
-                                                            updateUserLName = jucc.lastname,
-                                                            updateUserAcc = jucc.username,
-                                                            createUserJob = jucc.job,
-                                                            cardName = jcrd.name,
-                                                            bondDeserveDate = jbbo.deserveDate,
-                                                            bondIsRecieved = jbbo.isRecieved,
-                                                            agentCompany = jaa.company,
-                                                            shippingCompanyId = C.shippingCompanyId,
-                                                            shippingCompanyName = C.shippingCompanies.name,
-
-                                                        }).ToList();
-
-                    /*
-                    if (cachlist.Count > 0 )
-                    {
-                        CashTransferModel tempitem = null;
-                        foreach (CashTransferModel cashtItem in cachlist)
-                        {if (cashtItem.side == "p") { }
-                            tempitem = this.Getpostransmodel(cashtItem.cashTransId)
-                                .Where(C => C.cashTransId != cashtItem.cashTransId).FirstOrDefault();
-                            cashtItem.cashTrans2Id = tempitem.cashTransId;
-                            cashtItem.pos2Id = tempitem.posId;
-                            cashtItem.pos2Name = tempitem.posName;
-                            cashtItem.isConfirm2 = tempitem.isConfirm;
-                            // cashtItem.posCreatorName = tempitem.posName;
-
-
-                        }
-
-                    }
-                    */
-
-
-
-                    if (cachlist == null)
-                        return NotFound();
-                    else
-                        return Ok(cachlist);
-
-                }
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
             else
-                return NotFound();
+            {
+
+                //  IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                //foreach (Claim c in claims)
+                //{
+                //    if (c.Type == "mainBranchId")
+                //    {
+                //        mainBranchId = int.Parse(c.Value);
+                //    }
+                //    else if (c.Type == "userId")
+                //    {
+                //        userId = int.Parse(c.Value);
+                //    }
+
+                //}
+                // DateTime cmpdate = DateTime.Now.AddDays(newdays);
+                try
+                {
+
+                    //   List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+
+                        List<CashTransferModel> cachlist = (from C in entity.cashTransfer
+                                                            join b in entity.banks on C.bankId equals b.bankId into jb
+                                                            join a in entity.agents on C.agentId equals a.agentId into ja
+                                                            join p in entity.pos on C.posId equals p.posId into jp
+                                                            join pc in entity.pos on C.posIdCreator equals pc.posId into jpcr
+                                                            join u in entity.users on C.userId equals u.userId into ju
+                                                            join uc in entity.users on C.updateUserId equals uc.userId into juc
+                                                            join cr in entity.cards on C.cardId equals cr.cardId into jcr
+                                                            join bo in entity.bondes on C.bondId equals bo.bondId into jbo
+                                                            from jbb in jb.DefaultIfEmpty()
+                                                            from jaa in ja.DefaultIfEmpty()
+                                                            from jpp in jp.DefaultIfEmpty()
+                                                            from juu in ju.DefaultIfEmpty()
+                                                            from jpcc in jpcr.DefaultIfEmpty()
+                                                            from jucc in juc.DefaultIfEmpty()
+                                                            from jcrd in jcr.DefaultIfEmpty()
+                                                            from jbbo in jbo.DefaultIfEmpty()
+                                                            where (C.transType == "p")
+                                                            //&&  (brIds.Contains(jpp.branches.branchId) || brIds.Contains(jpcc.branches.branchId))
+
+                                                            //( C.transType == "p" && C.side==Side)
+                                                            select new CashTransferModel()
+                                                            {
+                                                                cashTransId = C.cashTransId,
+                                                                transType = C.transType,
+                                                                posId = C.posId,
+                                                                userId = C.userId,
+                                                                agentId = C.agentId,
+                                                                invId = C.invId,
+                                                                transNum = C.transNum,
+                                                                createDate = C.createDate,
+                                                                updateDate = C.updateDate,
+                                                                cash = C.cash,
+                                                                updateUserId = C.updateUserId,
+                                                                createUserId = C.createUserId,
+                                                                notes = C.notes,
+                                                                posIdCreator = C.posIdCreator,
+                                                                isConfirm = C.isConfirm,
+                                                                cashTransIdSource = C.cashTransIdSource,
+                                                                side = C.side,
+
+                                                                docName = C.docName,
+                                                                docNum = C.docNum,
+                                                                docImage = C.docImage,
+                                                                bankId = C.bankId,
+                                                                bankName = jbb.name,
+                                                                agentName = jaa.name,
+
+                                                                usersName = juu.name,// side =u
+                                                                userAcc = juu.username,// side =u
+                                                                posName = jpp.name,
+                                                                posCreatorName = jpcc.name,
+                                                                processType = C.processType,
+                                                                cardId = C.cardId,
+                                                                bondId = C.bondId,
+                                                                usersLName = juu.lastname,// side =u
+                                                                updateUserName = jucc.name,
+                                                                updateUserLName = jucc.lastname,
+                                                                updateUserAcc = jucc.username,
+                                                                createUserJob = jucc.job,
+                                                                cardName = jcrd.name,
+                                                                bondDeserveDate = jbbo.deserveDate,
+                                                                bondIsRecieved = jbbo.isRecieved,
+                                                                agentCompany = jaa.company,
+                                                                shippingCompanyId = C.shippingCompanyId,
+                                                                shippingCompanyName = C.shippingCompanies.name,
+
+                                                            }).ToList();
+
+                        /*
+                        if (cachlist.Count > 0 )
+                        {
+                            CashTransferModel tempitem = null;
+                            foreach (CashTransferModel cashtItem in cachlist)
+                            {if (cashtItem.side == "p") { }
+                                tempitem = this.Getpostransmodel(cashtItem.cashTransId)
+                                    .Where(C => C.cashTransId != cashtItem.cashTransId).FirstOrDefault();
+                                cashtItem.cashTrans2Id = tempitem.cashTransId;
+                                cashtItem.pos2Id = tempitem.posId;
+                                cashtItem.pos2Name = tempitem.posName;
+                                cashtItem.isConfirm2 = tempitem.isConfirm;
+                                // cashtItem.posCreatorName = tempitem.posName;
+
+
+                            }
+
+                        }
+                        */
+
+
+
+
+
+                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(cachlist) };
+
+                    }
+
+                }
+                catch
+                {
+                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                }
+
+            }
+
+            //var re = Request;
+            //var headers = re.Headers;
+            //string token = "";
+
+
+            //if (headers.Contains("APIKey"))
+            //{
+            //    token = headers.GetValues("APIKey").First();
+            //}
+
+
+
+            //Validation validation = new Validation();
+            //bool valid = validation.CheckApiKey(token);
+
+            //if (valid)
+            //{
+            //    //  List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+            //    using (incposdbEntities entity = new incposdbEntities())
+            //    {
+
+            //        List<CashTransferModel> cachlist = (from C in entity.cashTransfer
+            //                                            join b in entity.banks on C.bankId equals b.bankId into jb
+            //                                            join a in entity.agents on C.agentId equals a.agentId into ja
+            //                                            join p in entity.pos on C.posId equals p.posId into jp
+            //                                            join pc in entity.pos on C.posIdCreator equals pc.posId into jpcr
+            //                                            join u in entity.users on C.userId equals u.userId into ju
+            //                                            join uc in entity.users on C.updateUserId equals uc.userId into juc
+            //                                            join cr in entity.cards on C.cardId equals cr.cardId into jcr
+            //                                            join bo in entity.bondes on C.bondId equals bo.bondId into jbo
+            //                                            from jbb in jb.DefaultIfEmpty()
+            //                                            from jaa in ja.DefaultIfEmpty()
+            //                                            from jpp in jp.DefaultIfEmpty()
+            //                                            from juu in ju.DefaultIfEmpty()
+            //                                            from jpcc in jpcr.DefaultIfEmpty()
+            //                                            from jucc in juc.DefaultIfEmpty()
+            //                                            from jcrd in jcr.DefaultIfEmpty()
+            //                                            from jbbo in jbo.DefaultIfEmpty()
+            //                                            where (C.transType == "p")
+            //                                            //&&  (brIds.Contains(jpp.branches.branchId) || brIds.Contains(jpcc.branches.branchId))
+
+            //                                            //( C.transType == "p" && C.side==Side)
+            //                                            select new CashTransferModel()
+            //                                            {
+            //                                                cashTransId = C.cashTransId,
+            //                                                transType = C.transType,
+            //                                                posId = C.posId,
+            //                                                userId = C.userId,
+            //                                                agentId = C.agentId,
+            //                                                invId = C.invId,
+            //                                                transNum = C.transNum,
+            //                                                createDate = C.createDate,
+            //                                                updateDate = C.updateDate,
+            //                                                cash = C.cash,
+            //                                                updateUserId = C.updateUserId,
+            //                                                createUserId = C.createUserId,
+            //                                                notes = C.notes,
+            //                                                posIdCreator = C.posIdCreator,
+            //                                                isConfirm = C.isConfirm,
+            //                                                cashTransIdSource = C.cashTransIdSource,
+            //                                                side = C.side,
+
+            //                                                docName = C.docName,
+            //                                                docNum = C.docNum,
+            //                                                docImage = C.docImage,
+            //                                                bankId = C.bankId,
+            //                                                bankName = jbb.name,
+            //                                                agentName = jaa.name,
+
+            //                                                usersName = juu.name,// side =u
+            //                                                userAcc = juu.username,// side =u
+            //                                                posName = jpp.name,
+            //                                                posCreatorName = jpcc.name,
+            //                                                processType = C.processType,
+            //                                                cardId = C.cardId,
+            //                                                bondId = C.bondId,
+            //                                                usersLName = juu.lastname,// side =u
+            //                                                updateUserName = jucc.name,
+            //                                                updateUserLName = jucc.lastname,
+            //                                                updateUserAcc = jucc.username,
+            //                                                createUserJob = jucc.job,
+            //                                                cardName = jcrd.name,
+            //                                                bondDeserveDate = jbbo.deserveDate,
+            //                                                bondIsRecieved = jbbo.isRecieved,
+            //                                                agentCompany = jaa.company,
+            //                                                shippingCompanyId = C.shippingCompanyId,
+            //                                                shippingCompanyName = C.shippingCompanies.name,
+
+            //                                            }).ToList();
+
+            //        /*
+            //        if (cachlist.Count > 0 )
+            //        {
+            //            CashTransferModel tempitem = null;
+            //            foreach (CashTransferModel cashtItem in cachlist)
+            //            {if (cashtItem.side == "p") { }
+            //                tempitem = this.Getpostransmodel(cashtItem.cashTransId)
+            //                    .Where(C => C.cashTransId != cashtItem.cashTransId).FirstOrDefault();
+            //                cashtItem.cashTrans2Id = tempitem.cashTransId;
+            //                cashtItem.pos2Id = tempitem.posId;
+            //                cashtItem.pos2Name = tempitem.posName;
+            //                cashtItem.isConfirm2 = tempitem.isConfirm;
+            //                // cashtItem.posCreatorName = tempitem.posName;
+
+
+            //            }
+
+            //        }
+            //        */
+
+
+
+            //        if (cachlist == null)
+            //            return NotFound();
+            //        else
+            //            return Ok(cachlist);
+
+            //    }
+            //}
+            //else
+            //    return NotFound();
         }
 
         //bank all
         [HttpGet]
         [Route("GetBankTrans")]
-        public IHttpActionResult GetBankTrans()
+        public ResponseVM GetBankTrans()
         {
+            // public ResponseVM GetPurinv(string token)
+
+            //int mainBranchId, int userId
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-
-
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
-            }
-
-
-
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid)
-            {
-                //List<int> brIds = AllowedBranchsId(mainBranchId, userId);
-                using (incposdbEntities entity = new incposdbEntities())
-                {
-
-                    List<CashTransferModel> cachlist = (from C in entity.cashTransfer
-                                                        join b in entity.banks on C.bankId equals b.bankId into jb
-                                                        join a in entity.agents on C.agentId equals a.agentId into ja
-                                                        join p in entity.pos on C.posId equals p.posId into jp
-                                                        join pc in entity.pos on C.posIdCreator equals pc.posId into jpcr
-                                                        join u in entity.users on C.userId equals u.userId into ju
-                                                        join uc in entity.users on C.updateUserId equals uc.userId into juc
-                                                        join cr in entity.cards on C.cardId equals cr.cardId into jcr
-                                                        join bo in entity.bondes on C.bondId equals bo.bondId into jbo
-                                                        from jbb in jb.DefaultIfEmpty()
-                                                        from jaa in ja.DefaultIfEmpty()
-                                                        from jpp in jp.DefaultIfEmpty()
-                                                        from juu in ju.DefaultIfEmpty()
-                                                        from jpcc in jpcr.DefaultIfEmpty()
-                                                        from jucc in juc.DefaultIfEmpty()
-                                                        from jcrd in jcr.DefaultIfEmpty()
-                                                        from jbbo in jbo.DefaultIfEmpty()
-                                                        where (C.side == "bn" && C.isConfirm == 1 && C.docNum != null)
-                                                        // &&(brIds.Contains(jpp.branches.branchId) || brIds.Contains(jpcc.branches.branchId))
-
-                                                        select new CashTransferModel()
-                                                        {
-                                                            cashTransId = C.cashTransId,
-                                                            transType = C.transType,
-                                                            posId = C.posId,
-                                                            userId = C.userId,
-                                                            agentId = C.agentId,
-                                                            invId = C.invId,
-                                                            transNum = C.transNum,
-                                                            createDate = C.createDate,
-                                                            updateDate = C.updateDate,
-                                                            cash = C.cash,
-                                                            updateUserId = C.updateUserId,
-                                                            createUserId = C.createUserId,
-                                                            notes = C.notes,
-                                                            posIdCreator = C.posIdCreator,
-                                                            isConfirm = C.isConfirm,
-                                                            cashTransIdSource = C.cashTransIdSource,
-                                                            side = C.side,
-
-                                                            docName = C.docName,
-                                                            docNum = C.docNum,
-                                                            docImage = C.docImage,
-                                                            bankId = C.bankId,
-                                                            bankName = jbb.name,
-                                                            agentName = jaa.name,
-
-                                                            usersName = juu.name,// side =u
-                                                            userAcc = juu.username,// side =u
-                                                            posName = jpp.name,
-                                                            posCreatorName = jpcc.name,
-                                                            processType = C.processType,
-                                                            cardId = C.cardId,
-                                                            bondId = C.bondId,
-                                                            usersLName = juu.lastname,// side =u
-                                                            updateUserName = jucc.name,
-                                                            updateUserLName = jucc.lastname,
-                                                            updateUserAcc = jucc.username,
-                                                            createUserJob = jucc.job,
-                                                            cardName = jcrd.name,
-                                                            bondDeserveDate = jbbo.deserveDate,
-                                                            bondIsRecieved = jbbo.isRecieved,
-                                                            agentCompany = jaa.company,
-                                                            shippingCompanyId = C.shippingCompanyId,
-                                                            shippingCompanyName = C.shippingCompanies.name,
-
-                                                        }).ToList();
-
-                    /*
-                    if (cachlist.Count > 0 )
-                    {
-                        CashTransferModel tempitem = null;
-                        foreach (CashTransferModel cashtItem in cachlist)
-                        {if (cashtItem.side == "p") { }
-                            tempitem = this.Getpostransmodel(cashtItem.cashTransId)
-                                .Where(C => C.cashTransId != cashtItem.cashTransId).FirstOrDefault();
-                            cashtItem.cashTrans2Id = tempitem.cashTransId;
-                            cashtItem.pos2Id = tempitem.posId;
-                            cashtItem.pos2Name = tempitem.posName;
-                            cashtItem.isConfirm2 = tempitem.isConfirm;
-                            // cashtItem.posCreatorName = tempitem.posName;
-
-
-                        }
-
-                    }
-                    */
-
-
-
-                    if (cachlist == null)
-                        return NotFound();
-                    else
-                        return Ok(cachlist);
-
-                }
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
             else
-                return NotFound();
+            {
+                //int mainBranchId = 0;
+                //int userId = 0;
+
+                //IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                //foreach (Claim c in claims)
+                //{
+                //    if (c.Type == "mainBranchId")
+                //    {
+                //        mainBranchId = int.Parse(c.Value);
+                //    }
+                //    else if (c.Type == "userId")
+                //    {
+                //        userId = int.Parse(c.Value);
+                //    }
+
+                //}
+                // DateTime cmpdate = DateTime.Now.AddDays(newdays);
+                try
+                {
+
+                    // List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+                        List<CashTransferModel> cachlist = (from C in entity.cashTransfer
+                                                            join b in entity.banks on C.bankId equals b.bankId into jb
+                                                            join a in entity.agents on C.agentId equals a.agentId into ja
+                                                            join p in entity.pos on C.posId equals p.posId into jp
+                                                            join pc in entity.pos on C.posIdCreator equals pc.posId into jpcr
+                                                            join u in entity.users on C.userId equals u.userId into ju
+                                                            join uc in entity.users on C.updateUserId equals uc.userId into juc
+                                                            join cr in entity.cards on C.cardId equals cr.cardId into jcr
+                                                            join bo in entity.bondes on C.bondId equals bo.bondId into jbo
+                                                            from jbb in jb.DefaultIfEmpty()
+                                                            from jaa in ja.DefaultIfEmpty()
+                                                            from jpp in jp.DefaultIfEmpty()
+                                                            from juu in ju.DefaultIfEmpty()
+                                                            from jpcc in jpcr.DefaultIfEmpty()
+                                                            from jucc in juc.DefaultIfEmpty()
+                                                            from jcrd in jcr.DefaultIfEmpty()
+                                                            from jbbo in jbo.DefaultIfEmpty()
+                                                            where (C.side == "bn" && C.isConfirm == 1 && C.docNum != null)
+                                                            // &&(brIds.Contains(jpp.branches.branchId) || brIds.Contains(jpcc.branches.branchId))
+
+                                                            select new CashTransferModel()
+                                                            {
+                                                                cashTransId = C.cashTransId,
+                                                                transType = C.transType,
+                                                                posId = C.posId,
+                                                                userId = C.userId,
+                                                                agentId = C.agentId,
+                                                                invId = C.invId,
+                                                                transNum = C.transNum,
+                                                                createDate = C.createDate,
+                                                                updateDate = C.updateDate,
+                                                                cash = C.cash,
+                                                                updateUserId = C.updateUserId,
+                                                                createUserId = C.createUserId,
+                                                                notes = C.notes,
+                                                                posIdCreator = C.posIdCreator,
+                                                                isConfirm = C.isConfirm,
+                                                                cashTransIdSource = C.cashTransIdSource,
+                                                                side = C.side,
+
+                                                                docName = C.docName,
+                                                                docNum = C.docNum,
+                                                                docImage = C.docImage,
+                                                                bankId = C.bankId,
+                                                                bankName = jbb.name,
+                                                                agentName = jaa.name,
+
+                                                                usersName = juu.name,// side =u
+                                                                userAcc = juu.username,// side =u
+                                                                posName = jpp.name,
+                                                                posCreatorName = jpcc.name,
+                                                                processType = C.processType,
+                                                                cardId = C.cardId,
+                                                                bondId = C.bondId,
+                                                                usersLName = juu.lastname,// side =u
+                                                                updateUserName = jucc.name,
+                                                                updateUserLName = jucc.lastname,
+                                                                updateUserAcc = jucc.username,
+                                                                createUserJob = jucc.job,
+                                                                cardName = jcrd.name,
+                                                                bondDeserveDate = jbbo.deserveDate,
+                                                                bondIsRecieved = jbbo.isRecieved,
+                                                                agentCompany = jaa.company,
+                                                                shippingCompanyId = C.shippingCompanyId,
+                                                                shippingCompanyName = C.shippingCompanies.name,
+
+                                                            }).ToList();
+
+                        /*
+                        if (cachlist.Count > 0 )
+                        {
+                            CashTransferModel tempitem = null;
+                            foreach (CashTransferModel cashtItem in cachlist)
+                            {if (cashtItem.side == "p") { }
+                                tempitem = this.Getpostransmodel(cashtItem.cashTransId)
+                                    .Where(C => C.cashTransId != cashtItem.cashTransId).FirstOrDefault();
+                                cashtItem.cashTrans2Id = tempitem.cashTransId;
+                                cashtItem.pos2Id = tempitem.posId;
+                                cashtItem.pos2Name = tempitem.posName;
+                                cashtItem.isConfirm2 = tempitem.isConfirm;
+                                // cashtItem.posCreatorName = tempitem.posName;
+
+
+                            }
+
+                        }
+                        */
+
+
+
+
+
+
+
+                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(cachlist) };
+
+                    }
+
+                }
+                catch
+                {
+                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                }
+
+            }
+
+            //var re = Request;
+            //var headers = re.Headers;
+            //string token = "";
+
+
+            //if (headers.Contains("APIKey"))
+            //{
+            //    token = headers.GetValues("APIKey").First();
+            //}
+
+
+
+            //Validation validation = new Validation();
+            //bool valid = validation.CheckApiKey(token);
+
+            //if (valid)
+            //{
+            //    //List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+            //    using (incposdbEntities entity = new incposdbEntities())
+            //    {
+
+            //        List<CashTransferModel> cachlist = (from C in entity.cashTransfer
+            //                                            join b in entity.banks on C.bankId equals b.bankId into jb
+            //                                            join a in entity.agents on C.agentId equals a.agentId into ja
+            //                                            join p in entity.pos on C.posId equals p.posId into jp
+            //                                            join pc in entity.pos on C.posIdCreator equals pc.posId into jpcr
+            //                                            join u in entity.users on C.userId equals u.userId into ju
+            //                                            join uc in entity.users on C.updateUserId equals uc.userId into juc
+            //                                            join cr in entity.cards on C.cardId equals cr.cardId into jcr
+            //                                            join bo in entity.bondes on C.bondId equals bo.bondId into jbo
+            //                                            from jbb in jb.DefaultIfEmpty()
+            //                                            from jaa in ja.DefaultIfEmpty()
+            //                                            from jpp in jp.DefaultIfEmpty()
+            //                                            from juu in ju.DefaultIfEmpty()
+            //                                            from jpcc in jpcr.DefaultIfEmpty()
+            //                                            from jucc in juc.DefaultIfEmpty()
+            //                                            from jcrd in jcr.DefaultIfEmpty()
+            //                                            from jbbo in jbo.DefaultIfEmpty()
+            //                                            where (C.side == "bn" && C.isConfirm == 1 && C.docNum != null)
+            //                                            // &&(brIds.Contains(jpp.branches.branchId) || brIds.Contains(jpcc.branches.branchId))
+
+            //                                            select new CashTransferModel()
+            //                                            {
+            //                                                cashTransId = C.cashTransId,
+            //                                                transType = C.transType,
+            //                                                posId = C.posId,
+            //                                                userId = C.userId,
+            //                                                agentId = C.agentId,
+            //                                                invId = C.invId,
+            //                                                transNum = C.transNum,
+            //                                                createDate = C.createDate,
+            //                                                updateDate = C.updateDate,
+            //                                                cash = C.cash,
+            //                                                updateUserId = C.updateUserId,
+            //                                                createUserId = C.createUserId,
+            //                                                notes = C.notes,
+            //                                                posIdCreator = C.posIdCreator,
+            //                                                isConfirm = C.isConfirm,
+            //                                                cashTransIdSource = C.cashTransIdSource,
+            //                                                side = C.side,
+
+            //                                                docName = C.docName,
+            //                                                docNum = C.docNum,
+            //                                                docImage = C.docImage,
+            //                                                bankId = C.bankId,
+            //                                                bankName = jbb.name,
+            //                                                agentName = jaa.name,
+
+            //                                                usersName = juu.name,// side =u
+            //                                                userAcc = juu.username,// side =u
+            //                                                posName = jpp.name,
+            //                                                posCreatorName = jpcc.name,
+            //                                                processType = C.processType,
+            //                                                cardId = C.cardId,
+            //                                                bondId = C.bondId,
+            //                                                usersLName = juu.lastname,// side =u
+            //                                                updateUserName = jucc.name,
+            //                                                updateUserLName = jucc.lastname,
+            //                                                updateUserAcc = jucc.username,
+            //                                                createUserJob = jucc.job,
+            //                                                cardName = jcrd.name,
+            //                                                bondDeserveDate = jbbo.deserveDate,
+            //                                                bondIsRecieved = jbbo.isRecieved,
+            //                                                agentCompany = jaa.company,
+            //                                                shippingCompanyId = C.shippingCompanyId,
+            //                                                shippingCompanyName = C.shippingCompanies.name,
+
+            //                                            }).ToList();
+
+            //        /*
+            //        if (cachlist.Count > 0 )
+            //        {
+            //            CashTransferModel tempitem = null;
+            //            foreach (CashTransferModel cashtItem in cachlist)
+            //            {if (cashtItem.side == "p") { }
+            //                tempitem = this.Getpostransmodel(cashtItem.cashTransId)
+            //                    .Where(C => C.cashTransId != cashtItem.cashTransId).FirstOrDefault();
+            //                cashtItem.cashTrans2Id = tempitem.cashTransId;
+            //                cashtItem.pos2Id = tempitem.posId;
+            //                cashtItem.pos2Name = tempitem.posName;
+            //                cashtItem.isConfirm2 = tempitem.isConfirm;
+            //                // cashtItem.posCreatorName = tempitem.posName;
+
+
+            //            }
+
+            //        }
+            //        */
+
+
+
+            //        if (cachlist == null)
+            //            return NotFound();
+            //        else
+            //            return Ok(cachlist);
+
+            //    }
+            //}
+            //else
+            //    return NotFound();
         }
         // المقبوضات
         [HttpGet]
         [Route("GetReceipt")]
-        public IHttpActionResult GetReceipt()
+        public ResponseVM GetReceipt()
         {
+            // public ResponseVM GetPurinv(string token)
+
+            //int mainBranchId, int userId
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-
-
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
-            }
-
-
-
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid)
-            {
-                //  List<int> brIds = AllowedBranchsId(mainBranchId, userId);
-                using (incposdbEntities entity = new incposdbEntities())
-                {
-
-
-                    List<CashTransferModel> cachlist = (from C in entity.cashTransfer
-                                                        join b in entity.banks on C.bankId equals b.bankId into jb
-                                                        join a in entity.agents on C.agentId equals a.agentId into ja
-                                                        join p in entity.pos on C.posId equals p.posId into jp
-                                                        join pc in entity.pos on C.posIdCreator equals pc.posId into jpcr
-                                                        join u in entity.users on C.userId equals u.userId into ju
-                                                        join uc in entity.users on C.updateUserId equals uc.userId into juc
-                                                        join cr in entity.cards on C.cardId equals cr.cardId into jcr
-                                                        join bo in entity.bondes on C.bondId equals bo.bondId into jbo
-                                                        from jbb in jb.DefaultIfEmpty()
-                                                        from jaa in ja.DefaultIfEmpty()
-                                                        from jpp in jp.DefaultIfEmpty()
-                                                        from juu in ju.DefaultIfEmpty()
-                                                        from jpcc in jpcr.DefaultIfEmpty()
-                                                        from jucc in juc.DefaultIfEmpty()
-                                                        from jcrd in jcr.DefaultIfEmpty()
-                                                        from jbbo in jbo.DefaultIfEmpty()
-                                                        where (C.transType == "d")
-                                                        //&& (brIds.Contains(jpp.branches.branchId) || brIds.Contains(jpcc.branches.branchId))
-
-                                                        //( C.transType == "p" && C.side==Side)
-                                                        select new CashTransferModel()
-                                                        {
-                                                            cashTransId = C.cashTransId,
-                                                            transType = C.transType,
-                                                            posId = C.posId,
-                                                            userId = C.userId,
-                                                            agentId = C.agentId,
-                                                            invId = C.invId,
-                                                            transNum = C.transNum,
-                                                            createDate = C.createDate,
-                                                            updateDate = C.updateDate,
-                                                            cash = C.cash,
-                                                            updateUserId = C.updateUserId,
-                                                            createUserId = C.createUserId,
-                                                            notes = C.notes,
-                                                            posIdCreator = C.posIdCreator,
-                                                            isConfirm = C.isConfirm,
-                                                            cashTransIdSource = C.cashTransIdSource,
-                                                            side = C.side,
-
-                                                            docName = C.docName,
-                                                            docNum = C.docNum,
-                                                            docImage = C.docImage,
-                                                            bankId = C.bankId,
-                                                            bankName = jbb.name,
-                                                            agentName = jaa.name,
-
-                                                            usersName = juu.name,// side =u
-                                                            userAcc = juu.username,// side =u
-                                                            posName = jpp.name,
-                                                            posCreatorName = jpcc.name,
-                                                            processType = C.processType,
-                                                            cardId = C.cardId,
-                                                            bondId = C.bondId,
-                                                            usersLName = juu.lastname,// side =u
-                                                            updateUserName = jucc.name,
-                                                            updateUserLName = jucc.lastname,
-                                                            updateUserAcc = jucc.username,
-                                                            createUserJob = jucc.job,
-                                                            cardName = jcrd.name,
-                                                            bondDeserveDate = jbbo.deserveDate,
-                                                            bondIsRecieved = jbbo.isRecieved,
-                                                            agentCompany = jaa.company,
-                                                            shippingCompanyId = C.shippingCompanyId,
-                                                            shippingCompanyName = C.shippingCompanies.name,
-
-                                                        }).ToList();
-
-
-
-
-                    if (cachlist == null)
-                        return NotFound();
-                    else
-                        return Ok(cachlist);
-
-                }
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
             else
-                return NotFound();
+            {
+                //    int mainBranchId = 0;
+                //    int userId = 0;
+
+                //    IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                //    foreach (Claim c in claims)
+                //    {
+                //        if (c.Type == "mainBranchId")
+                //        {
+                //            mainBranchId = int.Parse(c.Value);
+                //        }
+                //        else if (c.Type == "userId")
+                //        {
+                //            userId = int.Parse(c.Value);
+                //        }
+
+                //}
+                // DateTime cmpdate = DateTime.Now.AddDays(newdays);
+                try
+                {
+
+                    //  List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+
+                        List<CashTransferModel> cachlist = (from C in entity.cashTransfer
+                                                            join b in entity.banks on C.bankId equals b.bankId into jb
+                                                            join a in entity.agents on C.agentId equals a.agentId into ja
+                                                            join p in entity.pos on C.posId equals p.posId into jp
+                                                            join pc in entity.pos on C.posIdCreator equals pc.posId into jpcr
+                                                            join u in entity.users on C.userId equals u.userId into ju
+                                                            join uc in entity.users on C.updateUserId equals uc.userId into juc
+                                                            join cr in entity.cards on C.cardId equals cr.cardId into jcr
+                                                            join bo in entity.bondes on C.bondId equals bo.bondId into jbo
+                                                            from jbb in jb.DefaultIfEmpty()
+                                                            from jaa in ja.DefaultIfEmpty()
+                                                            from jpp in jp.DefaultIfEmpty()
+                                                            from juu in ju.DefaultIfEmpty()
+                                                            from jpcc in jpcr.DefaultIfEmpty()
+                                                            from jucc in juc.DefaultIfEmpty()
+                                                            from jcrd in jcr.DefaultIfEmpty()
+                                                            from jbbo in jbo.DefaultIfEmpty()
+                                                            where (C.transType == "d")
+                                                            //&& (brIds.Contains(jpp.branches.branchId) || brIds.Contains(jpcc.branches.branchId))
+
+                                                            //( C.transType == "p" && C.side==Side)
+                                                            select new CashTransferModel()
+                                                            {
+                                                                cashTransId = C.cashTransId,
+                                                                transType = C.transType,
+                                                                posId = C.posId,
+                                                                userId = C.userId,
+                                                                agentId = C.agentId,
+                                                                invId = C.invId,
+                                                                transNum = C.transNum,
+                                                                createDate = C.createDate,
+                                                                updateDate = C.updateDate,
+                                                                cash = C.cash,
+                                                                updateUserId = C.updateUserId,
+                                                                createUserId = C.createUserId,
+                                                                notes = C.notes,
+                                                                posIdCreator = C.posIdCreator,
+                                                                isConfirm = C.isConfirm,
+                                                                cashTransIdSource = C.cashTransIdSource,
+                                                                side = C.side,
+
+                                                                docName = C.docName,
+                                                                docNum = C.docNum,
+                                                                docImage = C.docImage,
+                                                                bankId = C.bankId,
+                                                                bankName = jbb.name,
+                                                                agentName = jaa.name,
+
+                                                                usersName = juu.name,// side =u
+                                                                userAcc = juu.username,// side =u
+                                                                posName = jpp.name,
+                                                                posCreatorName = jpcc.name,
+                                                                processType = C.processType,
+                                                                cardId = C.cardId,
+                                                                bondId = C.bondId,
+                                                                usersLName = juu.lastname,// side =u
+                                                                updateUserName = jucc.name,
+                                                                updateUserLName = jucc.lastname,
+                                                                updateUserAcc = jucc.username,
+                                                                createUserJob = jucc.job,
+                                                                cardName = jcrd.name,
+                                                                bondDeserveDate = jbbo.deserveDate,
+                                                                bondIsRecieved = jbbo.isRecieved,
+                                                                agentCompany = jaa.company,
+                                                                shippingCompanyId = C.shippingCompanyId,
+                                                                shippingCompanyName = C.shippingCompanies.name,
+
+                                                            }).ToList();
+
+
+
+
+
+
+
+                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(cachlist) };
+
+                    }
+
+                }
+                catch
+                {
+                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                }
+
+            }
+
+            //var re = Request;
+            //var headers = re.Headers;
+            //string token = "";
+
+
+            //if (headers.Contains("APIKey"))
+            //{
+            //    token = headers.GetValues("APIKey").First();
+            //}
+
+
+
+            //Validation validation = new Validation();
+            //bool valid = validation.CheckApiKey(token);
+
+            //if (valid)
+            //{
+            //    //  List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+            //    using (incposdbEntities entity = new incposdbEntities())
+            //    {
+
+
+            //        List<CashTransferModel> cachlist = (from C in entity.cashTransfer
+            //                                            join b in entity.banks on C.bankId equals b.bankId into jb
+            //                                            join a in entity.agents on C.agentId equals a.agentId into ja
+            //                                            join p in entity.pos on C.posId equals p.posId into jp
+            //                                            join pc in entity.pos on C.posIdCreator equals pc.posId into jpcr
+            //                                            join u in entity.users on C.userId equals u.userId into ju
+            //                                            join uc in entity.users on C.updateUserId equals uc.userId into juc
+            //                                            join cr in entity.cards on C.cardId equals cr.cardId into jcr
+            //                                            join bo in entity.bondes on C.bondId equals bo.bondId into jbo
+            //                                            from jbb in jb.DefaultIfEmpty()
+            //                                            from jaa in ja.DefaultIfEmpty()
+            //                                            from jpp in jp.DefaultIfEmpty()
+            //                                            from juu in ju.DefaultIfEmpty()
+            //                                            from jpcc in jpcr.DefaultIfEmpty()
+            //                                            from jucc in juc.DefaultIfEmpty()
+            //                                            from jcrd in jcr.DefaultIfEmpty()
+            //                                            from jbbo in jbo.DefaultIfEmpty()
+            //                                            where (C.transType == "d")
+            //                                            //&& (brIds.Contains(jpp.branches.branchId) || brIds.Contains(jpcc.branches.branchId))
+
+            //                                            //( C.transType == "p" && C.side==Side)
+            //                                            select new CashTransferModel()
+            //                                            {
+            //                                                cashTransId = C.cashTransId,
+            //                                                transType = C.transType,
+            //                                                posId = C.posId,
+            //                                                userId = C.userId,
+            //                                                agentId = C.agentId,
+            //                                                invId = C.invId,
+            //                                                transNum = C.transNum,
+            //                                                createDate = C.createDate,
+            //                                                updateDate = C.updateDate,
+            //                                                cash = C.cash,
+            //                                                updateUserId = C.updateUserId,
+            //                                                createUserId = C.createUserId,
+            //                                                notes = C.notes,
+            //                                                posIdCreator = C.posIdCreator,
+            //                                                isConfirm = C.isConfirm,
+            //                                                cashTransIdSource = C.cashTransIdSource,
+            //                                                side = C.side,
+
+            //                                                docName = C.docName,
+            //                                                docNum = C.docNum,
+            //                                                docImage = C.docImage,
+            //                                                bankId = C.bankId,
+            //                                                bankName = jbb.name,
+            //                                                agentName = jaa.name,
+
+            //                                                usersName = juu.name,// side =u
+            //                                                userAcc = juu.username,// side =u
+            //                                                posName = jpp.name,
+            //                                                posCreatorName = jpcc.name,
+            //                                                processType = C.processType,
+            //                                                cardId = C.cardId,
+            //                                                bondId = C.bondId,
+            //                                                usersLName = juu.lastname,// side =u
+            //                                                updateUserName = jucc.name,
+            //                                                updateUserLName = jucc.lastname,
+            //                                                updateUserAcc = jucc.username,
+            //                                                createUserJob = jucc.job,
+            //                                                cardName = jcrd.name,
+            //                                                bondDeserveDate = jbbo.deserveDate,
+            //                                                bondIsRecieved = jbbo.isRecieved,
+            //                                                agentCompany = jaa.company,
+            //                                                shippingCompanyId = C.shippingCompanyId,
+            //                                                shippingCompanyName = C.shippingCompanies.name,
+
+            //                                            }).ToList();
+
+
+
+
+            //        if (cachlist == null)
+            //            return NotFound();
+            //        else
+            //            return Ok(cachlist);
+
+            //    }
+            //}
+            //else
+            //    return NotFound();
         }
 
 
         // pos
         [HttpGet]
         [Route("GetPosTrans")]
-        public IHttpActionResult GetPosTrans()
+        public ResponseVM GetPosTrans()
         {
+            // public ResponseVM GetPurinv(string token)
+
+            //int mainBranchId, int userId
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
-            }
-
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid)
-            {
-
-                // List<int> brIds = AllowedBranchsId(mainBranchId, userId);
-                using (incposdbEntities entity = new incposdbEntities())
-                {
-
-                    var cachlist = (from C in entity.cashTransfer
-                                    join b in entity.banks on C.bankId equals b.bankId into jb
-                                    join a in entity.agents on C.agentId equals a.agentId into ja
-                                    join p in entity.pos on C.posId equals p.posId into jp
-                                    join pc in entity.pos on C.posIdCreator equals pc.posId into jpcr
-                                    join u in entity.users on C.userId equals u.userId into ju
-                                    join uc in entity.users on C.updateUserId equals uc.userId into juc
-                                    join cr in entity.cards on C.cardId equals cr.cardId into jcr
-                                    join bo in entity.bondes on C.bondId equals bo.bondId into jbo
-                                    from jbb in jb.DefaultIfEmpty()
-                                    from jaa in ja.DefaultIfEmpty()
-                                    from jpp in jp.DefaultIfEmpty()
-                                    from juu in ju.DefaultIfEmpty()
-                                    from jpcc in jpcr.DefaultIfEmpty()
-                                    from jucc in juc.DefaultIfEmpty()
-                                    from jcrd in jcr.DefaultIfEmpty()
-                                    from jbbo in jbo.DefaultIfEmpty()
-                                    where (C.isConfirm == 1 && C.side == "p"
-                                    && (C.transType == "d" ?
-                                    entity.cashTransfer.Where(x2 => x2.cashTransId == (int)C.cashTransIdSource).FirstOrDefault().isConfirm == 1 :
-                                    entity.cashTransfer.Where(x2 => C.cashTransId == (int)x2.cashTransIdSource).FirstOrDefault().isConfirm == 1
-                                    ))
-                                    //  && (brIds.Contains(jpp.branches.branchId) || brIds.Contains(jpcc.branches.branchId))
-
-
-                                    select new
-                                    {
-                                        cashTransId = C.cashTransId,
-                                        transType = C.transType,
-                                        //  posId = C.posId,
-                                        userId = C.userId,
-                                        agentId = C.agentId,
-                                        invId = C.invId,
-                                        transNum = C.transNum,
-                                        createDate = C.createDate,
-                                        updateDate = C.updateDate,
-                                        cash = C.cash,
-                                        updateUserId = C.updateUserId,
-                                        createUserId = C.createUserId,
-                                        notes = C.notes,
-                                        posIdCreator = C.posIdCreator,
-                                        isConfirm = C.isConfirm,
-                                        cashTransIdSource = C.cashTransIdSource,
-                                        side = C.side,
-
-                                        docName = C.docName,
-                                        docNum = C.docNum,
-                                        docImage = C.docImage,
-                                        bankId = C.bankId,
-                                        bankName = jbb.name,
-                                        agentName = jaa.name,
-
-                                        usersName = juu.name,// side =u
-                                        userAcc = juu.username,// side =u
-                                        posName = jpp.name,
-                                        posCreatorName = jpcc.name,
-                                        processType = C.processType,
-                                        cardId = C.cardId,
-                                        bondId = C.bondId,
-                                        usersLName = juu.lastname,// side =u
-                                        updateUserName = jucc.name,
-                                        updateUserLName = jucc.lastname,
-                                        updateUserAcc = jucc.username,
-                                        createUserJob = jucc.job,
-                                        cardName = jcrd.name,
-                                        bondDeserveDate = jbbo.deserveDate,
-                                        bondIsRecieved = jbbo.isRecieved,
-                                        agentCompany = jaa.company,
-                                        shippingCompanyId = C.shippingCompanyId,
-                                        shippingCompanyName = C.shippingCompanies.name,
-                                        /*
-                                        pos2Id = C.transType == "d" ? C.cashTransfer2.posId :
-                                         entity.cashTransfer.Where(x2 => C.cashTransId == (int)x2.cashTransIdSource).FirstOrDefault().posId
-                                        ,
-                                        pos2Name = C.transType == "d" ? C.cashTransfer2.pos.name :
-                                        entity.cashTransfer.Where(x2 => C.cashTransId == (int)x2.cashTransIdSource).FirstOrDefault().pos.name
-                                        ,
-                                        branchId = C.pos.branchId,
-                                        branchName = C.pos.branches.name,
-                                        branch2Id = C.transType == "d" ? C.cashTransfer2.pos.branchId :
-                                         entity.cashTransfer.Where(x2 => C.cashTransId == (int)x2.cashTransIdSource).FirstOrDefault().pos.branchId
-                                       ,
-                                        branch2Name = C.transType == "d" ? C.cashTransfer2.pos.branches.name :
-                                         entity.cashTransfer.Where(x2 => C.cashTransId == (int)x2.cashTransIdSource).FirstOrDefault().pos.branches.name
-                                      ,
-                                      */
-
-                                        branchCreatorId = C.pos1.branchId,
-                                        branchCreator = C.pos1.branches.name,
-
-
-
-                                        fromposId = C.transType == "p" ? C.posId : (C.transType == "d" ? C.cashTransfer2.posId :
-                                         entity.cashTransfer.Where(x2 => C.cashTransId == (int)x2.cashTransIdSource).FirstOrDefault().posId
-                                        ),
-                                        fromposName = C.transType == "p" ? jpp.name : (C.transType == "d" ? C.cashTransfer2.pos.name :
-                                        entity.cashTransfer.Where(x2 => C.cashTransId == (int)x2.cashTransIdSource).FirstOrDefault().pos.name
-                                       ),
-                                        frombranchId = C.transType == "p" ? C.pos.branchId : C.transType == "d" ? C.cashTransfer2.pos.branchId :
-                                         entity.cashTransfer.Where(x2 => C.cashTransId == (int)x2.cashTransIdSource).FirstOrDefault().pos.branchId
-                                       ,
-                                        frombranchName = C.transType == "p" ? C.pos.branches.name : C.transType == "d" ? C.cashTransfer2.pos.branches.name :
-                                         entity.cashTransfer.Where(x2 => C.cashTransId == (int)x2.cashTransIdSource).FirstOrDefault().pos.branches.name
-                                      ,
-
-
-
-
-
-                                        toposId = C.transType == "d" ? C.posId : (C.transType == "d" ? C.cashTransfer2.posId :
-                                         entity.cashTransfer.Where(x2 => C.cashTransId == (int)x2.cashTransIdSource).FirstOrDefault().posId
-                                        ),
-                                        toposName = C.transType == "d" ? jpp.name : (C.transType == "d" ? C.cashTransfer2.pos.name :
-                                        entity.cashTransfer.Where(x2 => C.cashTransId == (int)x2.cashTransIdSource).FirstOrDefault().pos.name
-                                       ),
-                                        tobranchId = C.transType == "d" ? C.pos.branchId : C.transType == "d" ? C.cashTransfer2.pos.branchId :
-                                         entity.cashTransfer.Where(x2 => C.cashTransId == (int)x2.cashTransIdSource).FirstOrDefault().pos.branchId
-                                       ,
-                                        tobranchName = C.transType == "d" ? C.pos.branches.name : C.transType == "d" ? C.cashTransfer2.pos.branches.name :
-                                         entity.cashTransfer.Where(x2 => C.cashTransId == (int)x2.cashTransIdSource).FirstOrDefault().pos.branches.name
-                                      ,
-
-                                    }).ToList();
-
-
-
-                    if (cachlist == null)
-                        return NotFound();
-                    else
-                        return Ok(cachlist);
-
-                }
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
             else
-                return NotFound();
+            {
+                //int mainBranchId = 0;
+                //int userId = 0;
+
+                //IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                //foreach (Claim c in claims)
+                //{
+                //    if (c.Type == "mainBranchId")
+                //    {
+                //        mainBranchId = int.Parse(c.Value);
+                //    }
+                //    else if (c.Type == "userId")
+                //    {
+                //        userId = int.Parse(c.Value);
+                //    }
+
+                //}
+                // DateTime cmpdate = DateTime.Now.AddDays(newdays);
+                try
+                {
+
+                    //  List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+
+
+
+                        var cachlist = (from C in entity.cashTransfer
+                                        join b in entity.banks on C.bankId equals b.bankId into jb
+                                        join a in entity.agents on C.agentId equals a.agentId into ja
+                                        join p in entity.pos on C.posId equals p.posId into jp
+                                        join pc in entity.pos on C.posIdCreator equals pc.posId into jpcr
+                                        join u in entity.users on C.userId equals u.userId into ju
+                                        join uc in entity.users on C.updateUserId equals uc.userId into juc
+                                        join cr in entity.cards on C.cardId equals cr.cardId into jcr
+                                        join bo in entity.bondes on C.bondId equals bo.bondId into jbo
+                                        from jbb in jb.DefaultIfEmpty()
+                                        from jaa in ja.DefaultIfEmpty()
+                                        from jpp in jp.DefaultIfEmpty()
+                                        from juu in ju.DefaultIfEmpty()
+                                        from jpcc in jpcr.DefaultIfEmpty()
+                                        from jucc in juc.DefaultIfEmpty()
+                                        from jcrd in jcr.DefaultIfEmpty()
+                                        from jbbo in jbo.DefaultIfEmpty()
+                                        where (C.isConfirm == 1 && C.side == "p"
+                                        && (C.transType == "d" ?
+                                        entity.cashTransfer.Where(x2 => x2.cashTransId == (int)C.cashTransIdSource).FirstOrDefault().isConfirm == 1 :
+                                        entity.cashTransfer.Where(x2 => C.cashTransId == (int)x2.cashTransIdSource).FirstOrDefault().isConfirm == 1
+                                        ))
+                                        //  && (brIds.Contains(jpp.branches.branchId) || brIds.Contains(jpcc.branches.branchId))
+
+
+                                        select new
+                                        {
+                                            cashTransId = C.cashTransId,
+                                            transType = C.transType,
+                                            //  posId = C.posId,
+                                            userId = C.userId,
+                                            agentId = C.agentId,
+                                            invId = C.invId,
+                                            transNum = C.transNum,
+                                            createDate = C.createDate,
+                                            updateDate = C.updateDate,
+                                            cash = C.cash,
+                                            updateUserId = C.updateUserId,
+                                            createUserId = C.createUserId,
+                                            notes = C.notes,
+                                            posIdCreator = C.posIdCreator,
+                                            isConfirm = C.isConfirm,
+                                            cashTransIdSource = C.cashTransIdSource,
+                                            side = C.side,
+
+                                            docName = C.docName,
+                                            docNum = C.docNum,
+                                            docImage = C.docImage,
+                                            bankId = C.bankId,
+                                            bankName = jbb.name,
+                                            agentName = jaa.name,
+
+                                            usersName = juu.name,// side =u
+                                            userAcc = juu.username,// side =u
+                                            posName = jpp.name,
+                                            posCreatorName = jpcc.name,
+                                            processType = C.processType,
+                                            cardId = C.cardId,
+                                            bondId = C.bondId,
+                                            usersLName = juu.lastname,// side =u
+                                            updateUserName = jucc.name,
+                                            updateUserLName = jucc.lastname,
+                                            updateUserAcc = jucc.username,
+                                            createUserJob = jucc.job,
+                                            cardName = jcrd.name,
+                                            bondDeserveDate = jbbo.deserveDate,
+                                            bondIsRecieved = jbbo.isRecieved,
+                                            agentCompany = jaa.company,
+                                            shippingCompanyId = C.shippingCompanyId,
+                                            shippingCompanyName = C.shippingCompanies.name,
+                                            /*
+                                            pos2Id = C.transType == "d" ? C.cashTransfer2.posId :
+                                             entity.cashTransfer.Where(x2 => C.cashTransId == (int)x2.cashTransIdSource).FirstOrDefault().posId
+                                            ,
+                                            pos2Name = C.transType == "d" ? C.cashTransfer2.pos.name :
+                                            entity.cashTransfer.Where(x2 => C.cashTransId == (int)x2.cashTransIdSource).FirstOrDefault().pos.name
+                                            ,
+                                            branchId = C.pos.branchId,
+                                            branchName = C.pos.branches.name,
+                                            branch2Id = C.transType == "d" ? C.cashTransfer2.pos.branchId :
+                                             entity.cashTransfer.Where(x2 => C.cashTransId == (int)x2.cashTransIdSource).FirstOrDefault().pos.branchId
+                                           ,
+                                            branch2Name = C.transType == "d" ? C.cashTransfer2.pos.branches.name :
+                                             entity.cashTransfer.Where(x2 => C.cashTransId == (int)x2.cashTransIdSource).FirstOrDefault().pos.branches.name
+                                          ,
+                                          */
+
+                                            branchCreatorId = C.pos1.branchId,
+                                            branchCreator = C.pos1.branches.name,
+
+
+
+                                            fromposId = C.transType == "p" ? C.posId : (C.transType == "d" ? C.cashTransfer2.posId :
+                                             entity.cashTransfer.Where(x2 => C.cashTransId == (int)x2.cashTransIdSource).FirstOrDefault().posId
+                                            ),
+                                            fromposName = C.transType == "p" ? jpp.name : (C.transType == "d" ? C.cashTransfer2.pos.name :
+                                            entity.cashTransfer.Where(x2 => C.cashTransId == (int)x2.cashTransIdSource).FirstOrDefault().pos.name
+                                           ),
+                                            frombranchId = C.transType == "p" ? C.pos.branchId : C.transType == "d" ? C.cashTransfer2.pos.branchId :
+                                             entity.cashTransfer.Where(x2 => C.cashTransId == (int)x2.cashTransIdSource).FirstOrDefault().pos.branchId
+                                           ,
+                                            frombranchName = C.transType == "p" ? C.pos.branches.name : C.transType == "d" ? C.cashTransfer2.pos.branches.name :
+                                             entity.cashTransfer.Where(x2 => C.cashTransId == (int)x2.cashTransIdSource).FirstOrDefault().pos.branches.name
+                                          ,
+
+
+
+
+
+                                            toposId = C.transType == "d" ? C.posId : (C.transType == "d" ? C.cashTransfer2.posId :
+                                             entity.cashTransfer.Where(x2 => C.cashTransId == (int)x2.cashTransIdSource).FirstOrDefault().posId
+                                            ),
+                                            toposName = C.transType == "d" ? jpp.name : (C.transType == "d" ? C.cashTransfer2.pos.name :
+                                            entity.cashTransfer.Where(x2 => C.cashTransId == (int)x2.cashTransIdSource).FirstOrDefault().pos.name
+                                           ),
+                                            tobranchId = C.transType == "d" ? C.pos.branchId : C.transType == "d" ? C.cashTransfer2.pos.branchId :
+                                             entity.cashTransfer.Where(x2 => C.cashTransId == (int)x2.cashTransIdSource).FirstOrDefault().pos.branchId
+                                           ,
+                                            tobranchName = C.transType == "d" ? C.pos.branches.name : C.transType == "d" ? C.cashTransfer2.pos.branches.name :
+                                             entity.cashTransfer.Where(x2 => C.cashTransId == (int)x2.cashTransIdSource).FirstOrDefault().pos.branches.name
+                                          ,
+
+                                        }).ToList();
+
+
+
+                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(cachlist) };
+
+                    }
+
+                }
+                catch
+                {
+                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                }
+
+            }
+
+            //    var re = Request;
+            //    var headers = re.Headers;
+            //    string token = "";
+
+            //    if (headers.Contains("APIKey"))
+            //    {
+            //        token = headers.GetValues("APIKey").First();
+            //    }
+
+            //    Validation validation = new Validation();
+            //    bool valid = validation.CheckApiKey(token);
+
+            //    if (valid)
+            //    {
+
+            //        // List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+            //        using (incposdbEntities entity = new incposdbEntities())
+            //        {
+
+            //            var cachlist = (from C in entity.cashTransfer
+            //                            join b in entity.banks on C.bankId equals b.bankId into jb
+            //                            join a in entity.agents on C.agentId equals a.agentId into ja
+            //                            join p in entity.pos on C.posId equals p.posId into jp
+            //                            join pc in entity.pos on C.posIdCreator equals pc.posId into jpcr
+            //                            join u in entity.users on C.userId equals u.userId into ju
+            //                            join uc in entity.users on C.updateUserId equals uc.userId into juc
+            //                            join cr in entity.cards on C.cardId equals cr.cardId into jcr
+            //                            join bo in entity.bondes on C.bondId equals bo.bondId into jbo
+            //                            from jbb in jb.DefaultIfEmpty()
+            //                            from jaa in ja.DefaultIfEmpty()
+            //                            from jpp in jp.DefaultIfEmpty()
+            //                            from juu in ju.DefaultIfEmpty()
+            //                            from jpcc in jpcr.DefaultIfEmpty()
+            //                            from jucc in juc.DefaultIfEmpty()
+            //                            from jcrd in jcr.DefaultIfEmpty()
+            //                            from jbbo in jbo.DefaultIfEmpty()
+            //                            where (C.isConfirm == 1 && C.side == "p"
+            //                            && (C.transType == "d" ?
+            //                            entity.cashTransfer.Where(x2 => x2.cashTransId == (int)C.cashTransIdSource).FirstOrDefault().isConfirm == 1 :
+            //                            entity.cashTransfer.Where(x2 => C.cashTransId == (int)x2.cashTransIdSource).FirstOrDefault().isConfirm == 1
+            //                            ))
+            //                            //  && (brIds.Contains(jpp.branches.branchId) || brIds.Contains(jpcc.branches.branchId))
+
+
+            //                            select new
+            //                            {
+            //                                cashTransId = C.cashTransId,
+            //                                transType = C.transType,
+            //                                //  posId = C.posId,
+            //                                userId = C.userId,
+            //                                agentId = C.agentId,
+            //                                invId = C.invId,
+            //                                transNum = C.transNum,
+            //                                createDate = C.createDate,
+            //                                updateDate = C.updateDate,
+            //                                cash = C.cash,
+            //                                updateUserId = C.updateUserId,
+            //                                createUserId = C.createUserId,
+            //                                notes = C.notes,
+            //                                posIdCreator = C.posIdCreator,
+            //                                isConfirm = C.isConfirm,
+            //                                cashTransIdSource = C.cashTransIdSource,
+            //                                side = C.side,
+
+            //                                docName = C.docName,
+            //                                docNum = C.docNum,
+            //                                docImage = C.docImage,
+            //                                bankId = C.bankId,
+            //                                bankName = jbb.name,
+            //                                agentName = jaa.name,
+
+            //                                usersName = juu.name,// side =u
+            //                                userAcc = juu.username,// side =u
+            //                                posName = jpp.name,
+            //                                posCreatorName = jpcc.name,
+            //                                processType = C.processType,
+            //                                cardId = C.cardId,
+            //                                bondId = C.bondId,
+            //                                usersLName = juu.lastname,// side =u
+            //                                updateUserName = jucc.name,
+            //                                updateUserLName = jucc.lastname,
+            //                                updateUserAcc = jucc.username,
+            //                                createUserJob = jucc.job,
+            //                                cardName = jcrd.name,
+            //                                bondDeserveDate = jbbo.deserveDate,
+            //                                bondIsRecieved = jbbo.isRecieved,
+            //                                agentCompany = jaa.company,
+            //                                shippingCompanyId = C.shippingCompanyId,
+            //                                shippingCompanyName = C.shippingCompanies.name,
+            //                                /*
+            //                                pos2Id = C.transType == "d" ? C.cashTransfer2.posId :
+            //                                 entity.cashTransfer.Where(x2 => C.cashTransId == (int)x2.cashTransIdSource).FirstOrDefault().posId
+            //                                ,
+            //                                pos2Name = C.transType == "d" ? C.cashTransfer2.pos.name :
+            //                                entity.cashTransfer.Where(x2 => C.cashTransId == (int)x2.cashTransIdSource).FirstOrDefault().pos.name
+            //                                ,
+            //                                branchId = C.pos.branchId,
+            //                                branchName = C.pos.branches.name,
+            //                                branch2Id = C.transType == "d" ? C.cashTransfer2.pos.branchId :
+            //                                 entity.cashTransfer.Where(x2 => C.cashTransId == (int)x2.cashTransIdSource).FirstOrDefault().pos.branchId
+            //                               ,
+            //                                branch2Name = C.transType == "d" ? C.cashTransfer2.pos.branches.name :
+            //                                 entity.cashTransfer.Where(x2 => C.cashTransId == (int)x2.cashTransIdSource).FirstOrDefault().pos.branches.name
+            //                              ,
+            //                              */
+
+            //                                branchCreatorId = C.pos1.branchId,
+            //                                branchCreator = C.pos1.branches.name,
+
+
+
+            //                                fromposId = C.transType == "p" ? C.posId : (C.transType == "d" ? C.cashTransfer2.posId :
+            //                                 entity.cashTransfer.Where(x2 => C.cashTransId == (int)x2.cashTransIdSource).FirstOrDefault().posId
+            //                                ),
+            //                                fromposName = C.transType == "p" ? jpp.name : (C.transType == "d" ? C.cashTransfer2.pos.name :
+            //                                entity.cashTransfer.Where(x2 => C.cashTransId == (int)x2.cashTransIdSource).FirstOrDefault().pos.name
+            //                               ),
+            //                                frombranchId = C.transType == "p" ? C.pos.branchId : C.transType == "d" ? C.cashTransfer2.pos.branchId :
+            //                                 entity.cashTransfer.Where(x2 => C.cashTransId == (int)x2.cashTransIdSource).FirstOrDefault().pos.branchId
+            //                               ,
+            //                                frombranchName = C.transType == "p" ? C.pos.branches.name : C.transType == "d" ? C.cashTransfer2.pos.branches.name :
+            //                                 entity.cashTransfer.Where(x2 => C.cashTransId == (int)x2.cashTransIdSource).FirstOrDefault().pos.branches.name
+            //                              ,
+
+
+
+
+
+            //                                toposId = C.transType == "d" ? C.posId : (C.transType == "d" ? C.cashTransfer2.posId :
+            //                                 entity.cashTransfer.Where(x2 => C.cashTransId == (int)x2.cashTransIdSource).FirstOrDefault().posId
+            //                                ),
+            //                                toposName = C.transType == "d" ? jpp.name : (C.transType == "d" ? C.cashTransfer2.pos.name :
+            //                                entity.cashTransfer.Where(x2 => C.cashTransId == (int)x2.cashTransIdSource).FirstOrDefault().pos.name
+            //                               ),
+            //                                tobranchId = C.transType == "d" ? C.pos.branchId : C.transType == "d" ? C.cashTransfer2.pos.branchId :
+            //                                 entity.cashTransfer.Where(x2 => C.cashTransId == (int)x2.cashTransIdSource).FirstOrDefault().pos.branchId
+            //                               ,
+            //                                tobranchName = C.transType == "d" ? C.pos.branches.name : C.transType == "d" ? C.cashTransfer2.pos.branches.name :
+            //                                 entity.cashTransfer.Where(x2 => C.cashTransId == (int)x2.cashTransIdSource).FirstOrDefault().pos.branches.name
+            //                              ,
+
+            //                            }).ToList();
+
+
+
+            //            if (cachlist == null)
+            //                return NotFound();
+            //            else
+            //                return Ok(cachlist);
+
+            //        }
+            //    }
+            //    else
+            //        return NotFound();
+            //
         }
 
         //كشف حساب
         [HttpGet]
         [Route("GetStatement")]
-        public IHttpActionResult GetStatement()
+        public ResponseVM GetStatement()
         {
+            // public ResponseVM GetPurinv(string token)
+
+            //int mainBranchId, int userId
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-
-
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
-            }
-
-
-
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid)
-            {
-                //  List<int> brIds = AllowedBranchsId(mainBranchId, userId);
-
-                using (incposdbEntities entity = new incposdbEntities())
-                {
-
-                    var cachlist = (from C in entity.cashTransfer
-                                    join b in entity.banks on C.bankId equals b.bankId into jb
-                                    join a in entity.agents on C.agentId equals a.agentId into ja
-                                    join p in entity.pos on C.posId equals p.posId into jp
-                                    join pc in entity.pos on C.posIdCreator equals pc.posId into jpcr
-                                    join u in entity.users on C.userId equals u.userId into ju
-                                    join uc in entity.users on C.updateUserId equals uc.userId into juc
-                                    join cr in entity.cards on C.cardId equals cr.cardId into jcr
-                                    join bo in entity.bondes on C.bondId equals bo.bondId into jbo
-                                    join sh in entity.shippingCompanies on C.shippingCompanyId equals sh.shippingCompanyId into jsh
-                                    join inv in entity.invoices on C.invId equals inv.invoiceId into jinv//yasmine
-                                    from jbb in jb.DefaultIfEmpty()
-                                    from jaa in ja.DefaultIfEmpty()
-                                    from jpp in jp.DefaultIfEmpty()
-                                    from juu in ju.DefaultIfEmpty()
-                                    from jpcc in jpcr.DefaultIfEmpty()
-                                    from jucc in juc.DefaultIfEmpty()
-                                    from jcrd in jcr.DefaultIfEmpty()
-                                    from jbbo in jbo.DefaultIfEmpty()
-                                    from jshh in jsh.DefaultIfEmpty()
-                                    from jinvv in jinv.DefaultIfEmpty()//yasmine
-                                    where (C.side == "c" || C.side == "v" || C.side == "b" || C.side == "u" || C.side == "sh")//( C.transType == "p" && C.side==Side)
-
-                                    //&& (brIds.Contains(jpp.branches.branchId) || brIds.Contains(jpcc.branches.branchId))
-
-                                    select new
-                                    {
-                                        cashTransId = C.cashTransId,
-                                        transType = C.transType,
-                                        posId = C.posId,
-                                        userId = C.userId,
-                                        agentId = C.agentId,
-                                        invId = C.invId,
-                                        transNum = C.transNum,
-                                        createDate = C.createDate,
-                                        updateDate = C.updateDate,
-                                        cash = C.cash,
-                                        updateUserId = C.updateUserId,
-                                        createUserId = C.createUserId,
-                                        notes = C.notes,
-                                        posIdCreator = C.posIdCreator,
-                                        isConfirm = C.isConfirm,
-                                        cashTransIdSource = C.cashTransIdSource,
-                                        side = C.side,
-
-                                        docName = C.docName,
-                                        docNum = C.docNum,
-                                        docImage = C.docImage,
-                                        bankId = C.bankId,
-                                        bankName = jbb.name,
-                                        agentName = jaa.name,
-
-                                        usersName = juu.name,// side =u
-                                        userAcc = juu.username,// side =u
-                                        posName = jpp.name,
-                                        posCreatorName = jpcc.name,
-                                        processType = C.processType,
-                                        cardId = C.cardId,
-                                        bondId = C.bondId,
-                                        usersLName = juu.lastname,// side =u
-                                        updateUserName = jucc.name,
-                                        updateUserLName = jucc.lastname,
-                                        updateUserAcc = jucc.username,
-                                        createUserJob = jucc.job,
-                                        cardName = jcrd.name,
-                                        bondDeserveDate = jbbo.deserveDate,
-                                        bondIsRecieved = jbbo.isRecieved,
-                                        agentCompany = jaa.company,
-                                        shippingCompanyId = C.shippingCompanyId,
-                                        shippingCompanyName = C.shippingCompanies.name,
-
-                                        agentBalance = jaa.balance,
-                                        agentBType = jaa.balanceType,
-                                        userBalance = juu.balance,
-                                        userBType = juu.balanceType,
-                                        shippingBalance = (decimal?)jshh.balance,
-
-                                        shippingCompaniesBType = jshh.balanceType,
-
-                                        invNumber = jinvv.invNumber,//yasmine
-                                        bondNumber = jbbo.number//yasmine
-
-                                    }).ToList();
-                    /*
-                    if (cachlist.Count > 0 )
-                    {
-                        CashTransferModel tempitem = null;
-                        foreach (CashTransferModel cashtItem in cachlist)
-                        {if (cashtItem.side == "p") { }
-                            tempitem = this.Getpostransmodel(cashtItem.cashTransId)
-                                .Where(C => C.cashTransId != cashtItem.cashTransId).FirstOrDefault();
-                            cashtItem.cashTrans2Id = tempitem.cashTransId;
-                            cashtItem.pos2Id = tempitem.posId;
-                            cashtItem.pos2Name = tempitem.posName;
-                            cashtItem.isConfirm2 = tempitem.isConfirm;
-                            // cashtItem.posCreatorName = tempitem.posName;
-
-
-                        }
-
-                    }
-                    */
-
-
-
-                    if (cachlist == null)
-                        return NotFound();
-                    else
-                        return Ok(cachlist);
-
-                }
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
             else
-                return NotFound();
+            {
+                //int mainBranchId = 0;
+                //int userId = 0;
+
+                //IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                //foreach (Claim c in claims)
+                //{
+                //    if (c.Type == "mainBranchId")
+                //    {
+                //        mainBranchId = int.Parse(c.Value);
+                //    }
+                //    else if (c.Type == "userId")
+                //    {
+                //        userId = int.Parse(c.Value);
+                //    }
+
+                //}
+                // DateTime cmpdate = DateTime.Now.AddDays(newdays);
+                try
+                {
+
+                    //List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+
+
+                        var cachlist = (from C in entity.cashTransfer
+                                        join b in entity.banks on C.bankId equals b.bankId into jb
+                                        join a in entity.agents on C.agentId equals a.agentId into ja
+                                        join p in entity.pos on C.posId equals p.posId into jp
+                                        join pc in entity.pos on C.posIdCreator equals pc.posId into jpcr
+                                        join u in entity.users on C.userId equals u.userId into ju
+                                        join uc in entity.users on C.updateUserId equals uc.userId into juc
+                                        join cr in entity.cards on C.cardId equals cr.cardId into jcr
+                                        join bo in entity.bondes on C.bondId equals bo.bondId into jbo
+                                        join sh in entity.shippingCompanies on C.shippingCompanyId equals sh.shippingCompanyId into jsh
+                                        join inv in entity.invoices on C.invId equals inv.invoiceId into jinv//yasmine
+                                        from jbb in jb.DefaultIfEmpty()
+                                        from jaa in ja.DefaultIfEmpty()
+                                        from jpp in jp.DefaultIfEmpty()
+                                        from juu in ju.DefaultIfEmpty()
+                                        from jpcc in jpcr.DefaultIfEmpty()
+                                        from jucc in juc.DefaultIfEmpty()
+                                        from jcrd in jcr.DefaultIfEmpty()
+                                        from jbbo in jbo.DefaultIfEmpty()
+                                        from jshh in jsh.DefaultIfEmpty()
+                                        from jinvv in jinv.DefaultIfEmpty()//yasmine
+                                        where (C.side == "c" || C.side == "v" || C.side == "b" || C.side == "u" || C.side == "sh")//( C.transType == "p" && C.side==Side)
+
+                                        //&& (brIds.Contains(jpp.branches.branchId) || brIds.Contains(jpcc.branches.branchId))
+
+                                        select new
+                                        {
+                                            cashTransId = C.cashTransId,
+                                            transType = C.transType,
+                                            posId = C.posId,
+                                            userId = C.userId,
+                                            agentId = C.agentId,
+                                            invId = C.invId,
+                                            transNum = C.transNum,
+                                            createDate = C.createDate,
+                                            updateDate = C.updateDate,
+                                            cash = C.cash,
+                                            updateUserId = C.updateUserId,
+                                            createUserId = C.createUserId,
+                                            notes = C.notes,
+                                            posIdCreator = C.posIdCreator,
+                                            isConfirm = C.isConfirm,
+                                            cashTransIdSource = C.cashTransIdSource,
+                                            side = C.side,
+
+                                            docName = C.docName,
+                                            docNum = C.docNum,
+                                            docImage = C.docImage,
+                                            bankId = C.bankId,
+                                            bankName = jbb.name,
+                                            agentName = jaa.name,
+
+                                            usersName = juu.name,// side =u
+                                            userAcc = juu.username,// side =u
+                                            posName = jpp.name,
+                                            posCreatorName = jpcc.name,
+                                            processType = C.processType,
+                                            cardId = C.cardId,
+                                            bondId = C.bondId,
+                                            usersLName = juu.lastname,// side =u
+                                            updateUserName = jucc.name,
+                                            updateUserLName = jucc.lastname,
+                                            updateUserAcc = jucc.username,
+                                            createUserJob = jucc.job,
+                                            cardName = jcrd.name,
+                                            bondDeserveDate = jbbo.deserveDate,
+                                            bondIsRecieved = jbbo.isRecieved,
+                                            agentCompany = jaa.company,
+                                            shippingCompanyId = C.shippingCompanyId,
+                                            shippingCompanyName = C.shippingCompanies.name,
+
+                                            agentBalance = jaa.balance,
+                                            agentBType = jaa.balanceType,
+                                            userBalance = juu.balance,
+                                            userBType = juu.balanceType,
+                                            shippingBalance = (decimal?)jshh.balance,
+
+                                            shippingCompaniesBType = jshh.balanceType,
+
+                                            invNumber = jinvv.invNumber,//yasmine
+                                            bondNumber = jbbo.number//yasmine
+
+                                        }).ToList();
+                        /*
+                        if (cachlist.Count > 0 )
+                        {
+                            CashTransferModel tempitem = null;
+                            foreach (CashTransferModel cashtItem in cachlist)
+                            {if (cashtItem.side == "p") { }
+                                tempitem = this.Getpostransmodel(cashtItem.cashTransId)
+                                    .Where(C => C.cashTransId != cashtItem.cashTransId).FirstOrDefault();
+                                cashtItem.cashTrans2Id = tempitem.cashTransId;
+                                cashtItem.pos2Id = tempitem.posId;
+                                cashtItem.pos2Name = tempitem.posName;
+                                cashtItem.isConfirm2 = tempitem.isConfirm;
+                                // cashtItem.posCreatorName = tempitem.posName;
+
+
+                            }
+
+                        }
+                        */
+
+
+
+
+
+                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(cachlist) };
+
+                    }
+
+                }
+                catch
+                {
+                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                }
+
+            }
+
+            //var re = Request;
+            //var headers = re.Headers;
+            //string token = "";
+
+
+            //if (headers.Contains("APIKey"))
+            //{
+            //    token = headers.GetValues("APIKey").First();
+            //}
+
+
+
+            //Validation validation = new Validation();
+            //bool valid = validation.CheckApiKey(token);
+
+            //if (valid)
+            //{
+            //    //  List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+
+            //    using (incposdbEntities entity = new incposdbEntities())
+            //    {
+
+            //        var cachlist = (from C in entity.cashTransfer
+            //                        join b in entity.banks on C.bankId equals b.bankId into jb
+            //                        join a in entity.agents on C.agentId equals a.agentId into ja
+            //                        join p in entity.pos on C.posId equals p.posId into jp
+            //                        join pc in entity.pos on C.posIdCreator equals pc.posId into jpcr
+            //                        join u in entity.users on C.userId equals u.userId into ju
+            //                        join uc in entity.users on C.updateUserId equals uc.userId into juc
+            //                        join cr in entity.cards on C.cardId equals cr.cardId into jcr
+            //                        join bo in entity.bondes on C.bondId equals bo.bondId into jbo
+            //                        join sh in entity.shippingCompanies on C.shippingCompanyId equals sh.shippingCompanyId into jsh
+            //                        join inv in entity.invoices on C.invId equals inv.invoiceId into jinv//yasmine
+            //                        from jbb in jb.DefaultIfEmpty()
+            //                        from jaa in ja.DefaultIfEmpty()
+            //                        from jpp in jp.DefaultIfEmpty()
+            //                        from juu in ju.DefaultIfEmpty()
+            //                        from jpcc in jpcr.DefaultIfEmpty()
+            //                        from jucc in juc.DefaultIfEmpty()
+            //                        from jcrd in jcr.DefaultIfEmpty()
+            //                        from jbbo in jbo.DefaultIfEmpty()
+            //                        from jshh in jsh.DefaultIfEmpty()
+            //                        from jinvv in jinv.DefaultIfEmpty()//yasmine
+            //                        where (C.side == "c" || C.side == "v" || C.side == "b" || C.side == "u" || C.side == "sh")//( C.transType == "p" && C.side==Side)
+
+            //                        //&& (brIds.Contains(jpp.branches.branchId) || brIds.Contains(jpcc.branches.branchId))
+
+            //                        select new
+            //                        {
+            //                            cashTransId = C.cashTransId,
+            //                            transType = C.transType,
+            //                            posId = C.posId,
+            //                            userId = C.userId,
+            //                            agentId = C.agentId,
+            //                            invId = C.invId,
+            //                            transNum = C.transNum,
+            //                            createDate = C.createDate,
+            //                            updateDate = C.updateDate,
+            //                            cash = C.cash,
+            //                            updateUserId = C.updateUserId,
+            //                            createUserId = C.createUserId,
+            //                            notes = C.notes,
+            //                            posIdCreator = C.posIdCreator,
+            //                            isConfirm = C.isConfirm,
+            //                            cashTransIdSource = C.cashTransIdSource,
+            //                            side = C.side,
+
+            //                            docName = C.docName,
+            //                            docNum = C.docNum,
+            //                            docImage = C.docImage,
+            //                            bankId = C.bankId,
+            //                            bankName = jbb.name,
+            //                            agentName = jaa.name,
+
+            //                            usersName = juu.name,// side =u
+            //                            userAcc = juu.username,// side =u
+            //                            posName = jpp.name,
+            //                            posCreatorName = jpcc.name,
+            //                            processType = C.processType,
+            //                            cardId = C.cardId,
+            //                            bondId = C.bondId,
+            //                            usersLName = juu.lastname,// side =u
+            //                            updateUserName = jucc.name,
+            //                            updateUserLName = jucc.lastname,
+            //                            updateUserAcc = jucc.username,
+            //                            createUserJob = jucc.job,
+            //                            cardName = jcrd.name,
+            //                            bondDeserveDate = jbbo.deserveDate,
+            //                            bondIsRecieved = jbbo.isRecieved,
+            //                            agentCompany = jaa.company,
+            //                            shippingCompanyId = C.shippingCompanyId,
+            //                            shippingCompanyName = C.shippingCompanies.name,
+
+            //                            agentBalance = jaa.balance,
+            //                            agentBType = jaa.balanceType,
+            //                            userBalance = juu.balance,
+            //                            userBType = juu.balanceType,
+            //                            shippingBalance = (decimal?)jshh.balance,
+
+            //                            shippingCompaniesBType = jshh.balanceType,
+
+            //                            invNumber = jinvv.invNumber,//yasmine
+            //                            bondNumber = jbbo.number//yasmine
+
+            //                        }).ToList();
+            //        /*
+            //        if (cachlist.Count > 0 )
+            //        {
+            //            CashTransferModel tempitem = null;
+            //            foreach (CashTransferModel cashtItem in cachlist)
+            //            {if (cashtItem.side == "p") { }
+            //                tempitem = this.Getpostransmodel(cashtItem.cashTransId)
+            //                    .Where(C => C.cashTransId != cashtItem.cashTransId).FirstOrDefault();
+            //                cashtItem.cashTrans2Id = tempitem.cashTransId;
+            //                cashtItem.pos2Id = tempitem.posId;
+            //                cashtItem.pos2Name = tempitem.posName;
+            //                cashtItem.isConfirm2 = tempitem.isConfirm;
+            //                // cashtItem.posCreatorName = tempitem.posName;
+
+
+            //            }
+
+            //        }
+            //        */
+
+
+
+            //        if (cachlist == null)
+            //            return NotFound();
+            //        else
+            //            return Ok(cachlist);
+
+            //    }
+            //}
+            //else
+            //    return NotFound();
         }
 
 
 
         public List<CashTransferModel> Getpostransmodel(int cashTransId)
         {
+
             string side = "p";
 
             using (incposdbEntities entity = new incposdbEntities())
@@ -4464,66 +7830,142 @@ notes
         // يومية الصندوق
         [HttpGet]
         [Route("GetBalance")]
-        public IHttpActionResult GetBalance(int mainBranchId, int userId)
+        public ResponseVM GetBalance(string token)
         {
+            // public ResponseVM GetPurinv(string token)
+
+            //int mainBranchId, int userId
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-
-
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
-            }
-
-
-
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid)
-            {
-                List<int> brid = new List<int>();
-                brid = AllowedBranchsId(mainBranchId, userId);
-
-
-                using (incposdbEntities entity = new incposdbEntities())
-                {
-
-                    var cachlist = (from p in entity.pos
-                                    join b in entity.branches on p.branchId equals b.branchId
-
-
-                                    //  from jbbo in jbo.DefaultIfEmpty()
-
-                                    where (brid.Contains(b.branchId))
-                                    select new
-                                    {
-
-                                        p.posId,
-                                        posName = p.name,
-                                        posIsActive = p.isActive,
-                                        posCode = p.code,
-                                        p.balance,
-                                        branchName = b.name,
-                                        b.branchId,
-                                        branchType = b.type,
-                                        branchCode = b.code,
-                                        banchIsActive = b.isActive
-                                    }).ToList();
-
-
-
-
-                    if (cachlist == null)
-                        return NotFound();
-                    else
-                        return Ok(cachlist);
-
-                }
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
             else
-                return NotFound();
+            {
+                int mainBranchId = 0;
+                int userId = 0;
+
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "mainBranchId")
+                    {
+                        mainBranchId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "userId")
+                    {
+                        userId = int.Parse(c.Value);
+                    }
+
+                }
+                // DateTime cmpdate = DateTime.Now.AddDays(newdays);
+                try
+                {
+
+                    List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+
+
+                        var cachlist = (from p in entity.pos
+                                        join b in entity.branches on p.branchId equals b.branchId
+
+
+                                        //  from jbbo in jbo.DefaultIfEmpty()
+
+                                        where (brIds.Contains(b.branchId))
+                                        select new
+                                        {
+
+                                            p.posId,
+                                            posName = p.name,
+                                            posIsActive = p.isActive,
+                                            posCode = p.code,
+                                            p.balance,
+                                            branchName = b.name,
+                                            b.branchId,
+                                            branchType = b.type,
+                                            branchCode = b.code,
+                                            banchIsActive = b.isActive
+                                        }).ToList();
+
+
+
+
+
+
+                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(cachlist) };
+
+                    }
+
+                }
+                catch
+                {
+                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                }
+
+            }
+
+            //var re = Request;
+            //var headers = re.Headers;
+            //string token = "";
+
+
+            //if (headers.Contains("APIKey"))
+            //{
+            //    token = headers.GetValues("APIKey").First();
+            //}
+
+
+
+            //Validation validation = new Validation();
+            //bool valid = validation.CheckApiKey(token);
+
+            //if (valid)
+            //{
+            //    List<int> brid = new List<int>();
+            //    brid = AllowedBranchsId(mainBranchId, userId);
+
+
+            //    using (incposdbEntities entity = new incposdbEntities())
+            //    {
+
+            //        var cachlist = (from p in entity.pos
+            //                        join b in entity.branches on p.branchId equals b.branchId
+
+
+            //                        //  from jbbo in jbo.DefaultIfEmpty()
+
+            //                        where (brid.Contains(b.branchId))
+            //                        select new
+            //                        {
+
+            //                            p.posId,
+            //                            posName = p.name,
+            //                            posIsActive = p.isActive,
+            //                            posCode = p.code,
+            //                            p.balance,
+            //                            branchName = b.name,
+            //                            b.branchId,
+            //                            branchType = b.type,
+            //                            branchCode = b.code,
+            //                            banchIsActive = b.isActive
+            //                        }).ToList();
+
+
+
+
+            //        if (cachlist == null)
+            //            return NotFound();
+            //        else
+            //            return Ok(cachlist);
+
+            //    }
+            //}
+            //else
+            //    return NotFound();
         }
 
         #endregion
@@ -4536,867 +7978,1811 @@ notes
 
         [HttpGet]
         [Route("Getdailyinvoice")]
-        public IHttpActionResult Getdailyinvoice(int mainBranchId, int userId, DateTime? date)//,DateTime? date
+        public ResponseVM Getdailyinvoice(string token)//,DateTime? date
         {
+            // public ResponseVM GetPurinv(string token)
+
+            //int mainBranchId, int userId(int mainBranchId, int userId, DateTime? date
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-
-
-            if (valid) // APIKey is valid
+            else
             {
-                BranchesController branchc = new BranchesController();
-                List<branches> branchesList = new List<branches>();
-                branchesList = branchc.BrListByBranchandUser(mainBranchId, userId);
-                List<int> bridlist = new List<int>();
-                Calculate calc = new Calculate();
-                bridlist.AddRange(branchesList.Select(x => x.branchId).ToList());
-
-                using (incposdbEntities entity = new incposdbEntities())
+                int mainBranchId = 0;
+                int userId = 0;
+                DateTime? date=new DateTime?();
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
                 {
-                    var invListm = (from I in entity.invoices
+                    if (c.Type == "mainBranchId")
+                    {
+                        mainBranchId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "userId")
+                    {
+                        userId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "date")
+                    {
+                        date = DateTime.Parse(c.Value);
+                    }
 
-                                        //  join B in entity.branches on I.branchId equals B.branchId into JB
-                                    join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
-                                    join A in entity.agents on I.agentId equals A.agentId into JA
-                                    join U in entity.users on I.createUserId equals U.userId into JU
-                                    join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
-                                    join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
-                                    join P in entity.pos on I.posId equals P.posId into JP
+                }
+                // DateTime cmpdate = DateTime.Now.AddDays(newdays);
+                try
+                {
+                    Calculate calc = new Calculate();
+                    List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
 
-                                    //   from JBB in JB
-                                    from JPP in JP.DefaultIfEmpty()
-                                    from JUU in JU.DefaultIfEmpty()
-                                    from JUPUS in JUPUSR.DefaultIfEmpty()
-                                    from JIMM in JIM.DefaultIfEmpty()
-                                    from JAA in JA.DefaultIfEmpty()
-                                    from JBCC in JBC.DefaultIfEmpty()
-                                    where (bridlist.Contains(JBCC.branchId)) && (I.invType == "sd" || I.invType == "s"
-                                    || I.invType == "sbd" || I.invType == "sd" || I.invType == "ord" || I.invType == "or"
-                                    || I.invType == "q" || I.invType == "qd")
-                                    // && calc.changeDateformat(I.updateDate, "yyyy-MM-dd")== calc.changeDateformat(date, "yyyy-MM-dd")
-                                    //&& DateTime.Compare((DateTime)IO.startDate, DateTime.Now) <= 0
-                                    //    && DateTime.Compare((DateTime)calc.changeDateformat(I.updateDate, "yyyy-MM-dd"), (DateTime)calc.changeDateformat(date, "yyyy-MM-dd")) >= 0
+                        var invListm = (from I in entity.invoices
 
-                                    select new
-                                    {
+                                            //  join B in entity.branches on I.branchId equals B.branchId into JB
+                                        join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
+                                        join A in entity.agents on I.agentId equals A.agentId into JA
+                                        join U in entity.users on I.createUserId equals U.userId into JU
+                                        join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
+                                        join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
+                                        join P in entity.pos on I.posId equals P.posId into JP
 
+                                        //   from JBB in JB
+                                        from JPP in JP.DefaultIfEmpty()
+                                        from JUU in JU.DefaultIfEmpty()
+                                        from JUPUS in JUPUSR.DefaultIfEmpty()
+                                        from JIMM in JIM.DefaultIfEmpty()
+                                        from JAA in JA.DefaultIfEmpty()
+                                        from JBCC in JBC.DefaultIfEmpty()
+                                        where (brIds.Contains(JBCC.branchId)) && (I.invType == "sd" || I.invType == "s"
+                                        || I.invType == "sbd" || I.invType == "sd" || I.invType == "ord" || I.invType == "or"
+                                        || I.invType == "q" || I.invType == "qd")
+                                        // && calc.changeDateformat(I.updateDate, "yyyy-MM-dd")== calc.changeDateformat(date, "yyyy-MM-dd")
+                                        //&& DateTime.Compare((DateTime)IO.startDate, DateTime.Now) <= 0
+                                        //    && DateTime.Compare((DateTime)calc.changeDateformat(I.updateDate, "yyyy-MM-dd"), (DateTime)calc.changeDateformat(date, "yyyy-MM-dd")) >= 0
 
-                                        //  Convert.ToDateTime()
-                                        I.invoiceId,
-                                        count = entity.itemsTransfer.Where(x => x.invoiceId == I.invoiceId).Count(),
-                                        I.invNumber,
-
-                                        I.posId,
-                                        I.invType,
-                                        I.total,
-                                        I.totalNet,
-                                        I.paid,
-                                        I.deserved,
-                                        I.deservedDate,
-                                        I.invDate,
-                                        I.invoiceMainId,
-                                        I.invCase,
-                                        I.invTime,
-                                        I.notes,
-                                        I.vendorInvNum,
-                                        I.vendorInvDate,
-                                        I.createUserId,
-                                        I.updateDate,
-                                        I.updateUserId,
-                                        I.branchId,
-                                        discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
-                                        I.discountType,
-                                        I.tax,
-                                        I.name,
-                                        I.isApproved,
-
-                                        //
-                                        I.branchCreatorId,
-                                        branchCreatorName = JBCC.name,
-                                        //
-                                        // branchName = JBB.name,
-
-                                        //     branchType = JBB.type,
-                                        posName = JPP.name,
-                                        posCode = JPP.code,
-
-                                        agentCode = JAA.code,
-                                        //
-                                        agentName = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb")) ?
-                                        "unknown" : JAA.name,
+                                        select new
+                                        {
 
 
-                                        //   agentType = JAA.type,
-                                        agentType = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
-                                        ? "c" : JAA.type,
-                                        agentId = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
-                                        ? 0 : I.agentId,
+                                            //  Convert.ToDateTime()
+                                            I.invoiceId,
+                                            count = entity.itemsTransfer.Where(x => x.invoiceId == I.invoiceId).Count(),
+                                            I.invNumber,
+
+                                            I.posId,
+                                            I.invType,
+                                            I.total,
+                                            I.totalNet,
+                                            I.paid,
+                                            I.deserved,
+                                            I.deservedDate,
+                                            I.invDate,
+                                            I.invoiceMainId,
+                                            I.invCase,
+                                            I.invTime,
+                                            I.notes,
+                                            I.vendorInvNum,
+                                            I.vendorInvDate,
+                                            I.createUserId,
+                                            I.updateDate,
+                                            I.updateUserId,
+                                            I.branchId,
+                                            discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
+                                            I.discountType,
+                                            I.tax,
+                                            I.name,
+                                            I.isApproved,
+
+                                            //
+                                            I.branchCreatorId,
+                                            branchCreatorName = JBCC.name,
+                                            //
+                                            // branchName = JBB.name,
+
+                                            //     branchType = JBB.type,
+                                            posName = JPP.name,
+                                            posCode = JPP.code,
+
+                                            agentCode = JAA.code,
+                                            //
+                                            agentName = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb")) ?
+                                            "unknown" : JAA.name,
 
 
-                                        cuserName = JUU.name,
-                                        cuserLast = JUU.lastname,
-                                        cUserAccName = JUU.username,
-                                        uuserName = JUPUS.name,
-                                        uuserLast = JUPUS.lastname,
-                                        uUserAccName = JUPUS.username,
-                                        agentCompany = ((JAA.company == null || JAA.company == "") && (I.invType == "s" || I.invType == "sb")) ?
-                                        "unknown" : JAA.company,
-
-                                        //username
-
-                                        //  I.invoiceId,
-                                        //    JBB.name
-                                    }).ToList();
-
-                    invListm = invListm.Where(X => DateTime.Compare((DateTime)calc.changeDateformat(X.updateDate, "yyyy-MM-dd"), (DateTime)calc.changeDateformat(date, "yyyy-MM-dd")) == 0).ToList();
+                                            //   agentType = JAA.type,
+                                            agentType = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
+                                            ? "c" : JAA.type,
+                                            agentId = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
+                                            ? 0 : I.agentId,
 
 
-                    if (invListm == null)
-                        return NotFound();
-                    else
-                        return Ok(invListm);
+                                            cuserName = JUU.name,
+                                            cuserLast = JUU.lastname,
+                                            cUserAccName = JUU.username,
+                                            uuserName = JUPUS.name,
+                                            uuserLast = JUPUS.lastname,
+                                            uUserAccName = JUPUS.username,
+                                            agentCompany = ((JAA.company == null || JAA.company == "") && (I.invType == "s" || I.invType == "sb")) ?
+                                            "unknown" : JAA.company,
+
+                                            //username
+
+                                            //  I.invoiceId,
+                                            //    JBB.name
+                                        }).ToList();
+
+                        invListm = invListm.Where(X => DateTime.Compare((DateTime)calc.changeDateformat(X.updateDate, "yyyy-MM-dd"), (DateTime)calc.changeDateformat(date, "yyyy-MM-dd")) == 0).ToList();
+
+
+
+
+
+
+                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(invListm) };
+
+                    }
+
+                }
+                catch
+                {
+                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
                 }
 
-
             }
 
-            //else
-            return NotFound();
+            //var re = Request;
+            //var headers = re.Headers;
+            //string token = "";
+            //if (headers.Contains("APIKey"))
+            //{
+            //    token = headers.GetValues("APIKey").First();
+            //}
+            //Validation validation = new Validation();
+            //bool valid = validation.CheckApiKey(token);
+
+
+
+            //if (valid) // APIKey is valid
+            //{
+            //    BranchesController branchc = new BranchesController();
+            //    List<branches> branchesList = new List<branches>();
+            //    branchesList = branchc.BrListByBranchandUser(mainBranchId, userId);
+            //    List<int> bridlist = new List<int>();
+            //    Calculate calc = new Calculate();
+            //    bridlist.AddRange(branchesList.Select(x => x.branchId).ToList());
+
+            //    using (incposdbEntities entity = new incposdbEntities())
+            //    {
+            //        var invListm = (from I in entity.invoices
+
+            //                            //  join B in entity.branches on I.branchId equals B.branchId into JB
+            //                        join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
+            //                        join A in entity.agents on I.agentId equals A.agentId into JA
+            //                        join U in entity.users on I.createUserId equals U.userId into JU
+            //                        join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
+            //                        join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
+            //                        join P in entity.pos on I.posId equals P.posId into JP
+
+            //                        //   from JBB in JB
+            //                        from JPP in JP.DefaultIfEmpty()
+            //                        from JUU in JU.DefaultIfEmpty()
+            //                        from JUPUS in JUPUSR.DefaultIfEmpty()
+            //                        from JIMM in JIM.DefaultIfEmpty()
+            //                        from JAA in JA.DefaultIfEmpty()
+            //                        from JBCC in JBC.DefaultIfEmpty()
+            //                        where (bridlist.Contains(JBCC.branchId)) && (I.invType == "sd" || I.invType == "s"
+            //                        || I.invType == "sbd" || I.invType == "sd" || I.invType == "ord" || I.invType == "or"
+            //                        || I.invType == "q" || I.invType == "qd")
+            //                        // && calc.changeDateformat(I.updateDate, "yyyy-MM-dd")== calc.changeDateformat(date, "yyyy-MM-dd")
+            //                        //&& DateTime.Compare((DateTime)IO.startDate, DateTime.Now) <= 0
+            //                        //    && DateTime.Compare((DateTime)calc.changeDateformat(I.updateDate, "yyyy-MM-dd"), (DateTime)calc.changeDateformat(date, "yyyy-MM-dd")) >= 0
+
+            //                        select new
+            //                        {
+
+
+            //                            //  Convert.ToDateTime()
+            //                            I.invoiceId,
+            //                            count = entity.itemsTransfer.Where(x => x.invoiceId == I.invoiceId).Count(),
+            //                            I.invNumber,
+
+            //                            I.posId,
+            //                            I.invType,
+            //                            I.total,
+            //                            I.totalNet,
+            //                            I.paid,
+            //                            I.deserved,
+            //                            I.deservedDate,
+            //                            I.invDate,
+            //                            I.invoiceMainId,
+            //                            I.invCase,
+            //                            I.invTime,
+            //                            I.notes,
+            //                            I.vendorInvNum,
+            //                            I.vendorInvDate,
+            //                            I.createUserId,
+            //                            I.updateDate,
+            //                            I.updateUserId,
+            //                            I.branchId,
+            //                            discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
+            //                            I.discountType,
+            //                            I.tax,
+            //                            I.name,
+            //                            I.isApproved,
+
+            //                            //
+            //                            I.branchCreatorId,
+            //                            branchCreatorName = JBCC.name,
+            //                            //
+            //                            // branchName = JBB.name,
+
+            //                            //     branchType = JBB.type,
+            //                            posName = JPP.name,
+            //                            posCode = JPP.code,
+
+            //                            agentCode = JAA.code,
+            //                            //
+            //                            agentName = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb")) ?
+            //                            "unknown" : JAA.name,
+
+
+            //                            //   agentType = JAA.type,
+            //                            agentType = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
+            //                            ? "c" : JAA.type,
+            //                            agentId = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
+            //                            ? 0 : I.agentId,
+
+
+            //                            cuserName = JUU.name,
+            //                            cuserLast = JUU.lastname,
+            //                            cUserAccName = JUU.username,
+            //                            uuserName = JUPUS.name,
+            //                            uuserLast = JUPUS.lastname,
+            //                            uUserAccName = JUPUS.username,
+            //                            agentCompany = ((JAA.company == null || JAA.company == "") && (I.invType == "s" || I.invType == "sb")) ?
+            //                            "unknown" : JAA.company,
+
+            //                            //username
+
+            //                            //  I.invoiceId,
+            //                            //    JBB.name
+            //                        }).ToList();
+
+            //        invListm = invListm.Where(X => DateTime.Compare((DateTime)calc.changeDateformat(X.updateDate, "yyyy-MM-dd"), (DateTime)calc.changeDateformat(date, "yyyy-MM-dd")) == 0).ToList();
+
+
+            //        if (invListm == null)
+            //            return NotFound();
+            //        else
+            //            return Ok(invListm);
+            //    }
+
+
+            //}
+
+            ////else
+            //return NotFound();
         }
 
         // يومية فواتير المشتريات العامة في قسم التقارير
         [HttpGet]
         [Route("GetPurdailyinvoice")]
-        public IHttpActionResult GetPurdailyinvoice(int mainBranchId, int userId, DateTime? date)//,DateTime? date
+        public ResponseVM GetPurdailyinvoice(string token)//,DateTime? date
         {
+            // public ResponseVM GetPurinv(string token)(int mainBranchId, int userId, DateTime? date)
+
+            //int mainBranchId, int userId
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-
-
-            if (valid) // APIKey is valid
+            else
             {
-                BranchesController branchc = new BranchesController();
-                List<branches> branchesList = new List<branches>();
-                branchesList = branchc.BrListByBranchandUser(mainBranchId, userId);
-                List<int> bridlist = new List<int>();
-                Calculate calc = new Calculate();
-                bridlist.AddRange(branchesList.Select(x => x.branchId).ToList());
-
-                using (incposdbEntities entity = new incposdbEntities())
+                int mainBranchId = 0;
+                int userId = 0;
+                DateTime? date = new DateTime?();
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
                 {
-                    var invListm = (from I in entity.invoices
+                    if (c.Type == "mainBranchId")
+                    {
+                        mainBranchId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "userId")
+                    {
+                        userId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "date")
+                    {
+                        date = DateTime.Parse(c.Value);
+                    }
 
-                                        //  join B in entity.branches on I.branchId equals B.branchId into JB
-                                    join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
-                                    join A in entity.agents on I.agentId equals A.agentId into JA
-                                    join U in entity.users on I.createUserId equals U.userId into JU
-                                    join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
-                                    join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
-                                    join P in entity.pos on I.posId equals P.posId into JP
-
-                                    //   from JBB in JB
-                                    from JPP in JP.DefaultIfEmpty()
-                                    from JUU in JU.DefaultIfEmpty()
-                                    from JUPUS in JUPUSR.DefaultIfEmpty()
-                                    from JIMM in JIM.DefaultIfEmpty()
-                                    from JAA in JA.DefaultIfEmpty()
-                                    from JBCC in JBC.DefaultIfEmpty()
-                                    where (bridlist.Contains(JBCC.branchId) || bridlist.Contains(JPP.branches.branchId)) &&
-                                    (I.invType == "pw" || I.invType == "pd"
-                                    || I.invType == "p" || I.invType == "pbd" || I.invType == "pbw" || I.invType == "pb"
-                                    || I.invType == "pod" || I.invType == "po")
-                                    // && calc.changeDateformat(I.updateDate, "yyyy-MM-dd")== calc.changeDateformat(date, "yyyy-MM-dd")
-                                    //&& DateTime.Compare((DateTime)IO.startDate, DateTime.Now) <= 0
-                                    //    && DateTime.Compare((DateTime)calc.changeDateformat(I.updateDate, "yyyy-MM-dd"), (DateTime)calc.changeDateformat(date, "yyyy-MM-dd")) >= 0
-
-                                    select new
-                                    {
+                }
+                // DateTime cmpdate = DateTime.Now.AddDays(newdays);
+                try
+                {
+                    Calculate calc = new Calculate();
+                    List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
 
 
-                                        //  Convert.ToDateTime()
-                                        I.invoiceId,
-                                        count = entity.itemsTransfer.Where(x => x.invoiceId == I.invoiceId).Count(),
-                                        I.invNumber,
+                        var invListm = (from I in entity.invoices
 
-                                        I.posId,
-                                        I.invType,
-                                        I.total,
-                                        I.totalNet,
-                                        I.paid,
-                                        I.deserved,
-                                        I.deservedDate,
-                                        I.invDate,
-                                        I.invoiceMainId,
-                                        I.invCase,
-                                        I.invTime,
-                                        I.notes,
-                                        I.vendorInvNum,
-                                        I.vendorInvDate,
-                                        I.createUserId,
-                                        I.updateDate,
-                                        I.updateUserId,
-                                        I.branchId,
-                                        discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
-                                        I.discountType,
-                                        I.tax,
-                                        I.name,
-                                        I.isApproved,
+                                            //  join B in entity.branches on I.branchId equals B.branchId into JB
+                                        join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
+                                        join A in entity.agents on I.agentId equals A.agentId into JA
+                                        join U in entity.users on I.createUserId equals U.userId into JU
+                                        join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
+                                        join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
+                                        join P in entity.pos on I.posId equals P.posId into JP
 
-                                        //
-                                        I.branchCreatorId,
-                                        branchCreatorName = JBCC.name,
-                                        //
-                                        // branchName = JBB.name,
+                                        //   from JBB in JB
+                                        from JPP in JP.DefaultIfEmpty()
+                                        from JUU in JU.DefaultIfEmpty()
+                                        from JUPUS in JUPUSR.DefaultIfEmpty()
+                                        from JIMM in JIM.DefaultIfEmpty()
+                                        from JAA in JA.DefaultIfEmpty()
+                                        from JBCC in JBC.DefaultIfEmpty()
+                                        where (brIds.Contains(JBCC.branchId) || brIds.Contains(JPP.branches.branchId)) &&
+                                        (I.invType == "pw" || I.invType == "pd"
+                                        || I.invType == "p" || I.invType == "pbd" || I.invType == "pbw" || I.invType == "pb"
+                                        || I.invType == "pod" || I.invType == "po")
+                                        // && calc.changeDateformat(I.updateDate, "yyyy-MM-dd")== calc.changeDateformat(date, "yyyy-MM-dd")
+                                        //&& DateTime.Compare((DateTime)IO.startDate, DateTime.Now) <= 0
+                                        //    && DateTime.Compare((DateTime)calc.changeDateformat(I.updateDate, "yyyy-MM-dd"), (DateTime)calc.changeDateformat(date, "yyyy-MM-dd")) >= 0
 
-                                        //     branchType = JBB.type,
-                                        posName = JPP.name,
-                                        posCode = JPP.code,
-
-                                        agentCode = JAA.code,
-                                        //
-                                        agentName = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb")) ?
-                                        "unknown" : JAA.name,
+                                        select new
+                                        {
 
 
-                                        //   agentType = JAA.type,
-                                        agentType = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
-                                        ? "c" : JAA.type,
-                                        agentId = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
-                                        ? 0 : I.agentId,
+                                            //  Convert.ToDateTime()
+                                            I.invoiceId,
+                                            count = entity.itemsTransfer.Where(x => x.invoiceId == I.invoiceId).Count(),
+                                            I.invNumber,
+
+                                            I.posId,
+                                            I.invType,
+                                            I.total,
+                                            I.totalNet,
+                                            I.paid,
+                                            I.deserved,
+                                            I.deservedDate,
+                                            I.invDate,
+                                            I.invoiceMainId,
+                                            I.invCase,
+                                            I.invTime,
+                                            I.notes,
+                                            I.vendorInvNum,
+                                            I.vendorInvDate,
+                                            I.createUserId,
+                                            I.updateDate,
+                                            I.updateUserId,
+                                            I.branchId,
+                                            discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
+                                            I.discountType,
+                                            I.tax,
+                                            I.name,
+                                            I.isApproved,
+
+                                            //
+                                            I.branchCreatorId,
+                                            branchCreatorName = JBCC.name,
+                                            //
+                                            // branchName = JBB.name,
+
+                                            //     branchType = JBB.type,
+                                            posName = JPP.name,
+                                            posCode = JPP.code,
+
+                                            agentCode = JAA.code,
+                                            //
+                                            agentName = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb")) ?
+                                            "unknown" : JAA.name,
 
 
-                                        cuserName = JUU.name,
-                                        cuserLast = JUU.lastname,
-                                        cUserAccName = JUU.username,
-                                        uuserName = JUPUS.name,
-                                        uuserLast = JUPUS.lastname,
-                                        uUserAccName = JUPUS.username,
-                                        agentCompany = ((JAA.company == null || JAA.company == "") && (I.invType == "s" || I.invType == "sb")) ?
-                                        "unknown" : JAA.company,
-
-                                        //username
-
-                                        //  I.invoiceId,
-                                        //    JBB.name
-                                    }).ToList();
-
-                    invListm = invListm.Where(X => DateTime.Compare((DateTime)calc.changeDateformat(X.updateDate, "yyyy-MM-dd"), (DateTime)calc.changeDateformat(date, "yyyy-MM-dd")) == 0).ToList();
+                                            //   agentType = JAA.type,
+                                            agentType = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
+                                            ? "c" : JAA.type,
+                                            agentId = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
+                                            ? 0 : I.agentId,
 
 
-                    if (invListm == null)
-                        return NotFound();
-                    else
-                        return Ok(invListm);
+                                            cuserName = JUU.name,
+                                            cuserLast = JUU.lastname,
+                                            cUserAccName = JUU.username,
+                                            uuserName = JUPUS.name,
+                                            uuserLast = JUPUS.lastname,
+                                            uUserAccName = JUPUS.username,
+                                            agentCompany = ((JAA.company == null || JAA.company == "") && (I.invType == "s" || I.invType == "sb")) ?
+                                            "unknown" : JAA.company,
+
+                                            //username
+
+                                            //  I.invoiceId,
+                                            //    JBB.name
+                                        }).ToList();
+
+                        invListm = invListm.Where(X => DateTime.Compare((DateTime)calc.changeDateformat(X.updateDate, "yyyy-MM-dd"), (DateTime)calc.changeDateformat(date, "yyyy-MM-dd")) == 0).ToList();
+
+
+
+
+
+                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(invListm) };
+
+                    }
+
+                }
+                catch
+                {
+                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
                 }
 
-
             }
 
-            //else
-            return NotFound();
+            //var re = Request;
+            //var headers = re.Headers;
+            //string token = "";
+            //if (headers.Contains("APIKey"))
+            //{
+            //    token = headers.GetValues("APIKey").First();
+            //}
+            //Validation validation = new Validation();
+            //bool valid = validation.CheckApiKey(token);
+
+
+
+            //if (valid) // APIKey is valid
+            //{
+            //    BranchesController branchc = new BranchesController();
+            //    List<branches> branchesList = new List<branches>();
+            //    branchesList = branchc.BrListByBranchandUser(mainBranchId, userId);
+            //    List<int> bridlist = new List<int>();
+            //    Calculate calc = new Calculate();
+            //    bridlist.AddRange(branchesList.Select(x => x.branchId).ToList());
+
+            //    using (incposdbEntities entity = new incposdbEntities())
+            //    {
+            //        var invListm = (from I in entity.invoices
+
+            //                            //  join B in entity.branches on I.branchId equals B.branchId into JB
+            //                        join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
+            //                        join A in entity.agents on I.agentId equals A.agentId into JA
+            //                        join U in entity.users on I.createUserId equals U.userId into JU
+            //                        join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
+            //                        join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
+            //                        join P in entity.pos on I.posId equals P.posId into JP
+
+            //                        //   from JBB in JB
+            //                        from JPP in JP.DefaultIfEmpty()
+            //                        from JUU in JU.DefaultIfEmpty()
+            //                        from JUPUS in JUPUSR.DefaultIfEmpty()
+            //                        from JIMM in JIM.DefaultIfEmpty()
+            //                        from JAA in JA.DefaultIfEmpty()
+            //                        from JBCC in JBC.DefaultIfEmpty()
+            //                        where (bridlist.Contains(JBCC.branchId) || bridlist.Contains(JPP.branches.branchId)) &&
+            //                        (I.invType == "pw" || I.invType == "pd"
+            //                        || I.invType == "p" || I.invType == "pbd" || I.invType == "pbw" || I.invType == "pb"
+            //                        || I.invType == "pod" || I.invType == "po")
+            //                        // && calc.changeDateformat(I.updateDate, "yyyy-MM-dd")== calc.changeDateformat(date, "yyyy-MM-dd")
+            //                        //&& DateTime.Compare((DateTime)IO.startDate, DateTime.Now) <= 0
+            //                        //    && DateTime.Compare((DateTime)calc.changeDateformat(I.updateDate, "yyyy-MM-dd"), (DateTime)calc.changeDateformat(date, "yyyy-MM-dd")) >= 0
+
+            //                        select new
+            //                        {
+
+
+            //                            //  Convert.ToDateTime()
+            //                            I.invoiceId,
+            //                            count = entity.itemsTransfer.Where(x => x.invoiceId == I.invoiceId).Count(),
+            //                            I.invNumber,
+
+            //                            I.posId,
+            //                            I.invType,
+            //                            I.total,
+            //                            I.totalNet,
+            //                            I.paid,
+            //                            I.deserved,
+            //                            I.deservedDate,
+            //                            I.invDate,
+            //                            I.invoiceMainId,
+            //                            I.invCase,
+            //                            I.invTime,
+            //                            I.notes,
+            //                            I.vendorInvNum,
+            //                            I.vendorInvDate,
+            //                            I.createUserId,
+            //                            I.updateDate,
+            //                            I.updateUserId,
+            //                            I.branchId,
+            //                            discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
+            //                            I.discountType,
+            //                            I.tax,
+            //                            I.name,
+            //                            I.isApproved,
+
+            //                            //
+            //                            I.branchCreatorId,
+            //                            branchCreatorName = JBCC.name,
+            //                            //
+            //                            // branchName = JBB.name,
+
+            //                            //     branchType = JBB.type,
+            //                            posName = JPP.name,
+            //                            posCode = JPP.code,
+
+            //                            agentCode = JAA.code,
+            //                            //
+            //                            agentName = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb")) ?
+            //                            "unknown" : JAA.name,
+
+
+            //                            //   agentType = JAA.type,
+            //                            agentType = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
+            //                            ? "c" : JAA.type,
+            //                            agentId = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
+            //                            ? 0 : I.agentId,
+
+
+            //                            cuserName = JUU.name,
+            //                            cuserLast = JUU.lastname,
+            //                            cUserAccName = JUU.username,
+            //                            uuserName = JUPUS.name,
+            //                            uuserLast = JUPUS.lastname,
+            //                            uUserAccName = JUPUS.username,
+            //                            agentCompany = ((JAA.company == null || JAA.company == "") && (I.invType == "s" || I.invType == "sb")) ?
+            //                            "unknown" : JAA.company,
+
+            //                            //username
+
+            //                            //  I.invoiceId,
+            //                            //    JBB.name
+            //                        }).ToList();
+
+            //        invListm = invListm.Where(X => DateTime.Compare((DateTime)calc.changeDateformat(X.updateDate, "yyyy-MM-dd"), (DateTime)calc.changeDateformat(date, "yyyy-MM-dd")) == 0).ToList();
+
+
+            //        if (invListm == null)
+            //            return NotFound();
+            //        else
+            //            return Ok(invListm);
+            //    }
+
+
+            //}
+
+            ////else
+            //return NotFound();
         }
 
         //  يومية الفواتير الخاصة بمستخدم
         [HttpGet]
         [Route("GetUserdailyinvoice")]
-        public IHttpActionResult GetUserdailyinvoice(int mainBranchId, int userId)
+        public ResponseVM GetUserdailyinvoice(string token)
         {
+
+            // public ResponseVM GetPurinv(string token)
+
+            //int mainBranchId, int userId
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-
-
-            if (valid) // APIKey is valid
+            else
             {
-                List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+                int mainBranchId = 0;
+                int userId = 0;
 
-                using (incposdbEntities entity = new incposdbEntities())
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
                 {
-                    var invListm = (from I in entity.invoices
+                    if (c.Type == "mainBranchId")
+                    {
+                        mainBranchId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "userId")
+                    {
+                        userId = int.Parse(c.Value);
+                    }
 
-                                        //  join B in entity.branches on I.branchId equals B.branchId into JB
-                                    join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
-                                    join A in entity.agents on I.agentId equals A.agentId into JA
-                                    join U in entity.users on I.createUserId equals U.userId into JU
-                                    join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
-                                    join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
-                                    join P in entity.pos on I.posId equals P.posId into JP
+                }
+                // DateTime cmpdate = DateTime.Now.AddDays(newdays);
+                try
+                {
 
-                                    //   from JBB in JB
-                                    from JPP in JP.DefaultIfEmpty()
-                                    from JUU in JU.DefaultIfEmpty()
-                                    from JUPUS in JUPUSR.DefaultIfEmpty()
-                                    from JIMM in JIM.DefaultIfEmpty()
-                                    from JAA in JA.DefaultIfEmpty()
-                                    from JBCC in JBC.DefaultIfEmpty()
-                                        // where (JUPUS.userId == userId)
-                                    where (brIds.Contains(JBCC.branchId) || brIds.Contains(JPP.branches.branchId))
-                                    select new
-                                    {
-
-                                        I.invoiceId,
-                                        count = entity.itemsTransfer.Where(x => x.invoiceId == I.invoiceId).Count(),
-                                        I.invNumber,
-
-                                        I.posId,
-                                        I.invType,
-                                        I.total,
-                                        I.totalNet,
-                                        I.paid,
-                                        I.deserved,
-                                        I.deservedDate,
-                                        I.invDate,
-                                        I.invoiceMainId,
-                                        I.invCase,
-                                        I.invTime,
-                                        I.notes,
-                                        I.vendorInvNum,
-                                        I.vendorInvDate,
-                                        I.createUserId,
-                                        I.updateDate,
-                                        I.updateUserId,
-                                        I.branchId,
-                                        discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
-                                        I.discountType,
-                                        I.tax,
-                                        I.name,
-                                        I.isApproved,
-
-                                        //
-                                        I.branchCreatorId,
-                                        branchCreatorName = JBCC.name,
-                                        //
-                                        // branchName = JBB.name,
-
-                                        //     branchType = JBB.type,
-                                        posName = JPP.name,
-                                        posCode = JPP.code,
-
-                                        agentCode = JAA.code,
-                                        //
-                                        agentName = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb")) ?
-                                        "unknown" : JAA.name,
+                    List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
 
 
-                                        //   agentType = JAA.type,
-                                        agentType = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
-                                        ? "c" : JAA.type,
-                                        agentId = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
-                                        ? 0 : I.agentId,
+                        var invListm = (from I in entity.invoices
+
+                                            //  join B in entity.branches on I.branchId equals B.branchId into JB
+                                        join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
+                                        join A in entity.agents on I.agentId equals A.agentId into JA
+                                        join U in entity.users on I.createUserId equals U.userId into JU
+                                        join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
+                                        join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
+                                        join P in entity.pos on I.posId equals P.posId into JP
+
+                                        //   from JBB in JB
+                                        from JPP in JP.DefaultIfEmpty()
+                                        from JUU in JU.DefaultIfEmpty()
+                                        from JUPUS in JUPUSR.DefaultIfEmpty()
+                                        from JIMM in JIM.DefaultIfEmpty()
+                                        from JAA in JA.DefaultIfEmpty()
+                                        from JBCC in JBC.DefaultIfEmpty()
+                                            // where (JUPUS.userId == userId)
+                                        where (brIds.Contains(JBCC.branchId) || brIds.Contains(JPP.branches.branchId))
+                                        select new
+                                        {
+
+                                            I.invoiceId,
+                                            count = entity.itemsTransfer.Where(x => x.invoiceId == I.invoiceId).Count(),
+                                            I.invNumber,
+
+                                            I.posId,
+                                            I.invType,
+                                            I.total,
+                                            I.totalNet,
+                                            I.paid,
+                                            I.deserved,
+                                            I.deservedDate,
+                                            I.invDate,
+                                            I.invoiceMainId,
+                                            I.invCase,
+                                            I.invTime,
+                                            I.notes,
+                                            I.vendorInvNum,
+                                            I.vendorInvDate,
+                                            I.createUserId,
+                                            I.updateDate,
+                                            I.updateUserId,
+                                            I.branchId,
+                                            discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
+                                            I.discountType,
+                                            I.tax,
+                                            I.name,
+                                            I.isApproved,
+
+                                            //
+                                            I.branchCreatorId,
+                                            branchCreatorName = JBCC.name,
+                                            //
+                                            // branchName = JBB.name,
+
+                                            //     branchType = JBB.type,
+                                            posName = JPP.name,
+                                            posCode = JPP.code,
+
+                                            agentCode = JAA.code,
+                                            //
+                                            agentName = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb")) ?
+                                            "unknown" : JAA.name,
 
 
-                                        cuserName = JUU.name,
-                                        cuserLast = JUU.lastname,
-                                        cUserAccName = JUU.username,
-                                        uuserName = JUPUS.name,
-                                        uuserLast = JUPUS.lastname,
-                                        uUserAccName = JUPUS.username,
-                                        agentCompany = ((JAA.company == null || JAA.company == "") && (I.invType == "s" || I.invType == "sb")) ?
-                                        "unknown" : JAA.company,
-
-                                        //username
-
-                                        //  I.invoiceId,
-                                        //    JBB.name
-                                    }).ToList();
+                                            //   agentType = JAA.type,
+                                            agentType = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
+                                            ? "c" : JAA.type,
+                                            agentId = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
+                                            ? 0 : I.agentId,
 
 
-                    if (invListm == null)
-                        return NotFound();
-                    else
-                        return Ok(invListm);
+                                            cuserName = JUU.name,
+                                            cuserLast = JUU.lastname,
+                                            cUserAccName = JUU.username,
+                                            uuserName = JUPUS.name,
+                                            uuserLast = JUPUS.lastname,
+                                            uUserAccName = JUPUS.username,
+                                            agentCompany = ((JAA.company == null || JAA.company == "") && (I.invType == "s" || I.invType == "sb")) ?
+                                            "unknown" : JAA.company,
+
+                                            //username
+
+                                            //  I.invoiceId,
+                                            //    JBB.name
+                                        }).ToList();
+
+
+
+
+                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(invListm) };
+
+                    }
+
+                }
+                catch
+                {
+                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
                 }
 
             }
 
-            //else
-            return NotFound();
+            //var re = Request;
+            //var headers = re.Headers;
+            //string token = "";
+            //if (headers.Contains("APIKey"))
+            //{
+            //    token = headers.GetValues("APIKey").First();
+            //}
+            //Validation validation = new Validation();
+            //bool valid = validation.CheckApiKey(token);
+
+
+
+            //if (valid) // APIKey is valid
+            //{
+            //    List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+
+            //    using (incposdbEntities entity = new incposdbEntities())
+            //    {
+            //        var invListm = (from I in entity.invoices
+
+            //                            //  join B in entity.branches on I.branchId equals B.branchId into JB
+            //                        join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
+            //                        join A in entity.agents on I.agentId equals A.agentId into JA
+            //                        join U in entity.users on I.createUserId equals U.userId into JU
+            //                        join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
+            //                        join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
+            //                        join P in entity.pos on I.posId equals P.posId into JP
+
+            //                        //   from JBB in JB
+            //                        from JPP in JP.DefaultIfEmpty()
+            //                        from JUU in JU.DefaultIfEmpty()
+            //                        from JUPUS in JUPUSR.DefaultIfEmpty()
+            //                        from JIMM in JIM.DefaultIfEmpty()
+            //                        from JAA in JA.DefaultIfEmpty()
+            //                        from JBCC in JBC.DefaultIfEmpty()
+            //                            // where (JUPUS.userId == userId)
+            //                        where (brIds.Contains(JBCC.branchId) || brIds.Contains(JPP.branches.branchId))
+            //                        select new
+            //                        {
+
+            //                            I.invoiceId,
+            //                            count = entity.itemsTransfer.Where(x => x.invoiceId == I.invoiceId).Count(),
+            //                            I.invNumber,
+
+            //                            I.posId,
+            //                            I.invType,
+            //                            I.total,
+            //                            I.totalNet,
+            //                            I.paid,
+            //                            I.deserved,
+            //                            I.deservedDate,
+            //                            I.invDate,
+            //                            I.invoiceMainId,
+            //                            I.invCase,
+            //                            I.invTime,
+            //                            I.notes,
+            //                            I.vendorInvNum,
+            //                            I.vendorInvDate,
+            //                            I.createUserId,
+            //                            I.updateDate,
+            //                            I.updateUserId,
+            //                            I.branchId,
+            //                            discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
+            //                            I.discountType,
+            //                            I.tax,
+            //                            I.name,
+            //                            I.isApproved,
+
+            //                            //
+            //                            I.branchCreatorId,
+            //                            branchCreatorName = JBCC.name,
+            //                            //
+            //                            // branchName = JBB.name,
+
+            //                            //     branchType = JBB.type,
+            //                            posName = JPP.name,
+            //                            posCode = JPP.code,
+
+            //                            agentCode = JAA.code,
+            //                            //
+            //                            agentName = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb")) ?
+            //                            "unknown" : JAA.name,
+
+
+            //                            //   agentType = JAA.type,
+            //                            agentType = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
+            //                            ? "c" : JAA.type,
+            //                            agentId = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
+            //                            ? 0 : I.agentId,
+
+
+            //                            cuserName = JUU.name,
+            //                            cuserLast = JUU.lastname,
+            //                            cUserAccName = JUU.username,
+            //                            uuserName = JUPUS.name,
+            //                            uuserLast = JUPUS.lastname,
+            //                            uUserAccName = JUPUS.username,
+            //                            agentCompany = ((JAA.company == null || JAA.company == "") && (I.invType == "s" || I.invType == "sb")) ?
+            //                            "unknown" : JAA.company,
+
+            //                            //username
+
+            //                            //  I.invoiceId,
+            //                            //    JBB.name
+            //                        }).ToList();
+
+
+            //        if (invListm == null)
+            //            return NotFound();
+            //        else
+            //            return Ok(invListm);
+            //    }
+
+            //}
+
+            ////else
+            //return NotFound();
         }
 
         // يومية الصندوق
         [HttpGet]
         [Route("GetDailyStatement")]
-        public IHttpActionResult GetDailyStatement(int mainBranchId, int userId)
+        public ResponseVM GetDailyStatement(string token)
         {
+
+            // public ResponseVM GetPurinv(string token)
+
+            //int mainBranchId, int userId
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-
-
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
-            }
-
-
-
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid)
-            {
-
-                BranchesController branchc = new BranchesController();
-                List<branches> branchesList = new List<branches>();
-                branchesList = branchc.BrListByBranchandUser(mainBranchId, userId);
-                List<int> bridlist = new List<int>();
-
-                bridlist.AddRange(branchesList.Select(x => x.branchId).ToList());
-
-                using (incposdbEntities entity = new incposdbEntities())
-                {
-
-                    var cachlist = (from C in entity.cashTransfer
-                                    join b in entity.banks on C.bankId equals b.bankId into jb
-                                    join a in entity.agents on C.agentId equals a.agentId into ja
-                                    join p in entity.pos on C.posId equals p.posId into jp
-                                    join pc in entity.pos on C.posIdCreator equals pc.posId into jpcr
-                                    join u in entity.users on C.userId equals u.userId into ju
-                                    join uc in entity.users on C.updateUserId equals uc.userId into juc
-                                    join cr in entity.cards on C.cardId equals cr.cardId into jcr
-                                    join bo in entity.bondes on C.bondId equals bo.bondId into jbo
-                                    join sh in entity.shippingCompanies on C.shippingCompanyId equals sh.shippingCompanyId into jsh
-                                    from jbb in jb.DefaultIfEmpty()
-                                    from jaa in ja.DefaultIfEmpty()
-                                    from jpp in jp.DefaultIfEmpty()
-                                    from juu in ju.DefaultIfEmpty()
-                                    from jpcc in jpcr.DefaultIfEmpty()
-                                    from jucc in juc.DefaultIfEmpty()
-                                    from jcrd in jcr.DefaultIfEmpty()
-                                    from jbbo in jbo.DefaultIfEmpty()
-                                    from jshh in jsh.DefaultIfEmpty()
-                                    where (C.processType == "cash" ||
-                                 (C.isConfirm == 1 && C.side == "p"
-                                   && (C.transType == "d" ?
-                                   entity.cashTransfer.Where(x2 => x2.cashTransId == (int)C.cashTransIdSource).FirstOrDefault().isConfirm == 1 :
-                                   entity.cashTransfer.Where(x2 => C.cashTransId == (int)x2.cashTransIdSource).FirstOrDefault().isConfirm == 1
-                                   ))) && (bridlist.Contains(jpp.branches.branchId) || bridlist.Contains(jpcc.branches.branchId))
-                                    select new
-                                    {
-                                        cashTransId = C.cashTransId,
-                                        transType = C.transType,
-                                        posId = C.posId,
-                                        userId = C.userId,
-                                        agentId = C.agentId,
-                                        invId = C.invId,
-                                        transNum = C.transNum,
-                                        createDate = C.createDate,
-                                        updateDate = C.updateDate,
-                                        cash = C.cash,
-                                        updateUserId = C.updateUserId,
-                                        createUserId = C.createUserId,
-                                        notes = C.notes,
-                                        posIdCreator = C.posIdCreator,
-                                        isConfirm = C.isConfirm,
-                                        cashTransIdSource = C.cashTransIdSource,
-                                        side = C.side,
-
-                                        docName = C.docName,
-                                        docNum = C.docNum,
-                                        docImage = C.docImage,
-                                        bankId = C.bankId,
-                                        bankName = jbb.name,
-                                        agentName = jaa.name,
-
-                                        usersName = juu.name,// side =u
-                                        userAcc = juu.username,// side =u
-                                        posName = jpp.name,
-                                        posCreatorName = jpcc.name,
-                                        processType = C.processType,
-                                        cardId = C.cardId,
-                                        bondId = C.bondId,
-                                        usersLName = juu.lastname,// side =u
-                                        updateUserName = jucc.name,
-                                        updateUserLName = jucc.lastname,
-                                        updateUserAcc = jucc.username,
-                                        createUserJob = jucc.job,
-                                        cardName = jcrd.name,
-                                        bondDeserveDate = jbbo.deserveDate,
-                                        bondIsRecieved = jbbo.isRecieved,
-                                        agentCompany = jaa.company,
-                                        shippingCompanyId = C.shippingCompanyId,
-                                        shippingCompanyName = C.shippingCompanies.name,
-
-                                        agentBalance = jaa.balance,
-                                        agentBType = jaa.balanceType,
-                                        userBalance = juu.balance,
-                                        userBType = juu.balanceType,
-                                        shippingBalance = (decimal?)jshh.balance,
-
-                                        shippingCompaniesBType = jshh.balanceType,
-                                        branchName = jpp.branches.name,
-                                        jpp.branchId,
-                                        posBalance = jpp.balance,
-                                    }).ToList();
-                    /*
-                    if (cachlist.Count > 0 )
-                    {
-                        CashTransferModel tempitem = null;
-                        foreach (CashTransferModel cashtItem in cachlist)
-                        {if (cashtItem.side == "p") { }
-                            tempitem = this.Getpostransmodel(cashtItem.cashTransId)
-                                .Where(C => C.cashTransId != cashtItem.cashTransId).FirstOrDefault();
-                            cashtItem.cashTrans2Id = tempitem.cashTransId;
-                            cashtItem.pos2Id = tempitem.posId;
-                            cashtItem.pos2Name = tempitem.posName;
-                            cashtItem.isConfirm2 = tempitem.isConfirm;
-                            // cashtItem.posCreatorName = tempitem.posName;
-
-
-                        }
-
-                    }
-                    */
-
-
-
-                    if (cachlist == null)
-                        return NotFound();
-                    else
-                        return Ok(cachlist);
-
-                }
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
             else
-                return NotFound();
+            {
+                int mainBranchId = 0;
+                int userId = 0;
+
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "mainBranchId")
+                    {
+                        mainBranchId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "userId")
+                    {
+                        userId = int.Parse(c.Value);
+                    }
+
+                }
+                // DateTime cmpdate = DateTime.Now.AddDays(newdays);
+                try
+                {
+
+                    List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+
+
+                        var cachlist = (from C in entity.cashTransfer
+                                        join b in entity.banks on C.bankId equals b.bankId into jb
+                                        join a in entity.agents on C.agentId equals a.agentId into ja
+                                        join p in entity.pos on C.posId equals p.posId into jp
+                                        join pc in entity.pos on C.posIdCreator equals pc.posId into jpcr
+                                        join u in entity.users on C.userId equals u.userId into ju
+                                        join uc in entity.users on C.updateUserId equals uc.userId into juc
+                                        join cr in entity.cards on C.cardId equals cr.cardId into jcr
+                                        join bo in entity.bondes on C.bondId equals bo.bondId into jbo
+                                        join sh in entity.shippingCompanies on C.shippingCompanyId equals sh.shippingCompanyId into jsh
+                                        from jbb in jb.DefaultIfEmpty()
+                                        from jaa in ja.DefaultIfEmpty()
+                                        from jpp in jp.DefaultIfEmpty()
+                                        from juu in ju.DefaultIfEmpty()
+                                        from jpcc in jpcr.DefaultIfEmpty()
+                                        from jucc in juc.DefaultIfEmpty()
+                                        from jcrd in jcr.DefaultIfEmpty()
+                                        from jbbo in jbo.DefaultIfEmpty()
+                                        from jshh in jsh.DefaultIfEmpty()
+                                        where (C.processType == "cash" ||
+                                     (C.isConfirm == 1 && C.side == "p"
+                                       && (C.transType == "d" ?
+                                       entity.cashTransfer.Where(x2 => x2.cashTransId == (int)C.cashTransIdSource).FirstOrDefault().isConfirm == 1 :
+                                       entity.cashTransfer.Where(x2 => C.cashTransId == (int)x2.cashTransIdSource).FirstOrDefault().isConfirm == 1
+                                       ))) && (brIds.Contains(jpp.branches.branchId) || brIds.Contains(jpcc.branches.branchId))
+                                        select new
+                                        {
+                                            cashTransId = C.cashTransId,
+                                            transType = C.transType,
+                                            posId = C.posId,
+                                            userId = C.userId,
+                                            agentId = C.agentId,
+                                            invId = C.invId,
+                                            transNum = C.transNum,
+                                            createDate = C.createDate,
+                                            updateDate = C.updateDate,
+                                            cash = C.cash,
+                                            updateUserId = C.updateUserId,
+                                            createUserId = C.createUserId,
+                                            notes = C.notes,
+                                            posIdCreator = C.posIdCreator,
+                                            isConfirm = C.isConfirm,
+                                            cashTransIdSource = C.cashTransIdSource,
+                                            side = C.side,
+
+                                            docName = C.docName,
+                                            docNum = C.docNum,
+                                            docImage = C.docImage,
+                                            bankId = C.bankId,
+                                            bankName = jbb.name,
+                                            agentName = jaa.name,
+
+                                            usersName = juu.name,// side =u
+                                            userAcc = juu.username,// side =u
+                                            posName = jpp.name,
+                                            posCreatorName = jpcc.name,
+                                            processType = C.processType,
+                                            cardId = C.cardId,
+                                            bondId = C.bondId,
+                                            usersLName = juu.lastname,// side =u
+                                            updateUserName = jucc.name,
+                                            updateUserLName = jucc.lastname,
+                                            updateUserAcc = jucc.username,
+                                            createUserJob = jucc.job,
+                                            cardName = jcrd.name,
+                                            bondDeserveDate = jbbo.deserveDate,
+                                            bondIsRecieved = jbbo.isRecieved,
+                                            agentCompany = jaa.company,
+                                            shippingCompanyId = C.shippingCompanyId,
+                                            shippingCompanyName = C.shippingCompanies.name,
+
+                                            agentBalance = jaa.balance,
+                                            agentBType = jaa.balanceType,
+                                            userBalance = juu.balance,
+                                            userBType = juu.balanceType,
+                                            shippingBalance = (decimal?)jshh.balance,
+
+                                            shippingCompaniesBType = jshh.balanceType,
+                                            branchName = jpp.branches.name,
+                                            jpp.branchId,
+                                            posBalance = jpp.balance,
+                                        }).ToList();
+                        /*
+                        if (cachlist.Count > 0 )
+                        {
+                            CashTransferModel tempitem = null;
+                            foreach (CashTransferModel cashtItem in cachlist)
+                            {if (cashtItem.side == "p") { }
+                                tempitem = this.Getpostransmodel(cashtItem.cashTransId)
+                                    .Where(C => C.cashTransId != cashtItem.cashTransId).FirstOrDefault();
+                                cashtItem.cashTrans2Id = tempitem.cashTransId;
+                                cashtItem.pos2Id = tempitem.posId;
+                                cashtItem.pos2Name = tempitem.posName;
+                                cashtItem.isConfirm2 = tempitem.isConfirm;
+                                // cashtItem.posCreatorName = tempitem.posName;
+
+
+                            }
+
+                        }
+                        */
+
+
+
+
+                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(cachlist) };
+
+                    }
+
+                }
+                catch
+                {
+                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                }
+
+            }
+
+            //var re = Request;
+            //var headers = re.Headers;
+            //string token = "";
+
+
+            //if (headers.Contains("APIKey"))
+            //{
+            //    token = headers.GetValues("APIKey").First();
+            //}
+
+
+
+            //Validation validation = new Validation();
+            //bool valid = validation.CheckApiKey(token);
+
+            //if (valid)
+            //{
+
+            //    BranchesController branchc = new BranchesController();
+            //    List<branches> branchesList = new List<branches>();
+            //    branchesList = branchc.BrListByBranchandUser(mainBranchId, userId);
+            //    List<int> bridlist = new List<int>();
+
+            //    bridlist.AddRange(branchesList.Select(x => x.branchId).ToList());
+
+            //    using (incposdbEntities entity = new incposdbEntities())
+            //    {
+
+            //        var cachlist = (from C in entity.cashTransfer
+            //                        join b in entity.banks on C.bankId equals b.bankId into jb
+            //                        join a in entity.agents on C.agentId equals a.agentId into ja
+            //                        join p in entity.pos on C.posId equals p.posId into jp
+            //                        join pc in entity.pos on C.posIdCreator equals pc.posId into jpcr
+            //                        join u in entity.users on C.userId equals u.userId into ju
+            //                        join uc in entity.users on C.updateUserId equals uc.userId into juc
+            //                        join cr in entity.cards on C.cardId equals cr.cardId into jcr
+            //                        join bo in entity.bondes on C.bondId equals bo.bondId into jbo
+            //                        join sh in entity.shippingCompanies on C.shippingCompanyId equals sh.shippingCompanyId into jsh
+            //                        from jbb in jb.DefaultIfEmpty()
+            //                        from jaa in ja.DefaultIfEmpty()
+            //                        from jpp in jp.DefaultIfEmpty()
+            //                        from juu in ju.DefaultIfEmpty()
+            //                        from jpcc in jpcr.DefaultIfEmpty()
+            //                        from jucc in juc.DefaultIfEmpty()
+            //                        from jcrd in jcr.DefaultIfEmpty()
+            //                        from jbbo in jbo.DefaultIfEmpty()
+            //                        from jshh in jsh.DefaultIfEmpty()
+            //                        where (C.processType == "cash" ||
+            //                     (C.isConfirm == 1 && C.side == "p"
+            //                       && (C.transType == "d" ?
+            //                       entity.cashTransfer.Where(x2 => x2.cashTransId == (int)C.cashTransIdSource).FirstOrDefault().isConfirm == 1 :
+            //                       entity.cashTransfer.Where(x2 => C.cashTransId == (int)x2.cashTransIdSource).FirstOrDefault().isConfirm == 1
+            //                       ))) && (bridlist.Contains(jpp.branches.branchId) || bridlist.Contains(jpcc.branches.branchId))
+            //                        select new
+            //                        {
+            //                            cashTransId = C.cashTransId,
+            //                            transType = C.transType,
+            //                            posId = C.posId,
+            //                            userId = C.userId,
+            //                            agentId = C.agentId,
+            //                            invId = C.invId,
+            //                            transNum = C.transNum,
+            //                            createDate = C.createDate,
+            //                            updateDate = C.updateDate,
+            //                            cash = C.cash,
+            //                            updateUserId = C.updateUserId,
+            //                            createUserId = C.createUserId,
+            //                            notes = C.notes,
+            //                            posIdCreator = C.posIdCreator,
+            //                            isConfirm = C.isConfirm,
+            //                            cashTransIdSource = C.cashTransIdSource,
+            //                            side = C.side,
+
+            //                            docName = C.docName,
+            //                            docNum = C.docNum,
+            //                            docImage = C.docImage,
+            //                            bankId = C.bankId,
+            //                            bankName = jbb.name,
+            //                            agentName = jaa.name,
+
+            //                            usersName = juu.name,// side =u
+            //                            userAcc = juu.username,// side =u
+            //                            posName = jpp.name,
+            //                            posCreatorName = jpcc.name,
+            //                            processType = C.processType,
+            //                            cardId = C.cardId,
+            //                            bondId = C.bondId,
+            //                            usersLName = juu.lastname,// side =u
+            //                            updateUserName = jucc.name,
+            //                            updateUserLName = jucc.lastname,
+            //                            updateUserAcc = jucc.username,
+            //                            createUserJob = jucc.job,
+            //                            cardName = jcrd.name,
+            //                            bondDeserveDate = jbbo.deserveDate,
+            //                            bondIsRecieved = jbbo.isRecieved,
+            //                            agentCompany = jaa.company,
+            //                            shippingCompanyId = C.shippingCompanyId,
+            //                            shippingCompanyName = C.shippingCompanies.name,
+
+            //                            agentBalance = jaa.balance,
+            //                            agentBType = jaa.balanceType,
+            //                            userBalance = juu.balance,
+            //                            userBType = juu.balanceType,
+            //                            shippingBalance = (decimal?)jshh.balance,
+
+            //                            shippingCompaniesBType = jshh.balanceType,
+            //                            branchName = jpp.branches.name,
+            //                            jpp.branchId,
+            //                            posBalance = jpp.balance,
+            //                        }).ToList();
+            //        /*
+            //        if (cachlist.Count > 0 )
+            //        {
+            //            CashTransferModel tempitem = null;
+            //            foreach (CashTransferModel cashtItem in cachlist)
+            //            {if (cashtItem.side == "p") { }
+            //                tempitem = this.Getpostransmodel(cashtItem.cashTransId)
+            //                    .Where(C => C.cashTransId != cashtItem.cashTransId).FirstOrDefault();
+            //                cashtItem.cashTrans2Id = tempitem.cashTransId;
+            //                cashtItem.pos2Id = tempitem.posId;
+            //                cashtItem.pos2Name = tempitem.posName;
+            //                cashtItem.isConfirm2 = tempitem.isConfirm;
+            //                // cashtItem.posCreatorName = tempitem.posName;
+
+
+            //            }
+
+            //        }
+            //        */
+
+
+
+            //        if (cachlist == null)
+            //            return NotFound();
+            //        else
+            //            return Ok(cachlist);
+
+            //    }
+            //}
+            //else
+            //    return NotFound();
         }
 
 
         // يومية الصندوق الخاصة بالمستخدم
         [HttpGet]
         [Route("GetUserDailyStatement")]
-        public IHttpActionResult GetUserDailyStatement(int mainBranchId, int userId)
+        public ResponseVM GetUserDailyStatement(string token)
         {
+
+            // public ResponseVM GetPurinv(string token)
+
+            //int mainBranchId, int userId
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-
-
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
-            }
-
-
-
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid)
-            {
-
-                List<int> brIds = AllowedBranchsId(mainBranchId, userId);
-
-                using (incposdbEntities entity = new incposdbEntities())
-                {
-
-                    var cachlist = (from C in entity.cashTransfer
-                                    join b in entity.banks on C.bankId equals b.bankId into jb
-                                    join a in entity.agents on C.agentId equals a.agentId into ja
-                                    join p in entity.pos on C.posId equals p.posId into jp
-                                    join pc in entity.pos on C.posIdCreator equals pc.posId into jpcr
-                                    join u in entity.users on C.userId equals u.userId into ju
-                                    join uc in entity.users on C.updateUserId equals uc.userId into juc
-                                    join cr in entity.cards on C.cardId equals cr.cardId into jcr
-                                    join bo in entity.bondes on C.bondId equals bo.bondId into jbo
-                                    join sh in entity.shippingCompanies on C.shippingCompanyId equals sh.shippingCompanyId into jsh
-                                    from jbb in jb.DefaultIfEmpty()
-                                    from jaa in ja.DefaultIfEmpty()
-                                    from jpp in jp.DefaultIfEmpty()
-                                    from juu in ju.DefaultIfEmpty()
-                                    from jpcc in jpcr.DefaultIfEmpty()
-                                    from jucc in juc.DefaultIfEmpty()
-                                    from jcrd in jcr.DefaultIfEmpty()
-                                    from jbbo in jbo.DefaultIfEmpty()
-                                    from jshh in jsh.DefaultIfEmpty()
-                                    where ((C.processType == "cash" ||
-                                 (C.isConfirm == 1 && C.side == "p"
-                                   && (C.transType == "d" ?
-                                   entity.cashTransfer.Where(x2 => x2.cashTransId == (int)C.cashTransIdSource).FirstOrDefault().isConfirm == 1 :
-                                   entity.cashTransfer.Where(x2 => C.cashTransId == (int)x2.cashTransIdSource).FirstOrDefault().isConfirm == 1
-                                   ))) && (brIds.Contains(jpp.branches.branchId) || brIds.Contains(jpcc.branches.branchId)))
-
-
-                                    select new
-                                    {
-                                        cashTransId = C.cashTransId,
-                                        transType = C.transType,
-                                        posId = C.posId,
-                                        userId = C.userId,
-                                        agentId = C.agentId,
-                                        invId = C.invId,
-                                        transNum = C.transNum,
-                                        createDate = C.createDate,
-                                        updateDate = C.updateDate,
-                                        cash = C.cash,
-                                        updateUserId = C.updateUserId,
-                                        createUserId = C.createUserId,
-                                        notes = C.notes,
-                                        posIdCreator = C.posIdCreator,
-                                        isConfirm = C.isConfirm,
-                                        cashTransIdSource = C.cashTransIdSource,
-                                        side = C.side,
-
-                                        docName = C.docName,
-                                        docNum = C.docNum,
-                                        docImage = C.docImage,
-                                        bankId = C.bankId,
-                                        bankName = jbb.name,
-                                        agentName = jaa.name,
-
-                                        usersName = juu.name,// side =u
-                                        userAcc = juu.username,// side =u
-                                        posName = jpp.name,
-                                        posCreatorName = jpcc.name,
-                                        processType = C.processType,
-                                        cardId = C.cardId,
-                                        bondId = C.bondId,
-                                        usersLName = juu.lastname,// side =u
-                                        updateUserName = jucc.name,
-                                        updateUserLName = jucc.lastname,
-                                        updateUserAcc = jucc.username,
-                                        createUserJob = jucc.job,
-                                        cardName = jcrd.name,
-                                        bondDeserveDate = jbbo.deserveDate,
-                                        bondIsRecieved = jbbo.isRecieved,
-                                        agentCompany = jaa.company,
-                                        shippingCompanyId = C.shippingCompanyId,
-                                        shippingCompanyName = C.shippingCompanies.name,
-
-                                        agentBalance = jaa.balance,
-                                        agentBType = jaa.balanceType,
-                                        userBalance = juu.balance,
-                                        userBType = juu.balanceType,
-                                        shippingBalance = (decimal?)jshh.balance,
-
-                                        shippingCompaniesBType = jshh.balanceType,
-                                        branchName = jpp.branches.name,
-                                        jpp.branchId,
-                                        posBalance = jpp.balance,
-
-                                    }).ToList();
-                    /*
-                    if (cachlist.Count > 0 )
-                    {
-                        CashTransferModel tempitem = null;
-                        foreach (CashTransferModel cashtItem in cachlist)
-                        {if (cashtItem.side == "p") { }
-                            tempitem = this.Getpostransmodel(cashtItem.cashTransId)
-                                .Where(C => C.cashTransId != cashtItem.cashTransId).FirstOrDefault();
-                            cashtItem.cashTrans2Id = tempitem.cashTransId;
-                            cashtItem.pos2Id = tempitem.posId;
-                            cashtItem.pos2Name = tempitem.posName;
-                            cashtItem.isConfirm2 = tempitem.isConfirm;
-                            // cashtItem.posCreatorName = tempitem.posName;
-
-
-                        }
-
-                    }
-                    */
-
-
-
-                    if (cachlist == null)
-                        return NotFound();
-                    else
-                        return Ok(cachlist);
-
-                }
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
             else
-                return NotFound();
+            {
+                int mainBranchId = 0;
+                int userId = 0;
+
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "mainBranchId")
+                    {
+                        mainBranchId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "userId")
+                    {
+                        userId = int.Parse(c.Value);
+                    }
+
+                }
+                // DateTime cmpdate = DateTime.Now.AddDays(newdays);
+                try
+                {
+
+                    List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+
+
+                        var cachlist = (from C in entity.cashTransfer
+                                        join b in entity.banks on C.bankId equals b.bankId into jb
+                                        join a in entity.agents on C.agentId equals a.agentId into ja
+                                        join p in entity.pos on C.posId equals p.posId into jp
+                                        join pc in entity.pos on C.posIdCreator equals pc.posId into jpcr
+                                        join u in entity.users on C.userId equals u.userId into ju
+                                        join uc in entity.users on C.updateUserId equals uc.userId into juc
+                                        join cr in entity.cards on C.cardId equals cr.cardId into jcr
+                                        join bo in entity.bondes on C.bondId equals bo.bondId into jbo
+                                        join sh in entity.shippingCompanies on C.shippingCompanyId equals sh.shippingCompanyId into jsh
+                                        from jbb in jb.DefaultIfEmpty()
+                                        from jaa in ja.DefaultIfEmpty()
+                                        from jpp in jp.DefaultIfEmpty()
+                                        from juu in ju.DefaultIfEmpty()
+                                        from jpcc in jpcr.DefaultIfEmpty()
+                                        from jucc in juc.DefaultIfEmpty()
+                                        from jcrd in jcr.DefaultIfEmpty()
+                                        from jbbo in jbo.DefaultIfEmpty()
+                                        from jshh in jsh.DefaultIfEmpty()
+                                        where ((C.processType == "cash" ||
+                                     (C.isConfirm == 1 && C.side == "p"
+                                       && (C.transType == "d" ?
+                                       entity.cashTransfer.Where(x2 => x2.cashTransId == (int)C.cashTransIdSource).FirstOrDefault().isConfirm == 1 :
+                                       entity.cashTransfer.Where(x2 => C.cashTransId == (int)x2.cashTransIdSource).FirstOrDefault().isConfirm == 1
+                                       ))) && (brIds.Contains(jpp.branches.branchId) || brIds.Contains(jpcc.branches.branchId)))
+
+
+                                        select new
+                                        {
+                                            cashTransId = C.cashTransId,
+                                            transType = C.transType,
+                                            posId = C.posId,
+                                            userId = C.userId,
+                                            agentId = C.agentId,
+                                            invId = C.invId,
+                                            transNum = C.transNum,
+                                            createDate = C.createDate,
+                                            updateDate = C.updateDate,
+                                            cash = C.cash,
+                                            updateUserId = C.updateUserId,
+                                            createUserId = C.createUserId,
+                                            notes = C.notes,
+                                            posIdCreator = C.posIdCreator,
+                                            isConfirm = C.isConfirm,
+                                            cashTransIdSource = C.cashTransIdSource,
+                                            side = C.side,
+
+                                            docName = C.docName,
+                                            docNum = C.docNum,
+                                            docImage = C.docImage,
+                                            bankId = C.bankId,
+                                            bankName = jbb.name,
+                                            agentName = jaa.name,
+
+                                            usersName = juu.name,// side =u
+                                            userAcc = juu.username,// side =u
+                                            posName = jpp.name,
+                                            posCreatorName = jpcc.name,
+                                            processType = C.processType,
+                                            cardId = C.cardId,
+                                            bondId = C.bondId,
+                                            usersLName = juu.lastname,// side =u
+                                            updateUserName = jucc.name,
+                                            updateUserLName = jucc.lastname,
+                                            updateUserAcc = jucc.username,
+                                            createUserJob = jucc.job,
+                                            cardName = jcrd.name,
+                                            bondDeserveDate = jbbo.deserveDate,
+                                            bondIsRecieved = jbbo.isRecieved,
+                                            agentCompany = jaa.company,
+                                            shippingCompanyId = C.shippingCompanyId,
+                                            shippingCompanyName = C.shippingCompanies.name,
+
+                                            agentBalance = jaa.balance,
+                                            agentBType = jaa.balanceType,
+                                            userBalance = juu.balance,
+                                            userBType = juu.balanceType,
+                                            shippingBalance = (decimal?)jshh.balance,
+
+                                            shippingCompaniesBType = jshh.balanceType,
+                                            branchName = jpp.branches.name,
+                                            jpp.branchId,
+                                            posBalance = jpp.balance,
+
+                                        }).ToList();
+                        /*
+                        if (cachlist.Count > 0 )
+                        {
+                            CashTransferModel tempitem = null;
+                            foreach (CashTransferModel cashtItem in cachlist)
+                            {if (cashtItem.side == "p") { }
+                                tempitem = this.Getpostransmodel(cashtItem.cashTransId)
+                                    .Where(C => C.cashTransId != cashtItem.cashTransId).FirstOrDefault();
+                                cashtItem.cashTrans2Id = tempitem.cashTransId;
+                                cashtItem.pos2Id = tempitem.posId;
+                                cashtItem.pos2Name = tempitem.posName;
+                                cashtItem.isConfirm2 = tempitem.isConfirm;
+                                // cashtItem.posCreatorName = tempitem.posName;
+
+
+                            }
+
+                        }
+                        */
+
+
+
+
+
+                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(cachlist) };
+
+                    }
+
+                }
+                catch
+                {
+                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                }
+
+            }
+
+            //var re = Request;
+            //var headers = re.Headers;
+            //string token = "";
+
+
+            //if (headers.Contains("APIKey"))
+            //{
+            //    token = headers.GetValues("APIKey").First();
+            //}
+
+
+
+            //Validation validation = new Validation();
+            //bool valid = validation.CheckApiKey(token);
+
+            //if (valid)
+            //{
+
+            //    List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+
+            //    using (incposdbEntities entity = new incposdbEntities())
+            //    {
+
+            //        var cachlist = (from C in entity.cashTransfer
+            //                        join b in entity.banks on C.bankId equals b.bankId into jb
+            //                        join a in entity.agents on C.agentId equals a.agentId into ja
+            //                        join p in entity.pos on C.posId equals p.posId into jp
+            //                        join pc in entity.pos on C.posIdCreator equals pc.posId into jpcr
+            //                        join u in entity.users on C.userId equals u.userId into ju
+            //                        join uc in entity.users on C.updateUserId equals uc.userId into juc
+            //                        join cr in entity.cards on C.cardId equals cr.cardId into jcr
+            //                        join bo in entity.bondes on C.bondId equals bo.bondId into jbo
+            //                        join sh in entity.shippingCompanies on C.shippingCompanyId equals sh.shippingCompanyId into jsh
+            //                        from jbb in jb.DefaultIfEmpty()
+            //                        from jaa in ja.DefaultIfEmpty()
+            //                        from jpp in jp.DefaultIfEmpty()
+            //                        from juu in ju.DefaultIfEmpty()
+            //                        from jpcc in jpcr.DefaultIfEmpty()
+            //                        from jucc in juc.DefaultIfEmpty()
+            //                        from jcrd in jcr.DefaultIfEmpty()
+            //                        from jbbo in jbo.DefaultIfEmpty()
+            //                        from jshh in jsh.DefaultIfEmpty()
+            //                        where ((C.processType == "cash" ||
+            //                     (C.isConfirm == 1 && C.side == "p"
+            //                       && (C.transType == "d" ?
+            //                       entity.cashTransfer.Where(x2 => x2.cashTransId == (int)C.cashTransIdSource).FirstOrDefault().isConfirm == 1 :
+            //                       entity.cashTransfer.Where(x2 => C.cashTransId == (int)x2.cashTransIdSource).FirstOrDefault().isConfirm == 1
+            //                       ))) && (brIds.Contains(jpp.branches.branchId) || brIds.Contains(jpcc.branches.branchId)))
+
+
+            //                        select new
+            //                        {
+            //                            cashTransId = C.cashTransId,
+            //                            transType = C.transType,
+            //                            posId = C.posId,
+            //                            userId = C.userId,
+            //                            agentId = C.agentId,
+            //                            invId = C.invId,
+            //                            transNum = C.transNum,
+            //                            createDate = C.createDate,
+            //                            updateDate = C.updateDate,
+            //                            cash = C.cash,
+            //                            updateUserId = C.updateUserId,
+            //                            createUserId = C.createUserId,
+            //                            notes = C.notes,
+            //                            posIdCreator = C.posIdCreator,
+            //                            isConfirm = C.isConfirm,
+            //                            cashTransIdSource = C.cashTransIdSource,
+            //                            side = C.side,
+
+            //                            docName = C.docName,
+            //                            docNum = C.docNum,
+            //                            docImage = C.docImage,
+            //                            bankId = C.bankId,
+            //                            bankName = jbb.name,
+            //                            agentName = jaa.name,
+
+            //                            usersName = juu.name,// side =u
+            //                            userAcc = juu.username,// side =u
+            //                            posName = jpp.name,
+            //                            posCreatorName = jpcc.name,
+            //                            processType = C.processType,
+            //                            cardId = C.cardId,
+            //                            bondId = C.bondId,
+            //                            usersLName = juu.lastname,// side =u
+            //                            updateUserName = jucc.name,
+            //                            updateUserLName = jucc.lastname,
+            //                            updateUserAcc = jucc.username,
+            //                            createUserJob = jucc.job,
+            //                            cardName = jcrd.name,
+            //                            bondDeserveDate = jbbo.deserveDate,
+            //                            bondIsRecieved = jbbo.isRecieved,
+            //                            agentCompany = jaa.company,
+            //                            shippingCompanyId = C.shippingCompanyId,
+            //                            shippingCompanyName = C.shippingCompanies.name,
+
+            //                            agentBalance = jaa.balance,
+            //                            agentBType = jaa.balanceType,
+            //                            userBalance = juu.balance,
+            //                            userBType = juu.balanceType,
+            //                            shippingBalance = (decimal?)jshh.balance,
+
+            //                            shippingCompaniesBType = jshh.balanceType,
+            //                            branchName = jpp.branches.name,
+            //                            jpp.branchId,
+            //                            posBalance = jpp.balance,
+
+            //                        }).ToList();
+            //        /*
+            //        if (cachlist.Count > 0 )
+            //        {
+            //            CashTransferModel tempitem = null;
+            //            foreach (CashTransferModel cashtItem in cachlist)
+            //            {if (cashtItem.side == "p") { }
+            //                tempitem = this.Getpostransmodel(cashtItem.cashTransId)
+            //                    .Where(C => C.cashTransId != cashtItem.cashTransId).FirstOrDefault();
+            //                cashtItem.cashTrans2Id = tempitem.cashTransId;
+            //                cashtItem.pos2Id = tempitem.posId;
+            //                cashtItem.pos2Name = tempitem.posName;
+            //                cashtItem.isConfirm2 = tempitem.isConfirm;
+            //                // cashtItem.posCreatorName = tempitem.posName;
+
+
+            //            }
+
+            //        }
+            //        */
+
+
+
+            //        if (cachlist == null)
+            //            return NotFound();
+            //        else
+            //            return Ok(cachlist);
+
+            //    }
+            //}
+            //else
+            //    return NotFound();
         }
 
         // الارباح
         // فواتير المبيعات مع العناصر
         [HttpGet]
         [Route("GetProfit")]
-        public IHttpActionResult GetProfit(int mainBranchId, int userId)
+        public ResponseVM GetProfit(string token)
         {
+            // public ResponseVM GetPurinv(string token)
+
+            //int mainBranchId, int userId
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
+            else
             {
+                int mainBranchId = 0;
+                int userId = 0;
                 InvoicesController invoice = new InvoicesController();
-                //  invoice.AvgItemPurPrice(1, 2);
-                List<int> brIds = AllowedBranchsId(mainBranchId, userId);
-
-                //  List<ItemTransferInvoiceModel> itemlist = new List<ItemTransferInvoiceModel>();
-                using (incposdbEntities entity = new incposdbEntities())
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
                 {
-                    List<ItemUnitInvoiceProfitModel> invListm = (from IT in entity.itemsTransfer
-                                                               from I in entity.invoices.Where(I => I.invoiceId == IT.invoiceId)
-
-                                                               from IU in entity.itemsUnits.Where(IU => IU.itemUnitId == IT.itemUnitId)
-                                                                   //  join ITCUSER in entity.users on IT.createUserId equals ITCUSER.userId
-                                                               join ITUPUSER in entity.users on IT.updateUserId equals ITUPUSER.userId
-                                                               join ITEM in entity.items on IU.itemId equals ITEM.itemId
-                                                               join UNIT in entity.units on IU.unitId equals UNIT.unitId
-                                                               //    join B in entity.branches on I.branchId equals B.branchId into JB
-                                                               join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
-                                                               join A in entity.agents on I.agentId equals A.agentId into JA
-                                                               // join U in entity.users on I.createUserId equals U.userId into JU
-                                                               join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
-                                                               // join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
-                                                               join P in entity.pos on I.posId equals P.posId into JP
-
-                                                               // from JBB in JB
-                                                               from JPP in JP.DefaultIfEmpty()
-                                                                   // from JUU in JU.DefaultIfEmpty()
-                                                               from JUPUS in JUPUSR.DefaultIfEmpty()
-                                                                   // from JIMM in JIM.DefaultIfEmpty()
-                                                               from JAA in JA.DefaultIfEmpty()
-                                                               from JBCC in JBC.DefaultIfEmpty()
-                                                               where (brIds.Contains(JBCC.branchId)) && (I.invType == "s" || I.invType == "sb")
-
-                                                               select new ItemUnitInvoiceProfitModel
-                                                               {
-
-                                                                   ITitemName = ITEM.name,
-                                                                   ITunitName = UNIT.name,
-                                                                   ITitemsTransId = IT.itemsTransId,
-                                                                   ITitemUnitId = IT.itemUnitId,
-
-                                                                   ITitemId = IU.itemId,
-                                                                   ITunitId = IU.unitId,
-                                                                   ITquantity = IT.quantity,
-
-                                                                   // ITcreateDate = IT.createDate,
-                                                                   ITupdateDate = IT.updateDate,
-                                                                   //  ITcreateUserId = IT.createUserId,
-                                                                   ITupdateUserId = IT.updateUserId,
-                                                                   // ITnotes = IT.notes,
-                                                                   ITprice = IT.price,
-                                                                   ITbarcode = IU.barcode,
-                                                                   //  ITCreateuserName = ITCUSER.name,
-                                                                   // ITCreateuserLName = ITCUSER.lastname,
-                                                                   //  ITCreateuserAccName = ITCUSER.username,
-
-
-                                                                   invoiceId = I.invoiceId,
-                                                                   invNumber = I.invNumber,
-                                                                   agentId = I.agentId,
-                                                                   posId = I.posId,
-                                                                   invType = I.invType,
-                                                                   total = I.total,
-                                                                   totalNet = I.totalNet,
-                                                                   //  I.paid,
-                                                                   // I.deserved,
-                                                                   //I.deservedDate,
-                                                                   //  I.invDate,
-                                                                   //  I.invoiceMainId,
-                                                                   // I.invCase,
-                                                                   //  I.invTime,
-                                                                   // I.notes,
-                                                                   //  I.vendorInvNum,
-                                                                   // I.vendorInvDate,
-                                                                   // I.createUserId,
-                                                                   updateDate = I.updateDate,
-                                                                   updateUserId = I.updateUserId,
-                                                                   branchId = I.branchId,
-                                                                   discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? ((I.discountValue / 100) * I.total) : 0),  //
-                                                                   discountType = I.discountType,
-                                                                   tax = I.tax,
-                                                                   //  I.name,
-                                                                   // I.isApproved,
-
-                                                                   //
-                                                                   branchCreatorId = I.branchCreatorId,
-                                                                   branchCreatorName = JBCC.name,
-                                                                   //
-                                                                   //  branchName = JBB.name,
-
-                                                                   //  branchType = JBB.type,
-                                                                   posName = JPP.name,
-                                                                   posCode = JPP.code,
-                                                                   agentName = JAA.name,
-                                                                   agentCode = JAA.code,
-                                                                   agentType = JAA.type,
-                                                                   //  cuserName = JUU.name,
-                                                                   //  cuserLast = JUU.lastname,
-                                                                   // cUserAccName = JUU.username,
-                                                                   uuserName = JUPUS.name,
-                                                                   uuserLast = JUPUS.lastname,
-                                                                   uUserAccName = JUPUS.username,
-                                                                   agentCompany = JAA.company,
-                                                                   subTotal = ((IT.price-(ITEM.taxes *IU.price/100))* IT.quantity),
-                                                                   //(ITEM.taxes *IU.price/100) = tax value
-                                                                   //username
-
-                                                                   //  I.invoiceId,
-                                                                   //    JBB.name
-                                                               }).ToList();
-
-
-                    foreach (ItemUnitInvoiceProfitModel row in invListm)
+                    if (c.Type == "mainBranchId")
                     {
-                        decimal unitpurchasePrice = 0;
-                        unitpurchasePrice = invoice.AvgItemPurPrice((int)row.ITitemUnitId, (int)row.ITitemId);
-                        row.purchasePrice = (decimal)row.ITquantity * unitpurchasePrice;
+                        mainBranchId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "userId")
+                    {
+                        userId = int.Parse(c.Value);
+                    }
 
-                        if (row.discountValue > 0)
+                }
+                // DateTime cmpdate = DateTime.Now.AddDays(newdays);
+                try
+                {
+
+                    List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+
+                        List<ItemUnitInvoiceProfitModel> invListm = (from IT in entity.itemsTransfer
+                                                                     from I in entity.invoices.Where(I => I.invoiceId == IT.invoiceId)
+
+                                                                     from IU in entity.itemsUnits.Where(IU => IU.itemUnitId == IT.itemUnitId)
+                                                                         //  join ITCUSER in entity.users on IT.createUserId equals ITCUSER.userId
+                                                                     join ITUPUSER in entity.users on IT.updateUserId equals ITUPUSER.userId
+                                                                     join ITEM in entity.items on IU.itemId equals ITEM.itemId
+                                                                     join UNIT in entity.units on IU.unitId equals UNIT.unitId
+                                                                     //    join B in entity.branches on I.branchId equals B.branchId into JB
+                                                                     join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
+                                                                     join A in entity.agents on I.agentId equals A.agentId into JA
+                                                                     // join U in entity.users on I.createUserId equals U.userId into JU
+                                                                     join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
+                                                                     // join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
+                                                                     join P in entity.pos on I.posId equals P.posId into JP
+
+                                                                     // from JBB in JB
+                                                                     from JPP in JP.DefaultIfEmpty()
+                                                                         // from JUU in JU.DefaultIfEmpty()
+                                                                     from JUPUS in JUPUSR.DefaultIfEmpty()
+                                                                         // from JIMM in JIM.DefaultIfEmpty()
+                                                                     from JAA in JA.DefaultIfEmpty()
+                                                                     from JBCC in JBC.DefaultIfEmpty()
+                                                                     where (brIds.Contains(JBCC.branchId)) && (I.invType == "s" || I.invType == "sb")
+
+                                                                     select new ItemUnitInvoiceProfitModel
+                                                                     {
+
+                                                                         ITitemName = ITEM.name,
+                                                                         ITunitName = UNIT.name,
+                                                                         ITitemsTransId = IT.itemsTransId,
+                                                                         ITitemUnitId = IT.itemUnitId,
+
+                                                                         ITitemId = IU.itemId,
+                                                                         ITunitId = IU.unitId,
+                                                                         ITquantity = IT.quantity,
+
+                                                                         // ITcreateDate = IT.createDate,
+                                                                         ITupdateDate = IT.updateDate,
+                                                                         //  ITcreateUserId = IT.createUserId,
+                                                                         ITupdateUserId = IT.updateUserId,
+                                                                         // ITnotes = IT.notes,
+                                                                         ITprice = IT.price,
+                                                                         ITbarcode = IU.barcode,
+                                                                         //  ITCreateuserName = ITCUSER.name,
+                                                                         // ITCreateuserLName = ITCUSER.lastname,
+                                                                         //  ITCreateuserAccName = ITCUSER.username,
+
+
+                                                                         invoiceId = I.invoiceId,
+                                                                         invNumber = I.invNumber,
+                                                                         agentId = I.agentId,
+                                                                         posId = I.posId,
+                                                                         invType = I.invType,
+                                                                         total = I.total,
+                                                                         totalNet = I.totalNet,
+                                                                         //  I.paid,
+                                                                         // I.deserved,
+                                                                         //I.deservedDate,
+                                                                         //  I.invDate,
+                                                                         //  I.invoiceMainId,
+                                                                         // I.invCase,
+                                                                         //  I.invTime,
+                                                                         // I.notes,
+                                                                         //  I.vendorInvNum,
+                                                                         // I.vendorInvDate,
+                                                                         // I.createUserId,
+                                                                         updateDate = I.updateDate,
+                                                                         updateUserId = I.updateUserId,
+                                                                         branchId = I.branchId,
+                                                                         discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? ((I.discountValue / 100) * I.total) : 0),  //
+                                                                         discountType = I.discountType,
+                                                                         tax = I.tax,
+                                                                         //  I.name,
+                                                                         // I.isApproved,
+
+                                                                         //
+                                                                         branchCreatorId = I.branchCreatorId,
+                                                                         branchCreatorName = JBCC.name,
+                                                                         //
+                                                                         //  branchName = JBB.name,
+
+                                                                         //  branchType = JBB.type,
+                                                                         posName = JPP.name,
+                                                                         posCode = JPP.code,
+                                                                         agentName = JAA.name,
+                                                                         agentCode = JAA.code,
+                                                                         agentType = JAA.type,
+                                                                         //  cuserName = JUU.name,
+                                                                         //  cuserLast = JUU.lastname,
+                                                                         // cUserAccName = JUU.username,
+                                                                         uuserName = JUPUS.name,
+                                                                         uuserLast = JUPUS.lastname,
+                                                                         uUserAccName = JUPUS.username,
+                                                                         agentCompany = JAA.company,
+                                                                         subTotal = ((IT.price - (ITEM.taxes * IU.price / 100)) * IT.quantity),
+                                                                         //(ITEM.taxes *IU.price/100) = tax value
+                                                                         //username
+
+                                                                         //  I.invoiceId,
+                                                                         //    JBB.name
+                                                                     }).ToList();
+
+
+                        foreach (ItemUnitInvoiceProfitModel row in invListm)
                         {
-                            decimal ITdiscountpercent = 0;
-                            ITdiscountpercent = ((decimal)row.subTotal * 100) / (decimal)row.total;
-                            decimal subTotalDiscount = (ITdiscountpercent * (decimal)row.discountValue) / 100;
-                            row.subTotalNet = (decimal)row.subTotal - subTotalDiscount;
+                            decimal unitpurchasePrice = 0;
+                            unitpurchasePrice = invoice.AvgItemPurPrice((int)row.ITitemUnitId, (int)row.ITitemId);
+                            row.purchasePrice = (decimal)row.ITquantity * unitpurchasePrice;
+
+                            if (row.discountValue > 0)
+                            {
+                                decimal ITdiscountpercent = 0;
+                                ITdiscountpercent = ((decimal)row.subTotal * 100) / (decimal)row.total;
+                                decimal subTotalDiscount = (ITdiscountpercent * (decimal)row.discountValue) / 100;
+                                row.subTotalNet = (decimal)row.subTotal - subTotalDiscount;
+
+                            }
+                            else
+                            {
+                                row.subTotalNet = (decimal)row.subTotal;
+                            }
+
+                            row.itemunitProfit = row.subTotalNet - row.purchasePrice;
+
+
 
                         }
-                        else
-                        {
-                            row.subTotalNet = (decimal)row.subTotal;
-                        }
-
-                        row.itemunitProfit = row.subTotalNet - row.purchasePrice;
 
 
+
+
+                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(invListm) };
 
                     }
 
-
-
-                    if (invListm == null)
-                        return NotFound();
-                    else
-                        return Ok(invListm);
+                }
+                catch
+                {
+                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
                 }
 
             }
 
-            //else
-            return NotFound();
+            //var re = Request;
+            //var headers = re.Headers;
+            //string token = "";
+            //if (headers.Contains("APIKey"))
+            //{
+            //    token = headers.GetValues("APIKey").First();
+            //}
+            //Validation validation = new Validation();
+            //bool valid = validation.CheckApiKey(token);
+
+            //if (valid) // APIKey is valid
+            //{
+            //    InvoicesController invoice = new InvoicesController();
+            //    //  invoice.AvgItemPurPrice(1, 2);
+            //    List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+
+            //    //  List<ItemTransferInvoiceModel> itemlist = new List<ItemTransferInvoiceModel>();
+            //    using (incposdbEntities entity = new incposdbEntities())
+            //    {
+            //        List<ItemUnitInvoiceProfitModel> invListm = (from IT in entity.itemsTransfer
+            //                                                   from I in entity.invoices.Where(I => I.invoiceId == IT.invoiceId)
+
+            //                                                   from IU in entity.itemsUnits.Where(IU => IU.itemUnitId == IT.itemUnitId)
+            //                                                       //  join ITCUSER in entity.users on IT.createUserId equals ITCUSER.userId
+            //                                                   join ITUPUSER in entity.users on IT.updateUserId equals ITUPUSER.userId
+            //                                                   join ITEM in entity.items on IU.itemId equals ITEM.itemId
+            //                                                   join UNIT in entity.units on IU.unitId equals UNIT.unitId
+            //                                                   //    join B in entity.branches on I.branchId equals B.branchId into JB
+            //                                                   join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
+            //                                                   join A in entity.agents on I.agentId equals A.agentId into JA
+            //                                                   // join U in entity.users on I.createUserId equals U.userId into JU
+            //                                                   join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
+            //                                                   // join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
+            //                                                   join P in entity.pos on I.posId equals P.posId into JP
+
+            //                                                   // from JBB in JB
+            //                                                   from JPP in JP.DefaultIfEmpty()
+            //                                                       // from JUU in JU.DefaultIfEmpty()
+            //                                                   from JUPUS in JUPUSR.DefaultIfEmpty()
+            //                                                       // from JIMM in JIM.DefaultIfEmpty()
+            //                                                   from JAA in JA.DefaultIfEmpty()
+            //                                                   from JBCC in JBC.DefaultIfEmpty()
+            //                                                   where (brIds.Contains(JBCC.branchId)) && (I.invType == "s" || I.invType == "sb")
+
+            //                                                   select new ItemUnitInvoiceProfitModel
+            //                                                   {
+
+            //                                                       ITitemName = ITEM.name,
+            //                                                       ITunitName = UNIT.name,
+            //                                                       ITitemsTransId = IT.itemsTransId,
+            //                                                       ITitemUnitId = IT.itemUnitId,
+
+            //                                                       ITitemId = IU.itemId,
+            //                                                       ITunitId = IU.unitId,
+            //                                                       ITquantity = IT.quantity,
+
+            //                                                       // ITcreateDate = IT.createDate,
+            //                                                       ITupdateDate = IT.updateDate,
+            //                                                       //  ITcreateUserId = IT.createUserId,
+            //                                                       ITupdateUserId = IT.updateUserId,
+            //                                                       // ITnotes = IT.notes,
+            //                                                       ITprice = IT.price,
+            //                                                       ITbarcode = IU.barcode,
+            //                                                       //  ITCreateuserName = ITCUSER.name,
+            //                                                       // ITCreateuserLName = ITCUSER.lastname,
+            //                                                       //  ITCreateuserAccName = ITCUSER.username,
+
+
+            //                                                       invoiceId = I.invoiceId,
+            //                                                       invNumber = I.invNumber,
+            //                                                       agentId = I.agentId,
+            //                                                       posId = I.posId,
+            //                                                       invType = I.invType,
+            //                                                       total = I.total,
+            //                                                       totalNet = I.totalNet,
+            //                                                       //  I.paid,
+            //                                                       // I.deserved,
+            //                                                       //I.deservedDate,
+            //                                                       //  I.invDate,
+            //                                                       //  I.invoiceMainId,
+            //                                                       // I.invCase,
+            //                                                       //  I.invTime,
+            //                                                       // I.notes,
+            //                                                       //  I.vendorInvNum,
+            //                                                       // I.vendorInvDate,
+            //                                                       // I.createUserId,
+            //                                                       updateDate = I.updateDate,
+            //                                                       updateUserId = I.updateUserId,
+            //                                                       branchId = I.branchId,
+            //                                                       discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? ((I.discountValue / 100) * I.total) : 0),  //
+            //                                                       discountType = I.discountType,
+            //                                                       tax = I.tax,
+            //                                                       //  I.name,
+            //                                                       // I.isApproved,
+
+            //                                                       //
+            //                                                       branchCreatorId = I.branchCreatorId,
+            //                                                       branchCreatorName = JBCC.name,
+            //                                                       //
+            //                                                       //  branchName = JBB.name,
+
+            //                                                       //  branchType = JBB.type,
+            //                                                       posName = JPP.name,
+            //                                                       posCode = JPP.code,
+            //                                                       agentName = JAA.name,
+            //                                                       agentCode = JAA.code,
+            //                                                       agentType = JAA.type,
+            //                                                       //  cuserName = JUU.name,
+            //                                                       //  cuserLast = JUU.lastname,
+            //                                                       // cUserAccName = JUU.username,
+            //                                                       uuserName = JUPUS.name,
+            //                                                       uuserLast = JUPUS.lastname,
+            //                                                       uUserAccName = JUPUS.username,
+            //                                                       agentCompany = JAA.company,
+            //                                                       subTotal = ((IT.price-(ITEM.taxes *IU.price/100))* IT.quantity),
+            //                                                       //(ITEM.taxes *IU.price/100) = tax value
+            //                                                       //username
+
+            //                                                       //  I.invoiceId,
+            //                                                       //    JBB.name
+            //                                                   }).ToList();
+
+
+            //        foreach (ItemUnitInvoiceProfitModel row in invListm)
+            //        {
+            //            decimal unitpurchasePrice = 0;
+            //            unitpurchasePrice = invoice.AvgItemPurPrice((int)row.ITitemUnitId, (int)row.ITitemId);
+            //            row.purchasePrice = (decimal)row.ITquantity * unitpurchasePrice;
+
+            //            if (row.discountValue > 0)
+            //            {
+            //                decimal ITdiscountpercent = 0;
+            //                ITdiscountpercent = ((decimal)row.subTotal * 100) / (decimal)row.total;
+            //                decimal subTotalDiscount = (ITdiscountpercent * (decimal)row.discountValue) / 100;
+            //                row.subTotalNet = (decimal)row.subTotal - subTotalDiscount;
+
+            //            }
+            //            else
+            //            {
+            //                row.subTotalNet = (decimal)row.subTotal;
+            //            }
+
+            //            row.itemunitProfit = row.subTotalNet - row.purchasePrice;
+
+
+
+            //        }
+
+
+
+            //        if (invListm == null)
+            //            return NotFound();
+            //        else
+            //            return Ok(invListm);
+            //    }
+
+            //}
+
+            ////else
+            //return NotFound();
         }
 
 

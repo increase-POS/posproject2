@@ -28,10 +28,8 @@ namespace POS_Server.Controllers
         [Route("Get")]
         public ResponseVM Get(string token)
         {
-             
             string type = "";
             Boolean canDelete = false;
-
             var re = Request;
             var headers = re.Headers;
             var jwt = headers.GetValues("Authorization").First();
@@ -204,7 +202,6 @@ namespace POS_Server.Controllers
             }
         }
 
-        ///////////////  Before Authorization
 
 
 
@@ -322,7 +319,7 @@ namespace POS_Server.Controllers
                 IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
                 foreach (Claim c in claims)
                 {
-                    if (c.Type == "agentId")
+                    if (c.Type == "itemId")
                     {
                         agentId = int.Parse(c.Value);
                     }
