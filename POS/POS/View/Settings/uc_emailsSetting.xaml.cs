@@ -377,10 +377,10 @@ namespace POS.View.Settings
                         sysEmail.updateUserId = MainWindow.userID;
                         sysEmail.isActive = 1;
 
-                        string s = await sysEmail.Save(sysEmail);
-                        if (s.Equals("-4"))
+                        int s = await sysEmail.Save(sysEmail);
+                        if (s.Equals(-4))
                             Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trMajorEmaillAlreadyExists"), animation: ToasterAnimation.FadeIn);
-                        else if (!s.Equals("-1"))
+                        else if (!s.Equals(0))
                         {
                             Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                             Btn_clear_Click(null, null);
@@ -429,10 +429,11 @@ namespace POS.View.Settings
                         sysEmail.createUserId = MainWindow.userID;
                         sysEmail.updateUserId = MainWindow.userID;
                         //sysEmail.isActive = 1;
-                        string s = await sysEmail.Save(sysEmail);
-                        if (s.Equals("-4"))
+                     //  string s = await sysEmail.Save(sysEmail);
+                        int s = await sysEmail.Save(sysEmail);
+                        if (s.Equals(-4))
                             Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trMajorEmaillAlreadyExists"), animation: ToasterAnimation.FadeIn);
-                        else if (!s.Equals("-1"))
+                        else if (!s.Equals(0))
                         {
                             Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
                             await RefreshSysEmailList();
@@ -497,9 +498,9 @@ namespace POS.View.Settings
                                 if (sysEmail.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
                                 if ((!sysEmail.canDelete) && (sysEmail.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
 
-                                string b = await sysEmail.Delete(sysEmail.emailId, MainWindow.userID.Value, sysEmail.canDelete);
+                               int b = await sysEmail.Delete(sysEmail.emailId, MainWindow.userID.Value, sysEmail.canDelete);
 
-                                if (!b.Equals("0"))
+                                if (!b.Equals(0))
                                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
 
                                 else
@@ -530,9 +531,9 @@ namespace POS.View.Settings
         {//activate
             sysEmail.isActive = 1;
 
-            string s = await sysEmail.Save(sysEmail);
-
-            if (!s.Equals("0"))
+          //  string s = await sysEmail.Save(sysEmail);
+           int s = await sysEmail.Save(sysEmail);
+            if (!s.Equals(0))
                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
             else
                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);

@@ -8,6 +8,8 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using System.Security.Claims;
+using Newtonsoft.Json.Converters;
 
 namespace POS.Classes
 {
@@ -42,175 +44,243 @@ namespace POS.Classes
 
         public async Task<List<SysEmails>> Get()
         {
-            List<SysEmails> memberships = null;
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            using (var client = new HttpClient())
+
+
+            List<SysEmails> list = new List<SysEmails>();
+         
+            IEnumerable<Claim> claims = await APIResult.getList("SysEmails/Get");
+
+            foreach (Claim c in claims)
             {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "SysEmails/Get");
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Get;
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage response = await client.SendAsync(request);
-
-                if (response.IsSuccessStatusCode)
+                if (c.Type == "scopes")
                 {
-                    var jsonString = await response.Content.ReadAsStringAsync();
-
-                    memberships = JsonConvert.DeserializeObject<List<SysEmails>>(jsonString);
-
-                    return memberships;
+                    list.Add(JsonConvert.DeserializeObject<SysEmails>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" }));
                 }
-                else //web api sent error response 
-                {
-                    memberships = new List<SysEmails>();
-                }
-                return memberships;
             }
+            return list;
+            //List<SysEmails> memberships = null;
+            //// ... Use HttpClient.
+            //ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            //using (var client = new HttpClient())
+            //{
+            //    ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+            //    client.BaseAddress = new Uri(Global.APIUri);
+            //    client.DefaultRequestHeaders.Clear();
+            //    client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+            //    client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+            //    HttpRequestMessage request = new HttpRequestMessage();
+            //    request.RequestUri = new Uri(Global.APIUri + "SysEmails/Get");
+            //    request.Headers.Add("APIKey", Global.APIKey);
+            //    request.Method = HttpMethod.Get;
+            //    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            //    HttpResponseMessage response = await client.SendAsync(request);
+
+            //    if (response.IsSuccessStatusCode)
+            //    {
+            //        var jsonString = await response.Content.ReadAsStringAsync();
+
+            //        memberships = JsonConvert.DeserializeObject<List<SysEmails>>(jsonString);
+
+            //        return memberships;
+            //    }
+            //    else //web api sent error response 
+            //    {
+            //        memberships = new List<SysEmails>();
+            //    }
+            //    return memberships;
+            //}
 
         }
 
-        public async Task<string> Save(SysEmails obj)
+        public async Task<int> Save(SysEmails obj)
         {
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            // 
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            string method = "SysEmails/Save";
+
             var myContent = JsonConvert.SerializeObject(obj);
+            parameters.Add("Object", myContent);
+            return APIResult.post(method, parameters);
 
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                // encoding parameter to get special characters
-                myContent = HttpUtility.UrlEncode(myContent);
-                request.RequestUri = new Uri(Global.APIUri + "SysEmails/Save?Object=" + myContent);
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Post;
-                //set content type
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var response = await client.SendAsync(request);
 
-                if (response.IsSuccessStatusCode)
-                {
-                    var message = await response.Content.ReadAsStringAsync();
-                    message = JsonConvert.DeserializeObject<string>(message);
-                    return message;
-                }
-                return "";
-            }
+            //// ... Use HttpClient.
+            //ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            //// 
+            //var myContent = JsonConvert.SerializeObject(obj);
+
+            //using (var client = new HttpClient())
+            //{
+            //    ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+            //    client.BaseAddress = new Uri(Global.APIUri);
+            //    client.DefaultRequestHeaders.Clear();
+            //    client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+            //    client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+            //    HttpRequestMessage request = new HttpRequestMessage();
+            //    // encoding parameter to get special characters
+            //    myContent = HttpUtility.UrlEncode(myContent);
+            //    request.RequestUri = new Uri(Global.APIUri + "SysEmails/Save?Object=" + myContent);
+            //    request.Headers.Add("APIKey", Global.APIKey);
+            //    request.Method = HttpMethod.Post;
+            //    //set content type
+            //    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            //    var response = await client.SendAsync(request);
+
+            //    if (response.IsSuccessStatusCode)
+            //    {
+            //        var message = await response.Content.ReadAsStringAsync();
+            //        message = JsonConvert.DeserializeObject<string>(message);
+            //        return message;
+            //    }
+            //    return "";
+            //}
         }
 
         public async Task<SysEmails> GetByID(int emailId)
         {
-            SysEmails obj = new SysEmails();
 
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            using (var client = new HttpClient())
+            SysEmails item = new SysEmails();
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("emailId", emailId.ToString());
+            //#################
+            IEnumerable<Claim> claims = await APIResult.getList("SysEmails/GetByID", parameters);
+
+            foreach (Claim c in claims)
             {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "SysEmails/GetByID?emailId=" + emailId);
-                request.Headers.Add("APIKey", Global.APIKey);
-              
-                request.Method = HttpMethod.Get;
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var response = await client.SendAsync(request);
-
-                if (response.IsSuccessStatusCode)
+                if (c.Type == "scopes")
                 {
-                    var jsonString = await response.Content.ReadAsStringAsync();
-
-                    obj = JsonConvert.DeserializeObject<SysEmails>(jsonString);
-
-                    return obj;
+                    item = JsonConvert.DeserializeObject<SysEmails>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    break;
                 }
-
-                return obj;
             }
+            return item;
+
+            //SysEmails obj = new SysEmails();
+
+            //// ... Use HttpClient.
+            //ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            //using (var client = new HttpClient())
+            //{
+            //    ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+            //    client.BaseAddress = new Uri(Global.APIUri);
+            //    client.DefaultRequestHeaders.Clear();
+            //    client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+            //    client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+            //    HttpRequestMessage request = new HttpRequestMessage();
+            //    request.RequestUri = new Uri(Global.APIUri + "SysEmails/GetByID?emailId=" + emailId);
+            //    request.Headers.Add("APIKey", Global.APIKey);
+              
+            //    request.Method = HttpMethod.Get;
+            //    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            //    var response = await client.SendAsync(request);
+
+            //    if (response.IsSuccessStatusCode)
+            //    {
+            //        var jsonString = await response.Content.ReadAsStringAsync();
+
+            //        obj = JsonConvert.DeserializeObject<SysEmails>(jsonString);
+
+            //        return obj;
+            //    }
+
+            //    return obj;
+            //}
         }
 
         //
         public async Task<SysEmails> GetByBranchIdandSide(int branchId, string side)
         {
-            SysEmails obj = new SysEmails();
+            SysEmails item = new SysEmails();
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("branchId", branchId.ToString());
+            parameters.Add("side", side.ToString());
 
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            using (var client = new HttpClient())
+            //#################
+            IEnumerable<Claim> claims = await APIResult.getList("SysEmails/GetByBranchIdandSide", parameters);
+
+            foreach (Claim c in claims)
             {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "SysEmails/GetByBranchIdandSide?branchId=" + branchId+ "&side=" + side);
-                request.Headers.Add("APIKey", Global.APIKey);
-
-                request.Method = HttpMethod.Get;
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var response = await client.SendAsync(request);
-
-                if (response.IsSuccessStatusCode)
+                if (c.Type == "scopes")
                 {
-                    var jsonString = await response.Content.ReadAsStringAsync();
-
-                    obj = JsonConvert.DeserializeObject<SysEmails>(jsonString);
-
-                    return obj;
+                    item = JsonConvert.DeserializeObject<SysEmails>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    break;
                 }
-
-                return obj;
             }
+            return item;
+
+
+            //SysEmails obj = new SysEmails();
+
+            //// ... Use HttpClient.
+            //ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            //using (var client = new HttpClient())
+            //{
+            //    ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+            //    client.BaseAddress = new Uri(Global.APIUri);
+            //    client.DefaultRequestHeaders.Clear();
+            //    client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+            //    client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+            //    HttpRequestMessage request = new HttpRequestMessage();
+            //    request.RequestUri = new Uri(Global.APIUri + "SysEmails/GetByBranchIdandSide?branchId=" + branchId+ "&side=" + side);
+            //    request.Headers.Add("APIKey", Global.APIKey);
+
+            //    request.Method = HttpMethod.Get;
+            //    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            //    var response = await client.SendAsync(request);
+
+            //    if (response.IsSuccessStatusCode)
+            //    {
+            //        var jsonString = await response.Content.ReadAsStringAsync();
+
+            //        obj = JsonConvert.DeserializeObject<SysEmails>(jsonString);
+
+            //        return obj;
+            //    }
+
+            //    return obj;
+            //}
         }
 
-        public async Task<string> Delete(int emailId, int userId, bool final)
+        public async Task<int> Delete(int emailId, int userId, bool final)
         {
-        
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("emailId", emailId.ToString());
+            parameters.Add("userId", userId.ToString());
+            parameters.Add("final", final.ToString());
+          
 
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "SysEmails/Delete?emailId=" + emailId + "&userId=" + userId + "&final=" + final);
-                request.Headers.Add("APIKey", Global.APIKey);
+            string method = "SysEmails/Delete";
+            return APIResult.post(method, parameters);
 
-                request.Method = HttpMethod.Post;
-                //set content type
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var response = await client.SendAsync(request);
 
-                if (response.IsSuccessStatusCode)
-                {
-                    var message = await response.Content.ReadAsStringAsync();
-                    message = JsonConvert.DeserializeObject<string>(message);
-                    return message;
-                }
-                return "";
-            }
+
+            //// ... Use HttpClient.
+            //ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+
+            //using (var client = new HttpClient())
+            //{
+            //    ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+            //    client.BaseAddress = new Uri(Global.APIUri);
+            //    client.DefaultRequestHeaders.Clear();
+            //    client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+            //    client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+            //    HttpRequestMessage request = new HttpRequestMessage();
+            //    request.RequestUri = new Uri(Global.APIUri + "SysEmails/Delete?emailId=" + emailId + "&userId=" + userId + "&final=" + final);
+            //    request.Headers.Add("APIKey", Global.APIKey);
+
+            //    request.Method = HttpMethod.Post;
+            //    //set content type
+            //    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            //    var response = await client.SendAsync(request);
+
+            //    if (response.IsSuccessStatusCode)
+            //    {
+            //        var message = await response.Content.ReadAsStringAsync();
+            //        message = JsonConvert.DeserializeObject<string>(message);
+            //        return message;
+            //    }
+            //    return "";
+            //}
         }
-  
+
 
 
 

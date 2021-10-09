@@ -317,7 +317,7 @@ namespace POS.View.windows
                     firstUserSetValue.note = first;
                     firstUserSetValue.createUserId = MainWindow.userID;
                     firstUserSetValue.updateUserId = MainWindow.userID;
-                    string res1 = await userSetValuesModel.Save(firstUserSetValue);
+                    int res1 = await userSetValuesModel.Save(firstUserSetValue);
 
                     //save second path
                     if(secondUserSetValue == null)
@@ -328,9 +328,9 @@ namespace POS.View.windows
                     secondUserSetValue.note = second;
                     secondUserSetValue.createUserId = MainWindow.userID;
                     secondUserSetValue.updateUserId = MainWindow.userID;
-                    string res2 = await userSetValuesModel.Save(secondUserSetValue);
+                   int res2 = await userSetValuesModel.Save(secondUserSetValue);
 
-                    if ((int.Parse(res1) > 0) && (int.Parse(res2) > 0))
+                    if ((res1 > 0) && (res2 > 0))
                     {
                         Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
                         MainWindow.firstPath = first;

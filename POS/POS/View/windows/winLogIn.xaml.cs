@@ -272,10 +272,10 @@ namespace POS.View.windows
                             MainWindow.loginBranch = await branchModel.getBranchById((int)MainWindow.branchID);
 
                             userLog.userId = user.userId;
-                            string str = await userLogsModel.Save(userLog);
+                           int str = await userLogsModel.Save(userLog);
 
-                            if (!str.Equals("0"))
-                                MainWindow.userLogInID = int.Parse(str);
+                            if (!str.Equals(0))
+                                MainWindow.userLogInID = str;
 
                             //remember me
                             if (cbxRemmemberMe.IsChecked.Value)

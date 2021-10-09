@@ -159,7 +159,7 @@ namespace POS.View.windows
         {
 
 
-            string msg;
+            int msg;
             sale_copy_countrow.value = (string)tb_saleCopyCount.Text;
             pur_copy_countrow.value = (string)tb_purCopyCount.Text;
             rep_copy_countrow.value = (string)tb_repPrintCount.Text;
@@ -176,7 +176,7 @@ namespace POS.View.windows
 
                 await refreshWindow();
                 await MainWindow.Getprintparameter();
-                if (int.Parse(msg) > 0)
+                if (msg > 0)
                 {
                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
                     await Task.Delay(1500);

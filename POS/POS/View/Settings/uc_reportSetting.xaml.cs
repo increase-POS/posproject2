@@ -213,7 +213,8 @@ namespace POS.View.Settings
 
         private async void Btn_saveReportlang_Click(object sender, RoutedEventArgs e)
         {
-            string msg = "";
+          //  string msg = "";
+           int msg = 0;
             if (cb_reportlang.SelectedIndex != -1)
             {
                 replangrow = replangList.Where(r => r.valId == (int)cb_reportlang.SelectedValue).FirstOrDefault();
@@ -222,7 +223,7 @@ namespace POS.View.Settings
                 //  replangrow.valId=
                 await MainWindow.GetReportlang();
                 await fillRepLang();
-                if (int.Parse(msg) > 0)
+                if (msg > 0)
                 {
                                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
                 }

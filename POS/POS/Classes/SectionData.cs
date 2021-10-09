@@ -866,8 +866,9 @@ namespace POS.Classes
             usMenuIsOpen.userId = MainWindow.userID;
             usMenuIsOpen.valId = valId;
             usMenuIsOpen.createUserId = MainWindow.userID;
-            string s = await usValueModel.Save(usMenuIsOpen);
-            if (!s.Equals("0"))
+          //  string s = await usValueModel.Save(usMenuIsOpen);
+          int s = await usValueModel.Save(usMenuIsOpen);
+            if (!s.Equals(0))
             {
                 //update menu in main window
                 SetValues v = await valueMedel.GetByID(valId);

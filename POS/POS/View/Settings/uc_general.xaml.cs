@@ -365,7 +365,8 @@ namespace POS.View.Settings
 
                 if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
-                    string s = "";
+                   // string s = "";
+                   int s = 0;
                     SectionData.validateEmptyComboBox(cb_region, p_errorRegion, tt_errorRegion, "trEmptyRegion");
                     if (!cb_region.Text.Equals(""))
                     {
@@ -373,11 +374,11 @@ namespace POS.View.Settings
                         if (regionId != 0)
                         {
                             s = await countryModel.UpdateIsdefault(regionId);
-                            if (!s.Equals("0"))
+                            if (!s.Equals(0))
                             {
                                 //update region and currency in main window
                                 List<CountryCode> c = await countryModel.GetAllRegion();
-                                MainWindow.Region = c.Where(r => r.countryId == int.Parse(s)).FirstOrDefault<CountryCode>();
+                                MainWindow.Region = c.Where(r => r.countryId == s).FirstOrDefault<CountryCode>();
                                 MainWindow.Currency = MainWindow.Region.currency;
                                 MainWindow.CurrencyId = MainWindow.Region.currencyId;
                                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
@@ -420,8 +421,9 @@ namespace POS.View.Settings
                             usLanguage.userId = MainWindow.userID;
                             usLanguage.valId = Convert.ToInt32(cb_language.SelectedValue);
                             usLanguage.createUserId = MainWindow.userID;
-                            string s = await usValueModel.Save(usLanguage);
-                            if (!s.Equals("0"))
+                          // string s = await usValueModel.Save(usLanguage);
+                           int s = await usValueModel.Save(usLanguage);
+                            if (!s.Equals(0))
                             {
                                 //update language in main window
                                 SetValues v = await valueModel.GetByID(Convert.ToInt32(cb_language.SelectedValue));
@@ -505,8 +507,9 @@ namespace POS.View.Settings
                         tax.value = tb_tax.Text;
                         tax.isSystem = 1;
                         tax.settingId = taxId;
-                        string s = await valueModel.Save(tax);
-                        if (!s.Equals("0"))
+                       // string s = await valueModel.Save(tax);
+                      int s = await valueModel.Save(tax);
+                        if (!s.Equals(0))
                         {
                             //update tax in main window
                             MainWindow.tax = decimal.Parse(tax.value);
@@ -668,8 +671,9 @@ namespace POS.View.Settings
                         dateForm.value = cb_dateForm.SelectedValue.ToString();
                         dateForm.isSystem = 1;
                         dateForm.settingId = dateFormId;
-                        string s = await valueModel.Save(dateForm);
-                        if (!s.Equals("0"))
+                       // string s = await valueModel.Save(dateForm);
+                       int s = await valueModel.Save(dateForm);
+                        if (!s.Equals(0))
                         {
                             //update dateForm in main window
                             MainWindow.dateFormat = dateForm.value;
@@ -796,9 +800,9 @@ namespace POS.View.Settings
                         accuracy.value = cb_accuracy.SelectedValue.ToString();
                         accuracy.isSystem = 1;
                         accuracy.settingId = accuracyId;
-                        string s = await valueModel.Save(accuracy);
-                        
-                        if (!s.Equals("-1"))
+                      //  string s = await valueModel.Save(accuracy);
+                        int s = await valueModel.Save(accuracy);
+                        if (!s.Equals(0))
                         {
                             //update accuracy in main window
                             MainWindow.accuracy = accuracy.value;

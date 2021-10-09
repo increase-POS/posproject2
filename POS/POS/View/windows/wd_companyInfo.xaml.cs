@@ -563,8 +563,9 @@ namespace POS.View.windows
                         setVName.isSystem = 1;
                         setVName.isDefault = 1;
                         setVName.settingId = nameId;
-                        string sName = await valueModel.Save(setVName);
-                        if (!sName.Equals("0"))
+                       // string sName = await valueModel.Save(setVName);
+                       int sName = await valueModel.Save(setVName);
+                        if (!sName.Equals(0))
                             MainWindow.companyName = tb_name.Text;
                     }
                     //save address
@@ -574,8 +575,9 @@ namespace POS.View.windows
                         setVAddress.isSystem = 1;
                         setVAddress.isDefault = 1;
                         setVAddress.settingId = addressId;
-                        string sAddress = await valueModel.Save(setVAddress);
-                        if (!sAddress.Equals("0"))
+                       int sAddress = await valueModel.Save(setVAddress);
+                     //   string sAddress = await valueModel.Save(setVAddress);
+                        if (!sAddress.Equals(0))
                             MainWindow.Address = tb_address.Text;
                     }
                     //save email
@@ -585,8 +587,9 @@ namespace POS.View.windows
                         setVEmail.isSystem = 1;
                         setVEmail.settingId = emailId;
                         setVEmail.isDefault = 1;
-                        string sEmail = await valueModel.Save(setVEmail);
-                        if (!sEmail.Equals("0"))
+                      //  string sEmail = await valueModel.Save(setVEmail);
+                        int sEmail = await valueModel.Save(setVEmail);
+                        if (!sEmail.Equals(0))
                             MainWindow.Email = tb_email.Text;
                     }
                     //save mobile
@@ -596,8 +599,8 @@ namespace POS.View.windows
                         setVMobile.isSystem = 1;
                         setVMobile.isDefault = 1;
                         setVMobile.settingId = mobileId;
-                        string sMobile = await valueModel.Save(setVMobile);
-                        if (!sMobile.Equals("0"))
+                        int sMobile = await valueModel.Save(setVMobile);
+                        if (!sMobile.Equals(0))
                             MainWindow.Mobile = cb_areaMobile.Text + tb_mobile.Text;
                     }
                     //save phone
@@ -607,8 +610,8 @@ namespace POS.View.windows
                         setVPhone.isSystem = 1;
                         setVPhone.isDefault = 1;
                         setVPhone.settingId = phoneId;
-                        string sPhone = await valueModel.Save(setVPhone);
-                        if (!sPhone.Equals(""))
+                       int sPhone = await valueModel.Save(setVPhone);
+                        if (!sPhone.Equals(0))
                             MainWindow.Phone = cb_areaPhone.Text + cb_areaPhoneLocal.Text + tb_phone.Text;
                     }
                     //save fax
@@ -618,27 +621,28 @@ namespace POS.View.windows
                         setVFax.isSystem = 1;
                         setVFax.isDefault = 1;
                         setVFax.settingId = faxId;
-                        string sFax = await valueModel.Save(setVFax);
-                        if (!sFax.Equals(""))
+                       int sFax = await valueModel.Save(setVFax);
+                        if (!sFax.Equals(0))
                             MainWindow.Fax = cb_areaFax.Text + cb_areaFaxLocal.Text + tb_fax.Text;
 
                     }
                     //  save logo
                     // image
-                    string sLogo = "";
+                  //  string sLogo = "";
+                    int sLogo =0;
                     if (isImgPressed)
                     {
                         isImgPressed = false;
 
-                        setVLogo.value = sLogo;
+                        setVLogo.value = sLogo.ToString();
                         setVLogo.isSystem = 1;
                         setVLogo.isDefault = 1;
                         setVLogo.settingId = logoId;
                         sLogo = await valueModel.Save(setVLogo);
-                        if (!sLogo.Equals(""))
+                        if (!sLogo.Equals(0))
                         {
                             MainWindow.logoImage = setVLogo.value;
-                            string b = await setVLogo.uploadImage(imgFileName, Md5Encription.MD5Hash("Inc-m" + sLogo), int.Parse(sLogo));
+                            string b = await setVLogo.uploadImage(imgFileName, Md5Encription.MD5Hash("Inc-m" + sLogo), sLogo);
                             setVLogo.value = b;
                             sLogo = await valueModel.Save(setVLogo);
                             await valueModel.getImg(setVLogo.value);

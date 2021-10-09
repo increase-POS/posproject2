@@ -8,6 +8,9 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using System.Security.Claims;
+
+using Newtonsoft.Json.Converters;
 
 namespace POS.Classes
 {
@@ -28,139 +31,168 @@ namespace POS.Classes
 
         public async Task<List<Papersize>> GetAll()
         {
-            List<Papersize> memberships = null;
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            using (var client = new HttpClient())
+
+            List<Papersize> list = new List<Papersize>();
+            //  Dictionary<string, string> parameters = new Dictionary<string, string>();
+            //parameters.Add("mainBranchId", mainBranchId.ToString());
+            //parameters.Add("userId", userId.ToString());
+            //parameters.Add("date", date.ToString());
+            //#################
+            IEnumerable<Claim> claims = await APIResult.getList("PaperSizeController/GetAll");
+
+            foreach (Claim c in claims)
             {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "PaperSizeController/GetAll");
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Get;
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage response = await client.SendAsync(request);
-
-                if (response.IsSuccessStatusCode)
+                if (c.Type == "scopes")
                 {
-                    var jsonString = await response.Content.ReadAsStringAsync();
-
-                    memberships = JsonConvert.DeserializeObject<List<Papersize>>(jsonString);
-
-                    return memberships;
+                    list.Add(JsonConvert.DeserializeObject<Papersize>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" }));
                 }
-                else //web api sent error response 
-                {
-                    memberships = new List<Papersize>();
-                }
-                return memberships;
             }
+            return list;
+
+
+
+            //List<Papersize> memberships = null;
+            //// ... Use HttpClient.
+            //ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            //using (var client = new HttpClient())
+            //{
+            //    ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+            //    client.BaseAddress = new Uri(Global.APIUri);
+            //    client.DefaultRequestHeaders.Clear();
+            //    client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+            //    client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+            //    HttpRequestMessage request = new HttpRequestMessage();
+            //    request.RequestUri = new Uri(Global.APIUri + "PaperSizeController/GetAll");
+            //    request.Headers.Add("APIKey", Global.APIKey);
+            //    request.Method = HttpMethod.Get;
+            //    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            //    HttpResponseMessage response = await client.SendAsync(request);
+
+            //    if (response.IsSuccessStatusCode)
+            //    {
+            //        var jsonString = await response.Content.ReadAsStringAsync();
+
+            //        memberships = JsonConvert.DeserializeObject<List<Papersize>>(jsonString);
+
+            //        return memberships;
+            //    }
+            //    else //web api sent error response 
+            //    {
+            //        memberships = new List<Papersize>();
+            //    }
+            //    return memberships;
+            //}
 
         }
 
-        public async Task<string> Save(Papersize obj)
+        public async Task<int> Save(Papersize obj)
         {
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            // 
+
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            string method = "PaperSizeController/Save";
+
             var myContent = JsonConvert.SerializeObject(obj);
+            parameters.Add("Object", myContent);
+            return APIResult.post(method, parameters);
 
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                // encoding parameter to get special characters
-                myContent = HttpUtility.UrlEncode(myContent);
-                request.RequestUri = new Uri(Global.APIUri + "PaperSizeController/Save?Object=" + myContent);
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Post;
-                //set content type
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var response = await client.SendAsync(request);
 
-                if (response.IsSuccessStatusCode)
-                {
-                    var message = await response.Content.ReadAsStringAsync();
-                    message = JsonConvert.DeserializeObject<string>(message);
-                    return message;
-                }
-                return "";
-            }
+            //// ... Use HttpClient.
+            //ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            //// 
+            //var myContent = JsonConvert.SerializeObject(obj);
+
+            //using (var client = new HttpClient())
+            //{
+            //    ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+            //    client.BaseAddress = new Uri(Global.APIUri);
+            //    client.DefaultRequestHeaders.Clear();
+            //    client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+            //    client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+            //    HttpRequestMessage request = new HttpRequestMessage();
+            //    // encoding parameter to get special characters
+            //    myContent = HttpUtility.UrlEncode(myContent);
+            //    request.RequestUri = new Uri(Global.APIUri + "PaperSizeController/Save?Object=" + myContent);
+            //    request.Headers.Add("APIKey", Global.APIKey);
+            //    request.Method = HttpMethod.Post;
+            //    //set content type
+            //    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            //    var response = await client.SendAsync(request);
+
+            //    if (response.IsSuccessStatusCode)
+            //    {
+            //        var message = await response.Content.ReadAsStringAsync();
+            //        message = JsonConvert.DeserializeObject<string>(message);
+            //        return message;
+            //    }
+            //    return "";
+            //}
         }
 
-        public async Task<Papersize> GetByID(int sizeId)
-        {
-            Papersize obj = new Papersize();
+        //public async Task<Papersize> GetByID(int sizeId)
+        //{
+        //    Papersize obj = new Papersize();
 
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "PaperSizeController/GetByID?sizeId=" + sizeId);
-                request.Headers.Add("APIKey", Global.APIKey);
+        //    // ... Use HttpClient.
+        //    ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+        //    using (var client = new HttpClient())
+        //    {
+        //        ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+        //        client.BaseAddress = new Uri(Global.APIUri);
+        //        client.DefaultRequestHeaders.Clear();
+        //        client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+        //        client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+        //        HttpRequestMessage request = new HttpRequestMessage();
+        //        request.RequestUri = new Uri(Global.APIUri + "PaperSizeController/GetByID?sizeId=" + sizeId);
+        //        request.Headers.Add("APIKey", Global.APIKey);
               
-                request.Method = HttpMethod.Get;
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var response = await client.SendAsync(request);
+        //        request.Method = HttpMethod.Get;
+        //        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        //        var response = await client.SendAsync(request);
 
-                if (response.IsSuccessStatusCode)
-                {
-                    var jsonString = await response.Content.ReadAsStringAsync();
+        //        if (response.IsSuccessStatusCode)
+        //        {
+        //            var jsonString = await response.Content.ReadAsStringAsync();
 
-                    obj = JsonConvert.DeserializeObject<Papersize>(jsonString);
+        //            obj = JsonConvert.DeserializeObject<Papersize>(jsonString);
 
-                    return obj;
-                }
+        //            return obj;
+        //        }
 
-                return obj;
-            }
-        }
+        //        return obj;
+        //    }
+        //}
 
-        public async Task<string> Delete(int sizeId)
-        {
+        //public async Task<string> Delete(int sizeId)
+        //{
         
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+        //    // ... Use HttpClient.
+        //    ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
 
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "PaperSizeController/Delete?sizeId=" + sizeId);
-                request.Headers.Add("APIKey", Global.APIKey);
+        //    using (var client = new HttpClient())
+        //    {
+        //        ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+        //        client.BaseAddress = new Uri(Global.APIUri);
+        //        client.DefaultRequestHeaders.Clear();
+        //        client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+        //        client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+        //        HttpRequestMessage request = new HttpRequestMessage();
+        //        request.RequestUri = new Uri(Global.APIUri + "PaperSizeController/Delete?sizeId=" + sizeId);
+        //        request.Headers.Add("APIKey", Global.APIKey);
 
-                request.Method = HttpMethod.Post;
-                //set content type
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var response = await client.SendAsync(request);
+        //        request.Method = HttpMethod.Post;
+        //        //set content type
+        //        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        //        var response = await client.SendAsync(request);
 
-                if (response.IsSuccessStatusCode)
-                {
-                    var message = await response.Content.ReadAsStringAsync();
-                    message = JsonConvert.DeserializeObject<string>(message);
-                    return message;
-                }
-                return "";
-            }
-        }
+        //        if (response.IsSuccessStatusCode)
+        //        {
+        //            var message = await response.Content.ReadAsStringAsync();
+        //            message = JsonConvert.DeserializeObject<string>(message);
+        //            return message;
+        //        }
+        //        return "";
+        //    }
+        //}
   
 
 

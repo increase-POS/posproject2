@@ -204,8 +204,8 @@ namespace POS.View.windows
 
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {
-            string msg = "";
-
+          //  string msg = "";
+            int msg = 0;
             if ((bool)tgl_printOnSavePur.IsChecked)
             {
                 print_on_save_purrow.value = "1";
@@ -250,7 +250,7 @@ namespace POS.View.windows
 
             await Getprintparameter();
             await MainWindow.Getprintparameter();
-            if (int.Parse(msg) > 0)
+            if (msg > 0)
             {
                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
                 await Task.Delay(1500);

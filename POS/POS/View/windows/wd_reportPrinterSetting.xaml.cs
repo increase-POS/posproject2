@@ -176,22 +176,23 @@ namespace POS.View.windows
         public async Task<string> Saveprinters()
         {
             PosSetting posscls = new PosSetting();
-            string msg;
+            // string msg = "";
+            int msg = 0;
             repprinterRow.name = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes((string)cb_repname.SelectedValue));
             repprinterRow.printFor = "rep";
             repprinterRow.createUserId = MainWindow.userID;
 
             msg = await printerModel.Save(repprinterRow);
-            reportPrinterId = int.Parse(msg);
-
+           // reportPrinterId = int.Parse(msg);
+            reportPrinterId = msg;
 
             salprinterRow.name = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes((string)cb_salname.SelectedValue));
             salprinterRow.printFor = "sal";
             salprinterRow.createUserId = MainWindow.userID;
 
             msg = await printerModel.Save(salprinterRow);
-            saleInvPrinterId = int.Parse(msg);
-
+           // saleInvPrinterId = int.Parse(msg);
+            saleInvPrinterId = msg;
             possettingModel.posId = MainWindow.posID;
             possettingModel.reportPrinterId = reportPrinterId;
             possettingModel.saleInvPrinterId = saleInvPrinterId;
@@ -205,8 +206,9 @@ namespace POS.View.windows
             posscls.reportPrinterId = possettingModel.reportPrinterId;
             posscls.saleInvPapersizeId = possettingModel.saleInvPapersizeId;
             posscls.docPapersizeId = possettingModel.docPapersizeId;
+           // msg = await possettingModel.Save(posscls);
             msg = await possettingModel.Save(posscls);
-            return msg;
+            return msg.ToString();
         }
         private void Btn_colse_Click(object sender, RoutedEventArgs e)
         {

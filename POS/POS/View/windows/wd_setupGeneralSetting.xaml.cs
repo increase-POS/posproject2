@@ -271,7 +271,7 @@ namespace POS.View.windows
                 dateForm.value = cb_dateForm.SelectedValue.ToString();
                 dateForm.isSystem = 1;
                 dateForm.settingId = setDate.settingId;
-                string s = await valueModel.Save(dateForm);
+                int s = await valueModel.Save(dateForm);
                 if (!s.Equals("0"))
                 {
                     //update dateForm in main window
@@ -293,8 +293,8 @@ namespace POS.View.windows
                 tax.value = tb_tax.Text;
                 tax.isSystem = 1;
                 tax.settingId = setTax.settingId;
-                string s = await valueModel.Save(tax);
-                if (!s.Equals("0"))
+               int s = await valueModel.Save(tax);
+                if (!s.Equals(0))
                 {
                     //update tax in main window
                     MainWindow.tax = decimal.Parse(tax.value);
@@ -308,7 +308,8 @@ namespace POS.View.windows
 
         private async Task saveCurrency()////////????????????????
         {
-            string s = "";
+            // string s = "";
+            int s = 0;
             if (!cb_currency.Text.Equals(""))
             {
                 int currencyId = Convert.ToInt32(cb_currency.SelectedValue);
@@ -319,7 +320,7 @@ namespace POS.View.windows
                     {
                         //update currency in main window
                         List<CountryCode> c = await countryModel.GetAllRegion();
-                        MainWindow.Currency = c.Where(r => r.countryId == int.Parse(s)).FirstOrDefault<CountryCode>().currency;
+                        MainWindow.Currency = c.Where(r => r.countryId ==s).FirstOrDefault<CountryCode>().currency;
                     }
                 }
             }
@@ -332,7 +333,8 @@ namespace POS.View.windows
 
         private async Task saveRegion()
         {
-            string s = "";
+            int s = 0;
+            //string s = "";
             List<CountryCode> c = await countryModel.GetAllRegion();
 
             if (!cb_region.Text.Equals(""))
@@ -345,7 +347,7 @@ namespace POS.View.windows
                     if (!s.Equals("0"))
                     {
                         //update region and currency in main window
-                        MainWindow.Region = c.Where(r => r.countryId == int.Parse(s)).FirstOrDefault<CountryCode>();
+                        MainWindow.Region = c.Where(r => r.countryId == s).FirstOrDefault<CountryCode>();
                         MainWindow.Currency = MainWindow.Region.currency;
                     }
                 }

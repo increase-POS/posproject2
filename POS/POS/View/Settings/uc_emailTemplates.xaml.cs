@@ -160,7 +160,7 @@ namespace POS.View.Settings
                     //write here Mr.Naji
 
                     /////
-                    string msg = "";
+                   int msg = 0;
                     setValues = setValuessQuery.Where(x => x.notes == "title").FirstOrDefault();
                     setValues.value = tb_title.Text;
                     msg += await setValuesModel.SaveValueByNotes(setValues);
