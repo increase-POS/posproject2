@@ -110,11 +110,12 @@ namespace POS.Classes
 
             // Token to String so you can use post it to api
             string postToken = handler.WriteToken(token);
+            var encryptedToken = EncryptThenCompress(postToken);
 
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
             ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
 
-            var client = new RestClient(Global.APIUri + method+"?token="+postToken);
+            var client = new RestClient(Global.APIUri + method+"?token="+encryptedToken);
             var request = new RestRequest(Method.POST);
             request.AddHeader("content-type", "application/json");
             request.AddHeader("authorization", "Bearer "+ postToken);
@@ -127,7 +128,8 @@ namespace POS.Classes
 
             if (response.StatusCode == HttpStatusCode.OK)
             {
-                var jwtToken = new JwtSecurityToken(Sresponse.Message);
+                var decryptedToken = DeCompressThenDecrypt(Sresponse.Message);
+                var jwtToken = new JwtSecurityToken(decryptedToken);
                 var s = jwtToken.Claims.ToArray();
                 IEnumerable<Claim> claims = jwtToken.Claims;
                 foreach (Claim c in claims)
