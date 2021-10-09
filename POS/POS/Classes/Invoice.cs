@@ -1386,13 +1386,13 @@ namespace POS.Classes
                     await cashTrasnfer.Save(cashTrasnfer); //add cash transfer
                     await invoice.saveInvoice(invoice);
                 }             
-                await company.Save(company);
+                await company.save(company);
             }
             else if (company.balanceType == 1)
             {
                 newBalance = (decimal) company.balance + (decimal)invoice.totalNet;
                 company.balance = newBalance;
-                await company.Save(company);
+                await company.save(company);
             }
             return invoice;
         }

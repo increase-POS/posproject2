@@ -308,7 +308,7 @@ namespace POS.Classes
 
 
         // get is exist
-        public async Task<string> UpdateStoresById(List<BranchStoretable> newList, int branchId, int userId)
+        public async Task<int> UpdateStoresById(List<BranchStoretable> newList, int branchId, int userId)
         {
             string message = "";
             // ... Use HttpClient.
@@ -338,7 +338,7 @@ namespace POS.Classes
                     message = await response.Content.ReadAsStringAsync();
                     message = JsonConvert.DeserializeObject<string>(message);
                 }
-                return message;
+                return 0;
             }
         }
 

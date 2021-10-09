@@ -1,10 +1,12 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -72,259 +74,99 @@ namespace POS.Classes
         public byte? uisOnline { get; set; }
         public Boolean ucanDelete { get; set; }
         public string uimage { get; set; }
-        /// <summary>
-        /// ///////////////////////////////////////
-        /// </summary>
-        /// <returns></returns>
-        /// 
-
-
 
         public async Task<List<BranchesUsers>> Get()
         {
-            List<BranchesUsers> memberships = null;
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            using (var client = new HttpClient())
+            List<BranchesUsers> items = new List<BranchesUsers>();
+            IEnumerable<Claim> claims = await APIResult.getList("BranchesUsers/Get");
+            foreach (Claim c in claims)
             {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "BranchesUsers/Get");
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Get;
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage response = await client.SendAsync(request);
-
-                if (response.IsSuccessStatusCode)
+                if (c.Type == "scopes")
                 {
-                    var jsonString = await response.Content.ReadAsStringAsync();
-
-                    memberships = JsonConvert.DeserializeObject<List<BranchesUsers>>(jsonString);
-
-                    return memberships;
+                    items.Add(JsonConvert.DeserializeObject<BranchesUsers>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" }));
                 }
-                else //web api sent error response 
-                {
-                    memberships = new List<BranchesUsers>();
-                }
-                return memberships;
             }
-
+            return items;
         }
-
-        public async Task<string> Save(BranchesUsers obj)
+        public async Task<BranchesUsers> GetByID(int itemId)
         {
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            // 
-            var myContent = JsonConvert.SerializeObject(obj);
+            BranchesUsers item = new BranchesUsers();
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("itemId", itemId.ToString());
+            //#################
+            IEnumerable<Claim> claims = await APIResult.getList("BranchesUsers/GetByID", parameters);
 
-            using (var client = new HttpClient())
+            foreach (Claim c in claims)
             {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                // encoding parameter to get special characters
-                myContent = HttpUtility.UrlEncode(myContent);
-                request.RequestUri = new Uri(Global.APIUri + "BranchesUsers/Save?Object=" + myContent);
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Post;
-                //set content type
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var response = await client.SendAsync(request);
-
-                if (response.IsSuccessStatusCode)
+                if (c.Type == "scopes")
                 {
-                    var message = await response.Content.ReadAsStringAsync();
-                    message = JsonConvert.DeserializeObject<string>(message);
-                    return message;
+                    item = JsonConvert.DeserializeObject<BranchesUsers>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    break;
                 }
-                return "";
             }
+            return item;
         }
-
-        public async Task<BranchesUsers> GetByID(int branchsUsersId)
+        public async Task<BranchesUserstable> GetBranchesByUserIdtable(int userId)
         {
-            BranchesUsers obj = new BranchesUsers();
+            BranchesUserstable item = new BranchesUserstable();
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("itemId", userId.ToString());
+            //#################
+            IEnumerable<Claim> claims = await APIResult.getList("BranchesUsers/GetBranchesByUserId", parameters);
 
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            using (var client = new HttpClient())
+            foreach (Claim c in claims)
             {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "BranchesUsers/GetByID?branchsUsersId=" + branchsUsersId);
-                request.Headers.Add("APIKey", Global.APIKey);
-
-                request.Method = HttpMethod.Get;
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var response = await client.SendAsync(request);
-
-                if (response.IsSuccessStatusCode)
+                if (c.Type == "scopes")
                 {
-                    var jsonString = await response.Content.ReadAsStringAsync();
-
-                    obj = JsonConvert.DeserializeObject<BranchesUsers>(jsonString);
-
-                    return obj;
+                    item = JsonConvert.DeserializeObject<BranchesUserstable>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    break;
                 }
-
-                return obj;
             }
+            return item;
         }
-
-        public async Task<string> Delete(int branchsUsersId)
-        {
-
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "BranchesUsers/Delete?branchsUsersId=" + branchsUsersId);
-                request.Headers.Add("APIKey", Global.APIKey);
-
-                request.Method = HttpMethod.Post;
-                //set content type
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var response = await client.SendAsync(request);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    var message = await response.Content.ReadAsStringAsync();
-                    message = JsonConvert.DeserializeObject<string>(message);
-                    return message;
-                }
-                return "";
-            }
-        }
-
-
-        public async Task<List<BranchesUserstable>> GetBranchesByUserIdtable(int userId)
-        {
-            List<BranchesUserstable> memberships = null;
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "BranchesUsers/GetBranchesByUserId?userId=" + userId);
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Get;
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage response = await client.SendAsync(request);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    var jsonString = await response.Content.ReadAsStringAsync();
-
-                    memberships = JsonConvert.DeserializeObject<List<BranchesUserstable>>(jsonString);
-
-                    return memberships;
-                }
-                else //web api sent error response 
-                {
-                    memberships = new List<BranchesUserstable>();
-                }
-                return memberships;
-            }
-
-        }
-
         public async Task<List<BranchesUsers>> GetBranchesByUserId(int userId)
         {
-            List<BranchesUsers> memberships = null;
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            using (var client = new HttpClient())
+            List<BranchesUsers> items = new List<BranchesUsers>();
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("itemId", userId.ToString());
+            //#################
+            IEnumerable<Claim> claims = await APIResult.getList("BranchesUsers/GetBranchesByUserId", parameters);
+
+            foreach (Claim c in claims)
             {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "BranchesUsers/GetBranchesByUserId?userId=" + userId);
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Get;
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage response = await client.SendAsync(request);
-
-                if (response.IsSuccessStatusCode)
+                if (c.Type == "scopes")
                 {
-                    var jsonString = await response.Content.ReadAsStringAsync();
-
-                    memberships = JsonConvert.DeserializeObject<List<BranchesUsers>>(jsonString);
-
-                    return memberships;
+                    items.Add( JsonConvert.DeserializeObject<BranchesUsers>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" }));
+                    break;
                 }
-                else //web api sent error response 
-                {
-                    memberships = new List<BranchesUsers>();
-                }
-                return memberships;
             }
-
+            return items;
         }
-
-
-        public async Task<string> UpdateBranchByUserId(List<BranchesUserstable> newList, int userId, int updateUserId)
+        public async Task<int> save(BranchesUsers item)
         {
-            string message = "";
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-
-            var myContent = JsonConvert.SerializeObject(newList);
-
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                // encoding parameter to get special characters
-                myContent = HttpUtility.UrlEncode(myContent);
-                request.RequestUri = new Uri(Global.APIUri + "BranchesUsers/UpdateBranchByUserId?newList=" + myContent + "&userId=" + userId + "&updateUserId=" + updateUserId);
-                request.Headers.Add("APIKey", Global.APIKey);
-                // request.Headers.Add("newList", myContent);
-                request.Method = HttpMethod.Post;
-                //set content type
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var response = await client.SendAsync(request);
-                //return myContent.ToString();
-                if (response.IsSuccessStatusCode)
-                {
-                    message = await response.Content.ReadAsStringAsync();
-                    message = JsonConvert.DeserializeObject<string>(message);
-                }
-                return message;
-            }
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            string method = "BranchesUsers/Save";
+            var myContent = JsonConvert.SerializeObject(item);
+            parameters.Add("itemObject", myContent);
+            return APIResult.post(method, parameters);
         }
-
+        public async Task<int> UpdateBranchByUserId(List<BranchesUserstable> newList, int userId, int updateUserId)
+        {
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            string method = "BranchesUsers/UpdateBranchByUserId";
+            var newListParameter = JsonConvert.SerializeObject(newList);
+            parameters.Add("newList", newListParameter);
+            parameters.Add("userId", userId.ToString());
+            parameters.Add("updateUserId", updateUserId.ToString());
+            return APIResult.post(method, parameters);
+        }
+        public async Task<int> delete(int branchsUsersId)
+        {
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("itemId", branchsUsersId.ToString());
+            string method = "BranchesUsers/Delete";
+            return APIResult.post(method, parameters);
+        }
     }
 }
 

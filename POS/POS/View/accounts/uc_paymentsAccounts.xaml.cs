@@ -789,7 +789,7 @@ namespace POS.View.accounts
                 shCom.balance += value;
             }
 
-            string s = await shCompanyModel.Save(shCom);
+              await shCompanyModel.save(shCom);
         }
 
         private void Btn_update_Click(object sender, RoutedEventArgs e)

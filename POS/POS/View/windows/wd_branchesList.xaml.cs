@@ -336,7 +336,7 @@ namespace POS.View.windows
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_branchList);
-                string s = "";
+                int s = 0;
                 if (userOrBranch == 'u')
                 {
                     foreach(var v in selectedStoresByUser)

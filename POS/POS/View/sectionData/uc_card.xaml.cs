@@ -257,16 +257,16 @@ namespace POS.View.sectionData
                             card.updateUserId = MainWindow.userID;
                             card.isActive = 1;
 
-                            string s = await cardModel.Save(card);
+                            int s = await cardModel.save(card);
 
                             //if (s.Equals("true"))
-                            if (!s.Equals(""))
+                            if (s>0)
                             {
                                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
 
                                 if (isImgPressed)
                                 {
-                                    int cardId = int.Parse(s);
+                                    int cardId = s;
                                     string b = await cardModel.uploadImage(imgFileName,
                                         Md5Encription.MD5Hash("Inc-m" + cardId.ToString()), cardId);
                                     card.image = b;
@@ -326,15 +326,15 @@ namespace POS.View.sectionData
                             card.updateUserId = MainWindow.userID;
                             card.isActive = 1;
 
-                            string s = await cardModel.Save(card);
+                            int s = await cardModel.save(card);
 
                             //if (s.Equals("true"))
-                            if (!s.Equals(""))
+                            if (s>0)
                             {
                                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
                                 if (isImgPressed)
                                 {
-                                    int cardId = int.Parse(s);
+                                    int cardId = s;
                                     string b = await cardModel.uploadImage(imgFileName, Md5Encription.MD5Hash("Inc-m" + cardId.ToString()), cardId);
                                     card.image = b;
                                     isImgPressed = false;
@@ -409,9 +409,9 @@ namespace POS.View.sectionData
                                 if (card.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
                                 if ((!card.canDelete) && (card.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
 
-                                bool b = await cardModel.deleteCard(card.cardId, MainWindow.userID.Value, card.canDelete);
+                                int b = await cardModel.delete(card.cardId, MainWindow.userID.Value, card.canDelete);
 
-                                if (b)
+                                if (b>0)
                                     Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
                                 else
                                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
@@ -442,9 +442,9 @@ namespace POS.View.sectionData
            
                 card.isActive = 1;
 
-                string s = await cardModel.Save(card);
+                int s = await cardModel.save(card);
 
-                if (s.Equals("true")) 
+                if (s>0) 
                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
                 else 
                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);

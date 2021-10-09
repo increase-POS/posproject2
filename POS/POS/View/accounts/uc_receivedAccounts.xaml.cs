@@ -763,7 +763,7 @@ namespace POS.View.accounts
                 else
                     shCom.balance -= value;
             }
-            string s = await shCompanyModel.Save(shCom);
+         await shCompanyModel.save(shCom);
 
         }
 

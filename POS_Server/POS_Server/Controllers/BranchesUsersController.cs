@@ -462,7 +462,6 @@ image
 
             newList = newList.Replace("\\", string.Empty);
             newList = newList.Trim('"');
-
             List<branchesUsers> newListObj = JsonConvert.DeserializeObject<List<branchesUsers>>(newList, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
 
             if (valid)

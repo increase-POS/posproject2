@@ -464,9 +464,9 @@ namespace POS.View.sectionData
                             shCom.fax = faxStr;
                             shCom.address = tb_address.Text;
 
-                            string s = await shCompaniesModel.Save(shCom);
+                            int s = await shCompaniesModel.save(shCom);
                            
-                            if (!s.Equals("0"))
+                            if (s>0)
                             {
                                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                                 Btn_clear_Click(null, null);
@@ -545,7 +545,7 @@ namespace POS.View.sectionData
                             shCompany.fax = faxStr;
                             shCompany.address = tb_address.Text;
 
-                            string s = await shCompaniesModel.Save(shCompany);
+                            int s = await shCompaniesModel.save(shCompany);
 
                             if (!s.Equals("0"))
                             {
@@ -614,9 +614,9 @@ namespace POS.View.sectionData
                                 if (shCompany.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
                                 if ((!shCompany.canDelete) && (shCompany.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
 
-                                string b = await shCompaniesModel.Delete(shCompany.shippingCompanyId, MainWindow.userID.Value, shCompany.canDelete);
+                                int b = await shCompaniesModel.delete(shCompany.shippingCompanyId, MainWindow.userID.Value, shCompany.canDelete);
 
-                                if (!b.Equals("0"))
+                                if (b>0)
                                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
 
                                 else
@@ -649,9 +649,9 @@ namespace POS.View.sectionData
 
             shCompany.isActive = 1;
 
-            string s = await shCompaniesModel.Save(shCompany);
+            int s = await shCompaniesModel.save(shCompany);
 
-            if (!s.Equals("0"))
+            if (s>0)
                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
             else
                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
