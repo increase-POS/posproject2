@@ -78,6 +78,7 @@ namespace POS.Classes
         public decimal subTotalNet { get; set; } // with invoice discount 
         public decimal itemunitProfit { get; set; }
         public decimal invoiceProfit { get; set; }
+        public decimal itemProfit { get; set; }
 
     }
     public class BalanceSTS

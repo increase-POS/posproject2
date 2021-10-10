@@ -5039,6 +5039,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pos ....
+        /// </summary>
+        internal static string trPosHint {
+            get {
+                return ResourceManager.GetString("trPosHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to POS Name.
         /// </summary>
         internal static string trPosName {

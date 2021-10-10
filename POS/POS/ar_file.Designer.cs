@@ -4994,6 +4994,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to نقطة البيع ....
+        /// </summary>
+        internal static string trPosHint {
+            get {
+                return ResourceManager.GetString("trPosHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to اسم نقطة البيع.
         /// </summary>
         internal static string trPosName {

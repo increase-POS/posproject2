@@ -85,21 +85,21 @@ namespace POS.View.reports
             chk_allPos.IsChecked = true;
 
             ////////invoice button//////////??????????????????????????
-            hideAllColumns();
+            //hideAllColumns();
 
-            col_invNum.Visibility = Visibility.Visible;
-            col_invType.Visibility = Visibility.Visible;
-            col_invTotal.Visibility = Visibility.Visible;
-            col_branch.Visibility = Visibility.Visible;
-            col_pos.Visibility = Visibility.Visible;
+            //col_invNum.Visibility = Visibility.Visible;
+            //col_invType.Visibility = Visibility.Visible;
+            //col_invTotal.Visibility = Visibility.Visible;
+            //col_branch.Visibility = Visibility.Visible;
+            //col_pos.Visibility = Visibility.Visible;
+            //col_invoiceProfit.Visibility = Visibility.Visible;
 
+            //await Search();
 
-            await RefreshItemUnitInvoiceProfit();
-            await Search();
-
-            SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), btn_invoice.Tag.ToString());
+            //SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), btn_invoice.Tag.ToString());
+            Btn_invoice_Click(null , null);
             /////////////////////////////?????????????????????????????????
-            
+
             //    if (sender != null)
             //        SectionData.EndAwait(grid_main);
             //}
@@ -119,10 +119,10 @@ namespace POS.View.reports
         async Task<IEnumerable<ItemUnitInvoiceProfit>> RefreshItemUnitInvoiceProfit()
         {
             profits = await statisticsModel.GetProfit(MainWindow.branchID.Value, MainWindow.userID.Value);
-         
             return profits;
         }
-        IEnumerable<ItemUnitInvoiceProfit> invoices = null;
+
+        IEnumerable<ItemUnitInvoiceProfit> profitsTemp = null;
         async Task Search()
         {
             if (profits is null)
@@ -130,31 +130,54 @@ namespace POS.View.reports
 
             searchText = txt_search.Text.ToLower();
           
-            invoices = profits.GroupBy(s => s.invoiceId).SelectMany(inv => inv.Take(1)).ToList();
-            profitsQuery = invoices
-                .Where(s =>
+            profitsTemp = profits.Where(p =>
+            (dp_startDate.SelectedDate != null ? p.updateDate >= dp_startDate.SelectedDate : true)
+            &&
+            //end date
+            (dp_endDate.SelectedDate != null ? p.updateDate <= dp_endDate.SelectedDate : true)
+            );
+
+            if (selectedTab == 0)
+                profitsTemp = profits.GroupBy(s => s.invoiceId).SelectMany(inv => inv.Take(1)).ToList();
+               
+            else
+                profitsTemp = profits.GroupBy(s => s.ITitemUnitId).SelectMany(inv => inv.Take(1)).ToList();
+
+            profitsQuery = profitsTemp
+            .Where(s =>
             (
             s.invNumber.ToLower().Contains(searchText)
             ||
-            s.total.ToString().ToLower().Contains(searchText)
+            s.totalNet.ToString().ToLower().Contains(searchText)
             )
             &&
-            //start date
-            (dp_startDate.SelectedDate != null ? s.updateDate >= dp_startDate.SelectedDate : true)
+            //branchID/itemID
+            (
+                (selectedTab == 0 ? cb_branches.SelectedIndex != -1 ? s.branchCreatorId == Convert.ToInt32(cb_branches.SelectedValue) : true
+                :
+                cb_branches.SelectedIndex != -1 ? s.ITitemId == Convert.ToInt32(cb_branches.SelectedValue) : true)
+            )
             &&
-            //end date
-            ( dp_endDate.SelectedDate != null ? s.updateDate <= dp_endDate.SelectedDate : true)
-            &&
-            //branchID
-            (cb_branches.SelectedIndex != -1 ? s.branchId == Convert.ToInt32(cb_branches.SelectedValue) : true)
-            &&
-            //posID
-            (cb_pos.SelectedIndex != -1 ? s.posId == Convert.ToInt32(cb_pos.SelectedValue) : true)
+            //posID/unitID
+            (
+                (selectedTab == 0 ? cb_pos.SelectedIndex != -1 ? s.posId == Convert.ToInt32(cb_pos.SelectedValue) : true
+                :
+                cb_pos.SelectedIndex != -1 ? s.ITunitId == Convert.ToInt32(cb_pos.SelectedValue) : true)
+                )
             );
+
+            var profitsSum = profitsQuery.GroupBy(s => s.invoiceId).Select(g => new {
+                invoiceId = g.FirstOrDefault().invoiceId,
+                invoiceProfit = g.Sum(p => p.itemunitProfit)
+            }).ToList();
+            foreach (var i in profitsSum)
+            {
+                profitsQuery.Select(x => x.invoiceProfit = (i.invoiceId == x.invoiceId) ? i.invoiceProfit : x.invoiceProfit);
+            }
 
             profitsQueryExcel = profitsQuery.ToList();
             RefreshProfitsView();
-            fillBranches();
+            fillCombo1();
             fillColumnChart();
             fillPieChart();
             fillRowChart();
@@ -168,22 +191,42 @@ namespace POS.View.reports
             //tb_total.Text = SectionData.DecTostring(total);
         }
 
-        private void fillBranches()
+        private void fillCombo1()
         {
-            cb_branches.SelectedValuePath = "branchId";
-            cb_branches.DisplayMemberPath = "branchCreatorName";
-            cb_branches.ItemsSource = profits.Select(i => new { i.branchCreatorName, i.branchId }).Distinct();
+            if (selectedTab == 0)
+            {
+                MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_branches, MainWindow.resourcemanager.GetString("trBranchHint"));
+                cb_branches.SelectedValuePath = "branchCreatorId";
+                cb_branches.DisplayMemberPath = "branchCreatorName";
+                cb_branches.ItemsSource = profits.GroupBy(g=>g.branchCreatorId).Select(i => new { i.FirstOrDefault(). branchCreatorName, i.FirstOrDefault().branchCreatorId });
+            }
+            else if(selectedTab == 1)
+            {
+                MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_branches, MainWindow.resourcemanager.GetString("trItemHint"));
+                cb_branches.SelectedValuePath = "ITitemId";
+                cb_branches.DisplayMemberPath = "ITitemName";
+                cb_branches.ItemsSource = profits.GroupBy(g => g.ITitemId).Select(i => new { i.FirstOrDefault().ITitemId, i.FirstOrDefault().ITitemName });
+            }
         }
 
-        private void fillPos(int bID)
+        private void fillCombo2(int bID)
         {
-            cb_pos.SelectedValuePath = "posId";
-            cb_pos.DisplayMemberPath = "posName";
-            cb_pos.ItemsSource = profits.Where(b => b.branchId == bID)
-                                                         .Select(i => new {
-                                                             i.posName,
-                                                             i.posId
-                                                         }).Distinct();
+            if(selectedTab == 0)
+            {
+                MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_pos, MainWindow.resourcemanager.GetString("trPosHint"));
+                cb_pos.SelectedValuePath = "posId";
+                cb_pos.DisplayMemberPath = "posName";
+                cb_pos.ItemsSource = profits.Where(b => b.branchId == bID).GroupBy(g => g.posId).Select(i => new {
+                                                                                  i.FirstOrDefault().posId , i.FirstOrDefault().posName });
+            }
+            else if(selectedTab == 1)
+            {
+                MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_pos, MainWindow.resourcemanager.GetString("trUnitHint"));
+                cb_pos.SelectedValuePath = "ITunitId";
+                cb_pos.DisplayMemberPath = "ITunitName";
+                cb_pos.ItemsSource = profits.Where(b => b.ITitemId == bID).GroupBy(g => g.ITunitId).Select(i => new {
+                                                                                  i.FirstOrDefault().ITunitId, i.FirstOrDefault().ITunitName});
+            }
 
         }
         private async void Btn_invoice_Click(object sender, RoutedEventArgs e)
@@ -194,7 +237,7 @@ namespace POS.View.reports
          //        SectionData.StartAwait(grid_main);
 
             hideAllColumns();
-            SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
+            //SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
             selectedTab = 0;
 
             col_invNum.Visibility = Visibility.Visible;
@@ -202,6 +245,7 @@ namespace POS.View.reports
             col_invTotal.Visibility = Visibility.Visible;
             col_branch.Visibility = Visibility.Visible;
             col_pos.Visibility = Visibility.Visible;
+            col_invoiceProfit.Visibility = Visibility.Visible;
 
             txt_search.Text = "";
            
@@ -236,12 +280,13 @@ namespace POS.View.reports
             col_itemName.Visibility = Visibility.Visible;
             col_unitName.Visibility = Visibility.Visible;
             col_quantity.Visibility = Visibility.Visible;
+            col_itemProfit.Visibility = Visibility.Visible;
 
             txt_search.Text = "";
             path_invoice.Fill = Brushes.White;
             bdrMain.RenderTransform = Animations.borderAnimation(50, bdrMain, true);
             ReportsHelp.paintTabControlBorder(grid_tabControl, bdr_item);
-            path_invoice.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+            path_item.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
 
             await Search();
 
@@ -266,6 +311,8 @@ namespace POS.View.reports
             col_invTotal.Visibility = Visibility.Collapsed;
             col_branch.Visibility = Visibility.Collapsed;
             col_pos.Visibility = Visibility.Collapsed;
+            col_invoiceProfit.Visibility = Visibility.Collapsed;
+            col_itemProfit.Visibility = Visibility.Collapsed;
         }
         private async void Chk_allBranches_Checked(object sender, RoutedEventArgs e)
         {//select all branches
@@ -424,7 +471,7 @@ namespace POS.View.reports
                     SectionData.StartAwait(grid_main);
 
                 await Search();
-                fillPos(Convert.ToInt32(cb_branches.SelectedValue));
+                fillCombo2(Convert.ToInt32(cb_branches.SelectedValue));
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);

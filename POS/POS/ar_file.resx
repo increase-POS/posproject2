@@ -2611,4 +2611,7 @@
   <data name="trTheRest" xml:space="preserve">
     <value>الباقي</value>
   </data>
+  <data name="trPosHint" xml:space="preserve">
+    <value>نقطة البيع ...</value>
+  </data>
 </root>
