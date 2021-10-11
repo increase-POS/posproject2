@@ -5120,6 +5120,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to الربح.
+        /// </summary>
+        internal static string trProfits {
+            get {
+                return ResourceManager.GetString("trProfits", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ترويج.
         /// </summary>
         internal static string trPromotion {

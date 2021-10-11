@@ -2614,4 +2614,7 @@
   <data name="trPosHint" xml:space="preserve">
     <value>نقطة البيع ...</value>
   </data>
+  <data name="trProfits" xml:space="preserve">
+    <value>الربح</value>
+  </data>
 </root>

@@ -1,13 +1,10 @@
-﻿using Microsoft.Reporting.WinForms;
-using Microsoft.Win32;
+﻿using LiveCharts;
+using LiveCharts.Helpers;
+using LiveCharts.Wpf;
 using POS.Classes;
-using POS.View.windows;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -19,6 +16,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.IO;
+using Microsoft.Reporting.WinForms;
+using Microsoft.Win32;
+using System.Threading;
+using POS.View.windows;
+using System.Resources;
+using System.Reflection;
+using static POS.Classes.Statistics;
 
 namespace POS.View.reports
 {
@@ -97,7 +102,7 @@ namespace POS.View.reports
             //await Search();
 
             //SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), btn_invoice.Tag.ToString());
-            Btn_invoice_Click(null , null);
+            Btn_invoice_Click(btn_invoice , null);
             /////////////////////////////?????????????????????????????????
 
             //    if (sender != null)
@@ -134,14 +139,14 @@ namespace POS.View.reports
             (dp_startDate.SelectedDate != null ? p.updateDate >= dp_startDate.SelectedDate : true)
             &&
             //end date
-            (dp_endDate.SelectedDate != null ? p.updateDate <= dp_endDate.SelectedDate : true)
+            (dp_endDate.SelectedDate   != null ? p.updateDate <= dp_endDate.SelectedDate   : true)
             );
 
             if (selectedTab == 0)
-                profitsTemp = profits.GroupBy(s => s.invoiceId).SelectMany(inv => inv.Take(1)).ToList();
+                profitsTemp = profitsTemp.GroupBy(s => s.invoiceId).SelectMany(inv => inv.Take(1)).ToList();
                
             else
-                profitsTemp = profits.GroupBy(s => s.ITitemUnitId).SelectMany(inv => inv.Take(1)).ToList();
+                profitsTemp = profitsTemp.GroupBy(s => s.ITitemUnitId).SelectMany(inv => inv.Take(1)).ToList();
 
             profitsQuery = profitsTemp
             .Where(s =>
@@ -149,6 +154,16 @@ namespace POS.View.reports
             s.invNumber.ToLower().Contains(searchText)
             ||
             s.totalNet.ToString().ToLower().Contains(searchText)
+            ||
+            s.invType.ToLower().Contains(searchText)
+            ||
+            s.ITitemName.ToLower().Contains(searchText)
+            ||
+            s.ITunitName.ToLower().Contains(searchText)
+            ||
+            s.ITquantity.ToString().ToLower().Contains(searchText)
+            ||
+            s.ITprice.ToString().ToLower().Contains(searchText)
             )
             &&
             //branchID/itemID
@@ -165,16 +180,40 @@ namespace POS.View.reports
                 cb_pos.SelectedIndex != -1 ? s.ITunitId == Convert.ToInt32(cb_pos.SelectedValue) : true)
                 )
             );
-
-            var profitsSum = profitsQuery.GroupBy(s => s.invoiceId).Select(g => new {
-                invoiceId = g.FirstOrDefault().invoiceId,
-                invoiceProfit = g.Sum(p => p.itemunitProfit)
-            }).ToList();
-            foreach (var i in profitsSum)
+            if (selectedTab == 0)
             {
-                profitsQuery.Select(x => x.invoiceProfit = (i.invoiceId == x.invoiceId) ? i.invoiceProfit : x.invoiceProfit);
-            }
+                var profitsSum = profitsQuery.GroupBy(s => s.invoiceId).Select(g => new
+                {
+                    invoiceProfit = g.Sum(p => p.itemunitProfit)
+                }).ToList();
 
+                //foreach (var i in profitsSum)
+                //{
+                //    profitsQuery.Select(x => { x.invoiceProfit = (i.invoiceId == x.invoiceId) ? i.invoiceProfit : x.invoiceProfit; return x; });
+                //}
+                //customers.Where(c => c.IsValid).Select(c => { c.CreditLimit = 1000; return c; }).ToList();
+                //foreach (var (item,index) in profitsQuery)
+                int i = 0;
+                foreach (var x in profitsQuery)
+                {
+                    x.invoiceProfit = profitsSum[i].invoiceProfit;
+                    i++;
+                }
+            }
+            else if (selectedTab == 1)
+            {
+                var profitsSum = profitsQuery.GroupBy(s => s.ITitemUnitId).Select(g => new
+                {
+                    itemProfit = g.Sum(p => p.itemunitProfit)
+                }).ToList();
+
+                int i = 0;
+                foreach (var x in profitsQuery)
+                {
+                    x.itemProfit = profitsSum[i].itemProfit;
+                    i++;
+                }
+            }
             profitsQueryExcel = profitsQuery.ToList();
             RefreshProfitsView();
             fillCombo1();
@@ -187,8 +226,14 @@ namespace POS.View.reports
         {
             dgFund.ItemsSource = profitsQuery;
             txt_count.Text = profitsQuery.Count().ToString();
-            //decimal total = profitsQuery.Select(b => b.balance.Value).Sum();
-            //tb_total.Text = SectionData.DecTostring(total);
+
+            decimal total = 0;
+            if(selectedTab == 0)
+                total = profitsQuery.Select(b => b.invoiceProfit).Sum();
+            else
+                total = profitsQuery.Select(b => b.itemProfit).Sum();
+
+            tb_total.Text = SectionData.DecTostring(total);
         }
 
         private void fillCombo1()
@@ -237,7 +282,7 @@ namespace POS.View.reports
          //        SectionData.StartAwait(grid_main);
 
             hideAllColumns();
-            //SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
+            SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
             selectedTab = 0;
 
             col_invNum.Visibility = Visibility.Visible;
@@ -659,143 +704,222 @@ namespace POS.View.reports
 
         private void fillColumnChart()
         {
-            //axcolumn.Labels = new List<string>();
-            //List<string> names = new List<string>();
-            //IEnumerable<int> x = null;
+            axcolumn.Labels = new List<string>();
+            List<string> names = new List<string>();
+            List<decimal> profit = new List<decimal>();
 
-            //var temp = balancesQuery;
-            //var result = temp.GroupBy(s => s.branchId).Select(s => new
+            var temp = profitsQuery;
+            //var result = temp.GroupBy(s => s.posId).Select(s => new
             //{
-            //    branchCreatorId = s.Key,
-            //    countS = s.Count(),
+            //    posId = s.Key
             //});
-            //x = result.Select(m => m.countS);
+            int count = 0;
+            if (selectedTab == 0)
+            {
+                var tempName = temp.GroupBy(s => s.posId).Select(s => new
+                {
+                    posName = s.FirstOrDefault().posName + "/" + s.FirstOrDefault().branchCreatorName
+                });
+                count = tempName.Count();
+                names.AddRange(tempName.Select(nn => nn.posName));
 
-            //var tempName = temp.GroupBy(s => s.branchName).Select(s => new
-            //{
-            //    branchName = s.Key
-            //});
-            //names.AddRange(tempName.Select(nn => nn.branchName));
+                var tempProfit = temp.GroupBy(s => s.posId).Select(s => new
+                {
+                    profit = s.Sum(p => decimal.Parse(SectionData.DecTostring(p.invoiceProfit)))
+                });
 
-            //List<string> lable = new List<string>();
-            //SeriesCollection columnChartData = new SeriesCollection();
-            //List<int> cS = new List<int>();
+                profit.AddRange(tempProfit.Select(nn => nn.profit));
+            }
+            else if (selectedTab == 1)
+            {
+                var tempName = temp.GroupBy(s => s.ITitemUnitId).Select(s => new
+                {
+                    name = s.FirstOrDefault().ITitemName+"/"+s.FirstOrDefault().ITunitName
+                });
+                count = tempName.Count();
+                names.AddRange(tempName.Select(nn => nn.name));
 
-            //List<string> titles = new List<string>()
-            //{
-            //   MainWindow.resourcemanager.GetString("tr_Balance")
-            //};
-            //for (int i = 0; i < x.Count(); i++)
-            //{
-            //    cS.Add(x.ToList().Skip(i).FirstOrDefault());
-            //    axcolumn.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
-            //}
+                var tempProfit = temp.GroupBy(s => s.ITitemId).Select(s => new
+                {
+                    profit = s.Sum(p => decimal.Parse(SectionData.DecTostring(p.itemProfit)))
+                });
 
-            //columnChartData.Add(
-            //new StackedColumnSeries
-            //{
-            //    Values = cS.AsChartValues(),
-            //    Title = titles[0],
-            //    DataLabels = true,
-            //});
+                profit.AddRange(tempProfit.Select(nn => nn.profit));
+            }
+            List<string> lable = new List<string>();
+            SeriesCollection columnChartData = new SeriesCollection();
 
-            //DataContext = this;
-            //cartesianChart.Series = columnChartData;
+            List<decimal> cS = new List<decimal>();
+
+            List<string> titles = new List<string>()
+            {
+               MainWindow.resourcemanager.GetString("trProfits")
+            };
+            int x = 6;
+            if (count < 6) x = count;
+            for (int i = 0; i < x; i++)
+            {
+                cS.Add(profit.ToList().Skip(i).FirstOrDefault());
+                axcolumn.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
+            }
+            if (count > 6)
+            {
+                cS.Add(profit.ToList().Skip(6).FirstOrDefault());
+                axcolumn.Labels.Add(MainWindow.resourcemanager.GetString("trOthers"));
+            }
+            columnChartData.Add(
+            new StackedColumnSeries
+            {
+                Values = cS.AsChartValues(),
+                Title = titles[0],
+                DataLabels = true,
+            });
+
+            DataContext = this;
+            cartesianChart.Series = columnChartData;
         }
 
         private void fillPieChart()
         {
-            //List<string> titles = new List<string>();
-            //IEnumerable<int> x = null;
+            List<string> titles = new List<string>();
+            IEnumerable<decimal> x = null;
 
-            //titles.Clear();
-            //var temp = balancesQuery;
-            //var titleTemp = temp.GroupBy(m => m.branchName);
-            //titles.AddRange(titleTemp.Select(jj => jj.Key));
-            //var result = temp.GroupBy(s => s.branchId).Select(s => new { branchCreatorId = s.Key, count = s.Count() });
-            //x = result.Select(m => m.count);
+            titles.Clear();
+            var temp = profitsQuery;
+            int count = 0;
+            if (selectedTab == 0)
+            {
+                var titleTemp = temp.GroupBy(m => m.branchCreatorName);
+                titles.AddRange(titleTemp.Select(jj => jj.Key));
 
-            //SeriesCollection piechartData = new SeriesCollection();
-            //for (int i = 0; i < x.Count(); i++)
-            //{
-            //    List<int> final = new List<int>();
-            //    List<string> lable = new List<string>();
-            //    final.Add(x.ToList().Skip(i).FirstOrDefault());
-            //    piechartData.Add(
-            //      new PieSeries
-            //      {
-            //          Values = final.AsChartValues(),
-            //          Title = titles.Skip(i).FirstOrDefault(),
-            //          DataLabels = true,
-            //      }
-            //  );
-            //}
-            //chart1.Series = piechartData;
+                var result = temp.GroupBy(s => s.branchCreatorId).Select(s => new
+                {
+                    branchCreatorId = s.Key,
+                    profit = s.Sum(p => p.invoiceProfit)
+                });
+                x = result.Select(m => decimal.Parse(SectionData.DecTostring(m.profit)));
+                count = x.Count();
+            }
+            else if (selectedTab == 1)
+            {
+                var titleTemp = temp.GroupBy(m => m.ITitemId).Select(d => new
+                {
+                    ITitemId = d.Key,
+                    name = d.FirstOrDefault().ITitemName
+                }
+                );
+                titles.AddRange(titleTemp.Select(jj => jj.name));
+
+                var result = temp.GroupBy(s => s.ITitemId).Select(s => new
+                {
+                    ITitemUnitId = s.Key,
+                    profit = s.Sum(p => p.itemProfit)
+                });
+                
+                x = result.Select(m => decimal.Parse(SectionData.DecTostring(m.profit)));
+                count = x.Count();
+            }
+            SeriesCollection piechartData = new SeriesCollection();
+
+            int xCount = 6;
+            if (count < 6) xCount = count;
+          
+           
+            for (int i = 0; i < xCount ; i++)
+            {
+                List<decimal> final = new List<decimal>();
+                List<string> lable = new List<string>();
+                final.Add(x.ToList().Skip(i).FirstOrDefault());
+                piechartData.Add(
+                 new PieSeries
+                 {
+                     Values = final.AsChartValues(),
+                     Title = titles.Skip(i).FirstOrDefault(),
+                     DataLabels = true,
+                 }
+             );
+            }
+            if (count > 6)
+            {
+                List<decimal> final = new List<decimal>();
+                List<string> lable = new List<string>();
+                final.Add(x.ToList().Skip(6).FirstOrDefault());
+                piechartData.Add(
+                new PieSeries
+                {
+                    Values = final.AsChartValues(),
+                    Title = MainWindow.resourcemanager.GetString("trOthers"),
+                    DataLabels = true,
+                }
+            );
+            }
+
+            chart1.Series = piechartData;
         }
 
         private void fillRowChart()
         {
-            //    MyAxis.Labels = new List<string>();
-            //    List<string> names = new List<string>();
-            //    IEnumerable<decimal> pTemp = null;
-            //    IEnumerable<decimal> pbTemp = null;
-            //    IEnumerable<decimal> resultTemp = null;
+        //    MyAxis.Labels = new List<string>();
+        //    List<string> names = new List<string>();
+        //    IEnumerable<decimal> pTemp = null;
+        //    IEnumerable<decimal> pbTemp = null;
+        //    IEnumerable<decimal> resultTemp = null;
 
-            //    var temp = balancesQuery;
-            //    var result = temp.GroupBy(s => s.branchId).Select(s => new
-            //    {
-            //        branchCreatorId = s.Key,
-            //        totalS = s.Sum(x => x.balance)
-            //    }
-            //    );
-            //    var resultTotal = result.Select(x => new { x.branchCreatorId, total = x.totalS - x.totalSb }).ToList();
-            //    pTemp = result.Select(x => (decimal)x.totalS);
+        //    var temp = itemTrasferInvoicesQuery;
+        //    var result = temp.GroupBy(s => s.branchCreatorId).Select(s => new
+        //    {
+        //        branchCreatorId = s.Key,
+        //        totalS = s.Where(x => x.invType == "s").Sum(x => x.totalNet),
+        //        totalSb = s.Where(x => x.invType == "sb").Sum(x => x.totalNet)
+        //    }
+        //    );
+        //    var resultTotal = result.Select(x => new { x.branchCreatorId, total = x.totalS - x.totalSb }).ToList();
+        //    pTemp = result.Select(x => (decimal)x.totalS);
+        //    pbTemp = result.Select(x => (decimal)x.totalSb);
+        //    resultTemp = result.Select(x => (decimal)x.totalS);
+        //    var tempName = temp.GroupBy(s => s.branchCreatorName).Select(s => new
+        //    {
+        //        uUserName = s.Key
+        //    });
+        //    names.AddRange(tempName.Select(nn => nn.uUserName));
 
-            //    resultTemp = result.Select(x => (decimal)x.totalS);
-            //    var tempName = temp.GroupBy(s => s.branchCreatorName).Select(s => new
-            //    {
-            //        uUserName = s.Key
-            //    });
-            //    names.AddRange(tempName.Select(nn => nn.uUserName));
-            //    //}
+        //    SeriesCollection rowChartData = new SeriesCollection();
+        //    List<decimal> purchase = new List<decimal>();
+        //    List<decimal> returns = new List<decimal>();
+        //    List<decimal> sub = new List<decimal>();
+        //    List<string> titles = new List<string>()
+        //    {
+        //                 "اجمالي المبيعات","اجمالي المرتجع","صافي المبيعات"
+        //    };
+        //    for (int i = 0; i < pbTemp.Count(); i++)
+        //    {
+        //        purchase.Add(pTemp.ToList().Skip(i).FirstOrDefault());
+        //        returns.Add(pbTemp.ToList().Skip(i).FirstOrDefault());
+        //        sub.Add(resultTemp.ToList().Skip(i).FirstOrDefault());
+        //        MyAxis.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
+        //    }
 
-            //    SeriesCollection rowChartData = new SeriesCollection();
-            //    List<decimal> purchase = new List<decimal>();
-            //    List<decimal> returns = new List<decimal>();
-            //    List<decimal> sub = new List<decimal>();
-            //    List<string> titles = new List<string>()
-            //    {
-            //                 "اجمالي المبيعات","اجمالي المرتجع","صافي المبيعات"
-            //    };
-            //    for (int i = 0; i < pbTemp.Count(); i++)
-            //    {
-            //        purchase.Add(pTemp.ToList().Skip(i).FirstOrDefault());
-            //        returns.Add(pbTemp.ToList().Skip(i).FirstOrDefault());
-            //        sub.Add(resultTemp.ToList().Skip(i).FirstOrDefault());
-            //        MyAxis.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
-            //    }
+        //    rowChartData.Add(
+        //  new LineSeries
+        //  {
+        //      Values = purchase.AsChartValues(),
+        //      Title = titles[0]
+        //  }); ;
+        //    rowChartData.Add(
+        // new LineSeries
+        // {
+        //     Values = returns.AsChartValues(),
+        //     Title = titles[1]
+        // });
+        //    rowChartData.Add(
+        //new LineSeries
+        //{
+        //    Values = sub.AsChartValues(),
+        //    Title = titles[2]
 
-            //    rowChartData.Add(
-            //  new LineSeries
-            //  {
-            //      Values = purchase.AsChartValues(),
-            //      Title = titles[0]
-            //  }); ;
-            //    rowChartData.Add(
-            // new LineSeries
-            // {
-            //     Values = returns.AsChartValues(),
-            //     Title = titles[1]
-            // });
-            //    rowChartData.Add(
-            //new LineSeries
-            //{
-            //    Values = sub.AsChartValues(),
-            //    Title = titles[2]
-
-            //});
-            //    DataContext = this;
-            //    rowChart.Series = rowChartData;
+        //});
+        //    DataContext = this;
+        //    rowChart.Series = rowChartData;
         }
 
       

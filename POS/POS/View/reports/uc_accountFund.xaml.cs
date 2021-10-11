@@ -90,7 +90,6 @@ namespace POS.View.reports
                 chk_allBranches.IsChecked = true;
                 chk_allPos.IsChecked = true;
             
-                await RefreshBalanceSTSList();
                 await Search();
 
                 SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), btn_branch.Tag.ToString());
@@ -198,7 +197,7 @@ namespace POS.View.reports
             {
                 balance = s.Key
             });
-            balances.AddRange(tempBalance.Select(nn => nn.balance.Value));
+            balances.AddRange(tempBalance.Select(nn => decimal.Parse(SectionData.DecTostring(nn.balance.Value))));
 
             List<string> lable = new List<string>();
             SeriesCollection columnChartData = new SeriesCollection();
@@ -255,7 +254,7 @@ namespace POS.View.reports
                                 count = g.Count()
                             });
             //x = result.Select(m => m.count);
-            balances = result.Select(m => m.balance.Value);
+            balances = result.Select(m => decimal.Parse(SectionData.DecTostring(m.balance.Value)));
 
             SeriesCollection piechartData = new SeriesCollection();
             //for (int i = 0; i < x.Count(); i++)
