@@ -20,8 +20,8 @@ namespace POS.Classes
 
    public class APIResult
     {
-            public string Message { get; set; }
-            public string Status { get; set; }
+            //public string Message { get; set; }
+            //public string Status { get; set; }
 
         private static string Secret = "EREMN05OPLoDvbTTa/QkqLNMI7cPLguaRyHzyg7n5qNBVjQmtBhz4SzYh4NBVCXi3KJHlSXKP+oi2+bXr6CUYTR==";
         public static async Task<IEnumerable<Claim>> getList(string method,Dictionary<string,string> parameters = null )
@@ -67,22 +67,31 @@ namespace POS.Classes
  
             var request = new RestRequest(Method.GET);
             request.AddHeader("content-type", "application/json, charset=UTF-8,Encoding.UNICOD, charset=utf8_unicode_ci");
-           request.AddHeader("authorization", "Bearer "+getToken);
             request.AddHeader("Content-Encoding", "gzip, charset=utf-8, Encoding.ASSCI,charset=utf8_unicode_ci ");
             request.AddHeader("Accept-Encoding", "gzip, deflate");
 
             IRestResponse response = await client.ExecuteTaskAsync(request);
             var jsonString = response.Content.ToString();
-            var Sresponse = JsonConvert.DeserializeObject<APIResult>(jsonString);
-
-            if (Sresponse.Status == "Success")
+            var Sresponse = JsonConvert.DeserializeObject<string>(jsonString);
+            if(Sresponse != "")
             {
-                var decryptedToken = DeCompressThenDecrypt(Sresponse.Message);
+                var decryptedToken = DeCompressThenDecrypt(Sresponse);
                 var jwtToken = new JwtSecurityToken(decryptedToken);
                 var s = jwtToken.Claims.ToArray();
                 IEnumerable<Claim> claims = jwtToken.Claims;
-                return  claims;
+                string validAuth = claims.Where(f => f.Type == "scopes").Select(x => x.Value).FirstOrDefault();
+                if (validAuth != null && s[2].Value == "-7") // invalid authintication
+                    return null;                   
+                return claims;
             }
+            //if (Sresponse.Status == "Success")
+            //{
+            //    var decryptedToken = DeCompressThenDecrypt(Sresponse.Message);
+            //    var jwtToken = new JwtSecurityToken(decryptedToken);
+            //    var s = jwtToken.Claims.ToArray();
+            //    IEnumerable<Claim> claims = jwtToken.Claims;
+            //    return  claims;
+            //}
             return null;
         }
 
@@ -124,11 +133,11 @@ namespace POS.Classes
 
             IRestResponse response = client.Execute(request);
             var jsonString = response.Content.ToString();
-            var Sresponse = JsonConvert.DeserializeObject<APIResult>(jsonString);
+            var Sresponse = JsonConvert.DeserializeObject<string>(jsonString);
 
             if (response.StatusCode == HttpStatusCode.OK)
             {
-                var decryptedToken = DeCompressThenDecrypt(Sresponse.Message);
+                var decryptedToken = DeCompressThenDecrypt(Sresponse);
                 var jwtToken = new JwtSecurityToken(decryptedToken);
                 var s = jwtToken.Claims.ToArray();
                 IEnumerable<Claim> claims = jwtToken.Claims;
