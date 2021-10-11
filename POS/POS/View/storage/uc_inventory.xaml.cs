@@ -203,6 +203,8 @@ namespace POS.View.storage
         private async Task fillItemLocations()
         {
             int sequence = 0;
+            _DestroyAmount = 0;
+            _ShortageAmount = 0;
             invItemsLocations.Clear();
 
             inventory = await inventory.getByBranch("d", MainWindow.branchID.Value);
@@ -228,7 +230,11 @@ namespace POS.View.storage
                     iil.createUserId = MainWindow.userLogin.userId;
 
                     invItemsLocations.Add(iil);
+
+                    //calculate _ShortageCount 
+                    _ShortageAmount += (int)il.quantity;
                 }
+                tb_shortage.Text = _ShortageAmount.ToString();
                 await inputEditable();
                 dg_items.ItemsSource = invItemsLocations.ToList();
                 if (firstTimeForDatagrid)
@@ -247,13 +253,15 @@ namespace POS.View.storage
         private async Task fillInventoryDetails()
         {
             int sequence = 0;
-            invItemsLocations.Clear();
-            itemsLocations = await itemLocationModel.getAll(MainWindow.branchID.Value);
+            _ShortageAmount = 0;
+            _DestroyAmount = 0;
+            invItemsLocations.Clear();   
 
             if (_InventoryType == "d")
                 inventory = await inventory.getByBranch("d", MainWindow.branchID.Value);
             if (inventory.inventoryId == 0)// there is no draft in branch
             {
+                itemsLocations = await itemLocationModel.getAll(MainWindow.branchID.Value);
                 foreach (ItemLocation il in itemsLocations)
                 {
                     sequence++;
@@ -272,6 +280,9 @@ namespace POS.View.storage
                     iil.createUserId = MainWindow.userLogin.userId;
 
                     invItemsLocations.Add(iil);
+
+                    //calculate _ShortageCount 
+                    _ShortageAmount += (int)il.quantity;
                 }
             }
             else
@@ -279,7 +290,15 @@ namespace POS.View.storage
                 txt_inventoryNum.Text = inventory.num;
                 txt_inventoryDate.Text = inventory.createDate.ToString();
                 invItemsLocations = await invItemModel.GetAll(inventory.inventoryId);
+                foreach (InventoryItemLocation il in invItemsLocations)
+                {
+                    _ShortageAmount += (int)(il.quantity - il.amount);
+                    _DestroyAmount += (int) il.amountDestroyed;
+                }
             }
+
+            tb_shortage.Text = _ShortageAmount.ToString();
+            tb_destroy.Text = _DestroyAmount.ToString();
             await inputEditable();
             dg_items.ItemsSource = invItemsLocations.ToList();
             if (firstTimeForDatagrid)
@@ -324,25 +343,43 @@ namespace POS.View.storage
                     SectionData.StartAwait(grid_main);
 
                 TextBox t = new TextBox();
-                ItemLocation row = e.Row.Item as ItemLocation;
+                InventoryItemLocation row = e.Row.Item as InventoryItemLocation;
                 var index = e.Row.GetIndex();
-                if (dg_items.SelectedIndex != -1 && index < itemsLocations.Count)
+                if (dg_items.SelectedIndex != -1 && index < invItemsLocations.Count)
                 {
                     var columnName = e.Column.Header.ToString();
                     t = e.EditingElement as TextBox;
+                    int oldCount;
+                    int newCount;
                     if (t != null && columnName == MainWindow.resourcemanager.GetString("trDestoryCount"))
                     {
-                        int destroyCount = int.Parse(t.Text);
-                        //int oldCount = e.Row.Item.
-                        int newCount = int.Parse(t.Text);
-                        if (destroyCount > itemsLocations[index].quantity)
+                        oldCount = (int)row.amountDestroyed;
+                        newCount = int.Parse(t.Text);
+                        if (newCount > invItemsLocations[index].quantity)
                         {
                             
                             t.Text = "0";
+                            newCount = 0;
                             Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorDistroyMoreQuanToolTip"), animation: ToasterAnimation.FadeIn);
                         }
+                        _DestroyAmount -= oldCount;
                         _DestroyAmount += newCount;
-                        refreshDestroyAmount();
+                        tb_destroy.Text = _DestroyAmount.ToString();
+                    }
+                    if (t != null && columnName == MainWindow.resourcemanager.GetString("trInventoryAmount"))
+                    {
+                        oldCount = (int)row.amount;
+                        newCount = int.Parse(t.Text);
+                        if (newCount > invItemsLocations[index].quantity)
+                        {
+                            t.Text = "0";
+                            newCount = 0;
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorShortMoreQuanToolTip"), animation: ToasterAnimation.FadeIn);
+                        }
+                        
+                        _ShortageAmount -= (int)(invItemsLocations[index].quantity - oldCount);
+                        _ShortageAmount += (int)invItemsLocations[index].quantity - newCount;
+                        tb_shortage.Text = _ShortageAmount.ToString();
                     }
                 }
                 if (sender != null)
@@ -355,10 +392,6 @@ namespace POS.View.storage
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-        private static void refreshDestroyAmount()
-        {
-
-        }
         private async void clearInventory()
         {
             _InventoryType = "d";
@@ -366,6 +399,8 @@ namespace POS.View.storage
             txt_inventoryDate.Text = "";
             txt_inventoryNum.Text = "";
             md_docImage.Badge = "";
+            _DestroyAmount = 0;
+            _ShortageAmount = 0;
             invItemsLocations.Clear();
             txt_titleDataGrid.Text = MainWindow.resourcemanager.GetString("trInventoryDraft");
             dg_items.ItemsSource = null;
@@ -430,7 +465,7 @@ namespace POS.View.storage
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-
+                
                 inventory = await inventory.getByBranch("d", MainWindow.branchID.Value);
                 if (inventory.inventoryId == 0)
                 {
@@ -439,10 +474,15 @@ namespace POS.View.storage
                 }
                 else
                 {
-                    txt_titleDataGrid.Text = MainWindow.resourcemanager.GetString("trInventoryDraft");
-                    _InventoryType = "d";
-                    await refreshDocCount(inventory.inventoryId);
-                    await fillInventoryDetails();
+                    if (_InventoryType == "d" && invItemsLocations.Count > 0)
+                    { }
+                    else
+                    {
+                        txt_titleDataGrid.Text = MainWindow.resourcemanager.GetString("trInventoryDraft");
+                        _InventoryType = "d";
+                        await refreshDocCount(inventory.inventoryId);
+                        await fillInventoryDetails();
+                    }
                 }
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -473,10 +513,15 @@ namespace POS.View.storage
                 }
                 else
                 {
-                    txt_titleDataGrid.Text = MainWindow.resourcemanager.GetString("trStocktaking");
-                    _InventoryType = "n";
-                    await refreshDocCount(inventory.inventoryId);
-                    await fillInventoryDetails();
+                    if (_InventoryType == "n" && invItemsLocations.Count > 0)
+                    { }
+                    else
+                    {
+                        txt_titleDataGrid.Text = MainWindow.resourcemanager.GetString("trStocktaking");
+                        _InventoryType = "n";
+                        await refreshDocCount(inventory.inventoryId);
+                        await fillInventoryDetails();
+                    }
                 }
                 if (sender != null)
                     SectionData.EndAwait(grid_main);

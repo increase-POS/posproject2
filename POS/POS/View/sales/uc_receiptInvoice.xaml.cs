@@ -3590,12 +3590,12 @@ namespace POS.View
                         if (w.invoice != null)
                         {
                             invoice = w.invoice;
+                            _InvoiceType = invoice.invType;
                             //notifications
                             setNotifications();
                             md_payments.Badge = "";
                             await refreshDocCount(invoice.invoiceId);
-
-                            _InvoiceType = invoice.invType;
+                         
                             _invoiceId = invoice.invoiceId;
                             // set title to bill
                             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trQuotations");

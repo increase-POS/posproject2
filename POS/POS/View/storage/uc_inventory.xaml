@@ -209,7 +209,7 @@
                Margin="5,5,10,10" x:Name="bdr_archive"
                     CornerRadius="7" BorderBrush="Black" Background="{StaticResource MainColorBlue}" Padding="0">
                 <Button Content="Save" Height="auto" BorderBrush="{x:Null}"  FontSize="14" x:Name="btn_archive"
-                    Background="{x:Null}" Click="Btn_archive_Click"  />
+                    Background="{x:Null}" Click="Btn_archive_Click" IsEnabled="False" />
             </Border>
 
         </Grid>
