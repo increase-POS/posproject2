@@ -78,10 +78,9 @@ namespace POS.Classes
                 var decryptedToken = DeCompressThenDecrypt(Sresponse);
                 var jwtToken = new JwtSecurityToken(decryptedToken);
                 var s = jwtToken.Claims.ToArray();
+                if (s[2].Value == "-7") // invalid authintication
+                    return null;
                 IEnumerable<Claim> claims = jwtToken.Claims;
-                string validAuth = claims.Where(f => f.Type == "scopes").Select(x => x.Value).FirstOrDefault();
-                if (validAuth != null && s[2].Value == "-7") // invalid authintication
-                    return null;                   
                 return claims;
             }
             //if (Sresponse.Status == "Success")
