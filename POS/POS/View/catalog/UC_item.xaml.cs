@@ -2337,7 +2337,7 @@ namespace POS.View
             {
                 //byte[] imageBuffer = await itemModel.downloadImage(item.image); // read this as BLOB from your DB
                 byte[] imageBuffer = itemModel.getLocalImage(item.image);
-                imageBuffer = null;
+
                 if (imageBuffer != null)
                 {
                     var bitmapImage = new BitmapImage();
