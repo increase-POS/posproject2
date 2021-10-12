@@ -386,9 +386,9 @@ namespace POS.View
                         barcodeString = generateRandomBarcode();
                 }
                 tb_barcode.Text = barcodeString;
+                SectionData.validateEmptyTextBox(tb_barcode, p_errorBarcode, tt_errorBarcode, "trErrorEmptyBarcodeToolTip");
             }
             drawBarcode(tb_barcode.Text);
-
         }
         private void drawBarcode(string barcodeStr)
         {
@@ -2158,7 +2158,6 @@ namespace POS.View
         }
         async Task RefrishCategoriesCard()
         {
-
             if (categories is null)
                 await RefrishCategories();
             categoriesQuery = categories.Where(x => x.isActive == tglCategoryState && x.parentId == categoryParentId);
@@ -2336,26 +2335,35 @@ namespace POS.View
             }
             else
             {
-                byte[] imageBuffer = await itemModel.downloadImage(item.image); // read this as BLOB from your DB
-
-                var bitmapImage = new BitmapImage();
+                //byte[] imageBuffer = await itemModel.downloadImage(item.image); // read this as BLOB from your DB
+                byte[] imageBuffer = itemModel.getLocalImage(item.image);
+                imageBuffer = null;
                 if (imageBuffer != null)
                 {
-                    using (var memoryStream = new MemoryStream(imageBuffer))
+                    var bitmapImage = new BitmapImage();
+                    if (imageBuffer != null)
                     {
-                        bitmapImage.BeginInit();
-                        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                        bitmapImage.StreamSource = memoryStream;
-                        bitmapImage.EndInit();
-                    }
+                        using (var memoryStream = new MemoryStream(imageBuffer))
+                        {
+                            bitmapImage.BeginInit();
+                            bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                            bitmapImage.StreamSource = memoryStream;
+                            bitmapImage.EndInit();
+                        }
 
-                    img_item.Background = new ImageBrush(bitmapImage);
+                        img_item.Background = new ImageBrush(bitmapImage);
+                    }
+                    // configure trmporary path
+                    string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+                    string tmpPath = System.IO.Path.Combine(dir, Global.TMPItemsFolder);
+                    tmpPath = System.IO.Path.Combine(tmpPath, item.image);
+                    openFileDialog.FileName = tmpPath;
                 }
-                // configure trmporary path
-                string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
-                string tmpPath = System.IO.Path.Combine(dir, Global.TMPItemsFolder);
-                tmpPath = System.IO.Path.Combine(tmpPath, item.image);
-                openFileDialog.FileName = tmpPath;
+                else
+                {
+                    SectionData.clearImg(img_item);
+                }
+                
             }
 
         }
@@ -2391,7 +2399,8 @@ namespace POS.View
             {
                 this.DataContext = item;
 
-
+                Btn_unitClear(null,null);
+                
                 await refreshPropertiesGrid(item.itemId);
                 await refreshSerials(item.itemId);
                 await refreshItemUnitsGrid(item.itemId);
@@ -3098,12 +3107,12 @@ namespace POS.View
         private async void Cb_selectUnit_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-
-                if (cb_selectUnit.SelectedIndex != -1)
+            {             
+                if (cb_selectUnit.SelectedIndex != -1 && itemUnit.itemUnitId == 0)
                 {
+                    if (sender != null)
+                        SectionData.StartAwait(grid_main);
+
                     if (cb_unit.SelectedIndex != -1 && (int)cb_selectUnit.SelectedValue == (int)cb_unit.SelectedValue)
                     {
                         tb_count.Text = "1";
@@ -3111,9 +3120,9 @@ namespace POS.View
                     await fillSmallUnits(item.itemId, (int)cb_selectUnit.SelectedValue);
                     generateBarcode("", true);
                     cb_unit.SelectedValue = itemUnit.subUnitId;
-                }
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
+                    if (sender != null)
+                        SectionData.EndAwait(grid_main);
+                }               
             }
             catch (Exception ex)
             {

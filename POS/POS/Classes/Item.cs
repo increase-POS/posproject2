@@ -380,6 +380,34 @@ namespace POS.Classes
                 return byteImg;
             }
         }
+
+        public byte[] getLocalImage(string imageName)
+        {
+            byte[] data = null;
+            string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+            string tmpPath = Path.Combine(dir, Global.TMPItemsFolder);
+            if (!Directory.Exists(tmpPath))
+                Directory.CreateDirectory(tmpPath);
+            tmpPath = Path.Combine(tmpPath, imageName);
+            if (System.IO.File.Exists(tmpPath))
+            {
+                // Load file meta data with FileInfo
+                FileInfo fileInfo = new FileInfo(tmpPath);
+                // The byte[] to save the data in
+                data = new byte[fileInfo.Length];
+                using (var stream = new FileStream(tmpPath, FileMode.Open, FileAccess.Read))
+                {
+                    stream.Read(data, 0, data.Length);
+                }
+                // Delete the temporary file
+                fileInfo.Delete();
+            }
+            return data;
+        }
+        public bool chkImgChng(string imageName, DateTime updateDate)
+        {
+            return true;
+        }
         #endregion
 
 
