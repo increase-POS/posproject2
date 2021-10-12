@@ -304,8 +304,8 @@ namespace POS.Classes
             //string str2 = Compress(text);
             //string str2 = Encoding.Unicode.GetString(bytes1);
             //return str2;
-          var str2 = ReverseString(str1);
-            var bytes = Encoding.UTF8.GetBytes(str2);
+          //var str2 = ReverseString(str1);
+            var bytes = Encoding.UTF8.GetBytes(str1);
             return (Encoding.UTF8.GetString(bytes));
         }
 
@@ -313,11 +313,11 @@ namespace POS.Classes
         {
             var bytes = Encoding.UTF8.GetBytes(text);
             text = Encoding.UTF8.GetString(bytes);
-            string reversedStr = ReverseString(text);
+            //string reversedStr = ReverseString(text);
             //var bytes = Encoding.Unicode.GetBytes(reversedStr);
             //var bytes1 = DeCompress(bytes);
             //string str = Encoding.Unicode.GetString(bytes1);
-            return( Decrypt(reversedStr));
+            return( Decrypt(text));
         }
     }
 
