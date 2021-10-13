@@ -2635,4 +2635,7 @@ Please add Email in setting</value>
   <data name="trProfits" xml:space="preserve">
     <value>Profits</value>
   </data>
+  <data name="trNoNetworkConnection" xml:space="preserve">
+    <value>No network connection</value>
+  </data>
 </root>

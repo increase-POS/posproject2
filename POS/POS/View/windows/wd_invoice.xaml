@@ -160,19 +160,14 @@
                             </Style>
                         </DataGrid.RowStyle>
                     </DataGrid>
-                    <Border Grid.Row="1" BorderThickness="0,0,0,1" BorderBrush="#178DD2" Margin="15 0 0 0" Width="15"  
+                    <Border Grid.Row="1" BorderThickness="0,0,0,1" BorderBrush="#178DD2" Margin="15 0 0 0"  
                             HorizontalAlignment="Left" VerticalAlignment="Bottom" >
-                            <TextBlock   Background="{x:Null}" x:Name="txt_count"   Grid.Column="4" 
-                               Text="0" Foreground="#378500" FontSize="12" HorizontalAlignment="Center" >
-                                       
-                                <TextBlock.ToolTip>
-                                    <ToolTip x:Name="tt_count" Content="Customers Count"
-                                              Placement="left" 
-                                              HorizontalOffset="35"
-                                              PlacementRectangle="50,25,0,0"
-                                              VerticalOffset="-20"/>
-                                </TextBlock.ToolTip>
-                            </TextBlock>
+                        <StackPanel Orientation="Horizontal" Margin="5 0 5 0">
+                        <TextBlock   Background="{x:Null}" x:Name="txt_countTitle"    Grid.Column="4" Margin="0 0 5 0"
+                               Text="Count:" Foreground="#378500" FontSize="14" HorizontalAlignment="Center"/>
+                        <TextBlock   Background="{x:Null}" x:Name="txt_count"   Grid.Column="4" 
+                               Text="0" Foreground="#378500" FontSize="14" HorizontalAlignment="Center" />
+                        </StackPanel>
                     </Border>
 
                 </Grid>

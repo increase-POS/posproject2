@@ -4274,6 +4274,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to لا يوجد اتصال بالشبكة.
+        /// </summary>
+        internal static string trNoNetworkConnection {
+            get {
+                return ResourceManager.GetString("trNoNetworkConnection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to لا يوجد إشعارات!.
         /// </summary>
         internal static string trNoNotifications {

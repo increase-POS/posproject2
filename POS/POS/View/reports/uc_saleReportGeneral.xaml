@@ -12,7 +12,6 @@
             <ColumnDefinition Width="auto"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-
         <Grid Name="main" Grid.Column="1">
             <ScrollViewer Name="sc_main" >
                 <WrapPanel Margin="0,15,0,15" HorizontalAlignment="Center" >

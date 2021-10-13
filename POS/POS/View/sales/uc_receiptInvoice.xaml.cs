@@ -4195,21 +4195,34 @@ namespace POS.View
             {
                 if (!string.IsNullOrEmpty(tb_total.Text) && !string.IsNullOrEmpty(tb_cashPaid.Text))
                 {
-                    decimal total = decimal.Parse(tb_total.Text);
-                    decimal cashPaid = decimal.Parse(tb_cashPaid.Text);
-                    decimal theRest = (cashPaid - total);
+                    if (tb_cashPaid.Text.Equals("0"))
+                    {
+                        txt_theRest.Text = "0";
+                        txt_theRest.Foreground = Application.Current.Resources["MainColorGrey"] as SolidColorBrush;
+                    }
+                        else
+                    {
+                        decimal total = decimal.Parse(tb_total.Text);
+                        decimal cashPaid = decimal.Parse(tb_cashPaid.Text);
+                        decimal theRest = (cashPaid - total);
 
                         txt_theRest.Text = theRest.ToString();
-                    if (theRest > 0)
-                        txt_theRest.Foreground = Application.Current.Resources["mediumGreen"] as SolidColorBrush;
-                    else if (theRest < 0)
-                        txt_theRest.Foreground = Application.Current.Resources["mediumRed"] as SolidColorBrush;
-                    else
-                        txt_theRest.Foreground = Application.Current.Resources["MainColorGrey"] as SolidColorBrush;
-                    
+
+                        if (theRest > 0)
+                            txt_theRest.Foreground = Application.Current.Resources["mediumGreen"] as SolidColorBrush;
+                        else if (theRest < 0)
+                            txt_theRest.Foreground = Application.Current.Resources["mediumRed"] as SolidColorBrush;
+                        else
+                            txt_theRest.Foreground = Application.Current.Resources["MainColorGrey"] as SolidColorBrush;
+                    }
+                   
+
                 }
                 else
+                {
                     txt_theRest.Text = "0";
+                        txt_theRest.Foreground = Application.Current.Resources["MainColorGrey"] as SolidColorBrush;
+                }
             }
             catch (Exception ex)
             {

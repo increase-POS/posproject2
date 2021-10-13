@@ -2617,4 +2617,7 @@
   <data name="trProfits" xml:space="preserve">
     <value>الربح</value>
   </data>
+  <data name="trNoNetworkConnection" xml:space="preserve">
+    <value>لا يوجد اتصال بالشبكة</value>
+  </data>
 </root>

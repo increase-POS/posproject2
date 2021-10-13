@@ -178,8 +178,10 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
 
                 mainWindow = this;
                 windowFlowDirection();
+               
+
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {  SectionData.ExceptionMessage(ex,this);}
 
         }
@@ -206,8 +208,8 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_mainWindow);
+ 
 
-                
 
                 #region bonni
 #pragma warning disable CS0436 // Type conflicts with imported type
@@ -243,6 +245,9 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
 
                 #endregion
                 translate();
+
+
+
 
                 #region get user path
                 try
@@ -422,13 +427,18 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
                 //grid_mainWindow.IsEnabled = true;
 
 
-
-
-
-              
-
                 //SelectAllText
                 EventManager.RegisterClassHandler(typeof(System.Windows.Controls.TextBox), System.Windows.Controls.TextBox.GotKeyboardFocusEvent, new RoutedEventHandler(SelectAllText));
+
+
+                //#region notifications location
+                //Point position = BTN_notifications.PointToScreen(new Point(0d, 0d)),
+                //controlPosition = this.PointToScreen(new Point(0d, 0d));
+                //position.X -= controlPosition.X;
+                //position.Y -= controlPosition.Y;
+                //position.X -= 100;
+                //bdrMain.Margin = new Thickness(0, 70, position.X, 0);
+                //#endregion
 
                 if (sender != null)
                     SectionData.EndAwait(grid_mainWindow);

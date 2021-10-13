@@ -154,7 +154,7 @@ namespace POS.View.windows
             dg_Invoice.Columns[2].Header = MainWindow.resourcemanager.GetString("trUser");
             dg_Invoice.Columns[3].Header = MainWindow.resourcemanager.GetString("trItemsCount");
             dg_Invoice.Columns[4].Header = MainWindow.resourcemanager.GetString("trTotal");
-            tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
+            txt_countTitle.Text = MainWindow.resourcemanager.GetString("trCount") + ":";
 
             btn_select.Content = MainWindow.resourcemanager.GetString("trSelect");
         }
