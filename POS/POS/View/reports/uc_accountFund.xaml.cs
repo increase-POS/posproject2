@@ -151,6 +151,28 @@ namespace POS.View.reports
 
         private void translate()
         {
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tt_branch, MainWindow.resourcemanager.GetString("trBranches"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_branches, MainWindow.resourcemanager.GetString("trBranch"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_pos, MainWindow.resourcemanager.GetString("trPOS"));
+
+            chk_allBranches.Content = MainWindow.resourcemanager.GetString("trAll");
+            chk_allPos.Content = MainWindow.resourcemanager.GetString("trAll");
+
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(txt_search, MainWindow.resourcemanager.GetString("trSearchHint"));
+            tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
+
+            col_branchCode.Header = MainWindow.resourcemanager.GetString("trCode");
+            col_branchName.Header = MainWindow.resourcemanager.GetString("trBranch");
+            col_posCode.Header = MainWindow.resourcemanager.GetString("trCode");
+            col_posName.Header = MainWindow.resourcemanager.GetString("trPOS");
+            col_posBalance.Header = MainWindow.resourcemanager.GetString("trBalance");
+
+            tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
+            tt_print.Content = MainWindow.resourcemanager.GetString("trPrint");
+            tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
+            tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
+
+            txt_total.Text = MainWindow.resourcemanager.GetString("trTotal");
         }
 
         private void fillBranches()

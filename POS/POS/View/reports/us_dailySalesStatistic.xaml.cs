@@ -112,7 +112,37 @@ namespace POS.View.reports
 
         private void translate()
         {
+            tt_invoice.Content = MainWindow.resourcemanager.GetString("trInvoices");
+            tt_order.Content = MainWindow.resourcemanager.GetString("trOrders");
+            tt_quotation.Content = MainWindow.resourcemanager.GetString("trQuotations");
+
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_invoiceDate, MainWindow.resourcemanager.GetString("trDate"));
+            chk_invoice.Content = MainWindow.resourcemanager.GetString("trInvoice");
+            chk_return.Content = MainWindow.resourcemanager.GetString("trReturn");
+            chk_drafs.Content = MainWindow.resourcemanager.GetString("trDraft");
+
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_branches, MainWindow.resourcemanager.GetString("trBranchHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_pos, MainWindow.resourcemanager.GetString("trPosHint"));
+
+            chk_allBranches.Content = MainWindow.resourcemanager.GetString("trAll");
+            chk_allPos.Content = MainWindow.resourcemanager.GetString("trAll");
+
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(txt_search, MainWindow.resourcemanager.GetString("trSearchHint"));
+            tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
+
+            col_No.Header = MainWindow.resourcemanager.GetString("trNum");
+            col_type.Header = MainWindow.resourcemanager.GetString("trType");
+            col_branch.Header = MainWindow.resourcemanager.GetString("trBranch");
+            col_pos.Header = MainWindow.resourcemanager.GetString("trPOS");
+            col_discount.Header = MainWindow.resourcemanager.GetString("trDiscount");
+            col_tax.Header = MainWindow.resourcemanager.GetString("trTax");
+            col_totalNet.Header = MainWindow.resourcemanager.GetString("trTotal");
             
+            tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
+            tt_print.Content = MainWindow.resourcemanager.GetString("trPrint");
+            tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
+            tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
+
         }
 
         async Task<IEnumerable<ItemTransferInvoice>> RefreshItemTransferInvoiceList()

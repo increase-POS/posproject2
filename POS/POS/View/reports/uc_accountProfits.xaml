@@ -267,7 +267,7 @@
                         <Button FlowDirection="LeftToRight" DockPanel.Dock="Right" Width="40" Height="40" x:Name="btn_refresh" 
                             materialDesign:ButtonAssist.CornerRadius="15" Cursor="Hand"
                           Background="{x:Null}" BorderBrush="{x:Null}"   Style="{StaticResource SmallButtonCircleRotate}"
-                             Margin="5,1"   ToolTip="Refresh"  RenderTransformOrigin="0.5,0.5"
+                             Margin="5,1" RenderTransformOrigin="0.5,0.5"
                             DataContext="M896,0L896,0C401.2,0,0,401.2,0,896v0c0,494.8,401.2,896,896,896h0c494.8,0,896-401.2,896-896v0C1792,401.2,1390.8,0,896,0z
 	 M1451.3,1021c-31.9,133.7-98.8,242.1-200.6,325.2c-101.8,83.1-221,124.6-357.7,124.6c-72.8,0-143.3-13.7-211.4-41.2
 	s-128.8-66.6-182.2-117.5l-96.5,96.5c-9.5,9.5-20.7,14.2-33.7,14.2s-24.2-4.7-33.7-14.2c-9.5-9.5-14.2-20.7-14.2-33.7v-335.3
@@ -288,6 +288,13 @@
                                     <TranslateTransform/>
                                 </TransformGroup>
                             </Button.RenderTransform>
+                            <Button.ToolTip>
+                                <ToolTip x:Name="tt_refresh" Content="Refresh"
+                                              Placement="left" 
+                                              HorizontalOffset="15"
+                                              PlacementRectangle="50,0,0,0"
+                                              VerticalOffset="25"/>
+                            </Button.ToolTip>
                         </Button>
 
 
@@ -426,7 +433,7 @@
                         <StackPanel Orientation="Horizontal" Margin="5,0" VerticalAlignment="Center" >
 
                             <TextBlock Text="TOTAL" x:Name="txt_total" Foreground="{StaticResource MainColorBlue}" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Left" 
-                               Margin="2,0,5,0" FontSize="22"/>
+                               Margin="2,0,5,0" FontSize="20"/>
                             <TextBlock  Grid.Column="1" Margin="5,0,0,0" FontWeight="Bold" FontSize="18"  VerticalAlignment="Center"
                                    TextAlignment="Center" Name="tb_total" Foreground="#4E4E4E" HorizontalAlignment="Right" 
                                       Text="0"          />

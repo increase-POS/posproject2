@@ -87,22 +87,7 @@ namespace POS.View.reports
             translate();
             #endregion
 
-            ////////invoice button//////////??????????????????????????
-            //hideAllColumns();
-
-            //col_invNum.Visibility = Visibility.Visible;
-            //col_invType.Visibility = Visibility.Visible;
-            //col_invTotal.Visibility = Visibility.Visible;
-            //col_branch.Visibility = Visibility.Visible;
-            //col_pos.Visibility = Visibility.Visible;
-            //col_invoiceProfit.Visibility = Visibility.Visible;
-
-            //await Search();
-
-            ////SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), btn_invoice.Tag.ToString());
             Btn_invoice_Click(btn_invoice , null);
-            //clickInvoiceBtn();
-            /////////////////////////////?????????????????????????????????
 
             //    if (sender != null)
             //        SectionData.EndAwait(grid_main);
@@ -117,7 +102,34 @@ namespace POS.View.reports
 
         private void translate()
         {
-           
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_startDate, MainWindow.resourcemanager.GetString("trStartDateHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_endDate, MainWindow.resourcemanager.GetString("trEndDateHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(txt_search, MainWindow.resourcemanager.GetString("trSearchHint"));
+
+            chk_allBranches.Content = MainWindow.resourcemanager.GetString("trAll");
+            chk_allPos.Content = MainWindow.resourcemanager.GetString("trAll");
+
+            tt_invoice.Content = MainWindow.resourcemanager.GetString("trInvoices");
+            tt_item.Content = MainWindow.resourcemanager.GetString("trItems");
+
+            col_invNum.Header = MainWindow.resourcemanager.GetString("trNum");
+            col_invType.Header = MainWindow.resourcemanager.GetString("trType");
+            col_invTotal.Header = MainWindow.resourcemanager.GetString("trTotal");
+            col_itemName.Header = MainWindow.resourcemanager.GetString("trItem");
+            col_unitName.Header = MainWindow.resourcemanager.GetString("trUnit");
+            col_quantity.Header = MainWindow.resourcemanager.GetString("trQuantity");
+            col_branch.Header = MainWindow.resourcemanager.GetString("trBranch");
+            col_pos.Header = MainWindow.resourcemanager.GetString("trPOS");
+            col_invoiceProfit.Header = MainWindow.resourcemanager.GetString("trProfits");
+            col_itemProfit.Header = MainWindow.resourcemanager.GetString("trProfits");
+
+            tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
+            tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
+            tt_print.Content = MainWindow.resourcemanager.GetString("trPrint");
+            tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
+            tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
+
+            txt_total.Text = MainWindow.resourcemanager.GetString("trTotal");
         }
 
         async Task<IEnumerable<ItemUnitInvoiceProfit>> RefreshItemUnitInvoiceProfit()
@@ -865,103 +877,19 @@ namespace POS.View.reports
 
         private void fillRowChart()
         {
-            #region
-            //MyAxis.Labels = new List<string>();
-            //List<string> names = new List<string>();
-            ////IEnumerable<decimal> pTemp = null;
-            ////IEnumerable<decimal> pbTemp = null;
-            ////IEnumerable<decimal> resultTemp = null;
-            //IEnumerable<decimal> profitTemp = null;
-            //var temp = profitsQuery;
-            //var result = temp.GroupBy(s => s.branchCreatorId).Select(s => new
-            //{
-            //    branchCreatorId = s.Key,
-            //    //totalS = s.Where(x => x.invType == "s").Sum(x => x.totalNet),
-            //    //totalSb = s.Where(x => x.invType == "sb").Sum(x => x.totalNet)
-            //    profit = s.FirstOrDefault().invoiceProfit
-            //}
-            //);
-            ////var resultTotal = result.Select(x => new { x.branchCreatorId, total = x.totalS - x.totalSb }).ToList();
-            ////pTemp = result.Select(x => (decimal)x.totalS);
-            ////pbTemp = result.Select(x => (decimal)x.totalSb);
-            ////resultTemp = result.Select(x => (decimal)x.totalS);
-            //profitTemp = result.Select(x => (decimal)x.profit);
-            //var tempName = temp.GroupBy(s => s.branchCreatorName).Select(s => new
-            //{
-            //    name = s.Key
-            //});
-            //names.AddRange(tempName.Select(nn => nn.name));
-
-            //SeriesCollection rowChartData = new SeriesCollection();
-            ////List<decimal> purchase = new List<decimal>();
-            ////List<decimal> returns = new List<decimal>();
-            ////List<decimal> sub = new List<decimal>();
-            //List<decimal> profitLst = new List<decimal>();
-            //List<string> titles = new List<string>()
-            //{
-            //         //    "اجمالي المبيعات","اجمالي المرتجع","صافي المبيعات"
-            //         MainWindow.resourcemanager.GetString("trProfits")
-            //};
-            ////for (int i = 0; i < pbTemp.Count(); i++)
-            //for (int i = 0; i < profitTemp.Count(); i++)
-            //{
-            //    //purchase.Add(pTemp.ToList().Skip(i).FirstOrDefault());
-            //    //returns.Add(pbTemp.ToList().Skip(i).FirstOrDefault());
-            //    //sub.Add(resultTemp.ToList().Skip(i).FirstOrDefault());
-            //    profitLst.Add(profitTemp.ToList().Skip(i).FirstOrDefault());
-            //    MyAxis.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
-            //}
-
-            //rowChartData.Add(
-            //     new LineSeries
-            //     {
-            //         Values = profitLst.AsChartValues(),
-            //         Title = titles[0]
-            //     });
-            ////new LineSeries
-            ////{
-            ////    Values = purchase.AsChartValues(),
-            ////    Title = titles[0]
-            ////});
-            ////  new LineSeries
-            ////  {
-            ////      Values = purchase.AsChartValues(),
-            ////      Title = titles[1]
-            ////  });
-            ////  new LineSeries
-            ////  {
-            ////      Values = purchase.AsChartValues(),
-            ////      Title = titles[2]
-            ////}
-            ////);
-
-            //DataContext = this;
-            //rowChart.Series = rowChartData;
-            #endregion
-
-            int endYear = DateTime.Now.Year;
-            int startYear = endYear - 1;
-            int startMonth = DateTime.Now.Month;
-            int endMonth = startMonth;
-            if (dp_startDate.SelectedDate != null && dp_endDate.SelectedDate != null)
-            {
-                startYear  = dp_startDate.SelectedDate.Value.Year;
-                endYear    = dp_endDate.SelectedDate.Value.Year;
-                startMonth = dp_startDate.SelectedDate.Value.Month;
-                endMonth   = dp_endDate.SelectedDate.Value.Month;
-            }
-
             MyAxis.Labels = new List<string>();
             List<string> names = new List<string>();
             List<int> ids = new List<int>();
-            List<ItemUnitInvoiceProfit> resultList = new List<ItemUnitInvoiceProfit>();
+            List<int> otherIds = new List<int>();
 
-            var temp = profitsQuery;
-            
+            List<ItemUnitInvoiceProfit> resultList = new List<ItemUnitInvoiceProfit>();
             SeriesCollection rowChartData = new SeriesCollection();
+
+            //var temp = profitsQuery;
+
             if (selectedTab == 0)
             {
-                var tempName = temp.GroupBy(s => new { s.branchCreatorId }).Select(s => new
+                var tempName = profitsQuery.GroupBy(s => new { s.branchCreatorId }).Select(s => new
                 {
                     id = s.Key,
                     name = s.FirstOrDefault().branchCreatorName
@@ -971,7 +899,7 @@ namespace POS.View.reports
             }
             else if (selectedTab == 1)
             {
-                var tempName = temp.GroupBy(s => new { s.ITitemId }).Select(s => new
+                var tempName = profitsQuery.GroupBy(s => new { s.ITitemId }).Select(s => new
                 {
                     id = s.Key,
                     name = s.FirstOrDefault().ITitemName
@@ -980,94 +908,260 @@ namespace POS.View.reports
                 ids.AddRange(tempName.Select(mm => mm.id.ITitemId.Value));
             }
 
-            //SeriesCollection columnChartData = new SeriesCollection();
-            //List<decimal> profitLst = new List<decimal>();
-
-            LineSeries[] ls = new LineSeries[names.Count];
-
-            for (int i = 0; i < names.Count(); i++)
+            //LineSeries[] ls = new LineSeries[names.Count];
+            int x = 6;
+            if (names.Count() < 6) x = names.Count(); 
+            for (int i = 0; i < x; i++)
             {
-                SeriesCollection columnChartData = new SeriesCollection();
-                List<decimal> profitLst = new List<decimal>();
+                #region
+                //int endYear = DateTime.Now.Year;
+                //int startYear = endYear - 1;
+                //int startMonth = DateTime.Now.Month;
+                //int endMonth = startMonth;
+                //if (dp_startDate.SelectedDate != null && dp_endDate.SelectedDate != null)
+                //{
+                //    startYear = dp_startDate.SelectedDate.Value.Year;
+                //    endYear = dp_endDate.SelectedDate.Value.Year;
+                //    startMonth = dp_startDate.SelectedDate.Value.Month;
+                //    endMonth = dp_endDate.SelectedDate.Value.Month;
+                //}
+                //SeriesCollection columnChartData = new SeriesCollection();
+                //List<decimal> profitLst = new List<decimal>();
 
-                if (endYear - startYear <= 1)
-                {
-                    for (int year = startYear; year <= endYear; year++)
-                    {
-                        for (int month = startMonth; month <= 12; month++)
-                        {
-                            var firstOfThisMonth = new DateTime(year, month, 1);
-                            var firstOfNextMonth = firstOfThisMonth.AddMonths(1);
+                //if (endYear - startYear <= 1)
+                //{
+                //    for (int year = startYear; year <= endYear; year++)
+                //    {
+                //        for (int month = startMonth; month <= 12; month++)
+                //        {
+                //            var firstOfThisMonth = new DateTime(year, month, 1);
+                //            var firstOfNextMonth = firstOfThisMonth.AddMonths(1);
 
-                            if (selectedTab == 0)
-                            {
-                                var drawProfit = temp.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth && c.branchCreatorId.Value == ids[i])
-                                                              .Select(b => b.invoiceProfit).Sum();
+                //            if (selectedTab == 0)
+                //            {
+                //                var drawProfit = profitsQuery.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth && c.branchCreatorId.Value == ids[i])
+                //                                              .Select(b => b.invoiceProfit).Sum();
 
-                                profitLst.Add(drawProfit);
-                            }
-                            else if(selectedTab == 1)
-                            {
-                                var drawProfit = temp.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth && c.ITitemId.Value == ids[i])
-                                                              .Select(b => b.invoiceProfit).Sum();
+                //                profitLst.Add(drawProfit);
+                //            }
+                //            else if (selectedTab == 1)
+                //            {
+                //                var drawProfit = profitsQuery.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth && c.ITitemId.Value == ids[i])
+                //                                              .Select(b => b.invoiceProfit).Sum();
 
-                                profitLst.Add(drawProfit);
-                            }
-                            MyAxis.Labels.Add(CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month) + "/" + year);
+                //                profitLst.Add(drawProfit);
+                //            }
+                //            MyAxis.Labels.Add(CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month) + "/" + year);
 
-                            if (year == endYear && month == endMonth)
-                            {
-                                break;
-                            }
-                            if (month == 12)
-                            {
-                                startMonth = 1;
-                                break;
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    for (int year = startYear; year <= endYear; year++)
-                    {
-                        var firstOfThisYear = new DateTime(year, 1, 1);
-                        var firstOfNextMYear = firstOfThisYear.AddYears(1);
+                //            if (year == endYear && month == endMonth)
+                //            {
+                //                break;
+                //            }
+                //            if (month == 12)
+                //            {
+                //                startMonth = 1;
+                //                break;
+                //            }
+                //        }
+                //    }
+                //}
+                //else
+                //{
+                //    for (int year = startYear; year <= endYear; year++)
+                //    {
+                //        var firstOfThisYear = new DateTime(year, 1, 1);
+                //        var firstOfNextMYear = firstOfThisYear.AddYears(1);
 
-                        if (selectedTab == 0)
-                        {
-                            var drawProfit = temp.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear && c.branchCreatorId.Value == ids[i])
-                                                           .Select(b => b.invoiceProfit).Sum();
+                //        if (selectedTab == 0)
+                //        {
+                //            var drawProfit = profitsQuery.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear && c.branchCreatorId.Value == ids[i])
+                //                                           .Select(b => b.invoiceProfit).Sum();
 
-                            profitLst.Add(drawProfit);
-                        }
-                        else if (selectedTab == 1)
-                        {
-                            var drawProfit = temp.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear && c.ITitemId.Value == ids[i])
-                                                           .Select(b => b.invoiceProfit).Sum();
+                //            profitLst.Add(drawProfit);
+                //        }
+                //        else if (selectedTab == 1)
+                //        {
+                //            var drawProfit = profitsQuery.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear && c.ITitemId.Value == ids[i])
+                //                                           .Select(b => b.invoiceProfit).Sum();
 
-                            profitLst.Add(drawProfit);
-                        }
-                        MyAxis.Labels.Add(year.ToString());
-                    }
-                }
+                //            profitLst.Add(drawProfit);
+                //        }
+                //        MyAxis.Labels.Add(year.ToString());
+                //    }
+                //}
 
-                ls[i].Values = profitLst.AsChartValues();
-                ls[i].Title = names[i];
+                ////ls[i] = new LineSeries{ 
+                ////    Values = profitLst.AsChartValues(),
+                ////    Title = names[i]
+                ////                  };
                 //rowChartData.Add(
                 //            new LineSeries
                 //            {
                 //                Values = profitLst.AsChartValues(),
                 //                Title = names[i]
                 //            });
+                #endregion
 
+                drawPoints(names[i] ,ids[i] , rowChartData , 'n' , otherIds);
             }
-            //rowChartData = new SeriesCollection(ls);
-
+            //others
+            if (names.Count() > 6)
+            {
+                for (int i = names.Count - x; i < names.Count; i++)
+                    otherIds.Add(ids[i]); 
+                drawPoints(MainWindow.resourcemanager.GetString("trOthers"), 0, rowChartData, 'o', otherIds);
+            }
+            //rowChartData.AddRange(ls);
             DataContext = this;
             rowChart.Series = rowChartData;
         }
 
+        private void drawPoints(string name , int id , SeriesCollection rowChartData , char ch , List<int> otherIds)
+        {
+            int endYear = DateTime.Now.Year;
+            int startYear = endYear - 1;
+            int startMonth = DateTime.Now.Month;
+            int endMonth = startMonth;
+            if (dp_startDate.SelectedDate != null && dp_endDate.SelectedDate != null)
+            {
+                startYear = dp_startDate.SelectedDate.Value.Year;
+                endYear = dp_endDate.SelectedDate.Value.Year;
+                startMonth = dp_startDate.SelectedDate.Value.Month;
+                endMonth = dp_endDate.SelectedDate.Value.Month;
+            }
+            SeriesCollection columnChartData = new SeriesCollection();
+            List<decimal> profitLst = new List<decimal>();
 
+            if (endYear - startYear <= 1)
+            {
+                for (int year = startYear; year <= endYear; year++)
+                {
+                    for (int month = startMonth; month <= 12; month++)
+                    {
+                        var firstOfThisMonth = new DateTime(year, month, 1);
+                        var firstOfNextMonth = firstOfThisMonth.AddMonths(1);
+
+                        if (selectedTab == 0)
+                        {
+                            if (ch == 'n')
+                            {
+                                var drawProfit = profitsQuery.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth && c.branchCreatorId.Value == id)
+                                                              .Select(b => b.invoiceProfit).Sum();
+
+                                profitLst.Add(decimal.Parse(SectionData.DecTostring(drawProfit)));
+                            }
+                            else if (ch == 'o')
+                            {
+                                decimal sum = 0;
+                                for (int i = 0; i < otherIds.Count; i++)
+                                {
+                                    var drawProfit = profitsQuery.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth && c.branchCreatorId.Value == otherIds[i])
+                                                             .Select(b => b.invoiceProfit).Sum();
+                                    sum = sum + drawProfit;
+                                }
+                                profitLst.Add(decimal.Parse(SectionData.DecTostring(sum)));
+                            }
+                        }
+                        else if (selectedTab == 1)
+                        {
+                            if (ch == 'n')
+                            {
+                                var drawProfit = profitsQuery.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth && c.ITitemId.Value == id)
+                                                              .Select(b => b.invoiceProfit).Sum();
+
+                                profitLst.Add(decimal.Parse(SectionData.DecTostring(drawProfit)));
+                            }
+                            else if (ch == 'o')
+                            {
+                                decimal sum = 0;
+                                for (int i = 0; i < otherIds.Count; i++)
+                                {
+                                    var drawProfit = profitsQuery.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth && c.ITitemId.Value == otherIds[i])
+                                                             .Select(b => b.invoiceProfit).Sum();
+                                    sum = sum + drawProfit;
+                                }
+                                profitLst.Add(decimal.Parse(SectionData.DecTostring(sum)));
+                            }
+                        }
+                        MyAxis.Labels.Add(CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month) + "/" + year);
+
+                        if (year == endYear && month == endMonth)
+                        {
+                            break;
+                        }
+                        if (month == 12)
+                        {
+                            startMonth = 1;
+                            break;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                for (int year = startYear; year <= endYear; year++)
+                {
+                    var firstOfThisYear = new DateTime(year, 1, 1);
+                    var firstOfNextMYear = firstOfThisYear.AddYears(1);
+
+                    if (selectedTab == 0)
+                    {
+                        if (ch == 'n')
+                        {
+                            var drawProfit = profitsQuery.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear && c.branchCreatorId.Value == id)
+                                                           .Select(b => b.invoiceProfit).Sum();
+
+                            profitLst.Add(decimal.Parse(SectionData.DecTostring(drawProfit)));
+                        }
+                        else if (ch == 'o')
+                        {
+                            decimal sum = 0;
+                            for (int i = 0; i < otherIds.Count; i++)
+                            {
+                                var drawProfit = profitsQuery.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear && c.branchCreatorId.Value == otherIds[i])
+                                                          .Select(b => b.invoiceProfit).Sum();
+                                sum = sum + drawProfit;
+                            }
+                            profitLst.Add(decimal.Parse(SectionData.DecTostring(sum)));
+                        }
+                    }
+                    else if (selectedTab == 1)
+                    {
+                        if (ch == 'n')
+                        {
+                            var drawProfit = profitsQuery.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear && c.ITitemId.Value == id)
+                                                           .Select(b => b.invoiceProfit).Sum();
+
+                            profitLst.Add(decimal.Parse(SectionData.DecTostring(drawProfit)));
+                        }
+                        else if (ch == 'o')
+                        {
+                            decimal sum = 0;
+                            for (int i = 0; i < otherIds.Count; i++)
+                            {
+                                var drawProfit = profitsQuery.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear && c.ITitemId.Value == otherIds[i])
+                                                           .Select(b => b.invoiceProfit).Sum();
+                                sum = sum + drawProfit;
+                            }
+                            profitLst.Add(decimal.Parse(SectionData.DecTostring(sum)));
+                        }
+                    }
+                    MyAxis.Labels.Add(year.ToString());
+                }
+            }
+
+            //ls[i] = new LineSeries
+            //{
+            //    Values = profitLst.AsChartValues(),
+            //    Title = names[i]
+            //};
+            rowChartData.Add(
+                        new LineSeries
+                        {
+                            Values = profitLst.AsChartValues(),
+                            Title = name
+                        });
+
+        }
     }
 }
