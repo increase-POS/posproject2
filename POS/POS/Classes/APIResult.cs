@@ -10,6 +10,8 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,13 +20,13 @@ using System.Web;
 namespace POS.Classes
 {
 
-   public class APIResult
+    public class APIResult
     {
-            public string Message { get; set; }
-            public string Status { get; set; }
+        //public string Message { get; set; }
+        //public string Status { get; set; }
 
         private static string Secret = "EREMN05OPLoDvbTTa/QkqLNMI7cPLguaRyHzyg7n5qNBVjQmtBhz4SzYh4NBVCXi3KJHlSXKP+oi2+bXr6CUYTR==";
-        public static async Task<IEnumerable<Claim>> getList(string method,Dictionary<string,string> parameters = null )
+        public static async Task<IEnumerable<Claim>> getList(string method, Dictionary<string, string> parameters = null)
         {
             #region generate token to send it to api
             byte[] key = Convert.FromBase64String(Secret);
@@ -39,11 +41,11 @@ namespace POS.Classes
             var exp = DateTime.UtcNow.AddSeconds(120);
             var payload = new JwtPayload(null, "", new List<Claim>(), nbf, exp);
 
-            if(parameters != null)
-            for (int i = 0; i < parameters.Count; i++)
-            {
-                payload.Add(parameters.Keys.ToList()[i], parameters.Values.ToList()[i]);
-            }
+            if (parameters != null)
+                for (int i = 0; i < parameters.Count; i++)
+                {
+                    payload.Add(parameters.Keys.ToList()[i], parameters.Values.ToList()[i]);
+                }
 
             var token = new JwtSecurityToken(header, payload);
             var handler = new JwtSecurityTokenHandler();
@@ -51,42 +53,70 @@ namespace POS.Classes
             // Token to String so you can use post it to api
             string getToken = handler.WriteToken(token);
             var encryptedToken = EncryptThenCompress(getToken);
-      
-             var myData = new
-            {
-                token = encryptedToken,
-            };
-            encryptedToken = HttpUtility.UrlPathEncode(encryptedToken);
 
-            var client = new RestClient(Global.APIUri + method + "?token=" + encryptedToken);
-            client.Encoding = Encoding.Unicode;
-       
+            //encryptedToken = HttpUtility.UrlPathEncode(encryptedToken);
+
+            writeToTmpFile(encryptedToken);
+            string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+            string tmpPath = Path.Combine(dir, Global.TMPFolder);
+            tmpPath = Path.Combine(tmpPath, "tmp.txt");
+            FileStream fs = new FileStream(tmpPath, FileMode.Open, FileAccess.Read);
             #endregion
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
             ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
- 
-            var request = new RestRequest(Method.GET);
-            request.AddHeader("content-type", "application/json, charset=UTF-8,Encoding.UNICOD, charset=utf8_unicode_ci");
-           request.AddHeader("authorization", "Bearer "+getToken);
-            request.AddHeader("Content-Encoding", "gzip, charset=utf-8, Encoding.ASSCI,charset=utf8_unicode_ci ");
-            request.AddHeader("Accept-Encoding", "gzip, deflate");
 
-            IRestResponse response = await client.ExecuteTaskAsync(request);
-            var jsonString = response.Content.ToString();
-            var Sresponse = JsonConvert.DeserializeObject<APIResult>(jsonString);
-
-            if (Sresponse.Status == "Success")
+            using (var client = new HttpClient())
             {
-                var decryptedToken = DeCompressThenDecrypt(Sresponse.Message);
-                var jwtToken = new JwtSecurityToken(decryptedToken);
-                var s = jwtToken.Claims.ToArray();
-                IEnumerable<Claim> claims = jwtToken.Claims;
-                return  claims;
+                client.BaseAddress = new Uri(Global.APIUri);
+                client.Timeout = System.TimeSpan.FromSeconds(3600);
+                string boundary = string.Format("----WebKitFormBoundary{0}", DateTime.Now.Ticks.ToString("x"));
+                MultipartFormDataContent form = new MultipartFormDataContent();
+                HttpContent content = new StreamContent(fs);
+                content.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
+                {
+                    FileName = "tmp.txt"
+                };
+                content.Headers.Add("client", "true");
+
+                form.Add(content, "fileToUpload");
+
+                var response = await client.PostAsync(@method + "?token=" + "null", form);
+                var jsonString = await response.Content.ReadAsStringAsync();
+                var Sresponse = JsonConvert.DeserializeObject<string>(jsonString);
+
+                if (Sresponse != "")
+                {
+                    var decryptedToken = DeCompressThenDecrypt(Sresponse);
+                    var jwtToken = new JwtSecurityToken(decryptedToken);
+                    var s = jwtToken.Claims.ToArray();
+                    IEnumerable<Claim> claims = jwtToken.Claims;
+                    string validAuth = claims.Where(f => f.Type == "scopes").Select(x => x.Value).FirstOrDefault();
+                    if (validAuth != null && s[2].Value == "-7") // invalid authintication
+                        return null;
+                    return claims;
+                }
+
             }
+            fs.Dispose();
+
             return null;
         }
-
-        public static int post(string method, Dictionary<string,string> parameters)
+       
+        public static void writeToTmpFile(string text)
+        {
+            string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+        string tmpPath = Path.Combine(dir, Global.TMPFolder);
+            if (!Directory.Exists(tmpPath))
+                Directory.CreateDirectory(tmpPath);
+            tmpPath = Path.Combine(tmpPath, "tmp.txt");
+            if (File.Exists(tmpPath))
+            {
+                File.Delete(tmpPath);
+            }
+            File.WriteAllText(tmpPath,text);
+         
+        }
+        public static async Task<int> post(string method, Dictionary<string,string> parameters)
         {
             byte[] key = Convert.FromBase64String(Secret);
             SymmetricSecurityKey securityKey = new SymmetricSecurityKey(key);
@@ -111,35 +141,48 @@ namespace POS.Classes
             // Token to String so you can use post it to api
             string postToken = handler.WriteToken(token);
             var encryptedToken = EncryptThenCompress(postToken);
+            writeToTmpFile(encryptedToken);
+            string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+            string tmpPath = Path.Combine(dir, Global.TMPFolder);
+            tmpPath = Path.Combine(tmpPath, "tmp.txt");
+            FileStream fs = new FileStream(tmpPath, FileMode.Open, FileAccess.Read);
 
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
             ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
 
-            var client = new RestClient(Global.APIUri + method+"?token="+encryptedToken);
-            var request = new RestRequest(Method.POST);
-            request.AddHeader("content-type", "application/json");
-            request.AddHeader("authorization", "Bearer "+ postToken);
-            request.AddHeader("APIKey", Global.APIKey);
-           // request.AddParameter("Message",postToken);
-
-            IRestResponse response = client.Execute(request);
-            var jsonString = response.Content.ToString();
-            var Sresponse = JsonConvert.DeserializeObject<APIResult>(jsonString);
-
-            if (response.StatusCode == HttpStatusCode.OK)
+            using (var client = new HttpClient())
             {
-                var decryptedToken = DeCompressThenDecrypt(Sresponse.Message);
-                var jwtToken = new JwtSecurityToken(decryptedToken);
-                var s = jwtToken.Claims.ToArray();
-                IEnumerable<Claim> claims = jwtToken.Claims;
-                foreach (Claim c in claims)
+                client.BaseAddress = new Uri(Global.APIUri);
+                client.Timeout = System.TimeSpan.FromSeconds(3600);
+                string boundary = string.Format("----WebKitFormBoundary{0}", DateTime.Now.Ticks.ToString("x"));
+                MultipartFormDataContent form = new MultipartFormDataContent();
+                HttpContent content = new StreamContent(fs);
+                content.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
                 {
-                    if (c.Type == "scopes")
+                    FileName = "tmp.txt"
+                };
+                content.Headers.Add("client", "true");
+
+                form.Add(content, "fileToUpload");
+
+                var response = await client.PostAsync(@method + "?token=" + "null", form);
+                var jsonString = await response.Content.ReadAsStringAsync();
+                var Sresponse = JsonConvert.DeserializeObject<string>(jsonString);
+                fs.Dispose();
+                if (Sresponse != "")
+                {
+                    var decryptedToken = DeCompressThenDecrypt(Sresponse);
+                    var jwtToken = new JwtSecurityToken(decryptedToken);
+                    var s = jwtToken.Claims.ToArray();
+                    IEnumerable<Claim> claims = jwtToken.Claims;
+                    foreach (Claim c in claims)
                     {
-                        return int.Parse(c.Value);
-                    }
+                        if (c.Type == "scopes")
+                        {
+                            return int.Parse(c.Value);
+                        }
+                    }                 
                 }
-                return 0;
             }
             return 0;
         }

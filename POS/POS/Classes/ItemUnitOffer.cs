@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Windows.Media.Imaging;
 using System.Windows.Resources;
+using System.Security.Claims;
 
 namespace POS.Classes
 {
@@ -35,117 +36,147 @@ namespace POS.Classes
         public Nullable<int> itemId { get; set; }
         public Nullable<int> unitId { get; set; }
 
-        public async Task<string> updategroup(int offerId, List<ItemUnitOffer> newitoflist, int userId)
+        public async Task<int> updategroup(int offerId, List<ItemUnitOffer> newitoflist, int userId)
         {
-            
-            string message = "";
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            // 
+
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            string method = "ItemsOffers/UpdateItemsByOfferId";
+
             var myContent = JsonConvert.SerializeObject(newitoflist);
+            parameters.Add("Object", myContent);
+            parameters.Add("offerId", offerId.ToString());
+            parameters.Add("userId", userId.ToString());
 
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                // encoding parameter to get special characters
-                myContent = HttpUtility.UrlEncode(myContent);
-                request.RequestUri = new Uri(Global.APIUri + "ItemsOffers/UpdateItemsByOfferId?newitoflist=" + myContent);
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Headers.Add("offerId", offerId.ToString());
-                request.Headers.Add("userId", userId.ToString());
-                request.Method = HttpMethod.Post;
-                //set content type
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var response = await client.SendAsync(request);
 
-                if (response.IsSuccessStatusCode)
-                {
-                    message = await response.Content.ReadAsStringAsync();
-                    message = JsonConvert.DeserializeObject<string>(message);
-                }
-                return message;
-            }
+
+            return Convert.ToInt32(APIResult.post(method, parameters));
+
+
+            //string message = "";
+            //// ... Use HttpClient.
+            //ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            //// 
+            //var myContent = JsonConvert.SerializeObject(newitoflist);
+
+            //using (var client = new HttpClient())
+            //{
+            //    ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+            //    client.BaseAddress = new Uri(Global.APIUri);
+            //    client.DefaultRequestHeaders.Clear();
+            //    client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+            //    client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+            //    HttpRequestMessage request = new HttpRequestMessage();
+            //    // encoding parameter to get special characters
+            //    myContent = HttpUtility.UrlEncode(myContent);
+            //    request.RequestUri = new Uri(Global.APIUri + "ItemsOffers/UpdateItemsByOfferId?newitoflist=" + myContent);
+            //    request.Headers.Add("APIKey", Global.APIKey);
+            //    request.Headers.Add("offerId", offerId.ToString());
+            //    request.Headers.Add("userId", userId.ToString());
+            //    request.Method = HttpMethod.Post;
+            //    //set content type
+            //    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            //    var response = await client.SendAsync(request);
+
+            //    if (response.IsSuccessStatusCode)
+            //    {
+            //        message = await response.Content.ReadAsStringAsync();
+            //        message = JsonConvert.DeserializeObject<string>(message);
+            //    }
+            //    return message;
+            //}
         }
-    
-
-       
-       
 
 
 
-        public async Task<List<ItemUnitOffer>> Getall()
-        {
-            List <ItemUnitOffer> itemUnitOfferlist = null;
 
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "ItemsOffers/Getall");
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Get;
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var response = await client.SendAsync(request);
 
-                if (response.IsSuccessStatusCode)
-                {
-                    var jsonString = await response.Content.ReadAsStringAsync();
 
-                    itemUnitOfferlist = JsonConvert.DeserializeObject <List<ItemUnitOffer>>(jsonString);
 
-                    return itemUnitOfferlist;
-                }
+        //public async Task<List<ItemUnitOffer>> Getall()
+        //{
+        //    List <ItemUnitOffer> itemUnitOfferlist = null;
 
-                return itemUnitOfferlist;
-            }
-        }
+        //    // ... Use HttpClient.
+        //    ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+        //    using (var client = new HttpClient())
+        //    {
+        //        ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+        //        client.BaseAddress = new Uri(Global.APIUri);
+        //        client.DefaultRequestHeaders.Clear();
+        //        client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+        //        client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+        //        HttpRequestMessage request = new HttpRequestMessage();
+        //        request.RequestUri = new Uri(Global.APIUri + "ItemsOffers/Getall");
+        //        request.Headers.Add("APIKey", Global.APIKey);
+        //        request.Method = HttpMethod.Get;
+        //        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        //        var response = await client.SendAsync(request);
+
+        //        if (response.IsSuccessStatusCode)
+        //        {
+        //            var jsonString = await response.Content.ReadAsStringAsync();
+
+        //            itemUnitOfferlist = JsonConvert.DeserializeObject <List<ItemUnitOffer>>(jsonString);
+
+        //            return itemUnitOfferlist;
+        //        }
+
+        //        return itemUnitOfferlist;
+        //    }
+        //}
 
 
         public async Task<List<ItemUnitOffer>> GetItemsByOfferId(int offerId)
         {
-            List<ItemUnitOffer> itemUnitOfferlist = null;
+            List<ItemUnitOffer> list = new List<ItemUnitOffer>();
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("offerId", offerId.ToString());
 
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            using (var client = new HttpClient())
+            //#################
+            IEnumerable<Claim> claims = await APIResult.getList("ItemsLocations/Get");
+
+            foreach (Claim c in claims)
             {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "ItemsOffers/GetItemsByOfferId");
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Headers.Add("offerId", offerId.ToString());
-                request.Method = HttpMethod.Get;
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var response = await client.SendAsync(request);
-
-                if (response.IsSuccessStatusCode)
+                if (c.Type == "scopes")
                 {
-                    var jsonString = await response.Content.ReadAsStringAsync();
-
-                    itemUnitOfferlist = JsonConvert.DeserializeObject<List<ItemUnitOffer>>(jsonString);
-
-                    return itemUnitOfferlist;
+                    list.Add(JsonConvert.DeserializeObject<ItemUnitOffer>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" }));
                 }
-
-                return itemUnitOfferlist;
             }
-        }
-        // get items in category and sub
+            return list;
+            //        List<ItemUnitOffer> itemUnitOfferlist = null;
 
+            //        // ... Use HttpClient.
+            //        ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            //        using (var client = new HttpClient())
+            //        {
+            //            ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+            //            client.BaseAddress = new Uri(Global.APIUri);
+            //            client.DefaultRequestHeaders.Clear();
+            //            client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+            //            client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+            //            HttpRequestMessage request = new HttpRequestMessage();
+            //            request.RequestUri = new Uri(Global.APIUri + "ItemsOffers/GetItemsByOfferId");
+            //            request.Headers.Add("APIKey", Global.APIKey);
+            //            request.Headers.Add("offerId", offerId.ToString());
+            //            request.Method = HttpMethod.Get;
+            //            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            //            var response = await client.SendAsync(request);
+
+            //            if (response.IsSuccessStatusCode)
+            //            {
+            //                var jsonString = await response.Content.ReadAsStringAsync();
+
+            //                itemUnitOfferlist = JsonConvert.DeserializeObject<List<ItemUnitOffer>>(jsonString);
+
+            //                return itemUnitOfferlist;
+            //            }
+
+            //            return itemUnitOfferlist;
+            //        }
+            //    }
+            //    // get items in category and sub
+
+        }
     }
 }
+

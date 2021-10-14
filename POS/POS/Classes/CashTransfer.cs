@@ -15,6 +15,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
 using System.Windows;
+using System.Security.Claims;
 
 namespace POS.Classes
 {
@@ -67,603 +68,823 @@ namespace POS.Classes
 
         public async Task<List<CashTransfer>> GetCashTransferAsync(string type, string side)
         {
-            List<CashTransfer> cashtransfer = null;
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Cashtransfer/GetBytypeandSide?type=" + type + "&side=" + side);
-                request.Headers.Add("APIKey", Global.APIKey);
-                /*
-                request.Headers.Add("type", type);
-                request.Headers.Add("side", side);
-                */
-                request.Method = HttpMethod.Get;
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage response = await client.SendAsync(request);
+            // string type, string side
+            List<CashTransfer> list = new List<CashTransfer>();
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("type", type.ToString());
+            parameters.Add("side", side.ToString());
+          
+            //#################
+            IEnumerable<Claim> claims = await APIResult.getList("Cashtransfer/GetBytypeandSide",parameters);
 
-                if (response.IsSuccessStatusCode)
+            foreach (Claim c in claims)
+            {
+                if (c.Type == "scopes")
                 {
-                    var jsonString = await response.Content.ReadAsStringAsync();
-                    jsonString = jsonString.Replace("\\", string.Empty);
-                    jsonString = jsonString.Trim('"');
-                    // fix date format
-                    JsonSerializerSettings settings = new JsonSerializerSettings
-                    {
-                        Converters = new List<JsonConverter> { new BadDateFixingConverter() },
-                        DateParseHandling = DateParseHandling.None
-                    };
-                    cashtransfer = JsonConvert.DeserializeObject<List<CashTransfer>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
-                    return cashtransfer;
+                    list.Add(JsonConvert.DeserializeObject<CashTransfer>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" }));
                 }
-                else //web api sent error response 
-                {
-                    cashtransfer = new List<CashTransfer>();
-                }
-                return cashtransfer;
             }
+            return list;
+            //List<CashTransfer> cashtransfer = null;
+            //// ... Use HttpClient.
+            //ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            //using (var client = new HttpClient())
+            //{
+            //    ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+            //    client.BaseAddress = new Uri(Global.APIUri);
+            //    client.DefaultRequestHeaders.Clear();
+            //    client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+            //    client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+            //    HttpRequestMessage request = new HttpRequestMessage();
+            //    request.RequestUri = new Uri(Global.APIUri + "Cashtransfer/GetBytypeandSide?type=" + type + "&side=" + side);
+            //    request.Headers.Add("APIKey", Global.APIKey);
+            //    /*
+            //    request.Headers.Add("type", type);
+            //    request.Headers.Add("side", side);
+            //    */
+            //    request.Method = HttpMethod.Get;
+            //    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            //    HttpResponseMessage response = await client.SendAsync(request);
+
+            //    if (response.IsSuccessStatusCode)
+            //    {
+            //        var jsonString = await response.Content.ReadAsStringAsync();
+            //        jsonString = jsonString.Replace("\\", string.Empty);
+            //        jsonString = jsonString.Trim('"');
+            //        // fix date format
+            //        JsonSerializerSettings settings = new JsonSerializerSettings
+            //        {
+            //            Converters = new List<JsonConverter> { new BadDateFixingConverter() },
+            //            DateParseHandling = DateParseHandling.None
+            //        };
+            //        cashtransfer = JsonConvert.DeserializeObject<List<CashTransfer>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+            //        return cashtransfer;
+            //    }
+            //    else //web api sent error response 
+            //    {
+            //        cashtransfer = new List<CashTransfer>();
+            //    }
+            //    return cashtransfer;
+            //}
 
         }
         //
         public async Task<List<CashTransfer>> GetCashTransferForPosAsync(string type, string side)
         {
-            List<CashTransfer> cashtransfer = null;
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Cashtransfer/GetBytypeAndSideForPos?type=" + type + "&side=" + side);
-                request.Headers.Add("APIKey", Global.APIKey);
-               
-                request.Method = HttpMethod.Get;
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage response = await client.SendAsync(request);
+            // string type, string side
+            List<CashTransfer> list = new List<CashTransfer>();
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("type", type.ToString());
+            parameters.Add("side", side.ToString());
 
-                if (response.IsSuccessStatusCode)
+            //#################
+            IEnumerable<Claim> claims = await APIResult.getList("Cashtransfer/GetBytypeAndSideForPos", parameters);
+
+            foreach (Claim c in claims)
+            {
+                if (c.Type == "scopes")
                 {
-                    var jsonString = await response.Content.ReadAsStringAsync();
-                    jsonString = jsonString.Replace("\\", string.Empty);
-                    jsonString = jsonString.Trim('"');
-                    // fix date format
-                    JsonSerializerSettings settings = new JsonSerializerSettings
-                    {
-                        Converters = new List<JsonConverter> { new BadDateFixingConverter() },
-                        DateParseHandling = DateParseHandling.None
-                    };
-                    cashtransfer = JsonConvert.DeserializeObject<List<CashTransfer>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
-                    return cashtransfer;
+                    list.Add(JsonConvert.DeserializeObject<CashTransfer>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" }));
                 }
-                else //web api sent error response 
-                {
-                    cashtransfer = new List<CashTransfer>();
-                }
-                return cashtransfer;
             }
+            return list;
+
+            //List<CashTransfer> cashtransfer = null;
+            //// ... Use HttpClient.
+            //ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            //using (var client = new HttpClient())
+            //{
+            //    ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+            //    client.BaseAddress = new Uri(Global.APIUri);
+            //    client.DefaultRequestHeaders.Clear();
+            //    client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+            //    client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+            //    HttpRequestMessage request = new HttpRequestMessage();
+            //    request.RequestUri = new Uri(Global.APIUri + "Cashtransfer/GetBytypeAndSideForPos?type=" + type + "&side=" + side);
+            //    request.Headers.Add("APIKey", Global.APIKey);
+
+            //    request.Method = HttpMethod.Get;
+            //    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            //    HttpResponseMessage response = await client.SendAsync(request);
+
+            //    if (response.IsSuccessStatusCode)
+            //    {
+            //        var jsonString = await response.Content.ReadAsStringAsync();
+            //        jsonString = jsonString.Replace("\\", string.Empty);
+            //        jsonString = jsonString.Trim('"');
+            //        // fix date format
+            //        JsonSerializerSettings settings = new JsonSerializerSettings
+            //        {
+            //            Converters = new List<JsonConverter> { new BadDateFixingConverter() },
+            //            DateParseHandling = DateParseHandling.None
+            //        };
+            //        cashtransfer = JsonConvert.DeserializeObject<List<CashTransfer>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+            //        return cashtransfer;
+            //    }
+            //    else //web api sent error response 
+            //    {
+            //        cashtransfer = new List<CashTransfer>();
+            //    }
+            //    return cashtransfer;
+            //}
 
         }
 
         public async Task<CashTransfer> GetByInvId(int invId)
         {
-            CashTransfer cashtransfer = null;
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Cashtransfer/GetByInvId?invId=" + invId );
-                request.Headers.Add("APIKey", Global.APIKey);
-                /*
-                request.Headers.Add("type", type);
-                request.Headers.Add("side", side);
-                */
-                request.Method = HttpMethod.Get;
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage response = await client.SendAsync(request);
+            CashTransfer item = new CashTransfer();
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("invId", invId.ToString());
+            //#################
+            IEnumerable<Claim> claims = await APIResult.getList("Cashtransfer/GetByInvId", parameters);
 
-                if (response.IsSuccessStatusCode)
+            foreach (Claim c in claims)
+            {
+                if (c.Type == "scopes")
                 {
-                    var jsonString = await response.Content.ReadAsStringAsync();
-                    jsonString = jsonString.Replace("\\", string.Empty);
-                    jsonString = jsonString.Trim('"');
-                    // fix date format
-                    JsonSerializerSettings settings = new JsonSerializerSettings
-                    {
-                        Converters = new List<JsonConverter> { new BadDateFixingConverter() },
-                        DateParseHandling = DateParseHandling.None
-                    };
-                    cashtransfer = JsonConvert.DeserializeObject<CashTransfer>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
-                    return cashtransfer;
+                    item = JsonConvert.DeserializeObject<CashTransfer>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    break;
                 }
-                else //web api sent error response 
-                {
-                    cashtransfer = new CashTransfer();
-                }
-                return cashtransfer;
             }
+            return item;
+
+
+            //CashTransfer cashtransfer = null;
+            //// ... Use HttpClient.
+            //ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            //using (var client = new HttpClient())
+            //{
+            //    ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+            //    client.BaseAddress = new Uri(Global.APIUri);
+            //    client.DefaultRequestHeaders.Clear();
+            //    client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+            //    client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+            //    HttpRequestMessage request = new HttpRequestMessage();
+            //    request.RequestUri = new Uri(Global.APIUri + "Cashtransfer/GetByInvId?invId=" + invId );
+            //    request.Headers.Add("APIKey", Global.APIKey);
+            //    /*
+            //    request.Headers.Add("type", type);
+            //    request.Headers.Add("side", side);
+            //    */
+            //    request.Method = HttpMethod.Get;
+            //    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            //    HttpResponseMessage response = await client.SendAsync(request);
+
+            //    if (response.IsSuccessStatusCode)
+            //    {
+            //        var jsonString = await response.Content.ReadAsStringAsync();
+            //        jsonString = jsonString.Replace("\\", string.Empty);
+            //        jsonString = jsonString.Trim('"');
+            //        // fix date format
+            //        JsonSerializerSettings settings = new JsonSerializerSettings
+            //        {
+            //            Converters = new List<JsonConverter> { new BadDateFixingConverter() },
+            //            DateParseHandling = DateParseHandling.None
+            //        };
+            //        cashtransfer = JsonConvert.DeserializeObject<CashTransfer>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+            //        return cashtransfer;
+            //    }
+            //    else //web api sent error response 
+            //    {
+            //        cashtransfer = new CashTransfer();
+            //    }
+            //    return cashtransfer;
+            //}
 
         }
 
         //GetListByInvId
         public async Task<List<CashTransfer>> GetListByInvId(int invId)
         {
-            List<CashTransfer> cashtransfer = null;
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Cashtransfer/GetListByInvId?invId=" + invId);
-                request.Headers.Add("APIKey", Global.APIKey);
-                /*
-                request.Headers.Add("type", type);
-                request.Headers.Add("side", side);
-                */
-                request.Method = HttpMethod.Get;
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage response = await client.SendAsync(request);
+            List<CashTransfer> list = new List<CashTransfer>();
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("invId", invId.ToString());
+            //#################
+            IEnumerable<Claim> claims = await APIResult.getList("Cashtransfer/GetListByInvId", parameters);
 
-                if (response.IsSuccessStatusCode)
+            foreach (Claim c in claims)
+            {
+                if (c.Type == "scopes")
                 {
-                    var jsonString = await response.Content.ReadAsStringAsync();
-                    jsonString = jsonString.Replace("\\", string.Empty);
-                    jsonString = jsonString.Trim('"');
-                    // fix date format
-                    JsonSerializerSettings settings = new JsonSerializerSettings
-                    {
-                        Converters = new List<JsonConverter> { new BadDateFixingConverter() },
-                        DateParseHandling = DateParseHandling.None
-                    };
-                    cashtransfer = JsonConvert.DeserializeObject<List<CashTransfer>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
-                    return cashtransfer;
+                    list = JsonConvert.DeserializeObject<List<CashTransfer>>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    break;
                 }
-                else //web api sent error response 
-                {
-                    cashtransfer = new List<CashTransfer>();
-                }
-                return cashtransfer;
             }
+            return list;
+
+            //List<CashTransfer> cashtransfer = null;
+            //// ... Use HttpClient.
+            //ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            //using (var client = new HttpClient())
+            //{
+            //    ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+            //    client.BaseAddress = new Uri(Global.APIUri);
+            //    client.DefaultRequestHeaders.Clear();
+            //    client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+            //    client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+            //    HttpRequestMessage request = new HttpRequestMessage();
+            //    request.RequestUri = new Uri(Global.APIUri + "Cashtransfer/GetListByInvId?invId=" + invId);
+            //    request.Headers.Add("APIKey", Global.APIKey);
+            //    /*
+            //    request.Headers.Add("type", type);
+            //    request.Headers.Add("side", side);
+            //    */
+            //    request.Method = HttpMethod.Get;
+            //    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            //    HttpResponseMessage response = await client.SendAsync(request);
+
+            //    if (response.IsSuccessStatusCode)
+            //    {
+            //        var jsonString = await response.Content.ReadAsStringAsync();
+            //        jsonString = jsonString.Replace("\\", string.Empty);
+            //        jsonString = jsonString.Trim('"');
+            //        // fix date format
+            //        JsonSerializerSettings settings = new JsonSerializerSettings
+            //        {
+            //            Converters = new List<JsonConverter> { new BadDateFixingConverter() },
+            //            DateParseHandling = DateParseHandling.None
+            //        };
+            //        cashtransfer = JsonConvert.DeserializeObject<List<CashTransfer>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+            //        return cashtransfer;
+            //    }
+            //    else //web api sent error response 
+            //    {
+            //        cashtransfer = new List<CashTransfer>();
+            //    }
+            //    return cashtransfer;
+            //}
 
         }
         public async Task<CashTransfer> GetByID(int cashTransferId)
         {
-            CashTransfer casht = new CashTransfer();
+            CashTransfer item = new CashTransfer();
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("cashTransferId", cashTransferId.ToString());
+            //#################
+            IEnumerable<Claim> claims = await APIResult.getList("Cashtransfer/GetByID", parameters);
 
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            using (var client = new HttpClient())
+            foreach (Claim c in claims)
             {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Cashtransfer/GetByID");
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Headers.Add("cashTransId", cashTransferId.ToString());
-                request.Method = HttpMethod.Get;
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var response = await client.SendAsync(request);
-
-                if (response.IsSuccessStatusCode)
+                if (c.Type == "scopes")
                 {
-                    var jsonString = await response.Content.ReadAsStringAsync();
-
-                    casht = JsonConvert.DeserializeObject<CashTransfer>(jsonString);
-
-                    return casht;
+                    item = JsonConvert.DeserializeObject<CashTransfer>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    break;
                 }
-
-                return casht;
             }
+            return item;
+
+
+            //CashTransfer casht = new CashTransfer();
+
+            //// ... Use HttpClient.
+            //ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            //using (var client = new HttpClient())
+            //{
+            //    ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+            //    client.BaseAddress = new Uri(Global.APIUri);
+            //    client.DefaultRequestHeaders.Clear();
+            //    client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+            //    client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+            //    HttpRequestMessage request = new HttpRequestMessage();
+            //    request.RequestUri = new Uri(Global.APIUri + "Cashtransfer/GetByID");
+            //    request.Headers.Add("APIKey", Global.APIKey);
+            //    request.Headers.Add("cashTransId", cashTransferId.ToString());
+            //    request.Method = HttpMethod.Get;
+            //    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            //    var response = await client.SendAsync(request);
+
+            //    if (response.IsSuccessStatusCode)
+            //    {
+            //        var jsonString = await response.Content.ReadAsStringAsync();
+
+            //        casht = JsonConvert.DeserializeObject<CashTransfer>(jsonString);
+
+            //        return casht;
+            //    }
+
+            //    return casht;
+            //}
         }
         /// ///////////////////////////////////////
 
-        public async Task<string> Save(CashTransfer cashTr)
+        public async Task<int> Save(CashTransfer cashTr)
         {
+
+
             string message = "";
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            string method = "Cashtransfer/Save";
 
-            string myContent = JsonConvert.SerializeObject(cashTr);
+            var myContent = JsonConvert.SerializeObject(cashTr);
+            parameters.Add("Object", myContent);
+            return Convert.ToInt32(APIResult.post(method, parameters));
 
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
 
-                HttpRequestMessage request = new HttpRequestMessage();
+            //... Use HttpClient.
+            //ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
 
-                // encoding parameter to get special characters
-                myContent = HttpUtility.UrlEncode(myContent);
+            //string myContent = JsonConvert.SerializeObject(cashTr);
 
-                request.RequestUri = new Uri(Global.APIUri + "Cashtransfer/Save?Object=" + myContent);
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Post;
-                //set content type
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var response = await client.SendAsync(request);
+            //using (var client = new HttpClient())
+            //{
+            //    ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+            //    client.BaseAddress = new Uri(Global.APIUri);
+            //    client.DefaultRequestHeaders.Clear();
+            //    client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+            //    client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
 
-                if (response.IsSuccessStatusCode)
-                {
-                    message = await response.Content.ReadAsStringAsync();
-                    message = JsonConvert.DeserializeObject<string>(message);
-                }
-                return message;
-            }
+            //    HttpRequestMessage request = new HttpRequestMessage();
+
+            //    encoding parameter to get special characters
+            //    myContent = HttpUtility.UrlEncode(myContent);
+
+            //    request.RequestUri = new Uri(Global.APIUri + "Cashtransfer/Save?Object=" + myContent);
+            //    request.Headers.Add("APIKey", Global.APIKey);
+            //    request.Method = HttpMethod.Post;
+            //    set content type
+            //    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            //    var response = await client.SendAsync(request);
+
+            //    if (response.IsSuccessStatusCode)
+            //    {
+            //        message = await response.Content.ReadAsStringAsync();
+            //        message = JsonConvert.DeserializeObject<string>(message);
+            //    }
+            //    return message;
+            //}
         }
 
 
 
         public async Task<List<CashTransfer>> GetbySourcId(string side, int sourceId)
         {
-            List<CashTransfer> cashtransfer = null;
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Cashtransfer/GetbySourcId?sourceId=" + sourceId + "&side=" + side);
-                request.Headers.Add("APIKey", Global.APIKey);
-                /*
-                request.Headers.Add("type", type);
-                request.Headers.Add("side", side);
-                */
-                request.Method = HttpMethod.Get;
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage response = await client.SendAsync(request);
 
-                if (response.IsSuccessStatusCode)
+            List<CashTransfer> list = new List<CashTransfer>();
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("side", side);
+            parameters.Add("sourceId", sourceId.ToString());
+
+            //#################
+            IEnumerable<Claim> claims = await APIResult.getList("Cashtransfer/GetbySourcId", parameters);
+
+            foreach (Claim c in claims)
+            {
+                if (c.Type == "scopes")
                 {
-                    var jsonString = await response.Content.ReadAsStringAsync();
-                    jsonString = jsonString.Replace("\\", string.Empty);
-                    jsonString = jsonString.Trim('"');
-                    // fix date format
-                    JsonSerializerSettings settings = new JsonSerializerSettings
-                    {
-                        Converters = new List<JsonConverter> { new BadDateFixingConverter() },
-                        DateParseHandling = DateParseHandling.None
-                    };
-                    cashtransfer = JsonConvert.DeserializeObject<List<CashTransfer>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
-                    return cashtransfer;
+                    list = JsonConvert.DeserializeObject<List<CashTransfer>>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    break;
                 }
-                else //web api sent error response 
-                {
-                    cashtransfer = new List<CashTransfer>();
-                }
-                return cashtransfer;
             }
+            return list;
+
+
+            //List<CashTransfer> cashtransfer = null;
+            //// ... Use HttpClient.
+            //ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            //using (var client = new HttpClient())
+            //{
+            //    ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+            //    client.BaseAddress = new Uri(Global.APIUri);
+            //    client.DefaultRequestHeaders.Clear();
+            //    client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+            //    client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+            //    HttpRequestMessage request = new HttpRequestMessage();
+            //    request.RequestUri = new Uri(Global.APIUri + "Cashtransfer/GetbySourcId?sourceId=" + sourceId + "&side=" + side);
+            //    request.Headers.Add("APIKey", Global.APIKey);
+            //    /*
+            //    request.Headers.Add("type", type);
+            //    request.Headers.Add("side", side);
+            //    */
+            //    request.Method = HttpMethod.Get;
+            //    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            //    HttpResponseMessage response = await client.SendAsync(request);
+
+            //    if (response.IsSuccessStatusCode)
+            //    {
+            //        var jsonString = await response.Content.ReadAsStringAsync();
+            //        jsonString = jsonString.Replace("\\", string.Empty);
+            //        jsonString = jsonString.Trim('"');
+            //        // fix date format
+            //        JsonSerializerSettings settings = new JsonSerializerSettings
+            //        {
+            //            Converters = new List<JsonConverter> { new BadDateFixingConverter() },
+            //            DateParseHandling = DateParseHandling.None
+            //        };
+            //        cashtransfer = JsonConvert.DeserializeObject<List<CashTransfer>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+            //        return cashtransfer;
+            //    }
+            //    else //web api sent error response 
+            //    {
+            //        cashtransfer = new List<CashTransfer>();
+            //    }
+            //    return cashtransfer;
+            //}
 
         }
 
-        public async Task<string> deletePosTrans(int cashTransId)
+        public async Task<int> deletePosTrans(int cashTransId)
         {
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("cashTransId", cashTransId.ToString());
+            
+            string method = "Cashtransfer/Delete";
+            return Convert.ToInt32(APIResult.post(method, parameters));
 
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Cashtransfer/Delete?cashTransId=" + cashTransId );
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Post;
-                //set content type
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var response = await client.SendAsync(request);
 
-                if (response.IsSuccessStatusCode)
-                {
-                    var message = await response.Content.ReadAsStringAsync();
-                    message = JsonConvert.DeserializeObject<string>(message);
-                    return message;// if message= 0 not deleted because two pos isconfirm==1 
-                                   // -if  message= 1 then deleted because one or two of pos isconfirm==0
-                }
-                return "error";
-            }
+            //// ... Use HttpClient.
+            //ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+
+            //using (var client = new HttpClient())
+            //{
+            //    ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+            //    client.BaseAddress = new Uri(Global.APIUri);
+            //    client.DefaultRequestHeaders.Clear();
+            //    client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+            //    client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+            //    HttpRequestMessage request = new HttpRequestMessage();
+            //    request.RequestUri = new Uri(Global.APIUri + "Cashtransfer/Delete?cashTransId=" + cashTransId );
+            //    request.Headers.Add("APIKey", Global.APIKey);
+            //    request.Method = HttpMethod.Post;
+            //    //set content type
+            //    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            //    var response = await client.SendAsync(request);
+
+            //    if (response.IsSuccessStatusCode)
+            //    {
+            //        var message = await response.Content.ReadAsStringAsync();
+            //        message = JsonConvert.DeserializeObject<string>(message);
+            //        return message;// if message= 0 not deleted because two pos isconfirm==1 
+            //                       // -if  message= 1 then deleted because one or two of pos isconfirm==0
+            //    }
+            //    return "error";
+            //}
         }
 
-        public async Task<string> MovePosCash(int cashTransId,int userIdD)
+        public async Task<int> MovePosCash(int cashTransId,int userIdD)
         {
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
 
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Cashtransfer/MovePosCash?cashTransId=" + cashTransId+"&useridD="+ userIdD);
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Post;
-                //set content type
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var response = await client.SendAsync(request);
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("cashTransId", cashTransId.ToString());
+            parameters.Add("userIdD", userIdD.ToString());
+            string method = "Cashtransfer/MovePosCash";
+            return Convert.ToInt32(APIResult.post(method, parameters));
 
-                if (response.IsSuccessStatusCode)
-                {
-                    var message = await response.Content.ReadAsStringAsync();
-                    message = JsonConvert.DeserializeObject<string>(message);
-                    return message;
-                    /* message value:
-                      Ok = transdone 
-                      or
-                      nobalanceinpullpos  -pullposnotconfirmed -nopullidornotconfirmed-idnotfound      
-                     * */
-                }
-                return "error";
-            }
+
+
+            //// ... Use HttpClient.
+            //ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+
+            //using (var client = new HttpClient())
+            //{
+            //    ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+            //    client.BaseAddress = new Uri(Global.APIUri);
+            //    client.DefaultRequestHeaders.Clear();
+            //    client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+            //    client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+            //    HttpRequestMessage request = new HttpRequestMessage();
+            //    request.RequestUri = new Uri(Global.APIUri + "Cashtransfer/MovePosCash?cashTransId=" + cashTransId+"&useridD="+ userIdD);
+            //    request.Headers.Add("APIKey", Global.APIKey);
+            //    request.Method = HttpMethod.Post;
+            //    //set content type
+            //    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            //    var response = await client.SendAsync(request);
+
+            //    if (response.IsSuccessStatusCode)
+            //    {
+            //        var message = await response.Content.ReadAsStringAsync();
+            //        message = JsonConvert.DeserializeObject<string>(message);
+            //        return message;
+            //        /* message value:
+            //          Ok = transdone 
+            //          or
+            //          nobalanceinpullpos  -pullposnotconfirmed -nopullidornotconfirmed-idnotfound      
+            //         * */
+            //    }
+            //    return "error";
+            //}
         }
 
-        public async Task<string> PayByAmmount(int agentId ,decimal ammount , string payType , CashTransfer cashTr)
+        public async Task<int> PayByAmmount(int agentId ,decimal ammount , string payType , CashTransfer cashTr)
         {
-            string message = "";
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
 
-            string myContent = JsonConvert.SerializeObject(cashTr);
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            
+            parameters.Add("agentId", agentId.ToString());
+            parameters.Add("ammount", ammount.ToString());
+            parameters.Add("payType", payType.ToString());
+            var myContent = JsonConvert.SerializeObject(cashTr);
+            parameters.Add("cashTr", myContent);
+          
+         
 
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+            string method = "Cashtransfer/payByAmount";
+            return Convert.ToInt32(APIResult.post(method, parameters));
 
-                HttpRequestMessage request = new HttpRequestMessage();
+            //string message = "";
+            //// ... Use HttpClient.
+            //ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
 
-                // encoding parameter to get special characters
-                myContent = HttpUtility.UrlEncode(myContent);
+            //string myContent = JsonConvert.SerializeObject(cashTr);
 
-                request.RequestUri = new Uri(Global.APIUri + "Cashtransfer/payByAmount?agentId=" + agentId + "&amount=" + ammount + "&payType=" + payType + "&cashtransfer=" + myContent);
+            //using (var client = new HttpClient())
+            //{
+            //    ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+            //    client.BaseAddress = new Uri(Global.APIUri);
+            //    client.DefaultRequestHeaders.Clear();
+            //    client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+            //    client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
 
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Post;
-                //set content type
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var response = await client.SendAsync(request);
+            //    HttpRequestMessage request = new HttpRequestMessage();
 
-                if (response.IsSuccessStatusCode)
-                {
-                    message = await response.Content.ReadAsStringAsync();
-                    message = JsonConvert.DeserializeObject<string>(message);
-                }
-                return message;
-            }
+            //    // encoding parameter to get special characters
+            //    myContent = HttpUtility.UrlEncode(myContent);
+
+            //    request.RequestUri = new Uri(Global.APIUri + "Cashtransfer/payByAmount?agentId=" + agentId + "&amount=" + ammount + "&payType=" + payType + "&cashtransfer=" + myContent);
+
+            //    request.Headers.Add("APIKey", Global.APIKey);
+            //    request.Method = HttpMethod.Post;
+            //    //set content type
+            //    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            //    var response = await client.SendAsync(request);
+
+            //    if (response.IsSuccessStatusCode)
+            //    {
+            //        message = await response.Content.ReadAsStringAsync();
+            //        message = JsonConvert.DeserializeObject<string>(message);
+            //    }
+            //    return message;
+            //}
         }
 
-        public async Task<string> PayUserByAmmount(int userId, decimal ammount, string payType, CashTransfer cashTr)
+        public async Task<int> PayUserByAmmount(int userId, decimal ammount, string payType, CashTransfer cashTr)
         {
-            string message = "";
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+         
+            parameters.Add("userId", userId.ToString());
+            parameters.Add("ammount", ammount.ToString());
+            parameters.Add("payType", payType.ToString());
+            var myContent = JsonConvert.SerializeObject(cashTr);
+            parameters.Add("cashTr", myContent);
 
-            string myContent = JsonConvert.SerializeObject(cashTr);
 
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
 
-                HttpRequestMessage request = new HttpRequestMessage();
+            string method = "Cashtransfer/payUserByAmount";
+            return Convert.ToInt32(APIResult.post(method, parameters));
 
-                // encoding parameter to get special characters
-                myContent = HttpUtility.UrlEncode(myContent);
 
-                request.RequestUri = new Uri(Global.APIUri + "Cashtransfer/payUserByAmount?userId=" + userId + "&amount=" + ammount + "&payType=" + payType + "&cashtransfer=" + myContent);
+            //string message = "";
+            //// ... Use HttpClient.
+            //ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
 
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Post;
-                //set content type
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var response = await client.SendAsync(request);
+            //string myContent = JsonConvert.SerializeObject(cashTr);
 
-                if (response.IsSuccessStatusCode)
-                {
-                    message = await response.Content.ReadAsStringAsync();
-                    message = JsonConvert.DeserializeObject<string>(message);
-                }
-                return message;
-            }
+            //using (var client = new HttpClient())
+            //{
+            //    ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+            //    client.BaseAddress = new Uri(Global.APIUri);
+            //    client.DefaultRequestHeaders.Clear();
+            //    client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+            //    client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+
+            //    HttpRequestMessage request = new HttpRequestMessage();
+
+            //    // encoding parameter to get special characters
+            //    myContent = HttpUtility.UrlEncode(myContent);
+
+            //    request.RequestUri = new Uri(Global.APIUri + "Cashtransfer/payUserByAmount?userId=" + userId + "&amount=" + ammount + "&payType=" + payType + "&cashtransfer=" + myContent);
+
+            //    request.Headers.Add("APIKey", Global.APIKey);
+            //    request.Method = HttpMethod.Post;
+            //    //set content type
+            //    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            //    var response = await client.SendAsync(request);
+
+            //    if (response.IsSuccessStatusCode)
+            //    {
+            //        message = await response.Content.ReadAsStringAsync();
+            //        message = JsonConvert.DeserializeObject<string>(message);
+            //    }
+            //    return message;
+            //}
         }
 
-        public async Task<string> payShippingCompanyByAmount(int shippingCompanyId, decimal ammount, string payType, CashTransfer cashTr)
+        public async Task<int> payShippingCompanyByAmount(int shippingCompanyId, decimal ammount, string payType, CashTransfer cashTr)
         {
-            string message = "";
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
 
-            string myContent = JsonConvert.SerializeObject(cashTr);
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
 
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+            parameters.Add("shippingCompanyId", shippingCompanyId.ToString());
+            parameters.Add("ammount", ammount.ToString());
+            parameters.Add("payType", payType.ToString());
+            var myContent = JsonConvert.SerializeObject(cashTr);
+            parameters.Add("cashTr", myContent);
 
-                HttpRequestMessage request = new HttpRequestMessage();
 
-                // encoding parameter to get special characters
-                myContent = HttpUtility.UrlEncode(myContent);
 
-                request.RequestUri = new Uri(Global.APIUri + "Cashtransfer/payShippingCompanyByAmount?shippingCompanyId=" + shippingCompanyId + "&amount=" + ammount + "&payType=" + payType + "&cashtransfer=" + myContent);
+            string method = "Cashtransfer/payShippingCompanyByAmount";
+            return Convert.ToInt32(APIResult.post(method, parameters));
 
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Post;
-                //set content type
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var response = await client.SendAsync(request);
+            //string message = "";
+            //// ... Use HttpClient.
+            //ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
 
-                if (response.IsSuccessStatusCode)
-                {
-                    message = await response.Content.ReadAsStringAsync();
-                    message = JsonConvert.DeserializeObject<string>(message);
-                }
-                return message;
-            }
+            //string myContent = JsonConvert.SerializeObject(cashTr);
+
+            //using (var client = new HttpClient())
+            //{
+            //    ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+            //    client.BaseAddress = new Uri(Global.APIUri);
+            //    client.DefaultRequestHeaders.Clear();
+            //    client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+            //    client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+
+            //    HttpRequestMessage request = new HttpRequestMessage();
+
+            //    // encoding parameter to get special characters
+            //    myContent = HttpUtility.UrlEncode(myContent);
+
+            //    request.RequestUri = new Uri(Global.APIUri + "Cashtransfer/payShippingCompanyByAmount?shippingCompanyId=" + shippingCompanyId + "&amount=" + ammount + "&payType=" + payType + "&cashtransfer=" + myContent);
+
+            //    request.Headers.Add("APIKey", Global.APIKey);
+            //    request.Method = HttpMethod.Post;
+            //    //set content type
+            //    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            //    var response = await client.SendAsync(request);
+
+            //    if (response.IsSuccessStatusCode)
+            //    {
+            //        message = await response.Content.ReadAsStringAsync();
+            //        message = JsonConvert.DeserializeObject<string>(message);
+            //    }
+            //    return message;
+            //}
         }
 
-        public async Task<string> PayListOfInvoices(int agentId, List<Invoice> invoicelst , string payType, CashTransfer cashTr)
+        public async Task<int> PayListOfInvoices(int agentId, List<Invoice> invoicelst , string payType, CashTransfer cashTr)
         {
-            string message = "";
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
 
-            string myContent = JsonConvert.SerializeObject(cashTr);
+            parameters.Add("agentId", agentId.ToString());
+            
+            parameters.Add("payType", payType);
+            var myContent = JsonConvert.SerializeObject(invoicelst);
+            parameters.Add("invoices", myContent);
+            var myContent2 = JsonConvert.SerializeObject(cashTr);
+            parameters.Add("cashtransfer", myContent2);
 
-            string myContent1 = JsonConvert.SerializeObject(invoicelst);
 
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
 
-                HttpRequestMessage request = new HttpRequestMessage();
+            string method = "Cashtransfer/payListOfInvoices";
+            return Convert.ToInt32(APIResult.post(method, parameters));
 
-                // encoding parameter to get special characters
-                myContent = HttpUtility.UrlEncode(myContent);
+            //string message = "";
+            //// ... Use HttpClient.
+            //ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
 
-                request.RequestUri = new Uri(Global.APIUri + "Cashtransfer/payListOfInvoices?agentId=" + agentId + "&invoices=" + myContent1 + "&payType=" + payType + "&cashtransfer=" + myContent);
+            //string myContent = JsonConvert.SerializeObject(cashTr);
 
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Post;
-                //set content type
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var response = await client.SendAsync(request);
+            //string myContent1 = JsonConvert.SerializeObject(invoicelst);
 
-                if (response.IsSuccessStatusCode)
-                {
-                    message = await response.Content.ReadAsStringAsync();
-                    message = JsonConvert.DeserializeObject<string>(message);
-                }
-                return message;
-            }
+            //using (var client = new HttpClient())
+            //{
+            //    ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+            //    client.BaseAddress = new Uri(Global.APIUri);
+            //    client.DefaultRequestHeaders.Clear();
+            //    client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+            //    client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+
+            //    HttpRequestMessage request = new HttpRequestMessage();
+
+            //    // encoding parameter to get special characters
+            //    myContent = HttpUtility.UrlEncode(myContent);
+
+            //    request.RequestUri = new Uri(Global.APIUri + "Cashtransfer/payListOfInvoices?agentId=" + agentId + "&invoices=" + myContent1 + "&payType=" + payType + "&cashtransfer=" + myContent);
+
+            //    request.Headers.Add("APIKey", Global.APIKey);
+            //    request.Method = HttpMethod.Post;
+            //    //set content type
+            //    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            //    var response = await client.SendAsync(request);
+
+            //    if (response.IsSuccessStatusCode)
+            //    {
+            //        message = await response.Content.ReadAsStringAsync();
+            //        message = JsonConvert.DeserializeObject<string>(message);
+            //    }
+            //    return message;
+            //}
+
+
         }
 
-        public async Task<string> PayUserListOfInvoices(int userId, List<Invoice> invoicelst, string payType, CashTransfer cashTr)
+        public async Task<int> PayUserListOfInvoices(int userId, List<Invoice> invoicelst, string payType, CashTransfer cashTr)
         {
-            string message = "";
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
 
-            string myContent = JsonConvert.SerializeObject(cashTr);
+            parameters.Add("userId", userId.ToString());
 
-            string myContent1 = JsonConvert.SerializeObject(invoicelst);
+            parameters.Add("payType", payType);
+            var myContent = JsonConvert.SerializeObject(invoicelst);
+            parameters.Add("invoices", myContent);
+            var myContent2 = JsonConvert.SerializeObject(cashTr);
+            parameters.Add("cashtransfer", myContent2);
 
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
 
-                HttpRequestMessage request = new HttpRequestMessage();
 
-                // encoding parameter to get special characters
-                myContent = HttpUtility.UrlEncode(myContent);
+            string method = "Cashtransfer/payUserListOfInvoices";
+            return Convert.ToInt32(APIResult.post(method, parameters));
 
-                request.RequestUri = new Uri(Global.APIUri + "Cashtransfer/payUserListOfInvoices?userId=" + userId + "&invoices=" + myContent1 + "&payType=" + payType + "&cashtransfer=" + myContent);
+            //string message = "";
+            //// ... Use HttpClient.
+            //ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
 
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Post;
-                //set content type
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var response = await client.SendAsync(request);
+            //string myContent = JsonConvert.SerializeObject(cashTr);
 
-                if (response.IsSuccessStatusCode)
-                {
-                    message = await response.Content.ReadAsStringAsync();
-                    message = JsonConvert.DeserializeObject<string>(message);
-                }
-                return message;
-            }
+            //string myContent1 = JsonConvert.SerializeObject(invoicelst);
+
+            //using (var client = new HttpClient())
+            //{
+            //    ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+            //    client.BaseAddress = new Uri(Global.APIUri);
+            //    client.DefaultRequestHeaders.Clear();
+            //    client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+            //    client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+
+            //    HttpRequestMessage request = new HttpRequestMessage();
+
+            //    // encoding parameter to get special characters
+            //    myContent = HttpUtility.UrlEncode(myContent);
+
+            //    request.RequestUri = new Uri(Global.APIUri + "Cashtransfer/payUserListOfInvoices?userId=" + userId + "&invoices=" + myContent1 + "&payType=" + payType + "&cashtransfer=" + myContent);
+
+            //    request.Headers.Add("APIKey", Global.APIKey);
+            //    request.Method = HttpMethod.Post;
+            //    //set content type
+            //    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            //    var response = await client.SendAsync(request);
+
+            //    if (response.IsSuccessStatusCode)
+            //    {
+            //        message = await response.Content.ReadAsStringAsync();
+            //        message = JsonConvert.DeserializeObject<string>(message);
+            //    }
+            //    return message;
+            //}
         }
 
-        public async Task<string> PayShippingCompanyListOfInvoices(int shippingCompanyId, List<Invoice> invoicelst, string payType, CashTransfer cashTr)
+        public async Task<int> PayShippingCompanyListOfInvoices(int shippingCompanyId, List<Invoice> invoicelst, string payType, CashTransfer cashTr)
         {
-            string message = "";
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
 
-            string myContent = JsonConvert.SerializeObject(cashTr);
+            parameters.Add("shippingCompanyId", shippingCompanyId.ToString());
 
-            string myContent1 = JsonConvert.SerializeObject(invoicelst);
+            parameters.Add("payType", payType);
+            var myContent = JsonConvert.SerializeObject(invoicelst);
+            parameters.Add("invoices", myContent);
+            var myContent2 = JsonConvert.SerializeObject(cashTr);
+            parameters.Add("cashtransfer", myContent2);
 
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
 
-                HttpRequestMessage request = new HttpRequestMessage();
 
-                // encoding parameter to get special characters
-                myContent = HttpUtility.UrlEncode(myContent);
+            string method = "Cashtransfer/payUserListOfInvoices";
+            return Convert.ToInt32(APIResult.post(method, parameters));
 
-                request.RequestUri = new Uri(Global.APIUri + "Cashtransfer/payShippingCompanyListOfInvoices?shippingCompanyId=" + shippingCompanyId + "&invoices=" + myContent1 + "&payType=" + payType + "&cashtransfer=" + myContent);
+            //string message = "";
+            //// ... Use HttpClient.
+            //ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
 
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Post;
-                //set content type
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var response = await client.SendAsync(request);
+            //string myContent = JsonConvert.SerializeObject(cashTr);
 
-                if (response.IsSuccessStatusCode)
-                {
-                    message = await response.Content.ReadAsStringAsync();
-                    message = JsonConvert.DeserializeObject<string>(message);
-                }
-                return message;
-            }
+            //string myContent1 = JsonConvert.SerializeObject(invoicelst);
+
+            //using (var client = new HttpClient())
+            //{
+            //    ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+            //    client.BaseAddress = new Uri(Global.APIUri);
+            //    client.DefaultRequestHeaders.Clear();
+            //    client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+            //    client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+
+            //    HttpRequestMessage request = new HttpRequestMessage();
+
+            //    // encoding parameter to get special characters
+            //    myContent = HttpUtility.UrlEncode(myContent);
+
+            //    request.RequestUri = new Uri(Global.APIUri + "Cashtransfer/payShippingCompanyListOfInvoices?shippingCompanyId=" + shippingCompanyId + "&invoices=" + myContent1 + "&payType=" + payType + "&cashtransfer=" + myContent);
+
+            //    request.Headers.Add("APIKey", Global.APIKey);
+            //    request.Method = HttpMethod.Post;
+            //    //set content type
+            //    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            //    var response = await client.SendAsync(request);
+
+            //    if (response.IsSuccessStatusCode)
+            //    {
+            //        message = await response.Content.ReadAsStringAsync();
+            //        message = JsonConvert.DeserializeObject<string>(message);
+            //    }
+            //    return message;
+            //}
         }
 
         public async Task<string> generateCashNumber(string cashNum)
@@ -679,31 +900,49 @@ namespace POS.Classes
 
         public async Task<int> GetLastNumOfCash(string cashNum)
         {
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            using (var client = new HttpClient())
+            int message = 0;
+          
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("cashCode", cashNum);
+            //#################
+            IEnumerable<Claim> claims = await APIResult.getList("Cashtransfer/GetLastNumOfCash", parameters);
+
+            foreach (Claim c in claims)
             {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Cashtransfer/GetLastNumOfCash?cashCode=" + cashNum);
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Get;
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage response = await client.SendAsync(request);
-
-                if (response.IsSuccessStatusCode)
+                if (c.Type == "scopes")
                 {
-                    string message = await response.Content.ReadAsStringAsync();
-                    message = JsonConvert.DeserializeObject<string>(message);
-                    return int.Parse(message);
+                    message = JsonConvert.DeserializeObject<int>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    break;
                 }
-
-                return 0;
             }
+            return message;
+
+
+            //// ... Use HttpClient.
+            //ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            //using (var client = new HttpClient())
+            //{
+            //    ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+            //    client.BaseAddress = new Uri(Global.APIUri);
+            //    client.DefaultRequestHeaders.Clear();
+            //    client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+            //    client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+            //    HttpRequestMessage request = new HttpRequestMessage();
+            //    request.RequestUri = new Uri(Global.APIUri + "Cashtransfer/GetLastNumOfCash?cashCode=" + cashNum);
+            //    request.Headers.Add("APIKey", Global.APIKey);
+            //    request.Method = HttpMethod.Get;
+            //    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            //    HttpResponseMessage response = await client.SendAsync(request);
+
+            //    if (response.IsSuccessStatusCode)
+            //    {
+            //        string message = await response.Content.ReadAsStringAsync();
+            //        message = JsonConvert.DeserializeObject<string>(message);
+            //        return int.Parse(message);
+            //    }
+
+            //    return 0;
+            //}
         }
 
         public async Task<string> generateDocNumber(string docNum)
@@ -719,97 +958,148 @@ namespace POS.Classes
 
         public async Task<int> GetLastNumOfDocNum(string docNum)
         {
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Cashtransfer/GetLastNumOfDocNum?docNum=" + docNum);
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Get;
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage response = await client.SendAsync(request);
+            int message = 0;
 
-                if (response.IsSuccessStatusCode)
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("docNum", docNum);
+            //#################
+            IEnumerable<Claim> claims = await APIResult.getList("Cashtransfer/GetLastNumOfDocNum", parameters);
+
+            foreach (Claim c in claims)
+            {
+                if (c.Type == "scopes")
                 {
-                    string message = await response.Content.ReadAsStringAsync();
-                    message = JsonConvert.DeserializeObject<string>(message);
-                    return int.Parse(message);
+                    message = JsonConvert.DeserializeObject<int>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    break;
                 }
-                return 0;
             }
+            return message;
+
+
+            //// ... Use HttpClient.
+            //ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            //using (var client = new HttpClient())
+            //{
+            //    ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+            //    client.BaseAddress = new Uri(Global.APIUri);
+            //    client.DefaultRequestHeaders.Clear();
+            //    client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+            //    client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+            //    HttpRequestMessage request = new HttpRequestMessage();
+            //    request.RequestUri = new Uri(Global.APIUri + "Cashtransfer/GetLastNumOfDocNum?docNum=" + docNum);
+            //    request.Headers.Add("APIKey", Global.APIKey);
+            //    request.Method = HttpMethod.Get;
+            //    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            //    HttpResponseMessage response = await client.SendAsync(request);
+
+            //    if (response.IsSuccessStatusCode)
+            //    {
+            //        string message = await response.Content.ReadAsStringAsync();
+            //        message = JsonConvert.DeserializeObject<string>(message);
+            //        return int.Parse(message);
+            //    }
+            //    return 0;
+            //}
         }
 
-        public async Task<string> payOrderInvoice(int invoiceId, int invStatusId ,decimal ammount, string payType, CashTransfer cashTransfer)
+        public async Task<int> payOrderInvoice(int invoiceId, int invStatusId ,decimal ammount, string payType, CashTransfer cashTransfer)
         {
-            string message = "";
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
 
-            string myContent = JsonConvert.SerializeObject(cashTransfer);
+            parameters.Add("invoiceId", invoiceId.ToString());
 
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+            parameters.Add("invStatusId", invStatusId.ToString());
+            parameters.Add("amount", ammount.ToString());
+            parameters.Add("payType", payType);
+            
+          
+            var myContent = JsonConvert.SerializeObject(cashTransfer);
+            parameters.Add("cashtransfer", myContent);
 
-                HttpRequestMessage request = new HttpRequestMessage();
+            string method = "Cashtransfer/payOrderInvoice";
+            return Convert.ToInt32(APIResult.post(method, parameters));
 
-                // encoding parameter to get special characters
-                myContent = HttpUtility.UrlEncode(myContent);
+            //string message = "";
+            //// ... Use HttpClient.
+            //ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
 
-                request.RequestUri = new Uri(Global.APIUri + "Cashtransfer/payOrderInvoice?invoiceId=" + invoiceId +"&invStatusId=" +invStatusId+ "&amount=" + ammount + "&payType=" + payType + "&cashtransfer=" + myContent);
+            //string myContent = JsonConvert.SerializeObject(cashTransfer);
 
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Post;
-                //set content type
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var response = await client.SendAsync(request);
+            //using (var client = new HttpClient())
+            //{
+            //    ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+            //    client.BaseAddress = new Uri(Global.APIUri);
+            //    client.DefaultRequestHeaders.Clear();
+            //    client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+            //    client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
 
-                if (response.IsSuccessStatusCode)
-                {
-                    message = await response.Content.ReadAsStringAsync();
-                    message = JsonConvert.DeserializeObject<string>(message);
-                }
-                return message;
-            }
+            //    HttpRequestMessage request = new HttpRequestMessage();
+
+            //    // encoding parameter to get special characters
+            //    myContent = HttpUtility.UrlEncode(myContent);
+
+            //    request.RequestUri = new Uri(Global.APIUri + "Cashtransfer/payOrderInvoice?invoiceId=" + invoiceId +"&invStatusId=" +invStatusId+ "&amount=" + ammount + "&payType=" + payType + "&cashtransfer=" + myContent);
+
+            //    request.Headers.Add("APIKey", Global.APIKey);
+            //    request.Method = HttpMethod.Post;
+            //    //set content type
+            //    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            //    var response = await client.SendAsync(request);
+
+            //    if (response.IsSuccessStatusCode)
+            //    {
+            //        message = await response.Content.ReadAsStringAsync();
+            //        message = JsonConvert.DeserializeObject<string>(message);
+            //    }
+            //    return message;
+            //}
         }
         public async Task<int> GetCashCount(int invoiceId)
         {
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "cashTransfer/GetCountByInvId?invoiceId=" + invoiceId );
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Get;
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage response = await client.SendAsync(request);
+            int message = 0;
 
-                if (response.IsSuccessStatusCode)
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("invoiceId", invoiceId.ToString());
+            //#################
+            IEnumerable<Claim> claims = await APIResult.getList("cashTransfer/GetCountByInvId", parameters);
+
+            foreach (Claim c in claims)
+            {
+                if (c.Type == "scopes")
                 {
-                    var count = await response.Content.ReadAsStringAsync();
-                    return int.Parse(count);
-                }
-                else //web api sent error response 
-                {
-                    return 0;
+                    message = JsonConvert.DeserializeObject<int>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    break;
                 }
             }
+            return message;
+
+
+            //// ... Use HttpClient.
+            //ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            //using (var client = new HttpClient())
+            //{
+            //    ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+            //    client.BaseAddress = new Uri(Global.APIUri);
+            //    client.DefaultRequestHeaders.Clear();
+            //    client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+            //    client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+            //    HttpRequestMessage request = new HttpRequestMessage();
+            //    request.RequestUri = new Uri(Global.APIUri + "cashTransfer/GetCountByInvId?invoiceId=" + invoiceId );
+            //    request.Headers.Add("APIKey", Global.APIKey);
+            //    request.Method = HttpMethod.Get;
+            //    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            //    HttpResponseMessage response = await client.SendAsync(request);
+
+            //    if (response.IsSuccessStatusCode)
+            //    {
+            //        var count = await response.Content.ReadAsStringAsync();
+            //        return int.Parse(count);
+            //    }
+            //    else //web api sent error response 
+            //    {
+            //        return 0;
+            //    }
+            //}
         }
 
     }

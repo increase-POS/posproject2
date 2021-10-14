@@ -491,8 +491,8 @@ namespace POS.Classes
                     list.Add(JsonConvert.DeserializeObject<BestSeller>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" }));
                 }
             }
-            return list;
-
+          return list;
+          //  return Convert.ToInt32(APIResult.post(method, parameters));
             //List<BestSeller> list = null;
             //// ... Use HttpClient.
             //ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;

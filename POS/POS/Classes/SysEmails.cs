@@ -99,7 +99,7 @@ namespace POS.Classes
 
             var myContent = JsonConvert.SerializeObject(obj);
             parameters.Add("Object", myContent);
-            return APIResult.post(method, parameters);
+            return Convert.ToInt32(APIResult.post(method, parameters));
 
 
             //// ... Use HttpClient.
@@ -248,7 +248,7 @@ namespace POS.Classes
           
 
             string method = "SysEmails/Delete";
-            return APIResult.post(method, parameters);
+            return Convert.ToInt32(APIResult.post(method, parameters));
 
 
 

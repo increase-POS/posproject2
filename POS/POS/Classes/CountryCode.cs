@@ -206,8 +206,8 @@ namespace POS.Classes
             //parameters.Add("final", final.ToString());
 
             string method = "Countries/UpdateIsdefault";
-            return APIResult.post(method, parameters);
-
+         //   return Convert.ToInt32(APIResult.post(method, parameters));
+            return Convert.ToInt32(APIResult.post(method, parameters));
 
             //// ... Use HttpClient.
             //ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
