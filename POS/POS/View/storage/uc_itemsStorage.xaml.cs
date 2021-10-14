@@ -436,8 +436,8 @@ namespace POS.View.storage
                             newLocation.note = tb_notes.Text;
                             newLocation.updateUserId = MainWindow.userID.Value;
                             newLocation.createUserId = MainWindow.userID.Value;
-                            bool res = await itemLocation.unlockItem(newLocation);
-                            if (res)
+                           int res = await itemLocation.unlockItem(newLocation);
+                            if (res>0)
                             {
                                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
 
@@ -505,8 +505,8 @@ namespace POS.View.storage
                                 newLocation.updateUserId = MainWindow.userID.Value;
                                 newLocation.createUserId = MainWindow.userID.Value;
                                 //newLocation.storeCost 
-                                bool res = await itemLocation.trasnferItem(itemLocation.itemsLocId, newLocation);
-                                if (res)
+                                int  res = await itemLocation.trasnferItem(itemLocation.itemsLocId, newLocation);
+                                if (res>0)
                                 {
                                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
 

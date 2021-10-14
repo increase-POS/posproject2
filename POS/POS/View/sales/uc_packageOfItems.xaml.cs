@@ -1301,7 +1301,7 @@ namespace POS.View
                         itemUnit.barcode = tb_barcode.Text;
                         itemUnit.createUserId = MainWindow.userID;
 
-                        string s = await itemUnitModel.saveItemUnit(itemUnit);
+                      int s = await itemUnitModel.saveItemUnit(itemUnit);
 
                         await RefrishItems();
                         Txb_searchitems_TextChanged(null, null);
@@ -1389,7 +1389,7 @@ namespace POS.View
                         itemUnit.barcode = tb_barcode.Text;
                         itemUnit.createUserId = MainWindow.userID;
 
-                        string s = await itemUnitModel.saveItemUnit(itemUnit);
+                       int s = await itemUnitModel.saveItemUnit(itemUnit);
 
                         await RefrishItems();
                         Txb_searchitems_TextChanged(null, null);

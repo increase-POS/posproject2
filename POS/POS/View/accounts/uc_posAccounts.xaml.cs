@@ -463,9 +463,9 @@ namespace POS.View.accounts
                         cash1.side = "p";//pos
                         cash1.posId = Convert.ToInt32(cb_pos1.SelectedValue);
 
-                        string s1 = await cashModel.Save(cash1);
+                      int s1 = await cashModel.Save(cash1);
 
-                        if (!s1.Equals("0"))
+                        if (!s1.Equals(0))
                         {
                             //second operation
                             CashTransfer cash2 = new CashTransfer();
@@ -480,11 +480,11 @@ namespace POS.View.accounts
                             else cash2.isConfirm = 0;
                             cash2.side = "p";//pos
                             cash2.posId = Convert.ToInt32(cb_pos2.SelectedValue);
-                            cash2.cashTransIdSource = int.Parse(s1);//id from first operation
+                            cash2.cashTransIdSource = s1;//id from first operation
 
-                            string s2 = await cashModel.Save(cash2);
+                            int s2 = await cashModel.Save(cash2);
 
-                            if (!s2.Equals("0"))
+                            if (!s2.Equals(0))
                             {
                                 #region notification Object
                                 int pos1 = 0;
@@ -567,18 +567,18 @@ namespace POS.View.accounts
                         cashtrans2.notes = tb_note.Text;
                         cashtrans2.posId = Convert.ToInt32(cb_pos1.SelectedValue);
 
-                        string s1 = await cashModel.Save(cashtrans2);
+                       int s1 = await cashModel.Save(cashtrans2);
 
-                        if (!s1.Equals("0"))
+                        if (!s1.Equals(0))
                         {
                             //second operation (deposit)
                             cashtrans3.cash = decimal.Parse(tb_cash.Text);
                             cashtrans3.posId = Convert.ToInt32(cb_pos2.SelectedValue);
                             cashtrans3.notes = tb_note.Text;
 
-                            string s2 = await cashModel.Save(cashtrans3);
+                            int s2 = await cashModel.Save(cashtrans3);
 
-                            if (!s2.Equals("0"))
+                            if (!s2.Equals(0))
                             {
                                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
 
@@ -624,15 +624,15 @@ namespace POS.View.accounts
                         #endregion
                         if (w.isOk)
                         {
-                            string b = await cashModel.deletePosTrans(cashtrans.cashTransId);
+                            int b = await cashModel.deletePosTrans(cashtrans.cashTransId);
 
-                            if (b == "1")
+                            if (b == 1)
                             {
                                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
                                 //clear textBoxs
                                 Btn_clear_Click(sender, e);
                             }
-                            else if (b == "0")
+                            else if (b == 0)
                                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopCanNotDeleteRequest"), animation: ToasterAnimation.FadeIn);
                             else
                                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
@@ -678,10 +678,10 @@ namespace POS.View.accounts
                         if (pos.balance >= cashtrans2.cash)
                         {
                             cashtrans2.isConfirm = 1;
-                            string s =await cashModel.Save(cashtrans2);
+                            int s =await cashModel.Save(cashtrans2);
                             s = await cashModel.MovePosCash(cashtrans2.cashTransId, MainWindow.userID.Value);
-
-                            if (s.Equals("transdone"))//tras done so confirm
+                            //   if (s.Equals("transdone"))//tras done so confirm
+                            if (s.Equals(1))//tras done so confirm
                                 await confirmOpr();
                             else//error then do not confirm
                                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
@@ -705,8 +705,8 @@ namespace POS.View.accounts
         private async Task confirmOpr()
         {
             cashtrans.isConfirm = 1;
-            string s = await cashModel.Save(cashtrans);
-            if (!s.Equals("0"))
+            int s = await cashModel.Save(cashtrans);
+            if (!s.Equals(0))
             {
                 await RefreshCashesList();
                 Tb_search_TextChanged(null, null);

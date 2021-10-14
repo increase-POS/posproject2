@@ -399,9 +399,9 @@ namespace POS.View.accounts
                             cash.isConfirm = 0;
                             cash.bankId = Convert.ToInt32(cb_bank.SelectedValue);
 
-                            string s = await cashModel.Save(cash);
+                            int s = await cashModel.Save(cash);
 
-                            if (!s.Equals("0"))
+                            if (!s.Equals(0))
                             {
 
                                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
@@ -425,9 +425,9 @@ namespace POS.View.accounts
                                 cashtrans.isConfirm = 1;
                                 cashtrans.docNum = tb_depositNumber.Text;
 
-                                string s = await cashModel.Save(cashtrans);
+                                int s = await cashModel.Save(cashtrans);
 
-                                if (!s.Equals("0"))
+                                if (!s.Equals(0))
                                 {
                                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trCompleted"), animation: ToasterAnimation.FadeIn);
                                     btn_add.IsEnabled = false;

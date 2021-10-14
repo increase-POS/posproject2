@@ -207,11 +207,11 @@ namespace POS.View.Settings
                         group.createUserId = MainWindow.userID;
                         group.updateUserId = MainWindow.userID;
                         group.isActive = 1;
-                        string s = await groupModel.Save(group);
-                        if (!s.Equals("-1"))
+                        int s = await groupModel.Save(group);
+                        if (!s.Equals(0))
                         {
-                           await addObjects(int.Parse(s));
-                            group.groupId = int.Parse(s);
+                           await addObjects(s);
+                            group.groupId =s;
                         }
                         else
                             Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
@@ -274,7 +274,7 @@ namespace POS.View.Settings
                 groupObject.isActive = 1;
                 groupObjectsList.Add(groupObject);
             }
-            string s = "";
+            int s = 0;
             for (int i = 0; i <= (groupObjectsList.Count / 15); i++)
             {
                 if (i < (groupObjectsList.Count / 15))
@@ -289,7 +289,7 @@ namespace POS.View.Settings
                 }
             }
 
-            if (s.Equals("true"))
+            if (s>0)
             {
                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                 Btn_clear_Click(null, null);
@@ -376,9 +376,9 @@ namespace POS.View.Settings
                             group.notes = tb_notes.Text;
                             group.updateUserId = MainWindow.userID;
 
-                            string s = await groupModel.Save(group);
+                            int s = await groupModel.Save(group);
 
-                            if (!s.Equals("-1"))
+                            if (!s.Equals(0))
                                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
                             else
                                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
@@ -446,9 +446,9 @@ namespace POS.View.Settings
                                         if (group.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
                                         if ((!group.canDelete) && (group.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
 
-                                        bool b = await groupModel.Delete(group.groupId, MainWindow.userID.Value, group.canDelete);
+                                        int b = await groupModel.Delete(group.groupId, MainWindow.userID.Value, group.canDelete);
 
-                                        if (b) //SectionData.popUpResponse("", popupContent);
+                                        if (b>0) //SectionData.popUpResponse("", popupContent);
                                             Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
                                         else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
                                             Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
@@ -482,9 +482,9 @@ namespace POS.View.Settings
             {//activate
                 group.isActive = 1;
 
-                string s = await group.Save(group);
+                int s = await group.Save(group);
 
-                if (!s.Equals("-1")) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopActive"));
+                if (!s.Equals(0)) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopActive"));
                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
                 else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
@@ -809,12 +809,12 @@ t1.Start();
                     SectionData.StartAwait(grid_main);
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update") || SectionData.isAdminPermision())
                     {
-                        string s = "";
+                        int s = 0;
                         foreach (var item in groupObjectsQuery)
                         {
                             s = await groupObject.Save(item);
                         }
-                        if (!s.Equals("-1"))
+                        if (!s.Equals(0))
                         {
                             //addObjects(int.Parse(s));
                             Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);

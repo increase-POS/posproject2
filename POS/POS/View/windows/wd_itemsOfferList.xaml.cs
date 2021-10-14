@@ -163,7 +163,7 @@ namespace POS.View.windows
                 if (sender != null)
                     SectionData.StartAwait(grid_offerList);
 
-                string s = await itemUnitOfferModel.updategroup(offerId, selectedItems, MainWindow.userID.Value);
+               int s = await itemUnitOfferModel.updategroup(offerId, selectedItems, MainWindow.userID.Value);
 
                 isActive = true;
                 this.Close();

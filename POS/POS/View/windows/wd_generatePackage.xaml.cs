@@ -189,8 +189,8 @@ namespace POS.View.windows
             if(valid)
             {
                 int quantity = int.Parse(tb_quantity.Text);
-                bool res = await itemLocation.generatePackage(_PackageParentId,quantity,(int)cb_location.SelectedValue,MainWindow.branchID.Value, MainWindow.userID.Value);
-                if (res)
+                int res = await itemLocation.generatePackage(_PackageParentId,quantity,(int)cb_location.SelectedValue,MainWindow.branchID.Value, MainWindow.userID.Value);
+                if (res > 0)
                 {
                     clearGenerateInputs();
                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);

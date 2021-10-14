@@ -408,7 +408,7 @@ namespace POS.View.accounts
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-        private async Task<string> saveBond(string num, decimal ammount, Nullable<DateTime> date, string type)
+        private async Task<int> saveBond(string num, decimal ammount, Nullable<DateTime> date, string type)
         {
             Bonds bond = new Bonds();
             bond.number = num;
@@ -418,7 +418,7 @@ namespace POS.View.accounts
             bond.isRecieved = 0;
             bond.createUserId = MainWindow.userID.Value;
 
-            string s = await bondModel.Save(bond);
+            int s = await bondModel.Save(bond);
 
             return s;
         }
@@ -1054,13 +1054,13 @@ namespace POS.View.accounts
 
                         if (cb_paymentProcessType.SelectedValue.ToString().Equals("doc"))
                         {
-                            string res = await saveBond(cash.docNum, cash.cash.Value, dp_docDate.SelectedDate.Value, "d");
-                            cash.bondId = int.Parse(res);
+                            int res = await saveBond(cash.docNum, cash.cash.Value, dp_docDate.SelectedDate.Value, "d");
+                            cash.bondId = res;
                         }
 
-                        string s = await cashModel.payOrderInvoice(invoice.invoiceId, invoice.invStatusId, cash.cash.Value, processType, cash);
+                       int s = await cashModel.payOrderInvoice(invoice.invoiceId, invoice.invStatusId, cash.cash.Value, processType, cash);
 
-                    if (!s.Equals(""))
+                    if (!s.Equals(0))
                     {
                         if (cb_paymentProcessType.SelectedValue.ToString().Equals("cash"))
                             await calcBalance(decimal.Parse(tb_cash.Text));

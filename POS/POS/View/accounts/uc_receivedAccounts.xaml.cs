@@ -519,8 +519,9 @@ namespace POS.View.accounts
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_ucReceivedAccounts);
-                string s = "0", s1 = "";
-
+                //  string s = "0", s1 = "";
+                int s = 0;
+                int s1 = 0;
                 if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
                     #region validate
@@ -640,8 +641,8 @@ namespace POS.View.accounts
 
                         if (cb_paymentProcessType.SelectedValue.ToString().Equals("doc"))
                         {
-                            string res = await saveBond(cash.docNum, cash.cash.Value, dp_docDate.SelectedDate.Value, "d");
-                            cash.bondId = int.Parse(res);
+                            int res = await saveBond(cash.docNum, cash.cash.Value, dp_docDate.SelectedDate.Value, "d");
+                            cash.bondId = res;
                         }
 
                         if (cb_depositorV.IsVisible || cb_depositorC.IsVisible)
@@ -699,7 +700,7 @@ namespace POS.View.accounts
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-        private async Task<string> saveBond(string num, decimal ammount, Nullable<DateTime> date, string type)
+        private async Task<int> saveBond(string num, decimal ammount, Nullable<DateTime> date, string type)
         {
             Bonds bond = new Bonds();
             bond.number = num;
@@ -709,7 +710,7 @@ namespace POS.View.accounts
             bond.isRecieved = 0;
             bond.createUserId = MainWindow.userID.Value;
 
-            string s = await bondModel.Save(bond);
+           int s = await bondModel.Save(bond);
 
             return s;
         }

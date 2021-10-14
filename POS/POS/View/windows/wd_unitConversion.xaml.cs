@@ -274,8 +274,8 @@ namespace POS.View.windows
                     if (cb_sectionLocation.SelectedIndex != -1)
                     {
                         var locationId = locations.Find(x => x.itemsLocId == (int)cb_sectionLocation.SelectedValue).locationId;
-                        bool res = await ItemLocation.transferAmountbetweenUnits((int)locationId, (int)cb_sectionLocation.SelectedValue, (int)cb_toUnit.SelectedValue, _FromQuantity, _ToQuantity, MainWindow.userID.Value);
-                        if (res)
+                       int res = await ItemLocation.transferAmountbetweenUnits((int)locationId, (int)cb_sectionLocation.SelectedValue, (int)cb_toUnit.SelectedValue, _FromQuantity, _ToQuantity, MainWindow.userID.Value);
+                        if (res>0)
                         {
                             clearConversionInputs();
                             Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
@@ -285,8 +285,8 @@ namespace POS.View.windows
                     }
                     else
                     {
-                        bool res = await ItemLocation.unitsConversion(MainWindow.branchID.Value, (int)cb_fromUnit.SelectedValue, (int)cb_toUnit.SelectedValue, _FromQuantity, _ToQuantity, MainWindow.userID.Value, isSmall);
-                        if (res)
+                     int res = await ItemLocation.unitsConversion(MainWindow.branchID.Value, (int)cb_fromUnit.SelectedValue, (int)cb_toUnit.SelectedValue, _FromQuantity, _ToQuantity, MainWindow.userID.Value, isSmall);
+                        if (res>0)
                         {
                             clearConversionInputs();
                             Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);

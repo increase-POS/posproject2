@@ -236,9 +236,9 @@ namespace POS.View.accounts
                         //update bond
                         bond.isRecieved = 1;
 
-                        string s = await bondModel.Save(bond);
+                       int s = await bondModel.Save(bond);
 
-                        if (!s.Equals("0"))
+                        if (!s.Equals(0))
                         {
                             //save new cashtransfer
                             CashTransfer cash = new CashTransfer();
@@ -268,7 +268,7 @@ namespace POS.View.accounts
 
                             s = await cashModel.Save(cash);
 
-                            if (!s.Equals("0"))
+                            if (!s.Equals(0))
                             {
                                 if (cb_paymentProcessType.SelectedValue.ToString().Equals("cash"))
                                     await calcBalance(bond.type, cash.cash.Value);

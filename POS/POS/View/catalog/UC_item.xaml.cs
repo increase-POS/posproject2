@@ -877,8 +877,8 @@ namespace POS.View
                             itemspropObj.updateUserId = MainWindow.userID;
                             itemspropObj.createUserId = MainWindow.userID;
 
-                            Boolean res = await itemsPropModel.Save(itemspropObj);
-                            if (res) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd"));
+                           int res = await itemsPropModel.Save(itemspropObj);
+                            if (res > 0) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd"));
                                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                             else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
                                 Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
@@ -1015,9 +1015,9 @@ namespace POS.View
                         int propertyItemId = (int)itemProp.propertyItemId;
                         int itemId = item.itemId;
 
-                        Boolean res = await itemsPropModel.Delete(itemProp.itemPropId);
+                       int res = await itemsPropModel.Delete(itemProp.itemPropId);
 
-                        if (res) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopDelete"));
+                        if (res>0) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopDelete"));
                             Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
                         else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
                             Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
@@ -1199,8 +1199,8 @@ namespace POS.View
                                     itemUnit.barcode = barcode;
                                     itemUnit.createUserId = MainWindow.userID;
 
-                                    string res = await itemUnit.saveItemUnit(itemUnit);
-                                    if (res.Equals("true"))
+                                  int res = await itemUnit.saveItemUnit(itemUnit);
+                                    if (res.Equals(res > 0))
                                         Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                                     else
                                         Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
@@ -1309,8 +1309,8 @@ namespace POS.View
                                     itemUnit.barcode = barcode;
                                     itemUnit.createUserId = MainWindow.userID;
 
-                                    string res = await itemUnit.saveItemUnit(itemUnit);
-                                    if (res.Equals("true"))
+                                    int res = await itemUnit.saveItemUnit(itemUnit);
+                                    if (res.Equals(res > 0))
                                         Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
                                     else
                                         Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
@@ -1345,9 +1345,9 @@ namespace POS.View
             itemUnit.isActive = 1;
             itemUnit.updateUserId = MainWindow.userID.Value;
 
-            string s = await itemUnit.saveItemUnit(itemUnit);
+            int s = await itemUnit.saveItemUnit(itemUnit);
 
-            if (s == "true")
+            if (s > 0)
                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
             else
                 Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
@@ -1394,9 +1394,9 @@ namespace POS.View
                                 if (itemUnit.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
                                 if ((!itemUnit.canDelete) && (itemUnit.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
                                 int userId = (int)MainWindow.userID;
-                                Boolean res = await itemUnit.Delete(itemUnit.itemUnitId, userId, itemUnit.canDelete);
+                                int res = await itemUnit.Delete(itemUnit.itemUnitId, userId, itemUnit.canDelete);
 
-                                if (res)
+                                if (res>0)
                                     Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
                                 else
                                     Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
