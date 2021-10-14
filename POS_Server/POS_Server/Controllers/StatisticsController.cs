@@ -9502,7 +9502,7 @@ else
                                                                          // from JIMM in JIM.DefaultIfEmpty()
                                                                      from JAA in JA.DefaultIfEmpty()
                                                                      from JBCC in JBC.DefaultIfEmpty()
-                                                                     where (brIds.Contains(JBCC.branchId)) && (I.invType == "s" || I.invType == "sb")
+                                                                     where (brIds.Contains(JBCC.branchId)) && (I.invType == "s" )
 
                                                                      select new ItemUnitInvoiceProfitModel
                                                                      {

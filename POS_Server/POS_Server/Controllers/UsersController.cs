@@ -69,8 +69,6 @@ namespace POS_Server.Controllers
                 }
             }
         }
-
-
         [HttpGet]
         [Route("Getloginuser")]
         public ResponseVM Getloginuser(string token)
@@ -348,6 +346,70 @@ namespace POS_Server.Controllers
             return NotFound();
         }
         */
+
+        [HttpGet]
+        [Route("GetSalesMan")]
+        public ResponseVM GetSalesMan(string token)
+        {
+            var re = Request;
+            var headers = re.Headers;
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+            {
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+            }
+            else
+            {
+                int branchId = 0;
+                string deliveryPermission = "";
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "branchId")
+                    {
+                        branchId = int.Parse(c.Value);
+                    } else if (c.Type == "deliveryPermission")
+                    {
+                        deliveryPermission = c.Value;
+                    }
+                }
+                List<UserModel> users = new List<UserModel>();
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var usersList = (from u in entity.users.Where(us => us.isActive == 1)
+                                     join bu in entity.branchesUsers on u.userId equals bu.userId
+                                     where bu.branchId == branchId
+                                     select new UserModel
+                                     {
+                                         userId = u.userId,
+                                         username = u.username,
+                                         name = u.name,
+                                         lastname = u.lastname,
+                                         fullName = u.name + " " + u.lastname,
+                                         balance = u.balance,
+                                         balanceType = u.balanceType,
+                                     }).ToList();
+
+                    foreach (UserModel user in usersList)
+                    {
+                        var groupObjects = (from GO in entity.groupObject
+                                            where GO.showOb == 1 && GO.objects.name.Contains(deliveryPermission)
+                                            join U in entity.users on GO.groupId equals U.groupId
+                                            where U.userId == user.userId
+                                            select new
+                                            {
+                                                //group object
+                                                GO.id,
+                                                GO.showOb,
+                                            }).FirstOrDefault();
+
+                        if (groupObjects != null)
+                            users.Add(user);
+                    }
+                    return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(users) };
+                }
+            }
+        }
         // add or update unit
         [HttpPost]
         [Route("Save")]
@@ -403,7 +465,7 @@ namespace POS_Server.Controllers
                             if (usersCount >= userMaxCount)
                             {
                                  message = "-1";
-                                return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken(message) };
+                                return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(message) };
                             }
                             else
                             {
@@ -473,7 +535,6 @@ namespace POS_Server.Controllers
                 }
             }
         }
-
         [HttpPost]
         [Route("Delete")]
         public ResponseVM Delete(string token)
@@ -552,7 +613,6 @@ namespace POS_Server.Controllers
             }
            
         }
-
         [Route("PostUserImage")]
         public IHttpActionResult PostUserImage()
         {
@@ -623,7 +683,6 @@ namespace POS_Server.Controllers
                 return Ok(res);
             }
         }
-
         [HttpGet]
         [Route("GetImage")]
         public HttpResponseMessage GetImage(string imageName)

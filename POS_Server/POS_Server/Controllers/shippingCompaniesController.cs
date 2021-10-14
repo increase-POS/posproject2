@@ -1,10 +1,13 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using POS_Server.Models;
+using POS_Server.Models.VM;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Web.Http;
 
 namespace POS_Server.Controllers
@@ -15,21 +18,18 @@ namespace POS_Server.Controllers
         // GET api/<controller>
         [HttpGet]
         [Route("Get")]
-        public IHttpActionResult Get()
+        public ResponseVM Get(string token)
         {
+
+            Boolean canDelete = false;
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-            bool canDelete = false;
-
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
+            else
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
@@ -58,25 +58,6 @@ namespace POS_Server.Controllers
 
 
                                 }).ToList();
-                    /*
-    public int membershipId { get; set; }
-        public string name { get; set; }
-        public Nullable<decimal> deliveryDiscount { get; set; }
-        public string deliveryDiscountType { get; set; }
-        public Nullable<decimal> invoiceDiscount { get; set; }
-        public string invoiceDiscountType { get; set; }
-        public Nullable<decimal> subscriptionFee { get; set; }
-        public string notes { get; set; }
-        public Nullable<System.DateTime> createDate { get; set; }
-        public Nullable<System.DateTime> updateDate { get; set; }
-        public Nullable<int> createUserId { get; set; }
-        public Nullable<int> updateUserId { get; set; }
-        public Nullable<byte> isActive { get; set; }
-        public bool canDelete { get; set; }
-
-
-                    */
-
                     if (List.Count > 0)
                     {
                         for (int i = 0; i < List.Count; i++)
@@ -93,33 +74,35 @@ namespace POS_Server.Controllers
                         }
                     }
 
-                    if (List == null)
-                        return NotFound();
-                    else
-                        return Ok(List);
+                    return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(List) };
+
                 }
             }
-            //else
-            return NotFound();
         }
 
         // GET api/<controller>
         [HttpGet]
         [Route("GetByID")]
-        public IHttpActionResult GetByID(int shippingCompanyId)
+        public ResponseVM GetByID(string token )
         {
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid)
+            else
             {
+                int shippingCompanyId = 0;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemId")
+                    {
+                        shippingCompanyId = int.Parse(c.Value);
+                    }
+                }
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var row = entity.shippingCompanies
@@ -148,37 +131,40 @@ namespace POS_Server.Controllers
                    })
                    .FirstOrDefault();
 
-                    if (row == null)
-                        return NotFound();
-                    else
-                        return Ok(row);
+                    return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(row) };
+
                 }
             }
-            else
-                return NotFound();
         }
 
         // add or update location
         [HttpPost]
         [Route("Save")]
-        public string Save(string Object)
+        public ResponseVM Save(string token  )
         {
+            string message = "";
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-            string message = "";
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid)
+            else
             {
-                Object = Object.Replace("\\", string.Empty);
-                Object = Object.Trim('"');
-                shippingCompanies newObject = JsonConvert.DeserializeObject<shippingCompanies>(Object, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+                string shippingCompaniesObject = "";
+                shippingCompanies newObject = null;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemObject")
+                    {
+                        shippingCompaniesObject = c.Value.Replace("\\", string.Empty);
+                        shippingCompaniesObject = shippingCompaniesObject.Trim('"');
+                        newObject = JsonConvert.DeserializeObject<shippingCompanies>(shippingCompaniesObject, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                        break;
+                    }
+                }
                 if (newObject.updateUserId == 0 || newObject.updateUserId == null)
                 {
                     Nullable<int> id = null;
@@ -239,26 +225,42 @@ namespace POS_Server.Controllers
                     message = "-1";
                 }
             }
-            return message;
+            return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(message) };
         }
 
         [HttpPost]
         [Route("Delete")]
-        public string Delete(int shippingCompanyId, int userId, bool final)
+        public ResponseVM Delete(string token)
         {
+            string message = "";
             var re = Request;
             var headers = re.Headers;
-            string token = "";
-            int message = 0;
-            if (headers.Contains("APIKey"))
+            var jwt = headers.GetValues("Authorization").First();
+            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
             }
-
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-            if (valid)
+            else
             {
+                int shippingCompanyId = 0;
+                int userId = 0;
+                Boolean final = false;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemId")
+                    {
+                        shippingCompanyId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "userId")
+                    {
+                        userId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "final")
+                    {
+                        final = bool.Parse(c.Value);
+                    }
+                }
                 if (final)
                 {
                     try
@@ -268,14 +270,16 @@ namespace POS_Server.Controllers
                             shippingCompanies objectDelete = entity.shippingCompanies.Find(shippingCompanyId);
 
                             entity.shippingCompanies.Remove(objectDelete);
-                            message = entity.SaveChanges();
+                            message = entity.SaveChanges().ToString();
 
-                            return message.ToString();
+                            return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(message) };
                         }
                     }
                     catch
                     {
-                        return "-1";
+                        message =  "-1";
+                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(message) };
+
                     }
                 }
                 else
@@ -289,22 +293,18 @@ namespace POS_Server.Controllers
                             objectDelete.isActive = 0;
                             objectDelete.updateUserId = userId;
                             objectDelete.updateDate = DateTime.Now;
-                            message = entity.SaveChanges();
+                            message = entity.SaveChanges().ToString();
 
-                            return message.ToString(); ;
+                            return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(message) };
                         }
                     }
                     catch
                     {
-                        return "-2";
+                        message = "-2";
+                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(message) };
                     }
                 }
             }
-            else
-                return "-3";
         }
-
-
-
     }
 }

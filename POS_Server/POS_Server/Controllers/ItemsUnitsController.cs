@@ -226,23 +226,31 @@ namespace POS_Server.Controllers
                         {
                             //create
                             // set the other default sale or purchase to 0 if the new object.default is 1
-
-                            if (newObject.defaultSale == 1)
-                            { // get the row with same itemId of newObject
-                                itemsUnits defItemUnit = entity.itemsUnits.Where(p => p.itemId == newObject.itemId && p.defaultSale == 1).FirstOrDefault();
-                                if (defItemUnit != null)
-                                {
-                                    defItemUnit.defaultSale = 0;
-                                    entity.SaveChanges();
-                                }
-                            }
-                            if (newObject.defaultPurchase == 1)
+                            var isFirstUnit = entity.itemsUnits.Where(x => x.itemId == newObject.itemId).FirstOrDefault();
+                            if (isFirstUnit == null)
                             {
-                                var defItemUnit = entity.itemsUnits.Where(p => p.itemId == newObject.itemId && p.defaultPurchase == 1).FirstOrDefault();
-                                if (defItemUnit != null)
+                                newObject.defaultSale = 1;
+                                newObject.defaultPurchase = 1;
+                            }
+                            else
+                            {
+                                if (newObject.defaultSale == 1)
+                                { // get the row with same itemId of newObject
+                                    itemsUnits defItemUnit = entity.itemsUnits.Where(p => p.itemId == newObject.itemId && p.defaultSale == 1).FirstOrDefault();
+                                    if (defItemUnit != null)
+                                    {
+                                        defItemUnit.defaultSale = 0;
+                                        entity.SaveChanges();
+                                    }
+                                }
+                                if (newObject.defaultPurchase == 1)
                                 {
-                                    defItemUnit.defaultPurchase = 0;
-                                    entity.SaveChanges();
+                                    var defItemUnit = entity.itemsUnits.Where(p => p.itemId == newObject.itemId && p.defaultPurchase == 1).FirstOrDefault();
+                                    if (defItemUnit != null)
+                                    {
+                                        defItemUnit.defaultPurchase = 0;
+                                        entity.SaveChanges();
+                                    }
                                 }
                             }
                             newObject.createDate = DateTime.Now;
