@@ -1094,16 +1094,16 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
                 #endregion
             }
         }
-        void initializationMainTrackChildren(string text)
-        {
-            var titleText = new TextBlock();
-            titleText.Text = "> " + text;
-            titleText.FontSize = 14;
-            titleText.FontWeight = FontWeights.Regular;
-            titleText.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
-            titleText.Margin = new Thickness(2.5, 1, 2.5, 1);
-            sp_mainTrack.Children.Add(titleText);
-        }
+        //void initializationMainTrackChildren(string text)
+        //{
+        //    var titleText = new TextBlock();
+        //    titleText.Text = "> " + text;
+        //    titleText.FontSize = 14;
+        //    titleText.FontWeight = FontWeights.Regular;
+        //    titleText.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+        //    titleText.Margin = new Thickness(2.5, 1, 2.5, 1);
+        //    sp_mainTrack.Children.Add(titleText);
+        //}
         private void BTN_catalog_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -1199,7 +1199,6 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             else
                 return "";
         }
-
         async Task<string> getDefaultDateForm()
         {
             v = await uc_general.getDefaultDateForm();
@@ -1208,7 +1207,6 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             else
                 return "";
         }
-
         async Task<CountryCode> getDefaultRegion()
         {
             CountryCode c = await uc_general.getDefaultRegion();
@@ -1217,12 +1215,10 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             else
                 return null;
         }
-
         private void Mi_more_Click(object sender, RoutedEventArgs e)
         {
 
         }
-
         public static string GetUntilOrEmpty(string text, string stopAt)
         {
             if (!String.IsNullOrWhiteSpace(text))
@@ -1318,7 +1314,6 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
                 SectionData.ExceptionMessage(ex, this );
             }
         }
-
         private void Btn_showAll_Click(object sender, RoutedEventArgs e)
         {
             Window.GetWindow(this).Opacity = 0.2;
@@ -1327,7 +1322,6 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             w.ShowDialog();
             Window.GetWindow(this).Opacity = 1;
         }
-
         private void TextBlock_MouseEnter(object sender, MouseEventArgs e)
         {
             try
@@ -1341,7 +1335,6 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
                 SectionData.ExceptionMessage(ex, this );
             }
         }
-
         private void TextBlock_MouseLeave(object sender, MouseEventArgs e)
         {
             try
@@ -1355,8 +1348,6 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
                 SectionData.ExceptionMessage(ex, this );
             }
         }
-
-       
         private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
         {
             try
@@ -1368,7 +1359,6 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
                 SectionData.ExceptionMessage(ex, this );
             }
         }
-
         private void Btn_info_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -1383,7 +1373,6 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
                 SectionData.ExceptionMessage(ex, this );
             }
         }
-
         private void Btn_userImage_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -1398,7 +1387,6 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
         private void clearImg()
         {
             Uri resourceUri = new Uri("pic/no-image-icon-90x90.png", UriKind.Relative);
@@ -1409,7 +1397,6 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             img_userLogin.Fill = myBrush;
 
         }
-
         public void BTN_purchases_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -1429,7 +1416,6 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
                 SectionData.ExceptionMessage(ex, this );
             }
         }
-
         public void BTN_sales_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -1448,7 +1434,6 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
                 SectionData.ExceptionMessage(ex, this );
             }
         }
-
         private void BTN_accounts_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -1467,7 +1452,6 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
                 SectionData.ExceptionMessage(ex, this );
             }
         }
-
         private void BTN_reports_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -1486,7 +1470,6 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
                 SectionData.ExceptionMessage(ex, this );
             }
         }
-
         public void BTN_settings_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -1505,7 +1488,6 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
                 SectionData.ExceptionMessage(ex, this );
             }
         }
-
         private void BTN_storage_Click(object sender, RoutedEventArgs e)
         {
             try
