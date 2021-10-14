@@ -115,7 +115,7 @@ namespace POS.Classes
 
             var myContent = JsonConvert.SerializeObject(agent);
             parameters.Add("itemObject", myContent);
-            return APIResult.post(method, parameters);
+            return Convert.ToInt32(APIResult.post(method, parameters));
         }
     
         /// ///////////////////////////////////////
@@ -158,7 +158,7 @@ namespace POS.Classes
             parameters.Add("final", final.ToString());
 
             string method = "Agent/Delete";
-            return APIResult.post(method, parameters);
+            return Convert.ToInt32(APIResult.post(method, parameters));
         }
 
          
@@ -239,7 +239,7 @@ namespace POS.Classes
             parameters.Add("itemObject", myContent);
 
             string method = "Agent/UpdateImage";
-            return APIResult.post(method, parameters);
+            return Convert.ToInt32(APIResult.post(method, parameters));
         }
       
         //public async Task<Image> downloadImage(string imageName)
@@ -299,7 +299,7 @@ namespace POS.Classes
             parameters.Add("balance", balance.ToString());
 
             string method = "Agent/UpdateBalance";
-            return APIResult.post(method, parameters);
+            return Convert.ToInt32(APIResult.post(method, parameters));
         }
 
          

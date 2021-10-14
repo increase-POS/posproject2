@@ -1017,7 +1017,7 @@ namespace POS.View.storage
                     invoice.paid = 0;
                     invoice.deserved = invoice.totalNet;
 
-                    int invoiceId = int.Parse(await invoiceModel.saveInvoice(invoiceModel));
+                    int invoiceId = await invoiceModel.saveInvoice(invoiceModel);
                     if (invoiceId != 0)
                     {
                         await invoice.recordPosCashTransfer(invoice, "pb");

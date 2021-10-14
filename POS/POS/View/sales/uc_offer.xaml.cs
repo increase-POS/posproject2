@@ -435,7 +435,7 @@ namespace POS.View
         }
         async Task<IEnumerable<Offer>> RefreshOffersList()
         {
-            offers = await offerModel.GetOffersAsync();
+            offers = await offerModel.Get();
             return offers;
         }
         void RefreshOfferView()
@@ -709,9 +709,9 @@ namespace POS.View
                                 if (offer.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
                                 if ((!offer.canDelete) && (offer.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
 
-                                bool b = await offerModel.deleteOffer(offer.offerId, MainWindow.userID.Value, offer.canDelete);
+                                int b = await offerModel.delete(offer.offerId, MainWindow.userID.Value, offer.canDelete);
 
-                                if (b)
+                                if (b>0)
                                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
 
                                 else
@@ -741,9 +741,9 @@ namespace POS.View
         {//activate
             offer.isActive = 1;
 
-            string s = await offerModel.Save(offer);
+            int s = await offerModel.save(offer);
 
-            if (!s.Equals("0"))
+            if (s>0)
                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
             else
                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
@@ -837,9 +837,9 @@ namespace POS.View
                             offer.discountValue = decimal.Parse(tb_discountValue.Text);
                             offer.createUserId = MainWindow.userID; ;
 
-                            string s = await offerModel.Save(offer);
+                            int s = await offerModel.save(offer);
 
-                            if (s.Equals("Offer Is Added Successfully"))
+                            if (s>0)
                             {
                                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                                 Btn_clear_Click(null, null);
@@ -947,9 +947,9 @@ namespace POS.View
                             offer.discountValue = decimal.Parse(tb_discountValue.Text);
                             offer.createUserId = MainWindow.userID; ;
 
-                            string s = await offerModel.Save(offer);
+                            int s = await offerModel.save(offer);
 
-                            if (s.Equals("Offer Is Updated Successfully"))
+                            if (s>0)
                             {
                                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
 

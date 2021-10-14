@@ -271,7 +271,7 @@ namespace POS.View.windows
                 
                 if (validate(location))
                 {
-                    string s = "";
+                    int s = 0;
                     generateLocationListX(location);
                     foreach (var item in locations)
                     {
@@ -284,7 +284,7 @@ namespace POS.View.windows
                             item.sectionId = null;
                             item.branchId = MainWindow.branchID;
 
-                            s = await location.saveLocation(item);
+                            s = await location.save(item);
                         }
                     }
 

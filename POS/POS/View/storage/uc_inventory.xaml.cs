@@ -420,12 +420,12 @@ namespace POS.View.storage
             inventory.inventoryType = invType;
             inventory.updateUserId = MainWindow.userLogin.userId;
 
-            int inventoryId = await inventory.Save(inventory);
+            int inventoryId = await inventory.save(inventory);
 
             if (inventoryId != 0)
             {
                 // add inventory details
-                string res = await invItemModel.Save(invItemsLocations, inventoryId);
+                int res = await invItemModel.save(invItemsLocations, inventoryId);
                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                 clearInventory();
             }
@@ -809,8 +809,8 @@ namespace POS.View.storage
                     #endregion
                     if (w.isOk)
                     {
-                        string res = await inventory.deleteInventory(inventory.inventoryId, MainWindow.userID.Value, false);
-                        if (res.Equals("1"))
+                        int res = await inventory.delete(inventory.inventoryId, MainWindow.userID.Value, false);
+                        if (res>0)
                         {
                             Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
 

@@ -107,7 +107,7 @@ namespace POS.View.windows
             categoryTextblocks[index].Tag = (sender as TextBlock).Tag;
             categoryTextblocks[index].Name = (sender as TextBlock).Name;
             int id = int.Parse(e.Data.GetData(DataFormats.Text, true).ToString());
-            category =  await categoryModel.GetCategoryByID(id);
+            category =  await categoryModel.getById(id);
             (sender as TextBlock).Text = category.name ;
             (sender as TextBlock).Tag = category.categoryId;
             

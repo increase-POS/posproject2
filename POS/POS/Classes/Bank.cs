@@ -66,7 +66,7 @@ namespace POS.Classes
             string method = "Banks/Save";
             var myContent = JsonConvert.SerializeObject(item);
             parameters.Add("itemObject", myContent);
-            return APIResult.post(method, parameters);
+            return Convert.ToInt32(APIResult.post(method, parameters));
         }
         public async Task<int> delete(int itemId, int userId, Boolean final)
         {
@@ -75,7 +75,7 @@ namespace POS.Classes
             parameters.Add("userId", userId.ToString());
             parameters.Add("final", final.ToString());
             string method = "Banks/Delete";
-            return APIResult.post(method, parameters);
+            return Convert.ToInt32(APIResult.post(method, parameters));
         }
     }
 }

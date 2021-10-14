@@ -265,7 +265,7 @@ namespace POS.View.windows
                             UsersLogs userLog = new UsersLogs();
                             userLog.posId = MainWindow.posID;
                             Pos posmodel = new Pos();
-                            posmodel = await posmodel.getPosById((int)MainWindow.posID);
+                            posmodel = await posmodel.getById((int)MainWindow.posID);
                             MainWindow.branchID = posmodel.branchId;
 
                             Branch branchModel = new Branch();

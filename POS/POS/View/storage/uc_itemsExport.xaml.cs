@@ -195,7 +195,7 @@ namespace POS.View.storage
                 setNotifications();
                 setTimer();
                 configureProcessType();
-                pos = await pos.getPosById(MainWindow.posID.Value);
+                pos = await pos.getById(MainWindow.posID.Value);
                 branchModel = await branchModel.getBranchById(MainWindow.branchID.Value);
                 await SectionData.fillBranches(cb_branch, "bs");
                 //await RefrishBranches();
@@ -1010,7 +1010,7 @@ namespace POS.View.storage
                     if (invoice.invNumber == null)
                         invoice.invNumber = await invoice.generateInvNumber("im",branchModel.code, MainWindow.branchID.Value);
                     // save invoice in DB
-                    invoiceId = int.Parse(await invoice.saveInvoice(invoice));
+                    invoiceId =await invoice.saveInvoice(invoice);
                     if (invoiceId != 0)
                     {
                         // expot order
@@ -1031,7 +1031,7 @@ namespace POS.View.storage
                                 invoice.branchId = (int)cb_branch.SelectedValue;
                             invoice.updateUserId = MainWindow.userID;
                         }
-                        int exportId = int.Parse(await invoice.saveInvoice(invoice));
+                        int exportId = await invoice.saveInvoice(invoice);
 
                         // add order details                      
                         await invoice.saveInvoiceItems(invoiceItems, invoiceId);
@@ -1051,7 +1051,7 @@ namespace POS.View.storage
                     if (invoice.invNumber == null)
                         invoice.invNumber = await invoice.generateInvNumber("ex", branchModel.code, MainWindow.branchID.Value);
                     // save invoice in DB
-                    invoiceId = int.Parse(await invoice.saveInvoice(invoice));
+                    invoiceId =await invoice.saveInvoice(invoice);
 
                     if (invoiceId != 0)
                     {
@@ -1073,7 +1073,7 @@ namespace POS.View.storage
                                 invoice.branchId = (int)cb_branch.SelectedValue;
                             invoice.updateUserId = MainWindow.userID;
                         }
-                        int importId = int.Parse(await invoice.saveInvoice(invoice));
+                        int importId = await invoice.saveInvoice(invoice);
 
                         // add order details
                         await invoice.saveInvoiceItems(invoiceItems, invoiceId);
@@ -1144,7 +1144,7 @@ namespace POS.View.storage
             if (invoice.invoiceMainId == null)
                 generatedInvoice = await invoice.getgeneratedInvoice(invoice.invoiceId);
             else
-                generatedInvoice = await invoice.GetById((int)invoice.invoiceMainId);
+                generatedInvoice = await invoice.getById((int)invoice.invoiceMainId);
             _Count = invoice.itemsCount.Value;
             tb_count.Text = _Count.ToString();
 
@@ -1273,7 +1273,7 @@ namespace POS.View.storage
                     if (invoice.invNumber == null)
                         invoice.invNumber = await invoice.generateInvNumber("im", branchModel.code, MainWindow.branchID.Value);
                     // save invoice in DB
-                    invoiceId = int.Parse(await invoice.saveInvoice(invoice));
+                    invoiceId =await invoice.saveInvoice(invoice);
                     if (invoiceId != 0)
                     {
                         #region notification Object
@@ -1285,7 +1285,7 @@ namespace POS.View.storage
                             createUserId = MainWindow.userID.Value,
                             updateUserId = MainWindow.userID.Value,
                         };
-                       await not.Save(not, (int) cb_branch.SelectedValue, "storageAlerts_ImpExp", cb_branch.Text);
+                       await not.save(not, (int) cb_branch.SelectedValue, "storageAlerts_ImpExp", cb_branch.Text);
                         #endregion
                         // expot order
                         if (invoice.invoiceId == 0) // create new export order
@@ -1306,7 +1306,7 @@ namespace POS.View.storage
                                 invoice.branchId = (int)cb_branch.SelectedValue;
                             invoice.updateUserId = MainWindow.userID;
                         }
-                        int exportId = int.Parse(await invoice.saveInvoice(invoice));
+                        int exportId =await invoice.saveInvoice(invoice);
 
                         // add order details                      
                         await invoice.saveInvoiceItems(invoiceItems, invoiceId);
@@ -1327,7 +1327,7 @@ namespace POS.View.storage
                     if (invoice.invNumber == null)
                         invoice.invNumber = await invoice.generateInvNumber("ex", branchModel.code, MainWindow.branchID.Value);
                     // save invoice in DB
-                    invoiceId = int.Parse(await invoice.saveInvoice(invoice));
+                    invoiceId = await invoice.saveInvoice(invoice);
 
                     if (invoiceId != 0)
                     {
@@ -1350,7 +1350,7 @@ namespace POS.View.storage
                                 invoice.branchId = (int)cb_branch.SelectedValue;
                             invoice.updateUserId = MainWindow.userID;
                         }
-                        int importId = int.Parse(await invoice.saveInvoice(invoice));
+                        int importId =await invoice.saveInvoice(invoice);
 
                         // add order details
                         await invoice.saveInvoiceItems(invoiceItems, invoiceId);
@@ -1366,7 +1366,7 @@ namespace POS.View.storage
                     invoice.invType = "ex";
                     invoice.updateUserId = MainWindow.userID;
                     // save invoice in DB
-                    invoiceId = int.Parse(await invoice.saveInvoice(invoice));
+                    invoiceId = await invoice.saveInvoice(invoice);
                     if (invoiceId != 0)
                     {
                         await invoice.saveInvoiceItems(invoiceItems, invoiceId);

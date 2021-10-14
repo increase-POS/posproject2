@@ -446,7 +446,7 @@ namespace POS.View
             section.updateUserId = MainWindow.userID;
             section.isActive = 1;
             section.isFreeZone = 1;
-            string sectionId = await section.saveSection(section);
+            int sectionId = await section.save(section);
             if (!sectionId.Equals("-1"))
             {
                 var location = new Classes.Location();
@@ -458,18 +458,18 @@ namespace POS.View
                 location.sectionId = null;
                 location.branchId = branchId;
                 location.isFreeZone = 1;
-                location.sectionId = int.Parse(sectionId);
+                location.sectionId = sectionId;
 
-                string l = await location.saveLocation(location);
+                int l = await location.save(location);
 
-                if (!l.Equals("-1"))
+                if (l>0)
                 {
                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                     Btn_clear_Click(null, null);
                 }
                 else
                 {
-                    await section.Delete(int.Parse(sectionId), MainWindow.userID.Value, true);
+                    await section.delete( sectionId , MainWindow.userID.Value, true);
                     await storeModel.delete(branchId, MainWindow.userID.Value, true);
                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                 }

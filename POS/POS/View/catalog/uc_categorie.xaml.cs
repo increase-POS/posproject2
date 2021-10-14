@@ -333,9 +333,9 @@ namespace POS.View
                             category.updateUserId = MainWindow.userID;
                             category.isActive = 1;
 
-                            string s = await categoryModel.saveCategory(category);
+                            int s = await categoryModel.save(category);
 
-                            if (!s.Equals("0"))  //{SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd")); Btn_clear_Click(null, null);  }
+                            if (s>0)  //{SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd")); Btn_clear_Click(null, null);  }
                             {
                                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                                 Btn_clear_Click(null, null);
@@ -347,7 +347,7 @@ namespace POS.View
 
                             if (isImgPressed)
                             {
-                                int categoryId = int.Parse(s);
+                                int categoryId =s;
                                 bool b = await categoryModel.uploadImage(imgFileName, Md5Encription.MD5Hash("Inc-m" + categoryId.ToString()), categoryId);
                                 isImgPressed = false;
                                 if (b)
@@ -419,9 +419,9 @@ namespace POS.View
                                 category.parentId = parentCategorieSelctedValue;
                                 category.updateUserId = MainWindow.userID;
 
-                                string s = await categoryModel.saveCategory(category);
+                                int s = await categoryModel.save(category);
 
-                                if (!s.Equals("0")) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate")); 
+                                if (s>0) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate")); 
                                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
                                 else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
                                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
@@ -430,7 +430,7 @@ namespace POS.View
 
                                 if (isImgPressed)
                                 {
-                                    int categoryId = int.Parse(s);
+                                    int categoryId =s;
                                     bool b = await categoryModel.uploadImage(imgFileName, Md5Encription.MD5Hash("Inc-m" + categoryId.ToString()), categoryId);
                                     isImgPressed = false;
                                     if (b)
@@ -551,9 +551,9 @@ namespace POS.View
                                 if (category.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
                                 if ((!category.canDelete) && (category.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
 
-                                bool b = await categoryModel.deleteCategory(category.categoryId, MainWindow.userID.Value, category.canDelete);
+                                int b = await categoryModel.delete(category.categoryId, MainWindow.userID.Value, category.canDelete);
 
-                                if (b) //SectionData.popUpResponse("", popupContent);
+                                if (b>0) //SectionData.popUpResponse("", popupContent);
                                     Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
                                 else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
                                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
@@ -585,9 +585,9 @@ namespace POS.View
 
             category.isActive = 1;
 
-            string s = await categoryModel.saveCategory(category);
+            int s = await categoryModel.save(category);
 
-            if (!s.Equals("0")) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopActive"));
+            if (s>0) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopActive"));
                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
             else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);

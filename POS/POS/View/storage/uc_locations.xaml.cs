@@ -250,9 +250,9 @@ namespace POS.View
                             location.sectionId = null;
                             location.branchId = MainWindow.branchID;
 
-                            string s = await locationModel.saveLocation(location);
+                            int s = await locationModel.save(location);
 
-                            if (!s.Equals("-1"))
+                            if (s>0)
                             {
                                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                                 Btn_clear_Click(null, null);
@@ -295,9 +295,9 @@ namespace POS.View
                         location.note = tb_notes.Text;
                         location.updateUserId = MainWindow.userID;
 
-                        string s = await locationModel.saveLocation(location);
+                        int s = await locationModel.save(location);
 
-                        if (!s.Equals("-1"))
+                        if (s>0)
                             Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
                         else
                             Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
@@ -361,9 +361,9 @@ namespace POS.View
                                 if (location.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
                                 if ((!location.canDelete) && (location.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
 
-                                bool b = await locationModel.Delete(location.locationId, MainWindow.userID.Value, location.canDelete);
+                                int b = await locationModel.delete(location.locationId, MainWindow.userID.Value, location.canDelete);
 
-                                if (b) //SectionData.popUpResponse("", popupContent);
+                                if (b>0) //SectionData.popUpResponse("", popupContent);
                                     Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
                                 else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
                                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
@@ -391,11 +391,11 @@ namespace POS.View
         {//activate
             location.isActive = 1;
 
-            string s = await locationModel.saveLocation(location);
+            int s = await locationModel.save(location);
 
-            if (s.Equals("Location Is Updated Successfully")) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopActive"));
+            if (s>0)  
                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
-            else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+            else  
                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
             await RefreshLocationsList();

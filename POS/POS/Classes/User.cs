@@ -138,7 +138,7 @@ namespace POS.Classes
 
             var myContent = JsonConvert.SerializeObject(user);
             parameters.Add("itemObject", myContent);
-            return APIResult.post(method, parameters);
+            return Convert.ToInt32(APIResult.post(method, parameters));
         }
 
         public async Task<int> delete(int delUserId, int userId, bool final)
@@ -149,7 +149,7 @@ namespace POS.Classes
             parameters.Add("final", final.ToString());
 
             string method = "Users/Delete";
-            return APIResult.post(method, parameters);
+            return Convert.ToInt32(APIResult.post(method, parameters));
         }
         public async Task<int> updateImage(User user)
         {
@@ -158,7 +158,7 @@ namespace POS.Classes
             parameters.Add("itemObject", myContent);
 
             string method = "Users/UpdateImage";
-            return APIResult.post(method, parameters);
+            return Convert.ToInt32(APIResult.post(method, parameters));
         }
         public async Task<string> uploadImage(string imagePath, string imageName, int userId)
         //public async Task<Boolean> uploadImage(string imagePath, int userId)

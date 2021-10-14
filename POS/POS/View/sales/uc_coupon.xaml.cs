@@ -460,9 +460,9 @@ namespace POS.View
                             coupon.remainQ = Int32.Parse(tb_quantity.Text);
                             coupon.createUserId = MainWindow.userID; ;
 
-                            string s = await couponModel.Save(coupon);
+                            int s = await couponModel.save(coupon);
 
-                            if (s.Equals("true"))
+                            if (s>0)
                             {
                                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                                 Btn_clear_Click(null, null);
@@ -778,9 +778,9 @@ namespace POS.View
                                 if (coupon.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
                                 if ((!coupon.canDelete) && (coupon.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
 
-                                bool b = await couponModel.deleteCoupon(coupon.cId, MainWindow.userID.Value, coupon.canDelete);
+                                int b = await couponModel.delete(coupon.cId, MainWindow.userID.Value, coupon.canDelete);
 
-                                if (b)
+                                if (b>0)
                                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
 
                                 else
@@ -812,9 +812,9 @@ namespace POS.View
         {//activate
             coupon.isActive = 1;
 
-            string s = await couponModel.Save(coupon);
+            int s = await couponModel.save(coupon);
 
-            if (!s.Equals("0"))
+            if (s>0)
                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
             else
                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
@@ -911,9 +911,9 @@ namespace POS.View
                             coupon.remainQ = Int32.Parse(tb_quantity.Text);
                             coupon.createUserId = MainWindow.userID;
 
-                            string s = await couponModel.Save(coupon);
+                            int s = await couponModel.save(coupon);
 
-                            if (s.Equals("true"))
+                            if (s>0)
                             {
                                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
 
@@ -971,7 +971,7 @@ namespace POS.View
 
         async Task<IEnumerable<Coupon>> RefreshCouponsList()
         {
-            coupons = await couponModel.GetCouponsAsync();
+            coupons = await couponModel.Get();
             return coupons;
         }
         void RefreshCouponView()

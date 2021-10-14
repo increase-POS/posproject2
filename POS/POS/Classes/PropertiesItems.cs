@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -26,188 +27,74 @@ namespace POS.Classes
         public Nullable<byte> isActive { get; set; }
         public Boolean canDelete { get; set; }
 
-        // adding or editing  category by calling API metod "save"
-        // if propertyItemId = 0 will call save else call edit
-
-        public async Task<Boolean> SavePropertiesItems(PropertiesItems propertiesItems)
-        {
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-
-            var myContent = JsonConvert.SerializeObject(propertiesItems);
-
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-
-                HttpRequestMessage request = new HttpRequestMessage();
-                // set unicode
-                request.Content = new StringContent(myContent, System.Text.Encoding.UTF8, "text/xml");
-
-                request.RequestUri = new Uri(Global.APIUri + "propertiesItems/Save?propItemObject=" + myContent);
-                request.Headers.Add("APIKey", Global.APIKey);
-                //set content type
-                request.Content.Headers.ContentType.Parameters.Add(new NameValueHeaderValue("charset", "utf-8"));
-                request.Method = HttpMethod.Post;
-
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var response = await client.SendAsync(request);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    return true;
-
-                }
-                return false;
-            }
-        }
-
-        public async Task<Boolean> DeletePropertiesItems(int propertyItemId,int userId,Boolean final)
-        {
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "propertiesItems/Delete?propertyItemId=" + propertyItemId+"&userId="+userId + "&final=" + final);
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Post;
-                //set content type
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var response = await client.SendAsync(request);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    return true;
-                }
-                return false;
-            }
-        }
-
         public async Task<List<PropertiesItems>> Get()
         {
-            List<PropertiesItems> propertiesItemss = null;
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            using (var client = new HttpClient())
+            List<PropertiesItems> items = new List<PropertiesItems>();
+            IEnumerable<Claim> claims = await APIResult.getList("propertiesItems/Get");
+            foreach (Claim c in claims)
             {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "propertiesItems/Get");
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Get;
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage response = await client.SendAsync(request);
-
-                if (response.IsSuccessStatusCode)
+                if (c.Type == "scopes")
                 {
-                    var jsonString = await response.Content.ReadAsStringAsync();
-                    jsonString = jsonString.Replace("\\", string.Empty);
-                    jsonString = jsonString.Trim('"');
-                    // fix date format
-                    JsonSerializerSettings settings = new JsonSerializerSettings
-                    {
-                        Converters = new List<JsonConverter> { new BadDateFixingConverter() },
-                        DateParseHandling = DateParseHandling.None
-                    };
-                    propertiesItemss = JsonConvert.DeserializeObject<List<PropertiesItems>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
-                    return propertiesItemss;
+                    items.Add(JsonConvert.DeserializeObject<PropertiesItems>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" }));
                 }
-                else //web api sent error response 
-                {
-                    propertiesItemss = new List<PropertiesItems>();
-                }
-                return propertiesItemss;
             }
+            return items;
         }
         //********************************************************
         //****************** get values of property
+        public async Task<PropertiesItems> getById(int itemId)
+        {
+            PropertiesItems item = new PropertiesItems();
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("itemId", itemId.ToString());
+            //#################
+            IEnumerable<Claim> claims = await APIResult.getList("PropertiesItems/GetPropItemByID", parameters);
+
+            foreach (Claim c in claims)
+            {
+                if (c.Type == "scopes")
+                {
+                    item = JsonConvert.DeserializeObject<PropertiesItems>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    break;
+                }
+            }
+            return item;
+        }
         public async Task<List<PropertiesItems>> GetPropertyItems(int propertyId)
         {
-            List<PropertiesItems> propertiesItemss = null;
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "propertiesItems/GetPropertyItems?propertyId="+ propertyId);
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Get;
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage response = await client.SendAsync(request);
+            List<PropertiesItems> items = new List<PropertiesItems>();
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("itemId", propertyId.ToString());
+            //#################
+            IEnumerable<Claim> claims = await APIResult.getList("propertiesItems/GetPropertyItems", parameters);
 
-                if (response.IsSuccessStatusCode)
+            foreach (Claim c in claims)
+            {
+                if (c.Type == "scopes")
                 {
-                    var jsonString = await response.Content.ReadAsStringAsync();
-                    jsonString = jsonString.Replace("\\", string.Empty);
-                    jsonString = jsonString.Trim('"');
-                    // fix date format
-                    JsonSerializerSettings settings = new JsonSerializerSettings
-                    {
-                        Converters = new List<JsonConverter> { new BadDateFixingConverter() },
-                        DateParseHandling = DateParseHandling.None
-                    };
-                    propertiesItemss = JsonConvert.DeserializeObject<List<PropertiesItems>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
-                    return propertiesItemss;
+                    items.Add(JsonConvert.DeserializeObject<PropertiesItems>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" }));
                 }
-                else //web api sent error response 
-                {
-                    propertiesItemss = new List<PropertiesItems>();
-                }
-                return propertiesItemss;
             }
+            return items;
         }
-        public async Task<PropertiesItems> GetPropItemByID(int propertyItemId)
+        // adding or editing  category by calling API metod "save"
+        // if propertyItemId = 0 will call save else call edit
+        public async Task<int> save(PropertiesItems item)
         {
-            PropertiesItems propertiesItems = new PropertiesItems();
-
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "PropertiesItems/GetPropItemByID");
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Headers.Add("propertyItemId", propertyItemId.ToString());
-                request.Method = HttpMethod.Get;
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var response = await client.SendAsync(request);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    var jsonString = await response.Content.ReadAsStringAsync();
-
-                    propertiesItems = JsonConvert.DeserializeObject<PropertiesItems>(jsonString);
-
-                    return propertiesItems;
-                }
-
-                return propertiesItems;
-            }
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            string method = "propertiesItems/Save";
+            var myContent = JsonConvert.SerializeObject(item);
+            parameters.Add("itemObject", myContent);
+            return Convert.ToInt32(APIResult.post(method, parameters));
+        }
+        public async Task<int> delete(int propertyItemId, int userId, Boolean final)
+        {
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("itemId", propertyItemId.ToString());
+            parameters.Add("userId", userId.ToString());
+            parameters.Add("final", final.ToString());
+            string method = "propertiesItems/Delete";
+            return Convert.ToInt32(APIResult.post(method, parameters));
         }
     }
 }

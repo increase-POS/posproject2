@@ -356,8 +356,8 @@ namespace POS.View.catalog
                         storageCost.createUserId = MainWindow.userID;
                         storageCost.isActive = 1;
 
-                        string s = await storageCostModel.Save(storageCost);
-                        if (!s.Equals("-1"))
+                        int s = await storageCostModel.save(storageCost);
+                        if (s>0)
                         {
                             Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                             Btn_clear_Click(null, null);
@@ -404,8 +404,8 @@ namespace POS.View.catalog
                         storageCost.createUserId = MainWindow.userID;
                         //storageCost.isActive = 1;
 
-                        string s = await storageCostModel.Save(storageCost);
-                        if (!s.Equals("-1"))
+                        int s = await storageCostModel.save(storageCost);
+                        if (s>0)
                         {
                             Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
 
@@ -471,9 +471,9 @@ namespace POS.View.catalog
                                 if (storageCost.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
                                 if ((!storageCost.canDelete) && (storageCost.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
 
-                                string b = await storageCostModel.Delete(storageCost.storageCostId, MainWindow.userID.Value, storageCost.canDelete);
+                                int b = await storageCostModel.delete(storageCost.storageCostId, MainWindow.userID.Value, storageCost.canDelete);
 
-                                if (!b.Equals("-1"))
+                                if (b>0)
                                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
 
                                 else
@@ -505,9 +505,9 @@ namespace POS.View.catalog
         {//activate
             storageCost.isActive = 1;
 
-            string s = await storageCostModel.Save(storageCost);
+            int s = await storageCostModel.save(storageCost);
 
-            if (!s.Equals("0"))
+            if (s>0)
                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
             else
                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);

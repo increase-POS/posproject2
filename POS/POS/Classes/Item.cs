@@ -69,7 +69,7 @@ namespace POS.Classes
 
             var myContent = JsonConvert.SerializeObject(item);
             parameters.Add("itemObject", myContent);
-            return APIResult.post(method, parameters);
+            return Convert.ToInt32(APIResult.post(method, parameters));
         }
         public async Task<List<Item>> GetAllItems()
         {
@@ -119,7 +119,7 @@ namespace POS.Classes
             parameters.Add("final", final.ToString());
 
             string method = "Items/Delete";
-            return APIResult.post(method, parameters);
+            return Convert.ToInt32(APIResult.post(method, parameters));
             //string message = "false";
             //// ... Use HttpClient.
             //ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
@@ -266,7 +266,7 @@ namespace POS.Classes
             parameters.Add("itemObject", myContent);
 
             string method = "Items/UpdateImage";
-            return APIResult.post(method, parameters); 
+            return Convert.ToInt32(APIResult.post(method, parameters)); 
         }
         public async Task<Boolean> uploadImage(string imagePath, string imageName, int itemId)
         {

@@ -70,8 +70,8 @@ namespace POS.View.reports
         {//load
             try
             {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
+                //if (sender != null)
+                //    SectionData.StartAwait(grid_main);
 
                 #region translate
                 if (MainWindow.lang.Equals("en"))
@@ -90,17 +90,17 @@ namespace POS.View.reports
                 chk_allBranches.IsChecked = true;
                 chk_allPos.IsChecked = true;
             
-                await Search();
+                //await Search();
 
                 SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), btn_branch.Tag.ToString());
 
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
+                //if (sender != null)
+                //    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
+                //if (sender != null)
+                //    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this);
             }
         }
@@ -337,8 +337,9 @@ namespace POS.View.reports
 
                 cb_branches.SelectedIndex = -1;
                 cb_branches.IsEnabled = false;
-                
-                await Search();
+
+                //await Search();
+                chk_allPos.IsChecked = true;
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);

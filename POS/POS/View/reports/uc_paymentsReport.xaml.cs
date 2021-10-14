@@ -48,11 +48,12 @@ namespace POS.View.reports
         IEnumerable<AccountantCombo> accShippingCombo;
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
+        {//load
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
                 payments = await statisticModel.GetPayments();
 
                 vendorCombo = statisticModel.getVendorCombo(payments, "v");
@@ -70,6 +71,19 @@ namespace POS.View.reports
                 accGeneralExpensesCombo = statisticModel.getAccounantCombo(payments, "e");
                 accAdministrativePullCombo = statisticModel.getAccounantCombo(payments, "m");
                 accShippingCombo = statisticModel.getAccounantCombo(payments, "sh");
+
+                //chk_allVendorsPaymentType.IsChecked = true;
+                //chk_allVendors.IsChecked = true;
+                //chk_allCustomers.IsChecked = true;
+                //chk_allUsers.IsChecked = true;
+                //chk_allVendorsAccountant.IsChecked = true;
+                //chk_allCustomersPaymentType.IsChecked = true;
+                //chk_allCustomersAccountant.IsChecked = true;
+                //chk_allUsers.IsChecked = true;
+                //chk_allUsersPaymentType.IsChecked = true;
+                //chk_allUsersAccountant.IsChecked = true;
+                //chk_allSalaries.IsChecked = true;
+                //chk_allSalariesPaymentType.IsChecked = true;
 
                 fillVendorCombo(vendorCombo, cb_vendors);
                 fillPaymentsTypeCombo(cb_vendorPayType);
@@ -93,6 +107,7 @@ namespace POS.View.reports
 
         private void fillVendorCombo(IEnumerable<VendorCombo> list, ComboBox cb)
         {
+            vendorCombo = statisticModel.getVendorCombo(payments, "v");
             cb.SelectedValuePath = "VendorId";
             cb.DisplayMemberPath = "VendorName";
             cb.ItemsSource = list;
@@ -101,7 +116,7 @@ namespace POS.View.reports
         private void fillPaymentsTypeCombo(ComboBox cb)
         {
             cb.SelectedValuePath = "PaymentsTypeName";
-            cb.DisplayMemberPath = "PaymentsTypeName";
+            cb.DisplayMemberPath = "PaymentsTypeText";
             cb.ItemsSource = payCombo;
         }
 
@@ -2018,6 +2033,7 @@ namespace POS.View.reports
         IEnumerable<CashTransferSts> temp = null;
         private void fillVendorsEvents()
         {
+            //fillVendorCombo(vendorCombo, cb_vendors);
             temp = fillList(payments, cb_vendors, cb_vendorPayType, cb_vendorAccountant, dp_vendorStartDate, dp_vendorEndDate).Where(x => x.side == "v" || x.side == "b");
             dgPayments.ItemsSource = temp;
             txt_count.Text = temp.Count().ToString();
@@ -2028,6 +2044,9 @@ namespace POS.View.reports
 
         private void fillCustomersEvents()
         {
+            //customerCombo = statisticModel.getVendorCombo(payments, "c");
+            //fillVendorCombo(customerCombo, cb_customer);
+
             temp = fillList(payments, cb_customer, cb_customerPayType, cb_customerAccountant, dp_customerStartDate, dp_customerEndDate).Where(x => x.side == "c" || x.side == "b");
             dgPayments.ItemsSource = temp;
             txt_count.Text = temp.Count().ToString();
@@ -2217,8 +2236,10 @@ namespace POS.View.reports
             List<decimal> cheque = new List<decimal>();
             List<decimal> balance = new List<decimal>();
 
-
-            for (int i = 0; i < resultList.Count(); i++)
+            int xCount = 6;
+            if (resultList.Count() <= 6)
+                xCount = resultList.Count();
+            for (int i = 0; i < xCount; i++)
             {
                 cash.Add(resultList.ToList().Skip(i).FirstOrDefault().cashTotal);
                 card.Add(resultList.ToList().Skip(i).FirstOrDefault().cardTotal);
@@ -2228,7 +2249,25 @@ namespace POS.View.reports
 
                 axcolumn.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
             }
+            if (resultList.Count() > 6)
+            {
+                decimal cashSum = 0, cardSum = 0, docSum = 0, chequeSum = 0, balanceSum = 0;
+                for (int i = resultList.Count - xCount+1; i < resultList.Count; i++)
+                {
+                    cashSum    = cashSum    + resultList.ToList().Skip(i).FirstOrDefault().cashTotal;
+                    cardSum    = cardSum    + resultList.ToList().Skip(i).FirstOrDefault().cardTotal;
+                    docSum     = docSum     + resultList.ToList().Skip(i).FirstOrDefault().docTotal;
+                    chequeSum  = chequeSum  + resultList.ToList().Skip(i).FirstOrDefault().chequeTotal;
+                    balanceSum = balanceSum + resultList.ToList().Skip(i).FirstOrDefault().balanceTotal;
+                }
+                cash.Add(cashSum);
+                card.Add(cardSum);
+                doc.Add(docSum);
+                cheque.Add(chequeSum);
+                balance.Add(balanceSum);
 
+                axcolumn.Labels.Add(MainWindow.resourcemanager.GetString("trOthers"));
+            }
             columnChartData.Add(
             new StackedColumnSeries
             {

@@ -431,14 +431,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
                 EventManager.RegisterClassHandler(typeof(System.Windows.Controls.TextBox), System.Windows.Controls.TextBox.GotKeyboardFocusEvent, new RoutedEventHandler(SelectAllText));
 
 
-                //#region notifications location
-                //Point position = BTN_notifications.PointToScreen(new Point(0d, 0d)),
-                //controlPosition = this.PointToScreen(new Point(0d, 0d));
-                //position.X -= controlPosition.X;
-                //position.Y -= controlPosition.Y;
-                //position.X -= 100;
-                //bdrMain.Margin = new Thickness(0, 70, position.X, 0);
-                //#endregion
+                SetNotificationsLocation();
 
                 if (sender != null)
                     SectionData.EndAwait(grid_mainWindow);
@@ -450,7 +443,17 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
                 SectionData.ExceptionMessage(ex, this );
             }
         }
-       
+       public void SetNotificationsLocation()
+        {
+            #region notifications location
+            Point position = BTN_notifications.PointToScreen(new Point(0d, 0d)),
+            controlPosition = this.PointToScreen(new Point(0d, 0d));
+            position.X -= controlPosition.X;
+            position.Y -= controlPosition.Y;
+            position.X -= 100;
+            bdrMain.Margin = new Thickness(0, 70, position.X, 0);
+            #endregion
+        }
         void SelectAllText(object sender, RoutedEventArgs e)
         {
             var textBox = sender as System.Windows.Controls.TextBox;
@@ -620,7 +623,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
 
             try
             {
-                posLogIn = await posLogIn.getPosById(posID.Value);
+                posLogIn = await posLogIn.getById(posID.Value);
                 txt_cashValue.Text = SectionData.DecTostring(posLogIn.balance);
                 txt_cashSympol.Text = MainWindow.Currency;
             }

@@ -302,8 +302,8 @@ namespace POS.View
                                 updateUserId = MainWindow.userID,
                                 isActive = 1,
                             };
-                            Boolean res = await unitModel.saveUnit(unit);
-                            if (res)
+                            int res = await unitModel.save(unit);
+                            if (res>0)
                                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                             else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
                                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
@@ -373,9 +373,9 @@ namespace POS.View
                             if (unit.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
                             if ((!unit.canDelete) && (unit.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
                             int userId = (int)MainWindow.userID;
-                            Boolean res = await unitModel.deleteUnit(unit.unitId, userId, unit.canDelete);
+                            int res = await unitModel.delete(unit.unitId, userId, unit.canDelete);
 
-                            if (res)
+                            if (res>0)
                                 Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
                             else
                                 Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
@@ -403,9 +403,9 @@ namespace POS.View
 
             unit.isActive = 1;
 
-            Boolean s = await unitModel.saveUnit(unit);
+            int s = await unitModel.save(unit);
 
-            if (s)
+            if (s>0)
                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
             else
                 Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
@@ -432,8 +432,8 @@ namespace POS.View
                             unit.name = tb_name.Text;
                             unit.notes = tb_notes.Text;
 
-                            Boolean res = await unitModel.saveUnit(unit);
-                            if (res)
+                            int res = await unitModel.save(unit);
+                            if (res>0)
                                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
                             else
                                 Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
@@ -470,7 +470,7 @@ namespace POS.View
         }
         async Task<IEnumerable<Unit>> RefreshUnitsList()
         {
-            units = await unitModel.GetUnitsAsync();
+            units = await unitModel.Get();
             units = units.Where(u => u.name != "package");
             return units;
         }

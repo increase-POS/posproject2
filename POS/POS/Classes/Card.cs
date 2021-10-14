@@ -83,7 +83,7 @@ namespace POS.Classes
             string method = "cards/Save";
             var myContent = JsonConvert.SerializeObject(item);
             parameters.Add("itemObject", myContent);
-            return APIResult.post(method, parameters);
+            return Convert.ToInt32(APIResult.post(method, parameters));
         }
         public async Task<int> delete(int cardId, int userId, Boolean final)
         {
@@ -92,7 +92,7 @@ namespace POS.Classes
             parameters.Add("userId", userId.ToString());
             parameters.Add("final", final.ToString());
             string method = "cards/Delete";
-            return APIResult.post(method, parameters);
+            return Convert.ToInt32(APIResult.post(method, parameters));
         }
         public async Task<int> updateImage(Card card)
         {
@@ -100,7 +100,7 @@ namespace POS.Classes
             var myContent = JsonConvert.SerializeObject(card);
             parameters.Add("itemObject", myContent);
             string method = "cards/UpdateImage";
-            return APIResult.post(method, parameters);
+            return Convert.ToInt32(APIResult.post(method, parameters));
         }
         public async Task<string> uploadImage(string imagePath, string imageName, int cardId)
         {

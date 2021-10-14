@@ -193,7 +193,7 @@ namespace POS.Classes
                 }
                 else if (_class.Equals("Offer"))
                 {
-                    List<Offer> offers = await offerModel.GetOffersAsync();
+                    List<Offer> offers = await offerModel.Get();
 
                     Offer offer = new Offer();
                     for (int i = 0; i < offers.Count; i++)
@@ -768,7 +768,7 @@ namespace POS.Classes
                 errorClass.posId = MainWindow.posID;
                 errorClass.branchId = MainWindow.branchID;
                 errorClass.createUserId = MainWindow.userLogin.userId;
-                await errorClass.Save(errorClass);
+                await errorClass.save(errorClass);
 
             }
             catch

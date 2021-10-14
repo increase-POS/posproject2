@@ -502,9 +502,9 @@ namespace POS.View.accounts
                                     updateUserId = MainWindow.userID.Value,
                                 };
                                 if(pos1 != 0)
-                                    await not.Save(not, (int)cb_pos1.SelectedValue, "accountsAlerts_transfers", cb_pos2.Text,0,pos1);
+                                    await not.save(not, (int)cb_pos1.SelectedValue, "accountsAlerts_transfers", cb_pos2.Text,0,pos1);
                                 if(pos2 != 0)
-                                    await not.Save(not, (int)cb_pos2.SelectedValue, "accountsAlerts_transfers", cb_pos1.Text, 0,pos2);
+                                    await not.save(not, (int)cb_pos2.SelectedValue, "accountsAlerts_transfers", cb_pos1.Text, 0,pos2);
 
                                 #endregion
 
@@ -673,7 +673,7 @@ namespace POS.View.accounts
                     if (!confirm) await confirmOpr();
                     else
                     {
-                        Pos pos = await posModel.getPosById(cashtrans2.posId.Value);
+                        Pos pos = await posModel.getById(cashtrans2.posId.Value);
                         //there is enough balance
                         if (pos.balance >= cashtrans2.cash)
                         {

@@ -1,10 +1,12 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -26,42 +28,27 @@ namespace POS.Classes
         public Nullable<byte> isActive { get; set; }
 
         //***********************************************
-        public async Task<string> Save(Notification obj , int branchId, string objectName, string prefix, int userId = 0, int posId=0)
+        public async Task<int> save(Notification obj, int branchId, string objectName, string prefix,
+            int userId = 0, int posId = 0)
         {
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            // 
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            string method = "notification/Save";
             var myContent = JsonConvert.SerializeObject(obj);
+            parameters.Add("itemObject", myContent);
+            parameters.Add("branchId", branchId.ToString());
+            parameters.Add("objectName", objectName);
+            parameters.Add("prefix", prefix);
+            parameters.Add("userId", userId.ToString());
+            parameters.Add("posId", posId.ToString());
 
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                // encoding parameter to get special characters
-                myContent = HttpUtility.UrlEncode(myContent);
-                request.RequestUri = new Uri(Global.APIUri + "notification/Save?obj=" + myContent + "&branchId="+branchId + "&objectName="+ objectName
-                                                    +"&prefix="+ prefix + "&userId=" + userId + "&posId="+posId);
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Post;
-                //set content type
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var response = await client.SendAsync(request);
 
-                if (response.IsSuccessStatusCode)
-                {
-                    var message = await response.Content.ReadAsStringAsync();
-                    message = JsonConvert.DeserializeObject<string>(message);
-                    return message;
-                }
-                return "";
-            }
+            return Convert.ToInt32(APIResult.post(method, parameters));
         }
-
+       
     }
+
+
+
     public  class NotificationUser
     {
         public int notUserId { get; set; }
@@ -72,138 +59,65 @@ namespace POS.Classes
         public Nullable<System.DateTime> updateDate { get; set; }
         public Nullable<int> createUserId { get; set; }
         public Nullable<int> updateUserId { get; set; }
-
         public string title { get; set; }
         public string ncontent { get; set; }
         public string side { get; set; }
         public string msgType { get; set; }
         public string path { get; set; }
-        public async Task<List<NotificationUser>> GetByUserId(int userId, string type,int posId)
+
+        public async Task<List<NotificationUser>> GetByUserId(int userId, string type, int posId)
         {
-            List<NotificationUser> notifications = null;
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            using (var client = new HttpClient())
+            List<NotificationUser> items = new List<NotificationUser>();
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("itemId", userId.ToString());
+            parameters.Add("type", type.ToString());
+            parameters.Add("posId", posId.ToString());
+            IEnumerable<Claim> claims = await APIResult.getList("notificationUser/GetByUserId", parameters);
+            foreach (Claim c in claims)
             {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "notificationUser/GetByUserId?userId=" + userId + "&type="+ type+"&posId="+posId);
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Get;
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage response = await client.SendAsync(request);
-
-                if (response.IsSuccessStatusCode)
+                if (c.Type == "scopes")
                 {
-                    var jsonString = await response.Content.ReadAsStringAsync();
-
-                    notifications = JsonConvert.DeserializeObject<List<NotificationUser>>(jsonString);
-
-                    return notifications;
-                }
-                else //web api sent error response 
-                {
-                    notifications = new List<NotificationUser>();
-                }
-                return notifications;
-            }
-
-        }
-        public async Task<string> Save(NotificationUser obj)
-        {
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            // 
-            var myContent = JsonConvert.SerializeObject(obj);
-
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                // encoding parameter to get special characters
-                myContent = HttpUtility.UrlEncode(myContent);
-                request.RequestUri = new Uri(Global.APIUri + "notificationUser/Save?obj=" + myContent);
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Post;
-                //set content type
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var response = await client.SendAsync(request);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    var message = await response.Content.ReadAsStringAsync();
-                    message = JsonConvert.DeserializeObject<string>(message);
-                    return message;
-                }
-                return "";
-            }
-        }
-        public async Task<string> setAsRead(int notUserId, int posId , string type)
-        {
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-              
-                request.RequestUri = new Uri(Global.APIUri + "notificationUser/setAsRead?notUserId=" + notUserId+"&posId="+posId+"&type="+ type);
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Post;
-                //set content type
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var response = await client.SendAsync(request);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    var message = await response.Content.ReadAsStringAsync();
-                    message = JsonConvert.DeserializeObject<string>(message);
-                    return message;
-                }
-                return "";
-            }
-        }
-        public async Task<int> GetCountByUserId( int userId, string type, int posId)
-        {
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "notificationUser/GetNotUserCount?userId=" + userId +"&type="+type+"&posId="+posId);
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Get;
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage response = await client.SendAsync(request);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    var count = await response.Content.ReadAsStringAsync();
-                    return int.Parse(count);
-                }
-                else //web api sent error response 
-                {
-                    return 0;
+                    items.Add(JsonConvert.DeserializeObject<NotificationUser>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" }));
                 }
             }
+            return items;
         }
+
+        public async Task<int> GetCountByUserId(int userId, string type, int posId)
+        {
+            int count =0;
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("itemId", userId.ToString());
+            parameters.Add("type", type.ToString());
+            parameters.Add("posId", posId.ToString());
+            IEnumerable<Claim> claims = await APIResult.getList("notificationUser/GetNotUserCount", parameters);
+            foreach (Claim c in claims)
+            {
+                if (c.Type == "scopes")
+                {
+                    count =int.Parse(c.Value);
+                }
+            }
+            return count;
+        }
+
+        public async Task<int> save(NotificationUser item)
+        {
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            string method = "notificationUser/Save";
+            var myContent = JsonConvert.SerializeObject(item);
+            parameters.Add("itemObject", myContent);
+            return Convert.ToInt32(APIResult.post(method, parameters));
+        }
+        public async Task<int> setAsRead(int notUserId, int posId, string type)
+        {
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            string method = "notificationUser/setAsRead";
+            parameters.Add("notUserId", notUserId.ToString());
+            parameters.Add("posId", posId.ToString());
+            parameters.Add("type", type.ToString());
+            return Convert.ToInt32(APIResult.post(method, parameters));
+        }
+
     }
 }

@@ -475,6 +475,7 @@ namespace POS.View.Settings
 
                                 //this.UserControl_Loaded(null , null);
                             MainWindow.loadingDefaultPath("settings", "general");
+                                MainWindow.mainWindow.SetNotificationsLocation();
                             }
                         }
                     }

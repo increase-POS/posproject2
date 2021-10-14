@@ -206,7 +206,7 @@ namespace POS.View.sales
                 await RefrishCustomers();
                 await fillBarcodeList();
                 await fillCouponsList();
-                pos = await posModel.getPosById(MainWindow.posID.Value);
+                pos = await posModel.getById(MainWindow.posID.Value);
                 branch = await branchModel.getBranchById((int)pos.branchId);
                 #region Style Date
                 //SectionData.defaultDatePickerStyle(dp_desrvedDate);
@@ -745,7 +745,7 @@ namespace POS.View.sales
                 isApproved = 0;
             invoice.isApproved = isApproved;
             // save invoice in DB
-            int invoiceId = int.Parse(await invoiceModel.saveInvoice(invoice));
+            int invoiceId = await invoiceModel.saveInvoice(invoice);
 
             if (invoiceId != 0)
             {
@@ -1709,7 +1709,7 @@ namespace POS.View.sales
         {
 
             prInvoice = new Invoice();
-            prInvoice = await invoiceModel.GetById(invoice.invoiceId);
+            prInvoice = await invoiceModel.getById(invoice.invoiceId);
 
             if (prInvoice.invType == "pd" || prInvoice.invType == "sd" || prInvoice.invType == "qd"
                 || prInvoice.invType == "sbd" || prInvoice.invType == "pbd"
@@ -2219,8 +2219,8 @@ namespace POS.View.sales
                     #endregion
                     if (w.isOk)
                     {
-                        string res = await invoice.deleteInvoice(invoice.invoiceId);
-                        if (res.Equals("1"))
+                        int res = await invoice.deleteInvoice(invoice.invoiceId);
+                        if (res>0)
                         {
                             Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
                             clearInvoice();

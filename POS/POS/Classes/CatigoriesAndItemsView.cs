@@ -392,10 +392,10 @@ namespace POS.Classes
                 //get dropped id
                 int curIndex = newCategories.FindIndex(c => c.categoryId == (sender as UC_squareCard).ContentId);
                 //get dropped category
-                category = await categoryModel.GetCategoryByID((sender as UC_squareCard).ContentId);
+                category = await categoryModel.getById((sender as UC_squareCard).ContentId);
                 int droppedSequence = category.sequence.Value;
                 //get dragged category
-                Category dragedCategory = await categoryModel.GetCategoryByID(Convert.ToInt32(e.Data.GetData(DataFormats.Text, true)));
+                Category dragedCategory = await categoryModel.getById(Convert.ToInt32(e.Data.GetData(DataFormats.Text, true)));
                 int draggedSequence = dragedCategory.sequence.Value;
                 //set dropped category
                 newCategories[curIndex] = dragedCategory;

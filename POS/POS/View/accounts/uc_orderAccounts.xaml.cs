@@ -427,7 +427,7 @@ namespace POS.View.accounts
         {
             int s = 0;
             //increase pos balance
-            Pos pos = await posModel.getPosById(MainWindow.posID.Value);
+            Pos pos = await posModel.getById(MainWindow.posID.Value);
             pos.balance += ammount;
 
             s = await pos.save(pos);

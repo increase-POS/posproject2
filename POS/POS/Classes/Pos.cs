@@ -43,7 +43,7 @@ namespace POS.Classes
             }
             return items;
         }
-        public async Task<Pos> getPosById(int itemId)
+        public async Task<Pos> getById(int itemId)
         {
             Pos item = new Pos();
             Dictionary<string, string> parameters = new Dictionary<string, string>();
@@ -67,16 +67,16 @@ namespace POS.Classes
             string method = "Pos/Save";
             var myContent = JsonConvert.SerializeObject(item);
             parameters.Add("itemObject", myContent);
-            return APIResult.post(method, parameters);
+            return Convert.ToInt32(APIResult.post(method, parameters));
         }
-        public async Task<int> delete(int posId, int userId, Boolean final)
+        public async Task<int> delete(int itemId, int userId, Boolean final)
         {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
-            parameters.Add("itemId", posId.ToString());
+            parameters.Add("itemId", itemId.ToString());
             parameters.Add("userId", userId.ToString());
             parameters.Add("final", final.ToString());
             string method = "Pos/Delete";
-            return APIResult.post(method, parameters);
+            return Convert.ToInt32(APIResult.post(method, parameters));
         }
     }
 }

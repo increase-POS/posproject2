@@ -408,7 +408,7 @@ namespace POS.View.storage
                                     inventoryItemLocId = invItemLoc.id,
                                     createUserId = MainWindow.userID,
                                 });
-                                invoiceId = int.Parse(await invoiceModel.saveInvoice(invoiceModel));
+                                invoiceId = await invoiceModel.saveInvoice(invoiceModel);
                                 if (invoiceId != 0)
                                 {
                                     invoiceModel.invoiceId = invoiceId;

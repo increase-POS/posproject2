@@ -765,7 +765,7 @@ namespace POS.View
                     invoice.invNumber = await invoice.generateInvNumber("pi", branchModel.code, MainWindow.branchID.Value);
 
                 // save invoice in DB
-                int invoiceId = int.Parse(await invoiceModel.saveInvoice(invoice));
+                int invoiceId = await invoiceModel.saveInvoice(invoice) ;
                 prInvoiceId = invoiceId;
                 invoice.invoiceId = invoiceId;
                 if (invoiceId != 0)
@@ -794,7 +794,7 @@ namespace POS.View
 
                         invoiceItems.Add(itemT);
                     }
-                    string s = await invoiceModel.saveInvoiceItems(invoiceItems, invoiceId);
+                    int s = await invoiceModel.saveInvoiceItems(invoiceItems, invoiceId);
                     
                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                 }
@@ -872,7 +872,7 @@ namespace POS.View
                                     createUserId = MainWindow.userID.Value,
                                     updateUserId = MainWindow.userID.Value,
                                 };
-                                await not.Save(not, (int)cb_branch.SelectedValue, "storageAlerts_ctreatePurchaseReturnInvoice",branchModel.name);
+                                await not.save(not, (int)cb_branch.SelectedValue, "storageAlerts_ctreatePurchaseReturnInvoice",branchModel.name);
                                 #endregion
                                 await addInvoice("pbw", "pb"); // pbw means waiting purchase bounce
                             }
@@ -923,7 +923,7 @@ namespace POS.View
                                         createUserId = MainWindow.userID.Value,
                                         updateUserId = MainWindow.userID.Value,
                                     };
-                                    await not.Save(not, (int)cb_branch.SelectedValue, "storageAlerts_ctreatePurchaseInvoice", branchModel.name);
+                                    await not.save(not, (int)cb_branch.SelectedValue, "storageAlerts_ctreatePurchaseInvoice", branchModel.name);
                                     #endregion
                                 }
                                 clearInvoice();
@@ -936,7 +936,7 @@ namespace POS.View
                                 _InvoiceType = "pd";
                             }
                             //
-                            prInvoice = await invoiceModel.GetById(prInvoiceId);
+                            prInvoice = await invoiceModel.getById(prInvoiceId);
                             ///////////////////////////////////////
 
                             if (prInvoice.invType == "pw")
@@ -2329,7 +2329,7 @@ namespace POS.View
             if (prInvoiceId > 0)
             {
                 prInvoice = new Invoice();
-                prInvoice = await invoiceModel.GetById(prInvoiceId);
+                prInvoice = await invoiceModel.getById(prInvoiceId);
                 //
                 if (prInvoice.invType == "pd" || prInvoice.invType == "sd" || prInvoice.invType == "qd"
                              || prInvoice.invType == "sbd" || prInvoice.invType == "pbd"
@@ -2396,7 +2396,7 @@ namespace POS.View
             if (prInvoiceId > 0)
             {
                 prInvoice = new Invoice();
-                prInvoice = await invoiceModel.GetById(prInvoiceId);
+                prInvoice = await invoiceModel.getById(prInvoiceId);
 
                 if (prInvoice.invType == "pd" || prInvoice.invType == "sd" || prInvoice.invType == "qd"
                 || prInvoice.invType == "sbd" || prInvoice.invType == "pbd"
@@ -2520,7 +2520,7 @@ namespace POS.View
             if (prInvoiceId > 0)
             {
                 prInvoice = new Invoice();
-                prInvoice = await invoiceModel.GetById(prInvoiceId);
+                prInvoice = await invoiceModel.getById(prInvoiceId);
 
                 List<ReportParameter> paramarr = new List<ReportParameter>();
 

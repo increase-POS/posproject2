@@ -184,7 +184,7 @@ namespace POS.View
                 tb_code.Focus();
                 SectionData.clearValidate(tb_code, p_errorCode);
 
-                units = await unitModel.GetUnitsAsync();
+                units = await unitModel.Get();
                 var uQuery = units.Where(u => u.name == "package").FirstOrDefault();
                 unitpackageId = uQuery.unitId;
 

@@ -414,7 +414,7 @@ namespace POS.View.storage
                                     inventoryItemLocId = invItemLoc.id,
                                     createUserId = MainWindow.userID,
                                 });
-                                invoiceId = int.Parse(await invoiceModel.saveInvoice(invoiceModel));
+                                invoiceId = await invoiceModel.saveInvoice(invoiceModel);
                                 if (invoiceId != 0)
                                 {
                                     invoiceModel.invoiceId = invoiceId;
@@ -470,7 +470,7 @@ namespace POS.View.storage
                                             readyItemsLoc.Add(itemsLocations[i]);
                                     }
 
-                                    invoiceId = int.Parse(await invoiceModel.saveInvoice(invoiceModel));
+                                    invoiceId = await invoiceModel.saveInvoice(invoiceModel);
                                     if (invoiceId != 0)
                                     {
                                         await invoiceModel.saveInvoiceItems(orderList, invoiceId);

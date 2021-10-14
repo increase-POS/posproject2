@@ -297,7 +297,7 @@ namespace POS.View
 
                 catigoriesAndItemsView.ucReceiptInvoice = this;
                  tb_barcode.Focus();
-                pos = await posModel.getPosById(MainWindow.posID.Value);
+                pos = await posModel.getById(MainWindow.posID.Value);
                 configurProcessType();
                 configureDiscountType();
                 setNotifications();
@@ -953,7 +953,7 @@ namespace POS.View
                 };
                 Branch branch = new Branch();
                 branch = await branch.getBranchById(MainWindow.branchID.Value);
-                await not.Save(not, MainWindow.branchID.Value, "saleAlerts_shippingUser", branch.name, (int)invoice.shipUserId);
+                await not.save(not, MainWindow.branchID.Value, "saleAlerts_shippingUser", branch.name, (int)invoice.shipUserId);
                 #endregion
                 await saveOrderStatus(invoice.invoiceId, "ex");
             }
@@ -1036,7 +1036,7 @@ namespace POS.View
                 invoice.invType = invType;
 
                 // save invoice in DB
-                int invoiceId = int.Parse(await invoiceModel.saveInvoice(invoice));
+                int invoiceId = await invoiceModel.saveInvoice(invoice);
                 invoice.invoiceId = invoiceId;
                 prinvoiceId = invoiceId;
                 if (invoiceId == -1)// إظهار رسالة الترقية
@@ -3093,9 +3093,9 @@ namespace POS.View
 
             prInvoice = new Invoice();
             if (prinvoiceId != 0)
-                prInvoice = await invoiceModel.GetById(prinvoiceId);
+                prInvoice = await invoiceModel.getById(prinvoiceId);
             else
-                prInvoice = await invoiceModel.GetById(invoice.invoiceId);
+                prInvoice = await invoiceModel.getById(invoice.invoiceId);
 
             if (prInvoice.invType == "pd" || prInvoice.invType == "sd" || prInvoice.invType == "qd"
                 || prInvoice.invType == "sbd" || prInvoice.invType == "pbd"
@@ -3374,9 +3374,9 @@ namespace POS.View
             {
                 prInvoice = new Invoice();
                 if (prinvoiceId != 0)
-                    prInvoice = await invoiceModel.GetById(prinvoiceId);
+                    prInvoice = await invoiceModel.getById(prinvoiceId);
                 else
-                    prInvoice = await invoiceModel.GetById(invoice.invoiceId);
+                    prInvoice = await invoiceModel.getById(invoice.invoiceId);
 
                 if (prInvoice.invType == "pd" || prInvoice.invType == "sd" || prInvoice.invType == "qd"
                 || prInvoice.invType == "sbd" || prInvoice.invType == "pbd"
@@ -4133,8 +4133,8 @@ namespace POS.View
                     #endregion
                     if (w.isOk)
                     {
-                        string res = await invoice.deleteOrder(invoice.invoiceId);
-                        if (res.Equals("1"))
+                        int res = await invoice.deleteOrder(invoice.invoiceId);
+                        if (res>0)
                         {
                             Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
 

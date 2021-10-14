@@ -304,7 +304,7 @@ namespace POS.View.accounts
         {//balance for pos
             int s = 0;
             //increase pos balance
-            Pos pos = await posModel.getPosById(MainWindow.posID.Value);
+            Pos pos = await posModel.getById(MainWindow.posID.Value);
             if (_type.Equals("p"))
                 pos.balance -= ammount;
             else
@@ -315,7 +315,7 @@ namespace POS.View.accounts
 
         private async Task<bool> chkEnoughBalance(decimal ammount)
         {
-            Pos pos = await posModel.getPosById(MainWindow.posID.Value);
+            Pos pos = await posModel.getById(MainWindow.posID.Value);
             if (pos.balance.Value >= ammount)
             { return true; }
             else { return false; }

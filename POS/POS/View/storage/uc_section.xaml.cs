@@ -257,9 +257,9 @@ namespace POS.View
                         section.updateUserId = MainWindow.userID;
                         section.isActive = 1;
 
-                        string s = await sectionModel.saveSection(section);
+                        int s = await sectionModel.save(section);
 
-                        if (!s.Equals("-1"))
+                        if (s>0)
                         {
                             Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                             Btn_clear_Click(null, null);
@@ -300,9 +300,9 @@ namespace POS.View
                         section.note = tb_note.Text;
                         section.updateUserId = MainWindow.userID;
 
-                        string s = await sectionModel.saveSection(section);
+                        int s = await sectionModel.save(section);
 
-                        if (!s.Equals("-1"))
+                        if (s>0)
                             Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
                         else
                             Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
@@ -366,9 +366,9 @@ namespace POS.View
                                 if (section.canDelete) popupContent = MainWindow.resourcemanager.GetString("trPopDelete");
                                 if ((!section.canDelete) && (section.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
 
-                                bool b = await sectionModel.Delete(section.sectionId, MainWindow.userID.Value, section.canDelete);
+                                int b = await sectionModel.delete(section.sectionId, MainWindow.userID.Value, section.canDelete);
 
-                                if (b)
+                                if (b>0)
                                     Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
                                 else
                                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
@@ -397,9 +397,9 @@ namespace POS.View
         {//activate
             section.isActive = 1;
 
-            string s = await sectionModel.saveSection(section);
+            int s = await sectionModel.save(section);
 
-            if (!s.Equals("-1"))
+            if (s>0)
                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopActive"), animation: ToasterAnimation.FadeIn);
             else
                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);

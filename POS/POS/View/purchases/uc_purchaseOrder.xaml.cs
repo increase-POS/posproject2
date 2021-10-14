@@ -641,7 +641,7 @@ namespace POS.View.purchases
             invoice.updateUserId = MainWindow.userID;
 
             // save invoice in DB
-            int invoiceId = int.Parse(await invoiceModel.saveInvoice(invoice));
+            int invoiceId = await invoiceModel.saveInvoice(invoice);
             invoice.invoiceId = invoiceId;
             if (invoiceId != 0)
             {

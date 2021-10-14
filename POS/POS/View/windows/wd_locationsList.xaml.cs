@@ -72,7 +72,7 @@ namespace POS.View.windows
                 translat();
                 #endregion
 
-                section = await sectionModel.GetSectionByID(sectionId);
+                section = await sectionModel.getById(sectionId);
 
                 allLocationsSource = await locationModel.Get();
                 allLocationsSource = allLocationsSource.Where(x => x.branchId == MainWindow.branchID && x.isFreeZone != 1).ToList();
@@ -161,7 +161,7 @@ namespace POS.View.windows
                 if (sender != null)
                     SectionData.StartAwait(grid_locations);
 
-                string s = await location.saveLocationsSection(selectedLocations , sectionId, MainWindow.userID.Value);
+                int s = await location.saveLocationsSection(selectedLocations , sectionId, MainWindow.userID.Value);
 
                 isActive = true;
                 this.Close();

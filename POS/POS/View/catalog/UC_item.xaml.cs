@@ -733,9 +733,9 @@ namespace POS.View
                 {
                     if (service.costId != 0)
                     {
-                        Boolean res = await serviceModel.delete(service.costId);
+                        int res = await serviceModel.delete(service.costId);
 
-                        if (res)
+                        if (res>0)
                             Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
                         else
                             Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
@@ -929,8 +929,8 @@ namespace POS.View
                     service.createUserId = MainWindow.userID;
                     service.updateUserId = MainWindow.userID;
 
-                    Boolean res = await serviceModel.saveService(service);
-                    if (res) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd"));
+                    int res = await serviceModel.save(service);
+                    if (res>0) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd"));
                         Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                     else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
                         Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
@@ -979,9 +979,9 @@ namespace POS.View
                         serial.itemId = item.itemId;
                         serial.isActive = 1;
 
-                        Boolean res = await serialModel.saveSerial(serial);
+                        int res = await serialModel.save(serial);
 
-                        if (res) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd"));
+                        if (res>0) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd"));
                             Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                         else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
                             Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
@@ -1049,9 +1049,9 @@ namespace POS.View
                     Boolean final = false;
                     if (serial.isActive == 1)
                         final = true;
-                    Boolean res = await serialModel.delete(serial.serialId, (int)MainWindow.userID, final);
+                    int res = await serialModel.delete(serial.serialId, (int)MainWindow.userID, final);
 
-                    if (res)
+                    if (res> 0)
                         Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
                     else
                         Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
@@ -1082,8 +1082,8 @@ namespace POS.View
                     service.name = tb_serviceName.Text;
                     service.costVal = decimal.Parse(tb_costVal.Text);
                     service.updateUserId = MainWindow.userID;
-                    Boolean res = await serviceModel.saveService(service);
-                    if (res) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));
+                    int res = await serviceModel.save(service);
+                    if (res>0) //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopUpdate"));
                         Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
                     else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
                         Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
@@ -1673,7 +1673,7 @@ namespace POS.View
 
         private async Task fillUnits()
         {
-            units = await unitModel.GetUnitsAsync();
+            units = await unitModel.Get();
             cb_minUnit.ItemsSource = units.ToList();
             cb_minUnit.SelectedValuePath = "unitId";
             cb_minUnit.DisplayMemberPath = "name";
@@ -1695,7 +1695,7 @@ namespace POS.View
         }
         async Task fillProperties()
         {
-            properties = await propertyModel.getProperty();
+            properties = await propertyModel.Get();
             cb_selectProperties.ItemsSource = properties.ToList();
             cb_selectProperties.SelectedValuePath = "propertyId";
             cb_selectProperties.DisplayMemberPath = "name";
@@ -2081,7 +2081,7 @@ namespace POS.View
                 if (cb_parentItem.SelectedIndex == -1 && cb_categorie.SelectedIndex != -1)
                 {
                     int catId = (int)cb_categorie.SelectedValue;
-                    cat = await categoryModel.GetCategoryByID(catId);
+                    cat = await categoryModel.getById(catId);
                     //tb_taxes.Text = cat.taxes.ToString();
                     tb_taxes.Text = SectionData.DecTostring(cat.taxes);
                 }

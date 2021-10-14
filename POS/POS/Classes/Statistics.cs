@@ -23,34 +23,34 @@ namespace POS.Classes
         /////////////// الارباح
         public string ITitemName { get; set; }
         public string ITunitName { get; set; }
-        public int ITitemsTransId { get; set; }
+        //public int ITitemsTransId { get; set; }*
         public Nullable<int> ITitemUnitId { get; set; }
 
         public Nullable<int> ITitemId { get; set; }
         public Nullable<int> ITunitId { get; set; }
         public Nullable<long> ITquantity { get; set; }
 
-        public Nullable<System.DateTime> ITupdateDate { get; set; }
+        //public Nullable<System.DateTime> ITupdateDate { get; set; }*
         //  public Nullable<int> IT.createUserId { get; set; } 
-        public Nullable<int> ITupdateUserId { get; set; }
+        //public Nullable<int> ITupdateUserId { get; set; }*
 
         public Nullable<decimal> ITprice { get; set; }
-        public string ITbarcode { get; set; }
+        //public string ITbarcode { get; set; }*
 
-        public string ITUpdateuserNam { get; set; }
-        public string ITUpdateuserLNam { get; set; }
-        public string ITUpdateuserAccNam { get; set; }
+        //public string ITUpdateuserNam { get; set; }*
+        //public string ITUpdateuserLNam { get; set; }*
+        //public string ITUpdateuserAccNam { get; set; }*
         public int invoiceId { get; set; }
         public string invNumber { get; set; }
-        public Nullable<int> agentId { get; set; }
+        //public Nullable<int> agentId { get; set; }*
         public Nullable<int> posId { get; set; }
         public string invType { get; set; }
         public Nullable<decimal> total { get; set; }
         public Nullable<decimal> totalNet { get; set; }
 
         public Nullable<System.DateTime> updateDate { get; set; }
-        public Nullable<int> updateUserId { get; set; }
-        public Nullable<int> branchId { get; set; }
+        //public Nullable<int> updateUserId { get; set; }*
+        //public Nullable<int> branchId { get; set; }*
         public Nullable<decimal> discountValue { get; set; }
         public string discountType { get; set; }
         public Nullable<decimal> tax { get; set; }
@@ -64,14 +64,14 @@ namespace POS.Classes
 
         public string posName { get; set; }
         public string posCode { get; set; }
-        public string agentName { get; set; }
-        public string agentCode { get; set; }
-        public string agentType { get; set; }
+        //public string agentName { get; set; }*
+        //public string agentCode { get; set; }*
+        //public string agentType { get; set; }*
 
-        public string uuserName { get; set; }
-        public string uuserLast { get; set; }
-        public string uUserAccName { get; set; }
-        public string agentCompany { get; set; }
+        //public string uuserName { get; set; }*
+        //public string uuserLast { get; set; }*
+        //public string uUserAccName { get; set; }*
+        //public string agentCompany { get; set; }*
         public Nullable<decimal> subTotal { get; set; }
         public decimal purchasePrice { get; set; }
         public decimal totalwithTax { get; set; }
@@ -108,16 +108,13 @@ namespace POS.Classes
         public Nullable<byte> userBType { get; set; }
         public Nullable<decimal> shippingBalance { get; set; }
         public Nullable<byte> shippingCompaniesBType { get; set; }
-
         private string description;
         private string description1;
-
         public string bondNumber { get; set; }
         public Nullable<int> fromposId { get; set; }
         public string fromposName { get; set; }
         public Nullable<int> frombranchId { get; set; }
         public string frombranchName { get; set; }
-
         public Nullable<int> toposId { get; set; }
         public string toposName { get; set; }
         public Nullable<int> tobranchId { get; set; }
@@ -2519,9 +2516,23 @@ namespace POS.Classes
         }
         public class PaymentsTypeCombo
         {
+        ///typeeeeeeeeeeeeeeeee
             private string paymentsTypeName;
+            private string paymentsTypeText;
 
             public string PaymentsTypeName { get => paymentsTypeName; set => paymentsTypeName = value; }
+            public string PaymentsTypeText
+            {
+                get => paymentsTypeName == "cash"    ? paymentsTypeText = MainWindow.resourcemanager.GetString("trCash")
+                    :  paymentsTypeName == "doc"     ? paymentsTypeText = MainWindow.resourcemanager.GetString("trDocument")
+                    :  paymentsTypeName == "cheque"  ? paymentsTypeText = MainWindow.resourcemanager.GetString("trCheque")
+                    :  paymentsTypeName == "balance" ? paymentsTypeText = MainWindow.resourcemanager.GetString("trCredit")
+                    :  paymentsTypeName == "card"    ? paymentsTypeText = MainWindow.resourcemanager.GetString("trCreditCard")
+                    :  paymentsTypeName == "inv"     ? paymentsTypeText = MainWindow.resourcemanager.GetString("trInv")
+                    :  "";
+                set => paymentsTypeText = value;
+            }
+
         }
         public List<PaymentsTypeCombo> getPaymentsTypeCombo(List<CashTransferSts> ITInvoice)
         {

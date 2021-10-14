@@ -463,7 +463,7 @@ namespace POS.View.accounts
 
         private async Task calcBalance(decimal ammount)
         {
-            Pos pos = await posModel.getPosById(MainWindow.posID.Value);
+            Pos pos = await posModel.getById(MainWindow.posID.Value);
 
             pos.balance += ammount;
 

@@ -221,7 +221,7 @@ namespace POS.View.sales
                 await fillShippingCompanies();
                 await fillUsers();
 
-                pos = await posModel.getPosById(MainWindow.posID.Value);
+                pos = await posModel.getById(MainWindow.posID.Value);
                 branch = await branchModel.getBranchById((int)pos.branchId);
 
                 tb_barcode.Focus();
@@ -842,7 +842,7 @@ namespace POS.View.sales
             // build invoice NUM like storCode_PI_sequence exp: 123_PI_2
             
             // save invoice in DB
-            int invoiceId = int.Parse(await invoiceModel.saveInvoice(invoice));
+            int invoiceId = await invoiceModel.saveInvoice(invoice);
 
             if (invoiceId != 0)
             {
@@ -1845,7 +1845,7 @@ SectionData.isAdminPermision())
                                 createUserId = MainWindow.userID.Value,
                                 updateUserId = MainWindow.userID.Value,
                             };
-                            await notification.Save(not, (int)cb_branch.SelectedValue, "saleAlerts_executeOrder", branch.name);
+                            await notification.save(not, (int)cb_branch.SelectedValue, "saleAlerts_executeOrder", branch.name);
                             #endregion
                             clearInvoice();
                             await refreshDraftNotification();
@@ -2129,7 +2129,7 @@ SectionData.isAdminPermision())
         {
 
             prInvoice = new Invoice();
-            prInvoice = await invoiceModel.GetById(invoice.invoiceId);
+            prInvoice = await invoiceModel.getById(invoice.invoiceId);
 
             if (prInvoice.invType == "pd" || prInvoice.invType == "sd" || prInvoice.invType == "qd"
                 || prInvoice.invType == "sbd" || prInvoice.invType == "pbd"
@@ -2459,8 +2459,8 @@ SectionData.isAdminPermision())
                     #endregion
                     if (w.isOk)
                     {
-                        string res = await invoice.deleteOrder(invoice.invoiceId);
-                        if (res.Equals("1"))
+                        int res = await invoice.deleteOrder(invoice.invoiceId);
+                        if (res>0)
                         {
                             Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
 
