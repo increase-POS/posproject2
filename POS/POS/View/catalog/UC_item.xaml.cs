@@ -51,6 +51,7 @@ namespace POS.View
         Service serviceModel = new Service();
         IEnumerable<Category> categoriesQuery;
         IEnumerable<Item> items;
+        IEnumerable<Item> allItems;
         IEnumerable<Item> itemsQuery;
         Category category = new Category();
         // item object
@@ -202,14 +203,15 @@ namespace POS.View
                     SectionData.StartAwait(grid_main);
 
                 TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
-                if (elapsed.TotalMilliseconds > 100)
+                if (elapsed.TotalMilliseconds > 150)
                 {
                     _BarcodeStr = "";
                 }
 
                 string digit = "";
                 // record keystroke & timestamp 
-                if (e.Key >= Key.D0 && e.Key <= Key.D9)
+              
+                    if (e.Key >= Key.D0 && e.Key <= Key.D9)
                 {
                     //digit pressed!
                     digit = e.Key.ToString().Substring(1);
@@ -224,7 +226,10 @@ namespace POS.View
                 _lastKeystroke = DateTime.Now;
 
                 // process barcode 
-                if (e.Key.ToString() == "Return" && _BarcodeStr.Length > 0)
+           
+              //if (e.Key.ToString() == "Return" && _BarcodeStr.Length > 0)
+           
+              if ( _BarcodeStr.Length == 13)
                 {
                     if (_Sender != null)
                     {
@@ -244,7 +249,7 @@ namespace POS.View
                         }
                     }
                     tb_barcode.Text = _BarcodeStr;
-                    _BarcodeStr = "";
+                    
                     // get item matches barcode
                     if (barcodesList != null)
                     {
@@ -254,10 +259,13 @@ namespace POS.View
                         {
                             if (dg_barcode.Visibility == Visibility.Visible)
                             {
-                                if (! await checkBarcodeValidity(tb_barcode.Text))
+                                if (!await checkBarcodeValidity(tb_barcode.Text))
                                 {
+                                    SectionData.validateDuplicateCode(tb_barcode, p_errorBarcode, tt_errorBarcode, "trErrorDuplicateBarcodeToolTip");
                                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorDuplicateBarcodeToolTip"), animation: ToasterAnimation.FadeIn);
                                 }
+                                else
+                                    SectionData.clearValidate(tb_barcode,p_errorBarcode);
                             }
                             else
                             {
@@ -268,7 +276,9 @@ namespace POS.View
                         }
                     }
                     drawBarcode(tb_barcode.Text);
+                    _BarcodeStr = "";
                 }
+               
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -455,8 +465,6 @@ namespace POS.View
 
         private void Btn_barcode_Click(object sender, RoutedEventArgs e)
         {
-
-
             try
             {
                 if (item.itemId > 0)
@@ -1310,7 +1318,7 @@ namespace POS.View
                                     itemUnit.createUserId = MainWindow.userID;
 
                                     int res = await itemUnit.saveItemUnit(itemUnit);
-                                    if (res.Equals(res > 0))
+                                    if (res > 0)
                                         Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
                                     else
                                         Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
@@ -1833,12 +1841,11 @@ namespace POS.View
         private void dg_unit_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-
+            {              
                 if (dg_unit.SelectedIndex != -1)
                 {
+                    if (sender != null)
+                        SectionData.StartAwait(grid_main);
                     itemUnit = dg_unit.SelectedItem as ItemUnit;
 
                     if (itemUnit.unitId != null)
@@ -1899,10 +1906,10 @@ namespace POS.View
                         }
 
                     }
+                    if (sender != null)
+                        SectionData.EndAwait(grid_main);
                 }
-                tb_barcode.Focus();
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
+                tb_barcode.Focus();             
             }
             catch (Exception ex)
             {
@@ -2187,8 +2194,9 @@ namespace POS.View
 
         async Task<IEnumerable<Item>> RefrishItems()
         {
+            allItems = await itemModel.GetAllItems();
             if (category.categoryId == 0)
-                items = await itemModel.GetAllItems();
+                items = allItems;
             else items = await itemModel.GetItemsInCategoryAndSub(category.categoryId);
             items = items.Where(x => x.type != "p").ToList();
      
@@ -2395,7 +2403,7 @@ namespace POS.View
             tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             tb_code.Background = (Brush)bc.ConvertFrom("#f8f8f8");
 
-            item = items.ToList().Find(c => c.itemId == itemId);
+            item = allItems.ToList().Find(c => c.itemId == itemId);
             if (item != null)
             {
                 this.DataContext = item;
@@ -3109,7 +3117,8 @@ namespace POS.View
         {
             try
             {             
-                if (cb_selectUnit.SelectedIndex != -1 && itemUnit.itemUnitId == 0)
+                //if (cb_selectUnit.SelectedIndex != -1 && itemUnit.itemUnitId == 0)
+                if (cb_selectUnit.SelectedIndex != -1)
                 {
                     if (sender != null)
                         SectionData.StartAwait(grid_main);
@@ -3119,8 +3128,10 @@ namespace POS.View
                         tb_count.Text = "1";
                     }
                     await fillSmallUnits(item.itemId, (int)cb_selectUnit.SelectedValue);
+                    if (itemUnit.itemUnitId == 0)
                     generateBarcode("", true);
                     cb_unit.SelectedValue = itemUnit.subUnitId;
+                    tb_barcode.Focus();
                     if (sender != null)
                         SectionData.EndAwait(grid_main);
                 }               
@@ -3145,6 +3156,7 @@ namespace POS.View
                     if ((int)cb_selectUnit.SelectedValue == (int)cb_unit.SelectedValue)
                         tb_count.Text = "1";
                 }
+             
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
