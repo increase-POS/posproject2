@@ -370,7 +370,7 @@ namespace POS.Classes
         {
 
 
-            string message = "";
+          //  string message = "";
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             string method = "Cashtransfer/Save";
 
@@ -571,7 +571,7 @@ namespace POS.Classes
             parameters.Add("ammount", ammount.ToString());
             parameters.Add("payType", payType.ToString());
             var myContent = JsonConvert.SerializeObject(cashTr);
-            parameters.Add("cashTr", myContent);
+            parameters.Add("cashTransfer", myContent);
           
          
 
@@ -622,7 +622,7 @@ namespace POS.Classes
             parameters.Add("ammount", ammount.ToString());
             parameters.Add("payType", payType.ToString());
             var myContent = JsonConvert.SerializeObject(cashTr);
-            parameters.Add("cashTr", myContent);
+            parameters.Add("cashTransfer", myContent);
 
 
 

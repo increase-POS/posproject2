@@ -245,7 +245,7 @@ namespace POS.Classes
             parameters.Add("Object", myContent);
            
 
-            string method = "categoryuser/UpdateCatUserList";
+            string method = "GroupObject/AddGroupObjectList";
            return await APIResult.post(method, parameters);
 
 

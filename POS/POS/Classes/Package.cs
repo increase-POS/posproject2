@@ -363,7 +363,7 @@ namespace POS.Classes
             Dictionary<string, string> parameters = new Dictionary<string, string>();
 
             var myContent = JsonConvert.SerializeObject(newplist);
-            parameters.Add("newlist", myContent);
+            parameters.Add("Object", myContent);
             parameters.Add("parentIUId", parentIUId.ToString());
             parameters.Add("userId", userId.ToString());
             string method = "Package/UpdatePackByParentId";

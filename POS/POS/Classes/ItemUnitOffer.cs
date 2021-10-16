@@ -133,7 +133,7 @@ namespace POS.Classes
             parameters.Add("offerId", offerId.ToString());
 
             //#################
-            IEnumerable<Claim> claims = await APIResult.getList("ItemsLocations/Get");
+            IEnumerable<Claim> claims = await APIResult.getList("ItemsOffers/GetItemsByOfferId", parameters);
 
             foreach (Claim c in claims)
             {

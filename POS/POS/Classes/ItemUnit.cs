@@ -107,7 +107,7 @@ namespace POS.Classes
             parameters.Add("itemUnitId", itemUnitId.ToString());
 
             //#################
-            IEnumerable<Claim> claims = await APIResult.getList("ItemsUnits/GetById");
+            IEnumerable<Claim> claims = await APIResult.getList("ItemsUnits/GetById", parameters);
 
             foreach (Claim c in claims)
             {
@@ -468,7 +468,7 @@ namespace POS.Classes
             parameters.Add("itemUnitId", itemUnitId.ToString());
 
             //#################
-            IEnumerable<Claim> claims = await APIResult.getList("itemsUnits/getSmallItemUnits");
+            IEnumerable<Claim> claims = await APIResult.getList("itemsUnits/getSmallItemUnits", parameters);
 
             foreach (Claim c in claims)
             {
@@ -521,7 +521,7 @@ namespace POS.Classes
             parameters.Add("toItemUnit", toItemUnit.ToString());
 
             //#################
-            IEnumerable<Claim> claims = await APIResult.getList("itemsUnits/largeToSmallUnitQuan");
+            IEnumerable<Claim> claims = await APIResult.getList("itemsUnits/largeToSmallUnitQuan", parameters);
 
             foreach (Claim c in claims)
             {
@@ -568,7 +568,7 @@ namespace POS.Classes
             parameters.Add("toItemUnit", toItemUnit.ToString());
 
             //#################
-            IEnumerable<Claim> claims = await APIResult.getList("itemsUnits/smallToLargeUnitQuan");
+            IEnumerable<Claim> claims = await APIResult.getList("itemsUnits/smallToLargeUnitQuan",parameters);
 
             foreach (Claim c in claims)
             {
