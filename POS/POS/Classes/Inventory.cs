@@ -81,6 +81,8 @@ namespace POS.Classes
                     break;
                 }
             }
+            if (item == null)
+                item = new Inventory();
             return item;
         }
         public async Task<int> GetLastNumOfInv(string invCode)
@@ -125,7 +127,7 @@ namespace POS.Classes
             string method = "Inventory/Save";
             var myContent = JsonConvert.SerializeObject(item);
             parameters.Add("itemObject", myContent);
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
         }
         //public async Task<string> deleteInventory(int inventoryId,int userId,bool final)
         //{
@@ -163,7 +165,7 @@ namespace POS.Classes
             parameters.Add("userId", userId.ToString());
             parameters.Add("final", final.ToString());
             string method = "Inventory/Delete";
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
         }
         public async Task<string> generateInvNumber(string invCode)
         {         

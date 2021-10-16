@@ -178,7 +178,7 @@ namespace POS.Classes
 
             var myContent = JsonConvert.SerializeObject(newObject);
             parameters.Add("Object", myContent);
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
 
 
             //// ... Use HttpClient.
@@ -325,7 +325,7 @@ namespace POS.Classes
             parameters.Add("userId", userId.ToString());
             parameters.Add("final", final.ToString());
             string method = "Package/Delete";
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
 
 
             //// ... Use HttpClient.
@@ -367,7 +367,7 @@ namespace POS.Classes
             parameters.Add("parentIUId", parentIUId.ToString());
             parameters.Add("userId", userId.ToString());
             string method = "Package/UpdatePackByParentId";
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
 
 
             //string message = "";

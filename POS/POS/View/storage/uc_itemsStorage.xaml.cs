@@ -139,7 +139,7 @@ namespace POS.View.storage
                     await refreshItemsLocations();
                 else if (chk_freezone.IsChecked == true)
                     await refreshFreeZoneItemsLocations();
-                else
+                else if (chk_locked.IsChecked == true)
                     await refreshLockedItems();
                 clearInputs();
 

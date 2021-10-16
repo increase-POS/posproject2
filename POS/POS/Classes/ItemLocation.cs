@@ -49,7 +49,7 @@ namespace POS.Classes
             parameters.Add("branchId", branchId.ToString());
            
             //#################
-            IEnumerable<Claim> claims = await APIResult.getList("ItemsLocations/Get");
+            IEnumerable<Claim> claims = await APIResult.getList("ItemsLocations/Get",parameters);
 
             foreach (Claim c in claims)
             {
@@ -106,7 +106,7 @@ namespace POS.Classes
             parameters.Add("branchId", branchId.ToString());
 
             //#################
-            IEnumerable<Claim> claims = await APIResult.getList("ItemsLocations/getAll");
+            IEnumerable<Claim> claims = await APIResult.getList("ItemsLocations/getAll",parameters);
 
             foreach (Claim c in claims)
             {
@@ -205,7 +205,7 @@ namespace POS.Classes
             parameters.Add("branchId", branchId.ToString());
 
             //#################
-            IEnumerable<Claim> claims = await APIResult.getList("ItemsLocations/GetFreeZoneItems");
+            IEnumerable<Claim> claims = await APIResult.getList("ItemsLocations/GetFreeZoneItems",parameters);
 
             foreach (Claim c in claims)
             {
@@ -260,7 +260,7 @@ namespace POS.Classes
             parameters.Add("branchId", branchId.ToString());
 
             //#################
-            IEnumerable<Claim> claims = await APIResult.getList("ItemsLocations/GetLockedItems");
+            IEnumerable<Claim> claims = await APIResult.getList("ItemsLocations/GetLockedItems",parameters);
 
             foreach (Claim c in claims)
             {
@@ -323,7 +323,7 @@ namespace POS.Classes
             var myContent1 = JsonConvert.SerializeObject(not);
             parameters.Add("notificationObj", myContent1);
 
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
 
 
 
@@ -368,7 +368,7 @@ namespace POS.Classes
             parameters.Add("Object", myContent);
           
 
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
 
 
 
@@ -421,7 +421,7 @@ namespace POS.Classes
             var myContent = JsonConvert.SerializeObject(smallUnit);
             parameters.Add("Object", myContent);
 
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
 
 
 
@@ -471,7 +471,7 @@ namespace POS.Classes
             var myContent = JsonConvert.SerializeObject(notification);
             parameters.Add("Object", myContent);
 
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
 
 
 
@@ -516,7 +516,7 @@ namespace POS.Classes
             var myContent = JsonConvert.SerializeObject(itemLocation);
             parameters.Add("Object", myContent);
 
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
 
 
             //// ... Use HttpClient.
@@ -562,7 +562,7 @@ namespace POS.Classes
             var myContent = JsonConvert.SerializeObject(invoiceItems);
             parameters.Add("Object", myContent);
 
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
 
 
             //// ... Use HttpClient.
@@ -610,7 +610,7 @@ namespace POS.Classes
 
 
 
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
 
 
             //// ... Use HttpClient.
@@ -652,7 +652,7 @@ namespace POS.Classes
 
 
 
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
 
 
             //// ... Use HttpClient.
@@ -694,7 +694,7 @@ namespace POS.Classes
 
 
 
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
 
 
             //// ... Use HttpClient.
@@ -731,7 +731,7 @@ namespace POS.Classes
             parameters.Add("itemLocId", itemLocId.ToString());
 
             //#################
-            IEnumerable<Claim> claims = await APIResult.getList("ItemsLocations/getAmountByItemLocId");
+            IEnumerable<Claim> claims = await APIResult.getList("ItemsLocations/getAmountByItemLocId",parameters);
 
 
             foreach (Claim c in claims)
@@ -787,7 +787,7 @@ namespace POS.Classes
             parameters.Add("branchId", branchId.ToString());
             parameters.Add("objectName", objectName);
 
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
 
 
             //// ... Use HttpClient.
@@ -838,7 +838,7 @@ namespace POS.Classes
             parameters.Add("branchId", branchId.ToString());
             parameters.Add("userId", userId.ToString());
 
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
 
 
             //  // ... Use HttpClient.
@@ -891,7 +891,7 @@ namespace POS.Classes
             parameters.Add("toBranch", toBranch.ToString());
             parameters.Add("objectName", objectName);
 
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
 
 
 
@@ -942,7 +942,7 @@ namespace POS.Classes
             parameters.Add("userId", userId.ToString());
 
 
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
 
 
             //// ... Use HttpClient.
@@ -986,7 +986,7 @@ namespace POS.Classes
 
             parameters.Add("branchId", branchId.ToString());
           
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
 
 
             //// ... Use HttpClient.
@@ -1036,7 +1036,7 @@ namespace POS.Classes
             parameters.Add("userId", userId.ToString());
 
 
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
 
 
             //// ... Use HttpClient.

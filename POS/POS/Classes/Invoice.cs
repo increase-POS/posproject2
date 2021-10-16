@@ -186,7 +186,7 @@ namespace POS.Classes
         {
             List<Invoice> items = new List<Invoice>();
             Dictionary<string, string> parameters = new Dictionary<string, string>();
-            parameters.Add("itemId", branchId.ToString());
+            parameters.Add("branchId", branchId.ToString());
             IEnumerable<Claim> claims = await APIResult.getList("Invoices/getOrdersForPay", parameters);
             foreach (Claim c in claims)
             {
@@ -357,7 +357,7 @@ namespace POS.Classes
             {
                 if (c.Type == "scopes")
                 {
-                    count = int.Parse(c.Value);
+                    count = decimal.Parse(c.Value);
                     break;
                 }
             }
@@ -614,7 +614,7 @@ namespace POS.Classes
             string method = "Invoices/Save";
             var myContent = JsonConvert.SerializeObject(item);
             parameters.Add("itemObject", myContent);
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
         }
         public async Task<int> saveOrderStatus(invoiceStatus item)
         {
@@ -622,16 +622,16 @@ namespace POS.Classes
             string method = "InvoiceStatus/Save";
             var myContent = JsonConvert.SerializeObject(item);
             parameters.Add("itemObject", myContent);
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
         }
         public async Task<int> saveInvoiceItems(List<ItemTransfer> invoiceItems, int invoiceId)
         {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             string method = "ItemsTransfer/Save";
             var myContent = JsonConvert.SerializeObject(invoiceItems);
-            parameters.Add("itemObject", myContent);
+            parameters.Add("itemTransferObject", myContent);
             parameters.Add("invoiceId", invoiceId.ToString());
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
         }
         public async Task<int> saveInvoiceCoupons(List<CouponInvoice> invoiceCoupons, int invoiceId, string invType)
         {
@@ -641,21 +641,21 @@ namespace POS.Classes
             parameters.Add("itemObject", myContent);
             parameters.Add("invoiceId", invoiceId.ToString());
             parameters.Add("invType", invType);
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
         }
         public async Task<int> deleteInvoice(int invoiceId)
         {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             parameters.Add("itemId", invoiceId.ToString());
             string method = "Invoices/delete";
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
         }
         public async Task<int> deleteOrder(int invoiceId)
         {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             parameters.Add("itemId", invoiceId.ToString());
             string method = "Invoices/deleteOrder";
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
         }
         public async Task<string> generateInvNumber(string invoiceCode, string branchCode, int branchId)
         {

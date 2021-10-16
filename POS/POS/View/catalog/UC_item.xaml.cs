@@ -2160,7 +2160,7 @@ namespace POS.View
         {
             if (categories is null)
                 await RefrishCategories();
-            categoriesQuery = categories.Where(x => x.isActive == tglCategoryState && x.parentId == categoryParentId);
+            categoriesQuery = categories.Where(x => x.isActive == tglCategoryState && x.parentId == categoryParentId).ToList();
             catigoriesAndItemsView.gridCatigories = grid_categoryCards;
             generateCoulmnCategoriesGrid(categoriesQuery.Count());
             catigoriesAndItemsView.FN_refrishCatalogCard(categoriesQuery.ToList(), -1);
@@ -2190,7 +2190,8 @@ namespace POS.View
             if (category.categoryId == 0)
                 items = await itemModel.GetAllItems();
             else items = await itemModel.GetItemsInCategoryAndSub(category.categoryId);
-            items = items.Where(x => x.type != "p");
+            items = items.Where(x => x.type != "p").ToList();
+     
             return items;
 
         }

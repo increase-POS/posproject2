@@ -117,7 +117,7 @@ namespace POS.Classes
             parameters.Add("itemObject", myContent);
             parameters.Add("inventoryId", inventoryId.ToString());
            
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
         }
         public async Task<int> distroyItem(InventoryItemLocation item)
         {
@@ -125,7 +125,7 @@ namespace POS.Classes
             string method = "InventoryItemLocation/distroyItem";
             var myContent = JsonConvert.SerializeObject(item);
             parameters.Add("itemObject", myContent);
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
         }
         public async Task<int> fallItem(InventoryItemLocation item)
         {
@@ -133,7 +133,7 @@ namespace POS.Classes
             string method = "InventoryItemLocation/fallItem";
             var myContent = JsonConvert.SerializeObject(item);
             parameters.Add("itemObject", myContent);
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
         }
         public async Task<int> delete(int itemId, int userId, Boolean final)
         {
@@ -142,7 +142,7 @@ namespace POS.Classes
             parameters.Add("userId", userId.ToString());
             parameters.Add("final", final.ToString());
             string method = "InventoryItemLocation/Delete";
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
         }
 
     }

@@ -42,7 +42,7 @@ namespace POS.Classes
             parameters.Add("posId", posId.ToString());
 
 
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
         }
        
     }
@@ -107,7 +107,7 @@ namespace POS.Classes
             string method = "notificationUser/Save";
             var myContent = JsonConvert.SerializeObject(item);
             parameters.Add("itemObject", myContent);
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
         }
         public async Task<int> setAsRead(int notUserId, int posId, string type)
         {
@@ -116,7 +116,7 @@ namespace POS.Classes
             parameters.Add("notUserId", notUserId.ToString());
             parameters.Add("posId", posId.ToString());
             parameters.Add("type", type.ToString());
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
         }
 
     }

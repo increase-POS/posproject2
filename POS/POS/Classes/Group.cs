@@ -102,8 +102,7 @@ namespace POS.Classes
             {
                 if (c.Type == "scopes")
                 {
-                    list = JsonConvert.DeserializeObject<List<User>>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
-                    break;
+                    list.Add(JsonConvert.DeserializeObject<User>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" }));
                 }
             }
             return list;
@@ -153,7 +152,7 @@ namespace POS.Classes
 
             var myContent = JsonConvert.SerializeObject(newObject);
             parameters.Add("Object", myContent);
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
 
             //    // ... Use HttpClient.
             //    ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
@@ -232,7 +231,7 @@ namespace POS.Classes
             parameters.Add("userId", userId.ToString());
             parameters.Add("final", final.ToString());
             string method = "Group/Delete";
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
 
             //// ... Use HttpClient.
             //ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
@@ -271,7 +270,7 @@ namespace POS.Classes
             parameters.Add("userId", userId.ToString());
 
             string method = "Group/UpdateGroupIdInUsers";
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
 
 
 

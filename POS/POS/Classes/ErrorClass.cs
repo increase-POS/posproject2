@@ -68,14 +68,14 @@ namespace POS.Classes
             string method = "errorcontroller/Save";
             var myContent = JsonConvert.SerializeObject(item);
             parameters.Add("itemObject", myContent);
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
         }
         public async Task<int> delete(int errorId)
         {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             parameters.Add("itemId", errorId.ToString());
             string method = "errorcontroller/Delete";
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
         }
     }
 }

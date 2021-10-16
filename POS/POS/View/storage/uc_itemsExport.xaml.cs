@@ -38,6 +38,7 @@ namespace POS.View.storage
         string packagePermission = "importExport_package";
         string unitConversionPermission = "importExport_unitConversion";
         string initializeShortagePermission = "importExport_initializeShortage";
+        string deliveryPermission = "salesOrders_delivery";
         private static uc_itemsExport _instance;
         public static uc_itemsExport Instance
         {
@@ -75,6 +76,11 @@ namespace POS.View.storage
         List<ItemTransfer> invoiceItems;
         List<ItemTransfer> mainInvoiceItems;
 
+        User userModel = new User();
+        List<User> users;
+        ShippingCompanies companyModel = new ShippingCompanies();
+        List<ShippingCompanies> companies;
+
         static private string _ProcessType = "imd"; //draft import
 
         static private int _SequenceNum = 0;
@@ -85,6 +91,9 @@ namespace POS.View.storage
         static private string _BarcodeStr = "";
         static private string _SelectedProcess = "";
         static private int _SelectedBranch = -1;
+        static private int _SelectedCompany = -1;
+        static private int _SelectedUser = -1;
+        static private decimal _DeliveryCost = 0;
 
         private static DispatcherTimer timer;
         Pos pos = new Pos();
@@ -200,7 +209,8 @@ namespace POS.View.storage
                 await SectionData.fillBranches(cb_branch, "bs");
                 //await RefrishBranches();
                 await RefrishItems();
-                
+                //await fillShippingCompanies();
+                //await fillUsers();
                 #region datagridChange
                 //CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(dg_billDetails.Items);
                 //((INotifyCollectionChanged)myCollectionView).CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
@@ -209,7 +219,7 @@ namespace POS.View.storage
 
                 #region Permision
 
-                
+
                 if (MainWindow.groupObject.HasPermissionAction(exportPermission, MainWindow.groupObjects, "one"))
                     md_orderWaitCount.Visibility = Visibility.Visible;
                 else
@@ -345,6 +355,20 @@ namespace POS.View.storage
         async Task RefrishItems()
         {
             items = await itemModel.GetAllItems();
+        }
+        private async Task fillUsers()
+        {
+            users = await userModel.getBranchSalesMan(MainWindow.branchID.Value, deliveryPermission);
+            //cb_user.ItemsSource = users;
+            //cb_user.DisplayMemberPath = "name";
+            //cb_user.SelectedValuePath = "userId";
+        }
+        private async Task fillShippingCompanies()
+        {
+            companies = await companyModel.Get();
+            //cb_company.ItemsSource = companies;
+            //cb_company.DisplayMemberPath = "name";
+            //cb_company.SelectedValuePath = "shippingCompanyId";
         }
         private void configureProcessType()
         {
@@ -969,6 +993,7 @@ namespace POS.View.storage
             _Count = 0;
             _SequenceNum = 0;
             _SelectedBranch = -1;
+            _DeliveryCost = 0;
             _SelectedProcess = "imd";
             _ProcessType = "imd";
             invoice = new Invoice();
@@ -996,6 +1021,7 @@ namespace POS.View.storage
                 itemT.price = billDetails[i].Price;
                 itemT.itemUnitId = billDetails[i].itemUnitId;
                 itemT.createUserId = MainWindow.userID;
+                itemT.invoiceId = billDetails[i].OrderId;
 
                 invoiceItems.Add(itemT);
             }
@@ -1010,7 +1036,7 @@ namespace POS.View.storage
                     if (invoice.invNumber == null)
                         invoice.invNumber = await invoice.generateInvNumber("im",branchModel.code, MainWindow.branchID.Value);
                     // save invoice in DB
-                    invoiceId =await invoice.saveInvoice(invoice);
+                    invoiceId = await invoice.saveInvoice(invoice);
                     if (invoiceId != 0)
                     {
                         // expot order
@@ -1051,7 +1077,7 @@ namespace POS.View.storage
                     if (invoice.invNumber == null)
                         invoice.invNumber = await invoice.generateInvNumber("ex", branchModel.code, MainWindow.branchID.Value);
                     // save invoice in DB
-                    invoiceId =await invoice.saveInvoice(invoice);
+                    invoiceId = await invoice.saveInvoice(invoice);
 
                     if (invoiceId != 0)
                     {
@@ -1273,7 +1299,7 @@ namespace POS.View.storage
                     if (invoice.invNumber == null)
                         invoice.invNumber = await invoice.generateInvNumber("im", branchModel.code, MainWindow.branchID.Value);
                     // save invoice in DB
-                    invoiceId =await invoice.saveInvoice(invoice);
+                    invoiceId = await invoice.saveInvoice(invoice);
                     if (invoiceId != 0)
                     {
                         #region notification Object
@@ -1306,7 +1332,7 @@ namespace POS.View.storage
                                 invoice.branchId = (int)cb_branch.SelectedValue;
                             invoice.updateUserId = MainWindow.userID;
                         }
-                        int exportId =await invoice.saveInvoice(invoice);
+                        int exportId = await invoice.saveInvoice(invoice);
 
                         // add order details                      
                         await invoice.saveInvoiceItems(invoiceItems, invoiceId);
@@ -1350,7 +1376,7 @@ namespace POS.View.storage
                                 invoice.branchId = (int)cb_branch.SelectedValue;
                             invoice.updateUserId = MainWindow.userID;
                         }
-                        int importId =await invoice.saveInvoice(invoice);
+                        int importId = await invoice.saveInvoice(invoice);
 
                         // add order details
                         await invoice.saveInvoiceItems(invoiceItems, invoiceId);
@@ -1539,7 +1565,12 @@ namespace POS.View.storage
 
                     //"tb_amont"
                     if (columnName == MainWindow.resourcemanager.GetString("trQuantity"))
-                        newCount = int.Parse(t.Text);
+                    {
+                        if (!t.Text.Equals(""))
+                            newCount = int.Parse(t.Text);
+                        else
+                            newCount = 0;
+                    }
                     else
                         newCount = row.Count;
 
@@ -1956,50 +1987,48 @@ namespace POS.View.storage
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-        private void Cb_company_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            /*
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
+        //private void Cb_company_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        //{
+        //    try
+        //    {
+        //        if (sender != null)
+        //            SectionData.StartAwait(grid_main);
 
-                TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
-                if (elapsed.TotalMilliseconds > 100 && cb_company.SelectedIndex != -1)
-                {
-                    _SelectedCompany = (int)cb_company.SelectedValue;
-                    companyModel = companies.Find(c => c.shippingCompanyId == (int)cb_company.SelectedValue);
-                    _DeliveryCost = (decimal)companyModel.deliveryCost;
-                    refreshTotalValue();
+        //        TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
+        //        if (elapsed.TotalMilliseconds > 100 && cb_company.SelectedIndex != -1)
+        //        {
+        //            _SelectedCompany = (int)cb_company.SelectedValue;
+        //            companyModel = companies.Find(c => c.shippingCompanyId == (int)cb_company.SelectedValue);
+        //            _DeliveryCost = (decimal)companyModel.deliveryCost;
+        //           // refreshTotalValue();
 
-                    if (companyModel.deliveryType == "local")
-                    {
-                        cb_user.Visibility = Visibility.Visible;
-                    }
-                    else
-                    {
-                        cb_user.SelectedIndex = -1;
-                        cb_user.Visibility = Visibility.Collapsed;
-                    }
-                }
-                else if (cb_company.SelectedIndex == -1)
-                {
-                    cb_company.SelectedItem = "";
-                }
-                else
-                    cb_company.SelectedValue = _SelectedCompany;
+        //            if (companyModel.deliveryType == "local")
+        //            {
+        //                cb_user.Visibility = Visibility.Visible;
+        //            }
+        //            else
+        //            {
+        //                cb_user.SelectedIndex = -1;
+        //                cb_user.Visibility = Visibility.Collapsed;
+        //            }
+        //        }
+        //        else if (cb_company.SelectedIndex == -1)
+        //        {
+        //            cb_company.SelectedItem = "";
+        //        }
+        //        else
+        //            cb_company.SelectedValue = _SelectedCompany;
 
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-            */
-        }
+        //        if (sender != null)
+        //            SectionData.EndAwait(grid_main);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        if (sender != null)
+        //            SectionData.EndAwait(grid_main);
+        //        SectionData.ExceptionMessage(ex, this);
+        //    }
+        //}
         private void Cb_user_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             /*

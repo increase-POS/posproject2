@@ -49,7 +49,7 @@ namespace POS.Classes
 
 
 
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
 
 
             //string message = "";

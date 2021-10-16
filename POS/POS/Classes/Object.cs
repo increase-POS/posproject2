@@ -96,7 +96,7 @@ namespace POS.Classes
 
             var myContent = JsonConvert.SerializeObject(newObject);
             parameters.Add("Object", myContent);
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
 
 
 
@@ -198,7 +198,7 @@ namespace POS.Classes
             parameters.Add("userId", userId.ToString());
             parameters.Add("final", final.ToString());
             string method = "Object/Delete";
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
 
             //// ... Use HttpClient.
             //ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;

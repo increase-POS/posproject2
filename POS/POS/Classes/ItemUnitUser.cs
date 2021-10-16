@@ -235,7 +235,7 @@ namespace POS.Classes
             parameters.Add("Object", myContent);
             parameters.Add("userId", userId.ToString());
 
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
 
 
 

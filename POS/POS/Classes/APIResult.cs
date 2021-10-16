@@ -56,10 +56,10 @@ namespace POS.Classes
 
             //encryptedToken = HttpUtility.UrlPathEncode(encryptedToken);
 
-            writeToTmpFile(encryptedToken);
-            string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
-            string tmpPath = Path.Combine(dir, Global.TMPFolder);
-            tmpPath = Path.Combine(tmpPath, "tmp.txt");
+            string tmpPath = writeToTmpFile(encryptedToken);
+            //string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+            //string tmpPath = Path.Combine(dir, Global.TMPFolder);
+           // tmpPath = Path.Combine(tmpPath, "tmp.txt");
             FileStream fs = new FileStream(tmpPath, FileMode.Open, FileAccess.Read);
             #endregion
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
@@ -72,6 +72,7 @@ namespace POS.Classes
                 string boundary = string.Format("----WebKitFormBoundary{0}", DateTime.Now.Ticks.ToString("x"));
                 MultipartFormDataContent form = new MultipartFormDataContent();
                 HttpContent content = new StreamContent(fs);
+               
                 content.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
                 {
                     FileName = "tmp.txt"
@@ -79,42 +80,58 @@ namespace POS.Classes
                 content.Headers.Add("client", "true");
 
                 form.Add(content, "fileToUpload");
-
+               
                 var response = await client.PostAsync(@method + "?token=" + "null", form);
-                var jsonString = await response.Content.ReadAsStringAsync();
-                var Sresponse = JsonConvert.DeserializeObject<string>(jsonString);
-
-                if (Sresponse != "")
+                if (response.IsSuccessStatusCode)
                 {
-                    var decryptedToken = DeCompressThenDecrypt(Sresponse);
-                    var jwtToken = new JwtSecurityToken(decryptedToken);
-                    var s = jwtToken.Claims.ToArray();
-                    IEnumerable<Claim> claims = jwtToken.Claims;
-                    string validAuth = claims.Where(f => f.Type == "scopes").Select(x => x.Value).FirstOrDefault();
-                    if (validAuth != null && s[2].Value == "-7") // invalid authintication
-                        return null;
-                    return claims;
+                    var jsonString = await response.Content.ReadAsStringAsync();
+                    var Sresponse = JsonConvert.DeserializeObject<string>(jsonString);
+                    fs.Dispose();
+                    File.Delete(tmpPath);
+                    if (Sresponse != "")
+                    {
+                        var decryptedToken = DeCompressThenDecrypt(Sresponse);
+                        var jwtToken = new JwtSecurityToken(decryptedToken);
+                        var s = jwtToken.Claims.ToArray();
+                        IEnumerable<Claim> claims = jwtToken.Claims;
+                        string validAuth = claims.Where(f => f.Type == "scopes").Select(x => x.Value).FirstOrDefault();
+                        if (validAuth != null && s[2].Value == "-7") // invalid authintication
+                            return null;
+                        return claims;
+                    }
                 }
-
             }
-            fs.Dispose();
 
             return null;
         }
        
-        public static void writeToTmpFile(string text)
+        public static string writeToTmpFile(string text)
         {
             string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
         string tmpPath = Path.Combine(dir, Global.TMPFolder);
             if (!Directory.Exists(tmpPath))
                 Directory.CreateDirectory(tmpPath);
-            tmpPath = Path.Combine(tmpPath, "tmp.txt");
-            if (File.Exists(tmpPath))
+            //check if file in use
+            string fileName = "";
+            int fileNum = 0;
+            string filePath = "";
+            while (true)
             {
-                File.Delete(tmpPath);
+                fileName = "tmp" + fileNum.ToString() + ".txt";
+                filePath = Path.Combine(tmpPath, fileName);
+                if (File.Exists(filePath))
+                {
+                    fileNum++;
+                }
+                else
+                {
+                    File.WriteAllText(@filePath, text);
+                    break;
+                }
             }
-            File.WriteAllText(tmpPath,text);
-         
+            //tmpPath = Path.Combine(tmpPath, "tmp.txt");
+ 
+            return filePath;
         }
         public static async Task<int> post(string method, Dictionary<string,string> parameters)
         {
@@ -141,10 +158,10 @@ namespace POS.Classes
             // Token to String so you can use post it to api
             string postToken = handler.WriteToken(token);
             var encryptedToken = EncryptThenCompress(postToken);
-            writeToTmpFile(encryptedToken);
-            string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
-            string tmpPath = Path.Combine(dir, Global.TMPFolder);
-            tmpPath = Path.Combine(tmpPath, "tmp.txt");
+            string tmpPath = writeToTmpFile(encryptedToken);
+            //string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+            //string tmpPath = Path.Combine(dir, Global.TMPFolder);
+            //tmpPath = Path.Combine(tmpPath, "tmp.txt");
             FileStream fs = new FileStream(tmpPath, FileMode.Open, FileAccess.Read);
 
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
@@ -157,6 +174,7 @@ namespace POS.Classes
                 string boundary = string.Format("----WebKitFormBoundary{0}", DateTime.Now.Ticks.ToString("x"));
                 MultipartFormDataContent form = new MultipartFormDataContent();
                 HttpContent content = new StreamContent(fs);
+               
                 content.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
                 {
                     FileName = "tmp.txt"
@@ -164,11 +182,12 @@ namespace POS.Classes
                 content.Headers.Add("client", "true");
 
                 form.Add(content, "fileToUpload");
-
+                
                 var response = await client.PostAsync(@method + "?token=" + "null", form);
                 var jsonString = await response.Content.ReadAsStringAsync();
                 var Sresponse = JsonConvert.DeserializeObject<string>(jsonString);
                 fs.Dispose();
+                File.Delete(tmpPath);
                 if (Sresponse != "")
                 {
                     var decryptedToken = DeCompressThenDecrypt(Sresponse);

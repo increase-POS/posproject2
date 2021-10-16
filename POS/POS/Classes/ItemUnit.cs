@@ -48,7 +48,7 @@ namespace POS.Classes
             parameters.Add("itemId", itemId.ToString());
 
             //#################
-            IEnumerable<Claim> claims = await APIResult.getList("ItemsUnits/GetAll");
+            IEnumerable<Claim> claims = await APIResult.getList("ItemsUnits/GetAll", parameters);
 
             foreach (Claim c in claims)
             {
@@ -164,7 +164,7 @@ namespace POS.Classes
             parameters.Add("itemId", itemId.ToString());
 
             //#################
-            IEnumerable<Claim> claims = await APIResult.getList("ItemsUnits/Get");
+            IEnumerable<Claim> claims = await APIResult.getList("ItemsUnits/Get",parameters);
 
             foreach (Claim c in claims)
             {
@@ -283,7 +283,7 @@ namespace POS.Classes
 
             var myContent = JsonConvert.SerializeObject(itemUnit);
             parameters.Add("Object", myContent);
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
 
            
             //// ... Use HttpClient.
@@ -326,7 +326,7 @@ namespace POS.Classes
             parameters.Add("userId", userId.ToString());
             parameters.Add("final", final.ToString());
             string method = "ItemsUnits/Delete";
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
 
             //// ... Use HttpClient.
             //ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
@@ -362,7 +362,7 @@ namespace POS.Classes
             //parameters.Add("userId", userId.ToString());
             //parameters.Add("date", date.ToString());
             //#################
-            IEnumerable<Claim> claims = await APIResult.getList("ItemsUnits/Getall");
+            IEnumerable<Claim> claims = await APIResult.getList("ItemsUnits/GetallItemsUnits");
 
             foreach (Claim c in claims)
             {

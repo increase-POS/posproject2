@@ -492,7 +492,7 @@ namespace POS.Classes
                 }
             }
           return list;
-          //  return Convert.ToInt32(APIResult.post(method, parameters));
+          // return await APIResult.post(method, parameters);
             //List<BestSeller> list = null;
             //// ... Use HttpClient.
             //ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;

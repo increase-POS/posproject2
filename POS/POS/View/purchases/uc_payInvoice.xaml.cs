@@ -765,12 +765,12 @@ namespace POS.View
                     invoice.invNumber = await invoice.generateInvNumber("pi", branchModel.code, MainWindow.branchID.Value);
 
                 // save invoice in DB
-                int invoiceId = await invoiceModel.saveInvoice(invoice) ;
+                int invoiceId = await invoiceModel.saveInvoice(invoice);
                 prInvoiceId = invoiceId;
                 invoice.invoiceId = invoiceId;
                 if (invoiceId != 0)
                 {
-                    if (invType == "pw")
+                    if (invType == "pw" || invType =="p")
                     {
                         await invoice.recordPosCashTransfer(invoice, "pi");
                         await invoice.recordCashTransfer(invoice, "pi");
@@ -2032,11 +2032,16 @@ namespace POS.View
                         decimal oldPrice = 0;
                         decimal newPrice = 0;
 
-                        //"tb_amont"
-                        if (columnName == MainWindow.resourcemanager.GetString("trQuantity"))
+                    //"tb_amont"
+                    if (columnName == MainWindow.resourcemanager.GetString("trQuantity"))
+                    {
+                        if (!t.Text.Equals(""))
                             newCount = int.Parse(t.Text);
                         else
-                            newCount = row.Count;
+                            newCount = 0;
+                    }
+                    else
+                        newCount = row.Count;
 
                         oldCount = row.Count;
 

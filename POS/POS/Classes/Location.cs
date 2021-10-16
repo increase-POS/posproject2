@@ -115,7 +115,7 @@ namespace POS.Classes
             string method = "Locations/Save";
             var myContent = JsonConvert.SerializeObject(item);
             parameters.Add("itemObject", myContent);
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
         }
 
         public async Task<int> saveLocationsSection(List<Location> locations, int sectionId, int userId)
@@ -126,7 +126,7 @@ namespace POS.Classes
             parameters.Add("itemObject", myContent);
             parameters.Add("sectionId", sectionId.ToString());
             parameters.Add("userId", userId.ToString());
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
         }
         public async Task<int> delete(int locationId, int userId, Boolean final)
         {
@@ -135,7 +135,7 @@ namespace POS.Classes
             parameters.Add("userId", userId.ToString());
             parameters.Add("final", final.ToString());
             string method = "Locations/Delete";
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
         }
 
     }

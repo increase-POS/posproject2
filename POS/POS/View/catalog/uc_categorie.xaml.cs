@@ -1291,15 +1291,19 @@ namespace POS.View
                 byte[] imageBuffer = await categoryModel.downloadImage(category.image); // read this as BLOB from your DB
 
                 var bitmapImage = new BitmapImage();
-
-                using (var memoryStream = new MemoryStream(imageBuffer))
+                if (imageBuffer != null)
                 {
-                    bitmapImage.BeginInit();
-                    bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                    bitmapImage.StreamSource = memoryStream;
-                    bitmapImage.EndInit();
+                    using (var memoryStream = new MemoryStream(imageBuffer))
+                    {
+                        bitmapImage.BeginInit();
+                        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmapImage.StreamSource = memoryStream;
+                        bitmapImage.EndInit();
+                    }
+                    img_category.Background = new ImageBrush(bitmapImage);
                 }
-                img_category.Background = new ImageBrush(bitmapImage);
+                else
+                    SectionData.clearImg(img_category);
 
             }
 

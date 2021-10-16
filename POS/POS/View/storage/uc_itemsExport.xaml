@@ -447,9 +447,9 @@
                                 </Grid>
                             </Expander>
                             <!--#endregion-->
-                            <Separator Margin="5,2.5" Grid.Row="3"  Background="#DFDFDF" VerticalAlignment="Center" Width="auto" />
+                            <!--<Separator Margin="5,2.5" Grid.Row="3"  Background="#DFDFDF" VerticalAlignment="Center" Width="auto" />-->
                             <!--#region  Delivery-->
-                            <Expander  x:Name="exp_delivery" Tag="delivery"  Expanded="Expander_Expanded" Margin="5" Background="White" Foreground="#178DD2" >
+                            <!--<Expander  x:Name="exp_delivery" Tag="delivery"  Expanded="Expander_Expanded" Margin="5" Background="White" Foreground="#178DD2" >
                                 <Expander.Header>
                                     <TextBlock  Text="Delivery" x:Name="txt_delivery" Foreground="#178DD2" 
                                                 FontWeight="Bold" FontSize="12"  
@@ -508,7 +508,7 @@
                                         </Path.ToolTip>
                                     </Path>
                                 </Grid>
-                            </Expander>
+                            </Expander>-->
                             <!--#endregion-->
                             <Separator Margin="5,2.5" Grid.Row="3"  Background="#DFDFDF" VerticalAlignment="Center" Width="auto" />
                             <!--#region  store-->

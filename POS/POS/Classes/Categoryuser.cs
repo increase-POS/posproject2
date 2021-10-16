@@ -101,8 +101,7 @@ namespace POS.Classes
             {
                 if (c.Type == "scopes")
                 {
-                    list = JsonConvert.DeserializeObject<List<Categoryuser>>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
-                    break;
+                    list.Add(JsonConvert.DeserializeObject<Categoryuser>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" }));
                 }
             }
             return list;
@@ -279,7 +278,7 @@ namespace POS.Classes
             parameters.Add("userId", userId.ToString());
          
             string method = "categoryuser/UpdateCatUserList";
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
 
         
             //#################

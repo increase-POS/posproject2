@@ -206,7 +206,7 @@ namespace POS.View.storage
             _DestroyAmount = 0;
             _ShortageAmount = 0;
             invItemsLocations.Clear();
-
+            inventory = new Inventory();
             inventory = await inventory.getByBranch("d", MainWindow.branchID.Value);
             if (inventory.inventoryId == 0)// there is no draft in branch
             {

@@ -379,9 +379,9 @@ namespace POS.View.storage
                             #endregion
 
                             List<ItemTransfer> orderList = new List<ItemTransfer>();
-                            int amount = await itemLocationModel.getAmountByItemLocId((int)invItemLoc.itemLocationId);
-                            if (amount >= invItemLoc.amount)
-                            {
+                            //int amount = await itemLocationModel.getAmountByItemLocId((int)invItemLoc.itemLocationId);
+                            //if (amount >= invItemLoc.amount)
+                            //{
                                 if (_ItemType == "sn")
                                     serialNum = tb_serialNum.Text;
 
@@ -422,11 +422,11 @@ namespace POS.View.storage
                                 }
                                 else
                                     Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-                            }
-                            else
-                            {
-                                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trShortageAmountMoreExist"), animation: ToasterAnimation.FadeIn);
-                            }
+                            //}
+                            //else
+                            //{
+                            //    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trShortageAmountMoreExist"), animation: ToasterAnimation.FadeIn);
+                            //}
                         }
                     }
                 }
@@ -576,6 +576,7 @@ namespace POS.View.storage
                 tb_notes.Clear();
                 tb_reasonOfShortage.Clear();
                 tb_notes.Clear();
+                invoiceModel = new Invoice();
             }
             catch (Exception ex)
             {

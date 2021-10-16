@@ -49,7 +49,7 @@ namespace POS.Classes
             string method = "servicesCosts/Save";
             var myContent = JsonConvert.SerializeObject(item);
             parameters.Add("itemObject", myContent);
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
         }
         //**********************************************
         // call api method to delete item service
@@ -58,7 +58,7 @@ namespace POS.Classes
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             parameters.Add("itemId", costId.ToString());
             string method = "servicesCosts/Delete";
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
         }
     }
 }

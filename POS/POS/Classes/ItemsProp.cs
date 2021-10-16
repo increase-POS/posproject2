@@ -33,7 +33,7 @@ namespace POS.Classes
 
             var myContent = JsonConvert.SerializeObject(itemsProp);
             parameters.Add("Object", myContent);
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
 
             //string message = "";
             //// ... Use HttpClient.
@@ -76,7 +76,7 @@ namespace POS.Classes
             parameters.Add("itemPropId", itemPropId.ToString());
        
             string method = "itemsProp/Delete";
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
 
 
 

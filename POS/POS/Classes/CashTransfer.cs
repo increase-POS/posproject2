@@ -266,8 +266,7 @@ namespace POS.Classes
             {
                 if (c.Type == "scopes")
                 {
-                    list = JsonConvert.DeserializeObject<List<CashTransfer>>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
-                    break;
+                    list.Add(JsonConvert.DeserializeObject<CashTransfer>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" }));
                 }
             }
             return list;
@@ -377,7 +376,7 @@ namespace POS.Classes
 
             var myContent = JsonConvert.SerializeObject(cashTr);
             parameters.Add("Object", myContent);
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
 
 
             //... Use HttpClient.
@@ -431,8 +430,7 @@ namespace POS.Classes
             {
                 if (c.Type == "scopes")
                 {
-                    list = JsonConvert.DeserializeObject<List<CashTransfer>>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
-                    break;
+                    list.Add(JsonConvert.DeserializeObject<CashTransfer>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" }));
                 }
             }
             return list;
@@ -488,7 +486,7 @@ namespace POS.Classes
             parameters.Add("cashTransId", cashTransId.ToString());
             
             string method = "Cashtransfer/Delete";
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
 
 
             //// ... Use HttpClient.
@@ -527,7 +525,7 @@ namespace POS.Classes
             parameters.Add("cashTransId", cashTransId.ToString());
             parameters.Add("userIdD", userIdD.ToString());
             string method = "Cashtransfer/MovePosCash";
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
 
 
 
@@ -578,7 +576,7 @@ namespace POS.Classes
          
 
             string method = "Cashtransfer/payByAmount";
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
 
             //string message = "";
             //// ... Use HttpClient.
@@ -629,7 +627,7 @@ namespace POS.Classes
 
 
             string method = "Cashtransfer/payUserByAmount";
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
 
 
             //string message = "";
@@ -682,7 +680,7 @@ namespace POS.Classes
 
 
             string method = "Cashtransfer/payShippingCompanyByAmount";
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
 
             //string message = "";
             //// ... Use HttpClient.
@@ -735,7 +733,7 @@ namespace POS.Classes
 
 
             string method = "Cashtransfer/payListOfInvoices";
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
 
             //string message = "";
             //// ... Use HttpClient.
@@ -792,7 +790,7 @@ namespace POS.Classes
 
 
             string method = "Cashtransfer/payUserListOfInvoices";
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
 
             //string message = "";
             //// ... Use HttpClient.
@@ -847,7 +845,7 @@ namespace POS.Classes
 
 
             string method = "Cashtransfer/payUserListOfInvoices";
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
 
             //string message = "";
             //// ... Use HttpClient.
@@ -1017,7 +1015,7 @@ namespace POS.Classes
             parameters.Add("cashtransfer", myContent);
 
             string method = "Cashtransfer/payOrderInvoice";
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
 
             //string message = "";
             //// ... Use HttpClient.

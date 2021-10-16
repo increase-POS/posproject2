@@ -52,8 +52,7 @@ namespace POS.Classes
             {
                 if (c.Type == "scopes")
                 {
-                    items = JsonConvert.DeserializeObject<List<PropertiesItems>>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
-                    break;
+                    items.Add(JsonConvert.DeserializeObject<PropertiesItems>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" }));
                 }
             }
             return items;
@@ -82,7 +81,7 @@ namespace POS.Classes
             string method = "Properties/Save";
             var myContent = JsonConvert.SerializeObject(item);
             parameters.Add("itemObject", myContent);
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
         }
         public async Task<int> delete(int propertyId, int userId, Boolean final)
         {
@@ -91,7 +90,7 @@ namespace POS.Classes
             parameters.Add("userId", userId.ToString());
             parameters.Add("final", final.ToString());
             string method = "Properties/Delete";
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
         }
     }
 }

@@ -148,7 +148,7 @@ namespace POS.Classes
             string method = "BranchesUsers/Save";
             var myContent = JsonConvert.SerializeObject(item);
             parameters.Add("itemObject", myContent);
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
         }
         public async Task<int> UpdateBranchByUserId(List<BranchesUserstable> newList, int userId, int updateUserId)
         {
@@ -158,14 +158,14 @@ namespace POS.Classes
             parameters.Add("newList", newListParameter);
             parameters.Add("userId", userId.ToString());
             parameters.Add("updateUserId", updateUserId.ToString());
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
         }
         public async Task<int> delete(int branchsUsersId)
         {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             parameters.Add("itemId", branchsUsersId.ToString());
             string method = "BranchesUsers/Delete";
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
         }
     }
 }

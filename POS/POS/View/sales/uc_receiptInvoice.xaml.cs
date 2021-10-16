@@ -1114,6 +1114,9 @@ namespace POS.View
                                 }
                                 cashTrasnfer.createUserId = MainWindow.userID;
                                 await cashTrasnfer.Save(cashTrasnfer); //add cash transfer  
+                                invoice.paid = invoice.totalNet;
+                                invoice.totalNet = 0;
+                                invoice.saveInvoice(invoice);
                                 break;
                             case 1:// balance: update customer balance
                                 if (cb_company.SelectedIndex != -1 && companyModel.deliveryType.Equals("com"))
@@ -1209,14 +1212,14 @@ namespace POS.View
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {//save
             try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
+            {            
                 if (((MainWindow.groupObject.HasPermissionAction(invoicePermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                         &&
                         (invoice.invType == "sd" || invoice.invType == "s"))
                         || (invoice.invType != "sd" && invoice.invType != "s"))
                 {
+                    if (sender != null)
+                        SectionData.StartAwait(grid_main);
                     //if (logInProcessing)
                     //{
                     //    logInProcessing = false;
@@ -1274,11 +1277,12 @@ namespace POS.View
                     //awaitSaveBtn(false);
                     //logInProcessing = true;
                     //}
+                    if (sender != null)
+                        SectionData.EndAwait(grid_main);
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
+               
             }
             catch (Exception ex)
             {
@@ -4134,7 +4138,7 @@ namespace POS.View
                     if (w.isOk)
                     {
                         int res = await invoice.deleteOrder(invoice.invoiceId);
-                        if (res>0)
+                        if (res >0)
                         {
                             Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
 

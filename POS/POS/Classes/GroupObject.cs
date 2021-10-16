@@ -106,7 +106,7 @@ namespace POS.Classes
 
             var myContent = JsonConvert.SerializeObject(newObject);
             parameters.Add("Object", myContent);
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
 
 
             //// ... Use HttpClient.
@@ -206,7 +206,7 @@ namespace POS.Classes
             parameters.Add("userId", userId.ToString());
             parameters.Add("final", final.ToString());
             string method = "GroupObject/Delete";
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
 
 
             //// ... Use HttpClient.
@@ -246,7 +246,7 @@ namespace POS.Classes
            
 
             string method = "categoryuser/UpdateCatUserList";
-            return Convert.ToInt32(APIResult.post(method, parameters));
+           return await APIResult.post(method, parameters);
 
 
             //string message = "";
@@ -293,8 +293,7 @@ namespace POS.Classes
             {
                 if (c.Type == "scopes")
                 {
-                    list = JsonConvert.DeserializeObject<List<GroupObject>>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
-                    break;
+                    list.Add(JsonConvert.DeserializeObject<GroupObject>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" }));
                 }
             }
             return list;
@@ -353,8 +352,7 @@ namespace POS.Classes
             {
                 if (c.Type == "scopes")
                 {
-                    list = JsonConvert.DeserializeObject<List<GroupObject>>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
-                    break;
+                    list.Add(JsonConvert.DeserializeObject<GroupObject>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" }));
                 }
             }
             return list;

@@ -398,9 +398,9 @@ namespace POS.View.storage
                         #endregion
                         if (invItemLoc.id != 0)
                         {  
-                            int amount = await itemLocationModel.getAmountByItemLocId((int)invItemLoc.itemLocationId);
-                            if (amount >= invItemLoc.amountDestroyed)
-                            {
+                            //int amount = await itemLocationModel.getAmountByItemLocId((int)invItemLoc.itemLocationId);
+                            //if (amount >= invItemLoc.amountDestroyed)
+                            //{
                                 orderList.Add(new ItemTransfer()
                                 {
                                     itemName = invItemLoc.itemName,
@@ -431,11 +431,11 @@ namespace POS.View.storage
                                 else
                                     Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
-                            }
-                            else
-                            {
-                                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trDestroyAmountMoreExist"), animation: ToasterAnimation.FadeIn);
-                            }
+                            //}
+                            //else
+                            //{
+                            //    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trDestroyAmountMoreExist"), animation: ToasterAnimation.FadeIn);
+                            //}
                         }
                         else
                         {
@@ -642,30 +642,17 @@ namespace POS.View.storage
 
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-
-                if (invItemLoc != null)
-                    invItemLoc.id = 0;
-                _ItemType = "";
-                DataContext = new InventoryItemLocation();
-                cb_item.SelectedIndex =
-                cb_unit.SelectedIndex = -1;
-                grid_serial.Visibility = Visibility.Collapsed;
-                tb_notes.Clear();
-                tb_reasonOfDestroy.Clear();
-                tb_notes.Clear();
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
+            if (invItemLoc != null)
+                invItemLoc.id = 0;
+            _ItemType = "";
+            DataContext = new InventoryItemLocation();
+            cb_item.SelectedIndex =
+            cb_unit.SelectedIndex = -1;
+            grid_serial.Visibility = Visibility.Collapsed;
+            tb_notes.Clear();
+            tb_reasonOfDestroy.Clear();
+            tb_notes.Clear();
+            invoiceModel = new Invoice();
         }
         private void Tgl_IsActive_Checked(object sender, RoutedEventArgs e)
         {
