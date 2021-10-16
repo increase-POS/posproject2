@@ -2638,4 +2638,13 @@ Please add Email in setting</value>
   <data name="trNoNetworkConnection" xml:space="preserve">
     <value>No network connection</value>
   </data>
+  <data name="trAdministrativePullHint" xml:space="preserve">
+    <value>Administrative Pull...</value>
+  </data>
+  <data name="trGeneralExpensesHint" xml:space="preserve">
+    <value>General Expenses...</value>
+  </data>
+  <data name="trSalaryHint" xml:space="preserve">
+    <value>Salary...</value>
+  </data>
 </root>

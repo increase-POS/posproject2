@@ -286,6 +286,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Administrative Pull....
+        /// </summary>
+        internal static string trAdministrativePullHint {
+            get {
+                return ResourceManager.GetString("trAdministrativePullHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Address....
         /// </summary>
         internal static string trAdressHint {
@@ -3274,6 +3283,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to General Expenses....
+        /// </summary>
+        internal static string trGeneralExpensesHint {
+            get {
+                return ResourceManager.GetString("trGeneralExpensesHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The amount cannot be greater than the deserved one.
         /// </summary>
         internal static string trGreaterAmmount {
@@ -5710,6 +5728,15 @@ namespace POS {
         internal static string trSalary {
             get {
                 return ResourceManager.GetString("trSalary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Salary....
+        /// </summary>
+        internal static string trSalaryHint {
+            get {
+                return ResourceManager.GetString("trSalaryHint", resourceCulture);
             }
         }
         
