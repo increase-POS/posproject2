@@ -66,6 +66,7 @@ namespace POS.View
             }
         }
         ObservableCollection<BillDetails> billDetails = new ObservableCollection<BillDetails>();
+        public List<Control> controls;
 
         Item itemModel = new Item();
         Item item = new Item();
@@ -98,6 +99,7 @@ namespace POS.View
         DateTime _lastKeystroke = new DateTime(0);
         static private string _BarcodeStr = "";
         static private object _Sender;
+        bool _IsFocused = false;
         #endregion
 
         CatigoriesAndItemsView catigoriesAndItemsView = new CatigoriesAndItemsView();
@@ -250,6 +252,9 @@ namespace POS.View
 
                 translate();
                 catigoriesAndItemsView.ucPayInvoice = this;
+                //List all the UIElement in the VisualTree
+                controls = new List<Control>();
+
                 setTimer();
                 await RefrishItems();
                 configureDiscountType();
@@ -267,7 +272,8 @@ namespace POS.View
                 //CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(dg_billDetails.Items);
                 //((INotifyCollectionChanged)myCollectionView).CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
                 #endregion
-
+                //Walk through the VisualTree
+                FindControl(this.grid_main, controls);
 
                 #region Permision
 
@@ -1680,29 +1686,16 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                if (e.KeyboardDevice.IsKeyDown(Key.LeftCtrl) || e.KeyboardDevice.IsKeyDown(Key.RightCtrl))
+                if (!_IsFocused)
                 {
-                    switch (e.Key)
-                    {
-                        case Key.P:
-                            //handle P key
-                            btn_printInvoice_Click(null, null);
-                            break;
-                        case Key.S:
-                            //handle S key
-                            Btn_save_Click(null, null);
-                            break;
-                        case Key.I:
-                            //handle S key
-                            Btn_items_Click(null, null);
-                            break;
-                    }
+                   Control c = CheckActiveControl();
+                    if (c == null)
+                        tb_barcode.Focus();
+                    _IsFocused = true;
                 }
-
-
-
+                
                 TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
-                if (elapsed.TotalMilliseconds > 50)
+                if (elapsed.TotalMilliseconds > 150)
                 {
                     _BarcodeStr = "";
                 }
@@ -1727,7 +1720,7 @@ namespace POS.View
                 _BarcodeStr += digit;
                 _lastKeystroke = DateTime.Now;
                 // process barcode
-
+               
                 if (e.Key.ToString() == "Return" && _BarcodeStr != "")
                 {
                     await dealWithBarcode(_BarcodeStr);
@@ -1742,7 +1735,7 @@ namespace POS.View
                         }
                         else if (tb != null)
                         {
-                            if (tb.Name == "tb_invoiceNumber" || tb.Name == "tb_note" || tb.Name == "tb_discount" || tb.Name == "tb_barcode")// remove barcode from text box
+                            if (tb.Name == "tb_invoiceNumber" || tb.Name == "tb_note" || tb.Name == "tb_discount" )// remove barcode from text box
                             {
                                 string tbString = tb.Text;
                                 string newStr = "";
@@ -1756,11 +1749,29 @@ namespace POS.View
                     }
                     tb_barcode.Text = _BarcodeStr;
                     _BarcodeStr = "";
-
+                    _IsFocused = false;
                     e.Handled = true;
                     cb_branch.SelectedValue = _SelectedBranch;
                 }
                 _Sender = null;
+                if (e.KeyboardDevice.IsKeyDown(Key.LeftCtrl) || e.KeyboardDevice.IsKeyDown(Key.RightCtrl))
+                {
+                    switch (e.Key)
+                    {
+                        case Key.P:
+                            //handle P key
+                            btn_printInvoice_Click(null, null);
+                            break;
+                        case Key.S:
+                            //handle S key
+                            Btn_save_Click(null, null);
+                            break;
+                        case Key.I:
+                            //handle S key
+                            Btn_items_Click(null, null);
+                            break;
+                    }
+                }
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -1769,6 +1780,41 @@ namespace POS.View
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this);
+            }
+        }
+        public Control CheckActiveControl()
+        {
+            for (int i = 0; i < controls.Count; i++)
+            {
+                Control c = controls[i];
+                if (c.IsFocused)
+                {
+                    return c;
+                }
+            }
+            return null;
+        }
+        public void FindControl(DependencyObject root, List<Control> controls)
+        {
+            controls.Clear();
+            var queue = new Queue<DependencyObject>();
+            queue.Enqueue(root);
+            while (queue.Count > 0)
+            {
+                var current = queue.Dequeue();
+                var control = current as Control;
+                if (control != null && control.IsTabStop)
+                {
+                    controls.Add(control);
+                }
+                for (int i = 0; i < VisualTreeHelper.GetChildrenCount(current); i++)
+                {
+                    var child = VisualTreeHelper.GetChild(current, i);
+                    if (child != null)
+                    {
+                        queue.Enqueue(child);
+                    }
+                }
             }
         }
         private async Task dealWithBarcode(string barcode)
@@ -1817,7 +1863,7 @@ namespace POS.View
                          // get item matches barcode
                     if (barcodesList != null)
                     {
-                        ItemUnit unit1 = barcodesList.ToList().Find(c => c.barcode == tb_barcode.Text.Trim());
+                        ItemUnit unit1 = barcodesList.ToList().Find(c => c.barcode == barcode.Trim());
 
                         // get item matches the barcode
                         if (unit1 != null)
@@ -1872,7 +1918,7 @@ namespace POS.View
                     string barcode = "";
                     if (_BarcodeStr.Length < 13)
                     {
-                        barcode = tb_barcode.Text;
+                        barcode = tb_barcode.Text;                       
                         await dealWithBarcode(barcode);
                     }
 
