@@ -131,7 +131,8 @@ namespace POS.View.windows
                     itemUnitId = (int)p.childIUId;
                     int requireQuan = itemQuanP * quantity;
 
-                    branchQuantity = await itemLocation.getUnitAmount(itemUnitId, MainWindow.branchID.Value);
+                    //branchQuantity = await itemLocation.getUnitAmount(itemUnitId, MainWindow.branchID.Value);
+                    branchQuantity = await itemLocation.getAmountInBranch(itemUnitId, MainWindow.branchID.Value);
 
                     if (requireQuan > branchQuantity)
                     {

@@ -211,6 +211,7 @@ namespace POS.View.storage
                 await RefrishItems();
                 //await fillShippingCompanies();
                 //await fillUsers();
+                await fillBarcodeList();
                 #region datagridChange
                 //CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(dg_billDetails.Items);
                 //((INotifyCollectionChanged)myCollectionView).CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);

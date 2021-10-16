@@ -277,8 +277,7 @@ namespace POS.Classes
             {
                 if (c.Type == "scopes")
                 {
-                    list = JsonConvert.DeserializeObject<List<Package>>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
-                    break;
+                    list.Add(JsonConvert.DeserializeObject<Package>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" }));
                 }
             }
             return list;
